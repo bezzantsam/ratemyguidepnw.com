@@ -19,5 +19,5 @@ export default function GuideSearch({guides}:{guides:RegistryGuide[]}){
  </div><div className="results-heading"><strong>{filtered.length.toLocaleString()} fishing guides</strong><span>Sorted by name A–Z · Page {currentPage} of {pages}</span></div>
  <div className="guide-results">{shown.map(g=><RegistryGuideCard key={g.registration} guide={g}/>)}</div>
  {pages>1&&<div className="pager"><button disabled={currentPage===1} onClick={()=>setPage(v=>Math.max(1,v-1))}>← Previous</button><span>Page {currentPage} / {pages}</span><button disabled={currentPage===pages} onClick={()=>setPage(v=>Math.min(pages,v+1))}>Next →</button></div>}
- </>;
+ </section>;
 }
