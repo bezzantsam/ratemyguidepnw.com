@@ -1,16 +1,11 @@
 'use client';
-import {useState} from 'react';
+import {useEffect,useState} from 'react';
+import AuthPanel,{client} from './AuthPanel';
 export default function ClaimForm({name,listing}:{name:string;listing:string}){
- const [claimant,setClaimant]=useState('');const [email,setEmail]=useState('');const [business,setBusiness]=useState('');const [proof,setProof]=useState('');
- const subject='Profile ownership claim request: '+name+' ('+listing+')';
- const body=['Captain profile ownership request','Listing: '+name,'Directory reference: '+listing,'Claimant name: '+claimant,'Reply email: '+email,'Business or outfit: '+business,'Public proof URL / explanation: '+proof,'','I understand that submitting this request does not verify or transfer ownership. The site operator will independently confirm my identity before changing the listing.'].join('\n');
- const ready=claimant.trim()&&email.includes('@')&&proof.trim();
- return <form className="claim-form" onSubmit={e=>{e.preventDefault();if(ready)window.location.href='mailto:bezzantsam@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body)}}>
- <label>Your full name<input required value={claimant} onChange={e=>setClaimant(e.target.value)} placeholder="Captain or authorized business representative"/></label>
- <label>Your email<input type="email" required value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@yourbusiness.com"/></label>
- <label>Business / outfit<input value={business} onChange={e=>setBusiness(e.target.value)} placeholder="Business name"/></label>
- <label>Public proof of association<textarea required value={proof} onChange={e=>setProof(e.target.value)} placeholder="Link to an official business page identifying you, or explain how we can independently verify the claim. Do not include ID documents or sensitive information." rows={4}/></label>
- <button className="button" disabled={!ready} type="submit">Prepare claim email →</button>
- <p className="muted">This opens your email app; you must send the message yourself. Requests are sent to the site's operator inbox. Claim requests do not grant access automatically. Do not email identification documents.</p>
- </form>
+ const[claimant,setClaimant]=useState(''),[business,setBusiness]=useState(''),[proof,setProof]=useState(''),[user,setUser]=useState(false),[status,setStatus]=useState(''),[busy,setBusy]=useState(false);
+ useEffect(()=>{if(!client)return;void client.auth.getUser().then(x=>setUser(!!x.data.user));const{data:{subscription}}=client.auth.onAuthStateChange((_e,s)=>setUser(!!s?.user));return()=>subscription.unsubscribe()},[]);
+ async function submit(){if(!client)return;setBusy(true);const {data:guide,error:lookupError}=await client.from('guides').select('id').eq('slug',listing.toLowerCase().replace(/[^a-z0-9]+/g,'-')).single();if(lookupError||!guide){setStatus('Could not find this listing.');setBusy(false);return}
+ const{data:u}=await client.auth.getUser();if(!u.user){setStatus('Please sign in first.');setBusy(false);return}
+ const{error}=await client.from('guide_claims').insert({guide_id:guide.id,claimant_id:u.user.id,status:'pending'});setStatus(error?.code==='23505'?'You already have a claim for this guide.':error?.message||'Your ownership claim is pending independent review. This does not verify your identity.');setBusy(false)}
+ return <div className="claim-form"><AuthPanel/><label>Full name<input required value={claimant} onChange={e=>setClaimant(e.target.value)} placeholder="Captain or authorized representative"/></label><label>Business or outfit<input value={business} onChange={e=>setBusiness(e.target.value)}/></label><label>Public evidence for manual verification<textarea rows={3} value={proof} onChange={e=>setProof(e.target.value)} placeholder="Public official listing or business site; do not include IDs or secrets"/></label><p className="muted">The claim request is stored securely with your signed-in account. Evidence entered here is not uploaded; send supporting public links to the site operator if requested. Knowing the registration number does not establish ownership.</p><button disabled={!user||busy||!claimant.trim()||!proof.trim()} onClick={()=>void submit()}>Request captain verification</button>{status&&<p role="status">{status}</p>}</div>
 }
