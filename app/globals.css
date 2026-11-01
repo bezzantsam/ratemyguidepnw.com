@@ -55,3 +55,21 @@
 .auth-panel button:disabled,.claim-form button:disabled{opacity:.45;cursor:not-allowed}
 
 .moderation-buttons{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}.moderation-buttons button{padding:11px 15px;border-radius:8px;border:0;background:#d8b26b;color:#11352f;font-weight:700;cursor:pointer}.moderation-buttons button:last-child{background:#415e58;color:#fff}.moderation-buttons button:disabled{opacity:.5} 
+
+
+/* Dock Talk marquee: hover/focus pauses, reduced motion disables animation. */
+.dock-ticker{display:flex;align-items:center;gap:0;background:#102d30;border-bottom:1px solid #426164;color:#eff7f1;min-height:44px;overflow:hidden}
+.dock-ticker-label{flex-shrink:0;display:flex;align-items:center;gap:7px;padding:13px 18px;background:#d5ae63;color:#10282b;font-size:12px;font-weight:900;letter-spacing:.08em;white-space:nowrap;z-index:1}
+.dock-ticker-dot{height:7px;width:7px;background:#10282b;border-radius:50%}
+.dock-ticker-window{min-width:0;flex:1;overflow:hidden}
+.dock-ticker-track{display:flex;width:max-content;animation:dock-talk-scroll 35s linear infinite}
+.dock-ticker-group{display:flex;align-items:center;flex-shrink:0;gap:30px;padding-inline:15px}
+.dock-ticker-item{display:inline-flex;align-items:center;gap:10px;white-space:nowrap;color:#e4eeea;font-size:12px;text-decoration:none}
+a.dock-ticker-item:hover{color:white;text-decoration:underline}
+.dock-ticker-stars{color:#f4c86d;letter-spacing:1px}
+.dock-ticker-demo{border:1px solid #79908b;border-radius:3px;padding:2px 5px;color:#c6d7d2;font-size:9px;letter-spacing:.06em}
+.dock-ticker-view{flex-shrink:0;padding:12px 16px;color:#e8c27c;font-size:12px;font-weight:700;white-space:nowrap}
+.dock-ticker:hover .dock-ticker-track,.dock-ticker:focus-within .dock-ticker-track{animation-play-state:paused}
+@keyframes dock-talk-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.dock-ticker-track{animation:none}.dock-ticker-window{overflow-x:auto}.dock-ticker-group[aria-hidden="true"]{display:none}}
+@media(max-width:580px){.dock-ticker-label{padding:13px 10px;font-size:10px}.dock-ticker-view{padding:12px 8px;font-size:10px}.dock-ticker-track{animation-duration:48s}}
