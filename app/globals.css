@@ -37,3 +37,5 @@
 .claim-form .button:disabled{opacity:.5;cursor:not-allowed}
 .directory-panel .empty-results{padding:22px;color:#415a54}
 @media(max-width:680px){.state-switch{margin:14px 15px 0}}
+
+.profile-summary{display:flex;align-items:center;gap:18px;margin:28px 0;padding:20px;border:1px solid #486b64;border-radius:12px;background:#18383a}.profile-summary p{margin:5px 0}
