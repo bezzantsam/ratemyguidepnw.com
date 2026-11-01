@@ -48,3 +48,8 @@
 .captain-details-editor button,.review-form button{background:#d8b26b;color:#12302d;border:0;border-radius:8px;padding:11px 14px;font-weight:700;cursor:pointer;width:fit-content}
 .review-form button:disabled{opacity:.5;cursor:not-allowed}
 .review-form{margin-top:28px}.review-form h3{margin-top:0}.review-form fieldset{border:1px solid #476763;border-radius:9px;padding:12px}.review-form legend{padding:0 7px;font-weight:700}.stars{display:flex;flex-wrap:wrap;gap:7px}.stars button{background:#244a46;color:#e2ebe7;border:1px solid #648279}.stars button.selected{background:#e6be72;color:#1e322d}.review-list{display:grid;gap:16px;margin:20px 0}.review-fields{margin-top:18px}
+
+.auth-panel{display:grid;gap:12px;max-width:470px;padding:18px;border:1px solid #5c7e74;border-radius:12px;margin:14px 0;background:#183d3b}
+.auth-panel input{color:#143530;background:#fff;border:1px solid #a2b9b1;border-radius:7px;padding:11px;display:block;width:100%}
+.auth-panel button,.claim-form button{background:#d8b26b;color:#102f2b;border:0;border-radius:8px;padding:12px 15px;font-weight:700;cursor:pointer;width:fit-content}
+.auth-panel button:disabled,.claim-form button:disabled{opacity:.45;cursor:not-allowed}
