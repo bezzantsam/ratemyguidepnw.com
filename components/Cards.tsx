@@ -1,0 +1,4 @@
+import Link from 'next/link';
+import type {Guide,Review} from '@/lib/data';
+export function GuideCard({guide}:{guide:Guide}){return <Link className="card" href={`/guides/${guide.slug}`}><p className="eyebrow">FICTIONAL DEMO GUIDE</p><h3>{guide.name}</h3><p>{guide.outfit}</p><p className="muted">{guide.waterway}</p><p><span className="metric">★ {guide.quality.toFixed(1)}</span> · {guide.rebook}% would book again</p><p className="muted">{guide.reviewCount} illustrative reviews</p></Link>}
+export function ReviewCard({review}:{review:Review}){return <article className="card"><p className="eyebrow">FICTIONAL DEMO REVIEW</p><h3><Link href={`/guides/${review.guideSlug}`}>{review.guideName}</Link></h3><p className="muted">{review.waterway} · ★ {review.score}/5</p><p className="review">“{review.body}”</p><p className="metric">{review.wouldBookAgain?"Would book again":"Would not book again"}</p></article>}
