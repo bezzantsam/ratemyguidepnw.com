@@ -1,45 +1,37 @@
-'use client';
 import Link from 'next/link';
-import { reviews } from '@/lib/data';
+import { getPublishedDockReviews } from '@/lib/dock-talk';
 
-/**
- * Prelaunch Dock Talk ticker: all review fixtures are fictional and clearly labeled.
- * Use approved/published reviews only when switching to Supabase.
- * Hover or focus pauses the scrolling strip; reduced-motion users see static items.
- */
-export default function DockTalkTicker() {
+export default async function DockTalkTicker() {
+  const reviews = await getPublishedDockReviews(12);
   return (
-    <section className="dock-ticker" aria-label="Dock Talk review ticker">
+    <section className="dock-ticker" aria-label="Dock Talk — latest published fishing guide reviews">
       <Link href="/reviews" className="dock-ticker-label">
-        <span aria-hidden="true" className="dock-ticker-dot" />
+        <span className="dock-ticker-dot" aria-hidden="true" />
         DOCK TALK
       </Link>
-      <div className="dock-ticker-window">
-        <div className="dock-ticker-track">
-          <div className="dock-ticker-group">
-            {reviews.map((review) => (
-              <Link key={review.id} href="/reviews" className="dock-ticker-item">
-                <span className="dock-ticker-stars" aria-label={`${review.score} out of 5 stars`}>{'★'.repeat(review.score)}{'☆'.repeat(5 - review.score)}</span>
-                <span>{review.waterway}</span>
-                <span aria-hidden="true">·</span>
-                <strong>{review.guideName}</strong>
-                <span className="dock-ticker-demo">DEMO REVIEW</span>
-              </Link>
-            ))}
-          </div>
-          <div className="dock-ticker-group" aria-hidden="true">
-            {reviews.map((review) => (
-              <span key={review.id} className="dock-ticker-item">
-                <span className="dock-ticker-stars">{'★'.repeat(review.score)}{'☆'.repeat(5 - review.score)}</span>
-                <span>{review.waterway}</span>
-                <span aria-hidden="true">·</span>
-                <strong>{review.guideName}</strong>
-                <span className="dock-ticker-demo">DEMO REVIEW</span>
-              </span>
+      {reviews.length === 0 ? (
+        <div className="dock-ticker-empty">First verified-published customer reviews coming soon. No ratings yet.</div>
+      ) : (
+        <div className="dock-ticker-window">
+          <div className="dock-ticker-track">
+            {[false, true].map(duplicate => (
+              <div key={String(duplicate)} className="dock-ticker-group" aria-hidden={duplicate}>
+                {reviews.map(review => (
+                  duplicate
+                    ? <span key={review.id} className="dock-ticker-item">
+                        <span className="dock-ticker-stars">{'★'.repeat(review.score)}{'☆'.repeat(5 - review.score)}</span>
+                        <span>{review.waterway}</span><span aria-hidden="true">·</span><strong>{review.guideName}</strong>
+                      </span>
+                    : <Link key={review.id} href={`/reviews#review-${review.id}`} className="dock-ticker-item">
+                        <span className="dock-ticker-stars" aria-label={`${review.score} out of five stars`}>{'★'.repeat(review.score)}{'☆'.repeat(5 - review.score)}</span>
+                        <span>{review.waterway}</span><span aria-hidden="true">·</span><strong>{review.guideName}</strong>
+                      </Link>
+                ))}
+              </div>
             ))}
           </div>
         </div>
-      </div>
+      )}
       <Link href="/reviews" className="dock-ticker-view">View feed →</Link>
     </section>
   );
