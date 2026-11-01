@@ -1,6 +1,7 @@
 'use client';
 import {useEffect,useState} from 'react';
 import {createClient} from '@supabase/supabase-js';
+import AuthPanel from './AuthPanel';
 const url=process.env.NEXT_PUBLIC_SUPABASE_URL,key=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 const db=url&&key?createClient(url,key):null;
 const categories=[['Overall experience','quality'],['Communication','communication'],['Professionalism','professionalism'],['Safety','safety'],['Boat & equipment','equipment'],['Fishing knowledge','knowledge'],['Effort & instruction','effort'],['Value for money','value_rating']] as const;
@@ -15,7 +16,7 @@ export default function CaptainReviews({slug}:{slug:string}){
  return <section className="section" id="reviews"><h2>Ratings &amp; angler reviews</h2><p className="muted">Reviews are anonymous to visitors. A signed-in account is required to help prevent fraud. Submissions are reviewed before publication.</p>
  {!reviews.length?<p>No published reviews yet. Be the first to share a firsthand trip experience.</p>:<div className="review-list">{reviews.map(r=><article className="card" key={r.id}><p><strong>{r.quality}/5 overall</strong> · Would book again: {r.would_book_again?'Yes':'No'}</p><p className="muted">Anonymous angler · {new Date(r.published_at).toLocaleDateString()}</p><p>{r.body}</p><p className="muted">{r.trip_context||''}</p></article>)}</div>}
  <div className="review-form card"><h3>Rate this fishing guide</h3><p className="muted">Share your own experience, including what went well and what fell short. Focus on observable events, avoid personal information, threats or unsupported accusations.</p>
- {!signedIn?<div><label>Email for private sign-in<input type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com"/></label><button disabled={busy||!email.includes('@')} onClick={()=>void signIn()}>Email sign-in link</button></div>:<div className="review-fields">{categories.map(([label,k])=><fieldset key={k}><legend>{label}{k==='quality'?' (required)':''}</legend><div className="stars">{[1,2,3,4,5].map(v=><button key={v} aria-pressed={ratings[k]===v} className={ratings[k]===v?'selected':''} onClick={()=>setRatings(p=>({...p,[k]:v}))} type="button">{v} ★</button>)}</div></fieldset>)}
+ {!signedIn?<div><AuthPanel/></div>:<div className="review-fields">{categories.map(([label,k])=><fieldset key={k}><legend>{label}{k==='quality'?' (required)':''}</legend><div className="stars">{[1,2,3,4,5].map(v=><button key={v} aria-pressed={ratings[k]===v} className={ratings[k]===v?'selected':''} onClick={()=>setRatings(p=>({...p,[k]:v}))} type="button">{v} ★</button>)}</div></fieldset>)}
  <label>Trip month<input type="month" value={month} max={new Date().toISOString().slice(0,7)} onChange={e=>setMonth(e.target.value)}/></label>
  <label>Trip intensity (not a quality score)<select value={intensity} onChange={e=>setIntensity(Number(e.target.value))}>{[1,2,3,4,5].map(x=><option value={x} key={x}>{x} / 5</option>)}</select></label>
  <label>Would you book again?<select value={wouldBook} onChange={e=>setWouldBook(e.target.value)}><option value="yes">Yes</option><option value="no">No</option></select></label>
