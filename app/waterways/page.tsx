@@ -1,1 +1,1 @@
-import Link from 'next/link';import {waterways} from '@/lib/data';export default function Page(){return <main><p className="eyebrow">FIND YOUR WATER</p><h1>Explore PNW fisheries.</h1><p className="lead">Start local. Discover the waterways where guides operate.</p><div className="grid">{waterways.map(w=><Link className="card" key={w.slug} href={`/waterways/${w.slug}`}><h3>{w.name}</h3><p>{w.region}</p></Link>)}</div></main>}
+import {redirect} from 'next/navigation';export default function Page(){redirect('/guides')}
