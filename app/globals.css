@@ -26,3 +26,14 @@
 .result-chevron{color:#739287;font-size:28px}
 .directory-panel .pager{color:#254c45}
 @media(max-width:680px){.directory-panel .searchbar{padding:15px;}.guide-result{padding:14px;gap:12px}.rating-tile{width:58px;height:62px}.guide-result h3{font-size:17px}.result-chevron{display:none}.results-heading{padding:13px 15px}}
+
+.state-switch{display:flex;gap:8px;flex-wrap:wrap;margin:16px 25px 0}
+.state-switch button{border:1px solid #abc4ba;background:#e7eee9;color:#284c42;border-radius:24px;padding:9px 17px;cursor:pointer;font-weight:700}
+.state-switch button.active{background:#176355;color:#fff;border-color:#176355}
+.claim-form{max-width:670px;display:flex;flex-direction:column;gap:18px}
+.claim-form label{display:flex;flex-direction:column;gap:7px;font-weight:700}
+.claim-form input,.claim-form textarea{background:#f8faf7;color:#173b32;font:inherit;border:1px solid #90ada3;border-radius:7px;padding:13px}
+.claim-form .button{width:fit-content;border:0;cursor:pointer}
+.claim-form .button:disabled{opacity:.5;cursor:not-allowed}
+.directory-panel .empty-results{padding:22px;color:#415a54}
+@media(max-width:680px){.state-switch{margin:14px 15px 0}}
