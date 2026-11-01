@@ -73,3 +73,6 @@ a.dock-ticker-item:hover{color:white;text-decoration:underline}
 @keyframes dock-talk-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @media(prefers-reduced-motion:reduce){.dock-ticker-track{animation:none}.dock-ticker-window{overflow-x:auto}.dock-ticker-group[aria-hidden="true"]{display:none}}
 @media(max-width:580px){.dock-ticker-label{padding:13px 10px;font-size:10px}.dock-ticker-view{padding:12px 8px;font-size:10px}.dock-ticker-track{animation-duration:48s}}
+
+.dock-ticker-empty{flex:1;min-width:0;padding:11px 16px;font-size:12px;color:#c6d7d2}
+.card:target{outline:2px solid #d5ae63;scroll-margin-top:24px}
