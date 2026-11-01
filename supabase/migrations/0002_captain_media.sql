@@ -1,0 +1,4 @@
+-- Approved guide owners may manage image galleries and one YouTube welcome video.
+-- Applied to Supabase with migration captain_verified_gallery_and_video.
+-- RLS policies and the guide-photos Storage bucket are managed by that migration.
+-- Keep this file as a pointer for repository history; do not rerun as SQL.
