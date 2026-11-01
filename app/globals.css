@@ -53,3 +53,5 @@
 .auth-panel input{color:#143530;background:#fff;border:1px solid #a2b9b1;border-radius:7px;padding:11px;display:block;width:100%}
 .auth-panel button,.claim-form button{background:#d8b26b;color:#102f2b;border:0;border-radius:8px;padding:12px 15px;font-weight:700;cursor:pointer;width:fit-content}
 .auth-panel button:disabled,.claim-form button:disabled{opacity:.45;cursor:not-allowed}
+
+.moderation-buttons{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}.moderation-buttons button{padding:11px 15px;border-radius:8px;border:0;background:#d8b26b;color:#11352f;font-weight:700;cursor:pointer}.moderation-buttons button:last-child{background:#415e58;color:#fff}.moderation-buttons button:disabled{opacity:.5} 
