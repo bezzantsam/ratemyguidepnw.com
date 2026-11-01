@@ -13,11 +13,11 @@ export default function GuideSearch({guides}:{guides:RegistryGuide[]}){
  const pages=Math.max(1,Math.ceil(filtered.length/pageSize));
  const currentPage=Math.min(page,pages);
  const shown=filtered.slice((currentPage-1)*pageSize,currentPage*pageSize);
- return <><div className="searchbar">
+ return <section className="directory-panel"><h2>Find a captain</h2><div className="searchbar">
   <label>Search captain, outfit, registration, or area<input value={q} onChange={e=>{setQ(e.target.value);setPage(1)}} placeholder="e.g., Columbia, charter, guide name"/></label>
   <label>Registered service area<select value={area} onChange={e=>{setArea(e.target.value);setPage(1)}}>{areas.map(a=><option key={a} value={a}>{a}</option>)}</select></label>
- </div><p className="muted">Alphabetical by captain name (A–Z) · {filtered.length} matching listings · Page {currentPage} of {pages}</p>
- <div className="grid">{shown.map(g=><RegistryGuideCard key={g.registration} guide={g}/>)}</div>
+ </div><div className="results-heading"><strong>{filtered.length.toLocaleString()} fishing guides</strong><span>Sorted by name A–Z · Page {currentPage} of {pages}</span></div>
+ <div className="guide-results">{shown.map(g=><RegistryGuideCard key={g.registration} guide={g}/>)}</div>
  {pages>1&&<div className="pager"><button disabled={currentPage===1} onClick={()=>setPage(v=>Math.max(1,v-1))}>← Previous</button><span>Page {currentPage} / {pages}</span><button disabled={currentPage===pages} onClick={()=>setPage(v=>Math.min(pages,v+1))}>Next →</button></div>}
  </>;
 }
