@@ -1,1 +1,2 @@
-export default function Page(){return <main><p className="eyebrow">DOCK TALK</p><h1>The stories behind the trips.</h1><p className="lead">We're building an independent, candid fishing guide review community.</p><p>No real reviews have been submitted. To protect guides and anglers, review posting is not yet enabled.</p></main>}
+import {redirect} from 'next/navigation';
+export default function ReviewsRedirect(){redirect('/guides')}
