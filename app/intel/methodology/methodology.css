@@ -1,0 +1,54 @@
+.methodology-page{padding-top:32px;padding-bottom:76px;max-width:1080px}
+.methodology-page a:focus-visible,.methodology-page summary:focus-visible{outline:3px solid #e3c37e;outline-offset:4px}
+.methodology-breadcrumb{display:flex;align-items:center;gap:13px;color:#a7c1b5;font-size:13px;margin-bottom:45px}
+.methodology-breadcrumb a{display:inline-flex;gap:9px;align-items:center;color:#f0d291}
+.methodology-eyebrow{font-size:11px;font-weight:800;letter-spacing:.15em;color:#ebce8d;text-transform:uppercase;display:flex;align-items:center;gap:9px}
+.methodology-heading{max-width:850px;padding-bottom:45px}
+.methodology-heading h1{font-size:clamp(40px,6.5vw,72px);letter-spacing:-.055em;line-height:1.06;margin:18px 0 20px}
+.methodology-heading h1 em{font-style:normal;color:#edcb84}
+.methodology-heading>p:last-child{font-size:17px;line-height:1.8;max-width:710px}
+.methodology-number{border:1px solid #547b70;border-radius:17px;padding:clamp(20px,4.5vw,44px);background:linear-gradient(125deg,#1b4441,#123034)}
+.methodology-number h2{font-size:clamp(25px,3.6vw,36px);letter-spacing:-.04em;margin:10px 0 28px}
+.methodology-equation{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.methodology-equation>div{display:grid;gap:6px;min-width:145px}
+.methodology-equation>div strong{font-size:clamp(29px,4vw,45px);font-variant-numeric:tabular-nums;letter-spacing:-.04em;color:#f4edd9}
+.methodology-equation>div span{font-size:12px;color:#bbd0c4}
+.methodology-equation .methodology-result{background:#e1c182;padding:15px 19px;border-radius:10px;min-width:175px}
+.methodology-equation .methodology-result strong,.methodology-equation .methodology-result span{color:#193e36}
+.methodology-operator{font-size:24px;color:#e5ca96;font-weight:800}
+.methodology-caveat{margin:27px 0 0;padding:16px 18px;border-left:3px solid #e5ca96;background:#244541;border-radius:0 7px 7px 0;font-size:14px;color:#d8e5da}
+.methodology-caveat strong{color:#ffe1a1}
+.methodology-section{margin-top:72px}
+.methodology-section h2{font-size:clamp(29px,4vw,42px);letter-spacing:-.04em;margin:10px 0 26px}
+.methodology-card-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.methodology-card{background:#193b3e;border:1px solid #436460;border-radius:13px;padding:24px}
+.methodology-step{font-weight:800;color:#e3c586;font-size:12px;letter-spacing:.08em}
+.methodology-card h3{font-size:20px;letter-spacing:-.025em;line-height:1.24;margin:19px 0 11px}
+.methodology-card p{font-size:13px;line-height:1.75;margin:0}
+.methodology-source-list{display:grid;gap:11px}
+.methodology-source-list a{display:flex;align-items:center;gap:17px;padding:19px 20px;border:1px solid #4f766a;border-radius:12px;background:#183b3a;text-decoration:none}
+.methodology-source-list a:hover{background:#225149;border-color:#d7c18d}
+.methodology-source-list a>svg:first-child{flex:none;color:#f0ce8d}
+.methodology-source-list a>svg:last-child{flex:none;margin-left:auto;color:#dfd4aa}
+.methodology-source-list a>span{display:grid;gap:4px}
+.methodology-source-list strong{font-size:15px;color:#f2f4e6}
+.methodology-source-list small{font-size:12px;color:#b6d0c5;line-height:1.5}
+.methodology-source-caption{font-size:12px;color:#adc5b9;line-height:1.7;margin-top:20px}
+.methodology-flow{display:flex;align-items:stretch;gap:12px}
+.methodology-flow>div{flex:1;min-width:0;background:#18393c;border:1px solid #4f6d65;border-radius:10px;padding:19px;display:grid;gap:10px}
+.methodology-flow>div svg{color:#edcf91}
+.methodology-flow>div strong{font-size:15px}
+.methodology-flow>div span{font-size:12px;color:#b7cbc2;line-height:1.55}
+.methodology-flow-arrow{align-self:center;font-size:24px;color:#b8c7b7}
+.methodology-model{background:#e9f0e9;color:#1d4438;border-radius:15px;padding:clamp(21px,4vw,37px);margin-top:72px}
+.methodology-model>div{display:flex;align-items:center;gap:13px;color:#2a6b50}
+.methodology-model .methodology-eyebrow{color:#357059}
+.methodology-model h2{font-size:clamp(28px,4vw,38px);margin:13px 0;letter-spacing:-.035em}
+.methodology-model p{color:#426554;font-size:15px;line-height:1.75}
+.methodology-model-status{display:inline-flex;align-items:center;gap:8px;border:1px solid #adc9b4;border-radius:9px;padding:11px 14px;background:#d6e6d9;font-size:13px!important}
+.methodology-model-status strong{color:#2a5342}
+.methodology-footer-note{font-size:13px;color:#b7cbbf;margin-top:28px}
+.methodology-back{display:inline-flex;align-items:center;gap:10px;border:1px solid #ac9470;color:#ead09c;font-size:13px;font-weight:750;padding:12px 15px;border-radius:8px;margin-top:21px}
+.methodology-back:hover{background:#193f3b;text-decoration:none}
+@media(max-width:760px){.methodology-card-grid{grid-template-columns:1fr}.methodology-flow{flex-direction:column}.methodology-flow-arrow{transform:rotate(90deg)}.methodology-equation{gap:12px}}
+@media(max-width:430px){.methodology-breadcrumb{margin-bottom:24px}.methodology-equation>div{min-width:110px}.methodology-operator{font-size:19px}.methodology-equation .methodology-result{width:100%}.methodology-source-list a{padding:15px 12px;gap:9px}.methodology-source-list strong{font-size:13px}.methodology-section{margin-top:55px}.methodology-heading{padding-bottom:26px}}
