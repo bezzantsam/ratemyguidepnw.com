@@ -27,3 +27,7 @@ Public anonymity for reviews does not mean no accountable authenticated user, no
 ## Deployment
 
 Run npm install, then npm run check. GitHub CI verifies public-source figures, TypeScript and Next.js production build. Review a Vercel branch preview before promoting; the product currently retains prelaunch noindex. Do not point GoDaddy's custom domain or expose a new backend without authorization, full review-system testing and commercial compliance.
+
+## Independently reviewed August 2026 historical sample
+
+A separate, **SHA-pinned, source-audited public historical release** at `data/chinook-2026-reviewed.json` covers 31 daily WDFW preliminary Chinook sample dates. Production may render this additional 2026 chart only when the exact original agency source hash and all normalized row bytes match the approved review; the source bot's mutable `data/chinook-wdfw-candidate.json` remains confined to its separate open PR. This release never includes 2027 outcomes or private forecasts. See [the full source audit](chinook-2026-source-audit.md).
