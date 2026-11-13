@@ -1,0 +1,76 @@
+name: NOAA Astoria historical tide source review
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/noaa-tide-historical-watch.yml
+  workflow_dispatch:
+  schedule:
+    - cron: '43 14 18 * *'
+permissions:
+  contents: write
+concurrency:
+  group: ratemyguide-noaa-astoria-2026-review
+  cancel-in-progress: false
+jobs:
+  verified-noaa-predictions:
+    if: github.repository == 'bezzantsam/ratemyguidepnw.com'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test synthetic NOAA source safeguards before network call
+        run: python -m unittest discover -s tests -p 'test_noaa_astoria_2026_watch.py' -v
+      - name: Load preceding candidate if it exists
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/noaa"
+          BRANCH=bot/noaa-astoria-2026-review
+          if git ls-remote --exit-code origin "refs/heads/$BRANCH" >/dev/null 2>&1; then
+            git fetch --no-tags --depth=1 origin "refs/heads/$BRANCH:refs/remotes/origin/$BRANCH"
+            git show "refs/remotes/origin/$BRANCH:data/noaa-astoria-2026-candidate.json" > "$RUNNER_TEMP/noaa/previous.json"
+          fi
+      - name: Fetch official NOAA high/low astronomical tide predictions
+        id: qa
+        run: |
+          set -euo pipefail
+          if test -s "$RUNNER_TEMP/noaa/previous.json"; then
+            python scripts/noaa_astoria_2026_watch.py --compare "$RUNNER_TEMP/noaa/previous.json" --output data/noaa-astoria-2026-candidate.json > "$RUNNER_TEMP/noaa/status.json"
+          else
+            python scripts/noaa_astoria_2026_watch.py --output data/noaa-astoria-2026-candidate.json > "$RUNNER_TEMP/noaa/status.json"
+          fi
+          cat "$RUNNER_TEMP/noaa/status.json"
+          echo "changed=$(jq -r '.status == \"new_tide_candidate_needs_review\"' "$RUNNER_TEMP/noaa/status.json")" >> "$GITHUB_OUTPUT"
+      - name: Preserve changed NOAA candidate only on separate review branch
+        if: steps.qa.outputs.changed == 'true'
+        env:
+          GH_TOKEN: \${{ github.token }}
+        run: |
+          set -euo pipefail
+          BRANCH=bot/noaa-astoria-2026-review
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -C "$BRANCH"
+          git add data/noaa-astoria-2026-candidate.json
+          git commit -m 'Propose official NOAA historical tide revision for manual QA'
+          gh auth setup-git
+          OLD="$(git rev-parse -q --verify "refs/remotes/origin/$BRANCH" || true)"
+          if test -n "$OLD"; then
+            git push origin "HEAD:refs/heads/$BRANCH" "--force-with-lease=refs/heads/$BRANCH:$OLD"
+          else
+            git push origin "HEAD:refs/heads/$BRANCH"
+          fi
+          echo 'Candidate saved to review branch. Website release is unchanged.'
+      - name: Upload unapproved candidate for audit
+        if: steps.qa.outputs.changed == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: noaa-astoria-2026-candidate-\${{ github.run_id }}
+          path: data/noaa-astoria-2026-candidate.json
+          retention-days: 30
+          if-no-files-found: error
