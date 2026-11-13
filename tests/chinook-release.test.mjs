@@ -69,7 +69,7 @@ test('review-queue candidates only render after deliberate production-main merge
   const page = readFileSync('app/intel/buoy-10-chinook/page.tsx', 'utf8');
   assert.match(guard, /VERCEL_ENV === 'production'/);
   assert.match(guard, /VERCEL_GIT_COMMIT_REF === 'main'/);
-  assert.match(guard, /if \(!isProductionMain\(\)\) return null/);
+  assert.match(guard, /if \(!isReviewedReleaseVisible\(\)\) return null/);
   assert.match(guard, /const history = seasons\[0\]/);
   assert.match(guard, /hashObservations\(seasons\)/);
   assert.match(guard, /source_html_sha256/);
