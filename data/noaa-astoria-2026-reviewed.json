@@ -1,0 +1,878 @@
+{
+  "schema_version": 1,
+  "source_url": "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?begin_date=20260801&end_date=20260831&station=9439040&product=predictions&datum=MLLW&time_zone=lst_ldt&units=english&interval=hilo&format=json&application=RateMyGuidePNW_Chinook_Intel",
+  "source_sha256": "451098ea97aa92f07a6682952a65d5ed37ed4a1be6da53ee8c45f66bfd229599",
+  "observations_sha256": "3628b480ec9b7b5a1b71f127e9e9f85504330a72f7ca4c4c170c81a2073a764d",
+  "captured_at_utc": "2026-11-13T23:25:29.806566+00:00",
+  "publication_status": "reviewed_historical_2026_tides_only",
+  "source": "NOAA CO-OPS astronomical tide predictions",
+  "station_id": "9439040",
+  "station_name": "Astoria, Oregon",
+  "station_is_buoy_10": false,
+  "time_zone": "lst_ldt",
+  "datum": "MLLW",
+  "units": "feet",
+  "date_scope": "2026-08-01 through 2026-08-31 (local civil dates)",
+  "interpretation": "Daily max predicted H minus min predicted L; not measured water level, adjacent exchange, Columbia current speed, or fish bite forecast",
+  "approved_for_public_display": true,
+  "approved_for_model_evaluation": false,
+  "daily": [
+    {
+      "date": "2026-08-01",
+      "highest_predicted_high_mllw_ft": 8.003,
+      "lowest_predicted_low_mllw_ft": -0.731,
+      "calendar_day_high_low_spread_ft": 8.734,
+      "high_events": 2,
+      "low_events": 2
+    },
+    {
+      "date": "2026-08-02",
+      "highest_predicted_high_mllw_ft": 7.844,
+      "lowest_predicted_low_mllw_ft": -0.366,
+      "calendar_day_high_low_spread_ft": 8.21,
+      "high_events": 2,
+      "low_events": 2
+    },
+    {
+      "date": "2026-08-03",
+      "highest_predicted_high_mllw_ft": 8.11,
+      "lowest_predicted_low_mllw_ft": 0.176,
+      "calendar_day_high_low_spread_ft": 7.934,
+      "high_events": 2,
+      "low_events": 2
+    },
+    {
+      "date": "2026-08-04",
+      "highest_predicted_high_mllw_ft": 8.331,
+      "lowest_predicted_low_mllw_ft": 0.876,
+      "calendar_day_high_low_spread_ft": 7.455,
+      "high_events": 2,
+      "low_events": 1
+    },
+    {
+      "date": "2026-08-05",
+      "highest_predicted_high_mllw_ft": 8.459,
+      "lowest_predicted_low_mllw_ft": 0.713,
+      "calendar_day_high_low_spread_ft": 7.746,
+      "high_events": 2,
+      "low_events": 2
+    },
+    {
+      "date": "2026-08-06",
+      "highest_predicted_high_mllw_ft": 8.494,
+      "lowest_predicted_low_mllw_ft": 0.58,
+      "calendar_day_high_low_spread_ft": 7.914,
+      "high_events": 2,
+      "low_events": 2
+    },
+    {
+      "date": "2026-08-07",
+      "highest_predicted_high_mllw_ft": 8.511,
+      "lowest_predicted_low_mllw_ft": 0.321,
+      "calendar_day_high_low_spread_ft": 8.19,
+      "high_events": 2,
+      "low_events": 2
+    },
+    {
+      "date": "2026-08-08",
+      "highest_predicted_high_mllw_ft": 8.617,
+      "lowest_predicted_low_mllw_ft": -0.143,
+      "calendar_day_high_low_spread_ft": 8.76,
+      "high_events": 2,
+      "low_events": 2
+    },
+    {
+      "date": "2026-08-09",
+      "highest_predicted_high_mllw_ft": 8.833,
+      "lowest_predicted_low_mllw_ft": -0.717,
+      "calendar_day_high_low_spread_ft": 9.55,
+      "high_events": 2,
+      "low_events": 2
+    },
+    {
+      "date": "2026-08-10",
+      "highest_predicted_high_mllw_ft": 6.808,
+      "lowest_predicted_low_mllw_ft": -1.245,
+      "calendar_day_high_low_spread_ft": 8.053,
+      "high_events": 1,
+      "low_events": 2
+    },
+    {
+      "date": "2026-08-11",
+      "highest_predicted_high_mllw_ft": 9.057,
+      "lowest_predicted_low_mllw_ft": -1.617,
+      "calendar_day_high_low_spread_ft": 10.674,
+      "high_events": 2,
+      "low_events": 2
+    },
+    {
+      "date": "2026-08-12",
+      "highest_predicted_high_mllw_ft": 9.158,
+      "lowest_predicted_low_mllw_ft": -1.769,
+      "calendar_day_high_low_spread_ft": 10.927,
+      "high_events": 2,
+      "low_events": 2
+    },
+    {
+      "date": "2026-08-13",
+      "highest_predicted_high_mllw_ft": 9.059,
+      "lowest_predicted_low_mllw_ft": -1.677,
+      "calendar_day_high_low_spread_ft": 10.736,
+      "high_events": 2,
+      "low_events": 2
+    },
+    {
+      "date": "2026-08-14",
+      "highest_predicted_high_mllw_ft": 8.746,
+      "lowest_predicted_low_mllw_ft": -1.344,
+      "calendar_day_high_low_spread_ft": 10.09,
+      "high_events": 2,
+      "low_events": 2
+    },
+    {
+      "date": "2026-08-15",
+      "highest_predicted_high_mllw_ft": 8.29,
+      "lowest_predicted_low_mllw_ft": -0.799,
+      "calendar_day_high_low_spread_ft": 9.089,
+      "high_events": 2,
+      "low_events": 2
+    },
+    {
+      "date": "2026-08-16",
+      "highest_predicted_high_mllw_ft": 8.276,
+      "lowest_predicted_low_mllw_ft": -0.088,
+      "calendar_day_high_low_spread_ft": 8.364,
+      "high_events": 2,
+      "low_events": 2
+    },
+    {
+      "date": "2026-08-17",
+      "highest_predicted_high_mllw_ft": 8.158,
+      "lowest_predicted_low_mllw_ft": 0.428,
+      "calendar_day_high_low_spread_ft": 7.73,
+      "high_events": 2,
+      "low_events": 2
+    },
+    {
+      "date": "2026-08-18",
+      "highest_predicted_high_mllw_ft": 7.952,
+      "lowest_predicted_low_mllw_ft": 1.586,
+      "calendar_day_high_low_spread_ft": 6.366,
+      "high_events": 2,
+      "low_events": 1
+    },
+    {
+      "date": "2026-08-19",
+      "highest_predicted_high_mllw_ft": 7.684,
+      "lowest_predicted_low_mllw_ft": 0.647,
+      "calendar_day_high_low_spread_ft": 7.037,
+      "high_events": 2,
+      "low_events": 2
+    },
+    {
+      "date": "2026-08-20",
+      "highest_predicted_high_mllw_ft": 7.405,
+      "lowest_predicted_low_mllw_ft": 0.856,
+      "calendar_day_high_low_spread_ft": 6.549,
+      "high_events": 2,
+      "low_events": 2
+    },
+    {
+      "date": "2026-08-21",
+      "highest_predicted_high_mllw_ft": 7.204,
+      "lowest_predicted_low_mllw_ft": 0.908,
+      "calendar_day_high_low_spread_ft": 6.296,
+      "high_events": 2,
+      "low_events": 2
+    },
+    {
+      "date": "2026-08-22",
+      "highest_predicted_high_mllw_ft": 7.186,
+      "lowest_predicted_low_mllw_ft": 0.724,
+      "calendar_day_high_low_spread_ft": 6.462,
+      "high_events": 2,
+      "low_events": 2
+    },
+    {
+      "date": "2026-08-23",
+      "highest_predicted_high_mllw_ft": 7.357,
+      "lowest_predicted_low_mllw_ft": 0.372,
+      "calendar_day_high_low_spread_ft": 6.985,
+      "high_events": 2,
+      "low_events": 2
+    },
+    {
+      "date": "2026-08-24",
+      "highest_predicted_high_mllw_ft": 7.617,
+      "lowest_predicted_low_mllw_ft": -0.028,
+      "calendar_day_high_low_spread_ft": 7.645,
+      "high_events": 2,
+      "low_events": 2
+    },
+    {
+      "date": "2026-08-25",
+      "highest_predicted_high_mllw_ft": 6.833,
+      "lowest_predicted_low_mllw_ft": -0.387,
+      "calendar_day_high_low_spread_ft": 7.22,
+      "high_events": 1,
+      "low_events": 2
+    },
+    {
+      "date": "2026-08-26",
+      "highest_predicted_high_mllw_ft": 7.856,
+      "lowest_predicted_low_mllw_ft": -0.647,
+      "calendar_day_high_low_spread_ft": 8.503,
+      "high_events": 2,
+      "low_events": 2
+    },
+    {
+      "date": "2026-08-27",
+      "highest_predicted_high_mllw_ft": 8.011,
+      "lowest_predicted_low_mllw_ft": -0.772,
+      "calendar_day_high_low_spread_ft": 8.783,
+      "high_events": 2,
+      "low_events": 2
+    },
+    {
+      "date": "2026-08-28",
+      "highest_predicted_high_mllw_ft": 8.055,
+      "lowest_predicted_low_mllw_ft": -0.739,
+      "calendar_day_high_low_spread_ft": 8.794,
+      "high_events": 2,
+      "low_events": 2
+    },
+    {
+      "date": "2026-08-29",
+      "highest_predicted_high_mllw_ft": 7.982,
+      "lowest_predicted_low_mllw_ft": -0.539,
+      "calendar_day_high_low_spread_ft": 8.521,
+      "high_events": 2,
+      "low_events": 2
+    },
+    {
+      "date": "2026-08-30",
+      "highest_predicted_high_mllw_ft": 8.169,
+      "lowest_predicted_low_mllw_ft": -0.178,
+      "calendar_day_high_low_spread_ft": 8.347,
+      "high_events": 2,
+      "low_events": 2
+    },
+    {
+      "date": "2026-08-31",
+      "highest_predicted_high_mllw_ft": 8.458,
+      "lowest_predicted_low_mllw_ft": -0.101,
+      "calendar_day_high_low_spread_ft": 8.559,
+      "high_events": 2,
+      "low_events": 2
+    }
+  ],
+  "events": [
+    {
+      "local_time": "2026-08-01 03:18",
+      "type": "H",
+      "predicted_mllw_ft": 8.003
+    },
+    {
+      "local_time": "2026-08-01 09:58",
+      "type": "L",
+      "predicted_mllw_ft": -0.731
+    },
+    {
+      "local_time": "2026-08-01 16:21",
+      "type": "H",
+      "predicted_mllw_ft": 7.592
+    },
+    {
+      "local_time": "2026-08-01 22:17",
+      "type": "L",
+      "predicted_mllw_ft": 1.437
+    },
+    {
+      "local_time": "2026-08-02 04:00",
+      "type": "H",
+      "predicted_mllw_ft": 7.664
+    },
+    {
+      "local_time": "2026-08-02 10:26",
+      "type": "L",
+      "predicted_mllw_ft": -0.366
+    },
+    {
+      "local_time": "2026-08-02 16:48",
+      "type": "H",
+      "predicted_mllw_ft": 7.844
+    },
+    {
+      "local_time": "2026-08-02 22:58",
+      "type": "L",
+      "predicted_mllw_ft": 1.113
+    },
+    {
+      "local_time": "2026-08-03 04:46",
+      "type": "H",
+      "predicted_mllw_ft": 7.186
+    },
+    {
+      "local_time": "2026-08-03 10:56",
+      "type": "L",
+      "predicted_mllw_ft": 0.176
+    },
+    {
+      "local_time": "2026-08-03 17:17",
+      "type": "H",
+      "predicted_mllw_ft": 8.11
+    },
+    {
+      "local_time": "2026-08-03 23:43",
+      "type": "L",
+      "predicted_mllw_ft": 0.868
+    },
+    {
+      "local_time": "2026-08-04 05:39",
+      "type": "H",
+      "predicted_mllw_ft": 6.595
+    },
+    {
+      "local_time": "2026-08-04 11:30",
+      "type": "L",
+      "predicted_mllw_ft": 0.876
+    },
+    {
+      "local_time": "2026-08-04 17:52",
+      "type": "H",
+      "predicted_mllw_ft": 8.331
+    },
+    {
+      "local_time": "2026-08-05 00:38",
+      "type": "L",
+      "predicted_mllw_ft": 0.713
+    },
+    {
+      "local_time": "2026-08-05 06:44",
+      "type": "H",
+      "predicted_mllw_ft": 5.979
+    },
+    {
+      "local_time": "2026-08-05 12:11",
+      "type": "L",
+      "predicted_mllw_ft": 1.681
+    },
+    {
+      "local_time": "2026-08-05 18:34",
+      "type": "H",
+      "predicted_mllw_ft": 8.459
+    },
+    {
+      "local_time": "2026-08-06 01:46",
+      "type": "L",
+      "predicted_mllw_ft": 0.58
+    },
+    {
+      "local_time": "2026-08-06 08:04",
+      "type": "H",
+      "predicted_mllw_ft": 5.519
+    },
+    {
+      "local_time": "2026-08-06 13:05",
+      "type": "L",
+      "predicted_mllw_ft": 2.485
+    },
+    {
+      "local_time": "2026-08-06 19:28",
+      "type": "H",
+      "predicted_mllw_ft": 8.494
+    },
+    {
+      "local_time": "2026-08-07 03:05",
+      "type": "L",
+      "predicted_mllw_ft": 0.321
+    },
+    {
+      "local_time": "2026-08-07 09:34",
+      "type": "H",
+      "predicted_mllw_ft": 5.432
+    },
+    {
+      "local_time": "2026-08-07 14:17",
+      "type": "L",
+      "predicted_mllw_ft": 3.115
+    },
+    {
+      "local_time": "2026-08-07 20:34",
+      "type": "H",
+      "predicted_mllw_ft": 8.511
+    },
+    {
+      "local_time": "2026-08-08 04:23",
+      "type": "L",
+      "predicted_mllw_ft": -0.143
+    },
+    {
+      "local_time": "2026-08-08 10:56",
+      "type": "H",
+      "predicted_mllw_ft": 5.748
+    },
+    {
+      "local_time": "2026-08-08 15:42",
+      "type": "L",
+      "predicted_mllw_ft": 3.354
+    },
+    {
+      "local_time": "2026-08-08 21:47",
+      "type": "H",
+      "predicted_mllw_ft": 8.617
+    },
+    {
+      "local_time": "2026-08-09 05:31",
+      "type": "L",
+      "predicted_mllw_ft": -0.717
+    },
+    {
+      "local_time": "2026-08-09 12:02",
+      "type": "H",
+      "predicted_mllw_ft": 6.267
+    },
+    {
+      "local_time": "2026-08-09 17:00",
+      "type": "L",
+      "predicted_mllw_ft": 3.162
+    },
+    {
+      "local_time": "2026-08-09 22:58",
+      "type": "H",
+      "predicted_mllw_ft": 8.833
+    },
+    {
+      "local_time": "2026-08-10 06:29",
+      "type": "L",
+      "predicted_mllw_ft": -1.245
+    },
+    {
+      "local_time": "2026-08-10 12:55",
+      "type": "H",
+      "predicted_mllw_ft": 6.808
+    },
+    {
+      "local_time": "2026-08-10 18:07",
+      "type": "L",
+      "predicted_mllw_ft": 2.685
+    },
+    {
+      "local_time": "2026-08-11 00:03",
+      "type": "H",
+      "predicted_mllw_ft": 9.057
+    },
+    {
+      "local_time": "2026-08-11 07:20",
+      "type": "L",
+      "predicted_mllw_ft": -1.617
+    },
+    {
+      "local_time": "2026-08-11 13:42",
+      "type": "H",
+      "predicted_mllw_ft": 7.29
+    },
+    {
+      "local_time": "2026-08-11 19:07",
+      "type": "L",
+      "predicted_mllw_ft": 2.086
+    },
+    {
+      "local_time": "2026-08-12 01:00",
+      "type": "H",
+      "predicted_mllw_ft": 9.158
+    },
+    {
+      "local_time": "2026-08-12 08:05",
+      "type": "L",
+      "predicted_mllw_ft": -1.769
+    },
+    {
+      "local_time": "2026-08-12 14:24",
+      "type": "H",
+      "predicted_mllw_ft": 7.686
+    },
+    {
+      "local_time": "2026-08-12 20:01",
+      "type": "L",
+      "predicted_mllw_ft": 1.482
+    },
+    {
+      "local_time": "2026-08-13 01:54",
+      "type": "H",
+      "predicted_mllw_ft": 9.059
+    },
+    {
+      "local_time": "2026-08-13 08:47",
+      "type": "L",
+      "predicted_mllw_ft": -1.677
+    },
+    {
+      "local_time": "2026-08-13 15:03",
+      "type": "H",
+      "predicted_mllw_ft": 7.99
+    },
+    {
+      "local_time": "2026-08-13 20:52",
+      "type": "L",
+      "predicted_mllw_ft": 0.956
+    },
+    {
+      "local_time": "2026-08-14 02:44",
+      "type": "H",
+      "predicted_mllw_ft": 8.746
+    },
+    {
+      "local_time": "2026-08-14 09:25",
+      "type": "L",
+      "predicted_mllw_ft": -1.344
+    },
+    {
+      "local_time": "2026-08-14 15:41",
+      "type": "H",
+      "predicted_mllw_ft": 8.194
+    },
+    {
+      "local_time": "2026-08-14 21:40",
+      "type": "L",
+      "predicted_mllw_ft": 0.565
+    },
+    {
+      "local_time": "2026-08-15 03:33",
+      "type": "H",
+      "predicted_mllw_ft": 8.25
+    },
+    {
+      "local_time": "2026-08-15 10:01",
+      "type": "L",
+      "predicted_mllw_ft": -0.799
+    },
+    {
+      "local_time": "2026-08-15 16:16",
+      "type": "H",
+      "predicted_mllw_ft": 8.29
+    },
+    {
+      "local_time": "2026-08-15 22:26",
+      "type": "L",
+      "predicted_mllw_ft": 0.346
+    },
+    {
+      "local_time": "2026-08-16 04:21",
+      "type": "H",
+      "predicted_mllw_ft": 7.628
+    },
+    {
+      "local_time": "2026-08-16 10:35",
+      "type": "L",
+      "predicted_mllw_ft": -0.088
+    },
+    {
+      "local_time": "2026-08-16 16:50",
+      "type": "H",
+      "predicted_mllw_ft": 8.276
+    },
+    {
+      "local_time": "2026-08-16 23:12",
+      "type": "L",
+      "predicted_mllw_ft": 0.307
+    },
+    {
+      "local_time": "2026-08-17 05:12",
+      "type": "H",
+      "predicted_mllw_ft": 6.947
+    },
+    {
+      "local_time": "2026-08-17 11:08",
+      "type": "L",
+      "predicted_mllw_ft": 0.729
+    },
+    {
+      "local_time": "2026-08-17 17:23",
+      "type": "H",
+      "predicted_mllw_ft": 8.158
+    },
+    {
+      "local_time": "2026-08-17 23:59",
+      "type": "L",
+      "predicted_mllw_ft": 0.428
+    },
+    {
+      "local_time": "2026-08-18 06:06",
+      "type": "H",
+      "predicted_mllw_ft": 6.282
+    },
+    {
+      "local_time": "2026-08-18 11:42",
+      "type": "L",
+      "predicted_mllw_ft": 1.586
+    },
+    {
+      "local_time": "2026-08-18 17:57",
+      "type": "H",
+      "predicted_mllw_ft": 7.952
+    },
+    {
+      "local_time": "2026-08-19 00:52",
+      "type": "L",
+      "predicted_mllw_ft": 0.647
+    },
+    {
+      "local_time": "2026-08-19 07:09",
+      "type": "H",
+      "predicted_mllw_ft": 5.726
+    },
+    {
+      "local_time": "2026-08-19 12:22",
+      "type": "L",
+      "predicted_mllw_ft": 2.416
+    },
+    {
+      "local_time": "2026-08-19 18:37",
+      "type": "H",
+      "predicted_mllw_ft": 7.684
+    },
+    {
+      "local_time": "2026-08-20 01:54",
+      "type": "L",
+      "predicted_mllw_ft": 0.856
+    },
+    {
+      "local_time": "2026-08-20 08:22",
+      "type": "H",
+      "predicted_mllw_ft": 5.398
+    },
+    {
+      "local_time": "2026-08-20 13:15",
+      "type": "L",
+      "predicted_mllw_ft": 3.132
+    },
+    {
+      "local_time": "2026-08-20 19:25",
+      "type": "H",
+      "predicted_mllw_ft": 7.405
+    },
+    {
+      "local_time": "2026-08-21 03:05",
+      "type": "L",
+      "predicted_mllw_ft": 0.908
+    },
+    {
+      "local_time": "2026-08-21 09:41",
+      "type": "H",
+      "predicted_mllw_ft": 5.4
+    },
+    {
+      "local_time": "2026-08-21 14:26",
+      "type": "L",
+      "predicted_mllw_ft": 3.6
+    },
+    {
+      "local_time": "2026-08-21 20:26",
+      "type": "H",
+      "predicted_mllw_ft": 7.204
+    },
+    {
+      "local_time": "2026-08-22 04:16",
+      "type": "L",
+      "predicted_mllw_ft": 0.724
+    },
+    {
+      "local_time": "2026-08-22 10:53",
+      "type": "H",
+      "predicted_mllw_ft": 5.691
+    },
+    {
+      "local_time": "2026-08-22 15:43",
+      "type": "L",
+      "predicted_mllw_ft": 3.688
+    },
+    {
+      "local_time": "2026-08-22 21:35",
+      "type": "H",
+      "predicted_mllw_ft": 7.186
+    },
+    {
+      "local_time": "2026-08-23 05:15",
+      "type": "L",
+      "predicted_mllw_ft": 0.372
+    },
+    {
+      "local_time": "2026-08-23 11:50",
+      "type": "H",
+      "predicted_mllw_ft": 6.101
+    },
+    {
+      "local_time": "2026-08-23 16:50",
+      "type": "L",
+      "predicted_mllw_ft": 3.44
+    },
+    {
+      "local_time": "2026-08-23 22:40",
+      "type": "H",
+      "predicted_mllw_ft": 7.357
+    },
+    {
+      "local_time": "2026-08-24 06:04",
+      "type": "L",
+      "predicted_mllw_ft": -0.028
+    },
+    {
+      "local_time": "2026-08-24 12:34",
+      "type": "H",
+      "predicted_mllw_ft": 6.498
+    },
+    {
+      "local_time": "2026-08-24 17:46",
+      "type": "L",
+      "predicted_mllw_ft": 3.004
+    },
+    {
+      "local_time": "2026-08-24 23:35",
+      "type": "H",
+      "predicted_mllw_ft": 7.617
+    },
+    {
+      "local_time": "2026-08-25 06:45",
+      "type": "L",
+      "predicted_mllw_ft": -0.387
+    },
+    {
+      "local_time": "2026-08-25 13:12",
+      "type": "H",
+      "predicted_mllw_ft": 6.833
+    },
+    {
+      "local_time": "2026-08-25 18:35",
+      "type": "L",
+      "predicted_mllw_ft": 2.498
+    },
+    {
+      "local_time": "2026-08-26 00:22",
+      "type": "H",
+      "predicted_mllw_ft": 7.856
+    },
+    {
+      "local_time": "2026-08-26 07:21",
+      "type": "L",
+      "predicted_mllw_ft": -0.647
+    },
+    {
+      "local_time": "2026-08-26 13:45",
+      "type": "H",
+      "predicted_mllw_ft": 7.109
+    },
+    {
+      "local_time": "2026-08-26 19:19",
+      "type": "L",
+      "predicted_mllw_ft": 1.976
+    },
+    {
+      "local_time": "2026-08-27 01:05",
+      "type": "H",
+      "predicted_mllw_ft": 8.011
+    },
+    {
+      "local_time": "2026-08-27 07:54",
+      "type": "L",
+      "predicted_mllw_ft": -0.772
+    },
+    {
+      "local_time": "2026-08-27 14:15",
+      "type": "H",
+      "predicted_mllw_ft": 7.351
+    },
+    {
+      "local_time": "2026-08-27 20:00",
+      "type": "L",
+      "predicted_mllw_ft": 1.462
+    },
+    {
+      "local_time": "2026-08-28 01:47",
+      "type": "H",
+      "predicted_mllw_ft": 8.055
+    },
+    {
+      "local_time": "2026-08-28 08:25",
+      "type": "L",
+      "predicted_mllw_ft": -0.739
+    },
+    {
+      "local_time": "2026-08-28 14:42",
+      "type": "H",
+      "predicted_mllw_ft": 7.595
+    },
+    {
+      "local_time": "2026-08-28 20:39",
+      "type": "L",
+      "predicted_mllw_ft": 0.965
+    },
+    {
+      "local_time": "2026-08-29 02:27",
+      "type": "H",
+      "predicted_mllw_ft": 7.982
+    },
+    {
+      "local_time": "2026-08-29 08:55",
+      "type": "L",
+      "predicted_mllw_ft": -0.539
+    },
+    {
+      "local_time": "2026-08-29 15:08",
+      "type": "H",
+      "predicted_mllw_ft": 7.868
+    },
+    {
+      "local_time": "2026-08-29 21:17",
+      "type": "L",
+      "predicted_mllw_ft": 0.509
+    },
+    {
+      "local_time": "2026-08-30 03:09",
+      "type": "H",
+      "predicted_mllw_ft": 7.784
+    },
+    {
+      "local_time": "2026-08-30 09:24",
+      "type": "L",
+      "predicted_mllw_ft": -0.178
+    },
+    {
+      "local_time": "2026-08-30 15:33",
+      "type": "H",
+      "predicted_mllw_ft": 8.169
+    },
+    {
+      "local_time": "2026-08-30 21:55",
+      "type": "L",
+      "predicted_mllw_ft": 0.135
+    },
+    {
+      "local_time": "2026-08-31 03:53",
+      "type": "H",
+      "predicted_mllw_ft": 7.457
+    },
+    {
+      "local_time": "2026-08-31 09:54",
+      "type": "L",
+      "predicted_mllw_ft": 0.331
+    },
+    {
+      "local_time": "2026-08-31 16:00",
+      "type": "H",
+      "predicted_mllw_ft": 8.458
+    },
+    {
+      "local_time": "2026-08-31 22:35",
+      "type": "L",
+      "predicted_mllw_ft": -0.101
+    }
+  ],
+  "review": {
+    "decision": "approved_for_descriptive_august_2026_comparison_only",
+    "reviewed_on": "2026-11-13",
+    "trace": "Official NOAA CO-OPS HTTPS high/low prediction archive as retrieved by GitHub Actions run 43526998102; checked 120 events, every August civil day, station, units, datum, daylight-adjusted local timestamp and normalized digest",
+    "model_approval": false,
+    "caveat": "Astoria astronomical high-to-low same-day predicted spread (not adjacent-tide exchange, real water level, river current speed, a fishing forecast or a causal bite factor)"
+  }
+}
