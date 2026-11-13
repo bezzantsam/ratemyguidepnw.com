@@ -23,6 +23,15 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Verify public Chinook evidence and private data separation
         run: npm run test:intel
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements-chinook-watch.txt
+      - name: Install official Chinook source parser
+        run: python -m pip install -r requirements-chinook-watch.txt
+      - name: Test Chinook official-source and no-fabricated-zeros safeguards
+        run: python -m unittest discover -s tests -p 'test_chinook_wdfw_watch.py' -v
       - name: TypeScript check
         run: npm run typecheck
       - name: Build Next.js production assets without private DB credentials
