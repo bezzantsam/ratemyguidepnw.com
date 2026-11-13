@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import './chinook-intel.css';
 import Link from 'next/link';
 import {
   ArrowRight, ArrowUpRight, ChartNoAxesCombined, CheckCircle2,
