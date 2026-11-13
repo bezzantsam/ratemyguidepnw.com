@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "fishery": "Columbia River estuary — Buoy 10",
+  "species": "Chinook",
+  "project": "Chrome-AI",
+  "publication_status": "methodology_only",
+  "released_on": "2026-11-13",
+  "target": "WDFW creel-sampled retained Chinook per sampled angler",
+  "target_unit": "retained Chinook / sampled angler",
+  "training_period": "August 2014–2026",
+  "prospective_evaluation": {
+    "season": "August 2027",
+    "predeclared_horizon_days": 7,
+    "status": "awaiting_official_2027_results",
+    "verified_outcome_days": 0,
+    "verified_model_mae": null,
+    "verified_baseline_mae": null
+  },
+  "release_approval": {
+    "independent_outcome_review": false,
+    "regulations_verified": false,
+    "approved_for_public_skill_claims": false
+  },
+  "source_links": {
+    "wdfw_creel": "https://wdfw.wa.gov/fishing/reports/creel/buoy10",
+    "noaa_astoria_tides": "https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9439040"
+  },
+  "observations": []
+}
