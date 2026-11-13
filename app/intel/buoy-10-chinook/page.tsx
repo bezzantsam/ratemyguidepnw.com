@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import UnifiedSearch from '@/components/UnifiedSearch';
 import ChinookSampleChart from '@/components/ChinookSampleChart';
+import Reviewed2026History from '@/components/Reviewed2026History';
 import { directoryEntries } from '@/lib/directory';
 import { chinookRelease } from '@/lib/chinook-intel';
 
@@ -109,6 +110,7 @@ export default function Buoy10ChinookIntel() {
           </article>
         </div>
         <ChinookSampleChart />
+        <Reviewed2026History />
         <div className="intel-sources">
           <div className="intel-sources-heading"><Waves size={21} aria-hidden="true" /><div><h3>Check the primary sources</h3><p>Original agency records, not screenshots or anonymous catch reports.</p></div></div>
           <div className="intel-source-list">
