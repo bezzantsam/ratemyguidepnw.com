@@ -1,5 +1,6 @@
 import 'server-only';
 import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { chinookRelease } from './chinook-intel';
 
@@ -24,7 +25,8 @@ type ReviewedHistory = {
 };
 
 const EXPECTED_URL = 'https://wdfw.wa.gov/fishing/reports/creel/buoy10';
-const SHA_PATTERN = /^[0-9a-f]{64}$/;
+const APPROVED_HTML_SHA = 'ef43d5b525a57af1efda3e856d7a77fea08c83ac1e452b208c9daf1cf4199562';
+const APPROVED_2026_SAMPLE_SHA = '3a8d445222e82f64515558cbc640cbd7aec10d7193725aa92a643645ef769672';
 const STATUS = new Set([
   'observed_unverified_regulations',
   'retention_closed_or_unverified',
@@ -36,11 +38,25 @@ function assert(condition: unknown, reason: string): asserts condition {
   if (!condition) throw new Error('Unapproved WDFW history: ' + reason);
 }
 
+/** Match the sorted compact canonical JSON used by the original Python watcher. */
+function canonical(value: unknown): string {
+  if (Array.isArray(value)) return '[' + value.map(canonical).join(',') + ']';
+  if (value && typeof value === 'object') {
+    return '{' + Object.entries(value as Record<string, unknown>)
+      .sort(([a], [b]) => a < b ? -1 : a > b ? 1 : 0)
+      .map(([key, val]) => JSON.stringify(key) + ':' + canonical(val)).join(',') + '}';
+  }
+  return JSON.stringify(value);
+}
+function hashObservations(value: unknown): string {
+  return createHash('sha256').update(canonical(value)).digest('hex');
+}
+
 /**
- * A candidate on an unreviewed bot branch MUST NOT become a live release.
- * Only a deliberate commit/merge into the production MAIN branch is eligible.
- * Vercel branch previews, unknown deployments and local machines show the
- * separately approved fixed five-day example only.
+ * The source bot's unreviewed candidate file is NEVER read by this component.
+ * Only the separate 2026 historical release, independently source-audited and
+ * explicitly committed on the production branch, may be rendered. Previews and
+ * local builds continue to use the original pinned five-day example.
  */
 function isProductionMain(): boolean {
   return process.env.VERCEL_ENV === 'production'
@@ -49,7 +65,7 @@ function isProductionMain(): boolean {
 
 export function reviewed2026ChinookHistory(): ReviewedHistory | null {
   if (!isProductionMain()) return null;
-  const candidatePath = path.join(process.cwd(), 'data', 'chinook-wdfw-candidate.json');
+  const candidatePath = path.join(process.cwd(), 'data', 'chinook-2026-reviewed.json');
   let raw: string;
   try {
     raw = readFileSync(candidatePath, 'utf8');
@@ -64,25 +80,31 @@ export function reviewed2026ChinookHistory(): ReviewedHistory | null {
   assert(data.schema_version === 1 && data.species === 'Chinook',
     'unexpected species or schema');
   assert(data.source_url === EXPECTED_URL, 'not the official WDFW source');
-  assert(data.publication_status === 'candidate_review_only', 'unexpected source status');
+  assert(data.publication_status === 'reviewed_historical_2026_only', 'unexpected source status');
+  assert(data.approved_for_model_training === false &&
+    data.approved_for_prospective_forecast_scoring === false,
+    'private research approval gate unexpectedly changed');
+  const review = data.review as Record<string, unknown> | undefined;
+  assert(review?.decision === 'approved_for_descriptive_2026_history_only',
+    'no documented descriptive-data release review');
   assert(data.model_prediction_values_included === false, 'private predictions detected');
   assert(data.official_sample_regulations_verified === false,
     'do not make agency-regulation certification claims');
   assert(data.site_automatically_publishes_candidate === false,
     'unexpected source publication policy');
-  assert(typeof data.source_html_sha256 === 'string' && SHA_PATTERN.test(data.source_html_sha256),
-    'missing source hash');
-  assert(typeof data.observations_sha256 === 'string' && SHA_PATTERN.test(data.observations_sha256),
-    'missing normalized source hash');
-  assert(Array.isArray(data.seasons) && data.seasons.length >= 1 && data.seasons.length <= 2,
-    'unknown report seasons');
+  assert(data.source_html_sha256 === APPROVED_HTML_SHA,
+    'source HTML does not match the audited official WDFW snapshot');
+  assert(data.observations_sha256 === APPROVED_2026_SAMPLE_SHA,
+    'normalized source hash was not reviewed');
+  assert(Array.isArray(data.seasons) && data.seasons.length === 1,
+    'never include future seasons in a public historical release');
   const seasons = data.seasons as Array<Record<string, unknown>>;
-  assert(seasons.every(s => s.year === 2026 || s.year === 2027),
-    'unexpected source year');
-  const history = seasons.find(s => s.year === 2026);
-  assert(history && Array.isArray(history.rows)
-    && history.rows.length >= 5 && history.rows.length <= 31,
-    'historical samples missing or oversized');
+  assert(seasons[0].year === 2026, 'historical release must be 2026 only');
+  assert(hashObservations(seasons) === APPROVED_2026_SAMPLE_SHA,
+    'released observations were altered after source audit');
+  const history = seasons[0];
+  assert(Array.isArray(history.rows) && history.rows.length === 31,
+    'full reviewed August 2026 sample is missing or oversized');
   assert(history.observed_days === history.rows.length, 'source row count mismatch');
 
   let previous = '';
@@ -99,6 +121,11 @@ export function reviewed2026ChinookHistory(): ReviewedHistory | null {
     assert(STATUS.has(row.sample_status), 'unknown agency status');
     assert(typeof row.source_retention_note === 'string'
       && row.source_retention_note.length <= 180, 'invalid retention note');
+    const augustDay = Number(row.date.slice(-2));
+    const expectedRetention = augustDay <= 9
+      ? 'Chinook and hatchery coho' : 'Hatchery Chinook and hatchery coho';
+    assert(row.source_retention_note === expectedRetention,
+      'retention label differs from approved agency schedule');
 
     if (row.sample_status === 'observed_unverified_regulations') {
       assert(Number.isInteger(row.anglers) && (row.anglers as number) > 0
@@ -133,8 +160,8 @@ export function reviewed2026ChinookHistory(): ReviewedHistory | null {
       && first.chinook_kept === reference.chinook_kept,
       'pinned WDFW August 2026 historical anchor changed');
   }
-  // Only historical 2026 agency observations. All 2027 data is excluded even
-  // if it appears in the merged WDFW candidate.
+  // Approved historical 2026 agency observations only. The bot's review queue
+  // and any 2027 official reports or private forecasts are separate files.
   return {
     source_sha256: data.source_html_sha256 as string,
     rows: eligible,
