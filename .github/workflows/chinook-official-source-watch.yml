@@ -14,6 +14,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  issues: write
 
 concurrency:
   group: rate-my-guide-wdfw-chinook-review
@@ -85,9 +86,17 @@ jobs:
           fi
           EXISTING="$(gh pr list --repo bezzantsam/ratemyguidepnw.com --head "$BRANCH" --state open --json number --jq '.[0].number // empty')"
           if test -z "$EXISTING"; then
-            gh pr create --repo bezzantsam/ratemyguidepnw.com --base main --head "$BRANCH" \
+            if ! gh pr create --repo bezzantsam/ratemyguidepnw.com --base main --head "$BRANCH" \
               --title 'Review newly published official WDFW Buoy 10 Chinook observations' \
-              --body 'Automated WDFW source-candidate update. **NOT APPROVED FOR PUBLIC DISPLAY, TRAINING, OR SCORING.** Inspect row counts, any closure or no-sample flags, source corrections, the first-five-day 2026 checksum anchor, and WDFW regulations before manually promoting any data to the website. The private Chrome-AI model, forecasts, Supabase credentials and guide reviews are not involved. Data is public agency material; the candidate JSON is deliberately not read by the website.'
+              --body 'Automated WDFW source-candidate update. **NOT APPROVED FOR PUBLIC DISPLAY, TRAINING, OR SCORING.** Inspect row counts, any closure or no-sample flags, source corrections, the first-five-day 2026 checksum anchor, and WDFW regulations before manually promoting any data to the website. The private Chrome-AI model, forecasts, Supabase credentials and guide reviews are not involved. Data is public agency material; the candidate JSON is deliberately not read by the website.'; then
+              echo "::warning::GitHub Actions cannot create PRs under current repository settings. Candidate is saved on $BRANCH."
+              EXISTING_ISSUE="$(gh issue list --repo bezzantsam/ratemyguidepnw.com --state open --search 'WDFW Chinook source review branch needs PR' --json number --jq '.[0].number // empty')"
+              if test -z "$EXISTING_ISSUE"; then
+                gh issue create --repo bezzantsam/ratemyguidepnw.com \
+                  --title 'WDFW Chinook source review branch needs PR' \
+                  --body 'GitHub blocked automated pull-request creation. Verified public WDFW candidate is safely stored at [the dedicated review branch](https://github.com/bezzantsam/ratemyguidepnw.com/tree/bot/wdfw-chinook-review), **not on the public website**. The repository owner can enable GitHub Actions PR creation in Settings → Actions → General or have a maintainer open a PR. This issue is reused rather than creating one on every source refresh.'
+              fi
+            fi
           fi
 
       - name: Store original candidate from this run for audit
