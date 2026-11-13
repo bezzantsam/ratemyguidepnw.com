@@ -22,7 +22,8 @@ export default function About() {
       <p>
         Our first research focus is Buoy 10 Chinook using official WDFW creel data and NOAA tides.
         The 2027 seven-day-ahead experimental forecast has not been independently scored yet.
-        <Link href="/intel/buoy-10-chinook"> Explore the source-backed Chinook Intel preview.</Link>
+        <Link href="/intel/buoy-10-chinook"> Explore Chinook Intel.</Link>
+        {' '}<Link href="/intel/methodology">Read how we verify the data and explain the limits.</Link>
       </p>
       <h2>Fairness and moderation</h2>
       <p>
