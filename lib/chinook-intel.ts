@@ -37,6 +37,14 @@ export type ChinookPublicRelease = {
     noaa_astoria_tides: string;
   };
   observations: [];
+  historical_sample: {
+    source: string;
+    source_updated: string;
+    dataset_status: 'agency_preliminary';
+    year: 2026;
+    scope: string;
+    rows: Array<{ date: string; boats: number; anglers: number; chinook_kept: number }>;
+  };
 };
 
 export function assertSafeChinookRelease(value: unknown): asserts value is ChinookPublicRelease {
@@ -47,10 +55,11 @@ export function assertSafeChinookRelease(value: unknown): asserts value is Chino
   const e = r.prospective_evaluation as Record<string, unknown> | undefined;
   const a = r.release_approval as Record<string, unknown> | undefined;
   const links = r.source_links as Record<string, unknown> | undefined;
+  const historic = r.historical_sample as Record<string, unknown> | undefined;
   const permitted = [
     'schema_version', 'fishery', 'species', 'project', 'publication_status',
     'released_on', 'target', 'target_unit', 'training_period',
-    'prospective_evaluation', 'release_approval', 'source_links', 'observations'
+    'prospective_evaluation', 'release_approval', 'source_links', 'observations', 'historical_sample'
   ];
   if (
     Object.keys(r).some(key => !permitted.includes(key)) ||
@@ -70,7 +79,27 @@ export function assertSafeChinookRelease(value: unknown): asserts value is Chino
     a.approved_for_public_skill_claims !== false ||
     !links || links.wdfw_creel !== 'https://wdfw.wa.gov/fishing/reports/creel/buoy10' ||
     links.noaa_astoria_tides !== 'https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9439040' ||
-    !Array.isArray(r.observations) || r.observations.length !== 0
+    !Array.isArray(r.observations) || r.observations.length !== 0 ||
+    !historic || historic.year !== 2026 || historic.dataset_status !== 'agency_preliminary' ||
+    historic.source_updated !== '2026-10-01' ||
+    !Array.isArray(historic.rows) || historic.rows.length !== 5 ||
+    historic.rows.some((row, index) => {
+      if (!row || typeof row !== 'object') return true;
+      const item = row as Record<string, unknown>;
+      const expected: Array<[string, number, number, number]> = [
+        ['2026-08-01', 53, 166, 38],
+        ['2026-08-02', 59, 174, 25],
+        ['2026-08-03', 37, 109, 19],
+        ['2026-08-04', 92, 253, 90],
+        ['2026-08-05', 35, 104, 45]
+      ];
+      const [date, boats, anglers, chinook] = expected[index];
+      return (
+        Object.keys(item).some(key => !['date', 'boats', 'anglers', 'chinook_kept'].includes(key)) ||
+        item.date !== date || item.boats !== boats ||
+        item.anglers !== anglers || item.chinook_kept !== chinook
+      );
+    })
   ) {
     throw new Error('Public Chinook release not reviewed for publication');
   }
