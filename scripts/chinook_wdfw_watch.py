@@ -14,12 +14,10 @@ from __future__ import annotations
 import argparse
 from datetime import date, datetime, timezone, timedelta
 from hashlib import sha256
-from io import BytesIO
 import json
 import os
 from pathlib import Path
 import re
-import sys
 from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 from zoneinfo import ZoneInfo
@@ -28,7 +26,6 @@ from bs4 import BeautifulSoup
 
 WDFW_URL = "https://wdfw.wa.gov/fishing/reports/creel/buoy10"
 MAX_SOURCE_BYTES = 2_000_000
-MAX_AGE_DAYS = 5  # source capture older than this on the runner is invalid
 PACIFIC = ZoneInfo("America/Los_Angeles")
 SCHEMA_VERSION = 1
 FIRST_YEAR = 2026
@@ -187,7 +184,10 @@ def parse_august(soup: BeautifulSoup, year: int, now: datetime) -> list[dict]:
             "source_retention_note": note[:180],
         })
     rows.sort(key=lambda row: row["date"])
-    require(len(rows) <= 31 and bool(rows), f"No August {year} observations")
+    require(len(rows) <= 31, f"Too many August {year} observations")
+    if not rows and year == LAST_YEAR:
+        return []
+    require(bool(rows), f"No August {year} observations")
     if year == FIRST_YEAR:
         anchors = [
             {field: row[field] for field in ("date", "boats", "anglers", "chinook_kept")}
