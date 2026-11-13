@@ -118,3 +118,30 @@
 .intel-reviewed-body a{color:#176a49;text-decoration:underline;font-weight:700}
 .intel-reviewed-body .intel-observed-table th,.intel-reviewed-body .intel-observed-table td{color:#294c3d;border-color:#bbcdbe}
 @media(max-width:640px){.intel-reviewed-history>summary{align-items:start;flex-direction:column;padding:18px}.intel-reviewed-body{padding:15px}}
+
+/* Reviewed NOAA Astoria tide vs WDFW Chinook comparison. Same light "evidence panel" language as .intel-sample / .intel-reviewed-history. */
+.intel-tide{margin:24px 0;background:#eaf0ea;color:#15362f;border:1px solid #bdcdc2;border-radius:14px;padding:28px;overflow:hidden}
+.intel-tide h3{color:#173c34;font-size:clamp(21px,2.8vw,28px);line-height:1.23;margin:8px 0 9px}
+.intel-tide .intel-label{color:#476a57}
+.intel-tide p{color:#4c6259;font-size:13px;margin:0;line-height:1.7}
+.intel-tide strong{color:#204b37}
+.intel-tide-heading{display:flex;align-items:start;justify-content:space-between;gap:24px;margin-bottom:19px}
+.intel-tide-metric{display:grid;gap:3px;flex-shrink:0;min-width:150px;padding:14px 16px;background:#d7e5d8;border:1px solid #9ab5a4;border-radius:12px;text-align:center}
+.intel-tide-metric strong{font-size:clamp(34px,5vw,44px);line-height:1.05;letter-spacing:-.04em;font-variant-numeric:tabular-nums;color:#173c34}
+.intel-tide-metric span{font-size:11px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;color:#2b5a48}
+.intel-tide-metric small{font-size:11px;color:#476a57}
+.intel-tide-scrollhint{display:none;font-size:11px!important;color:#476a57!important;margin:0 0 6px!important}
+.intel-tide-chart{overflow-x:auto;margin:0 -4px;padding:0 4px}
+.intel-tide-chart:focus-visible{outline:3px solid #1a6447;outline-offset:2px;border-radius:6px}
+.intel-tide-chart svg{display:block;width:100%;min-width:640px;height:auto}
+.intel-tide-warning{margin-top:18px!important;padding:15px 17px;background:#f4efd9;border:1px solid #cdbb7d;border-radius:10px;color:#4a3f1c!important}
+.intel-tide-warning strong{color:#3b3212}
+.intel-tide-details{margin-top:18px;border:1px solid #bbcdbe;border-radius:10px;background:#f3f7f2}
+.intel-tide-details>summary{cursor:pointer;padding:14px 17px;font-size:13px;font-weight:800;color:#204e3a}
+.intel-tide-details>summary:focus-visible{outline:3px solid #1a6447;outline-offset:-3px;border-radius:10px}
+.intel-tide-details[open]>summary{border-bottom:1px solid #bbcdbe}
+.intel-tide-details .intel-observed-table-scroll{padding:0 8px 8px}
+.intel-tide-attribution{margin-top:18px!important;font-size:12px!important}
+.intel-tide-attribution a{color:#176a49;text-decoration:underline;font-weight:700}
+@media(max-width:700px){.intel-tide-scrollhint{display:block}}
+@media(max-width:650px){.intel-tide{padding:18px}.intel-tide-heading{flex-direction:column;gap:14px}.intel-tide-metric{width:100%;text-align:left;grid-template-columns:auto 1fr;align-items:baseline;column-gap:12px}.intel-tide-metric small{grid-column:1/-1}}
