@@ -70,7 +70,8 @@ test('review-queue candidates only render after deliberate production-main merge
   assert.match(guard, /VERCEL_ENV === 'production'/);
   assert.match(guard, /VERCEL_GIT_COMMIT_REF === 'main'/);
   assert.match(guard, /if \(!isProductionMain\(\)\) return null/);
-  assert.match(guard, /history = seasons.find\(s => s.year === 2026\)/);
+  assert.match(guard, /const history = seasons\[0\]/);
+  assert.match(guard, /hashObservations\(seasons\)/);
   assert.match(guard, /source_html_sha256/);
   assert.match(guard, /source_retention_note/);
   assert.match(guard, /row\.chinook_kept === null/);

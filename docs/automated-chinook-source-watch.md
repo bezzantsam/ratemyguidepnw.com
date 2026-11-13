@@ -14,9 +14,9 @@ It runs **daily in August/September, weekly during other months**, plus manually
 4. Record only completed Pacific-local calendar dates, detect duplicated days, unexpected rows, absent effort and implausible reported catches
 5. Preserve actual sampled zero retained Chinook if retention is declared open; **never** turn a missing/closed/not-sampled day into a zero
 6. Compare normalized observational changes with the previous pending review candidate; do not open a new PR on each scheduled run
-7. When observations change, update **one open GitHub Pull Request** at `bot/wdfw-chinook-review` for human QA (with a private-to-the-PR exact WDFW HTML SHA and retrieval timestamp). This JSON is public agency data but **not** an approved scientific outcome dataset.
+7. When observations change, update **one open GitHub Pull Request** at `bot/wdfw-chinook-review` for human QA (with a publicly visible agency HTML SHA and retrieval timestamp). This JSON is public agency data but **not** an approved scientific outcome dataset.
 
-**Publishing is intentionally gated.** While the bot review PR is open, the candidate does **not** enter the public website, model training, seven-day forecast issuance, prospective scoring or guide reviews. Only after a maintainer deliberately **merges** the candidate into production `main` can `lib/chinook-reviewed-history.ts` verify its first-five-day anchor and render eligible **August 2026 historical observations** in a separate expandable public table. It displays agency counts as preliminary, not certified regulations or forecast accuracy. **All 2027 source data is excluded** even if it appears in the same candidate, and no source numbers become ML evaluation outcomes via this route.
+**Publishing is intentionally gated.** While the bot review PR is open, the candidate does **not** enter the public website, model training, seven-day forecast issuance, prospective scoring or guide reviews. The source-review PR is never an automatic website release. After an independent agency-source audit, an **explicitly separate, SHA-pinned historical release** in `data/chinook-2026-reviewed.json` can be committed to production `main` and rendered by `lib/chinook-reviewed-history.ts`. It displays agency counts as preliminary, not certified regulations or forecast accuracy. **All 2027 source data is excluded** even if it appears in the same candidate, and no source numbers become ML evaluation outcomes via this route.
 
 ## Project independence
 
@@ -36,11 +36,13 @@ A true private-Chrome-AI-to-public-website release would require a separately au
 
 ## Next release milestone
 
-A reviewed, signed, public-safe **historical 2026** data release for the site chart, with a separate manual approval gate for 2027 results and absolutely no automatic model skill claims. The 2027 scientific score remains a separate private evaluation against server-accepted seven-day-ahead frozen forecasts.
+A separately source-reviewed, SHA-pinned, public-safe **historical 2026** data release for the site chart, with a separate manual approval gate for 2027 results and absolutely no automatic model skill claims. The 2027 scientific score remains a separate private evaluation against server-accepted seven-day-ahead frozen forecasts.
 
 ## Review handoff to a public historical chart
 
 - The first human-created source-review queue is [PR #3](https://github.com/bezzantsam/ratemyguidepnw.com/pull/3). New WDFW source changes update that PR if it remains open.
 - Do **not** merge a 2027 record merely because a sample exists. Check it against the independent private Chrome-AI archive and verify agency source revisions, source-date sampling and regulation context.
-- For the **historical 2026** series, carefully reviewing then merging the source candidate into `main` is an explicit publication decision. The production-only React server component automatically displays eligible reported August 2026 samples, excludes missing and closed days, preserves the original source hash, and **never** displays 2027 data.
+- For the **historical 2026** series, the source-audited data is **copied into a separate, hash-pinned reviewed release file**, merged through an independent code-review PR. The source bot's PR #3 stays open for future monitoring. Production reads the reviewed release only, refuses unknown source hashes or changed historical rows, and never loads 2027 data.
 - Preview builds and local environments deliberately do not render an unapproved review candidate. Public authorization is based on `VERCEL_ENV=production` and `VERCEL_GIT_COMMIT_REF=main`; do not relax those gates merely to make a preview look full.
+
+**2026 approved historical audit:** [docs/chinook-2026-source-audit.md](chinook-2026-source-audit.md). The continuing source-watch PR remains open and is not itself the production data release.

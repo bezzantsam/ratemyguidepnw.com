@@ -1,11 +1,13 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import ts from 'typescript';
 
-const release = JSON.parse(readFileSync('lib/chinook-public-release.json', 'utf8'));
+const publicContract = JSON.parse(readFileSync('lib/chinook-public-release.json', 'utf8'));
+const audited = JSON.parse(readFileSync('data/chinook-2026-reviewed.json', 'utf8'));
 const source = readFileSync('lib/chinook-reviewed-history.ts', 'utf8');
 const compiled = ts.transpileModule(source, {
   compilerOptions: {
@@ -15,7 +17,12 @@ const compiled = ts.transpileModule(source, {
   },
 }).outputText;
 
+function clone(value) {
+  return JSON.parse(JSON.stringify(value));
+}
+
 function runGate(data, {environment='production', branch='main'}={}) {
+  if (arguments.length === 0) data = audited;
   let reads = 0;
   const exports = {};
   const sandbox = {
@@ -23,135 +30,97 @@ function runGate(data, {environment='production', branch='main'}={}) {
     module: {exports},
     process: {
       cwd: () => '/tmp/ratemyguidepnw',
-      env: {
-        VERCEL_ENV: environment,
-        VERCEL_GIT_COMMIT_REF: branch,
-      },
+      env: {VERCEL_ENV: environment, VERCEL_GIT_COMMIT_REF: branch},
     },
     require: name => {
       if (name === 'server-only') return {};
-      if (name === './chinook-intel') return {chinookRelease: release};
+      if (name === './chinook-intel') return {chinookRelease: publicContract};
       if (name === 'node:path') return path;
+      if (name === 'node:crypto') return crypto;
       if (name === 'node:fs') return {
-        readFileSync: () => {
+        readFileSync: file => {
           reads++;
+          assert.equal(file.endsWith('data/chinook-2026-reviewed.json'), true);
           if (data === undefined) {
-            const err = new Error('ENOENT');
-            err.code = 'ENOENT';
-            throw err;
+            const error = new Error('ENOENT');
+            error.code = 'ENOENT';
+            throw error;
           }
           return JSON.stringify(data);
         },
       };
-      throw new Error('Unexpected module: ' + name);
+      throw new Error('Unexpected imported module: ' + name);
     },
   };
   vm.runInNewContext(compiled, sandbox, {timeout:2000});
-  const result = sandbox.module.exports.reviewed2026ChinookHistory();
-  return {result, reads};
+  return {result:sandbox.module.exports.reviewed2026ChinookHistory(), reads};
 }
 
-function candidate({sixth, future=false}={}) {
-  const rows = release.historical_sample.rows.map(row => ({
-    ...row,
-    sample_status: 'observed_unverified_regulations',
-    source_retention_note: 'Chinook and hatchery coho',
-  }));
-  if (sixth) rows.push(sixth);
-  const seasons = [{year:2026, observed_days:rows.length, rows}];
-  if (future) seasons.push({
-    year:2027, observed_days:1, rows:[{
-      date:'2027-08-01', anglers:44, boats:22, chinook_kept:14,
-      sample_status:'observed_unverified_regulations',
-      source_retention_note:'Chinook and hatchery coho',
-    }],
-  });
-  return {
-    schema_version:1,
-    species:'Chinook',
-    source_url:'https://wdfw.wa.gov/fishing/reports/creel/buoy10',
-    source_html_sha256:'f'.repeat(64),
-    observations_sha256:'a'.repeat(64),
-    publication_status:'candidate_review_only',
-    model_prediction_values_included:false,
-    official_sample_regulations_verified:false,
-    site_automatically_publishes_candidate:false,
-    seasons,
-  };
-}
-
-test('unmerged preview data is never read or rendered', () => {
-  const data = candidate({sixth:{
-    date:'2026-08-06', anglers:78, boats:28, chinook_kept:39,
-    sample_status:'observed_unverified_regulations',
-    source_retention_note:'Chinook and hatchery coho'
-  }});
-  for (const mode of [
-    {environment:'preview',branch:'bot/wdfw-chinook-review'},
-    {environment:'production',branch:'bot/wdfw-chinook-review'},
-    {environment:'development',branch:'main'},
+test('previews, local builds and unreviewed bot branch do not read approved history', () => {
+  for (const config of [
+    {environment:'preview', branch:'bot/wdfw-chinook-review'},
+    {environment:'production', branch:'bot/wdfw-chinook-review'},
+    {environment:'development', branch:'main'},
   ]) {
-    const {result,reads} = runGate(data,mode);
-    assert.equal(result,null);
-    assert.equal(reads,0);
+    const {result, reads} = runGate(audited, config);
+    assert.equal(result, null);
+    assert.equal(reads, 0);
   }
 });
 
-test('production main renders only a validated 2026 historical row, not 2027', () => {
-  const data = candidate({
-    sixth:{
-      date:'2026-08-06', anglers:78, boats:28, chinook_kept:39,
+test('separate approved 2026 file reproduces all 31 original agency observations', () => {
+  const {result, reads} = runGate();
+  assert.equal(reads, 1);
+  assert.equal(result.rows.length, 31);
+  assert.equal(result.excluded_days, 0);
+  assert.equal(result.rows.reduce((sum, row) => sum + row.anglers, 0), 5087);
+  assert.equal(result.rows.reduce((sum, row) => sum + row.chinook_kept, 0), 1373);
+  assert.equal(result.source_sha256, 'ef43d5b525a57af1efda3e856d7a77fea08c83ac1e452b208c9daf1cf4199562');
+  assert.equal(result.rows.some(row=>row.date.startsWith('2027')), false);
+});
+
+test('review bot candidate is not consumed by production page', () => {
+  assert.equal(source.includes("data', 'chinook-wdfw-candidate.json'"), false);
+  assert.equal(source.includes("data', 'chinook-2026-reviewed.json'"), true);
+});
+
+test('future 2027 season is rejected, not displayed or imported', () => {
+  const changed = clone(audited);
+  changed.seasons.push({
+    year:2027,observed_days:1,rows:[{
+      date:'2027-08-01',anglers:100,boats:30,chinook_kept:11,
       sample_status:'observed_unverified_regulations',
-      source_retention_note:'Chinook and hatchery coho',
-    },
-    future:true,
+      source_retention_note:'Chinook and hatchery coho'
+    }]
   });
-  const {result,reads} = runGate(data);
-  assert.equal(reads,1);
-  assert.equal(result.rows.length,6);
-  assert.equal(result.rows[5].chinook_kept,39);
-  assert.equal(result.rows.filter(r=>r.date.startsWith('2027')).length,0);
-  assert.equal(result.excluded_days,0);
+  assert.throws(() => runGate(changed), /future seasons/);
 });
 
-test('an actual sampled zero survives; a closed day never becomes a zero', () => {
-  const zero = candidate({sixth:{
-    date:'2026-08-06', anglers:78, boats:28, chinook_kept:0,
-    sample_status:'observed_unverified_regulations',
-    source_retention_note:'Chinook and hatchery coho'
-  }});
-  assert.equal(runGate(zero).result.rows[5].chinook_kept,0);
-  const closed = candidate({sixth:{
-    date:'2026-08-06', anglers:78, boats:28, chinook_kept:null,
-    sample_status:'retention_closed_or_unverified',
-    source_retention_note:'Hatchery coho'
-  }});
-  const result = runGate(closed).result;
-  assert.equal(result.rows.length,5);
-  assert.equal(result.excluded_days,1);
+test('a revised agency count cannot silently replace the approved release', () => {
+  const changed = clone(audited);
+  changed.seasons[0].rows[21].chinook_kept++;
+  assert.throws(() => runGate(changed), /altered after source audit/);
 });
 
-test('missing merged candidate keeps existing pinned five-day example', () => {
-  assert.equal(runGate(undefined).result, null);
+test('a changed retention label fails publication until the release is reaudited', () => {
+  const changed = clone(audited);
+  changed.seasons[0].rows[25].source_retention_note = 'Chinook and hatchery coho';
+  assert.throws(() => runGate(changed), /altered after source audit/);
 });
 
-test('tampered first five official WDFW numbers fail closed', () => {
-  const data = candidate();
-  data.seasons[0].rows[0].chinook_kept = 900;
-  assert.throws(() => runGate(data), /Unapproved WDFW history/);
+test('source checksum, review status and ML approval are fail-closed', () => {
+  const wrongSource = clone(audited);
+  wrongSource.source_html_sha256 = 'f'.repeat(64);
+  assert.throws(() => runGate(wrongSource), /source HTML does not match/);
+  const notReviewed = clone(audited);
+  notReviewed.publication_status = 'candidate_review_only';
+  assert.throws(() => runGate(notReviewed), /unexpected source status/);
+  const contaminated = clone(audited);
+  contaminated.approved_for_model_training = true;
+  assert.throws(() => runGate(contaminated), /private research approval/);
 });
 
-test('wrong source, future model predictions and unrecognized rows fail closed', () => {
-  const data = candidate();
-  data.source_url='https://fake.example.com';
-  assert.throws(() => runGate(data), /official WDFW source/);
-  const changed = candidate();
-  changed.model_prediction_values_included=true;
-  assert.throws(() => runGate(changed), /private predictions/);
-  const invalid = candidate({sixth:{
-    date:'2026-08-06', anglers:78, boats:28, chinook_kept:0,
-    sample_status:'retention_closed_or_unverified',
-    source_retention_note:'Hatchery coho',
-  }});
-  assert.throws(() => runGate(invalid), /turned into a zero/);
+test('no approved release leaves initial 5-day historical panel unaffected', () => {
+  const {result} = runGate(undefined);
+  assert.equal(result, null);
 });

@@ -51,3 +51,7 @@ Deployment and build validation are pending Vercel/Supabase connection and a net
 The site now has a source-backed, methodology-only **[Buoy 10 Chinook Intel](/intel/buoy-10-chinook)** page. It displays the first five actual WDFW preliminary sample days from August 2026, the official source and count denominators, a 2027 seven-day forecast evaluation disclosure, and a searchable subset of real Lower Columbia River-area registry listings. **No private 2027 model predictions, unreviewed scoring claims or fabricated guide reviews are displayed.**
 
 The core Chrome-AI repo, models and forecasts remain **private and separate**. See [the integration design](docs/chinook-intel-integration.md). The website presents approved public evidence alongside a completely separate customer-review trust lane.
+
+### Approved historical Chinook expansion
+
+The August 2026 WDFW report has now been independently compared against the original archived source (all 31 dates and sampled totals), and the August 25 hatchery-Chinook rule was cross-checked against Washington's emergency order. The extended **1,373 retained Chinook / 5,087 sampled anglers** sample table is in a **separate, SHA-pinned, reviewed 2026 dataset** for production. The source bot's continuously updated review PR remains open; new agency changes never replace this public historical release automatically. This remains **preliminary agency sample data**, not individual catch odds or verified 2027 ML performance. See [audit details](docs/chinook-2026-source-audit.md).

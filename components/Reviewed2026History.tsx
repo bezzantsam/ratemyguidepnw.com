@@ -18,9 +18,9 @@ export default function Reviewed2026History() {
       </summary>
       <div className="intel-reviewed-body">
         <p>
-          Additional agency-published source rows were promoted only after the
-          official-source candidate was deliberately merged into the production
-          repository. These are historical creel observations, not a forecast,
+          These additional August 2026 agency observations are taken from a
+          separately source-audited, SHA-pinned historical release explicitly
+          approved on the production branch. These are historical creel observations, not a forecast,
           a legal retention notice or proof of prospective ML accuracy.
         </p>
         <div className="intel-observed-table-scroll">
