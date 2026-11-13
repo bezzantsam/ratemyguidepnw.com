@@ -45,11 +45,11 @@ jobs:
             python scripts/noaa_astoria_2026_watch.py --output data/noaa-astoria-2026-candidate.json > "$RUNNER_TEMP/noaa/status.json"
           fi
           cat "$RUNNER_TEMP/noaa/status.json"
-          echo "changed=$(jq -r '.status == \"new_tide_candidate_needs_review\"' "$RUNNER_TEMP/noaa/status.json")" >> "$GITHUB_OUTPUT"
+          echo "changed=$(jq -r '.status == "new_tide_candidate_needs_review"' "$RUNNER_TEMP/noaa/status.json")" >> "$GITHUB_OUTPUT"
       - name: Preserve changed NOAA candidate only on separate review branch
         if: steps.qa.outputs.changed == 'true'
         env:
-          GH_TOKEN: \${{ github.token }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           BRANCH=bot/noaa-astoria-2026-review
@@ -70,7 +70,7 @@ jobs:
         if: steps.qa.outputs.changed == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: noaa-astoria-2026-candidate-\${{ github.run_id }}
+          name: noaa-astoria-2026-candidate-${{ github.run_id }}
           path: data/noaa-astoria-2026-candidate.json
           retention-days: 30
           if-no-files-found: error
