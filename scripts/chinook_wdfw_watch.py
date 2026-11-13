@@ -228,9 +228,10 @@ def make_candidate(raw: bytes, *, now: datetime) -> dict:
     }
 
 
-def write_if_changed(destination: Path, candidate: dict) -> bool:
-    if destination.is_file():
-        previous = json.loads(destination.read_text(encoding="utf-8"))
+def write_if_changed(destination: Path, candidate: dict, *, compare_to: Path | None = None) -> bool:
+    reference = compare_to if compare_to is not None else destination
+    if reference.is_file():
+        previous = json.loads(reference.read_text(encoding="utf-8"))
         if previous.get("observations_sha256") == candidate["observations_sha256"]:
             return False
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -245,10 +246,11 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path,
                         default=Path("data/chinook-wdfw-candidate.json"))
+    parser.add_argument("--compare", type=Path, help="Previously generated review candidate, if any")
     args = parser.parse_args(argv)
     now = datetime.now(timezone.utc)
     candidate = make_candidate(fetch_wdfw(), now=now)
-    changed = write_if_changed(args.output, candidate)
+    changed = write_if_changed(args.output, candidate, compare_to=args.compare)
     print(json.dumps({
         "status": "new_candidate_needs_manual_review" if changed
                   else "official_observations_unchanged",
