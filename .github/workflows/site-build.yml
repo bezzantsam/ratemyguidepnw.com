@@ -1,0 +1,29 @@
+name: RateMyGuidePNW verified app build
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  public-safe-chinook:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install website dependencies
+        run: npm install --no-audit --no-fund
+      - name: Verify public Chinook evidence and private data separation
+        run: npm run test:intel
+      - name: TypeScript check
+        run: npm run typecheck
+      - name: Build Next.js production assets without private DB credentials
+        run: npm run build
