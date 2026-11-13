@@ -59,7 +59,7 @@ export default function Reviewed2026History() {
         <p>
           <strong>{retained.toLocaleString('en-US')} retained Chinook</strong> from
           {' '}{anglers.toLocaleString('en-US')} sampled anglers across these {count}
-          reported dates. {history.excluded_days > 0
+          {' '}reported dates. {history.excluded_days > 0
             ? String(history.excluded_days) + ' closed, unsampled or flagged dates excluded.'
             : 'No August days flagged in this released historical sample.'}
         </p>
