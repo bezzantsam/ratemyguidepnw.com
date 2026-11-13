@@ -1,0 +1,100 @@
+name: WDFW Chinook official-source review watch
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/chinook-official-source-watch.yml
+  workflow_dispatch:
+  schedule:
+    # Daily during August–September. Weekly otherwise, Pacific morning.
+    - cron: '17 13 * 8,9 *'
+    - cron: '17 13 * 1-7,10-12 1'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: rate-my-guide-wdfw-chinook-review
+  cancel-in-progress: false
+
+jobs:
+  official-source-review:
+    if: github.repository == 'bezzantsam/ratemyguidepnw.com'
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - name: Check out public RateMyGuidePNW site
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements-chinook-watch.txt
+
+      - name: Install pinned lightweight agency parser
+        run: python -m pip install -r requirements-chinook-watch.txt
+
+      - name: Test source integrity, Chinook-only status and publication gates
+        run: python -m unittest discover -s tests -p 'test_chinook_wdfw_watch.py' -v
+
+      - name: Compare against existing pending review branch
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/chinook"
+          BRANCH=bot/wdfw-chinook-review
+          if git ls-remote --exit-code origin "refs/heads/$BRANCH" >/dev/null 2>&1; then
+            git fetch --no-tags --depth=1 origin "refs/heads/$BRANCH:refs/remotes/origin/$BRANCH"
+            git show "refs/remotes/origin/$BRANCH:data/chinook-wdfw-candidate.json" > "$RUNNER_TEMP/chinook/previous.json"
+          fi
+
+      - name: Fetch official HTTPS WDFW and prepare unapproved observation candidate
+        id: candidate
+        run: |
+          set -euo pipefail
+          if test -s "$RUNNER_TEMP/chinook/previous.json"; then
+            python scripts/chinook_wdfw_watch.py --compare "$RUNNER_TEMP/chinook/previous.json" --output data/chinook-wdfw-candidate.json > "$RUNNER_TEMP/chinook/result.json"
+          else
+            python scripts/chinook_wdfw_watch.py --output data/chinook-wdfw-candidate.json > "$RUNNER_TEMP/chinook/result.json"
+          fi
+          cat "$RUNNER_TEMP/chinook/result.json"
+          echo "changed=$(jq -r '.status == "new_candidate_needs_manual_review"' "$RUNNER_TEMP/chinook/result.json")" >> "$GITHUB_OUTPUT"
+
+      - name: Create or refresh ONE review-only pull request (not a public data release)
+        if: steps.candidate.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          BRANCH=bot/wdfw-chinook-review
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -C "$BRANCH"
+          git add data/chinook-wdfw-candidate.json
+          git commit -m 'Propose newly reported WDFW Chinook observations for source QA'
+          gh auth setup-git
+          REMOTE_SHA="$(git rev-parse -q --verify "refs/remotes/origin/$BRANCH" || true)"
+          if test -n "$REMOTE_SHA"; then
+            git push origin "HEAD:refs/heads/$BRANCH" "--force-with-lease=refs/heads/$BRANCH:$REMOTE_SHA"
+          else
+            git push origin "HEAD:refs/heads/$BRANCH"
+          fi
+          EXISTING="$(gh pr list --repo bezzantsam/ratemyguidepnw.com --head "$BRANCH" --state open --json number --jq '.[0].number // empty')"
+          if test -z "$EXISTING"; then
+            gh pr create --repo bezzantsam/ratemyguidepnw.com --base main --head "$BRANCH" \
+              --title 'Review newly published official WDFW Buoy 10 Chinook observations' \
+              --body 'Automated WDFW source-candidate update. **NOT APPROVED FOR PUBLIC DISPLAY, TRAINING, OR SCORING.** Inspect row counts, any closure or no-sample flags, source corrections, the first-five-day 2026 checksum anchor, and WDFW regulations before manually promoting any data to the website. The private Chrome-AI model, forecasts, Supabase credentials and guide reviews are not involved. Data is public agency material; the candidate JSON is deliberately not read by the website.'
+          fi
+
+      - name: Store original candidate from this run for audit
+        if: steps.candidate.outputs.changed == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: wdfw-chinook-review-${{ github.run_id }}
+          path: data/chinook-wdfw-candidate.json
+          if-no-files-found: error
+          retention-days: 30
