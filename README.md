@@ -2,7 +2,7 @@
 
 Independent Pacific Northwest fishing-guide review directory, built with Next.js App Router, TypeScript, and a Supabase PostgreSQL migration.
 
-**Pre-launch demonstration.** All displayed guides, review counts, ratings, and reviews are entirely fictional. This repository is PUBLIC; do not commit credentials. The public review submission system, real guide authentication, moderation workflow, payment system, analytics and live database queries have NOT been implemented.
+**Pre-launch product.** The directory now contains real Oregon and Washington registry-source listings, but they are **not** current license verification, confirmed guide endorsements or proof of Buoy 10 Chinook operations. The site includes Supabase-backed review/auth/moderation components; production readiness, review authenticity and administrator bootstrap still require validation. No fictional ratings are passed off as real. This repository is PUBLIC: never commit credentials.
 
 ## Local development
 
@@ -14,7 +14,7 @@ npm run dev
 npm run build
 ```
 
-**Build status:** Not yet verified in this environment. Confirm npm install, typecheck, and build before deploying. The current site uses local fictional fixtures rather than Supabase.
+**Build integrity:** `npm run check` runs the Chinook public-release evidence tests, TypeScript check and production build. The directory uses static registry records, while live published-review components use their separate Supabase project when configured.
 
 ## Routes
 
@@ -30,12 +30,11 @@ npm run build
 
 ## Next milestones
 
-1. Verify a clean Next.js build and install dependencies.
-2. Create Supabase project and test schema; connect server-side database queries.
-3. Implement authentication, review submission, anti-abuse safeguards and human escalation before opening real reviews.
-4. Set up an appropriate Vercel commercial plan and preview deployment.
-5. Replace fictional profiles with vetted directory records, carefully distinguishing listed and verified guides.
-6. Only then consider GoDaddy DNS changes. Do not point the domain at demo data.
+1. Validate CI and Vercel preview of the Chinook Intel page without private Chrome-AI credentials.
+2. Finish real user authentication, review submission and moderator/administrator acceptance tests; enhance fraud safeguards and human escalation.
+3. Review the production security checklist and choose a commercial-compliant Vercel plan before charging.
+4. Separately authorize an approved aggregate-data release pipeline from private Chrome-AI, never direct database merging.
+5. Only then consider GoDaddy DNS changes. Do not point the custom domain at unfinished review or research experiences.
 
 No API keys or secrets are committed. Only `.env.example` placeholders are included.
 
@@ -46,3 +45,9 @@ The web directory now reads `lib/oregon-guides.json` with **1,027** unique regis
 **Important:** this is a static JSON-backed registry directory, not a Supabase database import. The uploaded file's ACTIVE status is not real-time license verification. The original CSV's service areas are broad regulatory regions, not evidence a guide fishes a particular named river. Review functionality, ratings and captain verification are not live.
 
 Deployment and build validation are pending Vercel/Supabase connection and a network-enabled build environment.
+
+## Chrome-AI × RateMyGuidePNW Chinook Intel V1 (November 13, 2026)
+
+The site now has a source-backed, methodology-only **[Buoy 10 Chinook Intel](/intel/buoy-10-chinook)** page. It displays the first five actual WDFW preliminary sample days from August 2026, the official source and count denominators, a 2027 seven-day forecast evaluation disclosure, and a searchable subset of real Lower Columbia River-area registry listings. **No private 2027 model predictions, unreviewed scoring claims or fabricated guide reviews are displayed.**
+
+The core Chrome-AI repo, models and forecasts remain **private and separate**. See [the integration design](docs/chinook-intel-integration.md). The website presents approved public evidence alongside a completely separate customer-review trust lane.
