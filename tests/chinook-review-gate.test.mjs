@@ -21,7 +21,8 @@ function clone(value) {
   return JSON.parse(JSON.stringify(value));
 }
 
-function runGate(data=audited, {environment='production', branch='main'}={}) {
+function runGate(data, {environment='production', branch='main'}={}) {
+  if (arguments.length === 0) data = audited;
   let reads = 0;
   const exports = {};
   const sandbox = {
