@@ -61,3 +61,22 @@ test('public site does not embed the private Chrome-AI credential or server-side
   assert.match(page, /getDirectoryEntry|directoryEntries/);
   assert.match(page, /ChinookSampleChart/);
 });
+
+
+test('review-queue candidates only render after deliberate production-main merge', () => {
+  const guard = readFileSync('lib/chinook-reviewed-history.ts', 'utf8');
+  const component = readFileSync('components/Reviewed2026History.tsx', 'utf8');
+  const page = readFileSync('app/intel/buoy-10-chinook/page.tsx', 'utf8');
+  assert.match(guard, /VERCEL_ENV === 'production'/);
+  assert.match(guard, /VERCEL_GIT_COMMIT_REF === 'main'/);
+  assert.match(guard, /if \(!isProductionMain\(\)\) return null/);
+  assert.match(guard, /history = seasons.find\(s => s.year === 2026\)/);
+  assert.match(guard, /source_html_sha256/);
+  assert.match(guard, /source_retention_note/);
+  assert.match(guard, /row\.chinook_kept === null/);
+  assert.match(guard, /pinned WDFW August 2026 historical anchor changed/);
+  assert.match(page, /Reviewed2026History/);
+  assert.match(component, /reviewed2026ChinookHistory/);
+  assert.equal(guard.includes('CHROME_AI_FORECAST_DATABASE_URL'), false);
+  assert.equal(component.includes('2027-08-'), false);
+});

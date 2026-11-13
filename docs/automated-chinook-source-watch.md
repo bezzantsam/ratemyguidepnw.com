@@ -16,7 +16,7 @@ It runs **daily in August/September, weekly during other months**, plus manually
 6. Compare normalized observational changes with the previous pending review candidate; do not open a new PR on each scheduled run
 7. When observations change, update **one open GitHub Pull Request** at `bot/wdfw-chinook-review` for human QA (with a private-to-the-PR exact WDFW HTML SHA and retrieval timestamp). This JSON is public agency data but **not** an approved scientific outcome dataset.
 
-**Publishing is intentionally gated.** The watcher's candidate JSON is **NOT imported into the live Chinook page**, model training, seven-day forecast issuance, prospectively verified outcome scoring or guide reviews. Before any new values are published, someone must verify the actual official record, sampling effort, legal Chinook retention, 2027 publication timing, source revisions and display scope; only then promote reviewed historical data by explicitly changing the public-release contract.
+**Publishing is intentionally gated.** While the bot review PR is open, the candidate does **not** enter the public website, model training, seven-day forecast issuance, prospective scoring or guide reviews. Only after a maintainer deliberately **merges** the candidate into production `main` can `lib/chinook-reviewed-history.ts` verify its first-five-day anchor and render eligible **August 2026 historical observations** in a separate expandable public table. It displays agency counts as preliminary, not certified regulations or forecast accuracy. **All 2027 source data is excluded** even if it appears in the same candidate, and no source numbers become ML evaluation outcomes via this route.
 
 ## Project independence
 
@@ -32,8 +32,15 @@ A true private-Chrome-AI-to-public-website release would require a separately au
 - `python -m unittest discover -s tests -p 'test_chinook_wdfw_watch.py' -v` tests the data parser using synthetic source HTML, without touching production
 - `npm run check` still verifies the public site release contract and production Next.js build
 
-**GitHub owner configuration:** If GitHub returns an error that workflow tokens cannot create Pull Requests, the repo owner must enable **Settings → Actions → General → Workflow permissions → Allow GitHub Actions to create and approve pull requests**, or use an authorized GitHub App. The site stays safe if this is unavailable: the action fails instead of pushing into `main`.
+**GitHub owner configuration:** If GitHub returns an error that workflow tokens cannot create Pull Requests, the repo owner must enable **Settings → Actions → General → Workflow permissions → Allow GitHub Actions to create and approve pull requests**, or use an authorized GitHub App. The current repository denies GitHub Actions PR creation even with write-scoped workflow tokens. A one-time [maintainer-created review PR #3](https://github.com/bezzantsam/ratemyguidepnw.com/pull/3) solves this: scheduled updates keep that same PR current. If it is merged or closed and GitHub still blocks new PR creation, the automation retains the review branch and opens at most one GitHub Issue requesting a new review PR. It never pushes unreviewed agency data into `main`.
 
 ## Next release milestone
 
 A reviewed, signed, public-safe **historical 2026** data release for the site chart, with a separate manual approval gate for 2027 results and absolutely no automatic model skill claims. The 2027 scientific score remains a separate private evaluation against server-accepted seven-day-ahead frozen forecasts.
+
+## Review handoff to a public historical chart
+
+- The first human-created source-review queue is [PR #3](https://github.com/bezzantsam/ratemyguidepnw.com/pull/3). New WDFW source changes update that PR if it remains open.
+- Do **not** merge a 2027 record merely because a sample exists. Check it against the independent private Chrome-AI archive and verify agency source revisions, source-date sampling and regulation context.
+- For the **historical 2026** series, carefully reviewing then merging the source candidate into `main` is an explicit publication decision. The production-only React server component automatically displays eligible reported August 2026 samples, excludes missing and closed days, preserves the original source hash, and **never** displays 2027 data.
+- Preview builds and local environments deliberately do not render an unapproved review candidate. Public authorization is based on `VERCEL_ENV=production` and `VERCEL_GIT_COMMIT_REF=main`; do not relax those gates merely to make a preview look full.
