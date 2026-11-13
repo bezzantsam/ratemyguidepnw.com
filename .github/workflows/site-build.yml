@@ -34,6 +34,8 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_chinook_wdfw_watch.py' -v
       - name: Test historical NOAA tide source, clock-time and publication safeguards
         run: python -m unittest discover -s tests -p 'test_noaa_astoria_2026_watch.py' -v
+      - name: Check source-backed Chinook methodology and accuracy disclosures
+        run: node --test tests/methodology.test.mjs
       - name: TypeScript check
         run: npm run typecheck
       - name: Build Next.js production assets without private DB credentials
