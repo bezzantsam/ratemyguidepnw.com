@@ -23,7 +23,12 @@ export async function getPublishedDockReviews(limit = 20): Promise<DockReview[]>
   if (!url || !key) return [];
   const client = createClient(url, key, {
     auth: { persistSession: false, autoRefreshToken: false },
-    global: { fetch: (input, init) => fetch(input, { ...init, cache: 'no-store' }) }
+    // Public, already-published reviews only. A 10-minute Next.js cache prevents
+    // one uncached Supabase query per one of thousands of directory pages at build.
+    // This client has NO signed-in user session or private reviewer identities.
+    global: { fetch: (input, init) => fetch(input, {
+      ...init, cache: 'force-cache', next: { revalidate: 600 }
+    }) }
   });
   const { data, error } = await client
     .from('reviews')
