@@ -76,3 +76,15 @@ a.dock-ticker-item:hover{color:white;text-decoration:underline}
 
 .dock-ticker-empty{flex:1;min-width:0;padding:11px 16px;font-size:12px;color:#c6d7d2}
 .card:target{outline:2px solid #d5ae63;scroll-margin-top:24px}
+
+
+/* Chinook Intel entry point on the real guide-directory homepage */
+.home-intel-feature{display:flex;align-items:center;gap:17px;background:linear-gradient(120deg,#204b49,#163b3d);border:1px solid #638277;padding:22px;border-radius:14px;margin:32px 0 36px;transition:border-color .18s ease,background .18s ease}
+.home-intel-feature:hover{border-color:#e5c481;background:linear-gradient(120deg,#275851,#1c4746);text-decoration:none}
+.home-intel-feature-icon{flex:0 0 57px;display:grid;place-items:center;height:57px;background:#d7b473;color:#11362f;border-radius:13px}
+.home-intel-feature-copy{flex:1;min-width:0}
+.home-intel-feature-copy>span{color:#edd096;letter-spacing:.12em;font-weight:800;font-size:10px}
+.home-intel-feature-copy>strong{display:block;font-size:clamp(20px,3vw,26px);margin:5px 0;letter-spacing:-.025em}
+.home-intel-feature-copy p{font-size:13px;color:#c3d5ca;margin:0}
+.home-intel-feature-arrow{flex:0 0 auto;color:#e4c37f}
+@media(max-width:540px){.home-intel-feature{align-items:flex-start;padding:17px;gap:12px}.home-intel-feature-icon{height:43px;flex-basis:43px}.home-intel-feature-arrow{display:none}}
