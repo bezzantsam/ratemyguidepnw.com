@@ -1,0 +1,282 @@
+{
+  "schema_version": 1,
+  "fishery": "WDFW Buoy 10",
+  "species": "Chinook",
+  "source_url": "https://wdfw.wa.gov/fishing/reports/creel/buoy10",
+  "source_html_sha256": "ef43d5b525a57af1efda3e856d7a77fea08c83ac1e452b208c9daf1cf4199562",
+  "observations_sha256": "3a8d445222e82f64515558cbc640cbd7aec10d7193725aa92a643645ef769672",
+  "captured_at_utc": "2026-11-13T21:41:26.198540+00:00",
+  "publication_status": "reviewed_historical_2026_only",
+  "model_prediction_values_included": false,
+  "official_sample_regulations_verified": false,
+  "site_automatically_publishes_candidate": false,
+  "approved_for_model_training": false,
+  "approved_for_prospective_forecast_scoring": false,
+  "review": {
+    "reviewed_at_utc": "2026-11-13",
+    "decision": "approved_for_descriptive_2026_history_only",
+    "scope": "The 31 published preliminary WDFW August 2026 Buoy 10 sampled effort and retained Chinook observations; not legal guidance or fishing advice",
+    "audited_against": "Original SHA-256-verified archived WDFW HTML and the 2026 Washington seasonal and August 25 emergency rules",
+    "regulatory_note": "August 1–9: Chinook; August 10–24: hatchery Chinook; August 25–31: hatchery Chinook per emergency WSR 26-18-012 effective August 25",
+    "official_report_url": "https://wdfw.wa.gov/fishing/reports/creel/buoy10",
+    "original_regulation_url": "https://lawfilesext.leg.wa.gov/law/wsr/2026/13/26-13-052.htm",
+    "emergency_regulation_url": "https://lawfilesext.leg.wa.gov/law/wsr/2026/18/26-18-012.htm",
+    "caveat": "WDFW preliminary creel samples. Sample-level counts only, not harvest totals, current fishing regulations, model predictions, or scientifically approved prospective forecasts"
+  },
+  "seasons": [
+    {
+      "year": 2026,
+      "observed_days": 31,
+      "rows": [
+        {
+          "date": "2026-08-01",
+          "boats": 53,
+          "anglers": 166,
+          "chinook_kept": 38,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-02",
+          "boats": 59,
+          "anglers": 174,
+          "chinook_kept": 25,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-03",
+          "boats": 37,
+          "anglers": 109,
+          "chinook_kept": 19,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-04",
+          "boats": 92,
+          "anglers": 253,
+          "chinook_kept": 90,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-05",
+          "boats": 35,
+          "anglers": 104,
+          "chinook_kept": 45,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-06",
+          "boats": 28,
+          "anglers": 78,
+          "chinook_kept": 39,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-07",
+          "boats": 34,
+          "anglers": 99,
+          "chinook_kept": 40,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-08",
+          "boats": 72,
+          "anglers": 227,
+          "chinook_kept": 87,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-09",
+          "boats": 59,
+          "anglers": 169,
+          "chinook_kept": 74,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-10",
+          "boats": 50,
+          "anglers": 141,
+          "chinook_kept": 61,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Hatchery Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-11",
+          "boats": 29,
+          "anglers": 82,
+          "chinook_kept": 26,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Hatchery Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-12",
+          "boats": 18,
+          "anglers": 49,
+          "chinook_kept": 15,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Hatchery Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-13",
+          "boats": 39,
+          "anglers": 110,
+          "chinook_kept": 29,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Hatchery Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-14",
+          "boats": 67,
+          "anglers": 186,
+          "chinook_kept": 41,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Hatchery Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-15",
+          "boats": 50,
+          "anglers": 157,
+          "chinook_kept": 43,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Hatchery Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-16",
+          "boats": 50,
+          "anglers": 150,
+          "chinook_kept": 44,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Hatchery Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-17",
+          "boats": 63,
+          "anglers": 190,
+          "chinook_kept": 77,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Hatchery Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-18",
+          "boats": 31,
+          "anglers": 96,
+          "chinook_kept": 36,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Hatchery Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-19",
+          "boats": 28,
+          "anglers": 78,
+          "chinook_kept": 35,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Hatchery Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-20",
+          "boats": 52,
+          "anglers": 166,
+          "chinook_kept": 96,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Hatchery Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-21",
+          "boats": 41,
+          "anglers": 117,
+          "chinook_kept": 42,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Hatchery Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-22",
+          "boats": 116,
+          "anglers": 377,
+          "chinook_kept": 82,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Hatchery Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-23",
+          "boats": 86,
+          "anglers": 268,
+          "chinook_kept": 39,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Hatchery Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-24",
+          "boats": 84,
+          "anglers": 230,
+          "chinook_kept": 39,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Hatchery Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-25",
+          "boats": 71,
+          "anglers": 222,
+          "chinook_kept": 27,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Hatchery Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-26",
+          "boats": 42,
+          "anglers": 125,
+          "chinook_kept": 32,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Hatchery Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-27",
+          "boats": 36,
+          "anglers": 100,
+          "chinook_kept": 25,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Hatchery Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-28",
+          "boats": 47,
+          "anglers": 146,
+          "chinook_kept": 15,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Hatchery Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-29",
+          "boats": 107,
+          "anglers": 315,
+          "chinook_kept": 38,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Hatchery Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-30",
+          "boats": 105,
+          "anglers": 301,
+          "chinook_kept": 58,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Hatchery Chinook and hatchery coho"
+        },
+        {
+          "date": "2026-08-31",
+          "boats": 41,
+          "anglers": 102,
+          "chinook_kept": 16,
+          "sample_status": "observed_unverified_regulations",
+          "source_retention_note": "Hatchery Chinook and hatchery coho"
+        }
+      ]
+    }
+  ]
+}
