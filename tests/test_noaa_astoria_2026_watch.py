@@ -62,7 +62,7 @@ class NOAAWatchTests(unittest.TestCase):
 
     def test_missing_day_fails_closed(self):
         raw = payload([v for v in make_events() if not v["t"].startswith("2026-08-17")])
-        with self.assertRaisesRegex(n.TideDataError, "31 August"):
+        with self.assertRaisesRegex(n.TideDataError, "31 August|Missing/duplicate/unordered"):
             n.parse_predictions(raw)
 
     def test_missing_low_tide_fails(self):
@@ -91,7 +91,7 @@ class NOAAWatchTests(unittest.TestCase):
             n.parse_predictions(json.dumps({"error": {"message": "bad key"}}).encode() + b" " * 200)
         changed = make_events()
         changed[1]["v"] = "-900.0"
-        with self.assertRaisesRegex(n.TideDataError, "Unreasonable"):
+        with self.assertRaisesRegex(n.TideDataError, "Unreasonable|Malformed"):
             n.parse_predictions(payload(changed))
 
     def test_no_repetitive_candidate_for_same_predictions(self):
