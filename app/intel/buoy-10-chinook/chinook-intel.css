@@ -103,3 +103,18 @@
 .intel-sample-bottom strong{color:#204b37}
 .intel-sample-bottom a{font-weight:800;color:#1a6447;text-decoration:underline}
 @media(max-width:650px){.intel-sample{padding:18px}.intel-sample-heading{display:block}.intel-sample-badge{display:inline-block;margin-top:14px}.intel-sample-bottom{grid-template-columns:1fr;gap:12px}}
+
+
+/* Only visible after agency-data review branch is deliberately merged to main */
+.intel-reviewed-history{margin:16px 0 24px;border:1px solid #61846f;border-radius:13px;overflow:hidden;background:#eaf0ea;color:#20473a}
+.intel-reviewed-history>summary{cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:21px 23px;list-style:none}
+.intel-reviewed-history>summary::-webkit-details-marker{display:none}
+.intel-reviewed-history>summary strong{font-size:16px;color:#204e3a}
+.intel-reviewed-history>summary span{color:#456954;font-size:12px;white-space:nowrap}
+.intel-reviewed-history[open]>summary{border-bottom:1px solid #bbcdbe}
+.intel-reviewed-body{padding:23px}
+.intel-reviewed-body>p{color:#4a6555;font-size:12px;line-height:1.7;margin:0 0 18px}
+.intel-reviewed-body>p:last-child{margin-top:17px;margin-bottom:0}
+.intel-reviewed-body a{color:#176a49;text-decoration:underline;font-weight:700}
+.intel-reviewed-body .intel-observed-table th,.intel-reviewed-body .intel-observed-table td{color:#294c3d;border-color:#bbcdbe}
+@media(max-width:640px){.intel-reviewed-history>summary{align-items:start;flex-direction:column;padding:18px}.intel-reviewed-body{padding:15px}}
