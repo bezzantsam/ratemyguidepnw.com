@@ -1,6 +1,6 @@
 # AI contributor contract — RateMyGuidePNW × Chrome-AI
 
-**Principal/product owner:** repository owner. **Integration lead:** ChatGPT, working in this repository through connected GitHub/Vercel tools. **Independent contributors:** Grok and Gemini Pro, whose output is accepted only through normal GitHub review. No model has permission to redefine scope, publish without review or alter private research automatically.
+**Principal/product owner:** repository owner. **Integration lead:** ChatGPT, working in this repository through connected GitHub/Vercel tools. **Independent contributors:** Grok (bounded coding tasks) and Gemini Pro (source-cited research). Grok's output is accepted only through GitHub review; Gemini's memo is reviewed for citations and converted into separate implementation tickets. No model has permission to redefine scope, publish without review or alter private research automatically.
 
 ## Current integration base
 
@@ -14,8 +14,9 @@
 - Each agent creates its **own** short-lived `agent/<provider>-<task>` branch from the shared integration branch.
 - Each agent opens a **draft PR targeting `feature/reviewed-noaa-chinook-scatter`**, not `main`; include the issue number, tests, changed file list, and limitations.
 - No force pushes to `main` or parent integration branch. Never auto-merge the WDFW or NOAA bot review queues.
-- **Grok:** independent scientific/methodology QA and targeted test coverage only. Do not modify web layout, graphics, style or private Chrome-AI model.
-- **Gemini:** frontend accessibility, responsive chart styling, mobile UX and clean component presentation only. Do not modify model formulas, source datasets or release approval gates.
+- **Grok science ticket #11:** independent scientific/methodology QA and targeted test coverage on `agent/grok-tide-qa`; no frontend edits.
+- **Grok frontend ticket #13:** scoped chart CSS / accessibility on `agent/grok-tide-ui`; no model math, source data or test-script edits.
+- **Gemini research ticket #12:** source-cited environmental-data and anonymous-review trust research; no GitHub write access required, no direct code edits. The principal can paste Gemini's memo for independent verification.
 - **ChatGPT:** cross-branch conflict resolution, code review, data integrity, CI and Vercel checks, main-branch integration; no claims of reviewing work that has not appeared in GitHub.
 - **Principal:** approves changes to public product claims, scope, company identity, ranking policy, DNS/domain and production monetization.
 
@@ -32,8 +33,17 @@
 ## Merge gates
 
 - Grok science tests and review conclusions accepted or documented as issues
-- Gemini accessible/responsive frontend accepted
+- Grok UI work #13 accepted, or any remaining layout work completed and independently reviewed by ChatGPT
+- Gemini research #12 has been reviewed and relevant evidence turned into separate follow-up issues; it is not a blocker for existing source-verified historical visualization
 - `npm run test:intel` and `npm run typecheck`, Python agency-source tests, and `npm run build` pass
 - Page preview checked on mobile and desktop
 - Release is public-safe, independently supported, and scientifically cautious
 - Principal remains the final product/release decision-maker
+
+## Principal design decision, November 13, 2026
+
+The existing deep-teal, warm-gold RateMyGuidePNW Chinook page aesthetic is approved. Gemini's screenshot suggestions are optional critique, not an instruction to rename Chrome-AI, restructure the full header, imply live telemetry or redesign the site. The active integration goal remains a usable, scientifically careful historical tide/scatter section, not a wholesale brand refresh.
+
+## Provider access
+
+Neither ChatGPT nor the GitHub connector can automatically invoke an external Grok/Gemini chat. A GitHub ticket is the shared task specification, **not evidence of a task running**. Grok may make changes if its user-connected GitHub integration actually grants write access; otherwise request a unified patch with base SHA. Gemini provides cited text through the principal, which ChatGPT can verify and implement. Do not claim work has started or finished without a real repository commit or supplied output.
