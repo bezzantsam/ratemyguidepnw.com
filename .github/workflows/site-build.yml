@@ -58,6 +58,8 @@ jobs:
         run: npm run test:integration
       - name: Validate public website source scouting and rights/privacy boundaries (offline)
         run: npm run test:source-scout
+      - name: Audit backend schema contracts offline and fail closed on unverified production readiness
+        run: python -m unittest discover -s tests -p 'test_backend_schema_preflight.py' -v
       - name: TypeScript check
         run: npm run typecheck
       - name: Build Next.js production assets without private DB credentials
