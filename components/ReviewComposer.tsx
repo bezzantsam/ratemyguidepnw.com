@@ -21,7 +21,7 @@ const extraRatings: {key: ReviewRatingKey; label: string}[] = [
 ];
 const draftStorage = (slug:string) => 'rmgpnw:review-draft:v1:' + slug;
 
-export default function ReviewComposer({guideId, slug}:{guideId:string;slug:string}) {
+export default function ReviewComposer({guideId, slug, submitEnabled = false}:{guideId:string;slug:string;submitEnabled?:boolean}) {
   const [draft,setDraft]=useState<ReviewDraft>(EMPTY_REVIEW_DRAFT);
   const [step,setStep]=useState<Step>(0);
   const [signedIn,setSignedIn]=useState(false);
@@ -98,6 +98,7 @@ export default function ReviewComposer({guideId, slug}:{guideId:string;slug:stri
     setStep((step+1) as Step);
   }
   async function submit(){
+    if(!submitEnabled){setMessage('Review submissions are not yet enabled. This form is a preview only.');return}
     if(!client||!guideId){setMessage('Review submissions are not configured for this guide yet.');return}
     const error=reviewStepError(0,draft,latestMonth)||reviewStepError(1,draft,latestMonth)||
       reviewStepError(2,draft,latestMonth);
@@ -140,6 +141,7 @@ export default function ReviewComposer({guideId, slug}:{guideId:string;slug:stri
   return <div className="review-form card" id="write-review">
     <p className="eyebrow">FIRSTHAND ANGLER EXPERIENCES</p>
     <h3>Tell anglers what your trip was really like.</h3>
+    {!submitEnabled&&<p role="status" className="muted">Review submissions are not live yet. You may explore the form, but no review will be saved or published. Current database and moderation checks must pass first.</p>}
     <p className="muted">Your review can be positive, mixed or critical. All ratings follow the same moderation process. We do not require receipts, booking confirmations, or payment records. Reviews are firsthand self-reports, not independently verified trips.</p>
     <ol className="review-progress" aria-label="Review submission steps">
       {['Trip','Ratings','Your story','Submit'].map((label,index)=>
@@ -202,9 +204,10 @@ export default function ReviewComposer({guideId, slug}:{guideId:string;slug:stri
       <p className="review-preview">{draft.body}</p>
       <p className="muted">Your account is used privately to help prevent duplicate or abusive reviews, not displayed to other anglers or captains. Your story may still be recognizable to people who were there. No receipt upload or independently verified-trip badge is offered yet. No proof of payment is requested.</p>
       <p className="muted">Your draft is temporarily saved in this browser tab for sign-in. Clear it when using a shared device.</p>
-      {!signedIn?<AuthPanel/>: <p className="review-signed-in">Signed in. Ready to send your review to the moderator queue.</p>}
+      {!submitEnabled?<p role="status">Submitting is disabled until live database review and moderation are verified.</p>:
+       !signedIn?<AuthPanel/>: <p className="review-signed-in">Signed in. Ready to send your review to the moderator queue.</p>}
       {(!client||!guideId)&&<p role="status">This guide has not been connected to the review database. Submission is unavailable.</p>}
-      <button type="button" disabled={!signedIn||!guideId||busy} onClick={()=>void submit()}>
+      <button type="button" disabled={!submitEnabled||!signedIn||!guideId||busy} onClick={()=>void submit()}>
         {busy?'Submitting…':'Submit review for moderation'}
       </button>
       <p className="muted">Review publication is never automatic. An account is not proof that a trip occurred.</p>

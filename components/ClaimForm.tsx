@@ -8,7 +8,7 @@ import AuthPanel,{client} from './AuthPanel';
  * The draft request_guide_claim() function is SECURITY INVOKER and subject
  * to live grants/RLS. No approved/verified/publication state comes from here.
  */
-export default function ClaimForm({name,listing}:{name:string;listing:string}){
+export default function ClaimForm({name,listing,submitEnabled=false}:{name:string;listing:string;submitEnabled?:boolean}){
   const [claimant,setClaimant]=useState('');
   const [business,setBusiness]=useState('');
   const [proof,setProof]=useState('');
@@ -27,6 +27,7 @@ export default function ClaimForm({name,listing}:{name:string;listing:string}){
   },[]);
 
   async function submit(){
+    if(!submitEnabled){setStatus('Profile claiming is not live yet. This form cannot submit a request.');return;}
     if(!client||busy)return;
     const captainName=claimant.trim(),businessName=business.trim(),publicEvidence=proof.trim();
     if(captainName.length<2||captainName.length>100||
@@ -73,7 +74,8 @@ export default function ClaimForm({name,listing}:{name:string;listing:string}){
   }
 
   return <div className="claim-form">
-    <AuthPanel/>
+    {!submitEnabled&&<p role="status" className="muted">Profile claiming is currently disabled while the live claim transaction and independent verification workflow are being tested. No request will be sent.</p>}
+    {submitEnabled&&<AuthPanel/>}
     <label>Full name
       <input required minLength={2} maxLength={100} autoComplete="name"
         value={claimant} onChange={event=>setClaimant(event.target.value)}
@@ -94,7 +96,7 @@ export default function ClaimForm({name,listing}:{name:string;listing:string}){
       proof of cash payment, customers' names, or personal identification.
       An existing registration number alone is not ownership proof.
     </p>
-    <button type="button" disabled={!client||!signedIn||busy||
+    <button type="button" disabled={!submitEnabled||!client||!signedIn||busy||
       claimant.trim().length<2||proof.trim().length<8}
       onClick={()=>void submit()}>
       {busy?'Submitting…':'Request profile claim review'}
