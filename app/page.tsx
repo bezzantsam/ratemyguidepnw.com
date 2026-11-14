@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ArrowUpRight, Fish, ShieldCheck } from 'lucide-react';
 import UnifiedSearch from '@/components/UnifiedSearch';
+import AppInstall from '@/components/AppInstall';
 import { directoryEntries } from '@/lib/directory';
 
 export default function Home() {
@@ -12,6 +13,7 @@ export default function Home() {
         Search Oregon and Washington fishing-guide listings by name, outfitter or service area.
         Make decisions with better evidence and fewer promotional claims.
       </p>
+      <AppInstall />
       <Link href="/intel/buoy-10-chinook" className="home-intel-feature">
         <div className="home-intel-feature-icon"><Fish size={28} aria-hidden="true" /></div>
         <div className="home-intel-feature-copy">
