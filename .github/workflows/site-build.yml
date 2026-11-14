@@ -74,6 +74,8 @@ jobs:
         run: npm run test:pricing-economics
       - name: Verify atomic captain claim and pending-only review proposal safety offline
         run: npm run test:atomic-claims
+      - name: Verify offline human moderator decisions and server-only review publication proposal
+        run: npm run test:review-decisions
       - name: TypeScript check
         run: npm run typecheck
       - name: Build Next.js production assets without private DB credentials
