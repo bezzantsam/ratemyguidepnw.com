@@ -137,3 +137,35 @@ a.dock-ticker-item:hover{color:white;text-decoration:underline}
 .trust-policy-footer{margin-top:24px;max-width:900px}
 @media(max-width:830px){.trust-evidence-grid{grid-template-columns:1fr}.trust-next-steps{grid-template-columns:1fr}.trust-panel-heading{align-items:flex-start}}
 @media(max-width:500px){.trust-term{grid-template-columns:1fr;gap:8px;padding:17px}.trust-panel{padding:16px}.trust-evidence-item{padding:17px}}
+
+
+/* Mobile-first firsthand review composer; follows existing estuary teal/brass tokens. */
+.review-progress{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;padding:0;margin:23px 0}
+.review-progress li{font-size:12px;color:#d7e6db;border:1px solid #638078;background:#204440;border-radius:8px;text-align:center;padding:11px 5px}
+.review-progress li.current{background:#d8b26b;color:#132d2b;border-color:#e8cc8f;font-weight:800}
+.review-step{display:grid;gap:18px}
+.review-step h4{font-size:22px;margin:0}
+.review-step fieldset{margin:0}
+.review-step label{line-height:1.6}
+.review-step label span.muted{font-weight:400}
+.review-rating{border:1px solid #53756a;border-radius:10px;padding:14px}
+.review-rating legend{font-size:15px;font-weight:700;padding:0 7px}
+.review-rating p{margin:3px 0 10px}
+.review-rating-options{display:flex;gap:8px;flex-wrap:wrap}
+.review-rating-options button{min-width:49px;min-height:46px;padding:9px 10px;background:#20463f;color:#edf1e6;border:1px solid #729286}
+.review-rating-options button.selected{background:#d8b26b;border-color:#e5c683;color:#132f29}
+.review-rating-options button:focus-visible,.review-step button:focus-visible,.review-step-actions button:focus-visible{outline:3px solid #f6da9c;outline-offset:3px}
+.review-step details{background:#163936;border:1px solid #547369;border-radius:10px;padding:12px 15px}
+.review-step summary{cursor:pointer;font-weight:700}
+.review-step details fieldset{margin-top:14px}
+.review-attestation{display:flex!important;align-items:flex-start;gap:10px}
+.review-attestation input{height:20px;width:20px;flex:0 0 20px;margin-top:3px}
+.review-preview{background:#123430;border-left:3px solid #d8b26b;padding:15px;border-radius:6px;white-space:pre-wrap;overflow-wrap:anywhere}
+.review-privacy-warning{border:1px solid #d1aa60;background:#3c382a;border-radius:8px;padding:13px;font-size:14px}
+.review-signed-in{color:#e6ca8f;font-weight:700}
+.review-status{border-left:3px solid #d8b26b;padding:10px 14px;background:#28443b;border-radius:4px}
+.review-step-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:20px}
+.review-step-actions button{margin:0}
+.review-step-actions button.review-secondary{background:transparent;color:#f0d295;border:1px solid #967c4d}
+.review-step textarea{resize:vertical}
+@media(max-width:580px){.review-form.card{padding:18px}.review-progress{gap:4px}.review-progress li{font-size:10px;padding:11px 2px}.review-rating-options{gap:5px}.review-rating-options button{flex:1;min-width:42px;padding:7px 5px;font-size:12px}.review-step-actions button{flex:1}}
