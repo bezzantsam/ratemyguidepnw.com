@@ -1,22 +1,11 @@
--- Proposed migration ONLY. Do NOT apply before deployed schema + RLS review.
--- Captain-submitted offerings are private, unapproved facts. No auto-publication.
--- Existing guides and guide_claims tables must exist from 0001_initial.sql.
-
-create or replace function public.can_propose_guide_fisheries(p_guide_id uuid)
-returns boolean
-language sql stable security definer
-set search_path = ''
-as $$
-  select exists (
-    select 1
-    from public.guide_claims c
-    where c.guide_id = p_guide_id
-      and c.claimant_id = (select auth.uid())
-      and c.status = 'approved'
-  );
-$$;
-revoke all on function public.can_propose_guide_fisheries(uuid) from public;
-grant execute on function public.can_propose_guide_fisheries(uuid) to authenticated;
+-- Proposed SQL ONLY. Do NOT apply before deployed schema and RLS review.
+-- Captain-submitted offerings are private and unapproved. No auto-publication.
+-- Avoid SECURITY DEFINER: safely expose only the signed-in claimant's own
+-- approved guide claim through a narrow SELECT policy on the existing table.
+grant select on table public.guide_claims to authenticated;
+create policy captain_read_own_approved_claim on public.guide_claims
+for select to authenticated
+using (claimant_id = (select auth.uid()) and status = 'approved');
 
 -- Defense in depth: PostgREST clients can bypass browser validation, so validate
 -- every nested field on the database side too.
@@ -46,6 +35,7 @@ begin
 
   for offer in select elem from jsonb_array_elements(p_offerings) as x(elem) loop
     if jsonb_typeof(offer) <> 'object' then return false; end if;
+    if not (offer ?& array['waterway','launch_area','species','months']) then return false; end if;
     if (offer - array['waterway','launch_area','species','months']) <> '{}'::jsonb then return false; end if;
     if jsonb_typeof(offer->'waterway') <> 'string' or
        jsonb_typeof(offer->'launch_area') <> 'string' or
@@ -56,6 +46,7 @@ begin
     if char_length(water) not between 3 and 80 or
        char_length(launch) > 80 or (char_length(launch)>0 and char_length(launch)<3)
        or water ~ '[<>]' or launch ~ '[<>]' or
+       water ~ '([0-9]{3}[-. ]?){2}[0-9]{4}' or launch ~ '([0-9]{3}[-. ]?){2}[0-9]{4}' or
        water ~* '[A-Z0-9._%+-]+@[A-Z0-9.-]+[.][A-Z]{2,}' or
        launch ~* '[A-Z0-9._%+-]+@[A-Z0-9.-]+[.][A-Z]{2,}' then return false; end if;
     if lower(water) = any(seen) then return false; end if;
@@ -83,6 +74,7 @@ begin
   end loop;
 
   if p_vessel is null or jsonb_typeof(p_vessel) <> 'object' then return false; end if;
+  if not (p_vessel ?& array['type','covered','heated','max_anglers','fish_care']) then return false; end if;
   if (p_vessel - array['type','covered','heated','max_anglers','fish_care']) <> '{}'::jsonb then return false; end if;
   if p_vessel->>'type' not in ('Sled / jet boat','Ocean charter boat','Drift boat','Raft',
        'Surf-launched dory','Catamaran','Other / varies') then return false; end if;
@@ -146,7 +138,12 @@ with check (
   submitted_by = (select auth.uid())
   and review_state = 'pending'
   and reviewed_at is null
-  and public.can_propose_guide_fisheries(guide_id)
+  and exists (
+    select 1 from public.guide_claims c
+    where c.guide_id = guide_fishery_proposals.guide_id
+      and c.claimant_id = (select auth.uid())
+      and c.status = 'approved'
+  )
 );
 
 -- No UPDATE/DELETE policies or grants for authenticated clients.
