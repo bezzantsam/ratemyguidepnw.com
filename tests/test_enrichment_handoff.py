@@ -90,5 +90,62 @@ class HandoffTests(unittest.TestCase):
         self.assertEqual(before, h.digest(file))
 
 
+    def test_nested_gemini_claims_are_converted_with_deduplicated_source_ids(self):
+        source = {'url': 'https://www.igotcrabs.net/bandit-guide-service',
+                  'source_type': 'operator_site', 'observed_on': '2026-11-14'}
+        data = {'schema_version': 1, 'records': [{
+            'directory_id': 'OG.0003790', 'publication_status': 'pending_review',
+            'aliases': [{'alias': 'Billy the Beach Bandit II', 'source': source}],
+            'waterways': [{'waterway': 'Buoy 10', 'source': source}]
+        }]}
+        before = copy.deepcopy(data)
+        converted, holds = h.normalize_gemini(data, today=date(2026, 11, 14))
+        self.assertEqual(holds['held'], [])
+        self.assertEqual(len(converted['records']), 1)
+        row = converted['records'][0]
+        self.assertEqual(len(row['sources']), 1)
+        self.assertEqual(row['aliases'], [{'value': 'Billy the Beach Bandit II', 'source_ids': ['s01']}])
+        self.assertEqual(row['waterways'], [{'value': 'Buoy 10', 'source_ids': ['s01']}])
+        self.assertTrue(self.validate(converted)['valid'])
+        self.assertEqual(data, before)
+
+    def test_gemini_http_is_held_without_fabricating_https_observation(self):
+        data = {'schema_version': 1, 'records': [{
+            'directory_id': 'OG.0003790', 'publication_status': 'pending_review',
+            'aliases': [{'alias': 'Billy the Beach Bandit II', 'source': {
+                'url': 'http://www.igotcrabs.net/bandit-guide-service',
+                'source_type': 'operator_site', 'observed_on': '2026-11-14'}}],
+            'waterways': []
+        }]}
+        converted, holds = h.normalize_gemini(data, today=date(2026, 11, 14))
+        self.assertEqual(converted['records'], [])
+        self.assertEqual(holds['accepted_for_schema_review'], 0)
+        self.assertEqual(holds['held'][0]['directory_id'], 'OG.0003790')
+        self.assertIn('HTTP is held', holds['held'][0]['errors'][0])
+
+    def test_invalid_date_unknown_id_and_unbacked_claims_do_not_pass_normalizer(self):
+        good = {'directory_id': 'OG.0003790', 'publication_status': 'pending_review',
+                'aliases': [{'alias': 'Unlisted Bandit Alias', 'source': {
+                    'url': 'https://www.igotcrabs.net/bandit-guide-service',
+                    'source_type': 'operator_site', 'observed_on': '2026-11-14'}}],
+                'waterways': []}
+        data = {'schema_version': 1, 'records': [copy.deepcopy(good)]}
+        data['records'][0]['directory_id'] = 'OG.9999999'
+        accepted, holds = h.normalize_gemini(data, today=date(2026, 11, 14))
+        self.assertFalse(accepted['records'])
+        self.assertIn('Existing directory ID required', str(holds['held'][0]['errors']))
+        for mutation in (
+            lambda r: r['aliases'][0]['source'].update(observed_on='2026-11-15'),
+            lambda r: r['aliases'][0].update(alias=''),
+            lambda r: r['aliases'][0]['source'].update(source_type='unknown'),
+        ):
+            row = copy.deepcopy(good)
+            mutation(row)
+            accepted, holds = h.normalize_gemini(
+                {'schema_version': 1, 'records': [row]}, today=date(2026, 11, 14))
+            self.assertEqual(accepted['records'], [])
+            self.assertTrue(holds['held'][0]['errors'])
+
+
 if __name__ == '__main__':
     unittest.main()
