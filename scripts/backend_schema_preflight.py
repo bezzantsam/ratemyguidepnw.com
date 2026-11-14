@@ -19,7 +19,7 @@ MEDIA = ROOT / "supabase/migrations/0002_captain_media.sql"
 FLEET = ROOT / "supabase/migrations/0003_pending_captain_fishery_proposals.sql"
 
 REVIEW_INSERT = {
-    "guide_id", "author_id", "quality", "intensity", "communication",
+    "guide_id", "author_id", "quality", "firsthand_attested", "communication",
     "safety", "effort", "equipment", "professionalism", "knowledge",
     "value_rating", "would_book_again", "catch_outcome", "body",
     "trip_month", "trip_context",
@@ -82,8 +82,12 @@ def risk_report() -> dict:
 
     # Fail closed if later edits bypass the contracts this audit inspects.
     observed = {
-        "claim_write": "from('guide_claims').insert" in files["claim"],
-        "private_claim_evidence_write": "from('claim_evidence').insert" in files["claim"],
+        "claim_write": "client.rpc('request_guide_claim'" in files["claim"],
+        "private_claim_evidence_write": "p_public_evidence:publicEvidence" in files["claim"],
+        "no_direct_orphan_claim_writes": (
+            "from('guide_claims').insert" not in files["claim"] and
+            "from('claim_evidence').insert" not in files["claim"]
+        ),
         "pending_review_write": "from('reviews').insert" in files["review"],
         "published_review_view_read": "from('public_angler_reviews')" in files["public"],
         "private_captain_fleet_write": "from('guide_fishery_proposals').insert" in files["fleet"],
@@ -94,6 +98,10 @@ def risk_report() -> dict:
         raise ValueError("Review client is supplying a moderation status.")
     if re.search(r"\bstatus\s*:\s*['\"](?:approved|published|pending)['\"]", files["claim"]):
         raise ValueError("Claim client is supplying a moderation status.")
+    source_review = (ROOT / "lib/review-submission.ts").read_text(encoding="utf-8")
+    if ("firsthand_attested: draft.attested === true" not in source_review
+            or "intensity: 3" in source_review):
+        raise ValueError("Firsthand self-report contract changed or false intensity returned.")
 
     gaps: list[dict[str, object]] = []
     for name, required in CLIENT_NEEDS.items():
@@ -144,6 +152,7 @@ def risk_report() -> dict:
         "local_scaffold_gaps": gaps,
         "media_0002": "historical_pointer_not_replayable_sql",
         "captain_0003": "unapplied_review_only",
+        "claim_review_proposal": "draft_staging_only_not_migrated_or_verified",
         "activation_actions_performed": 0,
         "next_action": (
             "Owner-approved project restoration, read-only deployed schema + grants "

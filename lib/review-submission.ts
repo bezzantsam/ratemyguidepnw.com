@@ -47,7 +47,8 @@ export function createPendingReviewInsert(draft: ReviewDraft, guideId: string, a
   const ratings = draft.ratings;
   return {
     guide_id: guideId, author_id: authorId,
-    quality: ratings.quality, intensity: 3, // existing required DB field; not a captain-quality score
+    quality: ratings.quality,
+    firsthand_attested: draft.attested === true, // self-attestation, NOT independently verified booking
     communication: ratings.communication ?? null, safety: ratings.safety ?? null,
     effort: ratings.effort ?? null, equipment: ratings.equipment ?? null,
     professionalism: ratings.professionalism ?? null,

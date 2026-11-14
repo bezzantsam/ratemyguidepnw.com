@@ -39,6 +39,7 @@ class BackendPreflightTests(unittest.TestCase):
         self.assertIn("communication", review_gaps[0]["needed_fields"])
         self.assertIn("value_rating", review_gaps[0]["needed_fields"])
         self.assertIn("trip_context", review_gaps[0]["needed_fields"])
+        self.assertIn("firsthand_attested", review_gaps[0]["needed_fields"])
 
     def test_parses_columns_from_declaration_not_unrelated_sql(self):
         sql = """
@@ -109,8 +110,10 @@ class BackendPreflightTests(unittest.TestCase):
             code = (ROOT / path).read_text(encoding="utf-8")
             self.assertNotRegex(code, r"\+\s*(?:error|writeError|saved\.error)\.message")
         claim = (ROOT / "components/ClaimForm.tsx").read_text()
-        self.assertIn("A claim request may have been recorded", claim)
-        self.assertIn("Do not submit a duplicate", claim)
+        self.assertIn("client.rpc('request_guide_claim'", claim)
+        self.assertIn("Your claim and supporting evidence were submitted together", claim)
+        self.assertNotIn("from('claim_evidence').insert", claim)
+        self.assertNotIn("from('guide_claims').insert", claim)
 
     def test_audit_cannot_be_silently_satisfied_by_pointer_or_draft_migration(self):
         report = preflight.risk_report()

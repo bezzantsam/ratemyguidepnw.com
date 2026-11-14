@@ -1,13 +1,104 @@
 'use client';
+
 import {useEffect,useState} from 'react';
 import AuthPanel,{client} from './AuthPanel';
+
+/**
+ * A claim and its private evidence must be one database transaction.
+ * The draft request_guide_claim() function is SECURITY INVOKER and subject
+ * to live grants/RLS. No approved/verified/publication state comes from here.
+ */
 export default function ClaimForm({name,listing}:{name:string;listing:string}){
- const[claimant,setClaimant]=useState(''),[business,setBusiness]=useState(''),[proof,setProof]=useState(''),[user,setUser]=useState(false),[status,setStatus]=useState(''),[busy,setBusy]=useState(false);
- useEffect(()=>{if(!client)return;void client.auth.getUser().then(x=>setUser(!!x.data.user));const{data:{subscription}}=client.auth.onAuthStateChange((_e,s)=>setUser(!!s?.user));return()=>subscription.unsubscribe()},[]);
- async function submit(){if(!client)return;setBusy(true);const {data:guide,error:lookupError}=await client.from('guides').select('id').eq('slug',listing.toLowerCase().replace(/[^a-z0-9]+/g,'-')).single();if(lookupError||!guide){setStatus('Could not find this listing.');setBusy(false);return}
- const{data:u}=await client.auth.getUser();if(!u.user){setStatus('Please sign in first.');setBusy(false);return}
- const{data:claim,error}=await client.from('guide_claims').insert({guide_id:guide.id,claimant_id:u.user.id}).select('id').single();
- if(claim){const saved=await client.from('claim_evidence').insert({claim_id:claim.id,claimant_name:claimant.trim(),business_name:business.trim(),public_evidence:proof.trim()});if(saved.error){setStatus('A claim request may have been recorded, but supporting evidence was not saved. Do not submit a duplicate. Claim intake needs administrator follow-up.');setBusy(false);return}}
- setStatus(error?.code==='23505'?'A claim already exists for this guide and account. A moderator may need to help with incomplete evidence.':error?'Claim submission failed. No ownership has been verified.':'Your ownership claim is pending independent review. This does not verify your identity.');setBusy(false)}
- return <div className="claim-form"><AuthPanel/><label>Full name<input required value={claimant} onChange={e=>setClaimant(e.target.value)} placeholder="Captain or authorized representative"/></label><label>Business or outfit<input value={business} onChange={e=>setBusiness(e.target.value)}/></label><label>Public evidence for manual verification<textarea rows={3} value={proof} onChange={e=>setProof(e.target.value)} placeholder="Public official listing or business site; do not include IDs or secrets"/></label><p className="muted">The claim request is stored securely with your signed-in account. The provided evidence is saved privately for the administrator to assess. Knowing the registration number does not establish ownership.</p><button disabled={!user||busy||!claimant.trim()||!proof.trim()} onClick={()=>void submit()}>Request captain verification</button>{status&&<p role="status">{status}</p>}</div>
+  const [claimant,setClaimant]=useState('');
+  const [business,setBusiness]=useState('');
+  const [proof,setProof]=useState('');
+  const [signedIn,setSignedIn]=useState(false);
+  const [status,setStatus]=useState('');
+  const [busy,setBusy]=useState(false);
+
+  useEffect(()=>{
+    if(!client)return;
+    let active=true;
+    void client.auth.getUser().then(({data})=>{if(active)setSignedIn(!!data.user)});
+    const {data:{subscription}}=client.auth.onAuthStateChange((_event,session)=>{
+      if(active)setSignedIn(!!session?.user);
+    });
+    return()=>{active=false;subscription.unsubscribe()};
+  },[]);
+
+  async function submit(){
+    if(!client||busy)return;
+    const captainName=claimant.trim(),businessName=business.trim(),publicEvidence=proof.trim();
+    if(captainName.length<2||captainName.length>100||
+       businessName.length>120||publicEvidence.length<8||publicEvidence.length>600){
+      setStatus('Please provide a name and public source details within the length limits.');
+      return;
+    }
+    setBusy(true);
+    setStatus('');
+    try{
+      const {data:user,error:authError}=await client.auth.getUser();
+      if(authError||!user.user){
+        setStatus('Please sign in before requesting a claim.');
+        return;
+      }
+      const publicSlug=listing.toLowerCase().replace(/[^a-z0-9]+/g,'-');
+      const {data:guide,error:lookupError}=await client.from('guides')
+        .select('id').eq('slug',publicSlug).maybeSingle();
+      if(lookupError||!guide){
+        setStatus('This directory listing is not yet connected for claims.');
+        return;
+      }
+      // The server derives claimant_id from auth.uid(), inserts claim+evidence
+      // atomically, assigns PENDING and verifies RLS. No browser double-write.
+      const {error}=await client.rpc('request_guide_claim',{
+        p_guide_id:guide.id,
+        p_claimant_name:captainName,
+        p_business_name:businessName,
+        p_public_evidence:publicEvidence,
+      });
+      if(error){
+        setStatus(error.code==='23505'
+          ? 'A request already exists for this profile and account. A moderator can review its status.'
+          : 'The request could not be saved. No profile ownership was verified.');
+        return;
+      }
+      setStatus('Your claim and supporting evidence were submitted together for independent review. You are not verified yet.');
+      setProof('');
+    }catch{
+      setStatus('The claim request could not be completed. No profile ownership was verified.');
+    }finally{
+      setBusy(false);
+    }
+  }
+
+  return <div className="claim-form">
+    <AuthPanel/>
+    <label>Full name
+      <input required minLength={2} maxLength={100} autoComplete="name"
+        value={claimant} onChange={event=>setClaimant(event.target.value)}
+        placeholder="Captain or authorized business representative"/>
+    </label>
+    <label>Business or outfit
+      <input maxLength={120} value={business}
+        onChange={event=>setBusiness(event.target.value)}/>
+    </label>
+    <label>Public source supporting your affiliation
+      <textarea rows={3} minLength={8} maxLength={600} value={proof}
+        onChange={event=>setProof(event.target.value)}
+        placeholder="Official listing or business website; no receipts, identity documents or secrets"/>
+    </label>
+    <p className="muted">
+      To protect captains and anglers, a claim is reviewed privately before
+      anyone can edit the public listing. We do not request tax records,
+      proof of cash payment, customers' names, or personal identification.
+      An existing registration number alone is not ownership proof.
+    </p>
+    <button type="button" disabled={!client||!signedIn||busy||
+      claimant.trim().length<2||proof.trim().length<8}
+      onClick={()=>void submit()}>
+      {busy?'Submitting…':'Request profile claim review'}
+    </button>
+    {status&&<p role="status">{status}</p>}
+  </div>;
 }
