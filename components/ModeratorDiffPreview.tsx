@@ -33,6 +33,13 @@ export default function ModeratorDiffPreview({
          </div>
        </article>)}
      </div>}
+   {summary.flags.length>0&&<section className="moderation-review-flags" aria-label="Potential credential claims">
+     <h3>Claims requiring independent evidence</h3>
+     <p className="muted">These are automated review flags, not findings of wrongdoing or proof of credentials.</p>
+     <ul>{summary.flags.map(flag=><li key={flag.path}>
+       <strong>{flag.path}</strong>: {flag.message}
+     </li>)}</ul>
+   </section>}
    <section className="moderation-review-warnings" aria-label="Reviewer attention">
      <h3>Reviewer checks</h3>
      <ul>{summary.warnings.map(note=><li key={note}>{note}</li>)}</ul>
