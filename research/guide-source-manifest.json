@@ -19,12 +19,5 @@
     "allowed_host": "www.fastactionfishing.com",
     "terms_reviewed_on": null,
     "approved_to_fetch": false
-  },
-  {
-    "guide_id": "OG.0000213",
-    "source_url": "https://fishermans-marine.com/pages/pro-staff",
-    "allowed_host": "fishermans-marine.com",
-    "terms_reviewed_on": null,
-    "approved_to_fetch": false
   }
 ]
