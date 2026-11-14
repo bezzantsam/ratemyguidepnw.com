@@ -1,4 +1,5 @@
 import { reviewedChinookTideComparison } from '@/lib/chinook-tide-comparison';
+import { chartDomain } from '@/lib/chinook-tide-core';
 
 export default function ChinookTideComparison() {
   const result = reviewedChinookTideComparison();
@@ -6,10 +7,7 @@ export default function ChinookTideComparison() {
 
   const points = result.points;
   const chart = {left: 75, right: 715, top: 26, bottom: 270};
-  const spreadValues = points.map(x => x.astoriaPredictedHighLowSpreadFt);
-  const lowX = Math.floor(Math.min(...spreadValues));
-  const highX = Math.ceil(Math.max(...spreadValues));
-  const highY = Math.ceil(Math.max(...points.map(x => x.retainedPerSampledAngler)) * 10) / 10;
+  const { lowX, highX, highY } = chartDomain(points);
   const cx = (x: number) => chart.left +
     (x - lowX) * (chart.right - chart.left) / (highX - lowX);
   const cy = (y: number) => chart.bottom -

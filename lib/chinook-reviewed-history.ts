@@ -56,15 +56,21 @@ function hashObservations(value: unknown): string {
  * The source bot's unreviewed candidate file is NEVER read by this component.
  * Only the separate 2026 historical release, independently source-audited and
  * explicitly committed on the production branch, may be rendered. Previews and
- * local builds continue to use the original pinned five-day example.
+ * local builds continue to use the original pinned five-day example, unless a
+ * reviewer deliberately sets INTEL_SHOW_REVIEWED_RELEASE=1 (Vercel *Preview*
+ * scope or a local shell) to QA the already-reviewed, SHA-pinned artifacts.
+ * The flag can never enable anything on a production deployment of another
+ * branch, and it does not widen which files are read.
  */
-function isProductionMain(): boolean {
-  return process.env.VERCEL_ENV === 'production'
-    && process.env.VERCEL_GIT_COMMIT_REF === 'main';
+export function isReviewedReleaseVisible(): boolean {
+  if (process.env.VERCEL_ENV === 'production') {
+    return process.env.VERCEL_GIT_COMMIT_REF === 'main';
+  }
+  return process.env.INTEL_SHOW_REVIEWED_RELEASE === '1';
 }
 
 export function reviewed2026ChinookHistory(): ReviewedHistory | null {
-  if (!isProductionMain()) return null;
+  if (!isReviewedReleaseVisible()) return null;
   const candidatePath = path.join(process.cwd(), 'data', 'chinook-2026-reviewed.json');
   let raw: string;
   try {
