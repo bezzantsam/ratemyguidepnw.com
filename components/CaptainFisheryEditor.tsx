@@ -19,7 +19,7 @@ const durationLabels:Record<(typeof TRIP_DURATIONS)[number],string>={
   unspecified:'Contact to confirm',half_day:'Half day',full_day:'Full day',multi_day:'Multi-day',
 };
 
-export default function CaptainFisheryEditor({listing,name}:{listing:string;name:string}){
+export default function CaptainFisheryEditor({listing,name,submitEnabled=false}:{listing:string;name:string;submitEnabled?:boolean}){
   const suggestionsId=useId();
   const [draft,setDraft]=useState<CaptainFisheryDraft>(makeEmptyCaptainDraft);
   const [ready,setReady]=useState(false);
@@ -139,6 +139,7 @@ export default function CaptainFisheryEditor({listing,name}:{listing:string;name
     setSubmitted(false);
   }
   async function submit(){
+    if(!submitEnabled){setMessage('Captain-contributed trip submissions are not live yet. Your draft stays in this tab.');return;}
     const errors=validateCaptainFisheryDraft(draft);
     if(errors.length){setMessage(errors[0]);return}
     if(!client||!guideUuid||!signedIn||!approvedOwner){
@@ -169,6 +170,7 @@ export default function CaptainFisheryEditor({listing,name}:{listing:string;name
   return <section className="section card captain-fishery-editor" aria-labelledby="captain-fishery-title">
     <p className="eyebrow">CAPTAIN-CONTRIBUTED DETAILS · FREE FACTUAL UPDATES</p>
     <h2 id="captain-fishery-title">Build your seasonal fishing profile</h2>
+    {!submitEnabled&&<p role="status" className="muted">Preview only. The live database does not yet support captain fishery proposals; nothing can be submitted or published.</p>}
     <p>Help anglers discover {name} by fishing water, species, month, and the <strong>actual boat assigned to each trip</strong>. This information is self-reported, not a license check. Paid tools never affect review scores or directory rankings.</p>
     <p className="muted">This form is a tab-local draft. After independent ownership approval, submissions enter manual moderation. Neither the trip packages nor your vessel claims publish automatically.</p>
     <datalist id={suggestionsId}>{WATERWAY_SUGGESTIONS.map(w=><option key={w} value={w}/>)}</datalist>
@@ -272,7 +274,7 @@ export default function CaptainFisheryEditor({listing,name}:{listing:string;name
 
     <div className="captain-fishery-actions">
       <button type="button" className="captain-secondary" onClick={clearDraft}>Clear draft</button>
-      <button type="button" disabled={busy||submitted||!ready||!client||!signedIn||!approvedOwner||!guideUuid||errors.length>0}
+      <button type="button" disabled={!submitEnabled||busy||submitted||!ready||!client||!signedIn||!approvedOwner||!guideUuid||errors.length>0}
         onClick={()=>void submit()}>{busy?'Submitting…':'Submit details for manual review'}</button>
     </div>
     {errors.length>0&&<p className="muted" role="status">{errors[0]}</p>}
