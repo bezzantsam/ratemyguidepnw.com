@@ -46,3 +46,32 @@ Four priority profile sources were independently opened on 2026-11-14:
 Rod Shulley's site timed out; no observation date or new claim was invented for that page. These checks improve existing records, not the count of unique enriched profiles. No credentials were checked and no deployment occurred.
 
 Tests exercise bad IDs, duplicate records, unsupported credential fields, invalid/missing citations, future dates, malformed records, unchanged source files, and public-file overwrite prevention. The tests run with the existing source-scout check in CI.
+
+
+## Gemini nested-source JSON compatibility (review-only)
+
+The first Gemini research handoff returned `aliases: [{alias, source}]` and
+`waterways: [{waterway, source}]`, which the strict `validate` command
+**correctly rejects**. Do not paste that payload directly into public enrichment.
+
+For a local raw Gemini JSON file in ignored `research-drafts/`, run:
+
+```bash
+python3 scripts/enrichment_handoff.py normalize-gemini \
+  --input research-drafts/gemini-batch01-raw.json \
+  --output research-drafts/gemini-batch01-pending.json \
+  --holds research-drafts/gemini-batch01-holds.json
+python3 scripts/enrichment_handoff.py validate \
+  --input research-drafts/gemini-batch01-pending.json \
+  --output research-drafts/gemini-batch01-review.json
+```
+
+The normalizer emits a strict PR #82 `schema_version: 1` claim payload with per-record
+`sources` and `source_ids`. It deduplicates identical source references and sends
+malformed, unrecognized, unsupported, future-dated or HTTP-only records to a
+**separate holds report**. It **never** guesses an HTTPS equivalent or fabricates
+a new observation date. If no valid records remain, its output has an empty records
+list and `validate` will rightly refuse it. The report is a source-claim
+format conversion, **not a verification of source content, guide identity,
+license status or current operation**. Nothing is published or deployed.
+
