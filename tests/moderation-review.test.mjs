@@ -41,8 +41,7 @@ test('month and amenity corrections are lower queue priority, but still require 
  assert.deepEqual(Array.from(summary.changes,x=>x.path).sort(),[
   'offerings.p1.months','vessels.v1.heated'
  ].sort());
- assert.equal(summary.warnings.some(x=>x.includes('Human approval')),false);
- assert.equal(summary.warnings.some(x=>x.includes('Human')),true);
+ assert.equal(summary.warnings.some(x=>x.includes('Human approval')),true);
 });
 
 test('boating location, type and vessel reassignments are medium priority',()=>{
