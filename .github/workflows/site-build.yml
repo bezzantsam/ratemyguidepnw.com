@@ -38,6 +38,8 @@ jobs:
         run: node --test tests/methodology.test.mjs
       - name: Verify guide profile provenance and honest review evidence labels
         run: node --test tests/guide-trust.test.mjs
+      - name: Verify mobile review form validation and privacy safeguards
+        run: npm run test:review
       - name: TypeScript check
         run: npm run typecheck
       - name: Build Next.js production assets without private DB credentials
