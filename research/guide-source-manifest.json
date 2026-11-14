@@ -1,0 +1,30 @@
+[
+  {
+    "guide_id": "OG.0000093",
+    "source_url": "https://www.routfitters.com/about-us/",
+    "allowed_host": "www.routfitters.com",
+    "terms_reviewed_on": null,
+    "approved_to_fetch": false
+  },
+  {
+    "guide_id": "OG.0000294",
+    "source_url": "https://www.barrettamesflyfishing.com/",
+    "allowed_host": "www.barrettamesflyfishing.com",
+    "terms_reviewed_on": null,
+    "approved_to_fetch": false
+  },
+  {
+    "guide_id": "OG.0000315",
+    "source_url": "https://www.fastactionfishing.com/",
+    "allowed_host": "www.fastactionfishing.com",
+    "terms_reviewed_on": null,
+    "approved_to_fetch": false
+  },
+  {
+    "guide_id": "OG.0000213",
+    "source_url": "https://fishermans-marine.com/pages/pro-staff",
+    "allowed_host": "fishermans-marine.com",
+    "terms_reviewed_on": null,
+    "approved_to_fetch": false
+  }
+]
