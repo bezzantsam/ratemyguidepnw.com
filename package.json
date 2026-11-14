@@ -18,7 +18,7 @@
     "test:moderation": "node --test tests/moderation-review.test.mjs",
     "test:identities": "node --test tests/guide-identity.test.mjs",
     "test:integration": "node --test tests/integration-release-gates.test.mjs",
-    "test:source-scout": "python3 -m unittest discover -s tests -p 'test_guide_source_scout.py' -v && python3 -m unittest discover -s tests -p 'test_enrichment_handoff.py' -v && python3 -m unittest discover -s tests -p 'test_guide_research_batch.py' -v && python3 -m unittest discover -s tests -p 'test_enrichment_review_queue.py' -v",
+    "test:source-scout": "python3 -m unittest discover -s tests -p 'test_guide_source_scout.py' -v && python3 -m unittest discover -s tests -p 'test_enrichment_handoff.py' -v && python3 -m unittest discover -s tests -p 'test_guide_research_batch.py' -v && python3 -m unittest discover -s tests -p 'test_enrichment_review_queue.py' -v && python3 -m unittest discover -s tests -p 'test_enrichment_editorial_decisions.py' -v",
     "test:backend-preflight": "python3 -m unittest discover -s tests -p 'test_backend_schema_preflight.py' -v",
     "test:founding-guides": "python3 -m unittest discover -s tests -p 'test_founding_guide_seed_plan.py' -v",
     "test:intent-events": "node --test tests/intent-events.test.mjs",
