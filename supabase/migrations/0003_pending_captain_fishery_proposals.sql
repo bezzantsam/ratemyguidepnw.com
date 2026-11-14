@@ -178,7 +178,10 @@ create unique index one_pending_fishery_proposal_per_owner_and_guide
 alter table public.guide_fishery_proposals enable row level security;
 alter table public.guide_fishery_proposals force row level security;
 revoke all on table public.guide_fishery_proposals from public,anon,authenticated;
-grant select,insert on table public.guide_fishery_proposals to authenticated;
+grant select on table public.guide_fishery_proposals to authenticated;
+-- INSERT cannot set review_state, created_at or reviewed_at: database owns them.
+grant insert (guide_id,submitted_by,vessels,offerings)
+  on table public.guide_fishery_proposals to authenticated;
 
 create policy captain_read_own_fishery_proposals on public.guide_fishery_proposals
 for select to authenticated
