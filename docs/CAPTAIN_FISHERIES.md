@@ -1,29 +1,39 @@
-# Captain-provided fisheries intake — engineering review
+# Captain-provided fleet and seasonal fishery intake (draft feature)
 
-This is the **free factual profile information** path. Captains can state the actual fisheries they target, normal operating months, typical launch area, vessel type, maximum group size, fish-care services, and seat/boat booking styles. None of these fields are an active-license check, proof of captain ownership, safety certification, a forecast, or an independently verified trip.
+**Status:** Review-only branch following draft PR #38. No live database migration or public publication. Core factual fields are intended to be free; payments and review/ranking systems are separate.
 
-## User flow
+## What the captain can contribute
 
-1. Find the historical directory listing and visit `/claim/[id]`.
-2. Request a **free** independent ownership review through the existing claim process.
-3. Draft up to eight fisheries in the structured editor while the claim is pending. Session storage is limited to that tab/browser, not cloud sync; there is no offline background publishing.
-4. **Only after the claimed owner is approved**, the browser may submit a structured proposal to `guide_fishery_proposals`, if the backend is online and the proposed SQL schema was separately reviewed and applied.
-5. SQL enforces approved-claim ownership, `auth.uid()=submitted_by`, `review_state='pending'`, strict JSONB field bounds, no client update/delete permission, no public SELECT.
-6. A future authorized moderator must review the proposal, check factual accuracy and clearly label any approved **Captain-provided** information before publishing in a **separate** public data layer. No auto-publishing or changing raw registry records.
+- **1–4 different vessels**, each with human-readable boat label, class, optional capacity (1–30), covered/heated flags, and fish-care services. The same operation may have an ocean charter, a river sled, and a drift boat.
+- **1–8 named seasonal trip packages**, each with a waterway, general launch region (not an address), 1–8 target species, 1–12 operating months, a specific **vessel reference**, that trip's booking style (seats, private boat or inquiry), and an optional duration.
+- Trip windows are typical **self-reported availability**, not actual fishery openings, legal compliance, or current inventory.
+- Captains may add separate packages to the same waterway if they have different trip names and offerings; keyword stuffing and duplicate name+waterway are rejected.
+- No self-entered licenses, criminal/background information, payment state, verified badges, review scores, USCG certification, or proof documents.
 
-A free profile claim and factual corrections should **not** require paying. Future paid products may include enhanced media, analytics, booking widgets and support, but never influence ratings, organic sorting, review deletion, owner legitimacy, or official-agency evidence.
+## Why the vessel relationship matters
 
-## Deployment safety gates
+Suppose a guide offers a 28-foot heated sled at Buoy 10 and a 17-foot open drift boat on a North Coast winter steelhead river. A **global** heated/capacity toggle would mislead anglers about the drift trip. This implementation binds each fishery to an explicit boat ID; the UI blocks removing a boat while a trip still references it.
 
-- **DO NOT RUN** `supabase/migrations/0003_pending_captain_fishery_proposals.sql` on the user's hosted project from this PR. It is a proposed script, not applied or integration-tested in a real database.
-- RateMyGuidePNW Supabase was previously reported inactive; actual schema, default table grants, claim RLS, auth and data API settings remain unverified. Existing migrations are historical scaffolds and may not reflect deployed columns. Review any naming conflicts before migration.
-- CI runs static contract and code-level tests; these **do not replace** Supabase `test db` / live-policy testing. Test with a local/staging database and real impersonated JWT sessions before launching, including owner, non-owner, anonymous, revoked claim, malformed JSON, forgery, excessive input and attempt to set `approved`.
-- RLS inserts do not serve as production abuse protection. Add per-user throttling, moderator inbox, spam/rate-limit controls, retention rules, approval history and appeals before enabling real intake.
-- An approved owner claim is **not** a verified license or USCG credential. Public UI must display every source tier independently.
-- No personal IDs, home addresses, government credential photos, payment information or exact private trip details are collected in this editor.
-- This feature does not expose the unapproved contributions to directory search or public guide pages.
+The initial PR #38 submitted a single global boat + booking mode. This child branch replaces that **unapplied** proposal with a single fleet+packages payload so the UI and backend can validate referential integrity together.
 
-## Local verification
+## Captain ownership and publication workflow
+
+1. The visitor finds the imported directory listing and opens `/claim/[id]`.
+2. The existing profile ownership request requires authenticated identity review. A public source registration number is not proof that the account is the captain.
+3. A prospective captain can draft boat/trip information in browser-tab session storage, including incomplete drafts. No cloud save or live sync is claimed. `v2` session key deliberately separates the new fleet schema from incompatible `v1` drafts.
+4. An independently **approved claimant** may submit only a **pending** proposal after the independently reviewed SQL intake is applied and the real project is online. The app returns errors when that is unavailable.
+5. The **proposed, unapplied** `supabase/migrations/0003_pending_captain_fishery_proposals.sql` allows authenticated owner-scoped SELECT and INSERT only. Each proposed vessel/trip is server-validated by an allowlist, length bounds, enums, unique IDs, foreign-reference checks, nonzero months/species, and a valid 1–30 capacity.
+6. A *separate* future administrator workflow must manually approve fields and deliberately publish a clearly labeled **Captain-provided · Self-reported** view. A proposal changing state to `approved` does not itself show anything publicly. Directory search never indexes proposals.
+
+## Release gate / operational risks
+
+- **Do not apply the SQL file** to the hosted RateMyGuidePNW Supabase project yet. The project was previously inactive; actual deployed schema, ownership policies, grants and moderator access were not inspected. The file is a proposed schema, not an applied migration.
+- Reconcile this with existing deployed tables and run positive/negative row-level tests in a separate local/staging Postgres environment: anonymous, unapproved claimant, another captain's guide, forged `submitted_by`, attempted `review_state='approved'`, malformed JSON, unknown fields, missing boat reference, forged boat capacity, deleted owner claim, duplicate proposals, SQL role privileges.
+- The code/CI tests are *contract and UI tests*. They do not prove the database enforcement, security, a deployed working form or a full moderation workflow.
+- A reviewed app must add rate limits, spam controls, human moderation inbox, operational audit events, and safe corrections/appeals before accepting real user submissions.
+- Captain-supplied fields must never supersede historical state-registration provenance, constitute license/USCG verification, affect search rank, or create paid ability to remove negative reviews.
+
+## Local checks
 
 ```sh
 npm run test:captain-fisheries
@@ -31,9 +41,9 @@ npm run typecheck
 npm run build
 ```
 
-## Technical reference
+## Implementation references
 
-- `lib/captain-fisheries.ts`: typed field taxonomy, validation and canonical pending payload.
-- `components/CaptainFisheryEditor.tsx`: responsive draft-first editor, guarded Supabase submission.
-- `supabase/migrations/0003_pending_captain_fishery_proposals.sql`: proposed intake schema with invoker RLS on `guide_claims`, pending proposal table and SQL validation.
-- `tests/captain-fisheries.test.mjs`: pure validation, pending-only mapper, UI guard and SQL access-contract checks.
+- `lib/captain-fisheries.ts`: v2 typed fleet+package model, strict allowlist and draft restore guards.
+- `components/CaptainFisheryEditor.tsx`: multiple boats / per-fishery assignment / tab draft / approved-owner query.
+- `supabase/migrations/0003_pending_captain_fishery_proposals.sql`: **unapplied** v2 private pending-only proposal and RLS template.
+- `tests/captain-fisheries.test.mjs`: typed record and schema guard tests (not live database role tests).
