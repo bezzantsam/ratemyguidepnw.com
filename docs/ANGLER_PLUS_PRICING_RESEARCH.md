@@ -7,6 +7,8 @@ A founder-operated fishing guide directory and useful fishing-planning software 
 
 **Provisional offer to test after there is genuinely useful premium functionality:** $29.99/year standard, with a time-limited $19.99/year founding offer; also test whether a $39.99/year anchor is feasible. **Do not publish an actual paywall at this stage.** A $9.99/year rate is useful as a downside unit-economics comparison, not an approved promise.
 
+**Operational commitment:** no phone calls, no concierge obligations, and no hidden manual fulfillment at this price. The modeled **license-holder proxy** is a market-sizing illustration, not a user list. Real subscription **conversion**, **renewal** performance, **payment processing**, and **founder labor** must be measured before a price is finalized. This product is **not deployed**.
+
 ## November 2026 independent public price benchmarks
 
 These are *existing mature apps*, not evidence that consumers would pay the same for this current website, which lacks verified condition forecasting, premium lake maps, national fish data, paid account management, live customer retention and active subscriptions.
