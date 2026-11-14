@@ -14,7 +14,8 @@ export function filterDirectoryEntries(entries:DirectoryEntry[], filters:Directo
    (filters.state==='All'||g.states.includes(filters.state as 'Oregon'|'Washington')) &&
    (filters.sourceZone==='All areas'||g.areas.includes(filters.sourceZone)) &&
    (filters.advertisedWater==='All advertised waters'||g.advertisedWaters.includes(filters.advertisedWater)) &&
-   [g.name,g.business||'',g.id,...g.areas,...g.searchAliases,...g.advertisedWaters]
+   [g.name,g.business||'',g.id,...g.areas,...g.searchAliases,...g.advertisedWaters,
+    ...(g.crew??[]).map(member=>member.name)]
     .join(' ').toLocaleLowerCase().includes(needle)
  ).sort((a,b)=>a.name.localeCompare(b.name,'en',{sensitivity:'base'})||a.id.localeCompare(b.id));
 }

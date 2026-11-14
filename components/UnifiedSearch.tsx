@@ -39,7 +39,7 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
     aria-pressed={state===s} onClick={()=>setRegion(s)}>{s==='All'?'All guides':s}</button>)}
   </div>
   <div className="searchbar">
-   <label>Captain, business, operating name, or registration
+   <label>Captain, crew, business, operating name, or registration
     <input type="search" value={q} onChange={e=>{setQ(e.target.value);setPage(1)}}
      placeholder="Try Josiah Darr or R Outfitters"/>
    </label>
@@ -67,6 +67,7 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
       </div>
       <p className="outfit-name">{g.business||'Fishing guide'}</p>
       {g.searchAliases.length>0&&<p className="guide-meta">Also listed publicly as: {g.searchAliases.join(' · ')}</p>}
+      {(g.crew??[]).length>0&&<p className="guide-meta">Reported crew: {g.crew!.map(member=>`${member.name} (${member.role})`).join(' · ')}. Separate from the captain; current assignment unconfirmed.</p>}
       {g.advertisedWaters.length>0&&<p className="guide-meta">Advertised waters (source-linked): {g.advertisedWaters.slice(0,3).join(' · ')}{g.advertisedWaters.length>3?' · + more':''}</p>}
       <p className="guide-meta">{g.source==='Oregon registry'?'Imported registration zones':'Imported directory areas / notes'}: {g.areas.slice(0,3).join(' · ')||'Not specified'}{g.areas.length>3?' · + more':''}</p>
       <p className="guide-submeta">Imported source listing · Review information on profile · Current credentials not independently checked</p>
