@@ -3,7 +3,7 @@ import Link from 'next/link';
 import SaveGuideButton from './SaveGuideButton';
 import {useMemo,useState} from 'react';
 import type {DirectoryEntry} from '@/lib/directory';
-import {filterDirectoryEntries} from '@/lib/directory-query';
+import {filterDirectoryEntries,guideSearchScore} from '@/lib/directory-query';
 
 export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
  const[q,setQ]=useState('');
@@ -41,7 +41,7 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
   <div className="searchbar">
    <label>Captain, crew, business, operating name, or registration
     <input type="search" value={q} onChange={e=>{setQ(e.target.value);setPage(1)}}
-     placeholder="Try Josiah Darr or R Outfitters"/>
+     placeholder="Try Billy Bandit, Josiah Darr or a river"/>
    </label>
    <label>Imported source area / notes (unverified)
     <select value={area} onChange={e=>{setArea(e.target.value);setPage(1)}}>
@@ -54,8 +54,9 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
     </select>
    </label>
   </div>
+  <p className="muted">Search recognizes common nicknames and small spelling mistakes. Check the captain and business name before choosing a profile.</p>
   <div className="results-heading"><strong>{filtered.length.toLocaleString()} captain listings</strong>
-   <span>A–Z · Page {current} of {pages}</span>
+   <span>{q.trim()?'Closest matches first':'A–Z'} · Page {current} of {pages}</span>
   </div>
   <div className="guide-results">{filtered.slice((current-1)*size,current*size).map(g=>
    <div className="saved-guide-row" key={g.id}>
@@ -65,6 +66,7 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
       <div className="guide-result-top"><h3>{g.name}</h3>
        <span className="listing-chip">{g.states.join(' + ')}</span>
       </div>
+      {(guideSearchScore(g,q)??0)>=60&&<p className="guide-meta"><strong>Similar spelling match</strong> · Confirm the person and business.</p>}
       <p className="outfit-name">{g.business||'Fishing guide'}</p>
       {g.searchAliases.length>0&&<p className="guide-meta">Also listed publicly as: {g.searchAliases.join(' · ')}</p>}
       {(g.crew??[]).length>0&&<p className="guide-meta">Reported crew: {g.crew!.map(member=>`${member.name} (${member.role})`).join(' · ')}. Separate from the captain; current assignment unconfirmed.</p>}
