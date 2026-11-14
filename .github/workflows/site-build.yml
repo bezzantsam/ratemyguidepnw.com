@@ -56,6 +56,8 @@ jobs:
         run: npm run test:moderation
       - name: Verify full-stack integration, provenance and no automatic publication
         run: npm run test:integration
+      - name: Validate public website source scouting and rights/privacy boundaries (offline)
+        run: npm run test:source-scout
       - name: TypeScript check
         run: npm run typecheck
       - name: Build Next.js production assets without private DB credentials
