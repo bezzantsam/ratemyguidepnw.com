@@ -167,7 +167,10 @@ test('unapplied SQL enforces approved owner + private pending-only fleet proposa
  assert.match(sql,/c\.status='approved'/);
  assert.match(sql,/review_state='pending'/);
  assert.match(sql,/force row level security/);
- assert.match(sql,/grant select,insert on table public\.guide_fishery_proposals to authenticated/i);
+ assert.match(sql,/grant select on table public\.guide_fishery_proposals to authenticated/i);
+ assert.match(sql,/grant insert \(guide_id,submitted_by,vessels,offerings\)/i);
+ assert.doesNotMatch(sql,/grant select,insert on table public\.guide_fishery_proposals/i);
+ assert.match(sql,/review_state text not null default 'pending'/);
  assert.doesNotMatch(sql,/create policy .* for update/i);
  assert.doesNotMatch(sql,/create policy .* for delete/i);
  assert.doesNotMatch(sql,/for select to anon/i);
