@@ -279,13 +279,50 @@
       "Ryan Beck's Guide Service",
       "Fishing With Beck"
     ],
-    "advertisedWaters": []
+    "advertisedWaters": [
+      {
+        "name": "Wilson River",
+        "sourceUrl": "https://fishingwithbeck.com/salmon-fishing/",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Trask River",
+        "sourceUrl": "https://fishingwithbeck.com/salmon-fishing/",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Kilchis River",
+        "sourceUrl": "https://fishingwithbeck.com/salmon-fishing/",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Nestucca River",
+        "sourceUrl": "https://fishingwithbeck.com/salmon-fishing/",
+        "sourceType": "operator_site"
+      }
+    ]
   },
   "OG.0004087": {
     "searchAliases": [
       "Upper Columbia Guide Service"
     ],
-    "advertisedWaters": []
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://www.uppercolumbiaguide.com/",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://www.uppercolumbiaguide.com/",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Clearwater River",
+        "sourceUrl": "https://www.uppercolumbiaguide.com/",
+        "sourceType": "operator_site"
+      }
+    ]
   },
   "OG.0000607": {
     "searchAliases": [
@@ -299,6 +336,22 @@
       "Don Gresham",
       "DG Columbia Adventures Guide Service"
     ],
-    "advertisedWaters": []
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://dgcolumbiaadventures.com/",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://dgcolumbiaadventures.com/",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Buoy 10",
+        "sourceUrl": "https://dgcolumbiaadventures.com/",
+        "sourceType": "operator_site"
+      }
+    ]
   }
 }
