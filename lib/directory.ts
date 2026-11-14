@@ -2,6 +2,7 @@ import {oregonGuides,guideSlug} from './registry';
 import {washingtonGuides} from './washington';
 import {washingtonRecordForOregon} from './washington-reconciled';
 import {advertisedWaterwayNames,guideSearchTerms} from './guide-enrichment';
+import {charterCrewSearchMembers, type CharterCrewMember} from './charter-crew';
 
 export type DirectoryEntry={
   id:string;
@@ -14,6 +15,8 @@ export type DirectoryEntry={
   advertisedWaters:string[];
   /** Search terms from named, publicly linked sources; NOT legal identity verification. */
   searchAliases:string[];
+  /** Separate people associated with saltwater trips; never captain identity aliases. */
+  crew?:CharterCrewMember[];
   href:string;
   source:string;
 };
@@ -25,12 +28,14 @@ export const directoryEntries:DirectoryEntry[]=[
    areas:g.areas,
    advertisedWaters:advertisedWaterwayNames(g.registration),
    searchAliases:guideSearchTerms(g.registration),
+   crew:charterCrewSearchMembers(g.registration),
    href:'/guides/'+guideSlug(g),source:'Oregon registry',
  })),
  ...washingtonGuides.map(g=>({
    id:g.id,name:g.name,business:g.business,
    states:['Washington'] as ('Oregon'|'Washington')[],
    areas:g.notes?[g.notes]:[],advertisedWaters:[],searchAliases:[],
+   crew:charterCrewSearchMembers(g.id),
    href:'/washington/'+g.id,source:g.source,
  }))
 ];
