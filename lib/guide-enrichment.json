@@ -246,5 +246,59 @@
         "sourceType": "operator_site"
       }
     ]
+  },
+  "OG.0002193": {
+    "searchAliases": [
+      "Rod Shulley",
+      "Reel Em Up Fishing Adventures"
+    ],
+    "advertisedWaters": []
+  },
+  "OG.0003452": {
+    "searchAliases": [
+      "Oregon Adventures Guide Service",
+      "Oregon Adventure Guide Service"
+    ],
+    "advertisedWaters": []
+  },
+  "OG.0003297": {
+    "searchAliases": [
+      "Reel Time Fishing Adventures"
+    ],
+    "advertisedWaters": []
+  },
+  "OG.0000410": {
+    "searchAliases": [
+      "Chris Nordling",
+      "Chris Nordling's Guide Service"
+    ],
+    "advertisedWaters": []
+  },
+  "OG.0002254": {
+    "searchAliases": [
+      "Ryan Beck's Guide Service",
+      "Fishing With Beck"
+    ],
+    "advertisedWaters": []
+  },
+  "OG.0004087": {
+    "searchAliases": [
+      "Upper Columbia Guide Service"
+    ],
+    "advertisedWaters": []
+  },
+  "OG.0000607": {
+    "searchAliases": [
+      "Mikeys Fishing Adventures",
+      "Mikey's Fishing Adventures"
+    ],
+    "advertisedWaters": []
+  },
+  "OG.0003904": {
+    "searchAliases": [
+      "Don Gresham",
+      "DG Columbia Adventures Guide Service"
+    ],
+    "advertisedWaters": []
   }
 }
