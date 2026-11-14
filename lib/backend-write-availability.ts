@@ -13,11 +13,13 @@ import 'server-only';
 const REVIEWED_LIVE_WRITE_APPROVAL = Object.freeze({
   reviewSubmission: false,
   captainClaimSubmission: false,
+  captainFisherySubmission: false,
 });
 
 export type BackendWriteAvailability = Readonly<{
   reviews: boolean;
   claims: boolean;
+  fisheries: boolean;
 }>;
 
 export function backendWriteAvailability(): BackendWriteAvailability {
@@ -26,5 +28,6 @@ export function backendWriteAvailability(): BackendWriteAvailability {
   return {
     reviews: REVIEWED_LIVE_WRITE_APPROVAL.reviewSubmission && deploymentOptIn,
     claims: REVIEWED_LIVE_WRITE_APPROVAL.captainClaimSubmission && deploymentOptIn,
+    fisheries: REVIEWED_LIVE_WRITE_APPROVAL.captainFisherySubmission && deploymentOptIn,
   };
 }
