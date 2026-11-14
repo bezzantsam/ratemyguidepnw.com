@@ -1,9 +1,38 @@
 import {oregonGuides,guideSlug} from './registry';
 import {washingtonGuides} from './washington';
 import {washingtonRecordForOregon} from './washington-reconciled';
-export type DirectoryEntry={id:string;name:string;business:string|null;states:('Oregon'|'Washington')[];areas:string[];href:string;source:string};
+import {advertisedWaterwayNames,guideSearchTerms} from './guide-enrichment';
+
+export type DirectoryEntry={
+  id:string;
+  name:string;
+  business:string|null;
+  states:('Oregon'|'Washington')[];
+  /** Source-imported broad registration zones, NOT verified launch locations. */
+  areas:string[];
+  /** Independently displayed category: operating waters named in public sources. */
+  advertisedWaters:string[];
+  /** Search terms from named, publicly linked sources; NOT legal identity verification. */
+  searchAliases:string[];
+  href:string;
+  source:string;
+};
+
 export const directoryEntries:DirectoryEntry[]=[
- ...oregonGuides.map(g=>({id:g.registration,name:g.name,business:g.business,states:(washingtonRecordForOregon(g.registration)?['Oregon','Washington']:['Oregon']) as ('Oregon'|'Washington')[],areas:g.areas,href:'/guides/'+guideSlug(g),source:'Oregon registry'})),
- ...washingtonGuides.map(g=>({id:g.id,name:g.name,business:g.business,states:['Washington'] as ('Oregon'|'Washington')[],areas:g.notes?[g.notes]:[],href:'/washington/'+g.id,source:g.source}))
+ ...oregonGuides.map(g=>({
+   id:g.registration,name:g.name,business:g.business,
+   states:(washingtonRecordForOregon(g.registration)?['Oregon','Washington']:['Oregon']) as ('Oregon'|'Washington')[],
+   areas:g.areas,
+   advertisedWaters:advertisedWaterwayNames(g.registration),
+   searchAliases:guideSearchTerms(g.registration),
+   href:'/guides/'+guideSlug(g),source:'Oregon registry',
+ })),
+ ...washingtonGuides.map(g=>({
+   id:g.id,name:g.name,business:g.business,
+   states:['Washington'] as ('Oregon'|'Washington')[],
+   areas:g.notes?[g.notes]:[],advertisedWaters:[],searchAliases:[],
+   href:'/washington/'+g.id,source:g.source,
+ }))
 ];
+
 export function getDirectoryEntry(id:string){return directoryEntries.find(g=>g.id===id)}

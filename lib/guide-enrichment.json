@@ -1,0 +1,85 @@
+{
+  "OG.0000093": {
+    "searchAliases": [
+      "R Outfitters"
+    ],
+    "advertisedWaters": [
+      {
+        "name": "Buoy 10",
+        "sourceUrl": "https://www.routfitters.com/about-us/",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Clearwater River",
+        "sourceUrl": "https://www.routfitters.com/about-us/",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Snake River / Hells Canyon",
+        "sourceUrl": "https://www.routfitters.com/about-us/",
+        "sourceType": "operator_site"
+      }
+    ]
+  },
+  "OG.0000213": {
+    "searchAliases": [
+      "Josiah Darr"
+    ],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://fishermans-marine.com/pages/pro-staff",
+        "sourceType": "third_party_directory"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://fishermans-marine.com/pages/pro-staff",
+        "sourceType": "third_party_directory"
+      }
+    ]
+  },
+  "OG.0000294": {
+    "searchAliases": [
+      "Barrett Ames Fly Fishing"
+    ],
+    "advertisedWaters": [
+      {
+        "name": "Lower Deschutes River",
+        "sourceUrl": "https://www.barrettamesflyfishing.com/about",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Clackamas River",
+        "sourceUrl": "https://www.barrettamesflyfishing.com/",
+        "sourceType": "operator_site"
+      }
+    ]
+  },
+  "OG.0000315": {
+    "searchAliases": [
+      "Fast Action Fishing"
+    ],
+    "advertisedWaters": [
+      {
+        "name": "Buoy 10",
+        "sourceUrl": "https://www.fastactionfishing.com/",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://www.fastactionfishing.com/",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://www.fastactionfishing.com/",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Tillamook Bay",
+        "sourceUrl": "https://www.fastactionfishing.com/",
+        "sourceType": "operator_site"
+      }
+    ]
+  }
+}

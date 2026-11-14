@@ -208,3 +208,13 @@ a.dock-ticker-item:hover{color:white;text-decoration:underline}
 .review-step-actions button.review-secondary{background:transparent;color:#f0d295;border:1px solid #967c4d}
 .review-step textarea{resize:vertical}
 @media(max-width:580px){.review-form.card{padding:18px}.review-progress{gap:4px}.review-progress li{font-size:10px;padding:11px 2px}.review-rating-options{gap:5px}.review-rating-options button{flex:1;min-width:42px;padding:7px 5px;font-size:12px}.review-step-actions button{flex:1}}
+
+
+/* Directory provenance: explicit distinction between imported zones and public operator claims. */
+.directory-source-disclosure{padding:9px 25px 15px!important;margin:0;font-size:13px;color:#4c6764;line-height:1.55}
+.directory-panel .searchbar{grid-template-columns:minmax(0,1.7fr) minmax(0,1fr) minmax(0,1fr)}
+.guide-enrichment-waters{list-style:none;display:grid;gap:10px;padding:0;margin:20px 0}
+.guide-enrichment-waters li{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border:1px solid #5a746e;padding:12px;border-radius:9px}
+.guide-enrichment-waters li a{color:#f0d28b;font-size:13px;text-decoration:underline;text-underline-offset:3px}
+.guide-enrichment-waters li a:focus-visible{outline:3px solid #f0d28b;outline-offset:4px}
+@media(max-width:830px){.directory-panel .searchbar{grid-template-columns:1fr}}
