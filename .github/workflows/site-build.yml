@@ -72,6 +72,8 @@ jobs:
         run: npm run test:review-invitations
       - name: Validate annual pricing sensitivity, negative margin and regional TAM assumptions
         run: npm run test:pricing-economics
+      - name: Verify atomic captain claim and pending-only review proposal safety offline
+        run: npm run test:atomic-claims
       - name: TypeScript check
         run: npm run typecheck
       - name: Build Next.js production assets without private DB credentials
