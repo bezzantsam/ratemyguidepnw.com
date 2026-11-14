@@ -69,7 +69,7 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
       {g.searchAliases.length>0&&<p className="guide-meta">Also listed publicly as: {g.searchAliases.join(' · ')}</p>}
       {g.advertisedWaters.length>0&&<p className="guide-meta">Advertised waters (source-linked): {g.advertisedWaters.slice(0,3).join(' · ')}{g.advertisedWaters.length>3?' · + more':''}</p>}
       <p className="guide-meta">{g.source==='Oregon registry'?'Imported registration zones':'Imported directory areas / notes'}: {g.areas.slice(0,3).join(' · ')||'Not specified'}{g.areas.length>3?' · + more':''}</p>
-      <p className="guide-submeta">Historical source listing · Current credentials not independently checked</p>
+      <p className="guide-submeta">Imported source listing · Current credentials not independently checked</p>
      </div><span className="result-chevron">›</span>
     </Link><SaveGuideButton href={g.href} name={g.name}/>
    </div>)}
