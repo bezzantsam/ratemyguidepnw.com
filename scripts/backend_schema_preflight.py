@@ -22,7 +22,7 @@ REVIEW_INSERT = {
     "guide_id", "author_id", "quality", "intensity", "communication",
     "safety", "effort", "equipment", "professionalism", "knowledge",
     "value_rating", "would_book_again", "catch_outcome", "body",
-    "trip_month", "trip_context", "status",
+    "trip_month", "trip_context",
 }
 PUBLIC_REVIEWS_READ = {
     "id", "guide_id", "body", "quality", "published_at",
@@ -30,7 +30,7 @@ PUBLIC_REVIEWS_READ = {
     "equipment", "knowledge", "effort", "value_rating", "trip_context",
 }
 CLIENT_NEEDS = {
-    "guide_claims": {"guide_id", "claimant_id", "status"},
+    "guide_claims": {"guide_id", "claimant_id"},
     "claim_evidence": {"claim_id", "claimant_name", "business_name", "public_evidence"},
     "reviews": REVIEW_INSERT,
     "public_angler_reviews": PUBLIC_REVIEWS_READ,
@@ -90,6 +90,10 @@ def risk_report() -> dict:
     }
     if not all(observed.values()):
         raise ValueError("Client integration contract changed; manual security audit is required.")
+    if re.search(r"\bstatus\s*:\s*['\"](?:approved|published|pending)['\"]", files["review"]):
+        raise ValueError("Review client is supplying a moderation status.")
+    if re.search(r"\bstatus\s*:\s*['\"](?:approved|published|pending)['\"]", files["claim"]):
+        raise ValueError("Claim client is supplying a moderation status.")
 
     gaps: list[dict[str, object]] = []
     for name, required in CLIENT_NEEDS.items():
@@ -111,6 +115,11 @@ def risk_report() -> dict:
             })
 
     for name in ("guide_claims", "reviews"):
+        body = create_table_body(initial, name) or ""
+        if not re.search(r"\bstatus\s+text\s+not\s+null\s+default\s+'pending'", body, re.I):
+            gaps.append({
+                "object": name, "code": "pending_default_not_in_initial_scaffold",
+            })
         if not has_insert_policy(initial, name):
             gaps.append({
                 "object": name,
