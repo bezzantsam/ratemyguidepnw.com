@@ -24,6 +24,10 @@ These findings compare the source under `supabase/migrations/0001_initial.sql` t
 
 The `reviews` rating refresh functions in the initial SQL use privileged trigger helpers and must be separately reviewed for privilege boundaries and unauthorized execution. A green static build does not validate those security assumptions.
 
+## Additional hardening committed in this branch
+
+The browser previously included `status:'pending'` when submitting an angler review or guide ownership claim. It no longer supplies **any moderation status**. Both tables in the initial scaffold default to `pending`, so the database must set the initial state itself. The client remains unable to request `approved` or `published` through ordinary UI form payloads. This is **defense in depth**, not proof of real RLS: authenticated users may still call the Data API directly unless deployed column privileges, RLS policies and server moderation are tested and hardened.
+
 ## What has been built
 
 - `scripts/backend_schema_preflight.py` compares currently committed client paths to source-scaffold definitions. It rejects changes in the inspected client contract and never connects to Supabase or reads private records.
