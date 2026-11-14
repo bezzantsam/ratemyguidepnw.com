@@ -1,13 +1,13 @@
 'use client';
 import Link from 'next/link';
 import {usePathname} from 'next/navigation';
-import {BookOpenCheck, House, MessagesSquare, Search} from 'lucide-react';
+import {Bookmark, House, MessagesSquare, Search} from 'lucide-react';
 
 const tabs=[
  {href:'/',label:'Home',Icon:House},
  {href:'/guides',label:'Guides',Icon:Search},
  {href:'/reviews',label:'Dock Talk',Icon:MessagesSquare},
- {href:'/guides/verification',label:'Trust',Icon:BookOpenCheck},
+ {href:'/saved',label:'Saved',Icon:Bookmark},
 ] as const;
 
 export default function MobileNavigation(){
