@@ -64,7 +64,7 @@ test('guide profiles still load real Supabase moderation/review components', () 
 test('explanation provides neutral distinctions and accessible source disclosure', () => {
   const code=read('app/guides/verification/page.tsx');
   assert.match(code, /export const metadata/);
-  assert.match(code, /Source listing/);
+  assert.match(code, /Listing does not establish/);
   assert.match(code, /Current registration and USCG credentials/);
   assert.match(code, /Claimed guide profile/);
   assert.match(code, /Published angler review/);
