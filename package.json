@@ -8,7 +8,7 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test:intel": "node --test tests/chinook-release.test.mjs tests/chinook-review-gate.test.mjs tests/build-efficiency.test.mjs",
-    "check": "npm run test:intel && npm run test:pwa && npm run test:shortlist && npm run test:review && npm run test:directory-ids && npm run test:discovery && npm run test:identities && npm run test:captain-fisheries && npm run test:moderation && npm run typecheck && npm run build",
+    "check": "npm run test:intel && npm run test:pwa && npm run test:shortlist && npm run test:review && npm run test:directory-ids && npm run test:discovery && npm run test:identities && npm run test:captain-fisheries && npm run test:moderation && npm run test:integration && npm run typecheck && npm run build",
     "test:pwa": "node --test tests/pwa-shell.test.mjs",
     "test:shortlist": "node --test tests/saved-guides.test.mjs",
     "test:review": "node --test tests/review-submission.test.mjs",
@@ -16,7 +16,8 @@
     "test:discovery": "node --test tests/guide-discovery.test.mjs",
     "test:captain-fisheries": "node --test tests/captain-fisheries.test.mjs",
     "test:moderation": "node --test tests/moderation-review.test.mjs",
-    "test:identities": "node --test tests/guide-identity.test.mjs"
+    "test:identities": "node --test tests/guide-identity.test.mjs",
+    "test:integration": "node --test tests/integration-release-gates.test.mjs"
   },
   "dependencies": {
     "next": "^15.5.0",
