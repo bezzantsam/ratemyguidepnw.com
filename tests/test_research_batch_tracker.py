@@ -70,7 +70,7 @@ class AssignmentLedgerTests(unittest.TestCase):
         self.assertEqual(self.ledger['batches'][0]['next_after'], 'OG.0000088')
         self.assertEqual(t.next_batch(self.ledger, root=self.root)['records'][0]['directory_id'], self.ids[4])
         with self.assertRaisesRegex(ValueError, 'directory order'):
-            self.assign([self.ids[3], self.ids[2]], batch_id='02')
+            t.assign(t.empty(self.root), batch_id='02', ids=[self.ids[3], self.ids[2]], after=None, assigned_on='2026-11-14', root=self.root)
 
     def test_manifest_reservation_uses_current_source_fingerprints_and_exclusions(self):
         p = self.root / 'research-drafts/manifest.json'
@@ -136,6 +136,7 @@ class AssignmentLedgerTests(unittest.TestCase):
         self.assertEqual(t.load(path, root=self.root)['revision'], 1)
         tampered = json.loads(path.read_text())
         tampered['batches'].append({**tampered['batches'][0], 'batch_id': '02'})
+        tampered['revision'] = 2  # reach duplicate-assignment invariant after satisfying revision count
         path.write_text(json.dumps(tampered))
         with self.assertRaisesRegex(ValueError, 'duplicate assignments'):
             t.load(path, root=self.root)
