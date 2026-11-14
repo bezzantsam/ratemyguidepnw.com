@@ -13,7 +13,7 @@
     "test:shortlist": "node --test tests/saved-guides.test.mjs",
     "test:review": "node --test tests/review-submission.test.mjs",
     "test:directory-ids": "node --test tests/washington-stable-ids.test.mjs",
-    "test:discovery": "node --test tests/guide-discovery.test.mjs tests/charter-crew.test.mjs",
+    "test:discovery": "node --test tests/guide-discovery.test.mjs tests/charter-crew.test.mjs tests/research-workbench.test.mjs",
     "test:captain-fisheries": "node --test tests/captain-fisheries.test.mjs",
     "test:moderation": "node --test tests/moderation-review.test.mjs",
     "test:identities": "node --test tests/guide-identity.test.mjs",

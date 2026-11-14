@@ -9,7 +9,16 @@
       "publicationStatus": "manual_review_required",
       "credentialStatus": "unknown",
       "reason": "User reports a brother/co-guide. Given name and affiliation remain unresolved. Do not infer identity from surname, residential records, or regional proximity.",
-      "sourceUrl": null
+      "sourceUrl": null,
+      "incomingClaims": [
+        {
+          "claim": "Follow-up still leaves brother identity and formal business role unresolved. Do not block Daniel’s existing record while investigating the co-guide.",
+          "sourceUrl": null,
+          "basis": "supplied_research_unchecked",
+          "reportedObservedOn": "2026-11-13",
+          "checkedOn": null
+        }
+      ]
     },
     {
       "publicName": "Kodi Cherry",
@@ -18,7 +27,16 @@
       "publicationStatus": "manual_review_required",
       "credentialStatus": "unknown",
       "reason": "Founder identifies this guide. Public business contact and operating details remain unresolved. No tribal membership or permit inference; exclude family/obituary records.",
-      "sourceUrl": null
+      "sourceUrl": null,
+      "incomingClaims": [
+        {
+          "claim": "Follow-up supplies no public operator website or business contact. Firsthand founder identification remains separate from credentials and current permit evidence.",
+          "sourceUrl": null,
+          "basis": "supplied_research_unchecked",
+          "reportedObservedOn": "2026-11-13",
+          "checkedOn": null
+        }
+      ]
     },
     {
       "publicName": "Cleve Lorton",
@@ -27,7 +45,16 @@
       "publicationStatus": "manual_review_required",
       "credentialStatus": "unknown",
       "reason": "Tourism page names this guide. Current business contact, specific advertised waterways and permit standing not established.",
-      "sourceUrl": "https://www.ancient-coast.com/play"
+      "sourceUrl": "https://www.ancient-coast.com/play",
+      "incomingClaims": [
+        {
+          "claim": "Follow-up retains a tourism listing and firsthand founder identification; no new operator-published business contact supplied. Do not infer tribal membership or permits.",
+          "sourceUrl": "https://www.ancient-coast.com/play",
+          "basis": "supplied_research_unchecked",
+          "reportedObservedOn": "2026-11-13",
+          "checkedOn": null
+        }
+      ]
     },
     {
       "publicName": "The Gambler",
@@ -36,7 +63,16 @@
       "publicationStatus": "manual_review_required",
       "credentialStatus": "unknown",
       "reason": "Supplied Gambler Charter/Ilwaco/captain mapping remains a candidate: official pages returned no readable text during this check. Do not substitute a same-named boat.",
-      "sourceUrl": "https://www.gamblercharter.com/the-gambler"
+      "sourceUrl": "https://www.gamblercharter.com/the-gambler",
+      "incomingClaims": [
+        {
+          "claim": "Handoff reports a 42-foot North River Sounder, 12-foot beam and triple Yamaha 350s advertised as coming June 2025. Future-tense page copy does not establish delivery or current hull; retain older 35-foot hull separately.",
+          "sourceUrl": "https://www.gamblercharter.com/the-gambler",
+          "basis": "supplied_research_unchecked",
+          "reportedObservedOn": "2026-11-13",
+          "checkedOn": null
+        }
+      ]
     },
     {
       "publicName": "The Outlaw",
@@ -45,7 +81,16 @@
       "publicationStatus": "manual_review_required",
       "credentialStatus": "unknown",
       "reason": "Supplied Gambler Charter/Ilwaco/captain mapping remains a candidate; exact current operator, hull and crew assignments need accessible evidence.",
-      "sourceUrl": "https://www.gamblercharter.com/the-outlaw"
+      "sourceUrl": "https://www.gamblercharter.com/the-outlaw",
+      "incomingClaims": [
+        {
+          "claim": "Handoff reports a 31-foot North River Sounder, 2023 refit and twin Yamaha 250s; Dustin Greene is the proposed captain. Needs an independently readable source.",
+          "sourceUrl": "https://www.gamblercharter.com/the-outlaw",
+          "basis": "supplied_research_unchecked",
+          "reportedObservedOn": "2026-11-13",
+          "checkedOn": null
+        }
+      ]
     },
     {
       "publicName": "Gambler Charter",
@@ -54,7 +99,23 @@
       "publicationStatus": "manual_review_required",
       "credentialStatus": "unknown",
       "reason": "No local directory match established; vessel/captain/crew relationships are not approved for publication.",
-      "sourceUrl": "https://www.gamblercharter.com/our-captains"
+      "sourceUrl": "https://www.gamblercharter.com/our-captains",
+      "incomingClaims": [
+        {
+          "claim": "Handoff reports Jed Stout as Gambler captain and Dustin Greene as Outlaw captain. Outfitter crew candidates: Eric Surface, Hunter Stout, Sergey Zagariya (Serge), Chad Weller. No vessel-specific deckhand assignment established. Our retrieval still returned no readable lines.",
+          "sourceUrl": "https://www.gamblercharter.com/our-captains",
+          "basis": "supplied_research_unchecked",
+          "reportedObservedOn": "2026-11-13",
+          "checkedOn": null
+        },
+        {
+          "claim": "Handoff reports Port of Ilwaco, 211 Howerton Way SE; business phone 360-616-1413 and jed@gamblercharter.com. Business spelling varies between pages.",
+          "sourceUrl": "https://www.gamblercharter.com/contact",
+          "basis": "supplied_research_unchecked",
+          "reportedObservedOn": "2026-11-13",
+          "checkedOn": null
+        }
+      ]
     },
     {
       "publicName": "Dockside Charters",
@@ -72,7 +133,16 @@
       "publicationStatus": "manual_review_required",
       "credentialStatus": "unknown",
       "reason": "Official Dockside fleet page lists James Pederson. This supports a publicly listed assignment only, not current credentials, ownership, historic transitions, additional co-captains or deckhands.",
-      "sourceUrl": "https://www.docksidedepoebay.com/fleet.php"
+      "sourceUrl": "https://www.docksidedepoebay.com/fleet.php",
+      "incomingClaims": [
+        {
+          "claim": "Handoff reports 50-foot Delta, twin 315hp Cummins, James Pederson owner/operator; no current named deckhand.",
+          "sourceUrl": "https://www.docksidedepoebay.com/samson.php",
+          "basis": "supplied_research_unchecked",
+          "reportedObservedOn": "2026-11-13",
+          "checkedOn": null
+        }
+      ]
     },
     {
       "publicName": "Triumph",
@@ -81,7 +151,16 @@
       "publicationStatus": "manual_review_required",
       "credentialStatus": "unknown",
       "reason": "Official Dockside fleet page lists Leon Morrow. This supports a publicly listed assignment only, not current credentials, ownership, historic transitions, additional co-captains or deckhands.",
-      "sourceUrl": "https://www.docksidedepoebay.com/fleet.php"
+      "sourceUrl": "https://www.docksidedepoebay.com/fleet.php",
+      "incomingClaims": [
+        {
+          "claim": "Handoff reports 33-foot, six-passenger vessel with 430hp Cummins and Leon Morrow owner/operator.",
+          "sourceUrl": "https://www.docksidedepoebay.com/triumph.php",
+          "basis": "supplied_research_unchecked",
+          "reportedObservedOn": "2026-11-13",
+          "checkedOn": null
+        }
+      ]
     },
     {
       "publicName": "Tacklebuster",
@@ -90,7 +169,16 @@
       "publicationStatus": "manual_review_required",
       "credentialStatus": "unknown",
       "reason": "Official Dockside fleet page lists Captain JT. This supports a publicly listed assignment only, not current credentials, ownership, historic transitions, additional co-captains or deckhands.",
-      "sourceUrl": "https://www.docksidedepoebay.com/fleet.php"
+      "sourceUrl": "https://www.docksidedepoebay.com/fleet.php",
+      "incomingClaims": [
+        {
+          "claim": "The individual vessel page names Jeurgen Turner (JT) and Tyler Turner as captains. Fleet summary names only Captain JT. This supports both advertised relationships, not a current credential check.",
+          "sourceUrl": "https://www.docksidedepoebay.com/tacklebuster.php",
+          "basis": "operator_page_checked",
+          "reportedObservedOn": "2026-11-13",
+          "checkedOn": "2026-11-14"
+        }
+      ]
     },
     {
       "publicName": "Surfrider",
@@ -99,7 +187,16 @@
       "publicationStatus": "manual_review_required",
       "credentialStatus": "unknown",
       "reason": "Official Dockside fleet page lists Tyler Turner. This supports a publicly listed assignment only, not current credentials, ownership, historic transitions, additional co-captains or deckhands.",
-      "sourceUrl": "https://www.docksidedepoebay.com/fleet.php"
+      "sourceUrl": "https://www.docksidedepoebay.com/fleet.php",
+      "incomingClaims": [
+        {
+          "claim": "Handoff reports Tyler Turner as owner/operator and a 50-foot Delta hull with twin Caterpillar engines. Preserve separate Tacklebuster relationship.",
+          "sourceUrl": "https://www.docksidedepoebay.com/surfrider.php",
+          "basis": "supplied_research_unchecked",
+          "reportedObservedOn": "2026-11-13",
+          "checkedOn": null
+        }
+      ]
     },
     {
       "publicName": "Kimberly Ann",
@@ -108,7 +205,16 @@
       "publicationStatus": "manual_review_required",
       "credentialStatus": "unknown",
       "reason": "Official Dockside fleet page lists Richard Newton. This supports a publicly listed assignment only, not current credentials, ownership, historic transitions, additional co-captains or deckhands.",
-      "sourceUrl": "https://www.docksidedepoebay.com/fleet.php"
+      "sourceUrl": "https://www.docksidedepoebay.com/fleet.php",
+      "incomingClaims": [
+        {
+          "claim": "Handoff corrects generic multi-passenger label to an advertised 32-foot, six-passenger vessel operated by Richard Newton.",
+          "sourceUrl": "https://www.docksidedepoebay.com/KimberlyAnn.php",
+          "basis": "supplied_research_unchecked",
+          "reportedObservedOn": "2026-11-13",
+          "checkedOn": null
+        }
+      ]
     },
     {
       "publicName": "Sunrise",
@@ -117,7 +223,16 @@
       "publicationStatus": "manual_review_required",
       "credentialStatus": "unknown",
       "reason": "Official Dockside fleet page lists Chad Mckinney. This supports a publicly listed assignment only, not current credentials, ownership, historic transitions, additional co-captains or deckhands.",
-      "sourceUrl": "https://www.docksidedepoebay.com/fleet.php"
+      "sourceUrl": "https://www.docksidedepoebay.com/fleet.php",
+      "incomingClaims": [
+        {
+          "claim": "Handoff reports Chad McKinney (page spelling Mckinney) as operator and Grant as deckhand; length and engine details remain unspecified.",
+          "sourceUrl": "https://www.docksidedepoebay.com/Sunrise.php",
+          "basis": "supplied_research_unchecked",
+          "reportedObservedOn": "2026-11-13",
+          "checkedOn": null
+        }
+      ]
     },
     {
       "publicName": "SportFisher",
@@ -126,7 +241,16 @@
       "publicationStatus": "manual_review_required",
       "credentialStatus": "unknown",
       "reason": "Official Dockside fleet page lists Craig Calkins. This supports a publicly listed assignment only, not current credentials, ownership, historic transitions, additional co-captains or deckhands.",
-      "sourceUrl": "https://www.docksidedepoebay.com/fleet.php"
+      "sourceUrl": "https://www.docksidedepoebay.com/fleet.php",
+      "incomingClaims": [
+        {
+          "claim": "Handoff reports 50-foot vessel operated by Craig Calkins; no current named deckhand.",
+          "sourceUrl": "https://www.docksidedepoebay.com/Sportfisher.php",
+          "basis": "supplied_research_unchecked",
+          "reportedObservedOn": "2026-11-13",
+          "checkedOn": null
+        }
+      ]
     },
     {
       "publicName": "Jordan Knigge",
@@ -163,6 +287,204 @@
       "credentialStatus": "unknown",
       "reason": "Not among the nine named booking cards in the checked roster. Historical appearances or testimonials alone do not establish current affiliation.",
       "sourceUrl": "https://addicted.fishing/pages/book-a-guided-fishing-trip"
+    },
+    {
+      "publicName": "Twin Spin Guide Service",
+      "entityType": "business",
+      "directoryId": "OG.0003549",
+      "publicationStatus": "manual_review_required",
+      "credentialStatus": "unknown",
+      "reason": "Follow-up research supplied by founder. Review exact source support before adopting any additional fields.",
+      "sourceUrl": "https://visitgoldbeach.com/attractions/",
+      "incomingClaims": [
+        {
+          "claim": "Tourism pages conflict: guide-directory page assigns 541-698-8338 to Dan Coelho; attractions page assigns 541-698-7513 to Twin Spin and 541-698-8338 to Tyson Crumley. Neither number is promoted as confirmed.",
+          "sourceUrl": "https://visitgoldbeach.com/attractions/",
+          "basis": "supplied_research_unchecked",
+          "reportedObservedOn": "2026-11-13",
+          "checkedOn": null
+        }
+      ]
+    },
+    {
+      "publicName": "Chris Nordling",
+      "entityType": "person",
+      "directoryId": "OG.0000410",
+      "publicationStatus": "manual_review_required",
+      "credentialStatus": "unknown",
+      "reason": "Follow-up research supplied by founder. Review exact source support before adopting any additional fields.",
+      "sourceUrl": "http://www.catchsomefish.net/what-we-fish-for/",
+      "incomingClaims": [
+        {
+          "claim": "Handoff proposes Columbia/Buoy 10, Willamette/Oregon City, Clackamas, Sandy, North and South Santiam, Tillamook Bay and Nehalem Bay. HTTPS page retrieval failed here; do not add these waters from the handoff alone.",
+          "sourceUrl": "http://www.catchsomefish.net/what-we-fish-for/",
+          "basis": "supplied_research_unchecked",
+          "reportedObservedOn": "2026-11-13",
+          "checkedOn": null
+        }
+      ]
+    },
+    {
+      "publicName": "Ryan Beck",
+      "entityType": "person",
+      "directoryId": "OG.0002254",
+      "publicationStatus": "manual_review_required",
+      "credentialStatus": "unknown",
+      "reason": "Follow-up research supplied by founder. Review exact source support before adopting any additional fields.",
+      "sourceUrl": "https://fishingwithbeck.com/salmon-fishing/",
+      "incomingClaims": [
+        {
+          "claim": "Handoff removes Buoy 10 gallery-tag inference. Existing enrichment already contains only Wilson, Trask, Kilchis and Nestucca. No removal needed from current public-source data.",
+          "sourceUrl": "https://fishingwithbeck.com/salmon-fishing/",
+          "basis": "supplied_research_unchecked",
+          "reportedObservedOn": "2026-11-13",
+          "checkedOn": null
+        }
+      ]
+    },
+    {
+      "publicName": "Walter Rowe",
+      "entityType": "person",
+      "directoryId": "OG.0003297",
+      "publicationStatus": "manual_review_required",
+      "credentialStatus": "unknown",
+      "reason": "Follow-up research supplied by founder. Review exact source support before adopting any additional fields.",
+      "sourceUrl": "https://harvestingnature.com/2025/12/12/bocaccio-from-the-deep/",
+      "incomingClaims": [
+        {
+          "claim": "Handoff correctly distinguishes documented Newport trips from operator-advertised packages. Existing code already keeps Austin separate and does not index these reports as advertised waters.",
+          "sourceUrl": "https://harvestingnature.com/2025/12/12/bocaccio-from-the-deep/",
+          "basis": "supplied_research_unchecked",
+          "reportedObservedOn": "2026-11-13",
+          "checkedOn": null
+        }
+      ]
+    },
+    {
+      "publicName": "Don Gresham",
+      "entityType": "person",
+      "directoryId": "OG.0003904",
+      "publicationStatus": "manual_review_required",
+      "credentialStatus": "unknown",
+      "reason": "Follow-up research supplied by founder. Review exact source support before adopting any additional fields.",
+      "sourceUrl": "https://dgcolumbiaadventures.com/",
+      "incomingClaims": [
+        {
+          "claim": "Handoff supplies operator email dgresham503@gmail.com; separates operator Chinook/Coho and river-cruise claims from embedded client-review bottomfish claims. Do not convert reviews into advertised offerings.",
+          "sourceUrl": "https://dgcolumbiaadventures.com/",
+          "basis": "supplied_research_unchecked",
+          "reportedObservedOn": "2026-11-13",
+          "checkedOn": null
+        }
+      ]
+    },
+    {
+      "publicName": "Shane Magnuson",
+      "entityType": "person",
+      "directoryId": "OG.0004087",
+      "publicationStatus": "manual_review_required",
+      "credentialStatus": "unknown",
+      "reason": "Follow-up research supplied by founder. Review exact source support before adopting any additional fields.",
+      "sourceUrl": "https://www.uppercolumbiaguide.com/about-us",
+      "incomingClaims": [
+        {
+          "claim": "Handoff supplies shane@uppercolumbiaguide.com and distinguishes live Gorge/Rogue/Clearwater offerings from legacy directory locations. Existing enrichment already excludes those legacy waterways.",
+          "sourceUrl": "https://www.uppercolumbiaguide.com/about-us",
+          "basis": "supplied_research_unchecked",
+          "reportedObservedOn": "2026-11-13",
+          "checkedOn": null
+        }
+      ]
+    },
+    {
+      "publicName": "Rod Shulley",
+      "entityType": "person",
+      "directoryId": "OG.0002193",
+      "publicationStatus": "manual_review_required",
+      "credentialStatus": "unknown",
+      "reason": "Follow-up research supplied by founder. Review exact source support before adopting any additional fields.",
+      "sourceUrl": "https://reelemupfishingadventures.com/",
+      "incomingClaims": [
+        {
+          "claim": "Handoff distinguishes operator-listed Trask, Wilson, Nestucca, Tillamook Bay, Willamette and Columbia from third-party Nehalem/Scappoose listings.",
+          "sourceUrl": "https://reelemupfishingadventures.com/",
+          "basis": "supplied_research_unchecked",
+          "reportedObservedOn": "2026-11-13",
+          "checkedOn": null
+        }
+      ]
+    },
+    {
+      "publicName": "Cameron Black",
+      "entityType": "person",
+      "directoryId": "OG.0001093",
+      "publicationStatus": "manual_review_required",
+      "credentialStatus": "unknown",
+      "reason": "Follow-up research supplied by founder. Review exact source support before adopting any additional fields.",
+      "sourceUrl": "https://gonecatchin.com/cameron-black-at-gone-catchin-guide-service/",
+      "incomingClaims": [
+        {
+          "claim": "Handoff reports Layden Black as separate son/deckhand and specific boat/raft details. Do not add a captain alias or mandatory river-vessel selector.",
+          "sourceUrl": "https://gonecatchin.com/cameron-black-at-gone-catchin-guide-service/",
+          "basis": "supplied_research_unchecked",
+          "reportedObservedOn": "2026-11-13",
+          "checkedOn": null
+        }
+      ]
+    },
+    {
+      "publicName": "Cameron Kennedy",
+      "entityType": "person",
+      "directoryId": "OG.0002882",
+      "publicationStatus": "manual_review_required",
+      "credentialStatus": "unknown",
+      "reason": "Follow-up research supplied by founder. Review exact source support before adopting any additional fields.",
+      "sourceUrl": "https://cksportfishing.com/about/",
+      "incomingClaims": [
+        {
+          "claim": "Handoff repeats CK Sport Fishing with CK Guide Service as a search term. Existing ID is retained; new contacts remain proposals.",
+          "sourceUrl": "https://cksportfishing.com/about/",
+          "basis": "supplied_research_unchecked",
+          "reportedObservedOn": "2026-11-13",
+          "checkedOn": null
+        }
+      ]
+    },
+    {
+      "publicName": "Keondre Menefee",
+      "entityType": "person",
+      "directoryId": "OG.0003348",
+      "publicationStatus": "manual_review_required",
+      "credentialStatus": "unknown",
+      "reason": "Follow-up research supplied by founder. Review exact source support before adopting any additional fields.",
+      "sourceUrl": "https://www.valleycoastoutdoors.com/about",
+      "incomingClaims": [
+        {
+          "claim": "Handoff repeats Valley Coast LLC as an alias without resolving the prior business-identity ambiguity. Keep Valley Coast Outdoors as the supported name until this alias is substantiated.",
+          "sourceUrl": "https://www.valleycoastoutdoors.com/about",
+          "basis": "supplied_research_unchecked",
+          "reportedObservedOn": "2026-11-13",
+          "checkedOn": null
+        }
+      ]
+    },
+    {
+      "publicName": "William Sanborn",
+      "entityType": "person",
+      "directoryId": "OG.0003790",
+      "publicationStatus": "manual_review_required",
+      "credentialStatus": "unknown",
+      "reason": "Follow-up research supplied by founder. Review exact source support before adopting any additional fields.",
+      "sourceUrl": "https://www.igotcrabs.net/bandit-guide-service",
+      "incomingClaims": [
+        {
+          "claim": "Founder explicitly identifies Billy as William Sanborn of Bandit. Nickname-aware search now connects Billy + Bandit without changing identity or merging 1 Arm Bandit.",
+          "sourceUrl": "https://www.igotcrabs.net/bandit-guide-service",
+          "basis": "supplied_research_unchecked",
+          "reportedObservedOn": "2026-11-13",
+          "checkedOn": null
+        }
+      ]
     }
   ],
   "crossStateCandidates": [
@@ -185,5 +507,6 @@
     "No automatic import of criminal-history flags, family-record references, telephone-aggregator data or inferred tribal membership.",
     "No vessel selection required for ordinary river or bank guides.",
     "Twin Spin conflicting phone numbers are excluded; no guessed brother identity."
-  ]
+  ],
+  "latestHandoffReceivedOn": "2026-11-14"
 }

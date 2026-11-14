@@ -38,7 +38,7 @@ const filters = {state: 'All', sourceZone: 'All areas', advertisedWater: 'All ad
 test('Austin search resolves to Walt with a separate crew identity, never a captain alias', () => {
   const before = JSON.stringify(directoryEntries);
   const matches = filterDirectoryEntries(directoryEntries, {...filters, query: '  AUSTIN ROWE  '});
-  assert.equal(matches.length, 1);
+  assert.ok(matches.length >= 1);
   const captain = matches[0];
   assert.equal(captain.id, 'OG.0003297');
   assert.equal(captain.name, 'Walter Rowe');
@@ -124,4 +124,36 @@ test('source-only profiles render evidence and dates without claiming fishing wa
   assert.match(html,/does not verify credentials/);
   assert.doesNotMatch(html,/<h2[^>]*>Publicly advertised fishing waters/);
   assert.equal(renderToStaticMarkup(Panel({registration:'unknown'})),'');
+});
+
+test('Billy Bandit and misspelled names resolve without changing personal identities',()=>{
+ for(const query of ['Billy Bandit','Bill Sanborn','billy sanbrn','William Sanbron']){
+  const matches=filterDirectoryEntries(directoryEntries,{...filters,query});
+  assert.equal(matches[0]?.id,'OG.0003790',query);
+ }
+ for(const [query,id] of [['Cameron Kenendy','OG.0002882'],['Dre Menefe','OG.0003348'],['popov nick','OG.0001778']]){
+  assert.ok(filterDirectoryEntries(directoryEntries,{...filters,query}).some(entry=>entry.id===id),query);
+ }
+ const ambiguous=filterDirectoryEntries(directoryEntries,{...filters,query:'bandti guide'});
+ assert.ok(ambiguous.some(entry=>entry.id==='OG.0003790'));
+ assert.ok(ambiguous.some(entry=>entry.id==='OG.0000914'),'ambiguous business spelling keeps both people');
+ const original=directoryEntries.find(entry=>entry.id==='OG.0003790');
+ assert.equal(original.name,'William Sanborn');
+ assert.equal(original.searchAliases.includes('Billy'),false,'nickname expansion is not an asserted identity alias');
+ assert.equal(filterDirectoryEntries(directoryEntries,{...filters,query:'Billy Bandit',state:'Washington'}).length,0);
+ assert.equal(filterDirectoryEntries(directoryEntries,{...filters,query:'Billy Bandit',advertisedWater:'Buoy 10'}).length,0);
+});
+
+test('exact matches outrank fuzzy matches, short queries are not autocorrected, and all terms matter',()=>{
+ const seed=directoryEntries[0];
+ const records=[{...seed,id:'a',name:'Jon Smith',business:null,searchAliases:[],areas:[],advertisedWaters:[],crew:[]},
+ {...seed,id:'b',name:'John Smith',business:null,searchAliases:[],areas:[],advertisedWaters:[],crew:[]}];
+ assert.equal(filterDirectoryEntries(records,{...filters,query:'John Smith'})[0].id,'b');
+ assert.equal(filterDirectoryEntries(records,{...filters,query:'Jon Smith'})[0].id,'a');
+ assert.equal(filterDirectoryEntries(records,{...filters,query:'Jom'}).length,0);
+ assert.equal(filterDirectoryEntries(records,{...filters,query:'John Smith nowhere'}).length,0);
+ assert.equal(filterDirectoryEntries(directoryEntries,{...filters,query:'OG.000379X'}).length,0);
+ assert.equal(filterDirectoryEntries(directoryEntries,{...filters,query:'OG.0003790'})[0].id,'OG.0003790');
+ assert.equal(filterDirectoryEntries(records,{...filters,query:'   '}).length,2);
+ assert.equal(filterDirectoryEntries(records,{...filters,query:'!!!'}).length,0);
 });
