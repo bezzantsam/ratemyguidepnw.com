@@ -58,7 +58,11 @@ test('guide profiles still load real Supabase moderation/review components', () 
   }
   const review=read('components/CaptainReviews.tsx');
   assert.match(review, /public_angler_reviews/);
-  assert.match(review, /status:'pending'/);
+  const mapping=read('lib/review-submission.ts');
+  const composer=read('components/ReviewComposer.tsx');
+  assert.match(mapping, /status:\s*'pending'/);
+  assert.match(composer, /createPendingReviewInsert/);
+  assert.doesNotMatch(mapping, /status:\s*'published'/);
 });
 
 test('explanation provides neutral distinctions and accessible source disclosure', () => {
@@ -75,4 +79,11 @@ test('explanation provides neutral distinctions and accessible source disclosure
   assert.match(css, /trust-evidence-grid/);
   assert.match(css, /max-width:830px/);
   assert.match(css, /focus-visible/);
+});
+
+
+test('Dock Talk empty state never implies independent trip verification', () => {
+  const ticker=read('components/DockTalkTicker.tsx');
+  assert.match(ticker, /First moderated angler reviews coming soon/);
+  assert.doesNotMatch(ticker, /verified-published/);
 });

@@ -1,28 +1,51 @@
 'use client';
 import {useEffect,useState} from 'react';
-import {createClient} from '@supabase/supabase-js';
-import AuthPanel from './AuthPanel';
-const url=process.env.NEXT_PUBLIC_SUPABASE_URL,key=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
-const db=url&&key?createClient(url,key):null;
-const categories=[['Overall experience','quality'],['Communication','communication'],['Professionalism','professionalism'],['Safety','safety'],['Boat & equipment','equipment'],['Fishing knowledge','knowledge'],['Effort & instruction','effort'],['Value for money','value_rating']] as const;
-type PublicReview={id:string;body:string;quality:number;published_at:string;would_book_again:boolean;communication:number|null;professionalism:number|null;safety:number|null;equipment:number|null;knowledge:number|null;effort:number|null;value_rating:number|null;trip_context:string|null};
+import {client} from './AuthPanel';
+import ReviewComposer from './ReviewComposer';
+
+type PublicReview = {
+  id:string;body:string;quality:number;published_at:string;would_book_again:boolean;
+  communication:number|null;professionalism:number|null;safety:number|null;
+  equipment:number|null;knowledge:number|null;effort:number|null;
+  value_rating:number|null;trip_context:string|null;
+};
+
 export default function CaptainReviews({slug}:{slug:string}){
- const [id,setId]=useState(''),[reviews,setReviews]=useState<PublicReview[]>([]),[ratings,setRatings]=useState<Record<string,number>>({}),[body,setBody]=useState(''),[intensity,setIntensity]=useState(3),[wouldBook,setWouldBook]=useState('yes'),[outcome,setOutcome]=useState('not_disclosed'),[context,setContext]=useState(''),[month,setMonth]=useState(''),[email,setEmail]=useState(''),[signedIn,setSignedIn]=useState(false),[busy,setBusy]=useState(false),[msg,setMsg]=useState('');
- useEffect(()=>{let active=true;async function load(){if(!db)return;const {data:g}=await db.from('guides').select('id').eq('slug',slug).single();if(!g||!active)return;setId(g.id);const {data:r}=await db.from('public_angler_reviews').select('id,body,quality,published_at,would_book_again,communication,professionalism,safety,equipment,knowledge,effort,value_rating,trip_context').eq('guide_id',g.id).order('published_at',{ascending:false}).limit(50);if(active)setReviews(r||[]);const {data:u}=await db.auth.getUser();if(active)setSignedIn(!!u.user)}void load();const {data:{subscription}}=db?.auth.onAuthStateChange((_event,session)=>setSignedIn(!!session?.user))||{data:{subscription:{unsubscribe(){}}}};return()=>{active=false;subscription.unsubscribe()}},[slug]);
- async function signIn(){if(!db)return;setBusy(true);const {error}=await db.auth.signInWithOtp({email,options:{emailRedirectTo:window.location.href}});setMsg(error?.message||'Check your email for a sign-in link.');setBusy(false)}
- async function submit(){if(!db||!id)return;const user=(await db.auth.getUser()).data.user;if(!user){setMsg('Please sign in first.');return}if(body.trim().length<80||!ratings.quality||!month){setMsg('Add an overall rating, trip month, and at least 80 characters describing the trip.');return}
- setBusy(true);const {error}=await db.from('reviews').insert({guide_id:id,author_id:user.id,quality:ratings.quality,intensity,would_book_again:wouldBook==='yes',catch_outcome:outcome,body:body.trim(),trip_month:month+'-01',trip_context:context.trim()||null,communication:ratings.communication||null,professionalism:ratings.professionalism||null,safety:ratings.safety||null,equipment:ratings.equipment||null,knowledge:ratings.knowledge||null,effort:ratings.effort||null,value_rating:ratings.value_rating||null,status:'pending'});
- if(error)setMsg(error.message);else{setMsg('Review submitted for moderation. It is not public yet.');setBody('');setRatings({})}setBusy(false)}
- return <section className="section" id="reviews"><h2>Ratings &amp; angler reviews</h2><p className="muted">Reviews are anonymous to visitors. A signed-in account is required to help prevent fraud. Submissions are reviewed before publication.</p>
- {!reviews.length?<p>No published reviews yet. Be the first to share a firsthand trip experience.</p>:<div className="review-list">{reviews.map(r=><article className="card" key={r.id}><p><strong>{r.quality}/5 overall</strong> · Would book again: {r.would_book_again?'Yes':'No'}</p><p className="muted">Anonymous angler · {new Date(r.published_at).toLocaleDateString()}</p><p>{r.body}</p><p className="muted">{r.trip_context||''}</p></article>)}</div>}
- <div className="review-form card"><h3>Rate this fishing guide</h3><p className="muted">Share your own experience, including what went well and what fell short. Focus on observable events, avoid personal information, threats or unsupported accusations.</p>
- {!signedIn?<div><AuthPanel/></div>:<div className="review-fields">{categories.map(([label,k])=><fieldset key={k}><legend>{label}{k==='quality'?' (required)':''}</legend><div className="stars">{[1,2,3,4,5].map(v=><button key={v} aria-pressed={ratings[k]===v} className={ratings[k]===v?'selected':''} onClick={()=>setRatings(p=>({...p,[k]:v}))} type="button">{v} ★</button>)}</div></fieldset>)}
- <label>Trip month<input type="month" value={month} max={new Date().toISOString().slice(0,7)} onChange={e=>setMonth(e.target.value)}/></label>
- <label>Trip intensity (not a quality score)<select value={intensity} onChange={e=>setIntensity(Number(e.target.value))}>{[1,2,3,4,5].map(x=><option value={x} key={x}>{x} / 5</option>)}</select></label>
- <label>Would you book again?<select value={wouldBook} onChange={e=>setWouldBook(e.target.value)}><option value="yes">Yes</option><option value="no">No</option></select></label>
- <label>Catch outcome<select value={outcome} onChange={e=>setOutcome(e.target.value)}><option value="not_disclosed">Prefer not to say</option><option value="limited">Limited</option><option value="caught">Caught fish</option><option value="slow">Slow / no fish</option></select></label>
- <label>Trip context (optional)<input maxLength={140} value={context} onChange={e=>setContext(e.target.value)} placeholder="e.g., fall salmon charter, 4 anglers"/></label>
- <label>Write your review (80–3000 characters)<textarea minLength={80} maxLength={3000} rows={7} value={body} onChange={e=>setBody(e.target.value)} placeholder="Describe the booking, communication, equipment, conduct, safety and what actually happened. Be specific and fair."/></label>
- <button disabled={busy||!ratings.quality||body.trim().length<80||!month} onClick={()=>void submit()}>Submit anonymous review for moderation</button>
- <p className="muted">Anonymous means your name is not displayed to the public; the platform retains your account identifier for moderation and legal compliance. There is no guarantee of absolute anonymity.</p></div>}{msg&&<p role="status">{msg}</p>}</div></section>
+  const [guideId,setGuideId]=useState('');
+  const [reviews,setReviews]=useState<PublicReview[]>([]);
+  const [status,setStatus]=useState('Loading reviews…');
+  useEffect(()=>{
+    if(!client){setStatus('Review database is not configured yet.');return}
+    let active=true;
+    async function load(){
+      const {data:guide,error:guideError}=await client!.from('guides')
+        .select('id').eq('slug',slug).maybeSingle();
+      if(!active)return;
+      if(guideError||!guide){setStatus('This listing is not yet connected to the review database.');return}
+      setGuideId(guide.id);
+      const {data,error}=await client!.from('public_angler_reviews')
+        .select('id,body,quality,published_at,would_book_again,communication,professionalism,safety,equipment,knowledge,effort,value_rating,trip_context')
+        .eq('guide_id',guide.id).order('published_at',{ascending:false}).limit(50);
+      if(!active)return;
+      if(error){setStatus('Published reviews could not be loaded.');return}
+      setReviews(data||[]);
+      setStatus('');
+    }
+    void load();
+    return()=>{active=false};
+  },[slug]);
+
+  return <section className="section" id="reviews">
+    <h2>Ratings &amp; angler reviews</h2>
+    <p className="muted">Firsthand experiences are attributed to an account privately, and reviewed before publication. A published review is not automatically a verified trip.</p>
+    {status&&<p className="muted" role="status">{status}</p>}
+    {!status&&reviews.length===0&&<p>No published reviews yet. Share a genuine firsthand trip experience.</p>}
+    <div className="review-list">{reviews.map(review=><article className="card" key={review.id}>
+      <p><strong>{review.quality}/5 overall</strong> · Would book again: {review.would_book_again?'Yes':'No'}</p>
+      <p className="muted">Anonymous angler · {new Date(review.published_at).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'})}</p>
+      <p>{review.body}</p>
+      {review.trip_context&&<p className="muted">{review.trip_context}</p>}
+    </article>)}</div>
+    <ReviewComposer guideId={guideId} slug={slug}/>
+  </section>;
 }

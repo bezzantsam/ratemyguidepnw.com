@@ -38,6 +38,14 @@ jobs:
         run: node --test tests/methodology.test.mjs
       - name: Verify guide profile provenance and honest review evidence labels
         run: node --test tests/guide-trust.test.mjs
+      - name: Verify installable mobile shell and private-data offline policy
+        run: npm run test:pwa
+      - name: Verify browser-local saved captain shortlist
+        run: npm run test:shortlist
+      - name: Verify pending-only review composer
+        run: npm run test:review
+      - name: Verify Washington public profile URL stability
+        run: npm run test:directory-ids
       - name: TypeScript check
         run: npm run typecheck
       - name: Build Next.js production assets without private DB credentials

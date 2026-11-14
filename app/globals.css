@@ -137,3 +137,74 @@ a.dock-ticker-item:hover{color:white;text-decoration:underline}
 .trust-policy-footer{margin-top:24px;max-width:900px}
 @media(max-width:830px){.trust-evidence-grid{grid-template-columns:1fr}.trust-next-steps{grid-template-columns:1fr}.trust-panel-heading{align-items:flex-start}}
 @media(max-width:500px){.trust-term{grid-template-columns:1fr;gap:8px;padding:17px}.trust-panel{padding:16px}.trust-evidence-item{padding:17px}}
+
+/* The PWA shell never changes guide or review data; these are visual affordances only. */
+.mobile-navigation{display:none}
+.app-install{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;border:1px solid #557568;border-radius:12px;padding:16px 18px;background:#193b3e;margin-top:22px}
+.app-install-copy{display:flex;align-items:flex-start;gap:12px;flex:1;min-width:220px}
+.app-install-copy>svg{color:#ebc87c;flex-shrink:0;margin-top:3px}
+.app-install-copy strong{font-size:15px;color:#f7edcf}
+.app-install-copy p{font-size:12px;color:#c5d8cb;margin:5px 0}
+.app-install button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;background:#d8b26b;border:0;border-radius:8px;color:#0b2427;font:inherit;font-size:13px;font-weight:800;padding:11px 15px;cursor:pointer}
+.app-install-help{flex-basis:100%;font-size:13px;margin:0 0 0 33px;color:#e6e6db}
+.app-install button:focus-visible,.mobile-navigation a:focus-visible{outline:3px solid #f5deae;outline-offset:3px}
+@media(max-width:680px){
+ body{padding-bottom:calc(70px + env(safe-area-inset-bottom))}
+ header{flex-direction:row;align-items:center;justify-content:space-between;padding:16px 18px}
+ header nav[aria-label="Main navigation"]{display:none}
+ .brand{font-size:23px}
+ .mobile-navigation{position:fixed;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;align-items:stretch;left:0;right:0;bottom:0;z-index:100;background:#102d30;border-top:1px solid #668077;padding:3px 6px max(5px,env(safe-area-inset-bottom));box-shadow:0 -6px 24px #06181999}
+ .mobile-navigation-link{min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-radius:8px;color:#c5d6cf;font-size:11px;font-weight:700;line-height:1.1;text-align:center;padding:7px 0}
+ .mobile-navigation-link.active{color:#f3d28c;background:#224744}
+ .mobile-navigation-link:hover{text-decoration:none;color:#f4ddaa}
+ .app-install{padding:13px 14px}
+ .app-install-copy{min-width:100%}
+ .app-install button{width:100%}
+ .app-install-help{margin-left:0}
+}
+@media(prefers-reduced-motion:reduce){.mobile-navigation-link,.app-install button{transition:none}}
+
+
+/* Browser-local saved captain shortlist. Button is a sibling of the profile link, never a nested interactive element. */
+.saved-guide-row{display:flex;align-items:stretch;background:#fff;border-bottom:1px solid #e1e7e3}
+.saved-guide-row .guide-result{flex:1;min-width:0;border-bottom:0}
+.saved-guide-row .save-guide-control{display:flex;align-items:center;justify-content:center;padding:10px 16px}
+.save-guide-button{white-space:nowrap;cursor:pointer;background:#fff;border:1px solid #a8bdb6;border-radius:8px;color:#24483c;font:inherit;font-size:13px;font-weight:800;padding:10px 13px;min-height:44px}
+.save-guide-button.saved{background:#e9f3e9;border-color:#497657;color:#24553a}
+.save-guide-button:hover{border-color:#2e6755}
+.save-guide-button:focus-visible{outline:3px solid #d8b26b;outline-offset:3px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:580px){.saved-guide-row .save-guide-control{padding:8px}.save-guide-button{padding:9px 10px;font-size:12px}}
+
+
+
+/* Mobile-first firsthand review composer; follows existing estuary teal/brass tokens. */
+.review-progress{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;padding:0;margin:23px 0}
+.review-progress li{font-size:12px;color:#d7e6db;border:1px solid #638078;background:#204440;border-radius:8px;text-align:center;padding:11px 5px}
+.review-progress li.current{background:#d8b26b;color:#132d2b;border-color:#e8cc8f;font-weight:800}
+.review-step{display:grid;gap:18px}
+.review-step h4{font-size:22px;margin:0}
+.review-step fieldset{margin:0}
+.review-step label{line-height:1.6}
+.review-step label span.muted{font-weight:400}
+.review-rating{border:1px solid #53756a;border-radius:10px;padding:14px}
+.review-rating legend{font-size:15px;font-weight:700;padding:0 7px}
+.review-rating p{margin:3px 0 10px}
+.review-rating-options{display:flex;gap:8px;flex-wrap:wrap}
+.review-rating-options button{min-width:49px;min-height:46px;padding:9px 10px;background:#20463f;color:#edf1e6;border:1px solid #729286}
+.review-rating-options button.selected{background:#d8b26b;border-color:#e5c683;color:#132f29}
+.review-rating-options button:focus-visible,.review-step button:focus-visible,.review-step-actions button:focus-visible{outline:3px solid #f6da9c;outline-offset:3px}
+.review-step details{background:#163936;border:1px solid #547369;border-radius:10px;padding:12px 15px}
+.review-step summary{cursor:pointer;font-weight:700}
+.review-step details fieldset{margin-top:14px}
+.review-attestation{display:flex!important;align-items:flex-start;gap:10px}
+.review-attestation input{height:20px;width:20px;flex:0 0 20px;margin-top:3px}
+.review-preview{background:#123430;border-left:3px solid #d8b26b;padding:15px;border-radius:6px;white-space:pre-wrap;overflow-wrap:anywhere}
+.review-privacy-warning{border:1px solid #d1aa60;background:#3c382a;border-radius:8px;padding:13px;font-size:14px}
+.review-signed-in{color:#e6ca8f;font-weight:700}
+.review-status{border-left:3px solid #d8b26b;padding:10px 14px;background:#28443b;border-radius:4px}
+.review-step-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:20px}
+.review-step-actions button{margin:0}
+.review-step-actions button.review-secondary{background:transparent;color:#f0d295;border:1px solid #967c4d}
+.review-step textarea{resize:vertical}
+@media(max-width:580px){.review-form.card{padding:18px}.review-progress{gap:4px}.review-progress li{font-size:10px;padding:11px 2px}.review-rating-options{gap:5px}.review-rating-options button{flex:1;min-width:42px;padding:7px 5px;font-size:12px}.review-step-actions button{flex:1}}
