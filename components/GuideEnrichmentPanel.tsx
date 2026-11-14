@@ -8,11 +8,11 @@ const sourceLabels={
 /** Informational source references, never an official license or identity check. */
 export default function GuideEnrichmentPanel({registration}:{registration:string}){
  const enrichment=guideEnrichmentFor(registration);
- if(!enrichment || enrichment.advertisedWaters.length === 0)return null;
+ if(!enrichment || (enrichment.advertisedWaters.length === 0 && !enrichment.sourceLinks?.length))return null;
 
  return <section className="section card guide-enrichment" aria-labelledby="guide-enrichment-title">
    <p className="eyebrow">PUBLIC SOURCE RESEARCH · LIMITED PILOT</p>
-   <h2 id="guide-enrichment-title">Publicly advertised fishing waters</h2>
+   <h2 id="guide-enrichment-title">{enrichment.advertisedWaters.length ? 'Publicly advertised fishing waters' : 'Public business sources'}</h2>
    <p className="muted">These are named on linked operator or third-party pages, not verified departure ports, current bookings, active licenses, or endorsements by RateMyGuidePNW. Confirm availability directly before booking.</p>
    {enrichment.searchAliases.length>0&&<p><strong>Other public search names:</strong> {enrichment.searchAliases.join(' · ')}</p>}
    <ul className="guide-enrichment-waters">
@@ -20,11 +20,19 @@ export default function GuideEnrichmentPanel({registration}:{registration:string
        <li key={water.name}>
          <strong>{water.name}</strong>
          <a href={water.sourceUrl} target="_blank" rel="noopener noreferrer">
-           {sourceLabels[water.sourceType]} ↗
+           {sourceLabels[water.sourceType]} ↗ {water.observedOn && `· Observed ${water.observedOn}`}
          </a>
        </li>
      )}
    </ul>
+   {enrichment.sourceLinks?.length ? <div>
+     <h3>Business and operating-name sources</h3>
+     <ul>{enrichment.sourceLinks.map(source=><li key={source.url}>
+       <a href={source.url} target="_blank" rel="noopener noreferrer">{source.label} ↗</a>
+       {' · '}{sourceLabels[source.sourceType]} · Observed {source.observedOn}
+     </li>)}</ul>
+     <p className="muted">A commercial roster listing reports an affiliation; it does not verify credentials or guarantee the listing is current.</p>
+   </div> : null}
    <p className="muted">Public-facing names and advertised fisheries do not independently prove that two identities are the same person. Original registration details remain visible separately.</p>
  </section>;
 }

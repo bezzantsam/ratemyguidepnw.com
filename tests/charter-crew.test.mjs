@@ -101,3 +101,27 @@ test('rendered search card distinguishes reported crew from captain aliases', ()
   assert.doesNotMatch(html, /Also listed publicly as:[^<]*Austin/);
   assert.match(html, /href="\/guides\/og-0003297"/);
 });
+
+test('requested operating names find existing people without creating duplicate profiles', () => {
+  for (const [query, id] of [['Nick Popov','OG.0001778'],['Cliff Sallee','OG.0004079'],['Dre Menefee','OG.0003348'],['Dan Coelho','OG.0003549'],["Bonk 'Em All",'wa-021'],['Beach Bandit','OG.0003790']]) {
+    const matches=filterDirectoryEntries(directoryEntries,{...filters,query});
+    assert.ok(matches.some(row=>row.id===id),query);
+  }
+  const bandit=directoryEntries.find(row=>row.id==='OG.0003790');
+  assert.equal(bandit.name,'William Sanborn');
+  assert.equal(bandit.advertisedWaters.length,0,'shore activities alone do not establish named waterways');
+  const dre=directoryEntries.find(row=>row.id==='OG.0003348');
+  assert.equal(dre.searchAliases.includes('Valley Coast LLC'),false);
+  assert.equal(directoryEntries.find(row=>row.id==='OG.0003549').advertisedWaters.length,0);
+});
+
+test('source-only profiles render evidence and dates without claiming fishing waters', () => {
+  const Panel=load('components/GuideEnrichmentPanel.tsx').default;
+  const html=renderToStaticMarkup(Panel({registration:'wa-021'}));
+  assert.match(html,/Public business sources/);
+  assert.match(html,/https:\/\/bonkemall.com\//);
+  assert.match(html,/Observed 2026-11-14/);
+  assert.match(html,/does not verify credentials/);
+  assert.doesNotMatch(html,/<h2[^>]*>Publicly advertised fishing waters/);
+  assert.equal(renderToStaticMarkup(Panel({registration:'unknown'})),'');
+});

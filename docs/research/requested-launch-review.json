@@ -1,0 +1,189 @@
+{
+  "checkedOn": "2026-11-14",
+  "purpose": "Private repository research queue; never imported by public application routes.",
+  "pendingEntities": [
+    {
+      "publicName": "Daniel Coelho’s brother",
+      "entityType": "person",
+      "directoryId": null,
+      "publicationStatus": "manual_review_required",
+      "credentialStatus": "unknown",
+      "reason": "User reports a brother/co-guide. Given name and affiliation remain unresolved. Do not infer identity from surname, residential records, or regional proximity.",
+      "sourceUrl": null
+    },
+    {
+      "publicName": "Kodi Cherry",
+      "entityType": "person",
+      "directoryId": null,
+      "publicationStatus": "manual_review_required",
+      "credentialStatus": "unknown",
+      "reason": "Founder identifies this guide. Public business contact and operating details remain unresolved. No tribal membership or permit inference; exclude family/obituary records.",
+      "sourceUrl": null
+    },
+    {
+      "publicName": "Cleve Lorton",
+      "entityType": "person",
+      "directoryId": null,
+      "publicationStatus": "manual_review_required",
+      "credentialStatus": "unknown",
+      "reason": "Tourism page names this guide. Current business contact, specific advertised waterways and permit standing not established.",
+      "sourceUrl": "https://www.ancient-coast.com/play"
+    },
+    {
+      "publicName": "The Gambler",
+      "entityType": "vessel",
+      "directoryId": null,
+      "publicationStatus": "manual_review_required",
+      "credentialStatus": "unknown",
+      "reason": "Supplied Gambler Charter/Ilwaco/captain mapping remains a candidate: official pages returned no readable text during this check. Do not substitute a same-named boat.",
+      "sourceUrl": "https://www.gamblercharter.com/the-gambler"
+    },
+    {
+      "publicName": "The Outlaw",
+      "entityType": "vessel",
+      "directoryId": null,
+      "publicationStatus": "manual_review_required",
+      "credentialStatus": "unknown",
+      "reason": "Supplied Gambler Charter/Ilwaco/captain mapping remains a candidate; exact current operator, hull and crew assignments need accessible evidence.",
+      "sourceUrl": "https://www.gamblercharter.com/the-outlaw"
+    },
+    {
+      "publicName": "Gambler Charter",
+      "entityType": "business",
+      "directoryId": null,
+      "publicationStatus": "manual_review_required",
+      "credentialStatus": "unknown",
+      "reason": "No local directory match established; vessel/captain/crew relationships are not approved for publication.",
+      "sourceUrl": "https://www.gamblercharter.com/our-captains"
+    },
+    {
+      "publicName": "Dockside Charters",
+      "entityType": "business",
+      "directoryId": null,
+      "publicationStatus": "manual_review_required",
+      "credentialStatus": "unknown",
+      "reason": "Official fleet page lists seven boats. No local entity match or public fleet schema approved in this change.",
+      "sourceUrl": "https://www.docksidedepoebay.com/fleet.php"
+    },
+    {
+      "publicName": "Samson",
+      "entityType": "vessel",
+      "directoryId": null,
+      "publicationStatus": "manual_review_required",
+      "credentialStatus": "unknown",
+      "reason": "Official Dockside fleet page lists James Pederson. This supports a publicly listed assignment only, not current credentials, ownership, historic transitions, additional co-captains or deckhands.",
+      "sourceUrl": "https://www.docksidedepoebay.com/fleet.php"
+    },
+    {
+      "publicName": "Triumph",
+      "entityType": "vessel",
+      "directoryId": null,
+      "publicationStatus": "manual_review_required",
+      "credentialStatus": "unknown",
+      "reason": "Official Dockside fleet page lists Leon Morrow. This supports a publicly listed assignment only, not current credentials, ownership, historic transitions, additional co-captains or deckhands.",
+      "sourceUrl": "https://www.docksidedepoebay.com/fleet.php"
+    },
+    {
+      "publicName": "Tacklebuster",
+      "entityType": "vessel",
+      "directoryId": null,
+      "publicationStatus": "manual_review_required",
+      "credentialStatus": "unknown",
+      "reason": "Official Dockside fleet page lists Captain JT. This supports a publicly listed assignment only, not current credentials, ownership, historic transitions, additional co-captains or deckhands.",
+      "sourceUrl": "https://www.docksidedepoebay.com/fleet.php"
+    },
+    {
+      "publicName": "Surfrider",
+      "entityType": "vessel",
+      "directoryId": null,
+      "publicationStatus": "manual_review_required",
+      "credentialStatus": "unknown",
+      "reason": "Official Dockside fleet page lists Tyler Turner. This supports a publicly listed assignment only, not current credentials, ownership, historic transitions, additional co-captains or deckhands.",
+      "sourceUrl": "https://www.docksidedepoebay.com/fleet.php"
+    },
+    {
+      "publicName": "Kimberly Ann",
+      "entityType": "vessel",
+      "directoryId": null,
+      "publicationStatus": "manual_review_required",
+      "credentialStatus": "unknown",
+      "reason": "Official Dockside fleet page lists Richard Newton. This supports a publicly listed assignment only, not current credentials, ownership, historic transitions, additional co-captains or deckhands.",
+      "sourceUrl": "https://www.docksidedepoebay.com/fleet.php"
+    },
+    {
+      "publicName": "Sunrise",
+      "entityType": "vessel",
+      "directoryId": null,
+      "publicationStatus": "manual_review_required",
+      "credentialStatus": "unknown",
+      "reason": "Official Dockside fleet page lists Chad Mckinney. This supports a publicly listed assignment only, not current credentials, ownership, historic transitions, additional co-captains or deckhands.",
+      "sourceUrl": "https://www.docksidedepoebay.com/fleet.php"
+    },
+    {
+      "publicName": "SportFisher",
+      "entityType": "vessel",
+      "directoryId": null,
+      "publicationStatus": "manual_review_required",
+      "credentialStatus": "unknown",
+      "reason": "Official Dockside fleet page lists Craig Calkins. This supports a publicly listed assignment only, not current credentials, ownership, historic transitions, additional co-captains or deckhands.",
+      "sourceUrl": "https://www.docksidedepoebay.com/fleet.php"
+    },
+    {
+      "publicName": "Jordan Knigge",
+      "entityType": "person",
+      "directoryId": null,
+      "publicationStatus": "manual_review_required",
+      "credentialStatus": "unknown",
+      "reason": "Not among the nine named booking cards in the checked roster. Historical appearances or testimonials alone do not establish current affiliation.",
+      "sourceUrl": "https://addicted.fishing/pages/book-a-guided-fishing-trip"
+    },
+    {
+      "publicName": "Kevin Gray",
+      "entityType": "person",
+      "directoryId": null,
+      "publicationStatus": "manual_review_required",
+      "credentialStatus": "unknown",
+      "reason": "Not among the nine named booking cards in the checked roster. Historical appearances or testimonials alone do not establish current affiliation.",
+      "sourceUrl": "https://addicted.fishing/pages/book-a-guided-fishing-trip"
+    },
+    {
+      "publicName": "TJ Hester",
+      "entityType": "person",
+      "directoryId": null,
+      "publicationStatus": "manual_review_required",
+      "credentialStatus": "unknown",
+      "reason": "Not among the nine named booking cards in the checked roster. Historical appearances or testimonials alone do not establish current affiliation.",
+      "sourceUrl": "https://addicted.fishing/pages/book-a-guided-fishing-trip"
+    },
+    {
+      "publicName": "Eric Swanson",
+      "entityType": "person",
+      "directoryId": null,
+      "publicationStatus": "manual_review_required",
+      "credentialStatus": "unknown",
+      "reason": "Not among the nine named booking cards in the checked roster. Historical appearances or testimonials alone do not establish current affiliation.",
+      "sourceUrl": "https://addicted.fishing/pages/book-a-guided-fishing-trip"
+    }
+  ],
+  "crossStateCandidates": [
+    {
+      "oregonId": "OG.0001093",
+      "washingtonId": "wa-016",
+      "status": "manual_review_required"
+    },
+    {
+      "oregonId": "OG.0001248",
+      "washingtonId": "wa-070",
+      "status": "manual_review_required"
+    }
+  ],
+  "corrections": [
+    "Keep Walter/Walt Rowe and Austin Rowe separate; existing PR #79 models Austin as crew, not an alias.",
+    "Website listing is not government credential evidence.",
+    "Do not assign all outfitter crew to every boat without assignment evidence.",
+    "Do not use a gallery hashtag or trip video as proof of currently offered trips.",
+    "No automatic import of criminal-history flags, family-record references, telephone-aggregator data or inferred tribal membership.",
+    "No vessel selection required for ordinary river or bank guides.",
+    "Twin Spin conflicting phone numbers are excluded; no guessed brother identity."
+  ]
+}

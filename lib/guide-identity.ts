@@ -6,6 +6,7 @@
  * never merges reviews, captain claims, Saved Guides or licensing evidence.
  */
 export const DO_NOT_MERGE_PAIRS = [
+  ['OG.0003790','OG.0000914'], // William Sanborn / Bandit vs Raymond Herzman / 1 Arm Bandit
   ['wa-141','OG.0000315'], // Paul Lewis (Seattle) vs Marvin Henkel (Oregon): distinct Fast Action brands
   ['OG.0000050','OG.0000989'], // Shea vs Lance Fisher
   ['OG.0000050','OG.0003043'], // Shea vs Tony Fisher
