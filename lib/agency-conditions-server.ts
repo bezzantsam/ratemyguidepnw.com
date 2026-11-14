@@ -70,37 +70,37 @@ export function parseUsgsObservation(
   const output=base(key,fetchedAt);
   const now=Date.parse(fetchedAt);
   if(!Number.isFinite(now))throw new Error('Invalid fetch timestamp.');
-  if(!record(payload)||!record(payload.value)||!Array.isArray(payload.value.timeSeries))return output;
+  // USGS latest-continuous OGC API v1 returns GeoJSON FeatureCollection.
+  // Each feature properties includes monitoring_location_id, parameter_code,
+  // time, value, approval_status and unit_of_measure; no old NWIS timeSeries.
+  if(!record(payload)||!Array.isArray(payload.features))return output;
   const chosen=new Map<string,AgencyCondition['values'][number]>();
-  for(const series of payload.value.timeSeries){
-    if(!record(series)||!record(series.sourceInfo)||!record(series.variable))continue;
-    const sourceInfo=series.sourceInfo;
-    if(!Array.isArray(sourceInfo.siteCode)||
-        !sourceInfo.siteCode.some((s:unknown)=>record(s)&&s.value===output.stationId))continue;
-    const variable=series.variable;
-    if(!Array.isArray(variable.variableCode))continue;
-    const code=variable.variableCode.find((v:unknown)=>record(v)&&typeof v.value==='string'&&
-      Object.prototype.hasOwnProperty.call(USGS_CODES,v.value)) as Record<string,unknown>|undefined;
-    if(!code||!Array.isArray(series.values))continue;
-    const metric=USGS_CODES[code.value as string];
-    for(const block of series.values){
-      if(!record(block)||!Array.isArray(block.value))continue;
-      for(const point of block.value){
-        if(!record(point))continue;
-        const value=validNumber(point.value),sourceTime=safeIsoTime(point.dateTime);
-        if(value===null||sourceTime===null)continue;
-        const pointAt=Date.parse(sourceTime);
-        if(pointAt>now+5*60000)continue;
-        const existing=chosen.get(code.value as string);
-        if(existing&&Date.parse(existing.sourceTime)>=pointAt)continue;
-        const qualifiers=Array.isArray(point.qualifiers)
-          ?point.qualifiers.filter((q:unknown)=>typeof q==='string').join(', '):'Unspecified';
-        chosen.set(code.value as string,{
-          metric:metric.metric,value,unit:metric.unit,sourceTime,
-          quality:qualifiers||'Unspecified',
-        });
-      }
-    }
+  for(const feature of payload.features){
+    if(!record(feature)||!record(feature.properties))continue;
+    const p=feature.properties;
+    if(p.monitoring_location_id!=='USGS-'+output.stationId)continue;
+    if(typeof p.parameter_code!=='string'||
+       !Object.prototype.hasOwnProperty.call(USGS_CODES,p.parameter_code))continue;
+    const metric=USGS_CODES[p.parameter_code];
+    const value=validNumber(p.value),sourceTime=safeIsoTime(p.time);
+    if(value===null||sourceTime===null)continue;
+    const pointAt=Date.parse(sourceTime);
+    if(pointAt>now+5*60000)continue;
+    // Verify canonical units rather than silently labeling a converted unit.
+    const officialUnit=String(p.unit_of_measure??'').trim();
+    if(!officialUnit)continue;
+    const validUnits=metric.metric==='Discharge'
+      ?['ft^3/s','ft3/s','cfs']
+      :metric.metric==='Gage height'?['ft','feet']
+      :['deg C','°C','C','degree Celsius'];
+    if(!validUnits.includes(officialUnit))continue;
+    const existing=chosen.get(p.parameter_code);
+    if(existing&&Date.parse(existing.sourceTime)>=pointAt)continue;
+    chosen.set(p.parameter_code,{
+      metric:metric.metric,value,unit:metric.unit,sourceTime,
+      quality:typeof p.approval_status==='string'&&p.approval_status.trim()
+        ?p.approval_status.trim():'Unspecified',
+    });
   }
   const values=[...chosen.values()];
   const fresh=values.filter(p=>now-Date.parse(p.sourceTime)<=OBSERVATION_STALE_AFTER_MINUTES*60000);
@@ -139,10 +139,11 @@ export function agencyRequestUrl(key:WaterwaySourceKey):string{
   const src=WATERWAY_SOURCES[key];
   if(src.kind==='river'){
     const query=new URLSearchParams({
-      format:'json',sites:src.stationId,parameterCd:'00060,00065,00010',
-      period:'P2D',siteStatus:'all',
+      monitoring_location_id:'USGS-'+src.stationId,
+      f:'json',
+      limit:'100',
     });
-    return 'https://waterservices.usgs.gov/nwis/iv/?'+query.toString();
+    return 'https://api.waterdata.usgs.gov/ogcapi/v1/collections/latest-continuous/items?'+query.toString();
   }
   const query=new URLSearchParams({
     station:src.stationId,product:'predictions',date:'today',
