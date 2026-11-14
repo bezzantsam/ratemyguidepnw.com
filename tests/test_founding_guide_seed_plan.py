@@ -56,8 +56,12 @@ class FoundingGuideSeedPlanTests(unittest.TestCase):
         raw_ids = json.loads((ROOT / "lib/washington-stable-ids.json").read_text())
         raw_key = json.dumps(["nicholas ney", "neys fishing adventures", "wsga"],
                              separators=(",", ":"))
-        self.assertIn(raw_key, raw_ids)
-        self.assertNotIn(raw_ids[raw_key], existing)
+        # This reconciled WA row intentionally has NO separate stable public ID.
+        self.assertNotIn(raw_key, raw_ids)
+        self.assertTrue(any(row["name"] == "Nicholas Ney" for row in
+                            json.loads((ROOT / "lib/washington-raw.json").read_text())))
+        self.assertFalse(any(row["registered_name"] == "Nicholas Ney" and
+                             row["jurisdiction"] == "US-WA" for row in existing.values()))
         self.assertEqual(existing["OG.0000053"]["jurisdiction"], "US-OR")
         self.assertEqual(existing["wa-005"]["jurisdiction"], "US-WA")
 
