@@ -76,6 +76,8 @@ jobs:
         run: npm run test:atomic-claims
       - name: Verify offline human moderator decisions and server-only review publication proposal
         run: npm run test:review-decisions
+      - name: Verify modern USGS and NOAA source contracts without live fetches
+        run: npm run test:waterway-sources
       - name: TypeScript check
         run: npm run typecheck
       - name: Build Next.js production assets without private DB credentials
