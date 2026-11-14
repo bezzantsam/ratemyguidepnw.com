@@ -137,3 +137,29 @@ a.dock-ticker-item:hover{color:white;text-decoration:underline}
 .trust-policy-footer{margin-top:24px;max-width:900px}
 @media(max-width:830px){.trust-evidence-grid{grid-template-columns:1fr}.trust-next-steps{grid-template-columns:1fr}.trust-panel-heading{align-items:flex-start}}
 @media(max-width:500px){.trust-term{grid-template-columns:1fr;gap:8px;padding:17px}.trust-panel{padding:16px}.trust-evidence-item{padding:17px}}
+
+/* The PWA shell never changes guide or review data; these are visual affordances only. */
+.mobile-navigation{display:none}
+.app-install{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;border:1px solid #557568;border-radius:12px;padding:16px 18px;background:#193b3e;margin-top:22px}
+.app-install-copy{display:flex;align-items:flex-start;gap:12px;flex:1;min-width:220px}
+.app-install-copy>svg{color:#ebc87c;flex-shrink:0;margin-top:3px}
+.app-install-copy strong{font-size:15px;color:#f7edcf}
+.app-install-copy p{font-size:12px;color:#c5d8cb;margin:5px 0}
+.app-install button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;background:#d8b26b;border:0;border-radius:8px;color:#0b2427;font:inherit;font-size:13px;font-weight:800;padding:11px 15px;cursor:pointer}
+.app-install-help{flex-basis:100%;font-size:13px;margin:0 0 0 33px;color:#e6e6db}
+.app-install button:focus-visible,.mobile-navigation a:focus-visible{outline:3px solid #f5deae;outline-offset:3px}
+@media(max-width:680px){
+ body{padding-bottom:calc(70px + env(safe-area-inset-bottom))}
+ header{flex-direction:row;align-items:center;justify-content:space-between;padding:16px 18px}
+ header nav[aria-label="Main navigation"]{display:none}
+ .brand{font-size:23px}
+ .mobile-navigation{position:fixed;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;align-items:stretch;left:0;right:0;bottom:0;z-index:100;background:#102d30;border-top:1px solid #668077;padding:3px 6px max(5px,env(safe-area-inset-bottom));box-shadow:0 -6px 24px #06181999}
+ .mobile-navigation-link{min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-radius:8px;color:#c5d6cf;font-size:11px;font-weight:700;line-height:1.1;text-align:center;padding:7px 0}
+ .mobile-navigation-link.active{color:#f3d28c;background:#224744}
+ .mobile-navigation-link:hover{text-decoration:none;color:#f4ddaa}
+ .app-install{padding:13px 14px}
+ .app-install-copy{min-width:100%}
+ .app-install button{width:100%}
+ .app-install-help{margin-left:0}
+}
+@media(prefers-reduced-motion:reduce){.mobile-navigation-link,.app-install button{transition:none}}
