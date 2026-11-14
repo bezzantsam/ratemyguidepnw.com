@@ -13,6 +13,8 @@ Many guided fishing trips are arranged privately, paid in cash, organized by a f
 - **No self-promotion or hidden material connections:** A guide, employee, agent, competitor, relative, or someone who received a complimentary/discounted trip must disclose material relationships for independent review. A free trip is not automatically dishonest, but failing to disclose a material connection or posting an operator-created review is a trust risk. Do not condition incentives on positive or negative sentiment.
 - **Viewpoint-neutral:** Negative reviews and positive reviews pass the SAME rules. A negative review isn't removed solely because the guide disagrees or because an advertiser sponsors the corridor. Moderation does not promise to determine the objective truth of every disputed memory.
 
+**Conflict of interest disclosure:** Guides, competitors, employees, family members and recipients of material incentives must disclose their relationships to the platform for review. This is not permission to penalize a genuine negative rating solely because a guide dislikes it.
+
 ## Moderator guardrails and fair appeals
 
 A review may be held or removed for reasonable evidence of fabricated experience, duplicate/repeat rating manipulation, bot/coordinated brigade activity, direct threats, harassment, discriminatory attacks, defamation risk from serious unsubstantiated factual accusations, private financial/criminal-life allegations unrelated to the trip, explicit identifying details, unsafe precise fishing spots, irrelevant material or undisclosed insider/commercial relationships. No list of banned words can independently resolve authenticity; enforce rules **consistently**, with case-specific human decisions.
