@@ -38,6 +38,24 @@ jobs:
         run: node --test tests/methodology.test.mjs
       - name: Verify guide profile provenance and honest review evidence labels
         run: node --test tests/guide-trust.test.mjs
+      - name: Verify installable mobile shell and private-data offline policy
+        run: npm run test:pwa
+      - name: Verify browser-local saved captain shortlist
+        run: npm run test:shortlist
+      - name: Verify pending-only review composer
+        run: npm run test:review
+      - name: Verify Washington public profile URL stability
+        run: npm run test:directory-ids
+      - name: Verify evidence-backed guide discovery, aliases and search filters
+        run: npm run test:discovery
+      - name: Verify distinct OR/WA identities and imported-source provenance
+        run: npm run test:identities
+      - name: Validate captain-contributed fisheries, seasons and pending-only RLS proposal
+        run: npm run test:captain-fisheries
+      - name: Test captain fleet moderator diffs and dev-only inbox guard
+        run: npm run test:moderation
+      - name: Verify full-stack integration, provenance and no automatic publication
+        run: npm run test:integration
       - name: TypeScript check
         run: npm run typecheck
       - name: Build Next.js production assets without private DB credentials
