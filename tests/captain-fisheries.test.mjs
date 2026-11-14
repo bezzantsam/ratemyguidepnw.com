@@ -78,9 +78,9 @@ test('claim form is draft-first, with independently approved-owner permission ga
  const page=read('app/claim/[id]/page.tsx');
  assert.match(page,/<CaptainFisheryEditor listing=\{g\.id\}/);
  assert.match(view,/sessionStorage/);
- assert.match(view,/can_propose_guide_fisheries/);
+ assert.match(view,/from\('guide_claims'\)/);
  assert.match(view,/approvedOwner/);
- assert.match(view,/review_state/);
+ assert.match(view,/createCaptainProposalInsert/);
  assert.match(view,/manual review/);
  assert.match(view,/Draft preview only/);
  assert.doesNotMatch(view,/setStatus\('approved'\)/);
@@ -89,7 +89,7 @@ test('claim form is draft-first, with independently approved-owner permission ga
 
 test('proposed migration restricts insert to approved owner and pending-only, with no public read/publish',()=>{
  const sql=read('supabase/migrations/0003_pending_captain_fishery_proposals.sql');
- assert.match(sql,/security definer/i);
+ assert.doesNotMatch(sql,/security definer/i);
  assert.match(sql,/c\.claimant_id = \(select auth\.uid\(\)\)/);
  assert.match(sql,/c\.status = 'approved'/);
  assert.match(sql,/enable row level security/i);
