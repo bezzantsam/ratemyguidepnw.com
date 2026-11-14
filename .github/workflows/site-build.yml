@@ -48,6 +48,8 @@ jobs:
         run: npm run test:directory-ids
       - name: Verify evidence-backed guide discovery, aliases and search filters
         run: npm run test:discovery
+      - name: Verify WA/OR person identities and imported-source provenance
+        run: npm run test:identities
       - name: TypeScript check
         run: npm run typecheck
       - name: Build Next.js production assets without private DB credentials
