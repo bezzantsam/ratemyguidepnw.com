@@ -45,7 +45,7 @@ const equality=(a:unknown,b:unknown,unordered:boolean)=>
   JSON.stringify(unordered&&Array.isArray(a)?stableArray(a):a)===
   JSON.stringify(unordered&&Array.isArray(b)?stableArray(b):b);
 
-function compareField<T extends Record<string,unknown>>(
+function compareField<T extends object>(
   path:string,label:string,before:T,after:T,field:keyof T,
   risk:ReviewRisk,output:ReviewChange[],unordered=false
 ){
