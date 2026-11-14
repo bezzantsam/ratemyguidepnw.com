@@ -25,6 +25,24 @@ class FoundingGuideSeedPlanTests(unittest.TestCase):
         self.assertEqual(data["selected_count"], 0)
         self.assertEqual(data["mode"], "plan_only_no_outreach_or_publication")
 
+    def test_historical_oregon_registration_suffixes_preserve_public_identity(self):
+        existing = seed.known_public_records()
+        for public_id, name in [
+            ("OG.0000484.BRO", "Martin Sheppard"),
+            ("OG.0001225.F&F", "Scott Cook"),
+            ("OG.0001399.DJFL", "David Jones"),
+            ("OG.0001583.SRA", "Justin Luther"),
+            ("OG.0003194.SG", "Scott Cook"),
+        ]:
+            with self.subTest(public_id=public_id):
+                self.assertIn(public_id, existing)
+                self.assertEqual(existing[public_id]["registered_name"], name)
+                plan = seed.build_plan({"market_id": "pnw", "selected_public_ids": [public_id]})
+                self.assertEqual(plan["profiles"][0]["existing_public_id"], public_id)
+                self.assertEqual(plan["profiles"][0]["jurisdiction"], "US-OR")
+                self.assertEqual(plan["profiles"][0]["existing_profile_href"],
+                                 "/guides/" + seed.re.sub(r"[^a-z0-9]+", "-", public_id.lower()).strip("-"))
+
     def test_proven_public_profiles_are_distinct_and_wa_suppressed_records_stay_out(self):
         existing = seed.known_public_records()
         self.assertGreater(len(existing), 1000)
