@@ -91,7 +91,7 @@ test('profile UI distinguishes public operating claims from historical licensing
  assert.match(panel,/not verified departure ports/);
  assert.match(panel,/sourceUrl/);
  assert.match(panel,/noopener noreferrer/);
- assert.match(search,/Imported source zone \(broad\)/);
+ assert.match(search,/Imported source area \/ notes \(unverified\)/);
  assert.match(search,/Advertised fishing water \(pilot\)/);
  assert.match(search,/filterDirectoryEntries/);
  assert.doesNotMatch(search,/Verified current licensing/);
