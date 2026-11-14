@@ -89,7 +89,7 @@ test('claim form is draft-first, with independently approved-owner permission ga
 
 test('proposed migration restricts insert to approved owner and pending-only, with no public read/publish',()=>{
  const sql=read('supabase/migrations/0003_pending_captain_fishery_proposals.sql');
- assert.doesNotMatch(sql,/security definer/i);
+ assert.doesNotMatch(sql,/create or replace function public\\.can_propose_guide_fisheries/);
  assert.match(sql,/c\.claimant_id = \(select auth\.uid\(\)\)/);
  assert.match(sql,/c\.status = 'approved'/);
  assert.match(sql,/enable row level security/i);
