@@ -80,6 +80,43 @@ export function nextDraftId(items:{id:string}[],kind:'v'|'p'):string {
   return kind+String(Math.max(0,...ids)+1);
 }
 
+/** Accept incomplete but structurally safe tab-local drafts; do not require filled-in trips. */
+export function isSafeCaptainDraft(input:unknown):input is CaptainFisheryDraft {
+  if(!hasExactKeys(input,['vessels','offerings']))return false;
+  const d=input as CaptainFisheryDraft;
+  if(!Array.isArray(d.vessels)||d.vessels.length<1||d.vessels.length>MAX_VESSELS||
+     !Array.isArray(d.offerings)||d.offerings.length<1||d.offerings.length>MAX_OFFERINGS)return false;
+  const vesselIds=new Set<string>();
+  for(const v of d.vessels){
+    if(!hasExactKeys(v,vesselKeys)||!validId(v.id,'v')||vesselIds.has(v.id)||
+       typeof v.label!=='string'||v.label.length>80||
+       !validChoice(v.type,VESSEL_TYPES)||typeof v.covered!=='boolean'||typeof v.heated!=='boolean'||
+       (v.maxAnglers!==null&&(!Number.isInteger(v.maxAnglers)||v.maxAnglers<1||v.maxAnglers>30))||
+       !Array.isArray(v.fishCare)||v.fishCare.length>4||
+       new Set(v.fishCare).size!==v.fishCare.length||
+       v.fishCare.some(c=>!validChoice(c,FISH_CARE)))return false;
+    vesselIds.add(v.id);
+  }
+  const packageIds=new Set<string>();
+  for(const o of d.offerings){
+    if(!hasExactKeys(o,offerKeys)||!validId(o.id,'p')||packageIds.has(o.id)||
+       typeof o.title!=='string'||o.title.length>80||
+       typeof o.waterway!=='string'||o.waterway.length>80||
+       typeof o.launchArea!=='string'||o.launchArea.length>80||
+       !Array.isArray(o.species)||o.species.length>8||
+       new Set(o.species).size!==o.species.length||
+       o.species.some(s=>!validChoice(s,TARGET_SPECIES))||
+       !Array.isArray(o.months)||o.months.length>12||
+       new Set(o.months).size!==o.months.length||
+       o.months.some(m=>!Number.isInteger(m)||m<1||m>12)||
+       typeof o.vesselId!=='string'||!vesselIds.has(o.vesselId)||
+       !validChoice(o.bookingStyle,BOOKING_STYLES)||
+       !validChoice(o.duration,TRIP_DURATIONS))return false;
+    packageIds.add(o.id);
+  }
+  return true;
+}
+
 /** Invalid or unexpectedly extended JSON is rejected rather than sent to the database. */
 export function validateCaptainFisheryDraft(draft:CaptainFisheryDraft):string[] {
   const errors:string[]=[];
