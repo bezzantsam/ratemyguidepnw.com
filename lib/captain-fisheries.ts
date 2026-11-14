@@ -196,6 +196,6 @@ export function createCaptainProposalInsert(draft:CaptainFisheryDraft,guideId:st
       months:[...o.months].sort((a,b)=>a-b),vessel_id:o.vesselId,
       booking_style:o.bookingStyle,duration:o.duration,
     })),
-    review_state:'pending' as const,
+    // Review state and timestamps are database-generated; never client-supplied.
   };
 }
