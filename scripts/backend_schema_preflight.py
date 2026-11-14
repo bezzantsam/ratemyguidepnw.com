@@ -99,8 +99,8 @@ def risk_report() -> dict:
     if re.search(r"\bstatus\s*:\s*['\"](?:approved|published|pending)['\"]", files["claim"]):
         raise ValueError("Claim client is supplying a moderation status.")
     source_review = (ROOT / "lib/review-submission.ts").read_text(encoding="utf-8")
-    if "firsthand_attested: draft.attested === true" not in source_review or
-        "intensity: 3" in source_review:
+    if ("firsthand_attested: draft.attested === true" not in source_review
+            or "intensity: 3" in source_review):
         raise ValueError("Firsthand self-report contract changed or false intensity returned.")
 
     gaps: list[dict[str, object]] = []
