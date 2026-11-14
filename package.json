@@ -8,7 +8,8 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test:intel": "node --test tests/chinook-release.test.mjs tests/chinook-review-gate.test.mjs tests/build-efficiency.test.mjs",
-    "check": "npm run test:intel && npm run typecheck && npm run build"
+    "check": "npm run test:intel && npm run test:shortlist && npm run typecheck && npm run build",
+    "test:shortlist": "node --test tests/saved-guides.test.mjs"
   },
   "dependencies": {
     "next": "^15.5.0",
