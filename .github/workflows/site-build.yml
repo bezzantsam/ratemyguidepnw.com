@@ -54,6 +54,8 @@ jobs:
         run: npm run test:captain-fisheries
       - name: Test captain fleet moderator diffs and dev-only inbox guard
         run: npm run test:moderation
+      - name: Verify full-stack integration, provenance and no automatic publication
+        run: npm run test:integration
       - name: TypeScript check
         run: npm run typecheck
       - name: Build Next.js production assets without private DB credentials
