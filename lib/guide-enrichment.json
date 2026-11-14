@@ -273,7 +273,15 @@
       "Chris Nordling",
       "Chris Nordling's Guide Service"
     ],
-    "advertisedWaters": []
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.catchsomefish.net/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
   },
   "OG.0002254": {
     "searchAliases": [
@@ -284,22 +292,34 @@
       {
         "name": "Wilson River",
         "sourceUrl": "https://fishingwithbeck.com/salmon-fishing/",
-        "sourceType": "operator_site"
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
       },
       {
         "name": "Trask River",
         "sourceUrl": "https://fishingwithbeck.com/salmon-fishing/",
-        "sourceType": "operator_site"
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
       },
       {
         "name": "Kilchis River",
         "sourceUrl": "https://fishingwithbeck.com/salmon-fishing/",
-        "sourceType": "operator_site"
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
       },
       {
         "name": "Nestucca River",
         "sourceUrl": "https://fishingwithbeck.com/salmon-fishing/",
-        "sourceType": "operator_site"
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://fishingwithbeck.com/salmon-fishing/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
       }
     ]
   },
@@ -311,17 +331,28 @@
       {
         "name": "Columbia River",
         "sourceUrl": "https://www.uppercolumbiaguide.com/",
-        "sourceType": "operator_site"
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
       },
       {
         "name": "Rogue River",
         "sourceUrl": "https://www.uppercolumbiaguide.com/",
-        "sourceType": "operator_site"
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
       },
       {
         "name": "Clearwater River",
         "sourceUrl": "https://www.uppercolumbiaguide.com/",
-        "sourceType": "operator_site"
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.uppercolumbiaguide.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
       }
     ]
   },
@@ -341,17 +372,28 @@
       {
         "name": "Columbia River",
         "sourceUrl": "https://dgcolumbiaadventures.com/",
-        "sourceType": "operator_site"
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
       },
       {
         "name": "Willamette River",
         "sourceUrl": "https://dgcolumbiaadventures.com/",
-        "sourceType": "operator_site"
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
       },
       {
         "name": "Buoy 10",
         "sourceUrl": "https://dgcolumbiaadventures.com/",
-        "sourceType": "operator_site"
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://dgcolumbiaadventures.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
       }
     ]
   },
