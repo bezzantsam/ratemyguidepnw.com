@@ -8,7 +8,7 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test:intel": "node --test tests/chinook-release.test.mjs tests/chinook-review-gate.test.mjs tests/build-efficiency.test.mjs",
-    "check": "npm run test:intel && npm run test:pwa && npm run test:shortlist && npm run test:review && npm run test:directory-ids && npm run test:discovery && npm run test:identities && npm run test:captain-fisheries && npm run test:moderation && npm run test:integration && npm run test:source-scout && npm run test:backend-preflight && npm run test:founding-guides && npm run test:intent-events && npm run test:captain-publication && npm run test:review-scorecard && npm run test:review-invitations && npm run typecheck && npm run build",
+    "check": "npm run test:intel && npm run test:pwa && npm run test:shortlist && npm run test:review && npm run test:directory-ids && npm run test:discovery && npm run test:identities && npm run test:captain-fisheries && npm run test:moderation && npm run test:integration && npm run test:source-scout && npm run test:backend-preflight && npm run test:founding-guides && npm run test:intent-events && npm run test:captain-publication && npm run test:review-scorecard && npm run test:review-invitations && npm run test:pricing-economics && npm run typecheck && npm run build",
     "test:pwa": "node --test tests/pwa-shell.test.mjs",
     "test:shortlist": "node --test tests/saved-guides.test.mjs",
     "test:review": "node --test tests/review-submission.test.mjs",
@@ -24,7 +24,8 @@
     "test:intent-events": "node --test tests/intent-events.test.mjs",
     "test:captain-publication": "node --test tests/captain-publication-gate.test.mjs",
     "test:review-scorecard": "node --test tests/review-scorecard.test.mjs",
-    "test:review-invitations": "node --test tests/review-invitations.test.mjs"
+    "test:review-invitations": "node --test tests/review-invitations.test.mjs",
+    "test:pricing-economics": "node --test tests/pricing-economics.test.mjs"
   },
   "dependencies": {
     "next": "^15.5.0",

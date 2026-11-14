@@ -70,6 +70,8 @@ jobs:
         run: npm run test:review-scorecard
       - name: Verify no-pressure guide review invitations and URL privacy
         run: npm run test:review-invitations
+      - name: Validate annual pricing sensitivity, negative margin and regional TAM assumptions
+        run: npm run test:pricing-economics
       - name: TypeScript check
         run: npm run typecheck
       - name: Build Next.js production assets without private DB credentials
