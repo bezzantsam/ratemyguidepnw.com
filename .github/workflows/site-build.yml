@@ -66,6 +66,10 @@ jobs:
         run: npm run test:intent-events
       - name: Verify legacy captain edits and media uploads cannot bypass moderation
         run: npm run test:captain-publication
+      - name: Verify cash-friendly reviews and truthful published-rating samples
+        run: npm run test:review-scorecard
+      - name: Verify no-pressure guide review invitations and URL privacy
+        run: npm run test:review-invitations
       - name: TypeScript check
         run: npm run typecheck
       - name: Build Next.js production assets without private DB credentials

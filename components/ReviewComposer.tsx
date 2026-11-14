@@ -140,7 +140,7 @@ export default function ReviewComposer({guideId, slug}:{guideId:string;slug:stri
   return <div className="review-form card" id="write-review">
     <p className="eyebrow">FIRSTHAND ANGLER EXPERIENCES</p>
     <h3>Tell anglers what your trip was really like.</h3>
-    <p className="muted">Your review can be positive, mixed or critical. All ratings follow the same moderation process. We do not currently certify completed trips.</p>
+    <p className="muted">Your review can be positive, mixed or critical. All ratings follow the same moderation process. We do not require receipts, booking confirmations, or payment records. Reviews are firsthand self-reports, not independently verified trips.</p>
     <ol className="review-progress" aria-label="Review submission steps">
       {['Trip','Ratings','Your story','Submit'].map((label,index)=>
         <li key={label} className={step===index?'current':''}
@@ -148,7 +148,7 @@ export default function ReviewComposer({guideId, slug}:{guideId:string;slug:stri
     </ol>
     {ready&&step===0&&<div className="review-step">
       <h4>When did you fish?</h4>
-      <label>Trip month and year (required)
+      <label>Trip month and year (optional)
         <input type="month" min="2000-01" max={latestMonth} value={draft.month}
           onChange={event=>change({month:event.target.value})}/>
       </label>
@@ -160,7 +160,7 @@ export default function ReviewComposer({guideId, slug}:{guideId:string;slug:stri
           <option value="slow">Slow or no fish</option>
         </select>
       </label>
-      <p className="muted">Only your trip month and year are requested here. Details you write about a small boat party may still identify you to the captain.</p>
+      <p className="muted">Month and year are optional, especially if a small group could identify you. We do not request an exact trip date, receipt, payment method, private fishing spot or names of other anglers.</p>
     </div>}
     {ready&&step===1&&<div className="review-step">
       <h4>Rate what the captain controlled</h4>
@@ -178,10 +178,10 @@ export default function ReviewComposer({guideId, slug}:{guideId:string;slug:stri
           <option value="">Choose an answer</option><option value="yes">Yes</option><option value="no">No</option>
         </select>
       </label>
-      <label>Your firsthand review (80–500 characters)
+      <label>Your firsthand review ({REVIEW_MIN_CHARS}–{REVIEW_MAX_CHARS} characters)
         <textarea rows={6} minLength={REVIEW_MIN_CHARS} maxLength={REVIEW_MAX_CHARS}
           value={draft.body} onChange={event=>change({body:event.target.value})}
-          placeholder="What happened, how did the captain handle the conditions, and what would you tell a friend?"/>
+          placeholder="What went well or badly? Describe the guide's communication, effort, safety, and how they handled the conditions."/>
         <span className="muted">{draft.body.trim().length}/{REVIEW_MAX_CHARS} characters</span>
       </label>
       <label>General trip context (optional; avoid identifying other anglers)
@@ -192,14 +192,15 @@ export default function ReviewComposer({guideId, slug}:{guideId:string;slug:stri
         <p className="review-privacy-warning" role="status">Your text might identify someone. Remove phone numbers, emails, full names and uniquely identifying trip details before submitting.</p>}
       <label className="review-attestation">
         <input type="checkbox" checked={draft.attested} onChange={event=>change({attested:event.target.checked})}/>
-        I confirm this describes a genuine trip that I personally booked or attended.
+        I personally attended this fishing trip with this guide. This is my honest firsthand experience, not hearsay.
       </label>
+      <p className="muted">If you work for this guide, have a family or business relationship, or received a free or discounted trip, disclose that connection in your review. Do not include private financial details.</p>
     </div>}
     {ready&&step===3&&<div className="review-step">
       <h4>Review and submit privately</h4>
-      <p><strong>{draft.ratings.quality}/5 overall</strong> · {draft.month} · Would book again: {draft.wouldBook==='yes'?'Yes':'No'}</p>
+      <p><strong>{draft.ratings.quality}/5 overall</strong> · {draft.month||'Trip month undisclosed'} · Would book again: {draft.wouldBook==='yes'?'Yes':'No'}</p>
       <p className="review-preview">{draft.body}</p>
-      <p className="muted">Your account identifier is kept for moderation, not displayed publicly. Your trip and wording may still be recognizable to people who were there. No receipt upload or independently verified-trip badge is offered yet.</p>
+      <p className="muted">Your account is used privately to help prevent duplicate or abusive reviews, not displayed to other anglers or captains. Your story may still be recognizable to people who were there. No receipt upload or independently verified-trip badge is offered yet. No proof of payment is requested.</p>
       <p className="muted">Your draft is temporarily saved in this browser tab for sign-in. Clear it when using a shared device.</p>
       {!signedIn?<AuthPanel/>: <p className="review-signed-in">Signed in. Ready to send your review to the moderator queue.</p>}
       {(!client||!guideId)&&<p role="status">This guide has not been connected to the review database. Submission is unavailable.</p>}

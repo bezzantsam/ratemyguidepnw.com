@@ -25,13 +25,13 @@ const terms = [
   },
   {
     heading: 'Published angler review',
-    description: 'Reviews are submitted from authenticated accounts and pass a moderation step before publication. Reviewer identities are not displayed in published reviews.',
+    description: 'Reviews are firsthand self-reports from signed-in accounts and pass the same moderation rules whether positive or negative. Reviewer account identities are not displayed publicly. No receipt, financial proof or captain confirmation is needed to submit a standard review.',
     warning: 'Authentication and moderation do not, by themselves, mean the reviewer supplied independently confirmed booking or completed-trip evidence.',
   },
   {
     heading: 'Independently verified trip — future standard',
-    description: 'A future verified-trip label would require private confirmation of a completed trip and a clear dispute or appeal process. Personal receipts and identity documents must not appear in the public profile.',
-    warning: 'A “Verified trip” badge must not appear until that complete evidence workflow is actually implemented and tested.',
+    description: 'Ordinary reviews never require receipts, payment records, captain confirmation or an exact date. Any optional future independently verified-trip designation would require privacy-safe independent checks and a dispute process, never a barrier to submitting regular reviews.',
+    warning: 'A “Verified trip” badge must not appear until that optional evidence workflow is actually implemented and tested.',
   },
 ];
 

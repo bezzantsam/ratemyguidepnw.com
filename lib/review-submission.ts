@@ -1,5 +1,5 @@
 /** Frontend form validation only. DB/RLS and moderator approvals remain authoritative. */
-export const REVIEW_MIN_CHARS = 80;
+export const REVIEW_MIN_CHARS = 40; // usable firsthand feedback; no receipt or booking proof required
 export const REVIEW_MAX_CHARS = 500; // current SQL review body constraint
 export const REVIEW_RATING_KEYS = [
   'quality', 'communication', 'safety', 'effort',
@@ -29,11 +29,11 @@ export function isRating(value: unknown): value is number {
   return typeof value === 'number' && Number.isInteger(value) && value >= 1 && value <= 5;
 }
 export function reviewStepError(step: 0|1|2, draft: ReviewDraft, latestMonth: string): string | null {
-  if (step === 0 && !isValidTripMonth(draft.month, latestMonth)) return 'Choose a past trip month and year.';
+  if (step === 0 && draft.month !== '' && !isValidTripMonth(draft.month, latestMonth)) return 'Choose a past trip month, or leave it blank for privacy.';
   if (step === 1 && !isRating(draft.ratings.quality)) return 'Select an overall rating to continue.';
   if (step === 2) {
     const length = draft.body.trim().length;
-    if (length < REVIEW_MIN_CHARS || length > REVIEW_MAX_CHARS) return 'Write 80–500 characters describing your firsthand trip.';
+    if (length < REVIEW_MIN_CHARS || length > REVIEW_MAX_CHARS) return `Write ${REVIEW_MIN_CHARS}–${REVIEW_MAX_CHARS} characters describing your firsthand trip.`;
     if (draft.context.length > 140) return 'Keep trip context to 140 characters or fewer.';
     if (draft.wouldBook !== 'yes' && draft.wouldBook !== 'no') return 'Tell us whether you would book again.';
     if (!draft.attested) return 'Confirm this is your genuine firsthand experience.';
@@ -53,7 +53,7 @@ export function createPendingReviewInsert(draft: ReviewDraft, guideId: string, a
     professionalism: ratings.professionalism ?? null,
     knowledge: ratings.knowledge ?? null, value_rating: ratings.value_rating ?? null,
     would_book_again: draft.wouldBook === 'yes', catch_outcome: draft.outcome,
-    body: draft.body.trim(), trip_month: draft.month + '-01',
+    body: draft.body.trim(), trip_month: draft.month ? draft.month + '-01' : null,
     trip_context: draft.context.trim() || null,
     // Database default must force pending; clients must not choose moderation status.
   };
