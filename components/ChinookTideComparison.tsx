@@ -14,6 +14,9 @@ export default function ChinookTideComparison() {
     (x - lowX) * (chart.right - chart.left) / (highX - lowX);
   const cy = (y: number) => chart.bottom -
     y * (chart.bottom - chart.top) / highY;
+  const r = result.pearsonR;
+  const strength = Math.abs(r) < 0.3 ? 'weak' : Math.abs(r) < 0.6 ? 'moderate' : 'strong';
+  const direction = r < 0 ? 'negative' : 'positive';
 
   return (
     <section className="intel-tide" aria-labelledby="chinook-tides-heading">
@@ -30,13 +33,15 @@ export default function ChinookTideComparison() {
         <div className="intel-tide-metric">
           <strong>{result.pearsonR.toFixed(2).replace('-', '−')}</strong>
           <span>Unadjusted Pearson r</span>
-          <small>31 paired dates · descriptive only</small>
+          <small>{points.length} paired dates · descriptive only</small>
         </div>
       </div>
 
-      <div className="intel-tide-chart">
+      <p className="intel-tide-scrollhint">Swipe sideways to see the whole chart.</p>
+      <div className="intel-tide-chart" role="region" tabIndex={0}
+        aria-label="Scrollable scatterplot of predicted tidal spread versus retained Chinook per sampled angler">
         <svg viewBox="0 0 760 340" role="img"
-          aria-label="Scatterplot of 31 daily NOAA Astoria predicted high-low spreads versus WDFW retained Chinook per sampled angler in August 2026. The observed association is weak and slightly negative.">
+          aria-label={'Scatterplot of ' + points.length + ' daily NOAA Astoria predicted high-low spreads versus WDFW retained Chinook per sampled angler in August 2026. The unadjusted Pearson correlation is ' + r.toFixed(2) + ', a ' + strength + ' ' + direction + ' association. The full paired data are in the table below.'}>
           {[0, 0.25, 0.5, 0.75, 1].map(fraction => {
             const y = cy(highY * fraction);
             return (
@@ -58,9 +63,9 @@ export default function ChinookTideComparison() {
             </g>
           ))}
           <line x1={chart.left} y1={chart.bottom} x2={chart.right} y2={chart.bottom}
-            stroke="#769b87" strokeWidth={1.5}/>
+            stroke="#557c68" strokeWidth={1.5}/>
           <line x1={chart.left} y1={chart.top} x2={chart.left} y2={chart.bottom}
-            stroke="#769b87" strokeWidth={1.5}/>
+            stroke="#557c68" strokeWidth={1.5}/>
           {points.map(row => (
             <circle key={row.date}
               cx={cx(row.astoriaPredictedHighLowSpreadFt)}
