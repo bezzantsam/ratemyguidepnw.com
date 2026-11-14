@@ -12,7 +12,7 @@ type PublicReview = {
   value_rating:number|null;trip_context:string|null;
 };
 
-export default function CaptainReviews({slug}:{slug:string}){
+export default function CaptainReviews({slug,allowWrites=false}:{slug:string;allowWrites?:boolean}){
   const [guideId,setGuideId]=useState('');
   const [reviews,setReviews]=useState<PublicReview[]>([]);
   const [status,setStatus]=useState('Loading reviews…');
@@ -54,7 +54,7 @@ export default function CaptainReviews({slug}:{slug:string}){
       <p>{review.body}</p>
       {review.trip_context&&<p className="muted">{review.trip_context}</p>}
     </article>)}</div>
-    {!status&&guideId&&<ReviewInviteButton/>}
-    <ReviewComposer guideId={guideId} slug={slug}/>
+    {allowWrites&&!status&&guideId&&<ReviewInviteButton/>}
+    <ReviewComposer guideId={guideId} slug={slug} submitEnabled={allowWrites}/>
   </section>;
 }
