@@ -3,6 +3,7 @@ import Link from 'next/link';
 import SaveGuideButton from './SaveGuideButton';
 import {useMemo,useState} from 'react';
 import type {DirectoryEntry} from '@/lib/directory';
+import {filterDirectoryEntries} from '@/lib/directory-query';
 
 export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
  const[q,setQ]=useState('');
@@ -11,17 +12,9 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
  const[waterway,setWaterway]=useState('All advertised waters');
  const[page,setPage]=useState(1);
  const size=30;
- const normalizedQuery=q.trim().toLocaleLowerCase();
-
- const stateMatches=(g:DirectoryEntry)=>state==='All'||g.states.includes(state as 'Oregon'|'Washington');
- const filtered=useMemo(()=>entries.filter(g=>
-   (state==='All'||g.states.includes(state as 'Oregon'|'Washington')) &&
-   (area==='All areas'||g.areas.includes(area)) &&
-   (waterway==='All advertised waters'||g.advertisedWaters.includes(waterway)) &&
-   [g.name,g.business||'',g.id,...g.areas,...g.searchAliases,...g.advertisedWaters]
-     .join(' ').toLocaleLowerCase().includes(normalizedQuery)
- ).sort((a,b)=>a.name.localeCompare(b.name,'en',{sensitivity:'base'})||a.id.localeCompare(b.id)),
- [entries,normalizedQuery,state,area,waterway]);
+ const filtered=useMemo(()=>filterDirectoryEntries(entries,{
+  state,sourceZone:area,advertisedWater:waterway,query:q
+ }),[entries,q,state,area,waterway]);
 
  const areas=useMemo(()=>
   ['All areas',...new Set(entries.filter(g=>state==='All'||g.states.includes(state as 'Oregon'|'Washington'))
