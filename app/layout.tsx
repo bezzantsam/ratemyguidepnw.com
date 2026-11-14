@@ -1,13 +1,20 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
+import MobileNavigation from '@/components/MobileNavigation';
+import PWARegistration from '@/components/PWARegistration';
 import Link from 'next/link';
 import './globals.css';
 import DockTalkTicker from '@/components/DockTalkTicker';
 
 export const metadata: Metadata = {
   title: 'RateMyGuidePNW | Real Trips. Real Talk.',
-  description: 'Independent Pacific Northwest fishing guide reviews and source-backed Chinook fishing intel',
+  description: 'Independent Pacific Northwest fishing guide listings and moderated angler experiences',
+  applicationName: 'RateMyGuidePNW',
+  manifest: '/manifest.webmanifest',
+  appleWebApp: {capable:true, title:'RateMyGuidePNW', statusBarStyle:'black-translucent'},
   robots: { index: false, follow: false },
 };
+
+export const viewport: Viewport = {themeColor:'#0b2427',width:'device-width',initialScale:1};
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -26,7 +33,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </nav>
         </header>
         <DockTalkTicker />
-        {children}
+        <div id="site-content">{children}</div>
+        <MobileNavigation />
+        <PWARegistration />
         <footer>© {new Date().getFullYear()} RateMyGuidePNW · Independent by design · Pre-launch</footer>
       </body>
     </html>
