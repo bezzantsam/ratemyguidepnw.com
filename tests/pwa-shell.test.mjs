@@ -64,7 +64,7 @@ test('service worker intercepts only same-origin GET navigations',async()=>{
 
 test('mobile tabs link only to existing paths and expose active current page',()=>{
  const nav=read('components/MobileNavigation.tsx');
- for(const path of ['/', '/guides','/reviews','/guides/verification']){
+ for(const path of ['/', '/guides','/reviews','/saved']){
   assert.ok(nav.includes("href:'"+path+"'"));
  }
  assert.match(nav,/aria-current/);
