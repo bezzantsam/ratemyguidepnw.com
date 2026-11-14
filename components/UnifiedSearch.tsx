@@ -33,7 +33,7 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
 
  return <section className="directory-panel">
   <h2>Find a captain</h2>
-  <p className="directory-source-disclosure">Registration areas are broad historical source categories, not confirmed fishing ports. Advertised fishing waters are a small, source-linked research pilot and do not certify active operations or licensing.</p>
+  <p className="directory-source-disclosure">Imported location and registration fields are historical source categories, not confirmed fishing ports. Advertised fishing waters are a small, source-linked research pilot and do not certify active operations or licensing.</p>
   <div className="state-switch" aria-label="Filter guides by state">
    {['All','Oregon','Washington'].map(s=><button key={s} type="button" className={state===s?'active':''}
     aria-pressed={state===s} onClick={()=>setRegion(s)}>{s==='All'?'All guides':s}</button>)}
@@ -43,7 +43,7 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
     <input type="search" value={q} onChange={e=>{setQ(e.target.value);setPage(1)}}
      placeholder="Try Josiah Darr or R Outfitters"/>
    </label>
-   <label>Imported source zone (broad)
+   <label>Imported source area / notes (unverified)
     <select value={area} onChange={e=>{setArea(e.target.value);setPage(1)}}>
      {areas.map(a=><option key={a}>{a}</option>)}
     </select>
@@ -68,7 +68,7 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
       <p className="outfit-name">{g.business||'Fishing guide'}</p>
       {g.searchAliases.length>0&&<p className="guide-meta">Also listed publicly as: {g.searchAliases.join(' · ')}</p>}
       {g.advertisedWaters.length>0&&<p className="guide-meta">Advertised waters (source-linked): {g.advertisedWaters.slice(0,3).join(' · ')}{g.advertisedWaters.length>3?' · + more':''}</p>}
-      <p className="guide-meta">Imported source zones: {g.areas.slice(0,3).join(' · ')||'Not specified'}{g.areas.length>3?' · + more':''}</p>
+      <p className="guide-meta">{g.source==='Oregon registry'?'Imported registration zones':'Imported directory areas / notes'}: {g.areas.slice(0,3).join(' · ')||'Not specified'}{g.areas.length>3?' · + more':''}</p>
       <p className="guide-submeta">Historical source listing · Current credentials not independently checked</p>
      </div><span className="result-chevron">›</span>
     </Link><SaveGuideButton href={g.href} name={g.name}/>
