@@ -99,6 +99,19 @@ class BackendPreflightTests(unittest.TestCase):
             self.assertIsNotNone(declaration)
             self.assertRegex(declaration, r"status\s+text\s+not\s+null\s+default\s+'pending'")
 
+    def test_public_forms_hide_raw_database_error_details(self):
+        # Schema and private identifiers do not belong in end-user messages.
+        for path in (
+            "components/ClaimForm.tsx",
+            "components/ReviewComposer.tsx",
+            "components/CaptainFisheryEditor.tsx",
+        ):
+            code = (ROOT / path).read_text(encoding="utf-8")
+            self.assertNotRegex(code, r"\+\s*(?:error|writeError|saved\.error)\.message")
+        claim = (ROOT / "components/ClaimForm.tsx").read_text()
+        self.assertIn("A claim request may have been recorded", claim)
+        self.assertIn("Do not submit a duplicate", claim)
+
     def test_audit_cannot_be_silently_satisfied_by_pointer_or_draft_migration(self):
         report = preflight.risk_report()
         self.assertEqual(report["media_0002"], "historical_pointer_not_replayable_sql")
