@@ -87,7 +87,7 @@ export default function ReviewComposer({guideId, slug}:{guideId:string;slug:stri
     setMessage('Your draft was cleared from this tab.');
   }
   function advance(){
-    if(step>=3)return;
+    if(step===3)return;
     const error=reviewStepError(step,draft,latestMonth);
     if(error){setMessage(error);return}
     if(step===2){
