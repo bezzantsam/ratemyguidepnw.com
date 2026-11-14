@@ -48,7 +48,7 @@ test('insert is pending only, with existing DB columns and month granularity',()
  const d=draft();d.month='2026-08';d.ratings.quality=1;
  d.ratings.communication=2;d.wouldBook='no';d.attested=true;d.body='Tough experience. '.repeat(6);
  const row=api.createPendingReviewInsert(d,'guide-id','user-id');
- assert.equal(row.status,'pending');
+ assert.equal('status' in row,false); // Database default owns moderation state.
  assert.equal(row.guide_id,'guide-id');
  assert.equal(row.trip_month,'2026-08-01');
  assert.equal(row.quality,1);

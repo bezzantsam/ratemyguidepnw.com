@@ -55,6 +55,6 @@ export function createPendingReviewInsert(draft: ReviewDraft, guideId: string, a
     would_book_again: draft.wouldBook === 'yes', catch_outcome: draft.outcome,
     body: draft.body.trim(), trip_month: draft.month + '-01',
     trip_context: draft.context.trim() || null,
-    status: 'pending' as const,
+    // Database default must force pending; clients must not choose moderation status.
   };
 }

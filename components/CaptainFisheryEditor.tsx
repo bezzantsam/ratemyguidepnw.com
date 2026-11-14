@@ -154,7 +154,7 @@ export default function CaptainFisheryEditor({listing,name}:{listing:string;name
       if(error){
         setMessage(error.code==='42P01'||error.code==='PGRST205'?
           'Captain submissions are not enabled in the database yet. Your tab-local draft remains available.':
-          'Could not submit for moderation. No public profile was changed. '+error.message);
+          'Could not submit for moderation. No public profile was changed. Your local draft remains available.');
         return;
       }
       setSubmitted(true);

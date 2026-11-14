@@ -108,7 +108,7 @@ export default function ReviewComposer({guideId, slug}:{guideId:string;slug:stri
       if(authError||!data.user){setMessage('Please sign in before submitting.');return}
       const {error:writeError}=await client.from('reviews').insert(
         createPendingReviewInsert(draft,guideId,data.user.id));
-      if(writeError){setMessage('Could not submit your review: '+writeError.message);return}
+      if(writeError){setMessage('Could not submit your review. No review was published; your draft is still available.');return}
       try{window.sessionStorage.removeItem(draftStorage(slug))}catch{}
       setDraft({...EMPTY_REVIEW_DRAFT,ratings:{}});
       setStep(0);
