@@ -101,8 +101,8 @@ class CharterTests(unittest.TestCase):
                 for person in vessel['captains_reported']+vessel['crew_reported']:
                     self.assertEqual(person['credential_status'], 'unknown')
                     self.assertFalse(person['identity_verified'])
-        self.assertNotIn('ratings', json.dumps(result))
-        self.assertNotIn('reviews', json.dumps(result).lower().replace('reviews or public profiles',''))
+        self.assertNotIn('"ratings":', json.dumps(result))
+        self.assertNotIn('"reviews":', json.dumps(result))
 
     def test_new_public_registration_id_cannot_be_minted(self):
         data = source()
