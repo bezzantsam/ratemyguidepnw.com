@@ -50,6 +50,8 @@ jobs:
         run: npm run test:discovery
       - name: Validate captain-contributed fisheries, seasons and pending-only RLS proposal
         run: npm run test:captain-fisheries
+      - name: Test captain fleet moderator diffs and dev-only inbox guard
+        run: npm run test:moderation
       - name: TypeScript check
         run: npm run typecheck
       - name: Build Next.js production assets without private DB credentials
