@@ -153,6 +153,8 @@ end;
 $$;
 revoke all on function public.valid_captain_fleet_proposal(jsonb,jsonb) from public,anon;
 grant execute on function public.valid_captain_fleet_proposal(jsonb,jsonb) to authenticated;
+-- Protected moderator tooling also needs to validate checked rows.
+grant execute on function public.valid_captain_fleet_proposal(jsonb,jsonb) to service_role;
 
 create table public.guide_fishery_proposals (
   id uuid primary key default gen_random_uuid(),
