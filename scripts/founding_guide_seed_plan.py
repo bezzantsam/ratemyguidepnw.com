@@ -74,7 +74,7 @@ def known_public_records() -> dict[str, dict]:
     result = {}
     for record in json.loads((ROOT / "lib/oregon-guides.json").read_text()):
         record_id = record["registration"]
-        if not re.fullmatch(r"OG\.\d{7}", record_id) or record_id in result:
+        if not re.fullmatch(r"OG\.\d{7}(?:\.[A-Za-z0-9&-]{1,12})?", record_id) or record_id in result:
             raise SeedError("Invalid or duplicated historical Oregon public ID.")
         result[record_id] = {
             "public_id": record_id,
