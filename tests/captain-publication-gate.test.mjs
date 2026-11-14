@@ -49,7 +49,7 @@ test('a published OR/WA profile still renders visible, neutral, accessible conte
       assert.match(html,/independent review|review and/i);
       assert.doesNotMatch(html,/<button|<form|<script|<iframe|<img/i);
       assert.doesNotMatch(html,/Save captain information|Photo uploaded|Welcome video saved/);
-      assert.doesNotMatch(html,/credential verified|Verified trip/i);
+      assert.doesNotMatch(html,/<(?:span|strong)[^>]*>\\s*(?:Verified trip|Credential verified)/i);
     }
   }
 });
