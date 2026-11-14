@@ -166,16 +166,106 @@ def validate_handoff(payload, root=ROOT, today=None):
             'warning': 'Schema validation does not verify source contents or identities. No records were published.'}
 
 
+
+def normalize_gemini(payload, root=ROOT, today=None):
+    """Convert Gemini's nested source shape into a review-only PR #82 handoff.
+
+    Reject or hold evidence gaps; never change HTTP to HTTPS or claim website verification.
+    """
+    today = today or datetime.now(timezone.utc).date()
+    if (not isinstance(payload, dict) or set(payload) != {'schema_version', 'records'}
+            or payload['schema_version'] != 1 or not isinstance(payload['records'], list)
+            or not 1 <= len(payload['records']) <= 100):
+        raise ValueError('Expected schema_version 1 and 1 to 100 records.')
+    accepted, holds, seen_ids = [], [], set()
+    for item in payload['records']:
+        identity = item.get('directory_id') if isinstance(item, dict) else None
+        errors = []
+        if not isinstance(item, dict) or set(item) != {'directory_id', 'publication_status', 'aliases', 'waterways'}:
+            errors.append('Gemini record must contain exactly directory_id, publication_status, aliases, waterways.')
+        if not isinstance(identity, str) or not identity:
+            errors.append('Missing directory ID.')
+        elif identity in seen_ids:
+            errors.append('Duplicate directory ID in batch.')
+        if isinstance(identity, str):
+            seen_ids.add(identity)
+        if isinstance(item, dict) and item.get('publication_status') != 'pending_review':
+            errors.append('Publication status must be pending_review.')
+        sources, lookup, converted = [], {}, {'aliases': [], 'waterways': []}
+        if not errors:
+            for field, oldkey in [('aliases', 'alias'), ('waterways', 'waterway')]:
+                claims = item[field]
+                if not isinstance(claims, list) or len(claims) > 40:
+                    errors.append(field + ': expected a list of at most 40 claims.')
+                    continue
+                for claim in claims:
+                    if (not isinstance(claim, dict) or set(claim) != {oldkey, 'source'}
+                            or not isinstance(claim[oldkey], str) or not claim[oldkey].strip()
+                            or len(claim[oldkey]) > 160):
+                        errors.append(field + ': malformed claim.')
+                        continue
+                    source = claim['source']
+                    if (not isinstance(source, dict) or set(source) != {'url', 'source_type', 'observed_on'}
+                            or not isinstance(source['url'], str)
+                            or not source['url'].startswith('https://')
+                            or website_candidate(source['url']) != source['url']
+                            or source['source_type'] not in ('operator_site', 'third_party_directory')):
+                        errors.append(field + ': source must have a validated HTTPS URL and supported type; HTTP is held, not silently upgraded.')
+                        continue
+                    try:
+                        observed = date.fromisoformat(source['observed_on'])
+                        if observed > today:
+                            raise ValueError()
+                    except (TypeError, ValueError):
+                        errors.append(field + ': source observation date is invalid or future.')
+                        continue
+                    key = (source['url'], source['source_type'], source['observed_on'])
+                    if key not in lookup:
+                        source_id = 's' + str(len(lookup) + 1).zfill(2)
+                        lookup[key] = source_id
+                        sources.append({'id': source_id, **source})
+                    converted[field].append({'value': claim[oldkey], 'source_ids': [lookup[key]]})
+            if not converted['aliases'] and not converted['waterways']:
+                errors.append('At least one supported claim is required.')
+        record = {'directory_id': identity, 'publication_status': 'pending_review',
+                  'sources': sources, **converted}
+        if not errors:
+            checked = validate_handoff({'schema_version': 1, 'records': [record]}, root=root, today=today)
+            errors = checked['records'][0]['errors']
+        if errors:
+            holds.append({'directory_id': identity, 'errors': errors})
+        else:
+            accepted.append(record)
+    return {'schema_version': 1, 'records': accepted}, {
+        'mode': 'manual_research_review_required', 'source_record_count': len(payload['records']),
+        'accepted_for_schema_review': len(accepted), 'held': holds,
+        'warning': 'Converted source references are NOT independently verified. No public profile was modified.'
+    }
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('command', choices=['inventory', 'validate'])
+    parser.add_argument('command', choices=['inventory', 'validate', 'normalize-gemini'])
     parser.add_argument('--input', type=Path)
     parser.add_argument('--output', type=Path)
+    parser.add_argument('--holds', type=Path, help='Review-only JSON file for held Gemini rows')
     args = parser.parse_args()
     try:
-        if args.command == 'validate' and not args.input:
+        if args.command in ('validate', 'normalize-gemini') and not args.input:
             raise ValueError('--input is required for validate')
-        result = inventory() if args.command == 'inventory' else validate_handoff(read(args.input))
+        if args.command == 'inventory':
+            result = inventory()
+        elif args.command == 'validate':
+            result = validate_handoff(read(args.input))
+        else:
+            if not args.holds or not args.output:
+                raise ValueError('normalize-gemini requires both --output and --holds in research-drafts.')
+            result, held = normalize_gemini(read(args.input))
+            holding = args.holds.resolve()
+            staging = (ROOT / 'research-drafts').resolve()
+            if not holding.is_relative_to(staging):
+                raise ValueError('Held rows must stay under research-drafts.')
+            holding.parent.mkdir(parents=True, exist_ok=True)
+            holding.write_text(json.dumps(held, indent=2, ensure_ascii=False) + '\n')
         output = json.dumps(result, indent=2, ensure_ascii=False) + '\n'
         if args.output:
             target = args.output.resolve()
