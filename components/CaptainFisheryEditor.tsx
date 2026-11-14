@@ -61,8 +61,9 @@ export default function CaptainFisheryEditor({listing,name}:{listing:string;name
       const slug=listing.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/-$/,'');
       const {data:guide,error:guideError}=await client!.from('guides').select('id').eq('slug',slug).maybeSingle();
       if(!active||guideError||!guide)return;
-      const {data:allowed,error}=await client!.rpc('can_propose_guide_fisheries',{p_guide_id:guide.id});
-      if(!active||error||allowed!==true)return;
+      const {data:claims,error}=await client!.from('guide_claims')
+        .select('id').eq('guide_id',guide.id).eq('claimant_id',auth.user.id).eq('status','approved').limit(1);
+      if(!active||error||!claims?.length)return;
       setGuideUuid(guide.id);
       setApprovedOwner(true);
     };
