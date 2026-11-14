@@ -2,6 +2,7 @@
 import {useEffect,useState} from 'react';
 import {client} from './AuthPanel';
 import ReviewComposer from './ReviewComposer';
+import ReviewInviteButton from './ReviewInviteButton';
 import {summarizePublishedReviewSample,PUBLIC_REVIEW_PAGE_LIMIT} from '@/lib/review-scorecard';
 
 type PublicReview = {
@@ -53,6 +54,7 @@ export default function CaptainReviews({slug}:{slug:string}){
       <p>{review.body}</p>
       {review.trip_context&&<p className="muted">{review.trip_context}</p>}
     </article>)}</div>
+    {!status&&guideId&&<ReviewInviteButton/>}
     <ReviewComposer guideId={guideId} slug={slug}/>
   </section>;
 }
