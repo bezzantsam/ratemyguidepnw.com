@@ -81,5 +81,170 @@
         "sourceType": "operator_site"
       }
     ]
+  },
+  "OG.0000050": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Buoy 10",
+        "sourceUrl": "https://thefishere.com/guided-fishing-trips.php",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://thefishere.com/guided-fishing-trips.php",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Cowlitz River",
+        "sourceUrl": "https://thefishere.com/guided-fishing-trips.php",
+        "sourceType": "operator_site"
+      }
+    ]
+  },
+  "OG.0000316": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://www.nwsturgeonadventures.com/",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://www.nwsturgeonadventures.com/",
+        "sourceType": "operator_site"
+      }
+    ]
+  },
+  "OG.0000357": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://patabelguideservice.com/?page_id=1681",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://patabelguideservice.com/?page_id=1681",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Tillamook Bay",
+        "sourceUrl": "https://patabelguideservice.com/?page_id=1681",
+        "sourceType": "operator_site"
+      }
+    ]
+  },
+  "OG.0000989": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Buoy 10",
+        "sourceUrl": "https://lancefisherfishing.com/columbia-river-fishing/",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://lancefisherfishing.com/columbia-river-fishing/",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Cowlitz River",
+        "sourceUrl": "https://lancefisherfishing.com/columbia-river-fishing/",
+        "sourceType": "operator_site"
+      }
+    ]
+  },
+  "OG.0000395": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Tillamook Bay",
+        "sourceUrl": "https://stlaurentguideservice.com/",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://stlaurentguideservice.com/",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://stlaurentguideservice.com/",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Nestucca River",
+        "sourceUrl": "https://stlaurentguideservice.com/",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Buoy 10",
+        "sourceUrl": "https://stlaurentguideservice.com/",
+        "sourceType": "operator_site"
+      }
+    ]
+  },
+  "OG.0000609": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Buoy 10",
+        "sourceUrl": "https://astoriafishing.com/",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://astoriafishing.com/",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Pacific Ocean",
+        "sourceUrl": "https://astoriafishing.com/",
+        "sourceType": "operator_site"
+      }
+    ]
+  },
+  "OG.0002805": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Buoy 10",
+        "sourceUrl": "https://www.lowercolumbiaguide.com/",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://www.lowercolumbiaguide.com/",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Pacific Ocean",
+        "sourceUrl": "https://www.lowercolumbiaguide.com/",
+        "sourceType": "operator_site"
+      }
+    ]
+  },
+  "OG.0004017": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://washingtonfishingguides.net/",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Cowlitz River",
+        "sourceUrl": "https://washingtonfishingguides.net/",
+        "sourceType": "operator_site"
+      },
+      {
+        "name": "Lewis River",
+        "sourceUrl": "https://washingtonfishingguides.net/",
+        "sourceType": "operator_site"
+      }
+    ]
   }
 }
