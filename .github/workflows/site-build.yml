@@ -60,6 +60,8 @@ jobs:
         run: npm run test:source-scout
       - name: Audit backend schema contracts offline and fail closed on unverified production readiness
         run: python -m unittest discover -s tests -p 'test_backend_schema_preflight.py' -v
+      - name: Validate offline founding guide selections and national-ready source identities
+        run: npm run test:founding-guides
       - name: TypeScript check
         run: npm run typecheck
       - name: Build Next.js production assets without private DB credentials
