@@ -48,6 +48,8 @@ jobs:
         run: npm run test:directory-ids
       - name: Verify evidence-backed guide discovery, aliases and search filters
         run: npm run test:discovery
+      - name: Verify distinct OR/WA identities and imported-source provenance
+        run: npm run test:identities
       - name: Validate captain-contributed fisheries, seasons and pending-only RLS proposal
         run: npm run test:captain-fisheries
       - name: Test captain fleet moderator diffs and dev-only inbox guard
