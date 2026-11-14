@@ -85,3 +85,25 @@ test('installation guidance is opt-in, real-browser-triggered, and no offline da
  assert.match(sw,/window\.isSecureContext/);
  assert.match(sw,/navigator\.serviceWorker\.register/);
 });
+
+
+test('service worker precaches only the offline page and evicts its own old cache',async()=>{
+ const handlers={};const saved=[];const deleted=[];const existing=['rmgpnw-offline-shell-v0','unrelated-cache-v1'];
+ const self={
+  location:{origin:'https://ratemyguidepnw.com'},
+  clients:{claim:async()=>{}},
+  skipWaiting:async()=>{},
+  addEventListener:(name,handler)=>{handlers[name]=handler},
+ };
+ const caches={
+  open:async name=>{assert.equal(name,'rmgpnw-offline-shell-v1');return {add:async key=>saved.push(key)}},
+  keys:async()=>existing,
+  delete:async key=>{deleted.push(key);return true},
+ };
+ vm.runInNewContext(read('public/sw.js'),{self,caches,URL,fetch,Response,Promise,console});
+ const wait=fn=>new Promise((resolve,reject)=>fn({waitUntil:p=>Promise.resolve(p).then(resolve,reject)}));
+ await wait(handlers.install);
+ await wait(handlers.activate);
+ assert.deepEqual(saved,['/offline.html']);
+ assert.deepEqual(deleted,['rmgpnw-offline-shell-v0']);
+});
