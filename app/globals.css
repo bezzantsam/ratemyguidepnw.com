@@ -218,3 +218,25 @@ a.dock-ticker-item:hover{color:white;text-decoration:underline}
 .guide-enrichment-waters li a{color:#f0d28b;font-size:13px;text-decoration:underline;text-underline-offset:3px}
 .guide-enrichment-waters li a:focus-visible{outline:3px solid #f0d28b;outline-offset:4px}
 @media(max-width:830px){.directory-panel .searchbar{grid-template-columns:1fr}}
+
+/* Captain-submitted fields are drafts. These styles imply no license verification. */
+.captain-fishery-editor{display:grid;gap:16px}
+.captain-fishery-editor>h2{margin:0}
+.captain-fishery-offerings{display:grid;gap:16px}
+.captain-fishery-item{display:grid;gap:15px;border:1px solid #5b7872;border-radius:12px;padding:18px;min-width:0}
+.captain-fishery-item legend{padding:0 8px;font-size:17px;font-weight:800;color:#f0d292}
+.captain-fishery-item label{display:grid;gap:7px;font-size:14px;color:#f4e7c9}
+.captain-fishery-item input[type="text"],.captain-fishery-item input[type="number"],.captain-fishery-item select{width:100%;min-width:0;min-height:44px;padding:11px 12px;background:#102c2f;color:#f5f6ee;border:1px solid #78948b;border-radius:9px;font:inherit}
+.captain-fishery-choices{display:grid;gap:10px}
+.captain-fishery-chipgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(135px,1fr));gap:9px}
+.captain-fishery-chipgrid label{display:flex;align-items:center;gap:9px;padding:10px 12px;background:#1b4343;border:1px solid #50746f;border-radius:9px;color:#f4f4e8;font-size:13px;font-weight:600;line-height:1.25;cursor:pointer}
+.captain-fishery-chipgrid input{width:19px;height:19px;accent-color:#d8b26b;flex-shrink:0}
+.captain-monthgrid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:7px}
+.captain-monthgrid button{min-height:44px;border:1px solid #729187;border-radius:8px;color:#e2e9e2;background:#1b4040;font:inherit;font-size:12px;font-weight:700;cursor:pointer}
+.captain-monthgrid button.active{background:#d8b26b;color:#183333;border-color:#e4c989}
+.captain-fishery-actions{display:flex;flex-wrap:wrap;gap:12px}
+.captain-fishery-editor button{min-height:44px;border-radius:9px;padding:10px 14px;background:#d8b26b;color:#132b2c;font:inherit;font-weight:800;cursor:pointer}
+.captain-fishery-editor button.captain-secondary{background:transparent;border:1px solid #bda36f;color:#f1d291}
+.captain-fishery-editor button:disabled{opacity:.55;cursor:not-allowed}
+.captain-fishery-editor button:focus-visible,.captain-fishery-editor input:focus-visible,.captain-fishery-editor select:focus-visible{outline:3px solid #eacb90;outline-offset:3px}
+@media(max-width:600px){.captain-fishery-item{padding:12px}.captain-fishery-chipgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.captain-monthgrid{grid-template-columns:repeat(4,minmax(0,1fr))}.captain-fishery-actions button{flex:1}}
