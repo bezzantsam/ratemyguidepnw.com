@@ -76,7 +76,7 @@ declare
   v_decision_id uuid;
 begin
   if p_review_id is null or p_moderator_id is null
-     or p_decision not in ('publish','reject') then
+     or p_decision is null or p_decision not in ('publish','reject') then
     raise exception 'Invalid moderation decision'
       using errcode='22023';
   end if;
