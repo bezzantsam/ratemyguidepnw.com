@@ -29,7 +29,7 @@ test('a single profile can offer genuinely distinct vessels and seasonal trips',
  const draft=base();
  assert.deepEqual(Array.from(api.validateCaptainFisheryDraft(draft)),[]);
  const row=api.createCaptainProposalInsert(draft,'guide-uuid','user-uuid');
- assert.equal(row.review_state,'pending');
+ assert.equal('review_state' in row,false); // DB default is pending
  assert.equal(row.guide_id,'guide-uuid');
  assert.equal(row.submitted_by,'user-uuid');
  assert.equal(row.vessels.length,2);
