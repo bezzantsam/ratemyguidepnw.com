@@ -182,6 +182,21 @@ create policy authenticated_firsthand_review_pending
     )
   );
 
+-- Revoke the older broad published-only policy and require that the GUIDE
+-- itself remain published. Otherwise direct Data API reads could disclose
+-- a review for a now-suspended guide even when the public view hides it.
+drop policy if exists public_reviews on public.reviews;
+create policy public_reviews_visible_only
+  on public.reviews for select to anon, authenticated
+  using (
+    status = 'published'
+    and published_at is not null
+    and exists(
+      select 1 from public.guides g
+      where g.id = reviews.guide_id and g.listing_status = 'published'
+    )
+  );
+
 -- Public published-only view; explicit column list excludes account IDs,
 -- private claims/evidence, unmoderated body text, and moderator notes.
 -- SECURITY INVOKER ensures underlying tables' RLS and grants apply.
