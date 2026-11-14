@@ -46,7 +46,7 @@ SQL_TYPES = ("uuid", "text", "smallint", "boolean", "timestamptz", "numeric",
 
 
 def create_table_body(sql: str, name: str) -> str | None:
-    pattern = rf"\bcreate\s+table\s+public\.{re.escape(name)}\s*\((.*?)\n\);"
+    pattern = rf"\bcreate\s+table\s+public\.{re.escape(name)}\s*\((.*?)\n[ \t]*\);"
     match = re.search(pattern, sql, re.I | re.S)
     return match.group(1) if match else None
 
