@@ -20,6 +20,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <Link className="brand" href="/">RateMyGuide<span>PNW</span></Link>
           <nav aria-label="Main navigation">
             <Link href="/guides">Find a Guide</Link>
+            <Link href="/saved">Saved Guides</Link>
             <Link href="/intel/buoy-10-chinook">Chinook Intel</Link>
             <Link href="/reviews">Dock Talk</Link>
             <Link href="/about">About</Link>
