@@ -60,7 +60,7 @@ test('guide profiles still load real Supabase moderation/review components', () 
   assert.match(review, /public_angler_reviews/);
   const mapping=read('lib/review-submission.ts');
   const composer=read('components/ReviewComposer.tsx');
-  assert.match(mapping, /status:\s*'pending'/);
+  assert.doesNotMatch(mapping, /status:\s*'(?:pending|published)'/);
   assert.match(composer, /createPendingReviewInsert/);
   assert.doesNotMatch(mapping, /status:\s*'published'/);
 });
