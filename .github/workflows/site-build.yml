@@ -46,6 +46,8 @@ jobs:
         run: npm run test:review
       - name: Verify Washington public profile URL stability
         run: npm run test:directory-ids
+      - name: Verify evidence-backed guide discovery, aliases and search filters
+        run: npm run test:discovery
       - name: TypeScript check
         run: npm run typecheck
       - name: Build Next.js production assets without private DB credentials
