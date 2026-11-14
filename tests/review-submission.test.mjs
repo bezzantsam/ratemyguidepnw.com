@@ -57,7 +57,8 @@ test('insert is pending only, with existing DB columns and month granularity',()
  assert.equal(row.communication,2);
  assert.equal(row.safety,null);
  assert.equal(row.would_book_again,false);
- assert.equal(row.intensity,3);
+ assert.equal('intensity' in row,false); // do not invent a rating the angler never supplied.
+ assert.equal(row.firsthand_attested,true);
  assert.equal(row.trip_context,null);
  assert.equal('reviewer_email' in row,false);
  assert.equal('verified_trip' in row,false);
