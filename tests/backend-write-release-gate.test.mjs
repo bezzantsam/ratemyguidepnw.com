@@ -25,6 +25,7 @@ test('both browser write experiences fail closed by default', () => {
   const result = gate();
   assert.equal(result.reviews, false);
   assert.equal(result.claims, false);
+  assert.equal(result.fisheries, false);
 });
 
 test('production environment or an accidental deployment flag cannot activate unreviewed writes', () => {
@@ -37,6 +38,7 @@ test('production environment or an accidental deployment flag cannot activate un
     const result = gate(env);
     assert.equal(result.reviews, false, 'unreviewed review RPC/column cannot be activated');
     assert.equal(result.claims, false, 'missing claim RPC cannot be activated');
+    assert.equal(result.fisheries, false, 'unapplied captain fishery proposal table cannot be activated');
   }
 });
 
@@ -45,6 +47,7 @@ test('reviewed feature approvals require a server-side code change in addition t
   assert.match(source, /import 'server-only'/);
   assert.match(source, /reviewSubmission:\s*false/);
   assert.match(source, /captainClaimSubmission:\s*false/);
+  assert.match(source, /captainFisherySubmission:\s*false/);
   assert.match(source, /RMG_BACKEND_WRITE_RELEASE/);
   assert.doesNotMatch(source, /NEXT_PUBLIC_/);
   assert.doesNotMatch(source, /createClient|service_role|supabase/i);
@@ -77,6 +80,11 @@ test('captain claim page and form block RPC even if submit handler is called', (
   const page = read('app/claim/[id]/page.tsx');
   assert.match(page, /backendWriteAvailability/);
   assert.match(page, /submitEnabled=\{backendWriteAvailability\(\)\.claims\}/);
+  assert.match(page, /submitEnabled=\{backendWriteAvailability\(\)\.fisheries\}/);
+  const fishery = read('components/CaptainFisheryEditor.tsx');
+  assert.match(fishery, /submitEnabled=false/);
+  assert.match(fishery, /if\(!submitEnabled\)\{setMessage/);
+  assert.match(fishery, /disabled=\{!submitEnabled\|\|busy/);
   const form = read('components/ClaimForm.tsx');
   assert.match(form, /submitEnabled=false/);
   assert.match(form, /if\(!submitEnabled\)\{setStatus/);
@@ -88,7 +96,7 @@ test('captain claim page and form block RPC even if submit handler is called', (
 test('none of the released client paths can turn on themselves through a NEXT_PUBLIC flag', () => {
   const files = [
     'components/CaptainReviews.tsx','components/ReviewComposer.tsx',
-    'components/ClaimForm.tsx','app/claim/[id]/page.tsx',
+    'components/ClaimForm.tsx','components/CaptainFisheryEditor.tsx','app/claim/[id]/page.tsx',
     'app/guides/[slug]/page.tsx','app/washington/[id]/page.tsx',
   ];
   for (const file of files) {
