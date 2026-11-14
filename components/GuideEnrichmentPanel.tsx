@@ -8,7 +8,7 @@ const sourceLabels={
 /** Informational source references, never an official license or identity check. */
 export default function GuideEnrichmentPanel({registration}:{registration:string}){
  const enrichment=guideEnrichmentFor(registration);
- if(!enrichment)return null;
+ if(!enrichment || enrichment.advertisedWaters.length === 0)return null;
 
  return <section className="section card guide-enrichment" aria-labelledby="guide-enrichment-title">
    <p className="eyebrow">PUBLIC SOURCE RESEARCH · LIMITED PILOT</p>
