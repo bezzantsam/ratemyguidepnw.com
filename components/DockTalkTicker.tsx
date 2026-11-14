@@ -10,7 +10,7 @@ export default async function DockTalkTicker() {
         DOCK TALK
       </Link>
       {reviews.length === 0 ? (
-        <div className="dock-ticker-empty">First verified-published customer reviews coming soon. No ratings yet.</div>
+        <div className="dock-ticker-empty">First moderated angler reviews coming soon. No ratings published yet.</div>
       ) : (
         <div className="dock-ticker-window">
           <div className="dock-ticker-track">
