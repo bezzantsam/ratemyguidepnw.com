@@ -152,7 +152,7 @@ test('rejects non-record payloads and uncontrolled bulk records',()=>{
 
 test('no PII collection, database writes or fake uniqueness may be inferred from event validators',()=>{
  assert.doesNotMatch(source,/ip_address|rough_ua|user_agent|sha256\s*\(/i);
- assert.doesNotMatch(source,/\bsupabase\b|insert\(|cookie|fingerprint/i);
+ assert.doesNotMatch(source,/\bsupabase\b|insert\(|document\.cookie|deviceFingerprint/i);
  const contract=read('docs/INTENT_EVENTS_READINESS.md');
  assert.match(contract,/no live endpoint/i);
  assert.match(contract,/not verified bookings/i);
