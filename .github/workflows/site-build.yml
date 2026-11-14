@@ -64,6 +64,8 @@ jobs:
         run: npm run test:founding-guides
       - name: Validate privacy-safe intent contracts without collecting analytics
         run: npm run test:intent-events
+      - name: Verify legacy captain edits and media uploads cannot bypass moderation
+        run: npm run test:captain-publication
       - name: TypeScript check
         run: npm run typecheck
       - name: Build Next.js production assets without private DB credentials
