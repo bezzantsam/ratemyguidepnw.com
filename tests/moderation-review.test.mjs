@@ -124,3 +124,87 @@ test('production /admin/inbox is hard disabled, and preview includes synthetic d
  assert.match(css,/moderation-compare/);
  assert.match(css,/max-width:600px/);
 });
+
+
+test('new boats expose their complete submitted specs instead of only a label',()=>{
+ const previous=base(),proposed=copy(previous);
+ proposed.vessels.push({id:'v2',label:'18-foot drift boat',type:'Drift boat',
+  covered:false,heated:false,maxAnglers:3,fishCare:['Bleeding']});
+ const result=evaluate(previous,proposed);
+ const added=result.changes.find(x=>x.path==='vessels.v2');
+ assert.ok(added);
+ assert.equal(added.kind,'added');
+ for(const text of ['18-foot drift boat','Drift boat','Covered: No','Heated: No','Max anglers: 3','Bleeding']){
+  assert.ok(added.after.includes(text),text);
+ }
+});
+
+test('new and removed seasonal packages reveal species, months, fishery and assigned vessel',()=>{
+ const old=base(),after=copy(old);
+ after.vessels.push({id:'v2',label:'Winter drift boat',type:'Drift boat',
+  covered:false,heated:false,maxAnglers:2,fishCare:[]});
+ after.offerings.push({id:'p2',title:'Winter steelhead',waterway:'Nehalem River',
+  launchArea:'Wheeler',species:['Steelhead'],months:[1,2,3],vesselId:'v2',
+  bookingStyle:'private_boat',duration:'full_day'});
+ const added=evaluate(old,after).changes.find(x=>x.path==='offerings.p2');
+ assert.ok(added);
+ for(const text of ['Winter steelhead','Nehalem River','Wheeler','Steelhead',
+                    '1, 2, 3','Winter drift boat','(v2)','private_boat','full_day']){
+  assert.ok(added.after.includes(text),text);
+ }
+ const removed=evaluate(after,old).changes.find(x=>x.path==='offerings.p2');
+ assert.ok(removed);
+ assert.equal(removed.kind,'removed');
+ assert.ok(removed.before.includes('Nehalem River'));
+ assert.ok(removed.before.includes('Winter drift boat'));
+ assert.equal(removed.after,'Not listed');
+});
+
+test('credential and insurance wording is flagged on new submissions and changed titles',()=>{
+ const initial=base();
+ initial.vessels[0].label='Licensed and Insured Boat';
+ initial.offerings[0].title='USCG 100-ton Master Salmon Charter';
+ const first=evaluate(null,initial);
+ assert.equal(first.risk,'high');
+ assert.deepEqual(Array.from(first.flags,f=>f.path).sort(),[
+  'vessels.v1.label','offerings.p1.title'
+ ].sort());
+ assert.ok(first.flags.every(f=>f.code==='credential_or_insurance_claim'&&f.priority==='high'));
+ assert.ok(first.warnings.some(x=>x.includes('independent evidence')));
+
+ const before=base(),proposed=copy(before);
+ proposed.offerings[0].title='Coast Guard Certified Captain Charter';
+ const changed=evaluate(before,proposed);
+ assert.equal(changed.risk,'high');
+ assert.equal(changed.flags.length,1);
+ assert.equal(changed.flags[0].path,'offerings.p1.title');
+});
+
+test('already approved unchanged claims do not repeatedly trigger new flags, ordinary names remain neutral',()=>{
+ const before=base();before.offerings[0].title='Licensed Columbia Salmon Charter';
+ const same=evaluate(before,copy(before));
+ assert.equal(same.hasChanges,false);
+ assert.equal(same.flags.length,0);
+ const original=base(),proposal=copy(original);
+ proposal.offerings[0].title='Master Angler Salmon Trip';
+ const result=evaluate(original,proposal);
+ assert.equal(result.flags.length,0);
+ assert.equal(result.risk,'medium');
+});
+
+test('capacity changes warrant additional human attention',()=>{
+ const before=base(),after=copy(before);
+ after.vessels[0].maxAnglers=12;
+ const report=evaluate(before,after);
+ assert.equal(report.risk,'medium');
+ assert.ok(report.changes.some(x=>x.path==='vessels.v1.maxAnglers'));
+ assert.equal(report.humanApprovalRequired,true);
+});
+
+test('moderator preview surfaces warning flags but never provides publishing actions',()=>{
+ const ui=read('components/ModeratorDiffPreview.tsx');
+ assert.match(ui,/Claims requiring independent evidence/);
+ assert.match(ui,/summary\.flags/);
+ assert.match(ui,/not findings of wrongdoing/);
+ assert.doesNotMatch(ui,/<button|onClick|Approve & Publish/);
+});
