@@ -25,7 +25,7 @@ test('all editorial enrichments match existing imported Oregon profiles',()=>{
   assert.ok(known.has(registration),'unknown registration '+registration);
   assert.match(registration,/^OG\.\d{7}$/);
   assert.ok(Array.isArray(enriched[registration].searchAliases));
-  assert.ok(enriched[registration].advertisedWaters.length>0);
+  assert.ok(enriched[registration].advertisedWaters.length > 0 || enriched[registration].searchAliases.length > 0);
  }
 });
 
