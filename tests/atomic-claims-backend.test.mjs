@@ -62,7 +62,7 @@ test('browser reviews attest firsthand trips but never invent intensity or accep
 });
 
 test('client grants restrict review insert to allowed data, never status or publication timestamps',()=>{
- const match=schema.match(/grant insert \(([\s\S]*?)\) on public\.reviews to authenticated;/);
+ const match=schema.match(/grant insert \(([^;]*?)\) on public\.reviews to authenticated;/);
  assert.ok(match,'explicit review INSERT grant required');
  const columns=match[1].replace(/\s+/g,'').split(',');
  for(const name of ['guide_id','author_id','quality','body','firsthand_attested'])assert.ok(columns.includes(name),name);
