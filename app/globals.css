@@ -137,3 +137,14 @@ a.dock-ticker-item:hover{color:white;text-decoration:underline}
 .trust-policy-footer{margin-top:24px;max-width:900px}
 @media(max-width:830px){.trust-evidence-grid{grid-template-columns:1fr}.trust-next-steps{grid-template-columns:1fr}.trust-panel-heading{align-items:flex-start}}
 @media(max-width:500px){.trust-term{grid-template-columns:1fr;gap:8px;padding:17px}.trust-panel{padding:16px}.trust-evidence-item{padding:17px}}
+
+/* Browser-local saved captain shortlist. Button is a sibling of the profile link, never a nested interactive element. */
+.saved-guide-row{display:flex;align-items:stretch;background:#fff;border-bottom:1px solid #e1e7e3}
+.saved-guide-row .guide-result{flex:1;min-width:0;border-bottom:0}
+.saved-guide-row .save-guide-control{display:flex;align-items:center;justify-content:center;padding:10px 16px}
+.save-guide-button{white-space:nowrap;cursor:pointer;background:#fff;border:1px solid #a8bdb6;border-radius:8px;color:#24483c;font:inherit;font-size:13px;font-weight:800;padding:10px 13px;min-height:44px}
+.save-guide-button.saved{background:#e9f3e9;border-color:#497657;color:#24553a}
+.save-guide-button:hover{border-color:#2e6755}
+.save-guide-button:focus-visible{outline:3px solid #d8b26b;outline-offset:3px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:580px){.saved-guide-row .save-guide-control{padding:8px}.save-guide-button{padding:9px 10px;font-size:12px}}
