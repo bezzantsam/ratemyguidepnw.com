@@ -34,7 +34,7 @@ export const directoryEntries:DirectoryEntry[]=[
  ...washingtonGuides.map(g=>({
    id:g.id,name:g.name,business:g.business,
    states:['Washington'] as ('Oregon'|'Washington')[],
-   areas:g.notes?[g.notes]:[],advertisedWaters:[],searchAliases:[],
+   areas:g.notes?[g.notes]:[],advertisedWaters:advertisedWaterwayNames(g.id),searchAliases:guideSearchTerms(g.id),
    crew:charterCrewSearchMembers(g.id),
    href:'/washington/'+g.id,source:g.source,
  }))

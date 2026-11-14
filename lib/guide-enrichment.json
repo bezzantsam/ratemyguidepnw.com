@@ -354,5 +354,352 @@
         "sourceType": "operator_site"
       }
     ]
+  },
+  "OG.0001093": {
+    "searchAliases": [
+      "Gone Catchin Guide Service",
+      "Gone Catchin’ Outfitters"
+    ],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://gonecatchin.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "label": "Addicted Fishing booking roster listing",
+        "url": "https://addicted.fishing/pages/book-a-guided-fishing-trip",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0002882": {
+    "searchAliases": [
+      "CK Sport Fishing",
+      "Cameron Kennedy Sport Fishing"
+    ],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://cksportfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://cksportfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Columbia River estuary (Astoria)",
+        "sourceUrl": "https://cksportfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Klickitat River mouth",
+        "sourceUrl": "https://cksportfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://cksportfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0003549": {
+    "searchAliases": [
+      "Dan Coelho",
+      "Twin Spin Guide Service"
+    ],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Business directory listing",
+        "url": "https://visitgoldbeach.com/attractions/fishing-guided-fishing/fishing-guide-directory/",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0003348": {
+    "searchAliases": [
+      "Dre Menefee",
+      "Captain Dre",
+      "Valley Coast Outdoors"
+    ],
+    "advertisedWaters": [
+      {
+        "name": "Tillamook Bay",
+        "sourceUrl": "https://www.valleycoastoutdoors.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Pacific Ocean",
+        "sourceUrl": "https://www.valleycoastoutdoors.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://www.valleycoastoutdoors.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://www.valleycoastoutdoors.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Clackamas River",
+        "sourceUrl": "https://www.valleycoastoutdoors.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Sandy River",
+        "sourceUrl": "https://www.valleycoastoutdoors.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Wilson River",
+        "sourceUrl": "https://www.valleycoastoutdoors.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Trask River",
+        "sourceUrl": "https://www.valleycoastoutdoors.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Nestucca River",
+        "sourceUrl": "https://www.valleycoastoutdoors.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Siletz River",
+        "sourceUrl": "https://www.valleycoastoutdoors.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.valleycoastoutdoors.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0003790": {
+    "searchAliases": [
+      "Bandit Guide Service",
+      "Beach Bandit Crab Snares"
+    ],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.igotcrabs.net/bandit-guide-service",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0001778": {
+    "searchAliases": [
+      "Nick Popov",
+      "Peel The Reel Guide Service"
+    ],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://peelthereel.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://peelthereel.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://peelthereel.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "label": "Addicted Fishing booking roster listing",
+        "url": "https://addicted.fishing/pages/book-a-guided-fishing-trip",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0004032": {
+    "searchAliases": [
+      "Steel Obsession Guide Service"
+    ],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://steelobsession.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "label": "Addicted Fishing booking roster listing",
+        "url": "https://addicted.fishing/pages/book-a-guided-fishing-trip",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000218": {
+    "searchAliases": [
+      "Dave Manners",
+      "Big Dave Manners",
+      "Big Dave’s Fishing Adventures"
+    ],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://bigdavesfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "label": "Addicted Fishing booking roster listing",
+        "url": "https://addicted.fishing/pages/book-a-guided-fishing-trip",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0004079": {
+    "searchAliases": [
+      "Cliff Sallee",
+      "Reel Adrenaline Guide Service"
+    ],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://reeladrenaline.fishing/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://reeladrenaline.fishing/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "label": "Addicted Fishing booking roster listing",
+        "url": "https://addicted.fishing/pages/book-a-guided-fishing-trip",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0001248": {
+    "searchAliases": [
+      "Riverside Guide Service"
+    ],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://riversideguide.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://riversideguide.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "label": "Addicted Fishing booking roster listing",
+        "url": "https://addicted.fishing/pages/book-a-guided-fishing-trip",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "wa-021": {
+    "searchAliases": [
+      "Bonk 'Em All Adventures"
+    ],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://bonkemall.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "label": "Addicted Fishing booking roster listing",
+        "url": "https://addicted.fishing/pages/book-a-guided-fishing-trip",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0003644": {
+    "searchAliases": [
+      "Moore Fishing Guide Service"
+    ],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Addicted Fishing booking roster listing",
+        "url": "https://addicted.fishing/pages/book-a-guided-fishing-trip",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0003023": {
+    "searchAliases": [
+      "Adventures With Mayhem Outfitters"
+    ],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Addicted Fishing booking roster listing",
+        "url": "https://addicted.fishing/pages/book-a-guided-fishing-trip",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      }
+    ]
   }
 }

@@ -5,8 +5,16 @@ export type AdvertisedWaterway = {
   name: string;
   sourceUrl: string;
   sourceType: GuideEvidenceType;
+  observedOn?: string;
+};
+export type GuideSourceLink = {
+  label: string;
+  url: string;
+  sourceType: GuideEvidenceType;
+  observedOn: string;
 };
 export type GuideEnrichment = {
+  sourceLinks?: GuideSourceLink[];
   searchAliases: string[];
   advertisedWaters: AdvertisedWaterway[];
 };

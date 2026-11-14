@@ -7,7 +7,7 @@ import ts from 'typescript';
 const read=path=>readFileSync(path,'utf8');
 const imported=JSON.parse(read('lib/oregon-guides.json'));
 const enriched=JSON.parse(read('lib/guide-enrichment.json'));
-const known=new Set(imported.map(row=>row.registration));
+const known=new Set([...imported.map(row=>row.registration),...Object.values(JSON.parse(read('lib/washington-stable-ids.json')))]);
 
 function loadQuery(){
  const source=read('lib/directory-query.ts');
@@ -19,11 +19,11 @@ function loadQuery(){
  return exports.filterDirectoryEntries;
 }
 
-test('all editorial enrichments match existing imported Oregon profiles',()=>{
+test('all editorial enrichments match existing imported profiles',()=>{
  assert.ok(Object.keys(enriched).length > 0);
  for(const registration of Object.keys(enriched)){
   assert.ok(known.has(registration),'unknown registration '+registration);
-  assert.match(registration,/^OG\.\d{7}$/);
+  assert.match(registration,/^(OG\.\d{7}|wa-\d{3,})$/);
   assert.ok(Array.isArray(enriched[registration].searchAliases));
   assert.ok(enriched[registration].advertisedWaters.length > 0 || enriched[registration].searchAliases.length > 0);
  }
@@ -95,4 +95,24 @@ test('profile UI distinguishes public operating claims from historical licensing
  assert.match(search,/Advertised fishing water \(pilot\)/);
  assert.match(search,/filterDirectoryEntries/);
  assert.doesNotMatch(search,/Verified current licensing/);
+});
+
+test('new business evidence has safe dated links and pending research never feeds public enrichment',()=>{
+ for(const entry of Object.values(enriched)){
+  for(const source of entry.sourceLinks??[]){
+   const url=new URL(source.url);
+   assert.equal(url.protocol,'https:');
+   assert.equal(url.username,'');
+   assert.equal(url.password,'');
+   assert.match(source.observedOn,/^\d{4}-\d{2}-\d{2}$/);
+   assert.ok(['operator_site','third_party_directory'].includes(source.sourceType));
+   assert.ok(source.label.length>3);
+  }
+ }
+ const queue=JSON.parse(read('docs/research/requested-launch-review.json'));
+ for(const entity of queue.pendingEntities){
+  assert.equal(entity.publicationStatus,'manual_review_required');
+  assert.equal(entity.credentialStatus,'unknown');
+ }
+ assert.doesNotMatch(read('lib/guide-enrichment.ts'),/requested-launch-review/);
 });
