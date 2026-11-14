@@ -240,3 +240,33 @@ a.dock-ticker-item:hover{color:white;text-decoration:underline}
 .captain-fishery-editor button:disabled{opacity:.55;cursor:not-allowed}
 .captain-fishery-editor button:focus-visible,.captain-fishery-editor input:focus-visible,.captain-fishery-editor select:focus-visible{outline:3px solid #eacb90;outline-offset:3px}
 @media(max-width:600px){.captain-fishery-item{padding:12px}.captain-fishery-chipgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.captain-monthgrid{grid-template-columns:repeat(4,minmax(0,1fr))}.captain-fishery-actions button{flex:1}}
+
+
+/* Developer-only moderator diff. No live privileges or publication operations. */
+.moderation-preview-page{max-width:1120px;margin:0 auto;padding:24px 20px 110px}
+.moderation-review-preview{display:grid;gap:18px;background:#153335;border:1px solid #58736c;border-radius:16px;padding:20px}
+.moderation-review-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.moderation-review-heading h2{margin:8px 0}
+.moderation-risk{font-size:12px;letter-spacing:.07em;font-weight:800;border:1px solid #c1ae79;border-radius:8px;padding:9px 13px;white-space:nowrap}
+.moderation-risk-low{color:#d6e9d7}
+.moderation-risk-medium{color:#f1d497}
+.moderation-risk-high{color:#efb3a5}
+.moderation-review-list{display:grid;gap:12px}
+.moderation-review-change{border:1px solid #647d75;border-radius:12px;background:#0f292b;overflow:hidden}
+.moderation-review-change-heading{padding:10px 14px;border-bottom:1px solid #526c66;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.moderation-review-change-heading span{font-size:12px;color:#eac984}
+.moderation-compare{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+.moderation-compare>div{padding:12px 14px;min-width:0;overflow-wrap:anywhere}
+.moderation-compare>div+div{border-left:1px solid #526c66}
+.moderation-compare small{font-size:11px;color:#d0c8a7;font-weight:700;letter-spacing:.05em}
+.moderation-compare p{margin:8px 0 0;line-height:1.4}
+.moderation-review-warnings{background:#213d3e;border-radius:10px;padding:12px 18px}
+.moderation-review-warnings h3{margin:4px 0}
+.moderation-review-warnings li{margin:6px 0}
+.moderation-review-disabled{border-top:1px solid #708981;padding-top:14px}
+@media(max-width:600px){
+ .moderation-review-preview{padding:12px}
+ .moderation-compare{grid-template-columns:1fr}
+ .moderation-compare>div+div{border-left:0;border-top:1px solid #526c66}
+ .moderation-preview-page{padding:14px 12px 110px}
+}
