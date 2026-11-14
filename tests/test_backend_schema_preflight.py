@@ -85,6 +85,20 @@ class BackendPreflightTests(unittest.TestCase):
         self.assertIn("BLOCKED", result.stderr)
         self.assertIn('"production_ready": false', result.stdout)
 
+    def test_client_cannot_set_review_or_claim_status_and_db_has_pending_default(self):
+        report = preflight.risk_report()
+        self.assertTrue(report["client_integrations_inspected"]["pending_review_write"])
+        reviews = (ROOT / "lib/review-submission.ts").read_text()
+        claims = (ROOT / "components/ClaimForm.tsx").read_text()
+        self.assertNotIn("status: 'pending'", reviews)
+        self.assertNotIn("status:'pending'", claims)
+        self.assertNotIn("status:'approved'", claims)
+        schema = (ROOT / "supabase/migrations/0001_initial.sql").read_text()
+        for table in ("reviews", "guide_claims"):
+            declaration = preflight.create_table_body(schema, table)
+            self.assertIsNotNone(declaration)
+            self.assertRegex(declaration, r"status\s+text\s+not\s+null\s+default\s+'pending'")
+
     def test_audit_cannot_be_silently_satisfied_by_pointer_or_draft_migration(self):
         report = preflight.risk_report()
         self.assertEqual(report["media_0002"], "historical_pointer_not_replayable_sql")
