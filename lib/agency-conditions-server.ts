@@ -61,7 +61,7 @@ function base(key:WaterwaySourceKey,fetchedAt:string):AgencyCondition{
 function keyHasKind(key:WaterwaySourceKey,kind:'river'|'tides'){
   if(WATERWAY_SOURCES[key].kind!==kind)throw new Error('Source kind mismatch.');
 }
-/** Parse USGS NWIS IV JSON, preserving station, parameter and observation timestamps. */
+/** Parse modern USGS OGC latest-continuous GeoJSON with source timestamps. */
 export function parseUsgsObservation(
   key:WaterwaySourceKey,payload:unknown,
   fetchedAt:string
@@ -73,7 +73,7 @@ export function parseUsgsObservation(
   // USGS latest-continuous OGC API v1 returns GeoJSON FeatureCollection.
   // Each feature properties includes monitoring_location_id, parameter_code,
   // time, value, approval_status and unit_of_measure; no old NWIS timeSeries.
-  if(!record(payload)||!Array.isArray(payload.features))return output;
+  if(!record(payload)||payload.type!=='FeatureCollection'||!Array.isArray(payload.features))return output;
   const chosen=new Map<string,AgencyCondition['values'][number]>();
   for(const feature of payload.features){
     if(!record(feature)||!record(feature.properties))continue;
@@ -92,7 +92,7 @@ export function parseUsgsObservation(
     const validUnits=metric.metric==='Discharge'
       ?['ft^3/s','ft3/s','cfs']
       :metric.metric==='Gage height'?['ft','feet']
-      :['deg C','°C','C','degree Celsius'];
+      :['degC','deg C','°C','C','degree Celsius'];
     if(!validUnits.includes(officialUnit))continue;
     const existing=chosen.get(p.parameter_code);
     if(existing&&Date.parse(existing.sourceTime)>=pointAt)continue;
