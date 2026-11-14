@@ -80,3 +80,10 @@ test('explanation provides neutral distinctions and accessible source disclosure
   assert.match(css, /max-width:830px/);
   assert.match(css, /focus-visible/);
 });
+
+
+test('Dock Talk empty state never implies independent trip verification', () => {
+  const ticker=read('components/DockTalkTicker.tsx');
+  assert.match(ticker, /First moderated angler reviews coming soon/);
+  assert.doesNotMatch(ticker, /verified-published/);
+});
