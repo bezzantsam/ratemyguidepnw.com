@@ -88,3 +88,52 @@ a.dock-ticker-item:hover{color:white;text-decoration:underline}
 .home-intel-feature-copy p{font-size:13px;color:#c3d5ca;margin:0}
 .home-intel-feature-arrow{flex:0 0 auto;color:#e4c37f}
 @media(max-width:540px){.home-intel-feature{align-items:flex-start;padding:17px;gap:12px}.home-intel-feature-icon{height:43px;flex-basis:43px}.home-intel-feature-arrow{display:none}}
+
+
+/* Imported-source guide transparency. Neutral states intentionally never imply
+   current license, USCG credential, claimed account or proved completed trip. */
+.trust-panel{border:1px solid #567b73;background:#102e30;border-radius:15px;padding:clamp(18px,3vw,30px)}
+.trust-panel-heading{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:20px}
+.trust-panel-heading h2{font-size:clamp(25px,3vw,32px);line-height:1.13;margin:5px 0 0;letter-spacing:-.035em}
+.trust-panel-heading .eyebrow{font-size:10px;letter-spacing:.14em;margin:0 0 7px}
+.trust-explainer-link{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:750;color:#f0d08c;text-decoration:underline;text-underline-offset:4px}
+.trust-explainer-link:focus-visible,.trust-breadcrumb:focus-visible,.guide-verification-page a:focus-visible{outline:3px solid #eac87b;outline-offset:4px}
+.trust-evidence-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.trust-evidence-item{background:#1a4140;border:1px solid #456d62;border-radius:11px;padding:20px;min-width:0}
+.trust-evidence-title{display:flex;align-items:center;gap:9px;color:#f1eddf;font-size:14px}
+.trust-evidence-title svg{color:#e4c486;flex:0 0 auto}
+.trust-evidence-item p{font-size:13px;color:#c6d9cd;line-height:1.65;margin:14px 0}
+.trust-state{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:800;line-height:1.4;border-radius:20px;padding:6px 10px;max-width:100%;margin-top:15px}
+.trust-state-source{color:#e5d2aa;background:#3e473d;border:1px solid #847453}
+.trust-state-unknown{color:#dce3db;background:#304d4a;border:1px solid #768d83}
+.trust-evidence-item .trust-note{font-size:12px;color:#afc7b9}
+.trust-source-fields{margin:14px 0 0;border-top:1px solid #547268;padding-top:9px}
+.trust-source-fields>div{display:grid;gap:4px;padding:7px 0}
+.trust-source-fields dt{font-size:11px;color:#b6cbbf}
+.trust-source-fields dd{margin:0;overflow-wrap:anywhere;color:#f3e5c8;font-size:13px;font-weight:700}
+.trust-source-fields small{font-weight:400;color:#b6cbbf}
+.trust-panel-footnote{font-size:12px;color:#b6ccc2;margin:18px 0 0;line-height:1.7}
+.guide-verification-page{padding-top:40px}
+.guide-verification-page>h1{font-size:clamp(38px,5.6vw,63px);max-width:840px}
+.guide-verification-page>.lead{max-width:830px}
+.trust-breadcrumb{display:inline-flex;align-items:center;gap:10px;color:#f2d18d;font-size:13px;margin:0 0 32px}
+.trust-legend{display:flex;gap:11px;flex-wrap:wrap;align-items:center;margin:28px 0 57px}
+.trust-legend .trust-state{margin:0}
+.trust-term-list h2{font-size:clamp(27px,4vw,37px);letter-spacing:-.03em}
+.trust-terms{display:grid;gap:11px;margin-top:24px}
+.trust-term{display:grid;grid-template-columns:40px minmax(0,1fr);gap:18px;padding:23px;border:1px solid #4d7368;background:#193d3d;border-radius:11px}
+.trust-term-index{font-size:14px;color:#ebce8e;font-weight:800}
+.trust-term h3{font-size:21px;margin:0 0 9px}
+.trust-term p{font-size:14px;line-height:1.7;margin:0 0 10px}
+.trust-term p:last-child{margin-bottom:0}
+.trust-term-limit{border-left:3px solid #cead6c;padding:9px 12px;background:#284a42;border-radius:0 6px 6px 0}
+.trust-term-limit strong{color:#f4d995}
+.trust-next-steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:38px}
+.trust-next-steps>div{border:1px solid #56776d;background:#163536;border-radius:13px;padding:25px}
+.trust-next-steps svg{color:#e6c480}
+.trust-next-steps h2{font-size:24px;margin:15px 0 8px}
+.trust-next-steps p{font-size:14px;margin:0}
+.trust-next-steps .button{margin-bottom:0}
+.trust-policy-footer{margin-top:24px;max-width:900px}
+@media(max-width:830px){.trust-evidence-grid{grid-template-columns:1fr}.trust-next-steps{grid-template-columns:1fr}.trust-panel-heading{align-items:flex-start}}
+@media(max-width:500px){.trust-term{grid-template-columns:1fr;gap:8px;padding:17px}.trust-panel{padding:16px}.trust-evidence-item{padding:17px}}
