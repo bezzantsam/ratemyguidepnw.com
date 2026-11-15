@@ -11,11 +11,13 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
  const[area,setArea]=useState('All areas');
  const[waterway,setWaterway]=useState('All advertised waters');
  const[sourceLinkedOnly,setSourceLinkedOnly]=useState(false);
+ const[species,setSpecies]=useState('All advertised species');
+ const[technique,setTechnique]=useState('All advertised techniques');
  const[page,setPage]=useState(1);
  const size=30;
  const filtered=useMemo(()=>filterDirectoryEntries(entries,{
-  state,sourceZone:area,advertisedWater:waterway,query:q,sourceLinkedOnly
- }),[entries,q,state,area,waterway,sourceLinkedOnly]);
+  state,sourceZone:area,advertisedWater:waterway,query:q,sourceLinkedOnly,advertisedSpecies:species,advertisedTechnique:technique
+ }),[entries,q,state,area,waterway,sourceLinkedOnly,species,technique]);
 
  const areas=useMemo(()=>
   ['All areas',...new Set(entries.filter(g=>state==='All'||g.states.includes(state as 'Oregon'|'Washington'))
@@ -27,9 +29,11 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
     .flatMap(g=>g.advertisedWaters))].sort((a,b)=>a==='All advertised waters'?-1:b==='All advertised waters'?1:a.localeCompare(b)),
  [entries,state]);
 
+ const speciesChoices=useMemo(()=>['All advertised species',...new Set(entries.filter(g=>state==='All'||g.states.includes(state as 'Oregon'|'Washington')).flatMap(g=>g.advertisedSpecies??[]))].sort((a,b)=>a==='All advertised species'?-1:b==='All advertised species'?1:a.localeCompare(b)),[entries,state]);
+ const techniqueChoices=useMemo(()=>['All advertised techniques',...new Set(entries.filter(g=>state==='All'||g.states.includes(state as 'Oregon'|'Washington')).flatMap(g=>g.advertisedTechniques??[]))].sort((a,b)=>a==='All advertised techniques'?-1:b==='All advertised techniques'?1:a.localeCompare(b)),[entries,state]);
  const pages=Math.max(1,Math.ceil(filtered.length/size)),current=Math.min(page,pages);
  const setRegion=(s:string)=>{
-  setState(s);setArea('All areas');setWaterway('All advertised waters');setPage(1);
+  setState(s);setArea('All areas');setWaterway('All advertised waters');setSpecies('All advertised species');setTechnique('All advertised techniques');setPage(1);
  };
 
  return <section className="directory-panel">
@@ -54,6 +58,12 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
      {waters.map(a=><option key={a}>{a}</option>)}
     </select>
    </label>
+   <label>Target species (publicly advertised)
+    <select value={species} onChange={e=>{setSpecies(e.target.value);setPage(1)}}>{speciesChoices.map(x=><option key={x}>{x}</option>)}</select>
+   </label>
+   <label>Fishing method (publicly advertised)
+    <select value={technique} onChange={e=>{setTechnique(e.target.value);setPage(1)}}>{techniqueChoices.map(x=><option key={x}>{x}</option>)}</select>
+   </label>
   </div>
   <label className="source-linked-filter"><input type="checkbox" checked={sourceLinkedOnly}
    onChange={e=>{setSourceLinkedOnly(e.target.checked);setPage(1)}}/>
@@ -74,6 +84,9 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
       {(guideSearchScore(g,q)??0)>=60&&<p className="guide-meta"><strong>Similar spelling match</strong> · Confirm the person and business.</p>}
       <p className="outfit-name">{g.business||'Fishing guide'}</p>
       {g.searchAliases.length>0&&<p className="guide-meta">Also listed publicly as: {g.searchAliases.join(' · ')}</p>}
+      {(g.advertisedSpecies??[]).length>0&&<p className="guide-meta">Advertised species: {g.advertisedSpecies!.slice(0,4).join(' · ')}{g.advertisedSpecies!.length>4?' · + more':''}</p>}
+      {(g.advertisedTechniques??[]).length>0&&<p className="guide-meta">Fishing methods: {g.advertisedTechniques!.join(' · ')}</p>}
+      {g.hasRegistryWebsite&&!g.hasPublicSource&&<p className="guide-meta">Registry-reported website · Unverified, may be outdated</p>}
       {g.hasPublicSource&&<p className="guide-meta">Public source linked · Verify current trips with the operator</p>}
       {(g.crew??[]).length>0&&<p className="guide-meta">Reported crew: {g.crew!.map(member=>`${member.name} (${member.role})`).join(' · ')}. Separate from the captain; current assignment unconfirmed.</p>}
       {g.advertisedWaters.length>0&&<p className="guide-meta">Advertised waters (source-linked): {g.advertisedWaters.slice(0,3).join(' · ')}{g.advertisedWaters.length>3?' · + more':''}</p>}

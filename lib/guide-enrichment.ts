@@ -13,7 +13,18 @@ export type GuideSourceLink = {
   sourceType: GuideEvidenceType;
   observedOn: string;
 };
+export type GuideAdvertisedTag = AdvertisedWaterway;
+export type RegistryWebsiteReference = {
+  url:string;
+  importedValue:string;
+  sourceType:'oregon_registry_import';
+  verificationStatus:'unverified_registry_reference';
+};
 export type GuideEnrichment = {
+  registryWebsite?: RegistryWebsiteReference;
+  advertisedSpecies?: GuideAdvertisedTag[];
+  advertisedTechniques?: GuideAdvertisedTag[];
+  advertisedTripTypes?: GuideAdvertisedTag[];
   sourceLinks?: GuideSourceLink[];
   searchAliases: string[];
   advertisedWaters: AdvertisedWaterway[];
@@ -39,3 +50,8 @@ export function advertisedWaterwayNames(registration: string): string[] {
 export function guideSearchTerms(registration: string): string[] {
   return guideEnrichmentFor(registration)?.searchAliases ?? [];
 }
+
+/** Source-attributed fishing offerings, never inferred from historical registry zones. */
+export function advertisedSpeciesNames(registration:string):string[] {return guideEnrichmentFor(registration)?.advertisedSpecies?.map(x=>x.name)??[];}
+export function advertisedTechniqueNames(registration:string):string[] {return guideEnrichmentFor(registration)?.advertisedTechniques?.map(x=>x.name)??[];}
+export function advertisedTripTypeNames(registration:string):string[] {return guideEnrichmentFor(registration)?.advertisedTripTypes?.map(x=>x.name)??[];}

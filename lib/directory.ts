@@ -1,7 +1,7 @@
 import {oregonGuides,guideSlug} from './registry';
 import {washingtonGuides} from './washington';
 import {washingtonRecordForOregon} from './washington-reconciled';
-import {advertisedWaterwayNames,guideEnrichmentFor,guideSearchTerms} from './guide-enrichment';
+import {advertisedWaterwayNames,advertisedSpeciesNames,advertisedTechniqueNames,advertisedTripTypeNames,guideEnrichmentFor,guideSearchTerms} from './guide-enrichment';
 import {charterCrewSearchMembers, type CharterCrewMember} from './charter-crew';
 
 export type DirectoryEntry={
@@ -15,6 +15,11 @@ export type DirectoryEntry={
   advertisedWaters:string[];
   /** Search terms from named, publicly linked sources; NOT legal identity verification. */
   searchAliases:string[];
+  advertisedSpecies?:string[];
+  advertisedTechniques?:string[];
+  advertisedTripTypes?:string[];
+  /** Historical registry website, not independently source-linked or verified. */
+  hasRegistryWebsite?:boolean;
   /** A source-linked business profile, not current licensing or operator ownership verification. */
   hasPublicSource?:boolean;
   /** Separate people associated with saltwater trips; never captain identity aliases. */
@@ -30,6 +35,10 @@ export const directoryEntries:DirectoryEntry[]=[
    areas:g.areas,
    advertisedWaters:advertisedWaterwayNames(g.registration),
    searchAliases:guideSearchTerms(g.registration),
+   advertisedSpecies:advertisedSpeciesNames(g.registration),
+   advertisedTechniques:advertisedTechniqueNames(g.registration),
+   advertisedTripTypes:advertisedTripTypeNames(g.registration),
+   hasRegistryWebsite:Boolean(guideEnrichmentFor(g.registration)?.registryWebsite),
    hasPublicSource: Boolean(guideEnrichmentFor(g.registration)?.sourceLinks?.length || guideEnrichmentFor(g.registration)?.advertisedWaters.length),
    crew:charterCrewSearchMembers(g.registration),
    href:'/guides/'+guideSlug(g),source:'Oregon registry',
@@ -39,6 +48,10 @@ export const directoryEntries:DirectoryEntry[]=[
    states:['Washington'] as ('Oregon'|'Washington')[],
    areas:g.notes?[g.notes]:[],advertisedWaters:advertisedWaterwayNames(g.id),searchAliases:guideSearchTerms(g.id),
    hasPublicSource: Boolean(guideEnrichmentFor(g.id)?.sourceLinks?.length || guideEnrichmentFor(g.id)?.advertisedWaters.length),
+   advertisedSpecies:advertisedSpeciesNames(g.id),
+   advertisedTechniques:advertisedTechniqueNames(g.id),
+   advertisedTripTypes:advertisedTripTypeNames(g.id),
+   hasRegistryWebsite:false,
    crew:charterCrewSearchMembers(g.id),
    href:'/washington/'+g.id,source:g.source,
  }))

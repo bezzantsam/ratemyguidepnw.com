@@ -5311,6 +5311,53 @@
         "url": "https://www.catchingchromeguideservice.com/about",
         "sourceType": "operator_site",
         "observedOn": "2026-11-15"
+      },
+      {
+        "label": "Operator business website",
+        "url": "https://www.catchingchromeguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedSpecies": [
+      {
+        "name": "Chinook Salmon",
+        "sourceUrl": "https://www.catchingchromeguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Coho Salmon",
+        "sourceUrl": "https://www.catchingchromeguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Steelhead",
+        "sourceUrl": "https://www.catchingchromeguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Sturgeon",
+        "sourceUrl": "https://www.catchingchromeguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "American Shad",
+        "sourceUrl": "https://www.catchingchromeguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTechniques": [],
+    "advertisedTripTypes": [
+      {
+        "name": "Power boat",
+        "sourceUrl": "https://www.catchingchromeguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
       }
     ]
   },
@@ -5328,6 +5375,48 @@
       {
         "label": "Operator website",
         "url": "https://watertimeoutfitters.com/meet-our-guides/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "label": "Operator business website",
+        "url": "https://watertimeoutfitters.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedSpecies": [
+      {
+        "name": "Steelhead",
+        "sourceUrl": "https://watertimeoutfitters.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Trout",
+        "sourceUrl": "https://watertimeoutfitters.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "American Shad",
+        "sourceUrl": "https://watertimeoutfitters.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTechniques": [
+      {
+        "name": "Fly fishing",
+        "sourceUrl": "https://watertimeoutfitters.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTripTypes": [
+      {
+        "name": "Fly fishing instruction",
+        "sourceUrl": "https://watertimeoutfitters.com/",
         "sourceType": "operator_site",
         "observedOn": "2026-11-15"
       }
@@ -5424,6 +5513,53 @@
         "sourceType": "operator_site",
         "observedOn": "2026-11-15"
       }
+    ],
+    "advertisedSpecies": [
+      {
+        "name": "Salmon",
+        "sourceUrl": "https://www.hellscanyonsportfishing.com/fishing-guides",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Steelhead",
+        "sourceUrl": "https://www.hellscanyonsportfishing.com/fishing-guides",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Sturgeon",
+        "sourceUrl": "https://www.hellscanyonsportfishing.com/fishing-guides",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Walleye",
+        "sourceUrl": "https://www.hellscanyonsportfishing.com/fishing-guides",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Smallmouth Bass",
+        "sourceUrl": "https://www.hellscanyonsportfishing.com/fishing-guides",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Trout",
+        "sourceUrl": "https://www.hellscanyonsportfishing.com/fishing-guides",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTechniques": [],
+    "advertisedTripTypes": [
+      {
+        "name": "Jet boat",
+        "sourceUrl": "https://www.hellscanyonsportfishing.com/fishing-guides",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
     ]
   },
   "OG.0003972": {
@@ -5496,11 +5632,59 @@
   },
   "OG.0003631": {
     "searchAliases": [],
-    "advertisedWaters": [],
+    "advertisedWaters": [
+      {
+        "name": "Pacific Ocean",
+        "sourceUrl": "https://www.roamaboutoutdoors.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
     "sourceLinks": [
       {
         "label": "Operator website",
         "url": "https://www.roamaboutoutdoors.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedSpecies": [
+      {
+        "name": "Salmon",
+        "sourceUrl": "https://www.roamaboutoutdoors.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Rockfish",
+        "sourceUrl": "https://www.roamaboutoutdoors.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Lingcod",
+        "sourceUrl": "https://www.roamaboutoutdoors.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Halibut",
+        "sourceUrl": "https://www.roamaboutoutdoors.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Dungeness Crab",
+        "sourceUrl": "https://www.roamaboutoutdoors.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTechniques": [],
+    "advertisedTripTypes": [
+      {
+        "name": "Saltwater charter",
+        "sourceUrl": "https://www.roamaboutoutdoors.com/",
         "sourceType": "operator_site",
         "observedOn": "2026-11-15"
       }
@@ -5530,5 +5714,2148 @@
         "observedOn": "2026-11-15"
       }
     ]
+  },
+  "OG.0003609": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.meatwithoutfeetguides.com",
+      "importedValue": "www.meatwithoutfeetguides.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003634": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://AccessibleFishingAdventures.com",
+      "importedValue": "AccessibleFishingAdventures.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003716": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://shortbusguideservice.com",
+      "importedValue": "shortbusguideservice.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003834": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.cattywhompus.com",
+      "importedValue": "www.cattywhompus.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003836": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://Onlyfins.llc",
+      "importedValue": "Onlyfins.llc",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003837": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://eljeffay.com",
+      "importedValue": "eljeffay.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003889": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://viceoutdoorsllc.com",
+      "importedValue": "viceoutdoorsllc.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    },
+    "sourceLinks": [
+      {
+        "label": "Operator business website",
+        "url": "https://viceoutdoorsllc.com/meet-the-guides/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedSpecies": [],
+    "advertisedTechniques": [
+      {
+        "name": "Fly fishing",
+        "sourceUrl": "https://viceoutdoorsllc.com/meet-the-guides/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTripTypes": [
+      {
+        "name": "Fly fishing instruction",
+        "sourceUrl": "https://viceoutdoorsllc.com/meet-the-guides/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0003960": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.bewildfishing.com",
+      "importedValue": "www.bewildfishing.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003978": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.flycurious.org",
+      "importedValue": "www.flycurious.org",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003993": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://fergs.fishing/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "registryWebsite": {
+      "url": "https://www.fergs.fishing",
+      "importedValue": "www.fergs.fishing",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    },
+    "sourceLinks": [
+      {
+        "label": "Operator business website",
+        "url": "https://fergs.fishing/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedSpecies": [
+      {
+        "name": "Chinook Salmon",
+        "sourceUrl": "https://fergs.fishing/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Coho Salmon",
+        "sourceUrl": "https://fergs.fishing/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTechniques": [],
+    "advertisedTripTypes": []
+  },
+  "OG.0002044": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://danyoungsmakingmemoriesguideservice.com",
+      "importedValue": "danyoungsmakingmemoriesguideservice.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003383": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://ryantrippsguideservice.com",
+      "importedValue": "ryantrippsguideservice.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000047": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.jacksguideservice.net",
+      "importedValue": "www.jacksguideservice.net",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000359": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://wolfepackfishing.com",
+      "importedValue": "wolfepackfishing.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000401": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.nomadsfishingadventures.com",
+      "importedValue": "www.nomadsfishingadventures.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000409": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.travoisllc.com",
+      "importedValue": "www.travoisllc.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000412": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.o2fish.com",
+      "importedValue": "www.o2fish.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000414": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://amermaneggs.com",
+      "importedValue": "amermaneggs.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000427": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.enickeloutfitters.com",
+      "importedValue": "www.enickeloutfitters.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0001340": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.oregonfishing.com",
+      "importedValue": "www.oregonfishing.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0001395": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Williamson River",
+        "sourceUrl": "https://yamsiflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "registryWebsite": {
+      "url": "https://www.yamsiflyfishing.com",
+      "importedValue": "www.yamsiflyfishing.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    },
+    "sourceLinks": [
+      {
+        "label": "Operator business website",
+        "url": "https://yamsiflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedSpecies": [
+      {
+        "name": "Redband Trout",
+        "sourceUrl": "https://yamsiflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Brook Trout",
+        "sourceUrl": "https://yamsiflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTechniques": [
+      {
+        "name": "Fly fishing",
+        "sourceUrl": "https://yamsiflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTripTypes": [
+      {
+        "name": "Private-water fly fishing",
+        "sourceUrl": "https://yamsiflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001660": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.keystotheoutdoors.com",
+      "importedValue": "www.keystotheoutdoors.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0001821": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.upfrontoutfitters.com",
+      "importedValue": "www.upfrontoutfitters.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0001881": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Deschutes River",
+        "sourceUrl": "https://riverstoneadventures.com/multi-day-overnight-fishing-trip/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "registryWebsite": {
+      "url": "https://www.riverstoneadventures.com",
+      "importedValue": "www.riverstoneadventures.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    },
+    "sourceLinks": [
+      {
+        "label": "Operator business website",
+        "url": "https://riverstoneadventures.com/multi-day-overnight-fishing-trip/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedSpecies": [
+      {
+        "name": "Trout",
+        "sourceUrl": "https://riverstoneadventures.com/multi-day-overnight-fishing-trip/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Steelhead",
+        "sourceUrl": "https://riverstoneadventures.com/multi-day-overnight-fishing-trip/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTechniques": [
+      {
+        "name": "Fly fishing",
+        "sourceUrl": "https://riverstoneadventures.com/multi-day-overnight-fishing-trip/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTripTypes": [
+      {
+        "name": "Multi-day fishing trip",
+        "sourceUrl": "https://riverstoneadventures.com/multi-day-overnight-fishing-trip/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0002413": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://hukitoutfitters.net",
+      "importedValue": "hukitoutfitters.net",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0002596": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.outfishingadventures.com",
+      "importedValue": "www.outfishingadventures.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003191": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://Tonetrout.com",
+      "importedValue": "Tonetrout.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003288": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://tenacityoutdoors.com",
+      "importedValue": "tenacityoutdoors.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003399": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://spicysfishing.com",
+      "importedValue": "spicysfishing.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003538": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://Skylakeswild.com",
+      "importedValue": "Skylakeswild.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003606": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://deadmansguideservice.com",
+      "importedValue": "deadmansguideservice.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003633": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.strandfishing.net",
+      "importedValue": "www.strandfishing.net",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003696": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Pacific Ocean",
+        "sourceUrl": "https://www.allamericanguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "registryWebsite": {
+      "url": "https://www.allamericanguideservice.com",
+      "importedValue": "www.allamericanguideservice.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    },
+    "sourceLinks": [
+      {
+        "label": "Operator business website",
+        "url": "https://www.allamericanguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedSpecies": [
+      {
+        "name": "Albacore Tuna",
+        "sourceUrl": "https://www.allamericanguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Halibut",
+        "sourceUrl": "https://www.allamericanguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Rockfish",
+        "sourceUrl": "https://www.allamericanguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Sturgeon",
+        "sourceUrl": "https://www.allamericanguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Salmon",
+        "sourceUrl": "https://www.allamericanguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Trout",
+        "sourceUrl": "https://www.allamericanguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Dungeness Crab",
+        "sourceUrl": "https://www.allamericanguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTechniques": [
+      {
+        "name": "Trolling",
+        "sourceUrl": "https://www.allamericanguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Jigging",
+        "sourceUrl": "https://www.allamericanguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTripTypes": [
+      {
+        "name": "Saltwater charter",
+        "sourceUrl": "https://www.allamericanguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0003697": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.dirksoutdoors.com",
+      "importedValue": "www.dirksoutdoors.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000642": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.takedownfishingguideservice.com",
+      "importedValue": "www.takedownfishingguideservice.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000647": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.Smallstreamoutfitters.com",
+      "importedValue": "www.Smallstreamoutfitters.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000703": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.RogueRaftingCompany.com",
+      "importedValue": "www.RogueRaftingCompany.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0001599": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.Homewatersflyfishing.com",
+      "importedValue": "www.Homewatersflyfishing.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0002770": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://ro-guide-service.com",
+      "importedValue": "ro-guide-service.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003060": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://twistedwaters-gs.com",
+      "importedValue": "twistedwaters-gs.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003154": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.keepingitreelguideservice.com",
+      "importedValue": "www.keepingitreelguideservice.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003643": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://Jackcreeckguidedadventures.com",
+      "importedValue": "Jackcreeckguidedadventures.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003819": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://BDCguideservice.com",
+      "importedValue": "BDCguideservice.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003865": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.baguideservice.com",
+      "importedValue": "www.baguideservice.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003868": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://tntsportfishing.com",
+      "importedValue": "tntsportfishing.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003968": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Buoy 10",
+        "sourceUrl": "https://columbiachromefishing.com/rates/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://columbiachromefishing.com/rates/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "registryWebsite": {
+      "url": "https://ColumbiaChromeFishing.com",
+      "importedValue": "ColumbiaChromeFishing.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    },
+    "sourceLinks": [
+      {
+        "label": "Operator business website",
+        "url": "https://columbiachromefishing.com/rates/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedSpecies": [
+      {
+        "name": "Salmon",
+        "sourceUrl": "https://columbiachromefishing.com/rates/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Steelhead",
+        "sourceUrl": "https://columbiachromefishing.com/rates/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Sturgeon",
+        "sourceUrl": "https://columbiachromefishing.com/rates/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Walleye",
+        "sourceUrl": "https://columbiachromefishing.com/rates/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "American Shad",
+        "sourceUrl": "https://columbiachromefishing.com/rates/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTechniques": [],
+    "advertisedTripTypes": []
+  },
+  "OG.0004075": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://hsguideservice.com",
+      "importedValue": "hsguideservice.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000387": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.grievesfishing.com",
+      "importedValue": "www.grievesfishing.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000617": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.JonGeyerfishing.com",
+      "importedValue": "www.JonGeyerfishing.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0001103": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.mtwilliamsflyfish.com",
+      "importedValue": "www.mtwilliamsflyfish.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0001224": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Nushagak River",
+        "sourceUrl": "https://tomansoutdoors.com/tomans-king-camp-information/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "registryWebsite": {
+      "url": "https://www.Tomansoutdoors.com",
+      "importedValue": "www.Tomansoutdoors.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    },
+    "sourceLinks": [
+      {
+        "label": "Operator business website",
+        "url": "https://tomansoutdoors.com/tomans-king-camp-information/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedSpecies": [
+      {
+        "name": "Chinook Salmon",
+        "sourceUrl": "https://tomansoutdoors.com/tomans-king-camp-information/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTechniques": [
+      {
+        "name": "Trolling",
+        "sourceUrl": "https://tomansoutdoors.com/tomans-king-camp-information/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTripTypes": [
+      {
+        "name": "Multi-day fishing camp",
+        "sourceUrl": "https://tomansoutdoors.com/tomans-king-camp-information/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001277": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.helfrichoutfitter.com",
+      "importedValue": "http://www.helfrichoutfitter.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0002606": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://cornelisonfishing.com",
+      "importedValue": "cornelisonfishing.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000236": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.firstnaturetours.com",
+      "importedValue": "www.firstnaturetours.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000519": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://northwestsportfishing.com",
+      "importedValue": "northwestsportfishing.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000844": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.guideservicenorthwest.com",
+      "importedValue": "www.guideservicenorthwest.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000853": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.2dudesflyfishing.com",
+      "importedValue": "www.2dudesflyfishing.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0001106": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.wildtimesguides.com",
+      "importedValue": "www.wildtimesguides.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0001208": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.premofishing.com",
+      "importedValue": "www.premofishing.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0002062": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://mikoleitsguideservice.com",
+      "importedValue": "mikoleitsguideservice.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0002074": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Trinity River",
+        "sourceUrl": "https://johnklar.com/trinity-fishing-guide",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Smith River",
+        "sourceUrl": "https://johnklar.com/trinity-fishing-guide",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "registryWebsite": {
+      "url": "https://www.johnklar.com",
+      "importedValue": "www.johnklar.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    },
+    "sourceLinks": [
+      {
+        "label": "Operator business website",
+        "url": "https://johnklar.com/trinity-fishing-guide",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedSpecies": [
+      {
+        "name": "Steelhead",
+        "sourceUrl": "https://johnklar.com/trinity-fishing-guide",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Salmon",
+        "sourceUrl": "https://johnklar.com/trinity-fishing-guide",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTechniques": [],
+    "advertisedTripTypes": []
+  },
+  "OG.0002734": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://rivertreknw.com",
+      "importedValue": "rivertreknw.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003468": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.reeltherapyllc.com",
+      "importedValue": "www.reeltherapyllc.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003862": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.riverwandereroutdoors.com",
+      "importedValue": "www.riverwandereroutdoors.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000408": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.alansguideservice.com",
+      "importedValue": "www.alansguideservice.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000914": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.1armbanditfishingguide.com",
+      "importedValue": "www.1armbanditfishingguide.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000921": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://guidedwtersflyfishing.com",
+      "importedValue": "guidedwtersflyfishing.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0001014": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.finandfire.com",
+      "importedValue": "www.finandfire.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0001545": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.columbiariverfishingtrip.com",
+      "importedValue": "www.columbiariverfishingtrip.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0001973": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.luredbythebead.com",
+      "importedValue": "www.luredbythebead.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0002276": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.corkemfishingnw.com",
+      "importedValue": "www.corkemfishingnw.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0002470": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://joelsfishing.com",
+      "importedValue": "joelsfishing.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0002817": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://capnquint.com",
+      "importedValue": "capnquint.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0002878": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.jbeardguideservice.com",
+      "importedValue": "www.jbeardguideservice.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003014": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://nwboundoutdoors.com",
+      "importedValue": "nwboundoutdoors.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003540": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.bigriveroutfittersNW.com",
+      "importedValue": "www.bigriveroutfittersNW.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003701": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://kingfisherguideservice.com",
+      "importedValue": "kingfisherguideservice.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003817": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://2oceansguideservice.com",
+      "importedValue": "2oceansguideservice.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003823": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://skyhighoutdoorsllc.com",
+      "importedValue": "skyhighoutdoorsllc.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0004096": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://adamsnwfishing.com",
+      "importedValue": "adamsnwfishing.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000597": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.frigatetravel.com",
+      "importedValue": "www.frigatetravel.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000598": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.frigatetravel.com",
+      "importedValue": "www.frigatetravel.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000625": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.BillInkroteGuideService.com",
+      "importedValue": "www.BillInkroteGuideService.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000627": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.kutzkeyfishing.com",
+      "importedValue": "www.kutzkeyfishing.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000815": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.lottisguideservice.com",
+      "importedValue": "www.lottisguideservice.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0001067": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://belozerswhitewaterfishing.com",
+      "importedValue": "belozerswhitewaterfishing.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0003691": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://SteveLaingFlyFishing.com",
+      "importedValue": "SteveLaingFlyFishing.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000137": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.nestuccariverfishing.com",
+      "importedValue": "www.nestuccariverfishing.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000707": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.riverhawkguideserviceonline.net",
+      "importedValue": "www.riverhawkguideserviceonline.net",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000782": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.FishwithDrake.com",
+      "importedValue": "www.FishwithDrake.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000854": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.JBandwater.com",
+      "importedValue": "www.JBandwater.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0001298": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://southeroregonsportfishing.com",
+      "importedValue": "southeroregonsportfishing.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0001429": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://umpquarivers.com",
+      "importedValue": "umpquarivers.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0002727": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://Performanceoutdoorsoregon.com",
+      "importedValue": "Performanceoutdoorsoregon.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000418": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Buoy 10",
+        "sourceUrl": "https://billmonroeoutdoors.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://billmonroeoutdoors.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://billmonroeoutdoors.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Tillamook Bay",
+        "sourceUrl": "https://billmonroeoutdoors.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator business website",
+        "url": "https://billmonroeoutdoors.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedSpecies": [
+      {
+        "name": "Chinook Salmon",
+        "sourceUrl": "https://billmonroeoutdoors.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Coho Salmon",
+        "sourceUrl": "https://billmonroeoutdoors.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Steelhead",
+        "sourceUrl": "https://billmonroeoutdoors.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Sturgeon",
+        "sourceUrl": "https://billmonroeoutdoors.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Lingcod",
+        "sourceUrl": "https://billmonroeoutdoors.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Dungeness Crab",
+        "sourceUrl": "https://billmonroeoutdoors.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTechniques": [],
+    "advertisedTripTypes": []
+  },
+  "OG.0001195": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://jonessportfishing.com/about/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Snake River",
+        "sourceUrl": "https://jonessportfishing.com/about/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Clearwater River",
+        "sourceUrl": "https://jonessportfishing.com/about/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator business website",
+        "url": "https://jonessportfishing.com/about/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedSpecies": [
+      {
+        "name": "Chinook Salmon",
+        "sourceUrl": "https://jonessportfishing.com/about/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Coho Salmon",
+        "sourceUrl": "https://jonessportfishing.com/about/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Steelhead",
+        "sourceUrl": "https://jonessportfishing.com/about/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Sturgeon",
+        "sourceUrl": "https://jonessportfishing.com/about/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Walleye",
+        "sourceUrl": "https://jonessportfishing.com/about/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Smallmouth Bass",
+        "sourceUrl": "https://jonessportfishing.com/about/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Trout",
+        "sourceUrl": "https://jonessportfishing.com/about/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTechniques": [],
+    "advertisedTripTypes": []
+  },
+  "OG.0003664": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://bobsparre.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator business website",
+        "url": "https://bobsparre.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedSpecies": [
+      {
+        "name": "Salmon",
+        "sourceUrl": "https://bobsparre.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Steelhead",
+        "sourceUrl": "https://bobsparre.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Sturgeon",
+        "sourceUrl": "https://bobsparre.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Striped Bass",
+        "sourceUrl": "https://bobsparre.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "American Shad",
+        "sourceUrl": "https://bobsparre.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTechniques": [],
+    "advertisedTripTypes": []
+  },
+  "OG.0000384": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Pacific Ocean",
+        "sourceUrl": "https://www.charthousesportfish.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator business website",
+        "url": "https://www.charthousesportfish.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedSpecies": [
+      {
+        "name": "Salmon",
+        "sourceUrl": "https://www.charthousesportfish.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Halibut",
+        "sourceUrl": "https://www.charthousesportfish.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Lingcod",
+        "sourceUrl": "https://www.charthousesportfish.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTechniques": [],
+    "advertisedTripTypes": [
+      {
+        "name": "Six-passenger saltwater charter",
+        "sourceUrl": "https://www.charthousesportfish.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001035": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator business website",
+        "url": "https://flyfishportland.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedSpecies": [
+      {
+        "name": "Bass",
+        "sourceUrl": "https://flyfishportland.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Carp",
+        "sourceUrl": "https://flyfishportland.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Steelhead",
+        "sourceUrl": "https://flyfishportland.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Tiger Musky",
+        "sourceUrl": "https://flyfishportland.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Trout",
+        "sourceUrl": "https://flyfishportland.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTechniques": [
+      {
+        "name": "Fly fishing",
+        "sourceUrl": "https://flyfishportland.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Spey casting",
+        "sourceUrl": "https://flyfishportland.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTripTypes": []
+  },
+  "OG.0001653": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "North Santiam River",
+        "sourceUrl": "https://fishermanmikes.com/about-mike/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator business website",
+        "url": "https://fishermanmikes.com/about-mike/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedSpecies": [
+      {
+        "name": "Chinook Salmon",
+        "sourceUrl": "https://fishermanmikes.com/about-mike/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Steelhead",
+        "sourceUrl": "https://fishermanmikes.com/about-mike/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTechniques": [],
+    "advertisedTripTypes": [
+      {
+        "name": "Drift boat",
+        "sourceUrl": "https://fishermanmikes.com/about-mike/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001610": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Pacific Ocean",
+        "sourceUrl": "https://reeldealsportfish.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://reeldealsportfish.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator business website",
+        "url": "https://reeldealsportfish.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedSpecies": [
+      {
+        "name": "Rockfish",
+        "sourceUrl": "https://reeldealsportfish.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Lingcod",
+        "sourceUrl": "https://reeldealsportfish.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Dungeness Crab",
+        "sourceUrl": "https://reeldealsportfish.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Chinook Salmon",
+        "sourceUrl": "https://reeldealsportfish.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Coho Salmon",
+        "sourceUrl": "https://reeldealsportfish.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTechniques": [
+      {
+        "name": "Trolling",
+        "sourceUrl": "https://reeldealsportfish.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTripTypes": [
+      {
+        "name": "Drift boat",
+        "sourceUrl": "https://reeldealsportfish.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Saltwater charter",
+        "sourceUrl": "https://reeldealsportfish.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0002324": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "McKenzie River",
+        "sourceUrl": "https://www.trevinhoytfishing.com/pricing",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://www.trevinhoytfishing.com/pricing",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator business website",
+        "url": "https://www.trevinhoytfishing.com/pricing",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedSpecies": [
+      {
+        "name": "Chinook Salmon",
+        "sourceUrl": "https://www.trevinhoytfishing.com/pricing",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Steelhead",
+        "sourceUrl": "https://www.trevinhoytfishing.com/pricing",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Sturgeon",
+        "sourceUrl": "https://www.trevinhoytfishing.com/pricing",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTechniques": [
+      {
+        "name": "Trolling",
+        "sourceUrl": "https://www.trevinhoytfishing.com/pricing",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTripTypes": [
+      {
+        "name": "Drift boat",
+        "sourceUrl": "https://www.trevinhoytfishing.com/pricing",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Power boat",
+        "sourceUrl": "https://www.trevinhoytfishing.com/pricing",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0002505": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://tonyoguidedadventure.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Buoy 10",
+        "sourceUrl": "https://tonyoguidedadventure.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator business website",
+        "url": "https://tonyoguidedadventure.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedSpecies": [
+      {
+        "name": "Salmon",
+        "sourceUrl": "https://tonyoguidedadventure.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Sturgeon",
+        "sourceUrl": "https://tonyoguidedadventure.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Walleye",
+        "sourceUrl": "https://tonyoguidedadventure.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTechniques": [],
+    "advertisedTripTypes": []
+  },
+  "OG.0002411": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator business website",
+        "url": "https://riverwiseanglers.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedSpecies": [
+      {
+        "name": "Salmon",
+        "sourceUrl": "https://riverwiseanglers.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Steelhead",
+        "sourceUrl": "https://riverwiseanglers.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTechniques": [
+      {
+        "name": "Fly fishing",
+        "sourceUrl": "https://riverwiseanglers.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Spey casting",
+        "sourceUrl": "https://riverwiseanglers.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Swinging flies",
+        "sourceUrl": "https://riverwiseanglers.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTripTypes": []
+  },
+  "OG.0001063": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Public third-party business directory",
+        "url": "https://www.discoverwinchesterbay.com/fishingguide",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedSpecies": [
+      {
+        "name": "Salmon",
+        "sourceUrl": "https://www.discoverwinchesterbay.com/fishingguide",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Sturgeon",
+        "sourceUrl": "https://www.discoverwinchesterbay.com/fishingguide",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTechniques": [],
+    "advertisedTripTypes": []
+  },
+  "OG.0001393": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator business website",
+        "url": "https://hotlineguideservice.com/about-me/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedSpecies": [],
+    "advertisedTechniques": [],
+    "advertisedTripTypes": []
+  },
+  "OG.0003166": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "McKenzie River",
+        "sourceUrl": "https://www.willamettevalleyfishing.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://www.willamettevalleyfishing.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator business website",
+        "url": "https://www.willamettevalleyfishing.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedSpecies": [
+      {
+        "name": "Trout",
+        "sourceUrl": "https://www.willamettevalleyfishing.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Steelhead",
+        "sourceUrl": "https://www.willamettevalleyfishing.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTechniques": [
+      {
+        "name": "Fly fishing",
+        "sourceUrl": "https://www.willamettevalleyfishing.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Spey casting",
+        "sourceUrl": "https://www.willamettevalleyfishing.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTripTypes": [
+      {
+        "name": "Fly fishing instruction",
+        "sourceUrl": "https://www.willamettevalleyfishing.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0003159": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Pacific Ocean",
+        "sourceUrl": "https://fishingbooker.com/charters/view/38631",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Public business directory",
+        "url": "https://fishingbooker.com/charters/view/38631",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedSpecies": [
+      {
+        "name": "Chinook Salmon",
+        "sourceUrl": "https://fishingbooker.com/charters/view/38631",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Coho Salmon",
+        "sourceUrl": "https://fishingbooker.com/charters/view/38631",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Halibut",
+        "sourceUrl": "https://fishingbooker.com/charters/view/38631",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Lingcod",
+        "sourceUrl": "https://fishingbooker.com/charters/view/38631",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Rockfish",
+        "sourceUrl": "https://fishingbooker.com/charters/view/38631",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Albacore Tuna",
+        "sourceUrl": "https://fishingbooker.com/charters/view/38631",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Dungeness Crab",
+        "sourceUrl": "https://fishingbooker.com/charters/view/38631",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTechniques": [
+      {
+        "name": "Trolling",
+        "sourceUrl": "https://fishingbooker.com/charters/view/38631",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Jigging",
+        "sourceUrl": "https://fishingbooker.com/charters/view/38631",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "advertisedTripTypes": [
+      {
+        "name": "Saltwater charter",
+        "sourceUrl": "https://fishingbooker.com/charters/view/38631",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000353": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.fish-northwest.com",
+      "importedValue": "www.fish-northwest.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000364": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://columbiafishing.net",
+      "importedValue": "columbiafishing.net",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000665": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://cathunts.com",
+      "importedValue": "cathunts.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000691": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.5starcharters.com",
+      "importedValue": "www.5starcharters.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000729": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.AirWaterArt.com",
+      "importedValue": "www.AirWaterArt.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000382": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.khfishing.com",
+      "importedValue": "www.khfishing.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
   }
 }

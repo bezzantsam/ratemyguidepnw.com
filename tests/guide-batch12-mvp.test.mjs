@@ -8,6 +8,8 @@ const directory=JSON.parse(read('lib/oregon-guides.json'));
 const enrichment=JSON.parse(read('lib/guide-enrichment.json'));
 const prior=JSON.parse(read('docs/research/OREGON_NEXT_100_REVIEW_2026_11_15.json'));
 const batch=JSON.parse(read('docs/research/OREGON_BATCH_12_100_REVIEW.json'));
+const later=JSON.parse(read('docs/research/OREGON_BATCH_13_100_WEBSITE_AND_SPECIES.json'));
+const allowedPromotions=new Set(later.promoted_held_ids);
 test('Batch 12 never repeats already enriched or previous review assignments',()=>{
  assert.equal(batch.records.length,100);
  assert.equal(new Set(batch.records.map(r=>r.directory_id)).size,100);
@@ -38,7 +40,11 @@ test('Only 19 inspected business sources become enrichment entries; 81 URLs stay
     assert.equal(row.source_type,null);
     assert.equal(row.observed_on,null);
     assert.deepEqual(row.proposed_advertised_waters,[]);
-    assert.equal(e,undefined,'Unverified registry URL leaked into source enrichment: '+row.directory_id);
+    if(e){
+     assert.ok(allowedPromotions.has(row.directory_id),'Unreviewed guide promoted without later source '+row.directory_id);
+     const laterSource=later.publicSourceResearch.find(x=>x.registration===row.directory_id);
+     assert.ok(laterSource&&e.sourceLinks?.some(l=>l.url===laterSource.sourceUrl),'Missing later independent citation');
+    }
   }else{
     inspected++;
     assert.equal(row.source_status,'inspected_public_source_pending_editorial');
@@ -47,17 +53,19 @@ test('Only 19 inspected business sources become enrichment entries; 81 URLs stay
     assert.ok(['operator_site','third_party_directory'].includes(row.source_type));
     assert.ok(e,'Missing inspected source '+row.directory_id);
     assert.deepEqual(e.searchAliases,[],'Do not invent identity aliases');
-    assert.equal(e.sourceLinks.length,1);
-    assert.equal(e.sourceLinks[0].url,row.source_url);
-    assert.equal(e.sourceLinks[0].sourceType,row.source_type);
-    assert.equal(e.sourceLinks[0].observedOn,'2026-11-15');
-    assert.deepEqual(e.advertisedWaters.map(x=>x.name),row.proposed_advertised_waters);
+    const original=e.sourceLinks.find(l=>l.url===row.source_url);
+    assert.ok(original,'Original source lost');
+    assert.equal(original.sourceType,row.source_type);
+    assert.equal(original.observedOn,'2026-11-15');
+    for(const name of row.proposed_advertised_waters)assert.ok(e.advertisedWaters.some(w=>w.name===name));
     assert.equal(new Set(e.advertisedWaters.map(x=>x.name)).size,e.advertisedWaters.length);
     for(const w of e.advertisedWaters){
-      waters++;
-      assert.equal(w.sourceUrl,row.source_url);
-      assert.equal(w.sourceType,row.source_type);
-      assert.equal(w.observedOn,'2026-11-15');
+      if(row.proposed_advertised_waters.includes(w.name)){
+       waters++;
+       assert.equal(w.sourceUrl,row.source_url);
+       assert.equal(w.sourceType,row.source_type);
+       assert.equal(w.observedOn,'2026-11-15');
+      }
     }
   }
  }
