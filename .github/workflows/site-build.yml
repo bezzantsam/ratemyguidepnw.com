@@ -84,6 +84,8 @@ jobs:
         run: npm run test:next-100
       - name: Audit next 100 guide leads and source-linked MVP search
         run: npm run test:batch12-mvp
+      - name: Verify Batch 13 deduplication, source evidence and publication holds
+        run: npm run test:batch13-review
       - name: TypeScript check
         run: npm run typecheck
       - name: Build Next.js production assets without private DB credentials
