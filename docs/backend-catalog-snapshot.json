@@ -1,0 +1,3591 @@
+{
+  "columns": [
+    {
+      "name": "claim_id",
+      "type": "uuid",
+      "table": "claim_evidence",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "claimant_name",
+      "type": "text",
+      "table": "claim_evidence",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "business_name",
+      "type": "text",
+      "table": "claim_evidence",
+      "default": "''::text",
+      "not_null": true
+    },
+    {
+      "name": "public_evidence",
+      "type": "text",
+      "table": "claim_evidence",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "table": "claim_evidence",
+      "default": "now()",
+      "not_null": true
+    },
+    {
+      "name": "id",
+      "type": "uuid",
+      "table": "guide_claims",
+      "default": "gen_random_uuid()",
+      "not_null": true
+    },
+    {
+      "name": "guide_id",
+      "type": "uuid",
+      "table": "guide_claims",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "claimant_id",
+      "type": "uuid",
+      "table": "guide_claims",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "table": "guide_claims",
+      "default": "'pending'::text",
+      "not_null": true
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "table": "guide_claims",
+      "default": "now()",
+      "not_null": true
+    },
+    {
+      "name": "guide_id",
+      "type": "uuid",
+      "table": "guide_details",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "boat",
+      "type": "text",
+      "table": "guide_details",
+      "default": "''::text",
+      "not_null": true
+    },
+    {
+      "name": "gear",
+      "type": "text",
+      "table": "guide_details",
+      "default": "''::text",
+      "not_null": true
+    },
+    {
+      "name": "years_experience",
+      "type": "smallint",
+      "table": "guide_details",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "name": "expertise",
+      "type": "text",
+      "table": "guide_details",
+      "default": "''::text",
+      "not_null": true
+    },
+    {
+      "name": "targeted_species",
+      "type": "text",
+      "table": "guide_details",
+      "default": "''::text",
+      "not_null": true
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "table": "guide_details",
+      "default": "now()",
+      "not_null": true
+    },
+    {
+      "name": "id",
+      "type": "uuid",
+      "table": "guide_replies",
+      "default": "gen_random_uuid()",
+      "not_null": true
+    },
+    {
+      "name": "review_id",
+      "type": "uuid",
+      "table": "guide_replies",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "guide_id",
+      "type": "uuid",
+      "table": "guide_replies",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "author_id",
+      "type": "uuid",
+      "table": "guide_replies",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "body",
+      "type": "text",
+      "table": "guide_replies",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "table": "guide_replies",
+      "default": "'pending'::text",
+      "not_null": true
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "table": "guide_replies",
+      "default": "now()",
+      "not_null": true
+    },
+    {
+      "name": "id",
+      "type": "uuid",
+      "table": "guides",
+      "default": "gen_random_uuid()",
+      "not_null": true
+    },
+    {
+      "name": "slug",
+      "type": "text",
+      "table": "guides",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "full_name",
+      "type": "text",
+      "table": "guides",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "outfit_name",
+      "type": "text",
+      "table": "guides",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "name": "jurisdiction_id",
+      "type": "uuid",
+      "table": "guides",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "name": "license_number",
+      "type": "text",
+      "table": "guides",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "name": "verification_status",
+      "type": "text",
+      "table": "guides",
+      "default": "'listed'::text",
+      "not_null": true
+    },
+    {
+      "name": "listing_status",
+      "type": "text",
+      "table": "guides",
+      "default": "'draft'::text",
+      "not_null": true
+    },
+    {
+      "name": "website_url",
+      "type": "text",
+      "table": "guides",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "name": "average_quality",
+      "type": "numeric(3,2)",
+      "table": "guides",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "name": "would_book_again_pct",
+      "type": "numeric(5,2)",
+      "table": "guides",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "name": "review_count",
+      "type": "integer",
+      "table": "guides",
+      "default": "0",
+      "not_null": true
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "table": "guides",
+      "default": "now()",
+      "not_null": true
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "table": "guides",
+      "default": "now()",
+      "not_null": true
+    },
+    {
+      "name": "id",
+      "type": "uuid",
+      "table": "jurisdictions",
+      "default": "gen_random_uuid()",
+      "not_null": true
+    },
+    {
+      "name": "region_id",
+      "type": "uuid",
+      "table": "jurisdictions",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "code",
+      "type": "text",
+      "table": "jurisdictions",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "table": "jurisdictions",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "id",
+      "type": "uuid",
+      "table": "moderation_audit",
+      "default": "gen_random_uuid()",
+      "not_null": true
+    },
+    {
+      "name": "actor_id",
+      "type": "uuid",
+      "table": "moderation_audit",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "name": "target_type",
+      "type": "text",
+      "table": "moderation_audit",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "target_id",
+      "type": "uuid",
+      "table": "moderation_audit",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "old_status",
+      "type": "text",
+      "table": "moderation_audit",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "name": "new_status",
+      "type": "text",
+      "table": "moderation_audit",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "reason",
+      "type": "text",
+      "table": "moderation_audit",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "table": "moderation_audit",
+      "default": "now()",
+      "not_null": true
+    },
+    {
+      "name": "id",
+      "type": "uuid",
+      "table": "regions",
+      "default": "gen_random_uuid()",
+      "not_null": true
+    },
+    {
+      "name": "slug",
+      "type": "text",
+      "table": "regions",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "table": "regions",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "is_active",
+      "type": "boolean",
+      "table": "regions",
+      "default": "true",
+      "not_null": true
+    },
+    {
+      "name": "id",
+      "type": "uuid",
+      "table": "reviews",
+      "default": "gen_random_uuid()",
+      "not_null": true
+    },
+    {
+      "name": "guide_id",
+      "type": "uuid",
+      "table": "reviews",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "author_id",
+      "type": "uuid",
+      "table": "reviews",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "waterway_id",
+      "type": "uuid",
+      "table": "reviews",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "name": "species_id",
+      "type": "uuid",
+      "table": "reviews",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "name": "quality",
+      "type": "smallint",
+      "table": "reviews",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "intensity",
+      "type": "smallint",
+      "table": "reviews",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "would_book_again",
+      "type": "boolean",
+      "table": "reviews",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "catch_outcome",
+      "type": "text",
+      "table": "reviews",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "name": "body",
+      "type": "text",
+      "table": "reviews",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "table": "reviews",
+      "default": "'pending'::text",
+      "not_null": true
+    },
+    {
+      "name": "trip_month",
+      "type": "date",
+      "table": "reviews",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "table": "reviews",
+      "default": "now()",
+      "not_null": true
+    },
+    {
+      "name": "published_at",
+      "type": "timestamp with time zone",
+      "table": "reviews",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "name": "communication",
+      "type": "smallint",
+      "table": "reviews",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "name": "professionalism",
+      "type": "smallint",
+      "table": "reviews",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "name": "safety",
+      "type": "smallint",
+      "table": "reviews",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "name": "equipment",
+      "type": "smallint",
+      "table": "reviews",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "name": "knowledge",
+      "type": "smallint",
+      "table": "reviews",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "name": "effort",
+      "type": "smallint",
+      "table": "reviews",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "name": "value_rating",
+      "type": "smallint",
+      "table": "reviews",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "name": "trip_context",
+      "type": "text",
+      "table": "reviews",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "name": "user_id",
+      "type": "uuid",
+      "table": "site_admins",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "table": "site_admins",
+      "default": "now()",
+      "not_null": true
+    },
+    {
+      "name": "id",
+      "type": "uuid",
+      "table": "species",
+      "default": "gen_random_uuid()",
+      "not_null": true
+    },
+    {
+      "name": "slug",
+      "type": "text",
+      "table": "species",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "common_name",
+      "type": "text",
+      "table": "species",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "id",
+      "type": "uuid",
+      "table": "waterways",
+      "default": "gen_random_uuid()",
+      "not_null": true
+    },
+    {
+      "name": "region_id",
+      "type": "uuid",
+      "table": "waterways",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "slug",
+      "type": "text",
+      "table": "waterways",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "table": "waterways",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "table": "waterways",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "name": "is_published",
+      "type": "boolean",
+      "table": "waterways",
+      "default": "false",
+      "not_null": true
+    }
+  ],
+  "indexes": [
+    {
+      "name": "one_approved_owner_per_guide",
+      "table": "guide_claims",
+      "definition": "CREATE UNIQUE INDEX one_approved_owner_per_guide ON public.guide_claims USING btree (guide_id) WHERE (status = 'approved'::text)"
+    },
+    {
+      "name": "guides_name_trgm",
+      "table": "guides",
+      "definition": "CREATE INDEX guides_name_trgm ON public.guides USING gin (full_name gin_trgm_ops)"
+    },
+    {
+      "name": "guides_outfit_trgm",
+      "table": "guides",
+      "definition": "CREATE INDEX guides_outfit_trgm ON public.guides USING gin (outfit_name gin_trgm_ops)"
+    },
+    {
+      "name": "published_reviews_by_guide",
+      "table": "reviews",
+      "definition": "CREATE INDEX published_reviews_by_guide ON public.reviews USING btree (guide_id, published_at DESC) WHERE (status = 'published'::text)"
+    },
+    {
+      "name": "reviewer_one_review_per_guide",
+      "table": "reviews",
+      "definition": "CREATE UNIQUE INDEX reviewer_one_review_per_guide ON public.reviews USING btree (guide_id, author_id)"
+    }
+  ],
+  "policies": [
+    {
+      "name": "claim_evidence_own_insert",
+      "check": "(EXISTS ( SELECT 1\n   FROM guide_claims c\n  WHERE ((c.id = claim_evidence.claim_id) AND (c.claimant_id = ( SELECT auth.uid() AS uid)) AND (c.status = 'pending'::text))))",
+      "roles": [
+        "authenticated"
+      ],
+      "table": "claim_evidence",
+      "using": null,
+      "command": "INSERT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "claim_evidence_own_or_admin_read",
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "table": "claim_evidence",
+      "using": "((EXISTS ( SELECT 1\n   FROM guide_claims c\n  WHERE ((c.id = claim_evidence.claim_id) AND (c.claimant_id = ( SELECT auth.uid() AS uid))))) OR ( SELECT is_site_admin() AS is_site_admin))",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "admin_read_claims",
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "table": "guide_claims",
+      "using": "( SELECT is_site_admin() AS is_site_admin)",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "claim_own_read",
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "table": "guide_claims",
+      "using": "(claimant_id = ( SELECT auth.uid() AS uid))",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "claim_request_insert",
+      "check": "((claimant_id = ( SELECT auth.uid() AS uid)) AND (status = 'pending'::text))",
+      "roles": [
+        "authenticated"
+      ],
+      "table": "guide_claims",
+      "using": null,
+      "command": "INSERT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "guide_details_owner_insert",
+      "check": "(EXISTS ( SELECT 1\n   FROM guide_claims c\n  WHERE ((c.guide_id = guide_details.guide_id) AND (c.claimant_id = ( SELECT auth.uid() AS uid)) AND (c.status = 'approved'::text))))",
+      "roles": [
+        "authenticated"
+      ],
+      "table": "guide_details",
+      "using": null,
+      "command": "INSERT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "guide_details_owner_update",
+      "check": "(EXISTS ( SELECT 1\n   FROM guide_claims c\n  WHERE ((c.guide_id = guide_details.guide_id) AND (c.claimant_id = ( SELECT auth.uid() AS uid)) AND (c.status = 'approved'::text))))",
+      "roles": [
+        "authenticated"
+      ],
+      "table": "guide_details",
+      "using": "(EXISTS ( SELECT 1\n   FROM guide_claims c\n  WHERE ((c.guide_id = guide_details.guide_id) AND (c.claimant_id = ( SELECT auth.uid() AS uid)) AND (c.status = 'approved'::text))))",
+      "command": "UPDATE",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "guide_details_public",
+      "check": null,
+      "roles": [
+        "anon",
+        "authenticated"
+      ],
+      "table": "guide_details",
+      "using": "(EXISTS ( SELECT 1\n   FROM guides g\n  WHERE ((g.id = guide_details.guide_id) AND (g.listing_status = 'published'::text))))",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "public_guide_replies",
+      "check": null,
+      "roles": [
+        "public"
+      ],
+      "table": "guide_replies",
+      "using": "(status = 'published'::text)",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "public_guides",
+      "check": null,
+      "roles": [
+        "public"
+      ],
+      "table": "guides",
+      "using": "(listing_status = 'published'::text)",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "admin_read_audit",
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "table": "moderation_audit",
+      "using": "( SELECT is_site_admin() AS is_site_admin)",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "public_regions",
+      "check": null,
+      "roles": [
+        "public"
+      ],
+      "table": "regions",
+      "using": "is_active",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "admin_read_reviews",
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "table": "reviews",
+      "using": "( SELECT is_site_admin() AS is_site_admin)",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "published_review_rows",
+      "check": null,
+      "roles": [
+        "anon",
+        "authenticated"
+      ],
+      "table": "reviews",
+      "using": "((status = 'published'::text) AND (published_at IS NOT NULL))",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "submit_pending_review",
+      "check": "((author_id = ( SELECT auth.uid() AS uid)) AND (status = 'pending'::text) AND (published_at IS NULL))",
+      "roles": [
+        "authenticated"
+      ],
+      "table": "reviews",
+      "using": null,
+      "command": "INSERT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "admin_self_check",
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "table": "site_admins",
+      "using": "(user_id = ( SELECT auth.uid() AS uid))",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "public_species",
+      "check": null,
+      "roles": [
+        "public"
+      ],
+      "table": "species",
+      "using": "true",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "name": "public_waterways",
+      "check": null,
+      "roles": [
+        "public"
+      ],
+      "table": "waterways",
+      "using": "is_published",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    }
+  ],
+  "triggers": [
+    {
+      "name": "restrict_review_submissions",
+      "table": "reviews",
+      "definition": "CREATE TRIGGER restrict_review_submissions BEFORE INSERT ON public.reviews FOR EACH ROW EXECUTE FUNCTION throttle_review_submission()"
+    },
+    {
+      "name": "trg_reviews_rating",
+      "table": "reviews",
+      "definition": "CREATE TRIGGER trg_reviews_rating AFTER INSERT OR DELETE OR UPDATE OF quality, would_book_again, status, guide_id ON public.reviews FOR EACH ROW EXECUTE FUNCTION reviews_rating_trigger()"
+    }
+  ],
+  "functions": [
+    {
+      "acl": [
+        "postgres=X/postgres",
+        "authenticated=X/postgres",
+        "service_role=X/postgres"
+      ],
+      "name": "admin_decide_claim",
+      "config": [
+        "search_path=\"\""
+      ],
+      "definition": "CREATE OR REPLACE FUNCTION public.admin_decide_claim(p_id uuid, p_approve boolean, p_reason text DEFAULT NULL::text)\n RETURNS void\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\nAS $function$\ndeclare old_state text;gid uuid;begin\nif not public.is_site_admin() then raise exception 'Not authorized';end if;\nselect status,guide_id into old_state,gid from public.guide_claims where id=p_id for update;\nif old_state is null then raise exception 'Not found';end if;\nif old_state<>'pending' then raise exception 'Only pending claims can be decided';end if;\nif p_approve and exists(select 1 from public.guide_claims where guide_id=gid and status='approved') then raise exception 'A captain is already approved for this listing';end if;\nupdate public.guide_claims set status=case when p_approve then 'approved' else 'denied' end where id=p_id;\ninsert into public.moderation_audit(actor_id,target_type,target_id,old_status,new_status,reason) values(auth.uid(),'claim',p_id,old_state,case when p_approve then 'approved' else 'denied' end,left(p_reason,500));end$function$\n",
+      "security_definer": true
+    },
+    {
+      "acl": [
+        "postgres=X/postgres",
+        "authenticated=X/postgres",
+        "service_role=X/postgres"
+      ],
+      "name": "admin_decide_review",
+      "config": [
+        "search_path=\"\""
+      ],
+      "definition": "CREATE OR REPLACE FUNCTION public.admin_decide_review(p_id uuid, p_approve boolean, p_reason text DEFAULT NULL::text)\n RETURNS void\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\nAS $function$\ndeclare old_state text;begin\nif not public.is_site_admin() then raise exception 'Not authorized';end if;\nselect status into old_state from public.reviews where id=p_id for update;\nif old_state is null then raise exception 'Not found';end if;\nif old_state<>'pending' then raise exception 'Only pending reviews can be decided';end if;\nupdate public.reviews set status=case when p_approve then 'published' else 'rejected' end,published_at=case when p_approve then now() else null end where id=p_id;\ninsert into public.moderation_audit(actor_id,target_type,target_id,old_status,new_status,reason) values(auth.uid(),'review',p_id,old_state,case when p_approve then 'published' else 'rejected' end,left(p_reason,500));end$function$\n",
+      "security_definer": true
+    },
+    {
+      "acl": [
+        "postgres=X/postgres",
+        "authenticated=X/postgres",
+        "service_role=X/postgres"
+      ],
+      "name": "is_site_admin",
+      "config": [
+        "search_path=\"\""
+      ],
+      "definition": "CREATE OR REPLACE FUNCTION public.is_site_admin()\n RETURNS boolean\n LANGUAGE sql\n STABLE SECURITY DEFINER\n SET search_path TO ''\nAS $function$select exists(select 1 from public.site_admins where user_id=(select auth.uid()))$function$\n",
+      "security_definer": true
+    },
+    {
+      "acl": [
+        "postgres=X/postgres",
+        "service_role=X/postgres"
+      ],
+      "name": "refresh_guide_rating",
+      "config": [
+        "search_path=\"\""
+      ],
+      "definition": "CREATE OR REPLACE FUNCTION public.refresh_guide_rating(p_guide_id uuid)\n RETURNS void\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\nAS $function$\nbegin\n update public.guides g set\n average_quality=(select round(avg(r.quality)::numeric,2) from public.reviews r where r.guide_id=p_guide_id and r.status='published'),\n would_book_again_pct=(select round(100.0*avg((r.would_book_again)::int),2) from public.reviews r where r.guide_id=p_guide_id and r.status='published'),\n review_count=(select count(*) from public.reviews r where r.guide_id=p_guide_id and r.status='published'),\n updated_at=now()\n where g.id=p_guide_id;\nend $function$\n",
+      "security_definer": true
+    },
+    {
+      "acl": [
+        "postgres=X/postgres",
+        "service_role=X/postgres"
+      ],
+      "name": "reviews_rating_trigger",
+      "config": [
+        "search_path=\"\""
+      ],
+      "definition": "CREATE OR REPLACE FUNCTION public.reviews_rating_trigger()\n RETURNS trigger\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\nAS $function$\nbegin\n if tg_op='DELETE' then\n  perform public.refresh_guide_rating(old.guide_id);return old;\n end if;\n if tg_op='UPDATE' and old.guide_id is distinct from new.guide_id then\n  perform public.refresh_guide_rating(old.guide_id);\n end if;\n perform public.refresh_guide_rating(new.guide_id);return new;\nend $function$\n",
+      "security_definer": true
+    },
+    {
+      "acl": [
+        "postgres=X/postgres",
+        "service_role=X/postgres"
+      ],
+      "name": "throttle_review_submission",
+      "config": [
+        "search_path=\"\""
+      ],
+      "definition": "CREATE OR REPLACE FUNCTION public.throttle_review_submission()\n RETURNS trigger\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\nAS $function$\nbegin\nif exists(select 1 from public.guide_claims c where c.guide_id=new.guide_id and c.claimant_id=new.author_id and c.status='approved') then\n raise exception 'You cannot review a guide profile you own'; end if;\nif (select count(*) from public.reviews r where r.author_id=new.author_id and r.created_at>now()-interval '24 hours')>=3 then\n raise exception 'Review limit reached. Please try again later'; end if;\nreturn new;end $function$\n",
+      "security_definer": true
+    }
+  ],
+  "relations": [
+    {
+      "rls": false,
+      "kind": "v",
+      "name": "admin_pending_claims",
+      "view": " SELECT c.id,\n    c.guide_id,\n    g.full_name AS guide_name,\n    c.claimant_id,\n    c.created_at,\n    e.claimant_name,\n    e.business_name,\n    e.public_evidence\n   FROM guide_claims c\n     JOIN guides g ON g.id = c.guide_id\n     LEFT JOIN claim_evidence e ON e.claim_id = c.id\n  WHERE c.status = 'pending'::text;",
+      "options": [
+        "security_invoker=true"
+      ],
+      "force_rls": false
+    },
+    {
+      "rls": false,
+      "kind": "v",
+      "name": "admin_pending_reviews",
+      "view": " SELECT r.id,\n    r.guide_id,\n    g.full_name AS guide_name,\n    r.body,\n    r.quality,\n    r.safety,\n    r.communication,\n    r.professionalism,\n    r.created_at,\n    r.trip_month\n   FROM reviews r\n     JOIN guides g ON g.id = r.guide_id\n  WHERE r.status = 'pending'::text;",
+      "options": [
+        "security_invoker=true"
+      ],
+      "force_rls": false
+    },
+    {
+      "rls": true,
+      "kind": "r",
+      "name": "claim_evidence",
+      "view": null,
+      "options": null,
+      "force_rls": false
+    },
+    {
+      "rls": true,
+      "kind": "r",
+      "name": "guide_claims",
+      "view": null,
+      "options": null,
+      "force_rls": false
+    },
+    {
+      "rls": true,
+      "kind": "r",
+      "name": "guide_details",
+      "view": null,
+      "options": null,
+      "force_rls": false
+    },
+    {
+      "rls": true,
+      "kind": "r",
+      "name": "guide_replies",
+      "view": null,
+      "options": null,
+      "force_rls": false
+    },
+    {
+      "rls": true,
+      "kind": "r",
+      "name": "guides",
+      "view": null,
+      "options": null,
+      "force_rls": false
+    },
+    {
+      "rls": true,
+      "kind": "r",
+      "name": "jurisdictions",
+      "view": null,
+      "options": null,
+      "force_rls": false
+    },
+    {
+      "rls": true,
+      "kind": "r",
+      "name": "moderation_audit",
+      "view": null,
+      "options": null,
+      "force_rls": false
+    },
+    {
+      "rls": false,
+      "kind": "v",
+      "name": "public_angler_reviews",
+      "view": " SELECT id,\n    guide_id,\n    quality,\n    intensity,\n    would_book_again,\n    catch_outcome,\n    body,\n    trip_month,\n    published_at,\n    communication,\n    professionalism,\n    safety,\n    equipment,\n    knowledge,\n    effort,\n    value_rating,\n    trip_context\n   FROM reviews\n  WHERE status = 'published'::text AND published_at IS NOT NULL;",
+      "options": [
+        "security_invoker=true"
+      ],
+      "force_rls": false
+    },
+    {
+      "rls": true,
+      "kind": "r",
+      "name": "regions",
+      "view": null,
+      "options": null,
+      "force_rls": false
+    },
+    {
+      "rls": true,
+      "kind": "r",
+      "name": "reviews",
+      "view": null,
+      "options": null,
+      "force_rls": false
+    },
+    {
+      "rls": true,
+      "kind": "r",
+      "name": "site_admins",
+      "view": null,
+      "options": null,
+      "force_rls": false
+    },
+    {
+      "rls": true,
+      "kind": "r",
+      "name": "species",
+      "view": null,
+      "options": null,
+      "force_rls": false
+    },
+    {
+      "rls": true,
+      "kind": "r",
+      "name": "waterways",
+      "view": null,
+      "options": null,
+      "force_rls": false
+    }
+  ],
+  "constraints": [
+    {
+      "name": "claim_evidence_business_name_check",
+      "table": "claim_evidence",
+      "definition": "CHECK (length(business_name) <= 180)"
+    },
+    {
+      "name": "claim_evidence_claim_id_fkey",
+      "table": "claim_evidence",
+      "definition": "FOREIGN KEY (claim_id) REFERENCES guide_claims(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "claim_evidence_claimant_name_check",
+      "table": "claim_evidence",
+      "definition": "CHECK (length(claimant_name) >= 2 AND length(claimant_name) <= 120)"
+    },
+    {
+      "name": "claim_evidence_pkey",
+      "table": "claim_evidence",
+      "definition": "PRIMARY KEY (claim_id)"
+    },
+    {
+      "name": "claim_evidence_public_evidence_check",
+      "table": "claim_evidence",
+      "definition": "CHECK (length(public_evidence) >= 8 AND length(public_evidence) <= 1200)"
+    },
+    {
+      "name": "guide_claims_claimant_id_fkey",
+      "table": "guide_claims",
+      "definition": "FOREIGN KEY (claimant_id) REFERENCES auth.users(id)"
+    },
+    {
+      "name": "guide_claims_guide_id_claimant_id_key",
+      "table": "guide_claims",
+      "definition": "UNIQUE (guide_id, claimant_id)"
+    },
+    {
+      "name": "guide_claims_guide_id_fkey",
+      "table": "guide_claims",
+      "definition": "FOREIGN KEY (guide_id) REFERENCES guides(id)"
+    },
+    {
+      "name": "guide_claims_pkey",
+      "table": "guide_claims",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "guide_claims_status_check",
+      "table": "guide_claims",
+      "definition": "CHECK (status = ANY (ARRAY['pending'::text, 'approved'::text, 'denied'::text]))"
+    },
+    {
+      "name": "guide_details_boat_check",
+      "table": "guide_details",
+      "definition": "CHECK (length(boat) <= 250)"
+    },
+    {
+      "name": "guide_details_expertise_check",
+      "table": "guide_details",
+      "definition": "CHECK (length(expertise) <= 500)"
+    },
+    {
+      "name": "guide_details_gear_check",
+      "table": "guide_details",
+      "definition": "CHECK (length(gear) <= 500)"
+    },
+    {
+      "name": "guide_details_guide_id_fkey",
+      "table": "guide_details",
+      "definition": "FOREIGN KEY (guide_id) REFERENCES guides(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "guide_details_pkey",
+      "table": "guide_details",
+      "definition": "PRIMARY KEY (guide_id)"
+    },
+    {
+      "name": "guide_details_targeted_species_check",
+      "table": "guide_details",
+      "definition": "CHECK (length(targeted_species) <= 350)"
+    },
+    {
+      "name": "guide_details_years_experience_check",
+      "table": "guide_details",
+      "definition": "CHECK (years_experience >= 0 AND years_experience <= 80)"
+    },
+    {
+      "name": "guide_replies_author_id_fkey",
+      "table": "guide_replies",
+      "definition": "FOREIGN KEY (author_id) REFERENCES auth.users(id)"
+    },
+    {
+      "name": "guide_replies_body_check",
+      "table": "guide_replies",
+      "definition": "CHECK (char_length(body) >= 10 AND char_length(body) <= 1000)"
+    },
+    {
+      "name": "guide_replies_guide_id_fkey",
+      "table": "guide_replies",
+      "definition": "FOREIGN KEY (guide_id) REFERENCES guides(id)"
+    },
+    {
+      "name": "guide_replies_pkey",
+      "table": "guide_replies",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "guide_replies_review_id_fkey",
+      "table": "guide_replies",
+      "definition": "FOREIGN KEY (review_id) REFERENCES reviews(id)"
+    },
+    {
+      "name": "guide_replies_review_id_key",
+      "table": "guide_replies",
+      "definition": "UNIQUE (review_id)"
+    },
+    {
+      "name": "guide_replies_status_check",
+      "table": "guide_replies",
+      "definition": "CHECK (status = ANY (ARRAY['pending'::text, 'published'::text, 'removed'::text]))"
+    },
+    {
+      "name": "guides_jurisdiction_id_fkey",
+      "table": "guides",
+      "definition": "FOREIGN KEY (jurisdiction_id) REFERENCES jurisdictions(id)"
+    },
+    {
+      "name": "guides_listing_status_check",
+      "table": "guides",
+      "definition": "CHECK (listing_status = ANY (ARRAY['draft'::text, 'published'::text, 'suspended'::text]))"
+    },
+    {
+      "name": "guides_pkey",
+      "table": "guides",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "guides_slug_key",
+      "table": "guides",
+      "definition": "UNIQUE (slug)"
+    },
+    {
+      "name": "guides_verification_status_check",
+      "table": "guides",
+      "definition": "CHECK (verification_status = ANY (ARRAY['listed'::text, 'pending'::text, 'verified'::text]))"
+    },
+    {
+      "name": "jurisdictions_pkey",
+      "table": "jurisdictions",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "jurisdictions_region_id_code_key",
+      "table": "jurisdictions",
+      "definition": "UNIQUE (region_id, code)"
+    },
+    {
+      "name": "jurisdictions_region_id_fkey",
+      "table": "jurisdictions",
+      "definition": "FOREIGN KEY (region_id) REFERENCES regions(id)"
+    },
+    {
+      "name": "moderation_audit_actor_id_fkey",
+      "table": "moderation_audit",
+      "definition": "FOREIGN KEY (actor_id) REFERENCES auth.users(id)"
+    },
+    {
+      "name": "moderation_audit_pkey",
+      "table": "moderation_audit",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "moderation_audit_target_type_check",
+      "table": "moderation_audit",
+      "definition": "CHECK (target_type = ANY (ARRAY['review'::text, 'claim'::text]))"
+    },
+    {
+      "name": "regions_pkey",
+      "table": "regions",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "regions_slug_key",
+      "table": "regions",
+      "definition": "UNIQUE (slug)"
+    },
+    {
+      "name": "published_requires_date",
+      "table": "reviews",
+      "definition": "CHECK (status <> 'published'::text OR published_at IS NOT NULL)"
+    },
+    {
+      "name": "reviews_author_id_fkey",
+      "table": "reviews",
+      "definition": "FOREIGN KEY (author_id) REFERENCES auth.users(id)"
+    },
+    {
+      "name": "reviews_body_check",
+      "table": "reviews",
+      "definition": "CHECK (char_length(body) >= 80 AND char_length(body) <= 3000)"
+    },
+    {
+      "name": "reviews_catch_outcome_check",
+      "table": "reviews",
+      "definition": "CHECK (catch_outcome = ANY (ARRAY['limited'::text, 'caught'::text, 'slow'::text, 'not_disclosed'::text]))"
+    },
+    {
+      "name": "reviews_communication_check",
+      "table": "reviews",
+      "definition": "CHECK (communication >= 1 AND communication <= 5)"
+    },
+    {
+      "name": "reviews_effort_check",
+      "table": "reviews",
+      "definition": "CHECK (effort >= 1 AND effort <= 5)"
+    },
+    {
+      "name": "reviews_equipment_check",
+      "table": "reviews",
+      "definition": "CHECK (equipment >= 1 AND equipment <= 5)"
+    },
+    {
+      "name": "reviews_guide_id_fkey",
+      "table": "reviews",
+      "definition": "FOREIGN KEY (guide_id) REFERENCES guides(id)"
+    },
+    {
+      "name": "reviews_intensity_check",
+      "table": "reviews",
+      "definition": "CHECK (intensity >= 1 AND intensity <= 5)"
+    },
+    {
+      "name": "reviews_knowledge_check",
+      "table": "reviews",
+      "definition": "CHECK (knowledge >= 1 AND knowledge <= 5)"
+    },
+    {
+      "name": "reviews_pkey",
+      "table": "reviews",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "reviews_professionalism_check",
+      "table": "reviews",
+      "definition": "CHECK (professionalism >= 1 AND professionalism <= 5)"
+    },
+    {
+      "name": "reviews_quality_check",
+      "table": "reviews",
+      "definition": "CHECK (quality >= 1 AND quality <= 5)"
+    },
+    {
+      "name": "reviews_safety_check",
+      "table": "reviews",
+      "definition": "CHECK (safety >= 1 AND safety <= 5)"
+    },
+    {
+      "name": "reviews_species_id_fkey",
+      "table": "reviews",
+      "definition": "FOREIGN KEY (species_id) REFERENCES species(id)"
+    },
+    {
+      "name": "reviews_status_check",
+      "table": "reviews",
+      "definition": "CHECK (status = ANY (ARRAY['pending'::text, 'published'::text, 'rejected'::text, 'removed'::text]))"
+    },
+    {
+      "name": "reviews_trip_context_check",
+      "table": "reviews",
+      "definition": "CHECK (length(trip_context) <= 140)"
+    },
+    {
+      "name": "reviews_value_rating_check",
+      "table": "reviews",
+      "definition": "CHECK (value_rating >= 1 AND value_rating <= 5)"
+    },
+    {
+      "name": "reviews_waterway_id_fkey",
+      "table": "reviews",
+      "definition": "FOREIGN KEY (waterway_id) REFERENCES waterways(id)"
+    },
+    {
+      "name": "site_admins_pkey",
+      "table": "site_admins",
+      "definition": "PRIMARY KEY (user_id)"
+    },
+    {
+      "name": "site_admins_user_id_fkey",
+      "table": "site_admins",
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "species_pkey",
+      "table": "species",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "species_slug_key",
+      "table": "species",
+      "definition": "UNIQUE (slug)"
+    },
+    {
+      "name": "waterways_pkey",
+      "table": "waterways",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "waterways_region_id_fkey",
+      "table": "waterways",
+      "definition": "FOREIGN KEY (region_id) REFERENCES regions(id)"
+    },
+    {
+      "name": "waterways_slug_key",
+      "table": "waterways",
+      "definition": "UNIQUE (slug)"
+    }
+  ],
+  "table_grants": [
+    {
+      "table": "admin_pending_claims",
+      "grantee": "anon",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "admin_pending_claims",
+      "grantee": "anon",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "admin_pending_claims",
+      "grantee": "anon",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "admin_pending_claims",
+      "grantee": "anon",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "admin_pending_claims",
+      "grantee": "anon",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "admin_pending_claims",
+      "grantee": "anon",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "admin_pending_claims",
+      "grantee": "anon",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "admin_pending_claims",
+      "grantee": "authenticated",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "admin_pending_claims",
+      "grantee": "authenticated",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "admin_pending_claims",
+      "grantee": "authenticated",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "admin_pending_claims",
+      "grantee": "authenticated",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "admin_pending_claims",
+      "grantee": "authenticated",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "admin_pending_claims",
+      "grantee": "authenticated",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "admin_pending_claims",
+      "grantee": "authenticated",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "grantee": "anon",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "grantee": "anon",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "grantee": "anon",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "grantee": "anon",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "grantee": "anon",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "grantee": "anon",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "grantee": "anon",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "grantee": "authenticated",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "grantee": "authenticated",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "grantee": "authenticated",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "grantee": "authenticated",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "grantee": "authenticated",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "grantee": "authenticated",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "grantee": "authenticated",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "claim_evidence",
+      "grantee": "anon",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "claim_evidence",
+      "grantee": "anon",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "claim_evidence",
+      "grantee": "anon",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "claim_evidence",
+      "grantee": "anon",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "claim_evidence",
+      "grantee": "anon",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "claim_evidence",
+      "grantee": "anon",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "claim_evidence",
+      "grantee": "anon",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "claim_evidence",
+      "grantee": "authenticated",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "claim_evidence",
+      "grantee": "authenticated",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "claim_evidence",
+      "grantee": "authenticated",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "claim_evidence",
+      "grantee": "authenticated",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "claim_evidence",
+      "grantee": "authenticated",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "claim_evidence",
+      "grantee": "authenticated",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "claim_evidence",
+      "grantee": "authenticated",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "guide_claims",
+      "grantee": "anon",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "guide_claims",
+      "grantee": "anon",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "guide_claims",
+      "grantee": "anon",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "guide_claims",
+      "grantee": "anon",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "guide_claims",
+      "grantee": "anon",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "guide_claims",
+      "grantee": "anon",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "guide_claims",
+      "grantee": "anon",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "guide_claims",
+      "grantee": "authenticated",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "guide_claims",
+      "grantee": "authenticated",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "guide_claims",
+      "grantee": "authenticated",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "guide_claims",
+      "grantee": "authenticated",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "guide_claims",
+      "grantee": "authenticated",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "guide_claims",
+      "grantee": "authenticated",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "guide_claims",
+      "grantee": "authenticated",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "guide_details",
+      "grantee": "anon",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "guide_details",
+      "grantee": "anon",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "guide_details",
+      "grantee": "anon",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "guide_details",
+      "grantee": "anon",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "guide_details",
+      "grantee": "anon",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "guide_details",
+      "grantee": "anon",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "guide_details",
+      "grantee": "anon",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "guide_details",
+      "grantee": "authenticated",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "guide_details",
+      "grantee": "authenticated",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "guide_details",
+      "grantee": "authenticated",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "guide_details",
+      "grantee": "authenticated",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "guide_details",
+      "grantee": "authenticated",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "guide_details",
+      "grantee": "authenticated",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "guide_details",
+      "grantee": "authenticated",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "guide_replies",
+      "grantee": "anon",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "guide_replies",
+      "grantee": "anon",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "guide_replies",
+      "grantee": "anon",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "guide_replies",
+      "grantee": "anon",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "guide_replies",
+      "grantee": "anon",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "guide_replies",
+      "grantee": "anon",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "guide_replies",
+      "grantee": "anon",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "guide_replies",
+      "grantee": "authenticated",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "guide_replies",
+      "grantee": "authenticated",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "guide_replies",
+      "grantee": "authenticated",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "guide_replies",
+      "grantee": "authenticated",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "guide_replies",
+      "grantee": "authenticated",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "guide_replies",
+      "grantee": "authenticated",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "guide_replies",
+      "grantee": "authenticated",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "guides",
+      "grantee": "anon",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "guides",
+      "grantee": "anon",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "guides",
+      "grantee": "anon",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "guides",
+      "grantee": "anon",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "guides",
+      "grantee": "anon",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "guides",
+      "grantee": "anon",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "guides",
+      "grantee": "anon",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "guides",
+      "grantee": "authenticated",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "guides",
+      "grantee": "authenticated",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "guides",
+      "grantee": "authenticated",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "guides",
+      "grantee": "authenticated",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "guides",
+      "grantee": "authenticated",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "guides",
+      "grantee": "authenticated",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "guides",
+      "grantee": "authenticated",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "jurisdictions",
+      "grantee": "anon",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "jurisdictions",
+      "grantee": "anon",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "jurisdictions",
+      "grantee": "anon",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "jurisdictions",
+      "grantee": "anon",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "jurisdictions",
+      "grantee": "anon",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "jurisdictions",
+      "grantee": "anon",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "jurisdictions",
+      "grantee": "anon",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "jurisdictions",
+      "grantee": "authenticated",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "jurisdictions",
+      "grantee": "authenticated",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "jurisdictions",
+      "grantee": "authenticated",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "jurisdictions",
+      "grantee": "authenticated",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "jurisdictions",
+      "grantee": "authenticated",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "jurisdictions",
+      "grantee": "authenticated",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "jurisdictions",
+      "grantee": "authenticated",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "moderation_audit",
+      "grantee": "anon",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "moderation_audit",
+      "grantee": "anon",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "moderation_audit",
+      "grantee": "anon",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "moderation_audit",
+      "grantee": "anon",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "moderation_audit",
+      "grantee": "anon",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "moderation_audit",
+      "grantee": "anon",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "moderation_audit",
+      "grantee": "anon",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "moderation_audit",
+      "grantee": "authenticated",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "moderation_audit",
+      "grantee": "authenticated",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "moderation_audit",
+      "grantee": "authenticated",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "moderation_audit",
+      "grantee": "authenticated",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "moderation_audit",
+      "grantee": "authenticated",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "moderation_audit",
+      "grantee": "authenticated",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "moderation_audit",
+      "grantee": "authenticated",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "public_angler_reviews",
+      "grantee": "anon",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "public_angler_reviews",
+      "grantee": "anon",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "public_angler_reviews",
+      "grantee": "anon",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "public_angler_reviews",
+      "grantee": "anon",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "public_angler_reviews",
+      "grantee": "anon",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "public_angler_reviews",
+      "grantee": "anon",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "public_angler_reviews",
+      "grantee": "anon",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "public_angler_reviews",
+      "grantee": "authenticated",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "public_angler_reviews",
+      "grantee": "authenticated",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "public_angler_reviews",
+      "grantee": "authenticated",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "public_angler_reviews",
+      "grantee": "authenticated",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "public_angler_reviews",
+      "grantee": "authenticated",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "public_angler_reviews",
+      "grantee": "authenticated",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "public_angler_reviews",
+      "grantee": "authenticated",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "regions",
+      "grantee": "anon",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "regions",
+      "grantee": "anon",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "regions",
+      "grantee": "anon",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "regions",
+      "grantee": "anon",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "regions",
+      "grantee": "anon",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "regions",
+      "grantee": "anon",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "regions",
+      "grantee": "anon",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "regions",
+      "grantee": "authenticated",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "regions",
+      "grantee": "authenticated",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "regions",
+      "grantee": "authenticated",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "regions",
+      "grantee": "authenticated",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "regions",
+      "grantee": "authenticated",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "regions",
+      "grantee": "authenticated",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "regions",
+      "grantee": "authenticated",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "reviews",
+      "grantee": "anon",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "reviews",
+      "grantee": "anon",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "reviews",
+      "grantee": "anon",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "reviews",
+      "grantee": "anon",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "reviews",
+      "grantee": "anon",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "reviews",
+      "grantee": "anon",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "reviews",
+      "grantee": "authenticated",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "reviews",
+      "grantee": "authenticated",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "reviews",
+      "grantee": "authenticated",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "reviews",
+      "grantee": "authenticated",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "reviews",
+      "grantee": "authenticated",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "reviews",
+      "grantee": "authenticated",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "site_admins",
+      "grantee": "anon",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "site_admins",
+      "grantee": "anon",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "site_admins",
+      "grantee": "anon",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "site_admins",
+      "grantee": "anon",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "site_admins",
+      "grantee": "anon",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "site_admins",
+      "grantee": "anon",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "site_admins",
+      "grantee": "anon",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "site_admins",
+      "grantee": "authenticated",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "site_admins",
+      "grantee": "authenticated",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "site_admins",
+      "grantee": "authenticated",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "site_admins",
+      "grantee": "authenticated",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "site_admins",
+      "grantee": "authenticated",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "site_admins",
+      "grantee": "authenticated",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "site_admins",
+      "grantee": "authenticated",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "species",
+      "grantee": "anon",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "species",
+      "grantee": "anon",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "species",
+      "grantee": "anon",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "species",
+      "grantee": "anon",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "species",
+      "grantee": "anon",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "species",
+      "grantee": "anon",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "species",
+      "grantee": "anon",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "species",
+      "grantee": "authenticated",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "species",
+      "grantee": "authenticated",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "species",
+      "grantee": "authenticated",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "species",
+      "grantee": "authenticated",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "species",
+      "grantee": "authenticated",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "species",
+      "grantee": "authenticated",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "species",
+      "grantee": "authenticated",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "waterways",
+      "grantee": "anon",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "waterways",
+      "grantee": "anon",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "waterways",
+      "grantee": "anon",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "waterways",
+      "grantee": "anon",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "waterways",
+      "grantee": "anon",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "waterways",
+      "grantee": "anon",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "waterways",
+      "grantee": "anon",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "waterways",
+      "grantee": "authenticated",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "waterways",
+      "grantee": "authenticated",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "waterways",
+      "grantee": "authenticated",
+      "privilege": "REFERENCES"
+    },
+    {
+      "table": "waterways",
+      "grantee": "authenticated",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "waterways",
+      "grantee": "authenticated",
+      "privilege": "TRIGGER"
+    },
+    {
+      "table": "waterways",
+      "grantee": "authenticated",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "table": "waterways",
+      "grantee": "authenticated",
+      "privilege": "UPDATE"
+    }
+  ],
+  "server_version": "170011",
+  "column_select_grants": [
+    {
+      "table": "admin_pending_claims",
+      "column": "business_name",
+      "grantee": "anon"
+    },
+    {
+      "table": "admin_pending_claims",
+      "column": "business_name",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "admin_pending_claims",
+      "column": "claimant_id",
+      "grantee": "anon"
+    },
+    {
+      "table": "admin_pending_claims",
+      "column": "claimant_id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "admin_pending_claims",
+      "column": "claimant_name",
+      "grantee": "anon"
+    },
+    {
+      "table": "admin_pending_claims",
+      "column": "claimant_name",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "admin_pending_claims",
+      "column": "created_at",
+      "grantee": "anon"
+    },
+    {
+      "table": "admin_pending_claims",
+      "column": "created_at",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "admin_pending_claims",
+      "column": "guide_id",
+      "grantee": "anon"
+    },
+    {
+      "table": "admin_pending_claims",
+      "column": "guide_id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "admin_pending_claims",
+      "column": "guide_name",
+      "grantee": "anon"
+    },
+    {
+      "table": "admin_pending_claims",
+      "column": "guide_name",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "admin_pending_claims",
+      "column": "id",
+      "grantee": "anon"
+    },
+    {
+      "table": "admin_pending_claims",
+      "column": "id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "admin_pending_claims",
+      "column": "public_evidence",
+      "grantee": "anon"
+    },
+    {
+      "table": "admin_pending_claims",
+      "column": "public_evidence",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "column": "body",
+      "grantee": "anon"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "column": "body",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "column": "communication",
+      "grantee": "anon"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "column": "communication",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "column": "created_at",
+      "grantee": "anon"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "column": "created_at",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "column": "guide_id",
+      "grantee": "anon"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "column": "guide_id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "column": "guide_name",
+      "grantee": "anon"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "column": "guide_name",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "column": "id",
+      "grantee": "anon"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "column": "id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "column": "professionalism",
+      "grantee": "anon"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "column": "professionalism",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "column": "quality",
+      "grantee": "anon"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "column": "quality",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "column": "safety",
+      "grantee": "anon"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "column": "safety",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "column": "trip_month",
+      "grantee": "anon"
+    },
+    {
+      "table": "admin_pending_reviews",
+      "column": "trip_month",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "claim_evidence",
+      "column": "business_name",
+      "grantee": "anon"
+    },
+    {
+      "table": "claim_evidence",
+      "column": "business_name",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "claim_evidence",
+      "column": "claim_id",
+      "grantee": "anon"
+    },
+    {
+      "table": "claim_evidence",
+      "column": "claim_id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "claim_evidence",
+      "column": "claimant_name",
+      "grantee": "anon"
+    },
+    {
+      "table": "claim_evidence",
+      "column": "claimant_name",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "claim_evidence",
+      "column": "created_at",
+      "grantee": "anon"
+    },
+    {
+      "table": "claim_evidence",
+      "column": "created_at",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "claim_evidence",
+      "column": "public_evidence",
+      "grantee": "anon"
+    },
+    {
+      "table": "claim_evidence",
+      "column": "public_evidence",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guide_claims",
+      "column": "claimant_id",
+      "grantee": "anon"
+    },
+    {
+      "table": "guide_claims",
+      "column": "claimant_id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guide_claims",
+      "column": "created_at",
+      "grantee": "anon"
+    },
+    {
+      "table": "guide_claims",
+      "column": "created_at",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guide_claims",
+      "column": "guide_id",
+      "grantee": "anon"
+    },
+    {
+      "table": "guide_claims",
+      "column": "guide_id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guide_claims",
+      "column": "id",
+      "grantee": "anon"
+    },
+    {
+      "table": "guide_claims",
+      "column": "id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guide_claims",
+      "column": "status",
+      "grantee": "anon"
+    },
+    {
+      "table": "guide_claims",
+      "column": "status",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guide_details",
+      "column": "boat",
+      "grantee": "anon"
+    },
+    {
+      "table": "guide_details",
+      "column": "boat",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guide_details",
+      "column": "expertise",
+      "grantee": "anon"
+    },
+    {
+      "table": "guide_details",
+      "column": "expertise",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guide_details",
+      "column": "gear",
+      "grantee": "anon"
+    },
+    {
+      "table": "guide_details",
+      "column": "gear",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guide_details",
+      "column": "guide_id",
+      "grantee": "anon"
+    },
+    {
+      "table": "guide_details",
+      "column": "guide_id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guide_details",
+      "column": "targeted_species",
+      "grantee": "anon"
+    },
+    {
+      "table": "guide_details",
+      "column": "targeted_species",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guide_details",
+      "column": "updated_at",
+      "grantee": "anon"
+    },
+    {
+      "table": "guide_details",
+      "column": "updated_at",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guide_details",
+      "column": "years_experience",
+      "grantee": "anon"
+    },
+    {
+      "table": "guide_details",
+      "column": "years_experience",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guide_replies",
+      "column": "author_id",
+      "grantee": "anon"
+    },
+    {
+      "table": "guide_replies",
+      "column": "author_id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guide_replies",
+      "column": "body",
+      "grantee": "anon"
+    },
+    {
+      "table": "guide_replies",
+      "column": "body",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guide_replies",
+      "column": "created_at",
+      "grantee": "anon"
+    },
+    {
+      "table": "guide_replies",
+      "column": "created_at",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guide_replies",
+      "column": "guide_id",
+      "grantee": "anon"
+    },
+    {
+      "table": "guide_replies",
+      "column": "guide_id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guide_replies",
+      "column": "id",
+      "grantee": "anon"
+    },
+    {
+      "table": "guide_replies",
+      "column": "id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guide_replies",
+      "column": "review_id",
+      "grantee": "anon"
+    },
+    {
+      "table": "guide_replies",
+      "column": "review_id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guide_replies",
+      "column": "status",
+      "grantee": "anon"
+    },
+    {
+      "table": "guide_replies",
+      "column": "status",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guides",
+      "column": "average_quality",
+      "grantee": "anon"
+    },
+    {
+      "table": "guides",
+      "column": "average_quality",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guides",
+      "column": "created_at",
+      "grantee": "anon"
+    },
+    {
+      "table": "guides",
+      "column": "created_at",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guides",
+      "column": "full_name",
+      "grantee": "anon"
+    },
+    {
+      "table": "guides",
+      "column": "full_name",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guides",
+      "column": "id",
+      "grantee": "anon"
+    },
+    {
+      "table": "guides",
+      "column": "id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guides",
+      "column": "jurisdiction_id",
+      "grantee": "anon"
+    },
+    {
+      "table": "guides",
+      "column": "jurisdiction_id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guides",
+      "column": "license_number",
+      "grantee": "anon"
+    },
+    {
+      "table": "guides",
+      "column": "license_number",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guides",
+      "column": "listing_status",
+      "grantee": "anon"
+    },
+    {
+      "table": "guides",
+      "column": "listing_status",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guides",
+      "column": "outfit_name",
+      "grantee": "anon"
+    },
+    {
+      "table": "guides",
+      "column": "outfit_name",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guides",
+      "column": "review_count",
+      "grantee": "anon"
+    },
+    {
+      "table": "guides",
+      "column": "review_count",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guides",
+      "column": "slug",
+      "grantee": "anon"
+    },
+    {
+      "table": "guides",
+      "column": "slug",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guides",
+      "column": "updated_at",
+      "grantee": "anon"
+    },
+    {
+      "table": "guides",
+      "column": "updated_at",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guides",
+      "column": "verification_status",
+      "grantee": "anon"
+    },
+    {
+      "table": "guides",
+      "column": "verification_status",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guides",
+      "column": "website_url",
+      "grantee": "anon"
+    },
+    {
+      "table": "guides",
+      "column": "website_url",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "guides",
+      "column": "would_book_again_pct",
+      "grantee": "anon"
+    },
+    {
+      "table": "guides",
+      "column": "would_book_again_pct",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "jurisdictions",
+      "column": "code",
+      "grantee": "anon"
+    },
+    {
+      "table": "jurisdictions",
+      "column": "code",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "jurisdictions",
+      "column": "id",
+      "grantee": "anon"
+    },
+    {
+      "table": "jurisdictions",
+      "column": "id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "jurisdictions",
+      "column": "name",
+      "grantee": "anon"
+    },
+    {
+      "table": "jurisdictions",
+      "column": "name",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "jurisdictions",
+      "column": "region_id",
+      "grantee": "anon"
+    },
+    {
+      "table": "jurisdictions",
+      "column": "region_id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "moderation_audit",
+      "column": "actor_id",
+      "grantee": "anon"
+    },
+    {
+      "table": "moderation_audit",
+      "column": "actor_id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "moderation_audit",
+      "column": "created_at",
+      "grantee": "anon"
+    },
+    {
+      "table": "moderation_audit",
+      "column": "created_at",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "moderation_audit",
+      "column": "id",
+      "grantee": "anon"
+    },
+    {
+      "table": "moderation_audit",
+      "column": "id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "moderation_audit",
+      "column": "new_status",
+      "grantee": "anon"
+    },
+    {
+      "table": "moderation_audit",
+      "column": "new_status",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "moderation_audit",
+      "column": "old_status",
+      "grantee": "anon"
+    },
+    {
+      "table": "moderation_audit",
+      "column": "old_status",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "moderation_audit",
+      "column": "reason",
+      "grantee": "anon"
+    },
+    {
+      "table": "moderation_audit",
+      "column": "reason",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "moderation_audit",
+      "column": "target_id",
+      "grantee": "anon"
+    },
+    {
+      "table": "moderation_audit",
+      "column": "target_id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "moderation_audit",
+      "column": "target_type",
+      "grantee": "anon"
+    },
+    {
+      "table": "moderation_audit",
+      "column": "target_type",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "body",
+      "grantee": "anon"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "body",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "catch_outcome",
+      "grantee": "anon"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "catch_outcome",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "communication",
+      "grantee": "anon"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "communication",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "effort",
+      "grantee": "anon"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "effort",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "equipment",
+      "grantee": "anon"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "equipment",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "guide_id",
+      "grantee": "anon"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "guide_id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "id",
+      "grantee": "anon"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "intensity",
+      "grantee": "anon"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "intensity",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "knowledge",
+      "grantee": "anon"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "knowledge",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "professionalism",
+      "grantee": "anon"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "professionalism",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "published_at",
+      "grantee": "anon"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "published_at",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "quality",
+      "grantee": "anon"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "quality",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "safety",
+      "grantee": "anon"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "safety",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "trip_context",
+      "grantee": "anon"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "trip_context",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "trip_month",
+      "grantee": "anon"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "trip_month",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "value_rating",
+      "grantee": "anon"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "value_rating",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "would_book_again",
+      "grantee": "anon"
+    },
+    {
+      "table": "public_angler_reviews",
+      "column": "would_book_again",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "regions",
+      "column": "id",
+      "grantee": "anon"
+    },
+    {
+      "table": "regions",
+      "column": "id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "regions",
+      "column": "is_active",
+      "grantee": "anon"
+    },
+    {
+      "table": "regions",
+      "column": "is_active",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "regions",
+      "column": "name",
+      "grantee": "anon"
+    },
+    {
+      "table": "regions",
+      "column": "name",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "regions",
+      "column": "slug",
+      "grantee": "anon"
+    },
+    {
+      "table": "regions",
+      "column": "slug",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "reviews",
+      "column": "body",
+      "grantee": "anon"
+    },
+    {
+      "table": "reviews",
+      "column": "body",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "reviews",
+      "column": "catch_outcome",
+      "grantee": "anon"
+    },
+    {
+      "table": "reviews",
+      "column": "catch_outcome",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "reviews",
+      "column": "communication",
+      "grantee": "anon"
+    },
+    {
+      "table": "reviews",
+      "column": "communication",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "reviews",
+      "column": "effort",
+      "grantee": "anon"
+    },
+    {
+      "table": "reviews",
+      "column": "effort",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "reviews",
+      "column": "equipment",
+      "grantee": "anon"
+    },
+    {
+      "table": "reviews",
+      "column": "equipment",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "reviews",
+      "column": "guide_id",
+      "grantee": "anon"
+    },
+    {
+      "table": "reviews",
+      "column": "guide_id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "reviews",
+      "column": "id",
+      "grantee": "anon"
+    },
+    {
+      "table": "reviews",
+      "column": "id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "reviews",
+      "column": "intensity",
+      "grantee": "anon"
+    },
+    {
+      "table": "reviews",
+      "column": "intensity",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "reviews",
+      "column": "knowledge",
+      "grantee": "anon"
+    },
+    {
+      "table": "reviews",
+      "column": "knowledge",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "reviews",
+      "column": "professionalism",
+      "grantee": "anon"
+    },
+    {
+      "table": "reviews",
+      "column": "professionalism",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "reviews",
+      "column": "published_at",
+      "grantee": "anon"
+    },
+    {
+      "table": "reviews",
+      "column": "published_at",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "reviews",
+      "column": "quality",
+      "grantee": "anon"
+    },
+    {
+      "table": "reviews",
+      "column": "quality",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "reviews",
+      "column": "safety",
+      "grantee": "anon"
+    },
+    {
+      "table": "reviews",
+      "column": "safety",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "reviews",
+      "column": "trip_context",
+      "grantee": "anon"
+    },
+    {
+      "table": "reviews",
+      "column": "trip_context",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "reviews",
+      "column": "trip_month",
+      "grantee": "anon"
+    },
+    {
+      "table": "reviews",
+      "column": "trip_month",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "reviews",
+      "column": "value_rating",
+      "grantee": "anon"
+    },
+    {
+      "table": "reviews",
+      "column": "value_rating",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "reviews",
+      "column": "would_book_again",
+      "grantee": "anon"
+    },
+    {
+      "table": "reviews",
+      "column": "would_book_again",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "site_admins",
+      "column": "created_at",
+      "grantee": "anon"
+    },
+    {
+      "table": "site_admins",
+      "column": "created_at",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "site_admins",
+      "column": "user_id",
+      "grantee": "anon"
+    },
+    {
+      "table": "site_admins",
+      "column": "user_id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "species",
+      "column": "common_name",
+      "grantee": "anon"
+    },
+    {
+      "table": "species",
+      "column": "common_name",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "species",
+      "column": "id",
+      "grantee": "anon"
+    },
+    {
+      "table": "species",
+      "column": "id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "species",
+      "column": "slug",
+      "grantee": "anon"
+    },
+    {
+      "table": "species",
+      "column": "slug",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "waterways",
+      "column": "description",
+      "grantee": "anon"
+    },
+    {
+      "table": "waterways",
+      "column": "description",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "waterways",
+      "column": "id",
+      "grantee": "anon"
+    },
+    {
+      "table": "waterways",
+      "column": "id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "waterways",
+      "column": "is_published",
+      "grantee": "anon"
+    },
+    {
+      "table": "waterways",
+      "column": "is_published",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "waterways",
+      "column": "name",
+      "grantee": "anon"
+    },
+    {
+      "table": "waterways",
+      "column": "name",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "waterways",
+      "column": "region_id",
+      "grantee": "anon"
+    },
+    {
+      "table": "waterways",
+      "column": "region_id",
+      "grantee": "authenticated"
+    },
+    {
+      "table": "waterways",
+      "column": "slug",
+      "grantee": "anon"
+    },
+    {
+      "table": "waterways",
+      "column": "slug",
+      "grantee": "authenticated"
+    }
+  ]
+}
