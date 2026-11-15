@@ -12,7 +12,7 @@
     "reviewed": 100,
     "source_reviewed": 12,
     "registry_only": 88,
-    "new_waterway_claims": 38
+    "new_waterway_claims": 37
   },
   "policy": "Names, websites and activities imported from historic Oregon registry; public business-source claims dated but not current license confirmation. Species and techniques stored in staged research evidence only until reviewed taxonomy/claim pipeline is integrated.",
   "records": [
@@ -43,10 +43,9 @@
       "public_source_url": "https://www.khfishing.com/",
       "public_source_type": "operator_site",
       "observed_on": "2026-11-15",
-      "source_note": "Kevin Hawkins site advertises Montana trout trips and August Astoria Chinook/coho salmon; separate Montana/Oregon geographies",
+      "source_note": "Kevin Hawkins site advertises Montana trout trips and August Astoria Chinook/coho salmon; separate Montana/Oregon geographies Astoria salmon trips are not automatically ocean trips.",
       "advertised_waters": [
-        "Bitterroot River",
-        "Pacific Ocean"
+        "Bitterroot River"
       ],
       "advertised_species_staging_only": [
         "Chinook salmon",
@@ -134,7 +133,7 @@
         "South Santiam River"
       ],
       "advertised_species_staging_only": [
-        "Chinook salmon",
+        "Salmon",
         "Steelhead"
       ],
       "advertised_techniques_staging_only": [
@@ -328,11 +327,11 @@
       "imported_business": "Chrome Quest Guide Service LLC",
       "imported_website": "chromequestguideservice.com",
       "imported_activity": "Fishing",
-      "review_status": "registry_website_unverified",
+      "review_status": "operator_identity_conflict_hold",
       "public_source_url": null,
       "public_source_type": null,
       "observed_on": null,
-      "source_note": "Imported registry website only; not opened/confirmed. No current services, credentials or species inferred.",
+      "source_note": "Imported registry website only; not opened/confirmed. No current services, credentials or species inferred. Candidate explicitly held due to category or identity conflict; excluded from promotion.",
       "advertised_waters": [],
       "advertised_species_staging_only": [],
       "advertised_techniques_staging_only": [],
@@ -345,11 +344,11 @@
       "imported_business": "Vertical Jigs and Lures LLC",
       "imported_website": "verticaljigsandlures.com",
       "imported_activity": "Fishing",
-      "review_status": "registry_website_unverified",
+      "review_status": "product_vendor_hold",
       "public_source_url": null,
       "public_source_type": null,
       "observed_on": null,
-      "source_note": "Imported registry website only; not opened/confirmed. No current services, credentials or species inferred.",
+      "source_note": "Imported registry website only; not opened/confirmed. No current services, credentials or species inferred. Candidate explicitly held due to category or identity conflict; excluded from promotion.",
       "advertised_waters": [],
       "advertised_species_staging_only": [],
       "advertised_techniques_staging_only": [],
@@ -362,11 +361,11 @@
       "imported_business": "Good2GoTaxi.com",
       "imported_website": "Good2GoTaxi.com",
       "imported_activity": "Bird Watching, Fishing, Scenic Tours",
-      "review_status": "registry_website_unverified",
+      "review_status": "unrelated_business_hold",
       "public_source_url": null,
       "public_source_type": null,
       "observed_on": null,
-      "source_note": "Imported registry website only; not opened/confirmed. No current services, credentials or species inferred.",
+      "source_note": "Imported registry website only; not opened/confirmed. No current services, credentials or species inferred. Candidate explicitly held due to category or identity conflict; excluded from promotion.",
       "advertised_waters": [],
       "advertised_species_staging_only": [],
       "advertised_techniques_staging_only": [],
@@ -413,11 +412,11 @@
       "imported_business": "Cattywhompus LLC",
       "imported_website": "www.cattywhompus.com",
       "imported_activity": "Fishing",
-      "review_status": "registry_website_unverified",
+      "review_status": "category_review_hold",
       "public_source_url": null,
       "public_source_type": null,
       "observed_on": null,
-      "source_note": "Imported registry website only; not opened/confirmed. No current services, credentials or species inferred.",
+      "source_note": "Imported registry website only; not opened/confirmed. No current services, credentials or species inferred. Candidate explicitly held due to category or identity conflict; excluded from promotion.",
       "advertised_waters": [],
       "advertised_species_staging_only": [],
       "advertised_techniques_staging_only": [],
