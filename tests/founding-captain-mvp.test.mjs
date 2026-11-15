@@ -70,7 +70,7 @@ test('batch-08 source-backed profiles and operator links are now in the public d
  'OG.0000441','OG.0000443','OG.0000450','OG.0000460','OG.0000461',
  'OG.0000462','OG.0000468','OG.0000469'
  ];
- assert.ok(Object.keys(enrich).length>=57);
+ assert.ok(Object.keys(enrich).length>=72);
  let waters=0;
  for(const id of added){
   const row=enrich[id];
@@ -113,4 +113,33 @@ test('batch 09 adds 11 sourced profiles and preserves four non-published researc
  for(const held of ['OG.0000489','OG.0000511','OG.0000519','OG.0000525']){
   assert.equal(enrich[held],undefined);
  }
+});
+
+test('Batch 10 source-linked guide additions are searchable without merging identities',()=>{
+ const enrich=JSON.parse(read('lib/guide-enrichment.json'));
+ const ids=[
+  'OG.0000528','OG.0000544','OG.0000545','OG.0000548','OG.0000549',
+  'OG.0000550','OG.0000555','OG.0000561','OG.0000563','OG.0000567',
+  'OG.0000571','OG.0000572','OG.0000575','OG.0000581','OG.0000585'
+ ];
+ const known=JSON.parse(read('lib/oregon-guides.json'));
+ const knownIds=new Set(known.map(r=>r.registration));
+ let waterCount=0,aliasCount=0;
+ for(const id of ids){
+  assert.ok(knownIds.has(id),'guide identity not in imported directory: '+id);
+  const entry=enrich[id];
+  assert.ok(entry,'new guide missing: '+id);
+  assert.ok(entry.advertisedWaters.length+entry.searchAliases.length>0);
+  assert.ok(entry.sourceLinks.length>0);
+  for(const link of entry.sourceLinks)assert.match(link.url,/^https:\/\//);
+  for(const water of entry.advertisedWaters){
+   assert.match(water.sourceUrl,/^https:\/\//);
+   assert.equal(water.observedOn,'2026-11-14');
+   waterCount++;
+  }
+  aliasCount+=entry.searchAliases.length;
+ }
+ assert.equal(waterCount,50);
+ assert.equal(aliasCount,22);
+ assert.ok(enrich['OG.0000585'].searchAliases.includes('Wild Rivers Fishing'));
 });
