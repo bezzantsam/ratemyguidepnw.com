@@ -1,0 +1,1535 @@
+{
+  "schemaVersion": 1,
+  "batchId": "or-batch13-2026-11-15",
+  "baseSha": "ec64a42d3d80f1b870edf8fde0202d28ecaffdf3",
+  "notes": "100 new distinct Oregon registry website values, NOT independently verified live operator sites; separate 26 actually researched public sources add species, techniques and specialties; no Google/Facebook reviews copied.",
+  "counts": {
+    "new_registry_website_profiles": 100,
+    "registry_only_among_new": 92,
+    "new_with_public_site_evidence": 8,
+    "public_evidence_profiles": 26,
+    "promoted_from_prior_held": 18
+  },
+  "records": [
+    {
+      "registration": "OG.0002298",
+      "imported_name": "Jayson Hayes",
+      "imported_business": "Hayes Custom Boats",
+      "imported_website": "hayescustomboats.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://hayescustomboats.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003361",
+      "imported_name": "Matthew Fairbank",
+      "imported_business": "Vertical Jigs and Lures LLC",
+      "imported_website": "verticaljigsandlures.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://verticaljigsandlures.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0001059",
+      "imported_name": "Robert Weir",
+      "imported_business": "Sundance Kayak School LLC",
+      "imported_website": "www.sundancekayak.com",
+      "reported_activity": "CanoeKayakPaddle Craft, Fishing, Scenic Tours, Whitewater, Wilderness Adventure",
+      "registry_website_url": "https://www.sundancekayak.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0002938",
+      "imported_name": "Greg Morse",
+      "imported_business": "Good2GoTaxi.com",
+      "imported_website": "Good2GoTaxi.com",
+      "reported_activity": "Bird Watching, Fishing, Scenic Tours",
+      "registry_website_url": "https://Good2GoTaxi.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000743",
+      "imported_name": "Darren Roe",
+      "imported_business": "Crater Lake Zipline LLC",
+      "imported_website": "www.craterlakezipline.com",
+      "reported_activity": "Bird Watching, CanoeKayakPaddle Craft, Fishing, Nature Eco Hikes, Scenic Tours",
+      "registry_website_url": "https://www.craterlakezipline.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003609",
+      "imported_name": "Trever Adams",
+      "imported_business": "Meat Without Feet LLC",
+      "imported_website": "www.meatwithoutfeetguides.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.meatwithoutfeetguides.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003634",
+      "imported_name": "John Vogl",
+      "imported_business": "Accessible Fishing Adventures LLC",
+      "imported_website": "AccessibleFishingAdventures.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://AccessibleFishingAdventures.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003716",
+      "imported_name": "Gerald Goulet",
+      "imported_business": "Shortbus Guide Service LLC",
+      "imported_website": "shortbusguideservice.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://shortbusguideservice.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003834",
+      "imported_name": "Michael Bode",
+      "imported_business": "Cattywhompus LLC",
+      "imported_website": "www.cattywhompus.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.cattywhompus.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003836",
+      "imported_name": "Kirk Jenson",
+      "imported_business": "OnlyFins Guide Service LLC",
+      "imported_website": "Onlyfins.llc",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://Onlyfins.llc",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003837",
+      "imported_name": "Jeffrey Johnson",
+      "imported_business": "El Jeffay LLC",
+      "imported_website": "eljeffay.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://eljeffay.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003889",
+      "imported_name": "Gregory Hitchcock",
+      "imported_business": "Vice Outdoors LLC",
+      "imported_website": "viceoutdoorsllc.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://viceoutdoorsllc.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": "https://viceoutdoorsllc.com/meet-the-guides/"
+    },
+    {
+      "registration": "OG.0003960",
+      "imported_name": "Zohrab Kirakossian",
+      "imported_business": "Be Wild Fishing, LLC",
+      "imported_website": "www.bewildfishing.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.bewildfishing.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003978",
+      "imported_name": "Justin Bubenik",
+      "imported_business": "FlyCurious Fishing Inc",
+      "imported_website": "www.flycurious.org",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.flycurious.org",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003993",
+      "imported_name": "Jon Ferguson",
+      "imported_business": "Ferg's Guided Fishing ",
+      "imported_website": "www.fergs.fishing",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.fergs.fishing",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": "https://fergs.fishing/"
+    },
+    {
+      "registration": "OG.0000964",
+      "imported_name": "Todd Bingham",
+      "imported_business": "Coral Sea Scuba & Water Sports LLC",
+      "imported_website": "www.coralseascuba.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.coralseascuba.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0002044",
+      "imported_name": "Daniel Young",
+      "imported_business": "Making Memories Guide Service",
+      "imported_website": "danyoungsmakingmemoriesguideservice.com",
+      "reported_activity": "Bird Watching, Fishing, Nature Eco Hikes, Photography, Scenic Tours",
+      "registry_website_url": "https://danyoungsmakingmemoriesguideservice.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003383",
+      "imported_name": "Ryan Tripp",
+      "imported_business": "Ryan M Tripp Guide Service",
+      "imported_website": "ryantrippsguideservice.com",
+      "reported_activity": "Fishing, Whitewater",
+      "registry_website_url": "https://ryantrippsguideservice.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000047",
+      "imported_name": "John Hanson",
+      "imported_business": "Jack's Guide Service",
+      "imported_website": "www.jacksguideservice.net",
+      "reported_activity": "Bird Watching, Fishing, Photography, Scenic Tours",
+      "registry_website_url": "https://www.jacksguideservice.net",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000359",
+      "imported_name": "Douglas Wolfe",
+      "imported_business": "Douglas Scott Wolfe LLC",
+      "imported_website": "wolfepackfishing.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://wolfepackfishing.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000401",
+      "imported_name": "Damon Struble",
+      "imported_business": "Nomad's Fishing Adventures LLC",
+      "imported_website": "www.nomadsfishingadventures.com",
+      "reported_activity": "Fishing, Photography",
+      "registry_website_url": "https://www.nomadsfishingadventures.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000409",
+      "imported_name": "David Graham",
+      "imported_business": "Travois LLC",
+      "imported_website": "www.travoisllc.com",
+      "reported_activity": "CanoeKayakPaddle Craft, Fishing, Whitewater",
+      "registry_website_url": "https://www.travoisllc.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000412",
+      "imported_name": "Jon Payne",
+      "imported_business": "O2Fish Guide Service",
+      "imported_website": "www.o2fish.com",
+      "reported_activity": "Fishing, Wilderness Adventure",
+      "registry_website_url": "https://www.o2fish.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000414",
+      "imported_name": "Scott Amerman",
+      "imported_business": "Amermans Eggs and Guide Service",
+      "imported_website": "amermaneggs.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://amermaneggs.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000427",
+      "imported_name": "Ethan Nickel",
+      "imported_business": "Ethan Nickel Outfitters & Guide Service LLC",
+      "imported_website": "www.enickeloutfitters.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.enickeloutfitters.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0001340",
+      "imported_name": "Thomas Treadway",
+      "imported_business": "Oregon Fishing LLC",
+      "imported_website": "www.oregonfishing.com",
+      "reported_activity": "Fishing, Scenic Tours",
+      "registry_website_url": "https://www.oregonfishing.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0001395",
+      "imported_name": "Thomas Hyde",
+      "imported_business": "Yamsi Fly Fishing 1, Inc",
+      "imported_website": "www.yamsiflyfishing.com",
+      "reported_activity": "Bird Watching, CanoeKayakPaddle Craft, Fishing, Hunting, Nature Eco Hikes",
+      "registry_website_url": "https://www.yamsiflyfishing.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": "https://yamsiflyfishing.com/"
+    },
+    {
+      "registration": "OG.0001660",
+      "imported_name": "Shane Tyner",
+      "imported_business": "Keys to the Outdoors",
+      "imported_website": "www.keystotheoutdoors.com",
+      "reported_activity": "Fishing, Hunting",
+      "registry_website_url": "https://www.keystotheoutdoors.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0001821",
+      "imported_name": "Michael Jenkins",
+      "imported_business": "Upfront Outfitters",
+      "imported_website": "www.upfrontoutfitters.com",
+      "reported_activity": "Back Country, Fishing, Hunting, Photography, Wilderness Adventure",
+      "registry_website_url": "https://www.upfrontoutfitters.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0001881",
+      "imported_name": "Daniel Chambers",
+      "imported_business": "RiverStone Adventures LLC",
+      "imported_website": "www.riverstoneadventures.com",
+      "reported_activity": "Fishing, Whitewater",
+      "registry_website_url": "https://www.riverstoneadventures.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": "https://riverstoneadventures.com/multi-day-overnight-fishing-trip/"
+    },
+    {
+      "registration": "OG.0002413",
+      "imported_name": "Steven Brinkley",
+      "imported_business": "Hukit Outfitters LLC",
+      "imported_website": "hukitoutfitters.net",
+      "reported_activity": "Back Country, Fishing, Hunting, Wilderness Adventure",
+      "registry_website_url": "https://hukitoutfitters.net",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0002596",
+      "imported_name": "Benjamin Stephenson",
+      "imported_business": "Outfishing Adventures LLC",
+      "imported_website": "www.outfishingadventures.com",
+      "reported_activity": "CanoeKayakPaddle Craft, Fishing, Scenic Tours, Whitewater",
+      "registry_website_url": "https://www.outfishingadventures.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003191",
+      "imported_name": "Anthonie Stewart",
+      "imported_business": "Tonetrout Guiding LLC",
+      "imported_website": "Tonetrout.com",
+      "reported_activity": "Fishing, Hunting",
+      "registry_website_url": "https://Tonetrout.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003288",
+      "imported_name": "John Kaiser",
+      "imported_business": "Tenacity Outdoors ",
+      "imported_website": "tenacityoutdoors.com",
+      "reported_activity": "Fishing, Scenic Tours",
+      "registry_website_url": "https://tenacityoutdoors.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003399",
+      "imported_name": "Stephen Gettel",
+      "imported_business": "Spicy's Fishing and Outdoor Excursions",
+      "imported_website": "spicysfishing.com",
+      "reported_activity": "Fishing, Scenic Tours",
+      "registry_website_url": "https://spicysfishing.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003538",
+      "imported_name": "Brady Johnson",
+      "imported_business": "Sky Lakes Wilderness Adventures LLC",
+      "imported_website": "Skylakeswild.com",
+      "reported_activity": "Back Country, CanoeKayakPaddle Craft, Equestrian Ride, Fishing, Nature Eco Hikes, Photography, Scenic Tours, Wilderness Adventure",
+      "registry_website_url": "https://Skylakeswild.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003606",
+      "imported_name": "James Sens",
+      "imported_business": "Deadman's Guide Service LLC",
+      "imported_website": "deadmansguideservice.com",
+      "reported_activity": "Bird Watching, Fishing, Photography",
+      "registry_website_url": "https://deadmansguideservice.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003633",
+      "imported_name": "Dale Strand",
+      "imported_business": "D Andrew Strand Guide Service",
+      "imported_website": "www.strandfishing.net",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.strandfishing.net",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003696",
+      "imported_name": "Jason Rounsaville",
+      "imported_business": "All American Guide Service LLC",
+      "imported_website": "www.allamericanguideservice.com",
+      "reported_activity": "Fishing, Hunting",
+      "registry_website_url": "https://www.allamericanguideservice.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": "https://www.allamericanguideservice.com/"
+    },
+    {
+      "registration": "OG.0003697",
+      "imported_name": "David Dirks",
+      "imported_business": "The Dirks Group",
+      "imported_website": "www.dirksoutdoors.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.dirksoutdoors.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000642",
+      "imported_name": "Bryan Jones",
+      "imported_business": "Take Down Guide Service",
+      "imported_website": "www.takedownfishingguideservice.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.takedownfishingguideservice.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000647",
+      "imported_name": "Jesse Sampson",
+      "imported_business": "Small Stream LLC",
+      "imported_website": "www.Smallstreamoutfitters.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.Smallstreamoutfitters.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000703",
+      "imported_name": "Benjamin Bansen",
+      "imported_business": "Rogue Rafting Company LLC",
+      "imported_website": "www.RogueRaftingCompany.com",
+      "reported_activity": "Fishing, Hunting, Whitewater",
+      "registry_website_url": "https://www.RogueRaftingCompany.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0001599",
+      "imported_name": "Jason Mitzner",
+      "imported_business": "Home Waters Guide Service",
+      "imported_website": "www.Homewatersflyfishing.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.Homewatersflyfishing.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0002770",
+      "imported_name": "Riley Olson",
+      "imported_business": "R O Guide Service",
+      "imported_website": "ro-guide-service.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://ro-guide-service.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003060",
+      "imported_name": "Marc Bush",
+      "imported_business": "Twisted Waters Guide Service",
+      "imported_website": "twistedwaters-gs.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://twistedwaters-gs.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003154",
+      "imported_name": "Shelley Myers",
+      "imported_business": "Keep It Reel Guide Service",
+      "imported_website": "www.keepingitreelguideservice.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.keepingitreelguideservice.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003643",
+      "imported_name": "Gregory Allen",
+      "imported_business": "Jack Creek Guided Adventures LLC",
+      "imported_website": "Jackcreeckguidedadventures.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://Jackcreeckguidedadventures.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003819",
+      "imported_name": "Clinton McCulloch",
+      "imported_business": "BDC Guide Service LLC",
+      "imported_website": "BDCguideservice.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://BDCguideservice.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003865",
+      "imported_name": "Brennan Andre",
+      "imported_business": "BA Guide Service LLC",
+      "imported_website": "www.baguideservice.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.baguideservice.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003868",
+      "imported_name": "Tyler Blevin",
+      "imported_business": "TNT Sport Fishing",
+      "imported_website": "tntsportfishing.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://tntsportfishing.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003968",
+      "imported_name": "Steven Balodis",
+      "imported_business": "Columbia Chrome",
+      "imported_website": "ColumbiaChromeFishing.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://ColumbiaChromeFishing.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": "https://columbiachromefishing.com/rates/"
+    },
+    {
+      "registration": "OG.0004075",
+      "imported_name": "Hunter Smith",
+      "imported_business": "HS Guide Service",
+      "imported_website": "hsguideservice.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://hsguideservice.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000387",
+      "imported_name": "Vernon Grieve",
+      "imported_business": "Grieves Guide Service Inc",
+      "imported_website": "www.grievesfishing.com",
+      "reported_activity": "Bird Watching, Fishing, Scenic Tours, Whitewater, Wilderness Adventure",
+      "registry_website_url": "https://www.grievesfishing.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000617",
+      "imported_name": "Jonathan Geyer",
+      "imported_business": "Jon Geyer's Guide Service",
+      "imported_website": "www.JonGeyerfishing.com",
+      "reported_activity": "Fishing, Scenic Tours",
+      "registry_website_url": "https://www.JonGeyerfishing.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0001103",
+      "imported_name": "Michael Williams",
+      "imported_business": "Michael T Williams Flyfishing",
+      "imported_website": "www.mtwilliamsflyfish.com",
+      "reported_activity": "Fishing, Photography, Scenic Tours",
+      "registry_website_url": "https://www.mtwilliamsflyfish.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0001224",
+      "imported_name": "Jeremy Toman",
+      "imported_business": "Toman's Outdoor Adventures Inc",
+      "imported_website": "www.Tomansoutdoors.com",
+      "reported_activity": "Fishing, Hunting",
+      "registry_website_url": "https://www.Tomansoutdoors.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": "https://tomansoutdoors.com/tomans-king-camp-information/"
+    },
+    {
+      "registration": "OG.0001277",
+      "imported_name": "Kelsey Helfrich",
+      "imported_business": "Helfrich River Outfitters Inc",
+      "imported_website": "http://www.helfrichoutfitter.com",
+      "reported_activity": "CanoeKayakPaddle Craft, Fishing, Nature Eco Hikes, Photography, Scenic Tours, Whitewater",
+      "registry_website_url": "https://www.helfrichoutfitter.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0002606",
+      "imported_name": "Timothy Cornelison",
+      "imported_business": "Cornelison's Guided Fishing",
+      "imported_website": "cornelisonfishing.com",
+      "reported_activity": "Bird Watching, Fishing, Photography",
+      "registry_website_url": "https://cornelisonfishing.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000236",
+      "imported_name": "Kieron Wilde",
+      "imported_business": "First Nature LLC",
+      "imported_website": "www.firstnaturetours.com",
+      "reported_activity": "Bicycling, CanoeKayakPaddle Craft, Fishing, Nature Eco Hikes, Other, Scenic Tours, Wilderness Adventure",
+      "registry_website_url": "https://www.firstnaturetours.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000519",
+      "imported_name": "Charles Ireland",
+      "imported_business": "Northwest Sportfishing LLC",
+      "imported_website": "northwestsportfishing.com",
+      "reported_activity": "Fishing, Hunting",
+      "registry_website_url": "https://northwestsportfishing.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000844",
+      "imported_name": "Bradley Hadfield",
+      "imported_business": "Guide Service Northwest",
+      "imported_website": "www.guideservicenorthwest.com",
+      "reported_activity": "Fishing, Scenic Tours",
+      "registry_website_url": "https://www.guideservicenorthwest.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000853",
+      "imported_name": "Scott Nelson",
+      "imported_business": "Two Dudes Flyfishing",
+      "imported_website": "www.2dudesflyfishing.com",
+      "reported_activity": "Fishing, Whitewater",
+      "registry_website_url": "https://www.2dudesflyfishing.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0001106",
+      "imported_name": "James Szemenyei",
+      "imported_business": "Wild Times",
+      "imported_website": "www.wildtimesguides.com",
+      "reported_activity": "Fishing, Hunting",
+      "registry_website_url": "https://www.wildtimesguides.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0001208",
+      "imported_name": "Ian Premo",
+      "imported_business": null,
+      "imported_website": "www.premofishing.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.premofishing.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0002062",
+      "imported_name": "Jacob Mikoleit",
+      "imported_business": null,
+      "imported_website": "mikoleitsguideservice.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://mikoleitsguideservice.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0002074",
+      "imported_name": "John Klar",
+      "imported_business": null,
+      "imported_website": "www.johnklar.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.johnklar.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": "https://johnklar.com/trinity-fishing-guide"
+    },
+    {
+      "registration": "OG.0002734",
+      "imported_name": "Wade Grant",
+      "imported_business": "River Trek Northwest LLC",
+      "imported_website": "rivertreknw.com",
+      "reported_activity": "Bird Watching, Fishing, Photography, Scenic Tours",
+      "registry_website_url": "https://rivertreknw.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003468",
+      "imported_name": "Scott Kenney",
+      "imported_business": "Reel Therapy SportFishing LLC",
+      "imported_website": "www.reeltherapyllc.com",
+      "reported_activity": "Fishing, Scenic Tours",
+      "registry_website_url": "https://www.reeltherapyllc.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003862",
+      "imported_name": "Jerad Sorber",
+      "imported_business": "River Wanderer LLC",
+      "imported_website": "www.riverwandereroutdoors.com",
+      "reported_activity": "Fishing, Scenic Tours",
+      "registry_website_url": "https://www.riverwandereroutdoors.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000408",
+      "imported_name": "Alan Borges",
+      "imported_business": "Alan J Borges Guide Service",
+      "imported_website": "www.alansguideservice.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.alansguideservice.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000914",
+      "imported_name": "Raymond Herzman",
+      "imported_business": "1 Arm Bandit Guide Service",
+      "imported_website": "www.1armbanditfishingguide.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.1armbanditfishingguide.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000921",
+      "imported_name": "Craig Schuhmann",
+      "imported_business": "Guided Waters Fly Fishing",
+      "imported_website": "guidedwtersflyfishing.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://guidedwtersflyfishing.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0001014",
+      "imported_name": "Ryan McNulty",
+      "imported_business": "Fin N Fire LLC",
+      "imported_website": "www.finandfire.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.finandfire.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0001545",
+      "imported_name": "Casey Kelly",
+      "imported_business": "Northwest Columbia Fishing Adventures LLC",
+      "imported_website": "www.columbiariverfishingtrip.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.columbiariverfishingtrip.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0001973",
+      "imported_name": "Randy Bales",
+      "imported_business": "Lured LLC",
+      "imported_website": "www.luredbythebead.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.luredbythebead.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0002276",
+      "imported_name": "David Simpson",
+      "imported_business": "Corkem Fishing Northwest",
+      "imported_website": "www.corkemfishingnw.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.corkemfishingnw.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0002470",
+      "imported_name": "Joel Gibson",
+      "imported_business": "Joel's Guide Service LLC",
+      "imported_website": "joelsfishing.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://joelsfishing.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0002817",
+      "imported_name": "Quint McDonald",
+      "imported_business": "Captain Quint",
+      "imported_website": "capnquint.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://capnquint.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0002878",
+      "imported_name": "Jason Hagan",
+      "imported_business": "Grey Beard Fishing Adventures",
+      "imported_website": "www.jbeardguideservice.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.jbeardguideservice.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003014",
+      "imported_name": "Kevin Williams",
+      "imported_business": "Northwest Bound Outdoors",
+      "imported_website": "nwboundoutdoors.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://nwboundoutdoors.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003540",
+      "imported_name": "Christopher Calcagno",
+      "imported_business": "Big River Outfitters LLC Guide Service",
+      "imported_website": "www.bigriveroutfittersNW.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.bigriveroutfittersNW.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003701",
+      "imported_name": "Brian Hansen",
+      "imported_business": "Kingfisher Guide",
+      "imported_website": "kingfisherguideservice.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://kingfisherguideservice.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003817",
+      "imported_name": "Shannon Powell",
+      "imported_business": "Two Oceans Guide Service LLC",
+      "imported_website": "2oceansguideservice.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://2oceansguideservice.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003823",
+      "imported_name": "Tony Jones",
+      "imported_business": "Sky High Outdoors",
+      "imported_website": "skyhighoutdoorsllc.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://skyhighoutdoorsllc.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0004096",
+      "imported_name": "Adam Geddes",
+      "imported_business": "Adam's Northwest Fishing Adventures",
+      "imported_website": "adamsnwfishing.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://adamsnwfishing.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000597",
+      "imported_name": "Justin Crump",
+      "imported_business": "Frigate Adventure Travel, LLC",
+      "imported_website": "www.frigatetravel.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.frigatetravel.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000598",
+      "imported_name": "Kathryn Crump",
+      "imported_business": "Frigate Adventure Travel, LLC",
+      "imported_website": "www.frigatetravel.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.frigatetravel.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000625",
+      "imported_name": "William Inkrote",
+      "imported_business": null,
+      "imported_website": "www.BillInkroteGuideService.com",
+      "reported_activity": "Fishing, Whitewater",
+      "registry_website_url": "https://www.BillInkroteGuideService.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000627",
+      "imported_name": "Albert Kutzkey",
+      "imported_business": "Kutzkeys Guide Service",
+      "imported_website": "www.kutzkeyfishing.com",
+      "reported_activity": "Fishing, Scenic Tours",
+      "registry_website_url": "https://www.kutzkeyfishing.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000815",
+      "imported_name": "Jeff Lottis",
+      "imported_business": "CEA Inc",
+      "imported_website": "www.lottisguideservice.com",
+      "reported_activity": "Fishing, Hunting",
+      "registry_website_url": "https://www.lottisguideservice.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0001067",
+      "imported_name": "Kristopher Belozer",
+      "imported_business": null,
+      "imported_website": "belozerswhitewaterfishing.com",
+      "reported_activity": "Fishing, Hunting, Scenic Tours",
+      "registry_website_url": "https://belozerswhitewaterfishing.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0003691",
+      "imported_name": "Steven Laing",
+      "imported_business": null,
+      "imported_website": "SteveLaingFlyFishing.com",
+      "reported_activity": "Bird Watching, Fishing, Scenic Tours",
+      "registry_website_url": "https://SteveLaingFlyFishing.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000137",
+      "imported_name": "Jesse Zalonis",
+      "imported_business": "The Fish House Outdoor Company",
+      "imported_website": "www.nestuccariverfishing.com",
+      "reported_activity": "Bird Watching, Fishing, Other, Scenic Tours",
+      "registry_website_url": "https://www.nestuccariverfishing.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000707",
+      "imported_name": "Silas Stardance",
+      "imported_business": "Riverhawk Guide Service",
+      "imported_website": "www.riverhawkguideserviceonline.net",
+      "reported_activity": "Fishing, Photography, Scenic Tours",
+      "registry_website_url": "https://www.riverhawkguideserviceonline.net",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000782",
+      "imported_name": "Drake Radditz",
+      "imported_business": "Drake Radditz Guide Service LLC",
+      "imported_website": "www.FishwithDrake.com",
+      "reported_activity": "Back Country, Bird Watching, Fishing, Hunting, Scenic Tours, Whitewater, Wilderness Adventure",
+      "registry_website_url": "https://www.FishwithDrake.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000854",
+      "imported_name": "John Bowles",
+      "imported_business": "JB & Water Sportfishing",
+      "imported_website": "www.JBandwater.com",
+      "reported_activity": "Bird Watching, Fishing, Other, Photography, Scenic Tours",
+      "registry_website_url": "https://www.JBandwater.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0001298",
+      "imported_name": "Steven Crisler",
+      "imported_business": "Southern Oregon Sport Fishing",
+      "imported_website": "southeroregonsportfishing.com",
+      "reported_activity": "Fishing, Photography, Scenic Tours",
+      "registry_website_url": "https://southeroregonsportfishing.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0001429",
+      "imported_name": "Dustin Paul",
+      "imported_business": "North Umpqua Outfitters",
+      "imported_website": "umpquarivers.com",
+      "reported_activity": "Bicycling, Fishing, Nature Eco Hikes, Scenic Tours, Whitewater, Wilderness Adventure",
+      "registry_website_url": "https://umpquarivers.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0002727",
+      "imported_name": "Don Myers",
+      "imported_business": "Performance Outdoors",
+      "imported_website": "Performanceoutdoorsoregon.com",
+      "reported_activity": "Fishing, Hunting",
+      "registry_website_url": "https://Performanceoutdoorsoregon.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    }
+  ],
+  "promoted_held_ids": [
+    "OG.0000418",
+    "OG.0001195",
+    "OG.0003664",
+    "OG.0000384",
+    "OG.0001035",
+    "OG.0001653",
+    "OG.0001610",
+    "OG.0002324",
+    "OG.0002505",
+    "OG.0002411",
+    "OG.0001063",
+    "OG.0001393",
+    "OG.0003166",
+    "OG.0001556",
+    "OG.0003572",
+    "OG.0003631",
+    "OG.0003159",
+    "OG.0000416"
+  ],
+  "publicSourceResearch": [
+    {
+      "registration": "OG.0000418",
+      "sourceUrl": "https://billmonroeoutdoors.com/",
+      "sourceType": "operator_site",
+      "reviewStatus": "editorial_confirmation_required",
+      "species": [
+        "Chinook Salmon",
+        "Coho Salmon",
+        "Steelhead",
+        "Sturgeon",
+        "Lingcod",
+        "Dungeness Crab"
+      ],
+      "waters": [
+        "Buoy 10",
+        "Columbia River",
+        "Willamette River",
+        "Tillamook Bay"
+      ],
+      "techniques": [],
+      "tripTypes": []
+    },
+    {
+      "registration": "OG.0001195",
+      "sourceUrl": "https://jonessportfishing.com/about/",
+      "sourceType": "operator_site",
+      "reviewStatus": "editorial_confirmation_required",
+      "species": [
+        "Chinook Salmon",
+        "Coho Salmon",
+        "Steelhead",
+        "Sturgeon",
+        "Walleye",
+        "Smallmouth Bass",
+        "Trout"
+      ],
+      "waters": [
+        "Columbia River",
+        "Snake River",
+        "Clearwater River"
+      ],
+      "techniques": [],
+      "tripTypes": []
+    },
+    {
+      "registration": "OG.0003664",
+      "sourceUrl": "https://bobsparre.com/",
+      "sourceType": "operator_site",
+      "reviewStatus": "editorial_confirmation_required",
+      "species": [
+        "Salmon",
+        "Steelhead",
+        "Sturgeon",
+        "Striped Bass",
+        "American Shad"
+      ],
+      "waters": [
+        "Columbia River"
+      ],
+      "techniques": [],
+      "tripTypes": []
+    },
+    {
+      "registration": "OG.0000384",
+      "sourceUrl": "https://www.charthousesportfish.com/about.html",
+      "sourceType": "operator_site",
+      "reviewStatus": "editorial_confirmation_required",
+      "species": [
+        "Salmon",
+        "Halibut",
+        "Lingcod"
+      ],
+      "waters": [
+        "Pacific Ocean"
+      ],
+      "techniques": [],
+      "tripTypes": [
+        "Six-passenger saltwater charter"
+      ]
+    },
+    {
+      "registration": "OG.0001035",
+      "sourceUrl": "https://flyfishportland.com/",
+      "sourceType": "operator_site",
+      "reviewStatus": "editorial_confirmation_required",
+      "species": [
+        "Bass",
+        "Carp",
+        "Steelhead",
+        "Tiger Musky",
+        "Trout"
+      ],
+      "waters": [],
+      "techniques": [
+        "Fly fishing",
+        "Spey casting"
+      ],
+      "tripTypes": []
+    },
+    {
+      "registration": "OG.0003968",
+      "sourceUrl": "https://columbiachromefishing.com/rates/",
+      "sourceType": "operator_site",
+      "reviewStatus": "editorial_confirmation_required",
+      "species": [
+        "Salmon",
+        "Steelhead",
+        "Sturgeon",
+        "Walleye",
+        "American Shad"
+      ],
+      "waters": [
+        "Buoy 10",
+        "Columbia River"
+      ],
+      "techniques": [],
+      "tripTypes": []
+    },
+    {
+      "registration": "OG.0001653",
+      "sourceUrl": "https://fishermanmikes.com/about-mike/",
+      "sourceType": "operator_site",
+      "reviewStatus": "editorial_confirmation_required",
+      "species": [
+        "Chinook Salmon",
+        "Steelhead"
+      ],
+      "waters": [
+        "North Santiam River",
+        "Nestucca River"
+      ],
+      "techniques": [],
+      "tripTypes": [
+        "Drift boat"
+      ]
+    },
+    {
+      "registration": "OG.0001610",
+      "sourceUrl": "https://reeldealsportfish.com/",
+      "sourceType": "operator_site",
+      "reviewStatus": "editorial_confirmation_required",
+      "species": [
+        "Rockfish",
+        "Lingcod",
+        "Dungeness Crab",
+        "Chinook Salmon",
+        "Coho Salmon"
+      ],
+      "waters": [
+        "Pacific Ocean",
+        "Willamette River"
+      ],
+      "techniques": [
+        "Trolling"
+      ],
+      "tripTypes": [
+        "Drift boat",
+        "Saltwater charter"
+      ]
+    },
+    {
+      "registration": "OG.0002324",
+      "sourceUrl": "https://www.trevinhoytfishing.com/pricing",
+      "sourceType": "operator_site",
+      "reviewStatus": "editorial_confirmation_required",
+      "species": [
+        "Chinook Salmon",
+        "Steelhead",
+        "Sturgeon"
+      ],
+      "waters": [
+        "McKenzie River",
+        "Willamette River",
+        "Siuslaw River",
+        "Siletz River"
+      ],
+      "techniques": [
+        "Trolling"
+      ],
+      "tripTypes": [
+        "Drift boat",
+        "Power boat"
+      ]
+    },
+    {
+      "registration": "OG.0002505",
+      "sourceUrl": "https://tonyoguidedadventure.com/",
+      "sourceType": "operator_site",
+      "reviewStatus": "editorial_confirmation_required",
+      "species": [
+        "Salmon",
+        "Sturgeon",
+        "Walleye"
+      ],
+      "waters": [
+        "Columbia River",
+        "Buoy 10"
+      ],
+      "techniques": [],
+      "tripTypes": []
+    },
+    {
+      "registration": "OG.0002411",
+      "sourceUrl": "https://riverwiseanglers.com/",
+      "sourceType": "operator_site",
+      "reviewStatus": "editorial_confirmation_required",
+      "species": [
+        "Salmon",
+        "Steelhead"
+      ],
+      "waters": [],
+      "techniques": [
+        "Fly fishing",
+        "Spey casting",
+        "Swinging flies"
+      ],
+      "tripTypes": []
+    },
+    {
+      "registration": "OG.0003993",
+      "sourceUrl": "https://fergs.fishing/",
+      "sourceType": "operator_site",
+      "reviewStatus": "editorial_confirmation_required",
+      "species": [
+        "Chinook Salmon",
+        "Coho Salmon"
+      ],
+      "waters": [
+        "Columbia River"
+      ],
+      "techniques": [],
+      "tripTypes": []
+    },
+    {
+      "registration": "OG.0003696",
+      "sourceUrl": "https://www.allamericanguideservice.com/",
+      "sourceType": "operator_site",
+      "reviewStatus": "editorial_confirmation_required",
+      "species": [
+        "Albacore Tuna",
+        "Halibut",
+        "Rockfish",
+        "Sturgeon",
+        "Salmon",
+        "Trout",
+        "Dungeness Crab"
+      ],
+      "waters": [
+        "Pacific Ocean"
+      ],
+      "techniques": [
+        "Trolling",
+        "Jigging"
+      ],
+      "tripTypes": [
+        "Saltwater charter"
+      ]
+    },
+    {
+      "registration": "OG.0001063",
+      "sourceUrl": "https://www.discoverwinchesterbay.com/fishingguide",
+      "sourceType": "operator_site",
+      "reviewStatus": "editorial_confirmation_required",
+      "species": [
+        "Salmon",
+        "Sturgeon"
+      ],
+      "waters": [],
+      "techniques": [],
+      "tripTypes": [
+        "third_party_directory"
+      ]
+    },
+    {
+      "registration": "OG.0001395",
+      "sourceUrl": "https://yamsiflyfishing.com/",
+      "sourceType": "operator_site",
+      "reviewStatus": "editorial_confirmation_required",
+      "species": [
+        "Redband Trout",
+        "Brook Trout"
+      ],
+      "waters": [
+        "Williamson River"
+      ],
+      "techniques": [
+        "Fly fishing"
+      ],
+      "tripTypes": [
+        "Private-water fly fishing"
+      ]
+    },
+    {
+      "registration": "OG.0001393",
+      "sourceUrl": "https://hotlineguideservice.com/about-me/",
+      "sourceType": "operator_site",
+      "reviewStatus": "editorial_confirmation_required",
+      "species": [],
+      "waters": [],
+      "techniques": [],
+      "tripTypes": []
+    },
+    {
+      "registration": "OG.0003889",
+      "sourceUrl": "https://viceoutdoorsllc.com/meet-the-guides/",
+      "sourceType": "operator_site",
+      "reviewStatus": "editorial_confirmation_required",
+      "species": [],
+      "waters": [],
+      "techniques": [
+        "Fly fishing"
+      ],
+      "tripTypes": [
+        "Fly fishing instruction"
+      ]
+    },
+    {
+      "registration": "OG.0003166",
+      "sourceUrl": "https://www.willamettevalleyfishing.com/about",
+      "sourceType": "operator_site",
+      "reviewStatus": "editorial_confirmation_required",
+      "species": [
+        "Trout",
+        "Steelhead",
+        "Largemouth Bass"
+      ],
+      "waters": [
+        "McKenzie River",
+        "Willamette River"
+      ],
+      "techniques": [
+        "Fly fishing",
+        "Spey casting"
+      ],
+      "tripTypes": [
+        "Fly fishing instruction"
+      ]
+    },
+    {
+      "registration": "OG.0001881",
+      "sourceUrl": "https://riverstoneadventures.com/multi-day-overnight-fishing-trip/",
+      "sourceType": "operator_site",
+      "reviewStatus": "editorial_confirmation_required",
+      "species": [
+        "Trout",
+        "Steelhead"
+      ],
+      "waters": [
+        "Deschutes River"
+      ],
+      "techniques": [
+        "Fly fishing"
+      ],
+      "tripTypes": [
+        "Multi-day fishing trip"
+      ]
+    },
+    {
+      "registration": "OG.0002074",
+      "sourceUrl": "https://johnklar.com/trinity-fishing-guide",
+      "sourceType": "operator_site",
+      "reviewStatus": "editorial_confirmation_required",
+      "species": [
+        "Steelhead",
+        "Salmon"
+      ],
+      "waters": [
+        "Trinity River",
+        "Smith River"
+      ],
+      "techniques": [],
+      "tripTypes": []
+    },
+    {
+      "registration": "OG.0001224",
+      "sourceUrl": "https://tomansoutdoors.com/tomans-king-camp-information/",
+      "sourceType": "operator_site",
+      "reviewStatus": "editorial_confirmation_required",
+      "species": [
+        "Chinook Salmon"
+      ],
+      "waters": [
+        "Nushagak River"
+      ],
+      "techniques": [
+        "Trolling"
+      ],
+      "tripTypes": [
+        "Multi-day fishing camp"
+      ]
+    },
+    {
+      "registration": "OG.0001556",
+      "sourceUrl": "https://www.hellscanyonsportfishing.com/fishing-guides",
+      "sourceType": "operator_site",
+      "reviewStatus": "editorial_confirmation_required",
+      "species": [
+        "Salmon",
+        "Steelhead",
+        "Sturgeon",
+        "Walleye",
+        "Smallmouth Bass",
+        "Trout"
+      ],
+      "waters": [
+        "Snake River",
+        "Clearwater River",
+        "Columbia River"
+      ],
+      "techniques": [],
+      "tripTypes": [
+        "Jet boat"
+      ]
+    },
+    {
+      "registration": "OG.0003572",
+      "sourceUrl": "https://www.catchingchromeguideservice.com/",
+      "sourceType": "operator_site",
+      "reviewStatus": "editorial_confirmation_required",
+      "species": [
+        "Chinook Salmon",
+        "Coho Salmon",
+        "Steelhead",
+        "Sturgeon",
+        "American Shad"
+      ],
+      "waters": [
+        "Columbia River",
+        "Willamette River"
+      ],
+      "techniques": [],
+      "tripTypes": [
+        "Power boat"
+      ]
+    },
+    {
+      "registration": "OG.0003631",
+      "sourceUrl": "https://www.roamaboutoutdoors.com/",
+      "sourceType": "operator_site",
+      "reviewStatus": "editorial_confirmation_required",
+      "species": [
+        "Salmon",
+        "Rockfish",
+        "Lingcod",
+        "Halibut",
+        "Dungeness Crab"
+      ],
+      "waters": [
+        "Pacific Ocean"
+      ],
+      "techniques": [],
+      "tripTypes": [
+        "Saltwater charter"
+      ]
+    },
+    {
+      "registration": "OG.0003159",
+      "sourceUrl": "https://fishingbooker.com/charters/view/38631",
+      "sourceType": "third_party_directory",
+      "reviewStatus": "editorial_confirmation_required",
+      "species": [
+        "Chinook Salmon",
+        "Coho Salmon",
+        "Halibut",
+        "Lingcod",
+        "Rockfish",
+        "Albacore Tuna",
+        "Dungeness Crab"
+      ],
+      "waters": [
+        "Pacific Ocean"
+      ],
+      "techniques": [
+        "Trolling",
+        "Jigging"
+      ],
+      "tripTypes": [
+        "Saltwater charter"
+      ]
+    },
+    {
+      "registration": "OG.0000416",
+      "sourceUrl": "https://watertimeoutfitters.com/",
+      "sourceType": "operator_site",
+      "reviewStatus": "editorial_confirmation_required",
+      "species": [
+        "Steelhead",
+        "Trout",
+        "American Shad"
+      ],
+      "waters": [],
+      "techniques": [
+        "Fly fishing"
+      ],
+      "tripTypes": [
+        "Fly fishing instruction"
+      ]
+    }
+  ]
+}
