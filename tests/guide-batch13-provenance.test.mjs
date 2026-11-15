@@ -59,7 +59,7 @@ test('Every promoted previously held source must have independently documented p
    assert.equal(new Set(values.map(x=>x.name.toLowerCase())).size,values.length);
    for(const tag of values){assert.equal(tag.sourceUrl,s.sourceUrl);assert.equal(tag.sourceType,s.sourceType);assert.equal(tag.observedOn,'2026-11-15');}
   }
-  for(const name of s.waters)assert.ok(e.advertisedWaters.some(w=>w.name===name&&w.sourceUrl===s.sourceUrl),'unsupported or missing cited waterway '+id+' '+name);
+  for(const name of s.waters)assert.ok(e.advertisedWaters.some(w=>w.name===name&&e.sourceLinks.some(link=>link.url===w.sourceUrl)),'unsupported or missing cited waterway '+id+' '+name);
  }
 });
 function filter(){const js=ts.transpileModule(read('lib/directory-query.ts'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText;const exports={};vm.runInNewContext(js,{exports});return exports.filterDirectoryEntries;}
