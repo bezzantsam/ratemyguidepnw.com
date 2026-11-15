@@ -78,9 +78,12 @@ test('empty approved coverage hides controls while approved fixtures render them
  const {renderToStaticMarkup}=await import('react-dom/server');
  const {createRequire}=await import('node:module');
  const requireNode=createRequire(import.meta.url);
+ const recovery=load('lib/directory-recovery.ts',{'./directory-query':query,'./directory-url':url});
+ const emptyState={};
+ vm.runInNewContext(ts.transpileModule(read('components/DirectoryEmptyState.tsx'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020,jsx:ts.JsxEmit.ReactJSX,esModuleInterop:true}}).outputText,{exports:emptyState,require:name=>name==='@/lib/directory-recovery'?recovery:name.endsWith('.module.css')?{}:requireNode(name)});
  const exports={};
  const js=ts.transpileModule(read('components/UnifiedSearch.tsx'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020,jsx:ts.JsxEmit.ReactJSX,esModuleInterop:true}}).outputText;
- vm.runInNewContext(js,{exports,require:name=>name==='@/lib/directory-url'?url:name==='@/lib/directory-query'?query:requireNode(name)});
+ vm.runInNewContext(js,{exports,require:name=>name==='@/lib/directory-url'?url:name==='@/lib/directory-query'?query:name==='./DirectoryEmptyState'?emptyState:requireNode(name)});
  const base={id:'OG.0000047',name:'Example',business:null,states:['Oregon'],areas:[],advertisedWaters:[],searchAliases:[],href:'/guides/example',source:'Oregon registry'};
  const empty=renderToStaticMarkup(React.createElement(exports.default,{entries:[base]}));
  assert.doesNotMatch(empty,/Source-listed species|Source-listed fishing method/);
