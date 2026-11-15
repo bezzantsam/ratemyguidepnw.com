@@ -4,6 +4,7 @@ import {client} from './AuthPanel';
 import ReviewComposer from './ReviewComposer';
 import ReviewInviteButton from './ReviewInviteButton';
 import {summarizePublishedReviewSample,PUBLIC_REVIEW_PAGE_LIMIT} from '@/lib/review-scorecard';
+import {matchesPublicGuideIdentity} from '@/lib/guide-db-identity';
 
 type PublicReview = {
   id:string;body:string;quality:number;published_at:string;would_book_again:boolean;
@@ -12,18 +13,25 @@ type PublicReview = {
   value_rating:number|null;trip_context:string|null;
 };
 
-export default function CaptainReviews({slug,allowWrites=false}:{slug:string;allowWrites?:boolean}){
+export default function CaptainReviews({slug,expectedName,expectedBusiness,allowWrites=false}:{slug:string;expectedName:string;expectedBusiness:string|null;allowWrites?:boolean}){
   const [guideId,setGuideId]=useState('');
   const [reviews,setReviews]=useState<PublicReview[]>([]);
   const [status,setStatus]=useState('Loading reviews…');
   useEffect(()=>{
     if(!client){setStatus('Review database is not configured yet.');return}
     let active=true;
+    setGuideId('');
+    setReviews([]);
+    setStatus('Loading reviews…');
     async function load(){
       const {data:guide,error:guideError}=await client!.from('guides')
-        .select('id').eq('slug',slug).maybeSingle();
+        .select('id,full_name,outfit_name').eq('slug',slug).maybeSingle();
       if(!active)return;
       if(guideError||!guide){setStatus('This listing is not yet connected to the review database.');return}
+      if(!matchesPublicGuideIdentity({name:expectedName,business:expectedBusiness},guide)){
+        setStatus('Review data is temporarily unavailable: the directory and database identities do not agree.');
+        return;
+      }
       setGuideId(guide.id);
       const {data,error}=await client!.from('public_angler_reviews')
         .select('id,body,quality,published_at,would_book_again,communication,professionalism,safety,equipment,knowledge,effort,value_rating,trip_context')
@@ -35,7 +43,7 @@ export default function CaptainReviews({slug,allowWrites=false}:{slug:string;all
     }
     void load();
     return()=>{active=false};
-  },[slug]);
+  },[slug,expectedName,expectedBusiness]);
 
   const scorecard=summarizePublishedReviewSample(reviews);
   return <section className="section" id="reviews">
