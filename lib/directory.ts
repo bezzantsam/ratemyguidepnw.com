@@ -1,7 +1,7 @@
 import {oregonGuides,guideSlug} from './registry';
 import {washingtonGuides} from './washington';
 import {washingtonRecordForOregon} from './washington-reconciled';
-import {advertisedWaterwayNames,guideSearchTerms} from './guide-enrichment';
+import {advertisedWaterwayNames,guideEnrichmentFor,guideSearchTerms} from './guide-enrichment';
 import {charterCrewSearchMembers, type CharterCrewMember} from './charter-crew';
 
 export type DirectoryEntry={
@@ -15,6 +15,8 @@ export type DirectoryEntry={
   advertisedWaters:string[];
   /** Search terms from named, publicly linked sources; NOT legal identity verification. */
   searchAliases:string[];
+  /** A source-linked business profile, not current licensing or operator ownership verification. */
+  hasPublicSource?:boolean;
   /** Separate people associated with saltwater trips; never captain identity aliases. */
   crew?:CharterCrewMember[];
   href:string;
@@ -28,6 +30,7 @@ export const directoryEntries:DirectoryEntry[]=[
    areas:g.areas,
    advertisedWaters:advertisedWaterwayNames(g.registration),
    searchAliases:guideSearchTerms(g.registration),
+   hasPublicSource: Boolean(guideEnrichmentFor(g.registration)?.sourceLinks?.length || guideEnrichmentFor(g.registration)?.advertisedWaters.length),
    crew:charterCrewSearchMembers(g.registration),
    href:'/guides/'+guideSlug(g),source:'Oregon registry',
  })),
@@ -35,6 +38,7 @@ export const directoryEntries:DirectoryEntry[]=[
    id:g.id,name:g.name,business:g.business,
    states:['Washington'] as ('Oregon'|'Washington')[],
    areas:g.notes?[g.notes]:[],advertisedWaters:advertisedWaterwayNames(g.id),searchAliases:guideSearchTerms(g.id),
+   hasPublicSource: Boolean(guideEnrichmentFor(g.id)?.sourceLinks?.length || guideEnrichmentFor(g.id)?.advertisedWaters.length),
    crew:charterCrewSearchMembers(g.id),
    href:'/washington/'+g.id,source:g.source,
  }))

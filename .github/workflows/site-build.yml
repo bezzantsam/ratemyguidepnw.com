@@ -82,6 +82,8 @@ jobs:
         run: npm run test:source-audit
       - name: Verify 100 distinct new guide research records and 22 source-linked draft enrichments
         run: npm run test:next-100
+      - name: Audit next 100 guide leads and source-linked MVP search
+        run: npm run test:batch12-mvp
       - name: TypeScript check
         run: npm run typecheck
       - name: Build Next.js production assets without private DB credentials

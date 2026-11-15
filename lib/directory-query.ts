@@ -1,6 +1,6 @@
 import type {DirectoryEntry} from './directory';
 
-export type DirectoryFilters={state:string;sourceZone:string;advertisedWater:string;query:string};
+export type DirectoryFilters={state:string;sourceZone:string;advertisedWater:string;query:string;sourceLinkedOnly?:boolean};
 
 /** Search expansions only. These do NOT add identity aliases or credential evidence. */
 const nicknameFamilies=[
@@ -75,6 +75,7 @@ export function guideSearchScore(entry:DirectoryEntry,query:string):number|null 
 /** Exact filters stay exact; fuzzy text matches never expand fisheries or merge identities. */
 export function filterDirectoryEntries(entries:DirectoryEntry[],filters:DirectoryFilters):DirectoryEntry[]{
  return entries.filter(entry=>
+  (!filters.sourceLinkedOnly || entry.hasPublicSource===true)&&
   (filters.state==='All'||entry.states.includes(filters.state as 'Oregon'|'Washington'))&&
   (filters.sourceZone==='All areas'||entry.areas.includes(filters.sourceZone))&&
   (filters.advertisedWater==='All advertised waters'||entry.advertisedWaters.includes(filters.advertisedWater))

@@ -10,11 +10,12 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
  const[state,setState]=useState('All');
  const[area,setArea]=useState('All areas');
  const[waterway,setWaterway]=useState('All advertised waters');
+ const[sourceLinkedOnly,setSourceLinkedOnly]=useState(false);
  const[page,setPage]=useState(1);
  const size=30;
  const filtered=useMemo(()=>filterDirectoryEntries(entries,{
-  state,sourceZone:area,advertisedWater:waterway,query:q
- }),[entries,q,state,area,waterway]);
+  state,sourceZone:area,advertisedWater:waterway,query:q,sourceLinkedOnly
+ }),[entries,q,state,area,waterway,sourceLinkedOnly]);
 
  const areas=useMemo(()=>
   ['All areas',...new Set(entries.filter(g=>state==='All'||g.states.includes(state as 'Oregon'|'Washington'))
@@ -54,6 +55,10 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
     </select>
    </label>
   </div>
+  <label className="source-linked-filter"><input type="checkbox" checked={sourceLinkedOnly}
+   onChange={e=>{setSourceLinkedOnly(e.target.checked);setPage(1)}}/>
+   Only show source-linked guide profiles</label>
+  <p className="muted">Source-linked means a public business or advertised-fishing source was recorded. It is not a claim of active licensing, ownership verification, or current trip availability.</p>
   <p className="muted">Search recognizes common nicknames and small spelling mistakes. Check the captain and business name before choosing a profile.</p>
   <div className="results-heading"><strong>{filtered.length.toLocaleString()} captain listings</strong>
    <span>{q.trim()?'Closest matches first':'A–Z'} · Page {current} of {pages}</span>
@@ -69,6 +74,7 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
       {(guideSearchScore(g,q)??0)>=60&&<p className="guide-meta"><strong>Similar spelling match</strong> · Confirm the person and business.</p>}
       <p className="outfit-name">{g.business||'Fishing guide'}</p>
       {g.searchAliases.length>0&&<p className="guide-meta">Also listed publicly as: {g.searchAliases.join(' · ')}</p>}
+      {g.hasPublicSource&&<p className="guide-meta">Public source linked · Verify current trips with the operator</p>}
       {(g.crew??[]).length>0&&<p className="guide-meta">Reported crew: {g.crew!.map(member=>`${member.name} (${member.role})`).join(' · ')}. Separate from the captain; current assignment unconfirmed.</p>}
       {g.advertisedWaters.length>0&&<p className="guide-meta">Advertised waters (source-linked): {g.advertisedWaters.slice(0,3).join(' · ')}{g.advertisedWaters.length>3?' · + more':''}</p>}
       <p className="guide-meta">{g.source==='Oregon registry'?'Imported registration zones':'Imported directory areas / notes'}: {g.areas.slice(0,3).join(' · ')||'Not specified'}{g.areas.length>3?' · + more':''}</p>
