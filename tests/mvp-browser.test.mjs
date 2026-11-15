@@ -1,13 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {chromium} from 'playwright-core';
-import {mkdirSync} from 'node:fs';
+import {mkdirSync,readdirSync,readFileSync} from 'node:fs';
 import {join} from 'node:path';
 
-const origin='http://127.0.0.1:3157';
-const fakeApi='http://127.0.0.1:59999';
+const origin=process.env.TEST_BASE_URL;
+const fakeApi=process.env.TEST_API_URL;
+for(const value of [origin,fakeApi]){if(!value||!/^http:\/\/127\.0\.0\.1:\d+$/.test(value))throw new Error('Isolated loopback server URLs are required')}
+if(origin===fakeApi)throw new Error('App and backend must use separate owned ports');
 const executablePath=process.env.BROWSER_EXECUTABLE;
-if(!executablePath) throw new Error('Set BROWSER_EXECUTABLE to a local Chromium/Chrome executable. Serve the isolated build on 127.0.0.1:3157.');
+if(!executablePath) throw new Error('Set BROWSER_EXECUTABLE and use the isolated browser runner.');
 
 test('public MVP discovery and fail-closed identity flow in a browser', {timeout:120000}, async()=>{
  const browser=await chromium.launch({executablePath,headless:true});
@@ -31,6 +33,39 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
   await page.getByRole('heading',{name:'Find a captain'}).waitFor();
   await page.goto(`${origin}/guides`,{waitUntil:'domcontentloaded'});
   const q=page.getByRole('searchbox',{name:'Captain, business, operating name, or registration'});
+  // Synthetic approved fixtures exercise filters without publishing candidate research.
+  await page.getByText('Synthetic test fixture — not a real offering.').first().waitFor();
+  const species=page.getByLabel('Source-listed species');const method=page.getByLabel('Source-listed fishing method');
+  await species.selectOption({label:'Salmon'});await method.selectOption({label:'Fly fishing'});
+  await page.getByRole('link',{name:/John Hanson/}).first().waitFor();
+  assert.equal(await page.getByRole('link',{name:/Shea Fisher/}).count(),0,'broad Salmon does not imply Chinook');
+  assert.equal(new URL(page.url()).searchParams.get('species'),'Salmon');
+  await page.getByLabel('Advertised fishing water (pilot)').selectOption({label:'Fixture River'});
+  await page.getByRole('button',{name:'Remove waterway: Fixture River'}).click();
+  assert.equal(await species.inputValue(),'Salmon');assert.equal(await method.inputValue(),'Fly fishing');
+  const filteredUrl=page.url();await page.reload({waitUntil:'domcontentloaded'});
+  await page.waitForFunction(()=>document.querySelector('select')!==null&&new URLSearchParams(location.search).get('method')==='Fly fishing');
+  await page.getByRole('link',{name:/John Hanson/}).first().click();
+  await page.getByText('Synthetic test fixture — not a real offering.').waitFor();
+  await page.getByText('Separate items do not establish a combined trip.',{exact:false}).waitFor();
+  assert.doesNotMatch(await page.content(),/Pending Secret Species|Rejected Secret Method/,'unapproved attributes do not reach the profile HTML or serialized props');
+  await page.getByRole('link',{name:'← Search guides'}).click();
+  await page.waitForURL(filteredUrl);await page.getByRole('link',{name:/John Hanson/}).first().waitFor();
+  await species.selectOption({label:'Chinook Salmon'});
+  assert.equal(await page.getByRole('link',{name:/John Hanson/}).count(),0);
+  assert.equal(await page.getByRole('link',{name:/Shea Fisher/}).count(),0,'different method prevents a match');
+  await method.selectOption({label:'Trolling'});await page.getByRole('link',{name:/Shea Fisher/}).first().waitFor();
+  await page.getByRole('link',{name:/Shea Fisher/}).first().click();
+  await page.getByText('Source explicitly connects:',{exact:false}).waitFor();
+  await page.getByRole('link',{name:'← Search guides'}).click();
+  await page.getByRole('link',{name:/Shea Fisher/}).first().waitFor();
+  await page.goBack();await page.getByRole('heading',{name:'Shea Fisher',exact:true}).waitFor();
+  await page.goForward();
+  try{await page.getByRole('link',{name:/Shea Fisher/}).first().waitFor()}catch(e){throw new Error(`Forward restore failed at ${page.url()} with text ${(await page.locator('main').innerText()).slice(0,1000)}: ${e.message}`)}
+  const html=await page.content();assert.doesNotMatch(html,/Pending Secret Species|Rejected Secret Method/);
+  function staticFiles(dir){return readdirSync(dir,{withFileTypes:true}).flatMap(e=>e.isDirectory()?staticFiles(join(dir,e.name)):[join(dir,e.name)])}
+  for(const file of staticFiles('.next/static'))if(/\.(js|json)$/.test(file))assert.doesNotMatch(readFileSync(file,'utf8'),/Pending Secret Species|Rejected Secret Method/);
+  await page.getByRole('button',{name:'Clear all filters'}).click();
   // A shareable URL survives refresh and profile navigation, including page 2.
   await page.goto(`${origin}/guides?state=Oregon&area=Coos-Coquille&page=2`,{waitUntil:'domcontentloaded'});
   await page.waitForFunction(()=>new URLSearchParams(location.search).get('page')==='2');
@@ -60,7 +95,7 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
   assert.equal(await page.evaluate(()=>document.activeElement?.getAttribute('type')),'search','removing a search returns focus to the search box');
   await page.evaluate(()=>Object.defineProperty(navigator,'clipboard',{value:undefined,configurable:true}));
   await page.getByRole('button',{name:'Copy search link'}).click();
-  assert.match(await page.getByLabel('Search link',{exact:true}).inputValue(),/^http:\/\/127\.0\.0\.1:3157\/guides/);
+  assert.ok((await page.getByLabel('Search link',{exact:true}).inputValue()).startsWith(origin+'/guides'));
   await page.goto(`${origin}/guides/og-0000047?returnTo=${encodeURIComponent('https://evil.test')}`,{waitUntil:'domcontentloaded'});
   assert.equal(await page.getByRole('link',{name:'← Search guides'}).getAttribute('href'),'/guides');
   await page.goto(origin,{waitUntil:'domcontentloaded'});
@@ -74,6 +109,37 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
   await q.fill('Billy Davis');await page.getByRole('link',{name:/William Davis/}).first().waitFor();
   await q.fill('John Hansno');await page.getByRole('link',{name:/John Hanson/}).first().waitFor();
   await q.fill('zzzxqv nonexistent');await page.getByText('No matching guides.',{exact:false}).waitFor();
+  // Empty searches offer explicit, counted alternatives and preserve URL history.
+  const recovery=page.getByRole('list',{name:'Ways to adjust your search'});
+  await recovery.getByRole('button',{name:/Clear search text/}).click();
+  assert.equal(await q.inputValue(),'');
+  assert.ok(await page.locator('.guide-result').count()>0);
+  assert.equal(await page.locator('.results-heading').evaluate(el=>el===document.activeElement),true,'recovery moves focus to the updated results summary');
+  await page.goBack();await page.getByText('No matching guides.',{exact:false}).waitFor();
+  assert.equal(await q.inputValue(),'zzzxqv nonexistent');
+  await page.getByRole('button',{name:'Clear all filters'}).click();
+  await page.getByRole('button',{name:'Oregon',exact:true}).click();
+  await q.fill('John Hanson');
+  await species.selectOption({label:'Salmon'});await method.selectOption({label:'Fly fishing'});
+  await page.getByLabel('Advertised fishing water (pilot)').selectOption({label:'Fixture River'});
+  await page.getByText('No matching guides.',{exact:false}).waitFor();
+  const emptyUrl=page.url();
+  await recovery.getByRole('button',{name:'Remove water filter 1 listing'}).click();
+  await page.getByRole('link',{name:/John Hanson/}).first().waitFor();
+  assert.equal(await q.inputValue(),'John Hanson');
+  assert.equal(await species.inputValue(),'Salmon');assert.equal(await method.inputValue(),'Fly fishing');
+  assert.equal(new URL(page.url()).searchParams.get('state'),'Oregon');
+  assert.equal(new URL(page.url()).searchParams.has('water'),false);
+  const recoveredUrl=page.url();await page.reload({waitUntil:'domcontentloaded'});
+  await page.getByRole('link',{name:/John Hanson/}).first().waitFor();assert.equal(page.url(),recoveredUrl);
+  await page.goBack();await page.getByText('No matching guides.',{exact:false}).waitFor();assert.equal(page.url(),emptyUrl);
+  await page.goForward();await page.getByRole('link',{name:/John Hanson/}).first().waitFor();
+  await page.getByRole('link',{name:/John Hanson/}).first().click();
+  await page.getByRole('heading',{name:'John Hanson',exact:true}).waitFor();
+  await page.getByRole('link',{name:'← Search guides'}).click();
+  await page.waitForURL(recoveredUrl);await page.getByRole('link',{name:/John Hanson/}).first().waitFor();
+  assert.equal(await species.inputValue(),'Salmon');assert.equal(await method.inputValue(),'Fly fishing');
+  await page.getByRole('button',{name:'Clear all filters'}).click();
   await q.fill('');await page.getByRole('button',{name:'Oregon',exact:true}).click();
   await page.getByLabel('Imported source area / notes (unverified)').selectOption({label:'Coos-Coquille'});
   await q.fill('John Hanson');await page.getByRole('link',{name:/John Hanson/}).first().waitFor();

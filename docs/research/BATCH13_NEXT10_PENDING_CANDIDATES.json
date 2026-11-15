@@ -1,0 +1,2188 @@
+{
+  "schema_version": 1,
+  "status": "pending_review_only",
+  "publication_approved": false,
+  "reviewed_on": "2026-11-15",
+  "attributes": [
+    {
+      "guide_id": "OG.0001277",
+      "directory_name": "Kelsey Helfrich",
+      "directory_business": "Helfrich River Outfitters Inc",
+      "registry_website": "http://www.helfrichoutfitter.com",
+      "identity_evidence": {
+        "assessment": "Operator team page explicitly names Kelsey Helfrich with Helfrich River Outfitters. Other Helfrich family members and guides remain separate.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "helfrich-team",
+            "url": "https://www.helfrichoutfitter.com/meet-the-team/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Kelsey Helfrich biography and outfitter/owner heading; other team biographies are separate people.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "These are business offerings, not proof Kelsey personally guides each trip.",
+        "McKenzie rainbow-trout and Rogue steelhead offerings remain separate. Team biography rivers and rafting menu destinations are not added as fishing specialties.",
+        "Trip dates, prices and current availability are not captured."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Rainbow Trout",
+      "source": {
+        "source_id": "helfrich-mckenzie",
+        "url": "https://www.helfrichoutfitter.com/drift-boat-fly-fishing/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "McKenzie trip Details and Trip Highlights: river, drift boat, fly fishing and rainbow trout.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species"
+    },
+    {
+      "guide_id": "OG.0001277",
+      "directory_name": "Kelsey Helfrich",
+      "directory_business": "Helfrich River Outfitters Inc",
+      "registry_website": "http://www.helfrichoutfitter.com",
+      "identity_evidence": {
+        "assessment": "Operator team page explicitly names Kelsey Helfrich with Helfrich River Outfitters. Other Helfrich family members and guides remain separate.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "helfrich-team",
+            "url": "https://www.helfrichoutfitter.com/meet-the-team/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Kelsey Helfrich biography and outfitter/owner heading; other team biographies are separate people.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "These are business offerings, not proof Kelsey personally guides each trip.",
+        "McKenzie rainbow-trout and Rogue steelhead offerings remain separate. Team biography rivers and rafting menu destinations are not added as fishing specialties.",
+        "Trip dates, prices and current availability are not captured."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Fly fishing",
+      "source": {
+        "source_id": "helfrich-mckenzie",
+        "url": "https://www.helfrichoutfitter.com/drift-boat-fly-fishing/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "McKenzie trip Details and Trip Highlights: river, drift boat, fly fishing and rainbow trout.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "method"
+    },
+    {
+      "guide_id": "OG.0001277",
+      "directory_name": "Kelsey Helfrich",
+      "directory_business": "Helfrich River Outfitters Inc",
+      "registry_website": "http://www.helfrichoutfitter.com",
+      "identity_evidence": {
+        "assessment": "Operator team page explicitly names Kelsey Helfrich with Helfrich River Outfitters. Other Helfrich family members and guides remain separate.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "helfrich-team",
+            "url": "https://www.helfrichoutfitter.com/meet-the-team/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Kelsey Helfrich biography and outfitter/owner heading; other team biographies are separate people.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "These are business offerings, not proof Kelsey personally guides each trip.",
+        "McKenzie rainbow-trout and Rogue steelhead offerings remain separate. Team biography rivers and rafting menu destinations are not added as fishing specialties.",
+        "Trip dates, prices and current availability are not captured."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Drift boat fishing",
+      "source": {
+        "source_id": "helfrich-mckenzie",
+        "url": "https://www.helfrichoutfitter.com/drift-boat-fly-fishing/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "McKenzie trip Details and Trip Highlights: river, drift boat, fly fishing and rainbow trout.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "trip_type"
+    },
+    {
+      "guide_id": "OG.0001277",
+      "directory_name": "Kelsey Helfrich",
+      "directory_business": "Helfrich River Outfitters Inc",
+      "registry_website": "http://www.helfrichoutfitter.com",
+      "identity_evidence": {
+        "assessment": "Operator team page explicitly names Kelsey Helfrich with Helfrich River Outfitters. Other Helfrich family members and guides remain separate.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "helfrich-team",
+            "url": "https://www.helfrichoutfitter.com/meet-the-team/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Kelsey Helfrich biography and outfitter/owner heading; other team biographies are separate people.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "These are business offerings, not proof Kelsey personally guides each trip.",
+        "McKenzie rainbow-trout and Rogue steelhead offerings remain separate. Team biography rivers and rafting menu destinations are not added as fishing specialties.",
+        "Trip dates, prices and current availability are not captured."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Rainbow Trout",
+      "source": {
+        "source_id": "helfrich-mckenzie",
+        "url": "https://www.helfrichoutfitter.com/drift-boat-fly-fishing/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "McKenzie trip Details and Trip Highlights: river, drift boat, fly fishing and rainbow trout.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species",
+      "relationship": {
+        "waterway": "McKenzie River",
+        "species": "Rainbow Trout",
+        "method": "Fly fishing"
+      }
+    },
+    {
+      "guide_id": "OG.0001277",
+      "directory_name": "Kelsey Helfrich",
+      "directory_business": "Helfrich River Outfitters Inc",
+      "registry_website": "http://www.helfrichoutfitter.com",
+      "identity_evidence": {
+        "assessment": "Operator team page explicitly names Kelsey Helfrich with Helfrich River Outfitters. Other Helfrich family members and guides remain separate.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "helfrich-team",
+            "url": "https://www.helfrichoutfitter.com/meet-the-team/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Kelsey Helfrich biography and outfitter/owner heading; other team biographies are separate people.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "These are business offerings, not proof Kelsey personally guides each trip.",
+        "McKenzie rainbow-trout and Rogue steelhead offerings remain separate. Team biography rivers and rafting menu destinations are not added as fishing specialties.",
+        "Trip dates, prices and current availability are not captured."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Steelhead",
+      "source": {
+        "source_id": "helfrich-rogue",
+        "url": "https://www.helfrichoutfitter.com/helfrich-rogue-river-steelhead-fishing-and-lodging-trips/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Rogue trip Details and Trip Highlights: steelhead, fly fishing, drift boats and overnight river lodges.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species"
+    },
+    {
+      "guide_id": "OG.0001277",
+      "directory_name": "Kelsey Helfrich",
+      "directory_business": "Helfrich River Outfitters Inc",
+      "registry_website": "http://www.helfrichoutfitter.com",
+      "identity_evidence": {
+        "assessment": "Operator team page explicitly names Kelsey Helfrich with Helfrich River Outfitters. Other Helfrich family members and guides remain separate.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "helfrich-team",
+            "url": "https://www.helfrichoutfitter.com/meet-the-team/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Kelsey Helfrich biography and outfitter/owner heading; other team biographies are separate people.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "These are business offerings, not proof Kelsey personally guides each trip.",
+        "McKenzie rainbow-trout and Rogue steelhead offerings remain separate. Team biography rivers and rafting menu destinations are not added as fishing specialties.",
+        "Trip dates, prices and current availability are not captured."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Fly fishing",
+      "source": {
+        "source_id": "helfrich-rogue",
+        "url": "https://www.helfrichoutfitter.com/helfrich-rogue-river-steelhead-fishing-and-lodging-trips/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Rogue trip Details and Trip Highlights: steelhead, fly fishing, drift boats and overnight river lodges.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "method"
+    },
+    {
+      "guide_id": "OG.0001277",
+      "directory_name": "Kelsey Helfrich",
+      "directory_business": "Helfrich River Outfitters Inc",
+      "registry_website": "http://www.helfrichoutfitter.com",
+      "identity_evidence": {
+        "assessment": "Operator team page explicitly names Kelsey Helfrich with Helfrich River Outfitters. Other Helfrich family members and guides remain separate.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "helfrich-team",
+            "url": "https://www.helfrichoutfitter.com/meet-the-team/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Kelsey Helfrich biography and outfitter/owner heading; other team biographies are separate people.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "These are business offerings, not proof Kelsey personally guides each trip.",
+        "McKenzie rainbow-trout and Rogue steelhead offerings remain separate. Team biography rivers and rafting menu destinations are not added as fishing specialties.",
+        "Trip dates, prices and current availability are not captured."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Drift boat fishing",
+      "source": {
+        "source_id": "helfrich-rogue",
+        "url": "https://www.helfrichoutfitter.com/helfrich-rogue-river-steelhead-fishing-and-lodging-trips/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Rogue trip Details and Trip Highlights: steelhead, fly fishing, drift boats and overnight river lodges.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "trip_type"
+    },
+    {
+      "guide_id": "OG.0001277",
+      "directory_name": "Kelsey Helfrich",
+      "directory_business": "Helfrich River Outfitters Inc",
+      "registry_website": "http://www.helfrichoutfitter.com",
+      "identity_evidence": {
+        "assessment": "Operator team page explicitly names Kelsey Helfrich with Helfrich River Outfitters. Other Helfrich family members and guides remain separate.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "helfrich-team",
+            "url": "https://www.helfrichoutfitter.com/meet-the-team/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Kelsey Helfrich biography and outfitter/owner heading; other team biographies are separate people.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "These are business offerings, not proof Kelsey personally guides each trip.",
+        "McKenzie rainbow-trout and Rogue steelhead offerings remain separate. Team biography rivers and rafting menu destinations are not added as fishing specialties.",
+        "Trip dates, prices and current availability are not captured."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Lodge-based overnight fishing",
+      "source": {
+        "source_id": "helfrich-rogue",
+        "url": "https://www.helfrichoutfitter.com/helfrich-rogue-river-steelhead-fishing-and-lodging-trips/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Rogue trip Details and Trip Highlights: steelhead, fly fishing, drift boats and overnight river lodges.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "trip_type"
+    },
+    {
+      "guide_id": "OG.0001277",
+      "directory_name": "Kelsey Helfrich",
+      "directory_business": "Helfrich River Outfitters Inc",
+      "registry_website": "http://www.helfrichoutfitter.com",
+      "identity_evidence": {
+        "assessment": "Operator team page explicitly names Kelsey Helfrich with Helfrich River Outfitters. Other Helfrich family members and guides remain separate.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "helfrich-team",
+            "url": "https://www.helfrichoutfitter.com/meet-the-team/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Kelsey Helfrich biography and outfitter/owner heading; other team biographies are separate people.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "These are business offerings, not proof Kelsey personally guides each trip.",
+        "McKenzie rainbow-trout and Rogue steelhead offerings remain separate. Team biography rivers and rafting menu destinations are not added as fishing specialties.",
+        "Trip dates, prices and current availability are not captured."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Steelhead",
+      "source": {
+        "source_id": "helfrich-rogue",
+        "url": "https://www.helfrichoutfitter.com/helfrich-rogue-river-steelhead-fishing-and-lodging-trips/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Rogue trip Details and Trip Highlights: steelhead, fly fishing, drift boats and overnight river lodges.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species",
+      "relationship": {
+        "waterway": "Rogue River",
+        "species": "Steelhead",
+        "method": "Fly fishing"
+      }
+    },
+    {
+      "guide_id": "OG.0001344",
+      "directory_name": "Kevin Newell",
+      "directory_business": "Total Fisherman Guide Service",
+      "registry_website": "www.totalfisherrman.com",
+      "identity_evidence": {
+        "assessment": "Operator homepage explicitly identifies Kevin Newell separately from Lacey DeWeert and Sean Phillips at Total Fisherman Guide Service.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "total-home",
+            "url": "https://www.totalfisherman.com/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Separate Kevin Newell, Lacey DeWeert and Sean Phillips profiles; guided waters heading and distinct tuna, Buoy 10, sturgeon, halibut and bottom-fishing sections.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "Original totalfisherrman.com spelling stays intact. The matching named operator page supports a candidate source URL, not an automatic registry correction.",
+        "Company-wide species and water lists are independent except the explicitly stated Buoy 10 relationships. No all-species/all-water cross-product.",
+        "The other captains, deckhands and vessels are not aliases of Kevin. Promotional catch rates and credential assertions are excluded."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Albacore Tuna",
+      "source": {
+        "source_id": "total-home",
+        "url": "https://www.totalfisherman.com/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Separate Kevin Newell, Lacey DeWeert and Sean Phillips profiles; guided waters heading and distinct tuna, Buoy 10, sturgeon, halibut and bottom-fishing sections.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species"
+    },
+    {
+      "guide_id": "OG.0001344",
+      "directory_name": "Kevin Newell",
+      "directory_business": "Total Fisherman Guide Service",
+      "registry_website": "www.totalfisherrman.com",
+      "identity_evidence": {
+        "assessment": "Operator homepage explicitly identifies Kevin Newell separately from Lacey DeWeert and Sean Phillips at Total Fisherman Guide Service.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "total-home",
+            "url": "https://www.totalfisherman.com/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Separate Kevin Newell, Lacey DeWeert and Sean Phillips profiles; guided waters heading and distinct tuna, Buoy 10, sturgeon, halibut and bottom-fishing sections.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "Original totalfisherrman.com spelling stays intact. The matching named operator page supports a candidate source URL, not an automatic registry correction.",
+        "Company-wide species and water lists are independent except the explicitly stated Buoy 10 relationships. No all-species/all-water cross-product.",
+        "The other captains, deckhands and vessels are not aliases of Kevin. Promotional catch rates and credential assertions are excluded."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Chinook Salmon",
+      "source": {
+        "source_id": "total-home",
+        "url": "https://www.totalfisherman.com/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Separate Kevin Newell, Lacey DeWeert and Sean Phillips profiles; guided waters heading and distinct tuna, Buoy 10, sturgeon, halibut and bottom-fishing sections.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species"
+    },
+    {
+      "guide_id": "OG.0001344",
+      "directory_name": "Kevin Newell",
+      "directory_business": "Total Fisherman Guide Service",
+      "registry_website": "www.totalfisherrman.com",
+      "identity_evidence": {
+        "assessment": "Operator homepage explicitly identifies Kevin Newell separately from Lacey DeWeert and Sean Phillips at Total Fisherman Guide Service.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "total-home",
+            "url": "https://www.totalfisherman.com/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Separate Kevin Newell, Lacey DeWeert and Sean Phillips profiles; guided waters heading and distinct tuna, Buoy 10, sturgeon, halibut and bottom-fishing sections.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "Original totalfisherrman.com spelling stays intact. The matching named operator page supports a candidate source URL, not an automatic registry correction.",
+        "Company-wide species and water lists are independent except the explicitly stated Buoy 10 relationships. No all-species/all-water cross-product.",
+        "The other captains, deckhands and vessels are not aliases of Kevin. Promotional catch rates and credential assertions are excluded."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Coho Salmon",
+      "source": {
+        "source_id": "total-home",
+        "url": "https://www.totalfisherman.com/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Separate Kevin Newell, Lacey DeWeert and Sean Phillips profiles; guided waters heading and distinct tuna, Buoy 10, sturgeon, halibut and bottom-fishing sections.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species"
+    },
+    {
+      "guide_id": "OG.0001344",
+      "directory_name": "Kevin Newell",
+      "directory_business": "Total Fisherman Guide Service",
+      "registry_website": "www.totalfisherrman.com",
+      "identity_evidence": {
+        "assessment": "Operator homepage explicitly identifies Kevin Newell separately from Lacey DeWeert and Sean Phillips at Total Fisherman Guide Service.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "total-home",
+            "url": "https://www.totalfisherman.com/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Separate Kevin Newell, Lacey DeWeert and Sean Phillips profiles; guided waters heading and distinct tuna, Buoy 10, sturgeon, halibut and bottom-fishing sections.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "Original totalfisherrman.com spelling stays intact. The matching named operator page supports a candidate source URL, not an automatic registry correction.",
+        "Company-wide species and water lists are independent except the explicitly stated Buoy 10 relationships. No all-species/all-water cross-product.",
+        "The other captains, deckhands and vessels are not aliases of Kevin. Promotional catch rates and credential assertions are excluded."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Sturgeon",
+      "source": {
+        "source_id": "total-home",
+        "url": "https://www.totalfisherman.com/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Separate Kevin Newell, Lacey DeWeert and Sean Phillips profiles; guided waters heading and distinct tuna, Buoy 10, sturgeon, halibut and bottom-fishing sections.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species"
+    },
+    {
+      "guide_id": "OG.0001344",
+      "directory_name": "Kevin Newell",
+      "directory_business": "Total Fisherman Guide Service",
+      "registry_website": "www.totalfisherrman.com",
+      "identity_evidence": {
+        "assessment": "Operator homepage explicitly identifies Kevin Newell separately from Lacey DeWeert and Sean Phillips at Total Fisherman Guide Service.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "total-home",
+            "url": "https://www.totalfisherman.com/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Separate Kevin Newell, Lacey DeWeert and Sean Phillips profiles; guided waters heading and distinct tuna, Buoy 10, sturgeon, halibut and bottom-fishing sections.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "Original totalfisherrman.com spelling stays intact. The matching named operator page supports a candidate source URL, not an automatic registry correction.",
+        "Company-wide species and water lists are independent except the explicitly stated Buoy 10 relationships. No all-species/all-water cross-product.",
+        "The other captains, deckhands and vessels are not aliases of Kevin. Promotional catch rates and credential assertions are excluded."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Halibut",
+      "source": {
+        "source_id": "total-home",
+        "url": "https://www.totalfisherman.com/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Separate Kevin Newell, Lacey DeWeert and Sean Phillips profiles; guided waters heading and distinct tuna, Buoy 10, sturgeon, halibut and bottom-fishing sections.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species"
+    },
+    {
+      "guide_id": "OG.0001344",
+      "directory_name": "Kevin Newell",
+      "directory_business": "Total Fisherman Guide Service",
+      "registry_website": "www.totalfisherrman.com",
+      "identity_evidence": {
+        "assessment": "Operator homepage explicitly identifies Kevin Newell separately from Lacey DeWeert and Sean Phillips at Total Fisherman Guide Service.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "total-home",
+            "url": "https://www.totalfisherman.com/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Separate Kevin Newell, Lacey DeWeert and Sean Phillips profiles; guided waters heading and distinct tuna, Buoy 10, sturgeon, halibut and bottom-fishing sections.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "Original totalfisherrman.com spelling stays intact. The matching named operator page supports a candidate source URL, not an automatic registry correction.",
+        "Company-wide species and water lists are independent except the explicitly stated Buoy 10 relationships. No all-species/all-water cross-product.",
+        "The other captains, deckhands and vessels are not aliases of Kevin. Promotional catch rates and credential assertions are excluded."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Lingcod",
+      "source": {
+        "source_id": "total-home",
+        "url": "https://www.totalfisherman.com/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Separate Kevin Newell, Lacey DeWeert and Sean Phillips profiles; guided waters heading and distinct tuna, Buoy 10, sturgeon, halibut and bottom-fishing sections.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species"
+    },
+    {
+      "guide_id": "OG.0001344",
+      "directory_name": "Kevin Newell",
+      "directory_business": "Total Fisherman Guide Service",
+      "registry_website": "www.totalfisherrman.com",
+      "identity_evidence": {
+        "assessment": "Operator homepage explicitly identifies Kevin Newell separately from Lacey DeWeert and Sean Phillips at Total Fisherman Guide Service.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "total-home",
+            "url": "https://www.totalfisherman.com/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Separate Kevin Newell, Lacey DeWeert and Sean Phillips profiles; guided waters heading and distinct tuna, Buoy 10, sturgeon, halibut and bottom-fishing sections.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "Original totalfisherrman.com spelling stays intact. The matching named operator page supports a candidate source URL, not an automatic registry correction.",
+        "Company-wide species and water lists are independent except the explicitly stated Buoy 10 relationships. No all-species/all-water cross-product.",
+        "The other captains, deckhands and vessels are not aliases of Kevin. Promotional catch rates and credential assertions are excluded."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Sea Bass",
+      "source": {
+        "source_id": "total-home",
+        "url": "https://www.totalfisherman.com/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Separate Kevin Newell, Lacey DeWeert and Sean Phillips profiles; guided waters heading and distinct tuna, Buoy 10, sturgeon, halibut and bottom-fishing sections.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species"
+    },
+    {
+      "guide_id": "OG.0001344",
+      "directory_name": "Kevin Newell",
+      "directory_business": "Total Fisherman Guide Service",
+      "registry_website": "www.totalfisherrman.com",
+      "identity_evidence": {
+        "assessment": "Operator homepage explicitly identifies Kevin Newell separately from Lacey DeWeert and Sean Phillips at Total Fisherman Guide Service.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "total-home",
+            "url": "https://www.totalfisherman.com/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Separate Kevin Newell, Lacey DeWeert and Sean Phillips profiles; guided waters heading and distinct tuna, Buoy 10, sturgeon, halibut and bottom-fishing sections.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "Original totalfisherrman.com spelling stays intact. The matching named operator page supports a candidate source URL, not an automatic registry correction.",
+        "Company-wide species and water lists are independent except the explicitly stated Buoy 10 relationships. No all-species/all-water cross-product.",
+        "The other captains, deckhands and vessels are not aliases of Kevin. Promotional catch rates and credential assertions are excluded."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Rockfish",
+      "source": {
+        "source_id": "total-home",
+        "url": "https://www.totalfisherman.com/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Separate Kevin Newell, Lacey DeWeert and Sean Phillips profiles; guided waters heading and distinct tuna, Buoy 10, sturgeon, halibut and bottom-fishing sections.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species"
+    },
+    {
+      "guide_id": "OG.0001344",
+      "directory_name": "Kevin Newell",
+      "directory_business": "Total Fisherman Guide Service",
+      "registry_website": "www.totalfisherrman.com",
+      "identity_evidence": {
+        "assessment": "Operator homepage explicitly identifies Kevin Newell separately from Lacey DeWeert and Sean Phillips at Total Fisherman Guide Service.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "total-home",
+            "url": "https://www.totalfisherman.com/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Separate Kevin Newell, Lacey DeWeert and Sean Phillips profiles; guided waters heading and distinct tuna, Buoy 10, sturgeon, halibut and bottom-fishing sections.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "Original totalfisherrman.com spelling stays intact. The matching named operator page supports a candidate source URL, not an automatic registry correction.",
+        "Company-wide species and water lists are independent except the explicitly stated Buoy 10 relationships. No all-species/all-water cross-product.",
+        "The other captains, deckhands and vessels are not aliases of Kevin. Promotional catch rates and credential assertions are excluded."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Cabezon",
+      "source": {
+        "source_id": "total-home",
+        "url": "https://www.totalfisherman.com/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Separate Kevin Newell, Lacey DeWeert and Sean Phillips profiles; guided waters heading and distinct tuna, Buoy 10, sturgeon, halibut and bottom-fishing sections.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species"
+    },
+    {
+      "guide_id": "OG.0001344",
+      "directory_name": "Kevin Newell",
+      "directory_business": "Total Fisherman Guide Service",
+      "registry_website": "www.totalfisherrman.com",
+      "identity_evidence": {
+        "assessment": "Operator homepage explicitly identifies Kevin Newell separately from Lacey DeWeert and Sean Phillips at Total Fisherman Guide Service.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "total-home",
+            "url": "https://www.totalfisherman.com/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Separate Kevin Newell, Lacey DeWeert and Sean Phillips profiles; guided waters heading and distinct tuna, Buoy 10, sturgeon, halibut and bottom-fishing sections.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "Original totalfisherrman.com spelling stays intact. The matching named operator page supports a candidate source URL, not an automatic registry correction.",
+        "Company-wide species and water lists are independent except the explicitly stated Buoy 10 relationships. No all-species/all-water cross-product.",
+        "The other captains, deckhands and vessels are not aliases of Kevin. Promotional catch rates and credential assertions are excluded."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Chinook Salmon",
+      "source": {
+        "source_id": "total-home",
+        "url": "https://www.totalfisherman.com/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Separate Kevin Newell, Lacey DeWeert and Sean Phillips profiles; guided waters heading and distinct tuna, Buoy 10, sturgeon, halibut and bottom-fishing sections.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species",
+      "relationship": {
+        "waterway": "Buoy 10",
+        "species": "Chinook Salmon"
+      }
+    },
+    {
+      "guide_id": "OG.0001344",
+      "directory_name": "Kevin Newell",
+      "directory_business": "Total Fisherman Guide Service",
+      "registry_website": "www.totalfisherrman.com",
+      "identity_evidence": {
+        "assessment": "Operator homepage explicitly identifies Kevin Newell separately from Lacey DeWeert and Sean Phillips at Total Fisherman Guide Service.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "total-home",
+            "url": "https://www.totalfisherman.com/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Separate Kevin Newell, Lacey DeWeert and Sean Phillips profiles; guided waters heading and distinct tuna, Buoy 10, sturgeon, halibut and bottom-fishing sections.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "Original totalfisherrman.com spelling stays intact. The matching named operator page supports a candidate source URL, not an automatic registry correction.",
+        "Company-wide species and water lists are independent except the explicitly stated Buoy 10 relationships. No all-species/all-water cross-product.",
+        "The other captains, deckhands and vessels are not aliases of Kevin. Promotional catch rates and credential assertions are excluded."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Coho Salmon",
+      "source": {
+        "source_id": "total-home",
+        "url": "https://www.totalfisherman.com/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Separate Kevin Newell, Lacey DeWeert and Sean Phillips profiles; guided waters heading and distinct tuna, Buoy 10, sturgeon, halibut and bottom-fishing sections.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species",
+      "relationship": {
+        "waterway": "Buoy 10",
+        "species": "Coho Salmon"
+      }
+    },
+    {
+      "guide_id": "OG.0001429",
+      "directory_name": "Dustin Paul",
+      "directory_business": "North Umpqua Outfitters",
+      "registry_website": "umpquarivers.com",
+      "identity_evidence": {
+        "assessment": "Operator contact page identifies Dustin and Toni Paul at North Umpqua Outfitters; the people remain separate.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "umpqua-contact",
+            "url": "https://umpquarivers.com/contact-us-north-umpqua-booking-contact/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "North Umpqua Outfitters business heading and Dustin & Toni Paul sign-off; contact details omitted.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "Winter steelhead and summer trout offerings are distinct; summer fly-rod evidence does not establish a winter fly-fishing method.",
+        "The summer switch from drift boats to rafts depends on water conditions; platforms are not promised simultaneously.",
+        "An older biography and partner links mentioning the Rogue are not used to add a current North Umpqua Outfitters Rogue trip."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Steelhead",
+      "source": {
+        "source_id": "umpqua-winter",
+        "url": "https://umpquarivers.com/fishing-on-the-legendary-north-umpqua-river/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Winter Steelhead Fishing description: North Umpqua, wooden drift boats, catch-and-release; no fly-fishing method specified in this offering.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species"
+    },
+    {
+      "guide_id": "OG.0001429",
+      "directory_name": "Dustin Paul",
+      "directory_business": "North Umpqua Outfitters",
+      "registry_website": "umpquarivers.com",
+      "identity_evidence": {
+        "assessment": "Operator contact page identifies Dustin and Toni Paul at North Umpqua Outfitters; the people remain separate.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "umpqua-contact",
+            "url": "https://umpquarivers.com/contact-us-north-umpqua-booking-contact/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "North Umpqua Outfitters business heading and Dustin & Toni Paul sign-off; contact details omitted.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "Winter steelhead and summer trout offerings are distinct; summer fly-rod evidence does not establish a winter fly-fishing method.",
+        "The summer switch from drift boats to rafts depends on water conditions; platforms are not promised simultaneously.",
+        "An older biography and partner links mentioning the Rogue are not used to add a current North Umpqua Outfitters Rogue trip."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Drift boat fishing",
+      "source": {
+        "source_id": "umpqua-winter",
+        "url": "https://umpquarivers.com/fishing-on-the-legendary-north-umpqua-river/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Winter Steelhead Fishing description: North Umpqua, wooden drift boats, catch-and-release; no fly-fishing method specified in this offering.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "trip_type"
+    },
+    {
+      "guide_id": "OG.0001429",
+      "directory_name": "Dustin Paul",
+      "directory_business": "North Umpqua Outfitters",
+      "registry_website": "umpquarivers.com",
+      "identity_evidence": {
+        "assessment": "Operator contact page identifies Dustin and Toni Paul at North Umpqua Outfitters; the people remain separate.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "umpqua-contact",
+            "url": "https://umpquarivers.com/contact-us-north-umpqua-booking-contact/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "North Umpqua Outfitters business heading and Dustin & Toni Paul sign-off; contact details omitted.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "Winter steelhead and summer trout offerings are distinct; summer fly-rod evidence does not establish a winter fly-fishing method.",
+        "The summer switch from drift boats to rafts depends on water conditions; platforms are not promised simultaneously.",
+        "An older biography and partner links mentioning the Rogue are not used to add a current North Umpqua Outfitters Rogue trip."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Catch-and-release fishing",
+      "source": {
+        "source_id": "umpqua-winter",
+        "url": "https://umpquarivers.com/fishing-on-the-legendary-north-umpqua-river/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Winter Steelhead Fishing description: North Umpqua, wooden drift boats, catch-and-release; no fly-fishing method specified in this offering.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "trip_type"
+    },
+    {
+      "guide_id": "OG.0001429",
+      "directory_name": "Dustin Paul",
+      "directory_business": "North Umpqua Outfitters",
+      "registry_website": "umpquarivers.com",
+      "identity_evidence": {
+        "assessment": "Operator contact page identifies Dustin and Toni Paul at North Umpqua Outfitters; the people remain separate.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "umpqua-contact",
+            "url": "https://umpquarivers.com/contact-us-north-umpqua-booking-contact/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "North Umpqua Outfitters business heading and Dustin & Toni Paul sign-off; contact details omitted.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "Winter steelhead and summer trout offerings are distinct; summer fly-rod evidence does not establish a winter fly-fishing method.",
+        "The summer switch from drift boats to rafts depends on water conditions; platforms are not promised simultaneously.",
+        "An older biography and partner links mentioning the Rogue are not used to add a current North Umpqua Outfitters Rogue trip."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Steelhead",
+      "source": {
+        "source_id": "umpqua-winter",
+        "url": "https://umpquarivers.com/fishing-on-the-legendary-north-umpqua-river/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Winter Steelhead Fishing description: North Umpqua, wooden drift boats, catch-and-release; no fly-fishing method specified in this offering.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species",
+      "relationship": {
+        "waterway": "North Umpqua River",
+        "species": "Steelhead"
+      }
+    },
+    {
+      "guide_id": "OG.0001429",
+      "directory_name": "Dustin Paul",
+      "directory_business": "North Umpqua Outfitters",
+      "registry_website": "umpquarivers.com",
+      "identity_evidence": {
+        "assessment": "Operator contact page identifies Dustin and Toni Paul at North Umpqua Outfitters; the people remain separate.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "umpqua-contact",
+            "url": "https://umpquarivers.com/contact-us-north-umpqua-booking-contact/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "North Umpqua Outfitters business heading and Dustin & Toni Paul sign-off; contact details omitted.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "Winter steelhead and summer trout offerings are distinct; summer fly-rod evidence does not establish a winter fly-fishing method.",
+        "The summer switch from drift boats to rafts depends on water conditions; platforms are not promised simultaneously.",
+        "An older biography and partner links mentioning the Rogue are not used to add a current North Umpqua Outfitters Rogue trip."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Cutthroat Trout",
+      "source": {
+        "source_id": "umpqua-summer",
+        "url": "https://umpquarivers.com/summer-cutthroat-and-rainbow-trout-fishing/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Summer trout opening paragraph: North Umpqua cutthroat/rainbow trout, fly rods, drift boats and a seasonal switch to fishing rafts.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species"
+    },
+    {
+      "guide_id": "OG.0001429",
+      "directory_name": "Dustin Paul",
+      "directory_business": "North Umpqua Outfitters",
+      "registry_website": "umpquarivers.com",
+      "identity_evidence": {
+        "assessment": "Operator contact page identifies Dustin and Toni Paul at North Umpqua Outfitters; the people remain separate.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "umpqua-contact",
+            "url": "https://umpquarivers.com/contact-us-north-umpqua-booking-contact/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "North Umpqua Outfitters business heading and Dustin & Toni Paul sign-off; contact details omitted.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "Winter steelhead and summer trout offerings are distinct; summer fly-rod evidence does not establish a winter fly-fishing method.",
+        "The summer switch from drift boats to rafts depends on water conditions; platforms are not promised simultaneously.",
+        "An older biography and partner links mentioning the Rogue are not used to add a current North Umpqua Outfitters Rogue trip."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Rainbow Trout",
+      "source": {
+        "source_id": "umpqua-summer",
+        "url": "https://umpquarivers.com/summer-cutthroat-and-rainbow-trout-fishing/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Summer trout opening paragraph: North Umpqua cutthroat/rainbow trout, fly rods, drift boats and a seasonal switch to fishing rafts.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species"
+    },
+    {
+      "guide_id": "OG.0001429",
+      "directory_name": "Dustin Paul",
+      "directory_business": "North Umpqua Outfitters",
+      "registry_website": "umpquarivers.com",
+      "identity_evidence": {
+        "assessment": "Operator contact page identifies Dustin and Toni Paul at North Umpqua Outfitters; the people remain separate.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "umpqua-contact",
+            "url": "https://umpquarivers.com/contact-us-north-umpqua-booking-contact/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "North Umpqua Outfitters business heading and Dustin & Toni Paul sign-off; contact details omitted.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "Winter steelhead and summer trout offerings are distinct; summer fly-rod evidence does not establish a winter fly-fishing method.",
+        "The summer switch from drift boats to rafts depends on water conditions; platforms are not promised simultaneously.",
+        "An older biography and partner links mentioning the Rogue are not used to add a current North Umpqua Outfitters Rogue trip."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Fly fishing",
+      "source": {
+        "source_id": "umpqua-summer",
+        "url": "https://umpquarivers.com/summer-cutthroat-and-rainbow-trout-fishing/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Summer trout opening paragraph: North Umpqua cutthroat/rainbow trout, fly rods, drift boats and a seasonal switch to fishing rafts.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "method"
+    },
+    {
+      "guide_id": "OG.0001429",
+      "directory_name": "Dustin Paul",
+      "directory_business": "North Umpqua Outfitters",
+      "registry_website": "umpquarivers.com",
+      "identity_evidence": {
+        "assessment": "Operator contact page identifies Dustin and Toni Paul at North Umpqua Outfitters; the people remain separate.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "umpqua-contact",
+            "url": "https://umpquarivers.com/contact-us-north-umpqua-booking-contact/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "North Umpqua Outfitters business heading and Dustin & Toni Paul sign-off; contact details omitted.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "Winter steelhead and summer trout offerings are distinct; summer fly-rod evidence does not establish a winter fly-fishing method.",
+        "The summer switch from drift boats to rafts depends on water conditions; platforms are not promised simultaneously.",
+        "An older biography and partner links mentioning the Rogue are not used to add a current North Umpqua Outfitters Rogue trip."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Drift boat fishing",
+      "source": {
+        "source_id": "umpqua-summer",
+        "url": "https://umpquarivers.com/summer-cutthroat-and-rainbow-trout-fishing/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Summer trout opening paragraph: North Umpqua cutthroat/rainbow trout, fly rods, drift boats and a seasonal switch to fishing rafts.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "trip_type"
+    },
+    {
+      "guide_id": "OG.0001429",
+      "directory_name": "Dustin Paul",
+      "directory_business": "North Umpqua Outfitters",
+      "registry_website": "umpquarivers.com",
+      "identity_evidence": {
+        "assessment": "Operator contact page identifies Dustin and Toni Paul at North Umpqua Outfitters; the people remain separate.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "umpqua-contact",
+            "url": "https://umpquarivers.com/contact-us-north-umpqua-booking-contact/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "North Umpqua Outfitters business heading and Dustin & Toni Paul sign-off; contact details omitted.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "Winter steelhead and summer trout offerings are distinct; summer fly-rod evidence does not establish a winter fly-fishing method.",
+        "The summer switch from drift boats to rafts depends on water conditions; platforms are not promised simultaneously.",
+        "An older biography and partner links mentioning the Rogue are not used to add a current North Umpqua Outfitters Rogue trip."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Fishing raft",
+      "source": {
+        "source_id": "umpqua-summer",
+        "url": "https://umpquarivers.com/summer-cutthroat-and-rainbow-trout-fishing/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Summer trout opening paragraph: North Umpqua cutthroat/rainbow trout, fly rods, drift boats and a seasonal switch to fishing rafts.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "trip_type"
+    },
+    {
+      "guide_id": "OG.0001429",
+      "directory_name": "Dustin Paul",
+      "directory_business": "North Umpqua Outfitters",
+      "registry_website": "umpquarivers.com",
+      "identity_evidence": {
+        "assessment": "Operator contact page identifies Dustin and Toni Paul at North Umpqua Outfitters; the people remain separate.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "umpqua-contact",
+            "url": "https://umpquarivers.com/contact-us-north-umpqua-booking-contact/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "North Umpqua Outfitters business heading and Dustin & Toni Paul sign-off; contact details omitted.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "Winter steelhead and summer trout offerings are distinct; summer fly-rod evidence does not establish a winter fly-fishing method.",
+        "The summer switch from drift boats to rafts depends on water conditions; platforms are not promised simultaneously.",
+        "An older biography and partner links mentioning the Rogue are not used to add a current North Umpqua Outfitters Rogue trip."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Cutthroat Trout",
+      "source": {
+        "source_id": "umpqua-summer",
+        "url": "https://umpquarivers.com/summer-cutthroat-and-rainbow-trout-fishing/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Summer trout opening paragraph: North Umpqua cutthroat/rainbow trout, fly rods, drift boats and a seasonal switch to fishing rafts.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species",
+      "relationship": {
+        "waterway": "North Umpqua River",
+        "species": "Cutthroat Trout",
+        "method": "Fly fishing"
+      }
+    },
+    {
+      "guide_id": "OG.0001429",
+      "directory_name": "Dustin Paul",
+      "directory_business": "North Umpqua Outfitters",
+      "registry_website": "umpquarivers.com",
+      "identity_evidence": {
+        "assessment": "Operator contact page identifies Dustin and Toni Paul at North Umpqua Outfitters; the people remain separate.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "umpqua-contact",
+            "url": "https://umpquarivers.com/contact-us-north-umpqua-booking-contact/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "North Umpqua Outfitters business heading and Dustin & Toni Paul sign-off; contact details omitted.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "Winter steelhead and summer trout offerings are distinct; summer fly-rod evidence does not establish a winter fly-fishing method.",
+        "The summer switch from drift boats to rafts depends on water conditions; platforms are not promised simultaneously.",
+        "An older biography and partner links mentioning the Rogue are not used to add a current North Umpqua Outfitters Rogue trip."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Rainbow Trout",
+      "source": {
+        "source_id": "umpqua-summer",
+        "url": "https://umpquarivers.com/summer-cutthroat-and-rainbow-trout-fishing/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Summer trout opening paragraph: North Umpqua cutthroat/rainbow trout, fly rods, drift boats and a seasonal switch to fishing rafts.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species",
+      "relationship": {
+        "waterway": "North Umpqua River",
+        "species": "Rainbow Trout",
+        "method": "Fly fishing"
+      }
+    },
+    {
+      "guide_id": "OG.0001545",
+      "directory_name": "Casey Kelly",
+      "directory_business": "Northwest Columbia Fishing Adventures LLC",
+      "registry_website": "www.columbiariverfishingtrip.com",
+      "identity_evidence": {
+        "assessment": "Operator home and biography pages explicitly associate Casey Kelly with NW Columbia Fishing Adventures.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "casey-home",
+            "url": "https://columbiariverfishingtrip.com/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Main business introduction and separate species and location lists; Casey Kelly named. Credential and success-rate assertions excluded.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          },
+          {
+            "source_id": "casey-about",
+            "url": "https://columbiariverfishingtrip.com/casey-kelly/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Fishing Guide Casey Kelly biography: explicit Columbia River spring Chinook trolling with cut-plug or whole herring.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "The non-www operator domain was readable after the www variant failed. No silent registry URL replacement.",
+        "Keep the homepage species and water lists independent; only the biography directly connects spring Chinook, trolling and the Columbia.",
+        "Labels retain source granularity. Do not derive a technique for every listed species or copy credential claims, fishing regulations, success rates or available dates."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Salmon",
+      "source": {
+        "source_id": "casey-home",
+        "url": "https://columbiariverfishingtrip.com/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Main business introduction and separate species and location lists; Casey Kelly named. Credential and success-rate assertions excluded.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species"
+    },
+    {
+      "guide_id": "OG.0001545",
+      "directory_name": "Casey Kelly",
+      "directory_business": "Northwest Columbia Fishing Adventures LLC",
+      "registry_website": "www.columbiariverfishingtrip.com",
+      "identity_evidence": {
+        "assessment": "Operator home and biography pages explicitly associate Casey Kelly with NW Columbia Fishing Adventures.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "casey-home",
+            "url": "https://columbiariverfishingtrip.com/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Main business introduction and separate species and location lists; Casey Kelly named. Credential and success-rate assertions excluded.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          },
+          {
+            "source_id": "casey-about",
+            "url": "https://columbiariverfishingtrip.com/casey-kelly/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Fishing Guide Casey Kelly biography: explicit Columbia River spring Chinook trolling with cut-plug or whole herring.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "The non-www operator domain was readable after the www variant failed. No silent registry URL replacement.",
+        "Keep the homepage species and water lists independent; only the biography directly connects spring Chinook, trolling and the Columbia.",
+        "Labels retain source granularity. Do not derive a technique for every listed species or copy credential claims, fishing regulations, success rates or available dates."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Steelhead",
+      "source": {
+        "source_id": "casey-home",
+        "url": "https://columbiariverfishingtrip.com/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Main business introduction and separate species and location lists; Casey Kelly named. Credential and success-rate assertions excluded.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species"
+    },
+    {
+      "guide_id": "OG.0001545",
+      "directory_name": "Casey Kelly",
+      "directory_business": "Northwest Columbia Fishing Adventures LLC",
+      "registry_website": "www.columbiariverfishingtrip.com",
+      "identity_evidence": {
+        "assessment": "Operator home and biography pages explicitly associate Casey Kelly with NW Columbia Fishing Adventures.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "casey-home",
+            "url": "https://columbiariverfishingtrip.com/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Main business introduction and separate species and location lists; Casey Kelly named. Credential and success-rate assertions excluded.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          },
+          {
+            "source_id": "casey-about",
+            "url": "https://columbiariverfishingtrip.com/casey-kelly/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Fishing Guide Casey Kelly biography: explicit Columbia River spring Chinook trolling with cut-plug or whole herring.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "The non-www operator domain was readable after the www variant failed. No silent registry URL replacement.",
+        "Keep the homepage species and water lists independent; only the biography directly connects spring Chinook, trolling and the Columbia.",
+        "Labels retain source granularity. Do not derive a technique for every listed species or copy credential claims, fishing regulations, success rates or available dates."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Sturgeon",
+      "source": {
+        "source_id": "casey-home",
+        "url": "https://columbiariverfishingtrip.com/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Main business introduction and separate species and location lists; Casey Kelly named. Credential and success-rate assertions excluded.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species"
+    },
+    {
+      "guide_id": "OG.0001545",
+      "directory_name": "Casey Kelly",
+      "directory_business": "Northwest Columbia Fishing Adventures LLC",
+      "registry_website": "www.columbiariverfishingtrip.com",
+      "identity_evidence": {
+        "assessment": "Operator home and biography pages explicitly associate Casey Kelly with NW Columbia Fishing Adventures.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "casey-home",
+            "url": "https://columbiariverfishingtrip.com/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Main business introduction and separate species and location lists; Casey Kelly named. Credential and success-rate assertions excluded.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          },
+          {
+            "source_id": "casey-about",
+            "url": "https://columbiariverfishingtrip.com/casey-kelly/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Fishing Guide Casey Kelly biography: explicit Columbia River spring Chinook trolling with cut-plug or whole herring.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "The non-www operator domain was readable after the www variant failed. No silent registry URL replacement.",
+        "Keep the homepage species and water lists independent; only the biography directly connects spring Chinook, trolling and the Columbia.",
+        "Labels retain source granularity. Do not derive a technique for every listed species or copy credential claims, fishing regulations, success rates or available dates."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Sockeye",
+      "source": {
+        "source_id": "casey-home",
+        "url": "https://columbiariverfishingtrip.com/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Main business introduction and separate species and location lists; Casey Kelly named. Credential and success-rate assertions excluded.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species"
+    },
+    {
+      "guide_id": "OG.0001545",
+      "directory_name": "Casey Kelly",
+      "directory_business": "Northwest Columbia Fishing Adventures LLC",
+      "registry_website": "www.columbiariverfishingtrip.com",
+      "identity_evidence": {
+        "assessment": "Operator home and biography pages explicitly associate Casey Kelly with NW Columbia Fishing Adventures.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "casey-home",
+            "url": "https://columbiariverfishingtrip.com/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Main business introduction and separate species and location lists; Casey Kelly named. Credential and success-rate assertions excluded.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          },
+          {
+            "source_id": "casey-about",
+            "url": "https://columbiariverfishingtrip.com/casey-kelly/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Fishing Guide Casey Kelly biography: explicit Columbia River spring Chinook trolling with cut-plug or whole herring.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "The non-www operator domain was readable after the www variant failed. No silent registry URL replacement.",
+        "Keep the homepage species and water lists independent; only the biography directly connects spring Chinook, trolling and the Columbia.",
+        "Labels retain source granularity. Do not derive a technique for every listed species or copy credential claims, fishing regulations, success rates or available dates."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Kokanee",
+      "source": {
+        "source_id": "casey-home",
+        "url": "https://columbiariverfishingtrip.com/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Main business introduction and separate species and location lists; Casey Kelly named. Credential and success-rate assertions excluded.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species"
+    },
+    {
+      "guide_id": "OG.0001545",
+      "directory_name": "Casey Kelly",
+      "directory_business": "Northwest Columbia Fishing Adventures LLC",
+      "registry_website": "www.columbiariverfishingtrip.com",
+      "identity_evidence": {
+        "assessment": "Operator home and biography pages explicitly associate Casey Kelly with NW Columbia Fishing Adventures.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "casey-home",
+            "url": "https://columbiariverfishingtrip.com/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Main business introduction and separate species and location lists; Casey Kelly named. Credential and success-rate assertions excluded.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          },
+          {
+            "source_id": "casey-about",
+            "url": "https://columbiariverfishingtrip.com/casey-kelly/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Fishing Guide Casey Kelly biography: explicit Columbia River spring Chinook trolling with cut-plug or whole herring.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "The non-www operator domain was readable after the www variant failed. No silent registry URL replacement.",
+        "Keep the homepage species and water lists independent; only the biography directly connects spring Chinook, trolling and the Columbia.",
+        "Labels retain source granularity. Do not derive a technique for every listed species or copy credential claims, fishing regulations, success rates or available dates."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Coho",
+      "source": {
+        "source_id": "casey-home",
+        "url": "https://columbiariverfishingtrip.com/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Main business introduction and separate species and location lists; Casey Kelly named. Credential and success-rate assertions excluded.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species"
+    },
+    {
+      "guide_id": "OG.0001545",
+      "directory_name": "Casey Kelly",
+      "directory_business": "Northwest Columbia Fishing Adventures LLC",
+      "registry_website": "www.columbiariverfishingtrip.com",
+      "identity_evidence": {
+        "assessment": "Operator home and biography pages explicitly associate Casey Kelly with NW Columbia Fishing Adventures.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "casey-home",
+            "url": "https://columbiariverfishingtrip.com/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Main business introduction and separate species and location lists; Casey Kelly named. Credential and success-rate assertions excluded.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          },
+          {
+            "source_id": "casey-about",
+            "url": "https://columbiariverfishingtrip.com/casey-kelly/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Fishing Guide Casey Kelly biography: explicit Columbia River spring Chinook trolling with cut-plug or whole herring.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "The non-www operator domain was readable after the www variant failed. No silent registry URL replacement.",
+        "Keep the homepage species and water lists independent; only the biography directly connects spring Chinook, trolling and the Columbia.",
+        "Labels retain source granularity. Do not derive a technique for every listed species or copy credential claims, fishing regulations, success rates or available dates."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Chinook",
+      "source": {
+        "source_id": "casey-home",
+        "url": "https://columbiariverfishingtrip.com/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Main business introduction and separate species and location lists; Casey Kelly named. Credential and success-rate assertions excluded.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species"
+    },
+    {
+      "guide_id": "OG.0001545",
+      "directory_name": "Casey Kelly",
+      "directory_business": "Northwest Columbia Fishing Adventures LLC",
+      "registry_website": "www.columbiariverfishingtrip.com",
+      "identity_evidence": {
+        "assessment": "Operator home and biography pages explicitly associate Casey Kelly with NW Columbia Fishing Adventures.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "casey-home",
+            "url": "https://columbiariverfishingtrip.com/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Main business introduction and separate species and location lists; Casey Kelly named. Credential and success-rate assertions excluded.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          },
+          {
+            "source_id": "casey-about",
+            "url": "https://columbiariverfishingtrip.com/casey-kelly/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Fishing Guide Casey Kelly biography: explicit Columbia River spring Chinook trolling with cut-plug or whole herring.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "The non-www operator domain was readable after the www variant failed. No silent registry URL replacement.",
+        "Keep the homepage species and water lists independent; only the biography directly connects spring Chinook, trolling and the Columbia.",
+        "Labels retain source granularity. Do not derive a technique for every listed species or copy credential claims, fishing regulations, success rates or available dates."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Walleye",
+      "source": {
+        "source_id": "casey-home",
+        "url": "https://columbiariverfishingtrip.com/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Main business introduction and separate species and location lists; Casey Kelly named. Credential and success-rate assertions excluded.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species"
+    },
+    {
+      "guide_id": "OG.0001545",
+      "directory_name": "Casey Kelly",
+      "directory_business": "Northwest Columbia Fishing Adventures LLC",
+      "registry_website": "www.columbiariverfishingtrip.com",
+      "identity_evidence": {
+        "assessment": "Operator home and biography pages explicitly associate Casey Kelly with NW Columbia Fishing Adventures.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "casey-home",
+            "url": "https://columbiariverfishingtrip.com/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Main business introduction and separate species and location lists; Casey Kelly named. Credential and success-rate assertions excluded.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          },
+          {
+            "source_id": "casey-about",
+            "url": "https://columbiariverfishingtrip.com/casey-kelly/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Fishing Guide Casey Kelly biography: explicit Columbia River spring Chinook trolling with cut-plug or whole herring.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "The non-www operator domain was readable after the www variant failed. No silent registry URL replacement.",
+        "Keep the homepage species and water lists independent; only the biography directly connects spring Chinook, trolling and the Columbia.",
+        "Labels retain source granularity. Do not derive a technique for every listed species or copy credential claims, fishing regulations, success rates or available dates."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Shad",
+      "source": {
+        "source_id": "casey-home",
+        "url": "https://columbiariverfishingtrip.com/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Main business introduction and separate species and location lists; Casey Kelly named. Credential and success-rate assertions excluded.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species"
+    },
+    {
+      "guide_id": "OG.0001545",
+      "directory_name": "Casey Kelly",
+      "directory_business": "Northwest Columbia Fishing Adventures LLC",
+      "registry_website": "www.columbiariverfishingtrip.com",
+      "identity_evidence": {
+        "assessment": "Operator home and biography pages explicitly associate Casey Kelly with NW Columbia Fishing Adventures.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "casey-home",
+            "url": "https://columbiariverfishingtrip.com/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Main business introduction and separate species and location lists; Casey Kelly named. Credential and success-rate assertions excluded.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          },
+          {
+            "source_id": "casey-about",
+            "url": "https://columbiariverfishingtrip.com/casey-kelly/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Fishing Guide Casey Kelly biography: explicit Columbia River spring Chinook trolling with cut-plug or whole herring.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "The non-www operator domain was readable after the www variant failed. No silent registry URL replacement.",
+        "Keep the homepage species and water lists independent; only the biography directly connects spring Chinook, trolling and the Columbia.",
+        "Labels retain source granularity. Do not derive a technique for every listed species or copy credential claims, fishing regulations, success rates or available dates."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Bass",
+      "source": {
+        "source_id": "casey-home",
+        "url": "https://columbiariverfishingtrip.com/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Main business introduction and separate species and location lists; Casey Kelly named. Credential and success-rate assertions excluded.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species"
+    },
+    {
+      "guide_id": "OG.0001545",
+      "directory_name": "Casey Kelly",
+      "directory_business": "Northwest Columbia Fishing Adventures LLC",
+      "registry_website": "www.columbiariverfishingtrip.com",
+      "identity_evidence": {
+        "assessment": "Operator home and biography pages explicitly associate Casey Kelly with NW Columbia Fishing Adventures.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "casey-home",
+            "url": "https://columbiariverfishingtrip.com/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Main business introduction and separate species and location lists; Casey Kelly named. Credential and success-rate assertions excluded.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          },
+          {
+            "source_id": "casey-about",
+            "url": "https://columbiariverfishingtrip.com/casey-kelly/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Fishing Guide Casey Kelly biography: explicit Columbia River spring Chinook trolling with cut-plug or whole herring.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "The non-www operator domain was readable after the www variant failed. No silent registry URL replacement.",
+        "Keep the homepage species and water lists independent; only the biography directly connects spring Chinook, trolling and the Columbia.",
+        "Labels retain source granularity. Do not derive a technique for every listed species or copy credential claims, fishing regulations, success rates or available dates."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Spring Chinook",
+      "source": {
+        "source_id": "casey-about",
+        "url": "https://columbiariverfishingtrip.com/casey-kelly/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Fishing Guide Casey Kelly biography: explicit Columbia River spring Chinook trolling with cut-plug or whole herring.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species"
+    },
+    {
+      "guide_id": "OG.0001545",
+      "directory_name": "Casey Kelly",
+      "directory_business": "Northwest Columbia Fishing Adventures LLC",
+      "registry_website": "www.columbiariverfishingtrip.com",
+      "identity_evidence": {
+        "assessment": "Operator home and biography pages explicitly associate Casey Kelly with NW Columbia Fishing Adventures.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "casey-home",
+            "url": "https://columbiariverfishingtrip.com/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Main business introduction and separate species and location lists; Casey Kelly named. Credential and success-rate assertions excluded.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          },
+          {
+            "source_id": "casey-about",
+            "url": "https://columbiariverfishingtrip.com/casey-kelly/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Fishing Guide Casey Kelly biography: explicit Columbia River spring Chinook trolling with cut-plug or whole herring.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "The non-www operator domain was readable after the www variant failed. No silent registry URL replacement.",
+        "Keep the homepage species and water lists independent; only the biography directly connects spring Chinook, trolling and the Columbia.",
+        "Labels retain source granularity. Do not derive a technique for every listed species or copy credential claims, fishing regulations, success rates or available dates."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Trolling",
+      "source": {
+        "source_id": "casey-about",
+        "url": "https://columbiariverfishingtrip.com/casey-kelly/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Fishing Guide Casey Kelly biography: explicit Columbia River spring Chinook trolling with cut-plug or whole herring.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "method"
+    },
+    {
+      "guide_id": "OG.0001545",
+      "directory_name": "Casey Kelly",
+      "directory_business": "Northwest Columbia Fishing Adventures LLC",
+      "registry_website": "www.columbiariverfishingtrip.com",
+      "identity_evidence": {
+        "assessment": "Operator home and biography pages explicitly associate Casey Kelly with NW Columbia Fishing Adventures.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "casey-home",
+            "url": "https://columbiariverfishingtrip.com/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Main business introduction and separate species and location lists; Casey Kelly named. Credential and success-rate assertions excluded.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          },
+          {
+            "source_id": "casey-about",
+            "url": "https://columbiariverfishingtrip.com/casey-kelly/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Fishing Guide Casey Kelly biography: explicit Columbia River spring Chinook trolling with cut-plug or whole herring.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "The non-www operator domain was readable after the www variant failed. No silent registry URL replacement.",
+        "Keep the homepage species and water lists independent; only the biography directly connects spring Chinook, trolling and the Columbia.",
+        "Labels retain source granularity. Do not derive a technique for every listed species or copy credential claims, fishing regulations, success rates or available dates."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "value": "Spring Chinook",
+      "source": {
+        "source_id": "casey-about",
+        "url": "https://columbiariverfishingtrip.com/casey-kelly/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-15",
+        "locator": "Fishing Guide Casey Kelly biography: explicit Columbia River spring Chinook trolling with cut-plug or whole herring.",
+        "retrieval_method": "parsed_page",
+        "source_content_date": null
+      },
+      "evidence_scope": "operator_advertises",
+      "kind": "species",
+      "relationship": {
+        "waterway": "Columbia River",
+        "species": "Spring Chinook",
+        "method": "Trolling"
+      }
+    }
+  ],
+  "holds": [
+    {
+      "guide_id": "OG.0001077",
+      "directory_name": "Steven Morris",
+      "directory_business": "Wallowa Mountain Outfitters LLC",
+      "registry_website": "www.wallowamountainoutfitterscom",
+      "identity_evidence": {
+        "assessment": "Site names Steve Morris; Steven/Steve equivalence is not independently established. Guided pack-trip access is not confirmed angling instruction.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "wallowa-about",
+            "url": "https://www.wallowamountainoutfitters.com/aboutwmo",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "About WMO: named outfitter Steve Morris and horseback/pack-trip business description.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "Registry URL lacks the dot before com; preserve it unchanged. The readable alternate domain is an evidence lead, not a silently corrected booking URL.",
+        "Fishing access may be useful as a distinct future trip category, after identity and product-scope review."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "name": "Steven Morris",
+      "review_status": "category_review_hold",
+      "reason": "Site names Steve Morris; Steven/Steve equivalence is not independently established. Guided pack-trip access is not confirmed angling instruction.",
+      "held_observations": [
+        {
+          "source_id": "wallowa-pack",
+          "note": "Fishing is an advertised activity on horseback pack trips to Chimney Lake and the North Minam area. Do not turn access to fishing into personal fishing expertise or infer trout species.",
+          "source": {
+            "source_id": "wallowa-pack",
+            "url": "https://www.wallowamountainoutfitters.com/full-service-trips",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Full Service Trips: Chimney Lake and North Minam Meadows pack-trip sections describe fishing opportunities; no explicit angling instruction or species.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        }
+      ],
+      "failed_or_limited_fetches": []
+    },
+    {
+      "guide_id": "OG.0001103",
+      "directory_name": "Michael Williams",
+      "directory_business": "Michael T Williams Flyfishing",
+      "registry_website": "www.mtwilliamsflyfish.com",
+      "identity_evidence": {
+        "assessment": "Neither registry-domain variant could be inspected. No attributable operator page was accepted.",
+        "legal_identity_verified": false,
+        "sources": []
+      },
+      "limitations": [
+        "Search results for fly-tying instruction do not establish current guided fishing offerings. Failed retrieval does not imply closure."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "name": "Michael Williams",
+      "review_status": "retrieval_limited",
+      "reason": "Neither registry-domain variant could be inspected. No attributable operator page was accepted.",
+      "held_observations": [],
+      "failed_or_limited_fetches": [
+        {
+          "url": "https://www.mtwilliamsflyfish.com/",
+          "result": "tool_unavailable"
+        },
+        {
+          "url": "https://mtwilliamsflyfish.com/",
+          "result": "tool_unavailable"
+        }
+      ]
+    },
+    {
+      "guide_id": "OG.0001106",
+      "directory_name": "James Szemenyei",
+      "directory_business": "Wild Times",
+      "registry_website": "www.wildtimesguides.com",
+      "identity_evidence": {
+        "assessment": "The source names Jim Szemenyei and Phil Brown. James/Jim is a proposed name variant; the two partners remain distinct.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "wildtimes-home",
+            "url": "https://wildtimesguides.com/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Homepage: Phil Brown and Jim Szemenyei; general hunting/fishing heading, followed by hunting operations; no specific fish or fishing water.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "Do not interpret lack of specific fishing text as proof the business does not fish.",
+        "Do not copy claimed licenses or permits into verified credentials."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "name": "James Szemenyei",
+      "review_status": "category_review_hold",
+      "reason": "The source names Jim Szemenyei and Phil Brown. James/Jim is a proposed name variant; the two partners remain distinct.",
+      "held_observations": [
+        {
+          "source_id": "wildtimes-home",
+          "note": "A general hunting/fishing heading is present, but the inspected description supplies hunting operations rather than specific angling trips. Klamath/Tule Lake refuge mentions refer to hunting permits, not fishing waters.",
+          "source": {
+            "source_id": "wildtimes-home",
+            "url": "https://wildtimesguides.com/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Homepage: Phil Brown and Jim Szemenyei; general hunting/fishing heading, followed by hunting operations; no specific fish or fishing water.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        }
+      ],
+      "failed_or_limited_fetches": []
+    },
+    {
+      "guide_id": "OG.0001208",
+      "directory_name": "Ian Premo",
+      "directory_business": "",
+      "registry_website": "www.premofishing.com",
+      "identity_evidence": {
+        "assessment": "Neither registry-domain variant could be inspected; no sufficiently attributable operator evidence accepted for Ian Premo.",
+        "legal_identity_verified": false,
+        "sources": []
+      },
+      "limitations": [
+        "Third-party bait listings and domain-metadata snippets do not prove Ian Premo offers particular guided trips. No closure inference."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "name": "Ian Premo",
+      "review_status": "retrieval_limited",
+      "reason": "Neither registry-domain variant could be inspected; no sufficiently attributable operator evidence accepted for Ian Premo.",
+      "held_observations": [],
+      "failed_or_limited_fetches": [
+        {
+          "url": "https://www.premofishing.com/",
+          "result": "tool_unavailable"
+        },
+        {
+          "url": "https://premofishing.com/",
+          "result": "tool_unavailable"
+        }
+      ]
+    },
+    {
+      "guide_id": "OG.0001298",
+      "directory_name": "Steven Crisler",
+      "directory_business": "Southern Oregon Sport Fishing",
+      "registry_website": "southeroregonsportfishing.com",
+      "identity_evidence": {
+        "assessment": "A matching business page names Steve Crisler; the imported person is Steven Crisler. The alternate domain differs from the misspelled registry domain.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "crisler-home",
+            "url": "https://southernoregonsportfishing.com/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Guided Fishing Trips / River Fishing Trips: Steve Crisler and general Oregon salmon/steelhead offerings.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "Preserve the original southeroregonsportfishing.com spelling. Source domain is a research candidate pending identity/domain review.",
+        "Do not infer Rogue River from Gold Beach or promote the first-name variant automatically."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "name": "Steven Crisler",
+      "review_status": "name_variant_hold",
+      "reason": "A matching business page names Steve Crisler; the imported person is Steven Crisler. The alternate domain differs from the misspelled registry domain.",
+      "held_observations": [
+        {
+          "source_id": "crisler-home",
+          "note": "General Oregon river salmon and steelhead offerings and a Gold Beach booking banner are visible. No named river or confirmed Steven/Steve equivalence is established here.",
+          "source": {
+            "source_id": "crisler-home",
+            "url": "https://southernoregonsportfishing.com/",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Guided Fishing Trips / River Fishing Trips: Steve Crisler and general Oregon salmon/steelhead offerings.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        }
+      ],
+      "failed_or_limited_fetches": []
+    },
+    {
+      "guide_id": "OG.0001340",
+      "directory_name": "Thomas Treadway",
+      "directory_business": "Oregon Fishing LLC",
+      "registry_website": "www.oregonfishing.com",
+      "identity_evidence": {
+        "assessment": "The registry-linked site is a fishing-tackle storefront; the inspected guide-resource page is Coming Soon. No Thomas Treadway guide biography was established.",
+        "legal_identity_verified": false,
+        "sources": [
+          {
+            "source_id": "oregon-store",
+            "url": "https://www.oregonfishing.com/Oregon-Fishing-Guide-Resource",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Oregon Fishing Guide Resource page says Coming Soon; surrounding entries are tackle categories, not guide specialties.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        ]
+      },
+      "limitations": [
+        "Retain historical registry identity. Do not equate a tackle business or an empty guide-resource page with closure or lack of guiding activity."
+      ],
+      "editorial_status": "pending",
+      "publication_approved": false,
+      "name": "Thomas Treadway",
+      "review_status": "category_review_hold",
+      "reason": "The registry-linked site is a fishing-tackle storefront; the inspected guide-resource page is Coming Soon. No Thomas Treadway guide biography was established.",
+      "held_observations": [
+        {
+          "source_id": "oregon-store",
+          "note": "Salmon, steelhead, kokanee, bass and technique names are product categories. They are not evidence of this person's guided-trip offerings.",
+          "source": {
+            "source_id": "oregon-store",
+            "url": "https://www.oregonfishing.com/Oregon-Fishing-Guide-Resource",
+            "source_type": "operator_site",
+            "reviewed_on": "2026-11-15",
+            "locator": "Oregon Fishing Guide Resource page says Coming Soon; surrounding entries are tackle categories, not guide specialties.",
+            "retrieval_method": "parsed_page",
+            "source_content_date": null
+          }
+        }
+      ],
+      "failed_or_limited_fetches": []
+    }
+  ],
+  "limitations": [
+    "Operator offerings do not establish an individual guide’s expertise.",
+    "Separate lists are independent; only explicit relationships connect attributes.",
+    "Review dates do not establish publication dates, current availability or direct-server capture.",
+    "Evidence URLs are not registry corrections or approved booking links."
+  ],
+  "counts": {
+    "supported_records": 4,
+    "held_records": 6,
+    "attributes": 44,
+    "standalone_attributes": 36,
+    "relationship_attributes": 8,
+    "pending_waters": 13,
+    "distinct_standalone_attributes": 33,
+    "distinct_guide_waters": 11
+  },
+  "input_sha256": {
+    "BATCH13_NEXT10_SOURCE_REVIEW_20261115.json": "677997a85b66be95fc3cd34605332b34310e10f4fc5ad4e86d649b0399bea13c",
+    "BATCH13_NEXT10_SELECTION_20261115.json": "7feeb9c6accd3294e51603681f9f1abccf9a67c8e22cb678fc008e33a355969c",
+    "oregon-guides.json": "3f0671e58d8d9f5615ba15668b7043fbc4f11859dafb10cf91068a5eb2a62081"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "held_guides": [
+    {"guide_id": "OG.0000782", "reason": "Historical listing; current permit not verified."},
+    {"guide_id": "OG.0001224", "reason": "Operator source retrieval requires a direct recheck."},
+    {"guide_id": "OG.0001881", "reason": "Individual association with RiverStone remains unresolved."}
+  ],
+  "excluded_waterways": [
+    {"guide_id": "OG.0001116", "value": "Grindstone Lakes", "source_url": "https://www.nbflyfish.com/grindstone-lakes", "reviewed_on": "2026-11-15", "reason": "Operator notice says no bookings for 2024 and beyond."}
+  ]
+}

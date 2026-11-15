@@ -1,6 +1,6 @@
 import type {DirectoryEntry} from './directory';
 
-export type DirectoryFilters={state:string;sourceZone:string;advertisedWater:string;query:string};
+export type DirectoryFilters={state:string;sourceZone:string;advertisedWater:string;query:string;species?:string;method?:string};
 
 /** Search expansions only. These do NOT add identity aliases or credential evidence. */
 const nicknameFamilies=[
@@ -36,7 +36,7 @@ const cache=new WeakMap<DirectoryEntry,SearchIndex>();
 function indexFor(entry:DirectoryEntry):SearchIndex {
  let index=cache.get(entry);if(index)return index;
  const identity=[entry.name,entry.business??'',...entry.searchAliases].map(normalizeGuideSearch).filter(Boolean);
- const context=[...entry.areas,...entry.advertisedWaters].map(normalizeGuideSearch).filter(Boolean);
+ const context=[...entry.areas,...entry.advertisedWaters,...(entry.advertisedSpecies??[]),...(entry.advertisedMethods??[]),...(entry.advertisedTrips??[])].map(normalizeGuideSearch).filter(Boolean);
  index={identity,context,tokens:[...new Set(identity.flatMap(value=>value.split(' ')))],contextTokens:[...new Set(context.flatMap(value=>value.split(' ')))],firstName:normalizeGuideSearch(entry.name).split(' ')[0],id:entry.id.toLowerCase()};
  cache.set(entry,index);return index;
 }
@@ -77,7 +77,9 @@ export function filterDirectoryEntries(entries:DirectoryEntry[],filters:Director
  return entries.filter(entry=>
   (filters.state==='All'||entry.states.includes(filters.state as 'Oregon'|'Washington'))&&
   (filters.sourceZone==='All areas'||entry.areas.includes(filters.sourceZone))&&
-  (filters.advertisedWater==='All advertised waters'||entry.advertisedWaters.includes(filters.advertisedWater))
+  (filters.advertisedWater==='All advertised waters'||entry.advertisedWaters.includes(filters.advertisedWater))&&
+  (!filters.species||filters.species==='All species'||(entry.advertisedSpecies??[]).includes(filters.species))&&
+  (!filters.method||filters.method==='All methods'||(entry.advertisedMethods??[]).includes(filters.method))
  ).map(entry=>({entry,score:guideSearchScore(entry,filters.query)}))
   .filter((match):match is {entry:DirectoryEntry;score:number}=>match.score!==null)
   .sort((a,b)=>a.score-b.score||a.entry.name.localeCompare(b.entry.name,'en',{sensitivity:'base'})||a.entry.id.localeCompare(b.entry.id))

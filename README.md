@@ -56,19 +56,14 @@ The core Chrome-AI repo, models and forecasts remain **private and separate**. S
 
 The August 2026 WDFW report has now been independently compared against the original archived source (all 31 dates and sampled totals), and the August 25 hatchery-Chinook rule was cross-checked against Washington's emergency order. The extended **1,373 retained Chinook / 5,087 sampled anglers** sample table is in a **separate, SHA-pinned, reviewed 2026 dataset** for production. The source bot's continuously updated review PR remains open; new agency changes never replace this public historical release automatically. This remains **preliminary agency sample data**, not individual catch odds or verified 2027 ML performance. See [audit details](docs/chinook-2026-source-audit.md).
 
-### Local MVP browser regression
+### Isolated MVP browser regression
 
-Install the project dependencies and use a local Chromium or Chrome executable. Build with an isolated dummy Supabase address, then serve the build in a separate terminal:
-
-```sh
-NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:59999 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=local-test-key npm run build
-npm start -- --hostname 127.0.0.1 --port 3157
-```
-
-Run the test in another terminal, setting `BROWSER_EXECUTABLE` to your browser binary:
+Install the project dependencies and choose a local Chromium or Chrome executable. The runner requires an explicit Git tree object: it copies only tracked source from that tree, excluding environment files, into a disposable workspace. It installs its own dependencies, starts a private dummy backend and app server on separate assigned ports, and cleans up afterward. It does not use the checkout’s `.next` output or live credentials.
 
 ```sh
-BROWSER_EXECUTABLE='/path/to/chrome' npm run test:browser
+TREE=$(git rev-parse 'HEAD^{tree}')
+BROWSER_EXECUTABLE='/path/to/chrome' node scripts/browser-isolation.mjs ordinary "$TREE"
+BROWSER_EXECUTABLE='/path/to/chrome' bash scripts/build-fixture-browser.sh "$TREE"
 ```
 
-The browser test intercepts the dummy backend, blocks external origins and rejects writes. It requires the dummy URL to be compiled into the build so the mocked review and identity checks are exercised. Do not use production credentials for this test.
+To test intentional staged changes before committing, use `TREE=$(git write-tree)` instead. Unstaged and untracked files are excluded; stage only the changes intended for that snapshot. The synthetic mode uses visibly labeled test records only inside its disposable workspace. Never deploy a fixture build. The extended Batch 13 proposal is checked with `python3 scripts/extended_enrichment_proposal.py --check`; it does not authorize publication.
