@@ -1,0 +1,4061 @@
+{
+  "schema_version": 1,
+  "source_checkpoint": "68ccf8c850af6b161ba46ca9659363a73b6eb493",
+  "reviewed_on": "2026-11-15",
+  "publication_approved": false,
+  "records": [
+    {
+      "registration_id": "OG.0000137",
+      "name": "Jesse Zalonis",
+      "review_status": "source_supported_pending_editorial",
+      "publication_approved": false,
+      "before": {
+        "directory_name": "Jesse Zalonis",
+        "directory_business": "The Fish House Outdoor Company",
+        "public_enrichment": null
+      },
+      "identity": {
+        "assessment": "Industry page explicitly pairs Jesse Zalonis with the imported business; this is not current operator confirmation.",
+        "source_ids": [
+          "mad-river"
+        ],
+        "legal_identity_verified": false
+      },
+      "limitations": [
+        "Industry page links a different domain from the registry. Do not replace the registry URL or infer fishing waters without checking that operator destination."
+      ],
+      "exclusions": [],
+      "failed_or_limited_fetches": [],
+      "existing_facts": [
+        {
+          "field": "display_names",
+          "value": "Jesse Zalonis",
+          "scope": "industry_lists",
+          "source": {
+            "source_id": "mad-river",
+            "url": "https://www.madrivermanufacturing.com/pro-staff.aspx",
+            "source_type": "industry_directory",
+            "retrieval_method": "parsed_page",
+            "locator": "Oregon: Tim Barnett and Jesse Zalonis entries",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Industry page links a different domain from the registry. Do not replace the registry URL or infer fishing waters without checking that operator destination."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "baseline": "directory registry"
+        },
+        {
+          "field": "business_names",
+          "value": "The Fish House Outdoor Company",
+          "scope": "industry_lists",
+          "source": {
+            "source_id": "mad-river",
+            "url": "https://www.madrivermanufacturing.com/pro-staff.aspx",
+            "source_type": "industry_directory",
+            "retrieval_method": "parsed_page",
+            "locator": "Oregon: Tim Barnett and Jesse Zalonis entries",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Industry page links a different domain from the registry. Do not replace the registry URL or infer fishing waters without checking that operator destination."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "baseline": "directory registry"
+        }
+      ],
+      "proposed_additions": [],
+      "unsupported_fields": [],
+      "conflicts": [],
+      "withheld_reason": null,
+      "identity_sources": [
+        {
+          "source_id": "mad-river",
+          "url": "https://www.madrivermanufacturing.com/pro-staff.aspx",
+          "source_type": "industry_directory",
+          "retrieval_method": "parsed_page",
+          "locator": "Oregon: Tim Barnett and Jesse Zalonis entries",
+          "source_content_date": null,
+          "reviewed_on": "2026-11-15"
+        }
+      ]
+    },
+    {
+      "registration_id": "OG.0000382",
+      "name": "Kevin Hawkins",
+      "review_status": "source_supported_pending_editorial",
+      "publication_approved": false,
+      "before": {
+        "directory_name": "Kevin Hawkins",
+        "directory_business": "Kevin A Hawkins Fishing",
+        "public_enrichment": null
+      },
+      "identity": {
+        "assessment": "Page title and Kevin Hawkins Fishing branding support a business/person match.",
+        "source_ids": [
+          "hawkins"
+        ],
+        "legal_identity_verified": false
+      },
+      "limitations": [
+        "Montana fly fishing and Astoria salmon are separate offerings; do not apply each species/method to every water. An Oregon registry entry does not imply Oregon-only operations."
+      ],
+      "exclusions": [],
+      "failed_or_limited_fetches": [
+        {
+          "url": "https://www.khfishing.com/astoria-salmon-fishing",
+          "result": "cache_miss",
+          "fallback_source_id": "hawkins"
+        }
+      ],
+      "existing_facts": [],
+      "proposed_additions": [
+        {
+          "field": "advertised_waters",
+          "value": "Bitterroot River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "hawkins",
+            "url": "https://www.khfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Montana Fly Fishing Trips; Bitterroot River Fishing; Astoria Salmon Fishing",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Montana fly fishing and Astoria salmon are separate offerings; do not apply each species/method to every water. An Oregon registry entry does not imply Oregon-only operations."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        }
+      ],
+      "unsupported_fields": [
+        {
+          "field": "business_names",
+          "value": "Kevin Hawkins Fishing",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "hawkins",
+            "url": "https://www.khfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Montana Fly Fishing Trips; Bitterroot River Fishing; Astoria Salmon Fishing",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Montana fly fishing and Astoria salmon are separate offerings; do not apply each species/method to every water. An Oregon registry entry does not imply Oregon-only operations."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_locations",
+          "value": "Hamilton, Montana",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "hawkins",
+            "url": "https://www.khfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Montana Fly Fishing Trips; Bitterroot River Fishing; Astoria Salmon Fishing",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Montana fly fishing and Astoria salmon are separate offerings; do not apply each species/method to every water. An Oregon registry entry does not imply Oregon-only operations."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_locations",
+          "value": "Darby, Montana",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "hawkins",
+            "url": "https://www.khfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Montana Fly Fishing Trips; Bitterroot River Fishing; Astoria Salmon Fishing",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Montana fly fishing and Astoria salmon are separate offerings; do not apply each species/method to every water. An Oregon registry entry does not imply Oregon-only operations."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_locations",
+          "value": "Stevensville, Montana",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "hawkins",
+            "url": "https://www.khfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Montana Fly Fishing Trips; Bitterroot River Fishing; Astoria Salmon Fishing",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Montana fly fishing and Astoria salmon are separate offerings; do not apply each species/method to every water. An Oregon registry entry does not imply Oregon-only operations."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_locations",
+          "value": "Astoria, Oregon",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "hawkins",
+            "url": "https://www.khfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Montana Fly Fishing Trips; Bitterroot River Fishing; Astoria Salmon Fishing",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Montana fly fishing and Astoria salmon are separate offerings; do not apply each species/method to every water. An Oregon registry entry does not imply Oregon-only operations."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Chinook Salmon",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "hawkins",
+            "url": "https://www.khfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Montana Fly Fishing Trips; Bitterroot River Fishing; Astoria Salmon Fishing",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Montana fly fishing and Astoria salmon are separate offerings; do not apply each species/method to every water. An Oregon registry entry does not imply Oregon-only operations."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Coho Salmon",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "hawkins",
+            "url": "https://www.khfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Montana Fly Fishing Trips; Bitterroot River Fishing; Astoria Salmon Fishing",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Montana fly fishing and Astoria salmon are separate offerings; do not apply each species/method to every water. An Oregon registry entry does not imply Oregon-only operations."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_methods",
+          "value": "Fly fishing",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "hawkins",
+            "url": "https://www.khfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Montana Fly Fishing Trips; Bitterroot River Fishing; Astoria Salmon Fishing",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Montana fly fishing and Astoria salmon are separate offerings; do not apply each species/method to every water. An Oregon registry entry does not imply Oregon-only operations."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        }
+      ],
+      "conflicts": [],
+      "withheld_reason": null,
+      "identity_sources": [
+        {
+          "source_id": "hawkins",
+          "url": "https://www.khfishing.com/",
+          "source_type": "operator_site",
+          "retrieval_method": "parsed_page",
+          "locator": "Montana Fly Fishing Trips; Bitterroot River Fishing; Astoria Salmon Fishing",
+          "source_content_date": null,
+          "reviewed_on": "2026-11-15"
+        }
+      ]
+    },
+    {
+      "registration_id": "OG.0000387",
+      "name": "Vernon Grieve",
+      "review_status": "source_supported_pending_editorial",
+      "publication_approved": false,
+      "before": {
+        "directory_name": "Vernon Grieve",
+        "directory_business": "Grieves Guide Service Inc",
+        "public_enrichment": null
+      },
+      "identity": {
+        "assessment": "About page explicitly names Vernon Grieve and the business; other Grieve guides remain distinct.",
+        "source_ids": [
+          "grieve-about"
+        ],
+        "legal_identity_verified": false
+      },
+      "limitations": [
+        "Business-level trip offerings are not evidence Vernon personally guides every trip. Published seasonal copy is not a current fishing regulation."
+      ],
+      "exclusions": [],
+      "failed_or_limited_fetches": [],
+      "existing_facts": [],
+      "proposed_additions": [
+        {
+          "field": "advertised_waters",
+          "value": "Rogue River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "grieve-trips",
+            "url": "https://grievesfishing.com/trips/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Oregon Fishing Guide Trips",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Business-level trip offerings are not evidence Vernon personally guides every trip. Published seasonal copy is not a current fishing regulation."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Umpqua River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "grieve-trips",
+            "url": "https://grievesfishing.com/trips/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Oregon Fishing Guide Trips",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Business-level trip offerings are not evidence Vernon personally guides every trip. Published seasonal copy is not a current fishing regulation."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Elk River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "grieve-trips",
+            "url": "https://grievesfishing.com/trips/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Oregon Fishing Guide Trips",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Business-level trip offerings are not evidence Vernon personally guides every trip. Published seasonal copy is not a current fishing regulation."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Sixes River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "grieve-trips",
+            "url": "https://grievesfishing.com/trips/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Oregon Fishing Guide Trips",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Business-level trip offerings are not evidence Vernon personally guides every trip. Published seasonal copy is not a current fishing regulation."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Chetco River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "grieve-trips",
+            "url": "https://grievesfishing.com/trips/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Oregon Fishing Guide Trips",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Business-level trip offerings are not evidence Vernon personally guides every trip. Published seasonal copy is not a current fishing regulation."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        }
+      ],
+      "unsupported_fields": [
+        {
+          "field": "advertised_species",
+          "value": "Chinook Salmon",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "grieve-trips",
+            "url": "https://grievesfishing.com/trips/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Oregon Fishing Guide Trips",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Business-level trip offerings are not evidence Vernon personally guides every trip. Published seasonal copy is not a current fishing regulation."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Steelhead",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "grieve-trips",
+            "url": "https://grievesfishing.com/trips/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Oregon Fishing Guide Trips",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Business-level trip offerings are not evidence Vernon personally guides every trip. Published seasonal copy is not a current fishing regulation."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Smallmouth Bass",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "grieve-trips",
+            "url": "https://grievesfishing.com/trips/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Oregon Fishing Guide Trips",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Business-level trip offerings are not evidence Vernon personally guides every trip. Published seasonal copy is not a current fishing regulation."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        }
+      ],
+      "conflicts": [],
+      "withheld_reason": null,
+      "identity_sources": [
+        {
+          "source_id": "grieve-about",
+          "url": "https://grievesfishing.com/about/",
+          "source_type": "operator_site",
+          "retrieval_method": "parsed_page",
+          "locator": "About Grieve’s Fishing Guide Service: Vernon and Amy",
+          "source_content_date": null,
+          "reviewed_on": "2026-11-15"
+        }
+      ]
+    },
+    {
+      "registration_id": "OG.0000408",
+      "name": "Alan Borges",
+      "review_status": "source_supported_pending_editorial",
+      "publication_approved": false,
+      "before": {
+        "directory_name": "Alan Borges",
+        "directory_business": "Alan J Borges Guide Service",
+        "public_enrichment": null
+      },
+      "identity": {
+        "assessment": "Alan Borges Guide Service branding supports the imported name/business match.",
+        "source_ids": [
+          "borges"
+        ],
+        "legal_identity_verified": false
+      },
+      "limitations": [
+        "Retain broad salmon/trout labels where the text is broad. Do not infer present-season openings from this undated page."
+      ],
+      "exclusions": [],
+      "failed_or_limited_fetches": [],
+      "existing_facts": [],
+      "proposed_additions": [
+        {
+          "field": "advertised_waters",
+          "value": "Klamath River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "borges",
+            "url": "https://alansguideservice.com/fish/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Fish: Salmon, Steelhead, Trout",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Retain broad salmon/trout labels where the text is broad. Do not infer present-season openings from this undated page."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Trinity River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "borges",
+            "url": "https://alansguideservice.com/fish/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Fish: Salmon, Steelhead, Trout",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Retain broad salmon/trout labels where the text is broad. Do not infer present-season openings from this undated page."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Smith River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "borges",
+            "url": "https://alansguideservice.com/fish/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Fish: Salmon, Steelhead, Trout",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Retain broad salmon/trout labels where the text is broad. Do not infer present-season openings from this undated page."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Rogue River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "borges",
+            "url": "https://alansguideservice.com/fish/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Fish: Salmon, Steelhead, Trout",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Retain broad salmon/trout labels where the text is broad. Do not infer present-season openings from this undated page."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Chetco River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "borges",
+            "url": "https://alansguideservice.com/fish/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Fish: Salmon, Steelhead, Trout",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Retain broad salmon/trout labels where the text is broad. Do not infer present-season openings from this undated page."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Sacramento River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "borges",
+            "url": "https://alansguideservice.com/fish/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Fish: Salmon, Steelhead, Trout",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Retain broad salmon/trout labels where the text is broad. Do not infer present-season openings from this undated page."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        }
+      ],
+      "unsupported_fields": [
+        {
+          "field": "business_names",
+          "value": "Alan Borges Guide Service",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "borges",
+            "url": "https://alansguideservice.com/fish/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Fish: Salmon, Steelhead, Trout",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Retain broad salmon/trout labels where the text is broad. Do not infer present-season openings from this undated page."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Salmon",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "borges",
+            "url": "https://alansguideservice.com/fish/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Fish: Salmon, Steelhead, Trout",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Retain broad salmon/trout labels where the text is broad. Do not infer present-season openings from this undated page."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Chinook Salmon",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "borges",
+            "url": "https://alansguideservice.com/fish/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Fish: Salmon, Steelhead, Trout",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Retain broad salmon/trout labels where the text is broad. Do not infer present-season openings from this undated page."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Steelhead",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "borges",
+            "url": "https://alansguideservice.com/fish/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Fish: Salmon, Steelhead, Trout",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Retain broad salmon/trout labels where the text is broad. Do not infer present-season openings from this undated page."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Trout",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "borges",
+            "url": "https://alansguideservice.com/fish/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Fish: Salmon, Steelhead, Trout",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Retain broad salmon/trout labels where the text is broad. Do not infer present-season openings from this undated page."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_methods",
+          "value": "Fly fishing",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "borges",
+            "url": "https://alansguideservice.com/fish/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Fish: Salmon, Steelhead, Trout",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Retain broad salmon/trout labels where the text is broad. Do not infer present-season openings from this undated page."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_methods",
+          "value": "Conventional tackle",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "borges",
+            "url": "https://alansguideservice.com/fish/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Fish: Salmon, Steelhead, Trout",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Retain broad salmon/trout labels where the text is broad. Do not infer present-season openings from this undated page."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_methods",
+          "value": "Light tackle",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "borges",
+            "url": "https://alansguideservice.com/fish/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Fish: Salmon, Steelhead, Trout",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Retain broad salmon/trout labels where the text is broad. Do not infer present-season openings from this undated page."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        }
+      ],
+      "conflicts": [],
+      "withheld_reason": null,
+      "identity_sources": [
+        {
+          "source_id": "borges",
+          "url": "https://alansguideservice.com/fish/",
+          "source_type": "operator_site",
+          "retrieval_method": "parsed_page",
+          "locator": "Fish: Salmon, Steelhead, Trout",
+          "source_content_date": null,
+          "reviewed_on": "2026-11-15"
+        }
+      ]
+    },
+    {
+      "registration_id": "OG.0000415",
+      "name": "Timothy Barnett",
+      "review_status": "source_supported_pending_editorial",
+      "publication_approved": false,
+      "before": {
+        "directory_name": "Timothy Barnett",
+        "directory_business": "Barnett's Guide Service",
+        "public_enrichment": null
+      },
+      "identity": {
+        "assessment": "Industry page lists Tim Barnett and the registry-linked NestuccaRiver.com domain. Tim/Timothy remains an editorial name-variant link, not identity verification.",
+        "source_ids": [
+          "mad-river"
+        ],
+        "legal_identity_verified": false
+      },
+      "limitations": [
+        "Industry directory content is undated; operator availability and present credentials were not checked."
+      ],
+      "exclusions": [],
+      "failed_or_limited_fetches": [],
+      "existing_facts": [],
+      "proposed_additions": [
+        {
+          "field": "display_names",
+          "value": "Tim Barnett",
+          "scope": "industry_lists",
+          "source": {
+            "source_id": "mad-river",
+            "url": "https://www.madrivermanufacturing.com/pro-staff.aspx",
+            "source_type": "industry_directory",
+            "retrieval_method": "parsed_page",
+            "locator": "Oregon: Tim Barnett and Jesse Zalonis entries",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Industry directory content is undated; operator availability and present credentials were not checked."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "searchAliases",
+          "target_note": "Source-listed name; identity and alias need editorial approval."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Kilchis River",
+          "scope": "industry_lists",
+          "source": {
+            "source_id": "mad-river",
+            "url": "https://www.madrivermanufacturing.com/pro-staff.aspx",
+            "source_type": "industry_directory",
+            "retrieval_method": "parsed_page",
+            "locator": "Oregon: Tim Barnett and Jesse Zalonis entries",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Industry directory content is undated; operator availability and present credentials were not checked."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Wilson River",
+          "scope": "industry_lists",
+          "source": {
+            "source_id": "mad-river",
+            "url": "https://www.madrivermanufacturing.com/pro-staff.aspx",
+            "source_type": "industry_directory",
+            "retrieval_method": "parsed_page",
+            "locator": "Oregon: Tim Barnett and Jesse Zalonis entries",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Industry directory content is undated; operator availability and present credentials were not checked."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Trask River",
+          "scope": "industry_lists",
+          "source": {
+            "source_id": "mad-river",
+            "url": "https://www.madrivermanufacturing.com/pro-staff.aspx",
+            "source_type": "industry_directory",
+            "retrieval_method": "parsed_page",
+            "locator": "Oregon: Tim Barnett and Jesse Zalonis entries",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Industry directory content is undated; operator availability and present credentials were not checked."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Nestucca River",
+          "scope": "industry_lists",
+          "source": {
+            "source_id": "mad-river",
+            "url": "https://www.madrivermanufacturing.com/pro-staff.aspx",
+            "source_type": "industry_directory",
+            "retrieval_method": "parsed_page",
+            "locator": "Oregon: Tim Barnett and Jesse Zalonis entries",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Industry directory content is undated; operator availability and present credentials were not checked."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "South Santiam River",
+          "scope": "industry_lists",
+          "source": {
+            "source_id": "mad-river",
+            "url": "https://www.madrivermanufacturing.com/pro-staff.aspx",
+            "source_type": "industry_directory",
+            "retrieval_method": "parsed_page",
+            "locator": "Oregon: Tim Barnett and Jesse Zalonis entries",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Industry directory content is undated; operator availability and present credentials were not checked."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        }
+      ],
+      "unsupported_fields": [
+        {
+          "field": "advertised_species",
+          "value": "Salmon",
+          "scope": "industry_lists",
+          "source": {
+            "source_id": "mad-river",
+            "url": "https://www.madrivermanufacturing.com/pro-staff.aspx",
+            "source_type": "industry_directory",
+            "retrieval_method": "parsed_page",
+            "locator": "Oregon: Tim Barnett and Jesse Zalonis entries",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Industry directory content is undated; operator availability and present credentials were not checked."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Steelhead",
+          "scope": "industry_lists",
+          "source": {
+            "source_id": "mad-river",
+            "url": "https://www.madrivermanufacturing.com/pro-staff.aspx",
+            "source_type": "industry_directory",
+            "retrieval_method": "parsed_page",
+            "locator": "Oregon: Tim Barnett and Jesse Zalonis entries",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Industry directory content is undated; operator availability and present credentials were not checked."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_trip_types",
+          "value": "Drift boat fishing",
+          "scope": "industry_lists",
+          "source": {
+            "source_id": "mad-river",
+            "url": "https://www.madrivermanufacturing.com/pro-staff.aspx",
+            "source_type": "industry_directory",
+            "retrieval_method": "parsed_page",
+            "locator": "Oregon: Tim Barnett and Jesse Zalonis entries",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Industry directory content is undated; operator availability and present credentials were not checked."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        }
+      ],
+      "conflicts": [],
+      "withheld_reason": null,
+      "identity_sources": [
+        {
+          "source_id": "mad-river",
+          "url": "https://www.madrivermanufacturing.com/pro-staff.aspx",
+          "source_type": "industry_directory",
+          "retrieval_method": "parsed_page",
+          "locator": "Oregon: Tim Barnett and Jesse Zalonis entries",
+          "source_content_date": null,
+          "reviewed_on": "2026-11-15"
+        }
+      ]
+    },
+    {
+      "registration_id": "OG.0000427",
+      "name": "Ethan Nickel",
+      "review_status": "source_supported_pending_editorial",
+      "publication_approved": false,
+      "before": {
+        "directory_name": "Ethan Nickel",
+        "directory_business": "Ethan Nickel Outfitters & Guide Service LLC",
+        "public_enrichment": null
+      },
+      "identity": {
+        "assessment": "Named operator page ties Ethan Nickel to the outfitter.",
+        "source_ids": [
+          "nickel"
+        ],
+        "legal_identity_verified": false
+      },
+      "limitations": [
+        "Chinook is advertised on unnamed coastal streams, not established for every named river. Do not extract client comments as reviews."
+      ],
+      "exclusions": [],
+      "failed_or_limited_fetches": [],
+      "existing_facts": [],
+      "proposed_additions": [
+        {
+          "field": "advertised_waters",
+          "value": "McKenzie River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "nickel",
+            "url": "https://enickeloutfitters.com/about/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "About Ethan Nickel Outfitters, before visitor comments",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Chinook is advertised on unnamed coastal streams, not established for every named river. Do not extract client comments as reviews."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Willamette River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "nickel",
+            "url": "https://enickeloutfitters.com/about/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "About Ethan Nickel Outfitters, before visitor comments",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Chinook is advertised on unnamed coastal streams, not established for every named river. Do not extract client comments as reviews."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Deschutes River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "nickel",
+            "url": "https://enickeloutfitters.com/about/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "About Ethan Nickel Outfitters, before visitor comments",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Chinook is advertised on unnamed coastal streams, not established for every named river. Do not extract client comments as reviews."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        }
+      ],
+      "unsupported_fields": [
+        {
+          "field": "business_names",
+          "value": "Ethan Nickel Outfitters",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "nickel",
+            "url": "https://enickeloutfitters.com/about/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "About Ethan Nickel Outfitters, before visitor comments",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Chinook is advertised on unnamed coastal streams, not established for every named river. Do not extract client comments as reviews."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Trout",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "nickel",
+            "url": "https://enickeloutfitters.com/about/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "About Ethan Nickel Outfitters, before visitor comments",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Chinook is advertised on unnamed coastal streams, not established for every named river. Do not extract client comments as reviews."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Steelhead",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "nickel",
+            "url": "https://enickeloutfitters.com/about/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "About Ethan Nickel Outfitters, before visitor comments",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Chinook is advertised on unnamed coastal streams, not established for every named river. Do not extract client comments as reviews."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Chinook Salmon",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "nickel",
+            "url": "https://enickeloutfitters.com/about/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "About Ethan Nickel Outfitters, before visitor comments",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Chinook is advertised on unnamed coastal streams, not established for every named river. Do not extract client comments as reviews."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_methods",
+          "value": "Fly fishing",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "nickel",
+            "url": "https://enickeloutfitters.com/about/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "About Ethan Nickel Outfitters, before visitor comments",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Chinook is advertised on unnamed coastal streams, not established for every named river. Do not extract client comments as reviews."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_trip_types",
+          "value": "Drift boat fishing",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "nickel",
+            "url": "https://enickeloutfitters.com/about/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "About Ethan Nickel Outfitters, before visitor comments",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Chinook is advertised on unnamed coastal streams, not established for every named river. Do not extract client comments as reviews."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_trip_types",
+          "value": "Multi-day trips",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "nickel",
+            "url": "https://enickeloutfitters.com/about/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "About Ethan Nickel Outfitters, before visitor comments",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Chinook is advertised on unnamed coastal streams, not established for every named river. Do not extract client comments as reviews."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        }
+      ],
+      "conflicts": [],
+      "withheld_reason": null,
+      "identity_sources": [
+        {
+          "source_id": "nickel",
+          "url": "https://enickeloutfitters.com/about/",
+          "source_type": "operator_site",
+          "retrieval_method": "parsed_page",
+          "locator": "About Ethan Nickel Outfitters, before visitor comments",
+          "source_content_date": null,
+          "reviewed_on": "2026-11-15"
+        }
+      ]
+    },
+    {
+      "registration_id": "OG.0000617",
+      "name": "Jonathan Geyer",
+      "review_status": "source_supported_pending_editorial",
+      "publication_approved": false,
+      "before": {
+        "directory_name": "Jonathan Geyer",
+        "directory_business": "Jon Geyer's Guide Service",
+        "public_enrichment": null
+      },
+      "identity": {
+        "assessment": "Operator page names Jon Geyer and matching business; Jon/ Jonathan is a proposed name variant only.",
+        "source_ids": [
+          "geyer"
+        ],
+        "legal_identity_verified": false
+      },
+      "limitations": [
+        "Accessibility is operator-described, not independently inspected. No licensing, safety or catch-rate certification is asserted."
+      ],
+      "exclusions": [],
+      "failed_or_limited_fetches": [],
+      "existing_facts": [],
+      "proposed_additions": [
+        {
+          "field": "display_names",
+          "value": "Jon Geyer",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "geyer",
+            "url": "https://jongeyerfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Jon Geyer’s Guide Service; Our Guided Services; Primary Rivers; Lakes",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Accessibility is operator-described, not independently inspected. No licensing, safety or catch-rate certification is asserted."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "searchAliases",
+          "target_note": "Source-listed name; identity and alias need editorial approval."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Rogue River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "geyer",
+            "url": "https://jongeyerfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Jon Geyer’s Guide Service; Our Guided Services; Primary Rivers; Lakes",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Accessibility is operator-described, not independently inspected. No licensing, safety or catch-rate certification is asserted."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Umpqua River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "geyer",
+            "url": "https://jongeyerfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Jon Geyer’s Guide Service; Our Guided Services; Primary Rivers; Lakes",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Accessibility is operator-described, not independently inspected. No licensing, safety or catch-rate certification is asserted."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Chetco River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "geyer",
+            "url": "https://jongeyerfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Jon Geyer’s Guide Service; Our Guided Services; Primary Rivers; Lakes",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Accessibility is operator-described, not independently inspected. No licensing, safety or catch-rate certification is asserted."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Coquille River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "geyer",
+            "url": "https://jongeyerfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Jon Geyer’s Guide Service; Our Guided Services; Primary Rivers; Lakes",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Accessibility is operator-described, not independently inspected. No licensing, safety or catch-rate certification is asserted."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Elk River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "geyer",
+            "url": "https://jongeyerfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Jon Geyer’s Guide Service; Our Guided Services; Primary Rivers; Lakes",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Accessibility is operator-described, not independently inspected. No licensing, safety or catch-rate certification is asserted."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Sixes River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "geyer",
+            "url": "https://jongeyerfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Jon Geyer’s Guide Service; Our Guided Services; Primary Rivers; Lakes",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Accessibility is operator-described, not independently inspected. No licensing, safety or catch-rate certification is asserted."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Lost Creek Lake",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "geyer",
+            "url": "https://jongeyerfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Jon Geyer’s Guide Service; Our Guided Services; Primary Rivers; Lakes",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Accessibility is operator-described, not independently inspected. No licensing, safety or catch-rate certification is asserted."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Fish Lake",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "geyer",
+            "url": "https://jongeyerfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Jon Geyer’s Guide Service; Our Guided Services; Primary Rivers; Lakes",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Accessibility is operator-described, not independently inspected. No licensing, safety or catch-rate certification is asserted."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        }
+      ],
+      "unsupported_fields": [
+        {
+          "field": "advertised_species",
+          "value": "Chinook Salmon",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "geyer",
+            "url": "https://jongeyerfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Jon Geyer’s Guide Service; Our Guided Services; Primary Rivers; Lakes",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Accessibility is operator-described, not independently inspected. No licensing, safety or catch-rate certification is asserted."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Coho Salmon",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "geyer",
+            "url": "https://jongeyerfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Jon Geyer’s Guide Service; Our Guided Services; Primary Rivers; Lakes",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Accessibility is operator-described, not independently inspected. No licensing, safety or catch-rate certification is asserted."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Steelhead",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "geyer",
+            "url": "https://jongeyerfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Jon Geyer’s Guide Service; Our Guided Services; Primary Rivers; Lakes",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Accessibility is operator-described, not independently inspected. No licensing, safety or catch-rate certification is asserted."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Trout",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "geyer",
+            "url": "https://jongeyerfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Jon Geyer’s Guide Service; Our Guided Services; Primary Rivers; Lakes",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Accessibility is operator-described, not independently inspected. No licensing, safety or catch-rate certification is asserted."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Bass",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "geyer",
+            "url": "https://jongeyerfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Jon Geyer’s Guide Service; Our Guided Services; Primary Rivers; Lakes",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Accessibility is operator-described, not independently inspected. No licensing, safety or catch-rate certification is asserted."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Kokanee",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "geyer",
+            "url": "https://jongeyerfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Jon Geyer’s Guide Service; Our Guided Services; Primary Rivers; Lakes",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Accessibility is operator-described, not independently inspected. No licensing, safety or catch-rate certification is asserted."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_trip_types",
+          "value": "Family lake trips",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "geyer",
+            "url": "https://jongeyerfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Jon Geyer’s Guide Service; Our Guided Services; Primary Rivers; Lakes",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Accessibility is operator-described, not independently inspected. No licensing, safety or catch-rate certification is asserted."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_accessibility",
+          "value": "Wheelchair-friendly boat advertised",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "geyer",
+            "url": "https://jongeyerfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Jon Geyer’s Guide Service; Our Guided Services; Primary Rivers; Lakes",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Accessibility is operator-described, not independently inspected. No licensing, safety or catch-rate certification is asserted."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        }
+      ],
+      "conflicts": [],
+      "withheld_reason": null,
+      "identity_sources": [
+        {
+          "source_id": "geyer",
+          "url": "https://jongeyerfishing.com/",
+          "source_type": "operator_site",
+          "retrieval_method": "parsed_page",
+          "locator": "Jon Geyer’s Guide Service; Our Guided Services; Primary Rivers; Lakes",
+          "source_content_date": null,
+          "reviewed_on": "2026-11-15"
+        }
+      ]
+    },
+    {
+      "registration_id": "OG.0000741",
+      "name": "Robert Rees",
+      "review_status": "source_supported_pending_editorial",
+      "publication_approved": false,
+      "before": {
+        "directory_name": "Robert Rees",
+        "directory_business": "Bob Rees Fishing Guide LLC",
+        "public_enrichment": null
+      },
+      "identity": {
+        "assessment": "Sponsor directory pairs Bob Rees with the corresponding guide-service business; Robert/Bob is not a legal identity confirmation.",
+        "source_ids": [
+          "rees"
+        ],
+        "legal_identity_verified": false
+      },
+      "limitations": [
+        "Do not copy adjacent guides’ species, use a current-license badge, or treat the unvisited linked website as verified."
+      ],
+      "exclusions": [],
+      "failed_or_limited_fetches": [],
+      "existing_facts": [],
+      "proposed_additions": [
+        {
+          "field": "display_names",
+          "value": "Bob Rees",
+          "scope": "industry_lists",
+          "source": {
+            "source_id": "rees",
+            "url": "https://kastking.com/pages/pro-guide",
+            "source_type": "industry_directory",
+            "retrieval_method": "parsed_page",
+            "locator": "Pro Guide member Bob Rees only; not adjacent members",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Do not copy adjacent guides’ species, use a current-license badge, or treat the unvisited linked website as verified."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "searchAliases",
+          "target_note": "Source-listed name; identity and alias need editorial approval."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Columbia River",
+          "scope": "industry_lists",
+          "source": {
+            "source_id": "rees",
+            "url": "https://kastking.com/pages/pro-guide",
+            "source_type": "industry_directory",
+            "retrieval_method": "parsed_page",
+            "locator": "Pro Guide member Bob Rees only; not adjacent members",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Do not copy adjacent guides’ species, use a current-license badge, or treat the unvisited linked website as verified."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Willamette River",
+          "scope": "industry_lists",
+          "source": {
+            "source_id": "rees",
+            "url": "https://kastking.com/pages/pro-guide",
+            "source_type": "industry_directory",
+            "retrieval_method": "parsed_page",
+            "locator": "Pro Guide member Bob Rees only; not adjacent members",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Do not copy adjacent guides’ species, use a current-license badge, or treat the unvisited linked website as verified."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        }
+      ],
+      "unsupported_fields": [
+        {
+          "field": "business_names",
+          "value": "Bob Rees' Fishing Guide Service",
+          "scope": "industry_lists",
+          "source": {
+            "source_id": "rees",
+            "url": "https://kastking.com/pages/pro-guide",
+            "source_type": "industry_directory",
+            "retrieval_method": "parsed_page",
+            "locator": "Pro Guide member Bob Rees only; not adjacent members",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Do not copy adjacent guides’ species, use a current-license badge, or treat the unvisited linked website as verified."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_locations",
+          "value": "North Oregon Coast",
+          "scope": "industry_lists",
+          "source": {
+            "source_id": "rees",
+            "url": "https://kastking.com/pages/pro-guide",
+            "source_type": "industry_directory",
+            "retrieval_method": "parsed_page",
+            "locator": "Pro Guide member Bob Rees only; not adjacent members",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Do not copy adjacent guides’ species, use a current-license badge, or treat the unvisited linked website as verified."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Salmon",
+          "scope": "industry_lists",
+          "source": {
+            "source_id": "rees",
+            "url": "https://kastking.com/pages/pro-guide",
+            "source_type": "industry_directory",
+            "retrieval_method": "parsed_page",
+            "locator": "Pro Guide member Bob Rees only; not adjacent members",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Do not copy adjacent guides’ species, use a current-license badge, or treat the unvisited linked website as verified."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Steelhead",
+          "scope": "industry_lists",
+          "source": {
+            "source_id": "rees",
+            "url": "https://kastking.com/pages/pro-guide",
+            "source_type": "industry_directory",
+            "retrieval_method": "parsed_page",
+            "locator": "Pro Guide member Bob Rees only; not adjacent members",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Do not copy adjacent guides’ species, use a current-license badge, or treat the unvisited linked website as verified."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Sturgeon",
+          "scope": "industry_lists",
+          "source": {
+            "source_id": "rees",
+            "url": "https://kastking.com/pages/pro-guide",
+            "source_type": "industry_directory",
+            "retrieval_method": "parsed_page",
+            "locator": "Pro Guide member Bob Rees only; not adjacent members",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Do not copy adjacent guides’ species, use a current-license badge, or treat the unvisited linked website as verified."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Bottom fish",
+          "scope": "industry_lists",
+          "source": {
+            "source_id": "rees",
+            "url": "https://kastking.com/pages/pro-guide",
+            "source_type": "industry_directory",
+            "retrieval_method": "parsed_page",
+            "locator": "Pro Guide member Bob Rees only; not adjacent members",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Do not copy adjacent guides’ species, use a current-license badge, or treat the unvisited linked website as verified."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        }
+      ],
+      "conflicts": [],
+      "withheld_reason": null,
+      "identity_sources": [
+        {
+          "source_id": "rees",
+          "url": "https://kastking.com/pages/pro-guide",
+          "source_type": "industry_directory",
+          "retrieval_method": "parsed_page",
+          "locator": "Pro Guide member Bob Rees only; not adjacent members",
+          "source_content_date": null,
+          "reviewed_on": "2026-11-15"
+        }
+      ]
+    },
+    {
+      "registration_id": "OG.0000782",
+      "name": "Drake Radditz",
+      "review_status": "historical_listing_only",
+      "publication_approved": false,
+      "before": {
+        "directory_name": "Drake Radditz",
+        "directory_business": "Drake Radditz Guide Service LLC",
+        "public_enrichment": null
+      },
+      "identity": {
+        "assessment": "Business name occurs in the May 2025 BLM multi-category list. The list does not independently establish present individual credentials.",
+        "source_ids": [
+          "radditz-blm"
+        ],
+        "legal_identity_verified": false
+      },
+      "limitations": [
+        "May 2025 is the document date, not 2026 permit verification. No species, methods, active booking link or current authorization established."
+      ],
+      "exclusions": [],
+      "failed_or_limited_fetches": [
+        {
+          "url": "https://www.fishwithdrake.com/",
+          "result": "redirect_target_unavailable",
+          "fallback_source_id": "radditz-blm"
+        }
+      ],
+      "existing_facts": [],
+      "proposed_additions": [],
+      "unsupported_fields": [],
+      "conflicts": [],
+      "withheld_reason": "Historical listing only; no current permit verification.",
+      "identity_sources": [
+        {
+          "source_id": "radditz-blm",
+          "url": "https://www.blm.gov/sites/default/files/uploads/deschutes_shuttles.pdf",
+          "source_type": "agency_directory",
+          "retrieval_method": "pdf_text_and_page_images",
+          "locator": "May 2025 title on PDF page 1; Drake Radditz Guide Service LLC on page 2",
+          "source_content_date": "2025-05",
+          "reviewed_on": "2026-11-15"
+        }
+      ]
+    },
+    {
+      "registration_id": "OG.0001116",
+      "name": "Neal Burrell",
+      "review_status": "source_supported_pending_editorial",
+      "publication_approved": false,
+      "before": {
+        "directory_name": "Neal Burrell",
+        "directory_business": "Neal Burrell Fly Fishing LLC",
+        "public_enrichment": null
+      },
+      "identity": {
+        "assessment": "About page names Neal Burrell and his company; Deschutes page self-reports guide number 1116, consistent with the imported ID but not current license verification.",
+        "source_ids": [
+          "burrell-about",
+          "burrell-deschutes"
+        ],
+        "legal_identity_verified": false
+      },
+      "limitations": [
+        "Do not revive Grindstone from navigation or older descriptive paragraphs below the closure notice."
+      ],
+      "exclusions": [
+        {
+          "field": "advertised_waters",
+          "value": "Grindstone Lakes",
+          "source_id": "burrell-grindstone",
+          "reason": "Operator notice says no bookings for 2024 and beyond because the ranch ended its fishing program.",
+          "effective_from_year": 2024,
+          "source": {
+            "source_id": "burrell-grindstone",
+            "url": "https://www.nbflyfish.com/grindstone-lakes",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "ATTENTION notice above older descriptions: no bookings for 2024 and beyond",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          }
+        }
+      ],
+      "failed_or_limited_fetches": [],
+      "existing_facts": [],
+      "proposed_additions": [
+        {
+          "field": "advertised_waters",
+          "value": "Deschutes River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "burrell-deschutes",
+            "url": "https://www.nbflyfish.com/deschutes-river",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Deschutes River Camp Trips; guide number 1116",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Do not revive Grindstone from navigation or older descriptive paragraphs below the closure notice."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        }
+      ],
+      "unsupported_fields": [
+        {
+          "field": "advertised_species",
+          "value": "Redband Rainbow Trout",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "burrell-deschutes",
+            "url": "https://www.nbflyfish.com/deschutes-river",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Deschutes River Camp Trips; guide number 1116",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Do not revive Grindstone from navigation or older descriptive paragraphs below the closure notice."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Steelhead",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "burrell-deschutes",
+            "url": "https://www.nbflyfish.com/deschutes-river",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Deschutes River Camp Trips; guide number 1116",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Do not revive Grindstone from navigation or older descriptive paragraphs below the closure notice."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_methods",
+          "value": "Fly fishing",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "burrell-deschutes",
+            "url": "https://www.nbflyfish.com/deschutes-river",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Deschutes River Camp Trips; guide number 1116",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Do not revive Grindstone from navigation or older descriptive paragraphs below the closure notice."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_methods",
+          "value": "Spey fishing",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "burrell-deschutes",
+            "url": "https://www.nbflyfish.com/deschutes-river",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Deschutes River Camp Trips; guide number 1116",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Do not revive Grindstone from navigation or older descriptive paragraphs below the closure notice."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_trip_types",
+          "value": "Single-day trips",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "burrell-deschutes",
+            "url": "https://www.nbflyfish.com/deschutes-river",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Deschutes River Camp Trips; guide number 1116",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Do not revive Grindstone from navigation or older descriptive paragraphs below the closure notice."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_trip_types",
+          "value": "Multi-day camp trips",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "burrell-deschutes",
+            "url": "https://www.nbflyfish.com/deschutes-river",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Deschutes River Camp Trips; guide number 1116",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Do not revive Grindstone from navigation or older descriptive paragraphs below the closure notice."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        }
+      ],
+      "conflicts": [],
+      "withheld_reason": null,
+      "identity_sources": [
+        {
+          "source_id": "burrell-about",
+          "url": "https://www.nbflyfish.com/about",
+          "source_type": "operator_site",
+          "retrieval_method": "parsed_page",
+          "locator": "About; Neal Burrell Fly Fishing LLC",
+          "source_content_date": null,
+          "reviewed_on": "2026-11-15"
+        },
+        {
+          "source_id": "burrell-deschutes",
+          "url": "https://www.nbflyfish.com/deschutes-river",
+          "source_type": "operator_site",
+          "retrieval_method": "parsed_page",
+          "locator": "Deschutes River Camp Trips; guide number 1116",
+          "source_content_date": null,
+          "reviewed_on": "2026-11-15"
+        }
+      ]
+    },
+    {
+      "registration_id": "OG.0001224",
+      "name": "Jeremy Toman",
+      "review_status": "retrieval_limited_pending_editorial",
+      "publication_approved": false,
+      "before": {
+        "directory_name": "Jeremy Toman",
+        "directory_business": "Toman's Outdoor Adventures Inc",
+        "public_enrichment": null
+      },
+      "identity": {
+        "assessment": "Manufacturer directory explicitly names Jeremy Toman and links tomansoutdoors.com; trip-page text was available through search indexing, not direct fetch.",
+        "source_ids": [
+          "toman-manufacturer"
+        ],
+        "legal_identity_verified": false
+      },
+      "limitations": [
+        "Recheck the operator page directly before publishing its trip details. Indexed text does not establish current availability."
+      ],
+      "exclusions": [],
+      "failed_or_limited_fetches": [
+        {
+          "url": "https://tomansoutdoors.com/tomans-king-camp-information/",
+          "result": "timeout",
+          "fallback_source_id": "toman-camp"
+        },
+        {
+          "url": "https://tomansoutdoors.com/",
+          "result": "timeout",
+          "fallback_source_id": "toman-manufacturer"
+        }
+      ],
+      "existing_facts": [],
+      "proposed_additions": [],
+      "unsupported_fields": [],
+      "conflicts": [],
+      "withheld_reason": "Operator source retrieval was limited; direct recheck required.",
+      "identity_sources": [
+        {
+          "source_id": "toman-manufacturer",
+          "url": "https://alumaweldboats.com/products/tomans-guide-service",
+          "source_type": "industry_directory",
+          "retrieval_method": "parsed_page",
+          "locator": "Toman’s Guide Service: Jeremy Toman and website",
+          "source_content_date": null,
+          "reviewed_on": "2026-11-15"
+        }
+      ]
+    },
+    {
+      "registration_id": "OG.0001395",
+      "name": "Thomas Hyde",
+      "review_status": "source_supported_pending_editorial",
+      "publication_approved": false,
+      "before": {
+        "directory_name": "Thomas Hyde",
+        "directory_business": "Yamsi Fly Fishing 1, Inc",
+        "public_enrichment": null
+      },
+      "identity": {
+        "assessment": "About page names Tom Hyde as an owner and guide at Yamsi; Tom/Thomas is a source-backed proposed alias, not authority to merge family members.",
+        "source_ids": [
+          "yamsi-about"
+        ],
+        "legal_identity_verified": false
+      },
+      "limitations": [
+        "Tom, John and Caden Hyde must remain separate people. No personal reviews or licenses are transferred between them."
+      ],
+      "exclusions": [],
+      "failed_or_limited_fetches": [],
+      "existing_facts": [],
+      "proposed_additions": [
+        {
+          "field": "advertised_waters",
+          "value": "Williamson River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "yamsi",
+            "url": "https://yamsiflyfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Williamson headwaters; redband and brook trout",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Tom, John and Caden Hyde must remain separate people. No personal reviews or licenses are transferred between them."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "display_names",
+          "value": "Tom Hyde",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "yamsi-about",
+            "url": "https://yamsiflyfishing.com/about/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Meet the Hydes: Tom Hyde; other family members are distinct",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Tom, John and Caden Hyde must remain separate people. No personal reviews or licenses are transferred between them."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "searchAliases",
+          "target_note": "Source-listed name; identity and alias need editorial approval."
+        }
+      ],
+      "unsupported_fields": [
+        {
+          "field": "business_names",
+          "value": "Yamsi Fly Fishing",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "yamsi",
+            "url": "https://yamsiflyfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Williamson headwaters; redband and brook trout",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Tom, John and Caden Hyde must remain separate people. No personal reviews or licenses are transferred between them."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Redband Trout",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "yamsi",
+            "url": "https://yamsiflyfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Williamson headwaters; redband and brook trout",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Tom, John and Caden Hyde must remain separate people. No personal reviews or licenses are transferred between them."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Brook Trout",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "yamsi",
+            "url": "https://yamsiflyfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Williamson headwaters; redband and brook trout",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Tom, John and Caden Hyde must remain separate people. No personal reviews or licenses are transferred between them."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_methods",
+          "value": "Fly fishing",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "yamsi",
+            "url": "https://yamsiflyfishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Williamson headwaters; redband and brook trout",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Tom, John and Caden Hyde must remain separate people. No personal reviews or licenses are transferred between them."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        }
+      ],
+      "conflicts": [],
+      "withheld_reason": null,
+      "identity_sources": [
+        {
+          "source_id": "yamsi-about",
+          "url": "https://yamsiflyfishing.com/about/",
+          "source_type": "operator_site",
+          "retrieval_method": "parsed_page",
+          "locator": "Meet the Hydes: Tom Hyde; other family members are distinct",
+          "source_content_date": null,
+          "reviewed_on": "2026-11-15"
+        }
+      ]
+    },
+    {
+      "registration_id": "OG.0001881",
+      "name": "Daniel Chambers",
+      "review_status": "business_identity_hold",
+      "publication_approved": false,
+      "before": {
+        "directory_name": "Daniel Chambers",
+        "directory_business": "RiverStone Adventures LLC",
+        "public_enrichment": null
+      },
+      "identity": {
+        "assessment": "Trip page supports the RiverStone business offering but does not name Daniel Chambers. No individual linkage was independently established.",
+        "source_ids": [
+          "riverstone"
+        ],
+        "legal_identity_verified": false
+      },
+      "limitations": [
+        "Hold all person-profile integration until Daniel Chambers’ association is corroborated; do not treat a matching company name as a personal identity proof."
+      ],
+      "exclusions": [],
+      "failed_or_limited_fetches": [
+        {
+          "url": "https://riverstoneadventures.com/",
+          "result": "bad_gateway",
+          "fallback_source_id": "riverstone"
+        }
+      ],
+      "existing_facts": [],
+      "proposed_additions": [],
+      "unsupported_fields": [],
+      "conflicts": [],
+      "withheld_reason": "Daniel Chambers and RiverStone individual association unresolved.",
+      "identity_sources": [
+        {
+          "source_id": "riverstone",
+          "url": "https://riverstoneadventures.com/multi-day-overnight-fishing-trip/",
+          "source_type": "operator_site",
+          "retrieval_method": "parsed_page",
+          "locator": "Multi-Day Overnight Fishing Trip",
+          "source_content_date": null,
+          "reviewed_on": "2026-11-15"
+        }
+      ]
+    },
+    {
+      "registration_id": "OG.0002074",
+      "name": "John Klar",
+      "review_status": "source_supported_pending_editorial",
+      "publication_approved": false,
+      "before": {
+        "directory_name": "John Klar",
+        "directory_business": null,
+        "public_enrichment": null
+      },
+      "identity": {
+        "assessment": "Page names John Klar as its Northern California fishing guide.",
+        "source_ids": [
+          "klar"
+        ],
+        "legal_identity_verified": false
+      },
+      "limitations": [
+        "Northern California trip advertising does not contradict an Oregon registry entry. No current operating permit or seasonal availability inferred."
+      ],
+      "exclusions": [],
+      "failed_or_limited_fetches": [],
+      "existing_facts": [
+        {
+          "field": "display_names",
+          "value": "John Klar",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "klar",
+            "url": "https://johnklar.com/trinity-fishing-guide",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "John Klar heading; salmon and steelhead on Trinity and Smith",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Northern California trip advertising does not contradict an Oregon registry entry. No current operating permit or seasonal availability inferred."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "baseline": "directory registry"
+        }
+      ],
+      "proposed_additions": [
+        {
+          "field": "advertised_waters",
+          "value": "Trinity River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "klar",
+            "url": "https://johnklar.com/trinity-fishing-guide",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "John Klar heading; salmon and steelhead on Trinity and Smith",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Northern California trip advertising does not contradict an Oregon registry entry. No current operating permit or seasonal availability inferred."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Smith River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "klar",
+            "url": "https://johnklar.com/trinity-fishing-guide",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "John Klar heading; salmon and steelhead on Trinity and Smith",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Northern California trip advertising does not contradict an Oregon registry entry. No current operating permit or seasonal availability inferred."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        }
+      ],
+      "unsupported_fields": [
+        {
+          "field": "advertised_species",
+          "value": "Salmon",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "klar",
+            "url": "https://johnklar.com/trinity-fishing-guide",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "John Klar heading; salmon and steelhead on Trinity and Smith",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Northern California trip advertising does not contradict an Oregon registry entry. No current operating permit or seasonal availability inferred."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Steelhead",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "klar",
+            "url": "https://johnklar.com/trinity-fishing-guide",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "John Klar heading; salmon and steelhead on Trinity and Smith",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Northern California trip advertising does not contradict an Oregon registry entry. No current operating permit or seasonal availability inferred."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        }
+      ],
+      "conflicts": [],
+      "withheld_reason": null,
+      "identity_sources": [
+        {
+          "source_id": "klar",
+          "url": "https://johnklar.com/trinity-fishing-guide",
+          "source_type": "operator_site",
+          "retrieval_method": "parsed_page",
+          "locator": "John Klar heading; salmon and steelhead on Trinity and Smith",
+          "source_content_date": null,
+          "reviewed_on": "2026-11-15"
+        }
+      ]
+    },
+    {
+      "registration_id": "OG.0002329",
+      "name": "John Plughoff",
+      "review_status": "source_supported_pending_editorial",
+      "publication_approved": false,
+      "before": {
+        "directory_name": "John Plughoff",
+        "directory_business": "Plughoff Outfitters",
+        "public_enrichment": null
+      },
+      "identity": {
+        "assessment": "Trips page explicitly identifies John Plughoff as owner/operator.",
+        "source_ids": [
+          "plughoff"
+        ],
+        "legal_identity_verified": false
+      },
+      "limitations": [
+        "Do not turn the page’s advertised seasonal dates into official openings or its license self-claims into verified credentials."
+      ],
+      "exclusions": [],
+      "failed_or_limited_fetches": [],
+      "existing_facts": [
+        {
+          "field": "display_names",
+          "value": "John Plughoff",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "plughoff",
+            "url": "https://plughoffoutfitters.com/trips",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "John Plughoff identity and trip sections; no season-legality inference",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Do not turn the page’s advertised seasonal dates into official openings or its license self-claims into verified credentials."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "baseline": "directory registry"
+        }
+      ],
+      "proposed_additions": [
+        {
+          "field": "advertised_waters",
+          "value": "Columbia River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "plughoff",
+            "url": "https://plughoffoutfitters.com/trips",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "John Plughoff identity and trip sections; no season-legality inference",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Do not turn the page’s advertised seasonal dates into official openings or its license self-claims into verified credentials."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Snake River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "plughoff",
+            "url": "https://plughoffoutfitters.com/trips",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "John Plughoff identity and trip sections; no season-legality inference",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Do not turn the page’s advertised seasonal dates into official openings or its license self-claims into verified credentials."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Hanford Reach",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "plughoff",
+            "url": "https://plughoffoutfitters.com/trips",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "John Plughoff identity and trip sections; no season-legality inference",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Do not turn the page’s advertised seasonal dates into official openings or its license self-claims into verified credentials."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Buoy 10",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "plughoff",
+            "url": "https://plughoffoutfitters.com/trips",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "John Plughoff identity and trip sections; no season-legality inference",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Do not turn the page’s advertised seasonal dates into official openings or its license self-claims into verified credentials."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        }
+      ],
+      "unsupported_fields": [
+        {
+          "field": "advertised_locations",
+          "value": "Tri-Cities, Washington",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "plughoff",
+            "url": "https://plughoffoutfitters.com/trips",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "John Plughoff identity and trip sections; no season-legality inference",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Do not turn the page’s advertised seasonal dates into official openings or its license self-claims into verified credentials."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_locations",
+          "value": "Astoria, Oregon",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "plughoff",
+            "url": "https://plughoffoutfitters.com/trips",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "John Plughoff identity and trip sections; no season-legality inference",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Do not turn the page’s advertised seasonal dates into official openings or its license self-claims into verified credentials."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_locations",
+          "value": "Mouth of Klickitat River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "plughoff",
+            "url": "https://plughoffoutfitters.com/trips",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "John Plughoff identity and trip sections; no season-legality inference",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Do not turn the page’s advertised seasonal dates into official openings or its license self-claims into verified credentials."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Chinook Salmon",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "plughoff",
+            "url": "https://plughoffoutfitters.com/trips",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "John Plughoff identity and trip sections; no season-legality inference",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Do not turn the page’s advertised seasonal dates into official openings or its license self-claims into verified credentials."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Coho Salmon",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "plughoff",
+            "url": "https://plughoffoutfitters.com/trips",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "John Plughoff identity and trip sections; no season-legality inference",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Do not turn the page’s advertised seasonal dates into official openings or its license self-claims into verified credentials."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Sockeye Salmon",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "plughoff",
+            "url": "https://plughoffoutfitters.com/trips",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "John Plughoff identity and trip sections; no season-legality inference",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Do not turn the page’s advertised seasonal dates into official openings or its license self-claims into verified credentials."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Walleye",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "plughoff",
+            "url": "https://plughoffoutfitters.com/trips",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "John Plughoff identity and trip sections; no season-legality inference",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Do not turn the page’s advertised seasonal dates into official openings or its license self-claims into verified credentials."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Sturgeon",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "plughoff",
+            "url": "https://plughoffoutfitters.com/trips",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "John Plughoff identity and trip sections; no season-legality inference",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Do not turn the page’s advertised seasonal dates into official openings or its license self-claims into verified credentials."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        }
+      ],
+      "conflicts": [],
+      "withheld_reason": null,
+      "identity_sources": [
+        {
+          "source_id": "plughoff",
+          "url": "https://plughoffoutfitters.com/trips",
+          "source_type": "operator_site",
+          "retrieval_method": "parsed_page",
+          "locator": "John Plughoff identity and trip sections; no season-legality inference",
+          "source_content_date": null,
+          "reviewed_on": "2026-11-15"
+        }
+      ]
+    },
+    {
+      "registration_id": "OG.0002596",
+      "name": "Benjamin Stephenson",
+      "review_status": "source_supported_pending_editorial",
+      "publication_approved": false,
+      "before": {
+        "directory_name": "Benjamin Stephenson",
+        "directory_business": "Outfishing Adventures LLC",
+        "public_enrichment": null
+      },
+      "identity": {
+        "assessment": "Business site names Ben Stephenson and Evan Unti separately; Ben/Benjamin is a proposed alias, not an identity merge.",
+        "source_ids": [
+          "outfishing"
+        ],
+        "legal_identity_verified": false
+      },
+      "limitations": [
+        "Business offerings are not a guarantee that Ben personally guides each trip. Keep Evan Unti distinct."
+      ],
+      "exclusions": [],
+      "failed_or_limited_fetches": [],
+      "existing_facts": [],
+      "proposed_additions": [
+        {
+          "field": "display_names",
+          "value": "Ben Stephenson",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "outfishing",
+            "url": "https://www.outfishingadventures.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Guided Fly Fishing Trips on the Deschutes River; Ben Stephenson and Evan Unti",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Business offerings are not a guarantee that Ben personally guides each trip. Keep Evan Unti distinct."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "searchAliases",
+          "target_note": "Source-listed name; identity and alias need editorial approval."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Lower Deschutes River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "outfishing",
+            "url": "https://www.outfishingadventures.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Guided Fly Fishing Trips on the Deschutes River; Ben Stephenson and Evan Unti",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Business offerings are not a guarantee that Ben personally guides each trip. Keep Evan Unti distinct."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        }
+      ],
+      "unsupported_fields": [
+        {
+          "field": "advertised_species",
+          "value": "Redband Trout",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "outfishing",
+            "url": "https://www.outfishingadventures.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Guided Fly Fishing Trips on the Deschutes River; Ben Stephenson and Evan Unti",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Business offerings are not a guarantee that Ben personally guides each trip. Keep Evan Unti distinct."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Steelhead",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "outfishing",
+            "url": "https://www.outfishingadventures.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Guided Fly Fishing Trips on the Deschutes River; Ben Stephenson and Evan Unti",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Business offerings are not a guarantee that Ben personally guides each trip. Keep Evan Unti distinct."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_methods",
+          "value": "Fly fishing",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "outfishing",
+            "url": "https://www.outfishingadventures.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Guided Fly Fishing Trips on the Deschutes River; Ben Stephenson and Evan Unti",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Business offerings are not a guarantee that Ben personally guides each trip. Keep Evan Unti distinct."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_trip_types",
+          "value": "Day trips",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "outfishing",
+            "url": "https://www.outfishingadventures.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Guided Fly Fishing Trips on the Deschutes River; Ben Stephenson and Evan Unti",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Business offerings are not a guarantee that Ben personally guides each trip. Keep Evan Unti distinct."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_trip_types",
+          "value": "Overnight camp trips",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "outfishing",
+            "url": "https://www.outfishingadventures.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Guided Fly Fishing Trips on the Deschutes River; Ben Stephenson and Evan Unti",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Business offerings are not a guarantee that Ben personally guides each trip. Keep Evan Unti distinct."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        }
+      ],
+      "conflicts": [],
+      "withheld_reason": null,
+      "identity_sources": [
+        {
+          "source_id": "outfishing",
+          "url": "https://www.outfishingadventures.com/",
+          "source_type": "operator_site",
+          "retrieval_method": "parsed_page",
+          "locator": "Guided Fly Fishing Trips on the Deschutes River; Ben Stephenson and Evan Unti",
+          "source_content_date": null,
+          "reviewed_on": "2026-11-15"
+        }
+      ]
+    },
+    {
+      "registration_id": "OG.0003696",
+      "name": "Jason Rounsaville",
+      "review_status": "source_supported_pending_editorial",
+      "publication_approved": false,
+      "before": {
+        "directory_name": "Jason Rounsaville",
+        "directory_business": "All American Guide Service LLC",
+        "public_enrichment": null
+      },
+      "identity": {
+        "assessment": "Business homepage explicitly identifies Jason Rounsaville as managing captain.",
+        "source_ids": [
+          "all-american"
+        ],
+        "legal_identity_verified": false
+      },
+      "limitations": [
+        "Species come from advertised service categories. No narrower species, port, current boat assignment or licensing claim is inferred."
+      ],
+      "exclusions": [],
+      "failed_or_limited_fetches": [],
+      "existing_facts": [
+        {
+          "field": "display_names",
+          "value": "Jason Rounsaville",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "all-american",
+            "url": "https://www.allamericanguideservice.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Jason Rounsaville introduction and Fishing menu; not customer testimonial",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Species come from advertised service categories. No narrower species, port, current boat assignment or licensing claim is inferred."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "baseline": "directory registry"
+        }
+      ],
+      "proposed_additions": [],
+      "unsupported_fields": [
+        {
+          "field": "advertised_locations",
+          "value": "Oregon",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "all-american",
+            "url": "https://www.allamericanguideservice.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Jason Rounsaville introduction and Fishing menu; not customer testimonial",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Species come from advertised service categories. No narrower species, port, current boat assignment or licensing claim is inferred."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Tuna",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "all-american",
+            "url": "https://www.allamericanguideservice.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Jason Rounsaville introduction and Fishing menu; not customer testimonial",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Species come from advertised service categories. No narrower species, port, current boat assignment or licensing claim is inferred."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Halibut",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "all-american",
+            "url": "https://www.allamericanguideservice.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Jason Rounsaville introduction and Fishing menu; not customer testimonial",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Species come from advertised service categories. No narrower species, port, current boat assignment or licensing claim is inferred."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Rockfish",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "all-american",
+            "url": "https://www.allamericanguideservice.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Jason Rounsaville introduction and Fishing menu; not customer testimonial",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Species come from advertised service categories. No narrower species, port, current boat assignment or licensing claim is inferred."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Sturgeon",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "all-american",
+            "url": "https://www.allamericanguideservice.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Jason Rounsaville introduction and Fishing menu; not customer testimonial",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Species come from advertised service categories. No narrower species, port, current boat assignment or licensing claim is inferred."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Salmon",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "all-american",
+            "url": "https://www.allamericanguideservice.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Jason Rounsaville introduction and Fishing menu; not customer testimonial",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Species come from advertised service categories. No narrower species, port, current boat assignment or licensing claim is inferred."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Trout",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "all-american",
+            "url": "https://www.allamericanguideservice.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Jason Rounsaville introduction and Fishing menu; not customer testimonial",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Species come from advertised service categories. No narrower species, port, current boat assignment or licensing claim is inferred."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Kokanee",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "all-american",
+            "url": "https://www.allamericanguideservice.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Jason Rounsaville introduction and Fishing menu; not customer testimonial",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Species come from advertised service categories. No narrower species, port, current boat assignment or licensing claim is inferred."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Crab",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "all-american",
+            "url": "https://www.allamericanguideservice.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Jason Rounsaville introduction and Fishing menu; not customer testimonial",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Species come from advertised service categories. No narrower species, port, current boat assignment or licensing claim is inferred."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        }
+      ],
+      "conflicts": [],
+      "withheld_reason": null,
+      "identity_sources": [
+        {
+          "source_id": "all-american",
+          "url": "https://www.allamericanguideservice.com/",
+          "source_type": "operator_site",
+          "retrieval_method": "parsed_page",
+          "locator": "Jason Rounsaville introduction and Fishing menu; not customer testimonial",
+          "source_content_date": null,
+          "reviewed_on": "2026-11-15"
+        }
+      ]
+    },
+    {
+      "registration_id": "OG.0003889",
+      "name": "Gregory Hitchcock",
+      "review_status": "source_supported_pending_editorial",
+      "publication_approved": false,
+      "before": {
+        "directory_name": "Gregory Hitchcock",
+        "directory_business": "Vice Outdoors LLC",
+        "public_enrichment": null
+      },
+      "identity": {
+        "assessment": "Guide roster names Greg Hitchcock at Vice Outdoors; Greg/Gregory is a proposed alias, not an identity credential.",
+        "source_ids": [
+          "vice-guides"
+        ],
+        "legal_identity_verified": false
+      },
+      "limitations": [
+        "Waters and methods are business-level offerings, not proof Greg leads every trip. Other named guides remain distinct. Ignore embedded Google reviews."
+      ],
+      "exclusions": [],
+      "failed_or_limited_fetches": [],
+      "existing_facts": [],
+      "proposed_additions": [
+        {
+          "field": "display_names",
+          "value": "Greg Hitchcock",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "vice-guides",
+            "url": "https://viceoutdoorsllc.com/meet-the-guides/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Greg Hitchcock subsection only",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Waters and methods are business-level offerings, not proof Greg leads every trip. Other named guides remain distinct. Ignore embedded Google reviews."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "searchAliases",
+          "target_note": "Source-listed name; identity and alias need editorial approval."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Boise River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "vice-trips",
+            "url": "https://viceoutdoorsllc.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Boise and Owyhee service descriptions; excludes embedded Google reviews",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Waters and methods are business-level offerings, not proof Greg leads every trip. Other named guides remain distinct. Ignore embedded Google reviews."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Owyhee River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "vice-trips",
+            "url": "https://viceoutdoorsllc.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Boise and Owyhee service descriptions; excludes embedded Google reviews",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Waters and methods are business-level offerings, not proof Greg leads every trip. Other named guides remain distinct. Ignore embedded Google reviews."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        }
+      ],
+      "unsupported_fields": [
+        {
+          "field": "advertised_species",
+          "value": "Trout",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "vice-trips",
+            "url": "https://viceoutdoorsllc.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Boise and Owyhee service descriptions; excludes embedded Google reviews",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Waters and methods are business-level offerings, not proof Greg leads every trip. Other named guides remain distinct. Ignore embedded Google reviews."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Brown Trout",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "vice-trips",
+            "url": "https://viceoutdoorsllc.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Boise and Owyhee service descriptions; excludes embedded Google reviews",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Waters and methods are business-level offerings, not proof Greg leads every trip. Other named guides remain distinct. Ignore embedded Google reviews."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_methods",
+          "value": "Fly fishing",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "vice-trips",
+            "url": "https://viceoutdoorsllc.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Boise and Owyhee service descriptions; excludes embedded Google reviews",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Waters and methods are business-level offerings, not proof Greg leads every trip. Other named guides remain distinct. Ignore embedded Google reviews."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_methods",
+          "value": "Walk-and-wade fishing",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "vice-trips",
+            "url": "https://viceoutdoorsllc.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Boise and Owyhee service descriptions; excludes embedded Google reviews",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Waters and methods are business-level offerings, not proof Greg leads every trip. Other named guides remain distinct. Ignore embedded Google reviews."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_trip_types",
+          "value": "Float trips",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "vice-trips",
+            "url": "https://viceoutdoorsllc.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Boise and Owyhee service descriptions; excludes embedded Google reviews",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Waters and methods are business-level offerings, not proof Greg leads every trip. Other named guides remain distinct. Ignore embedded Google reviews."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_trip_types",
+          "value": "Casting lessons",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "vice-trips",
+            "url": "https://viceoutdoorsllc.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Boise and Owyhee service descriptions; excludes embedded Google reviews",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Waters and methods are business-level offerings, not proof Greg leads every trip. Other named guides remain distinct. Ignore embedded Google reviews."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        }
+      ],
+      "conflicts": [],
+      "withheld_reason": null,
+      "identity_sources": [
+        {
+          "source_id": "vice-guides",
+          "url": "https://viceoutdoorsllc.com/meet-the-guides/",
+          "source_type": "operator_site",
+          "retrieval_method": "parsed_page",
+          "locator": "Greg Hitchcock subsection only",
+          "source_content_date": null,
+          "reviewed_on": "2026-11-15"
+        }
+      ]
+    },
+    {
+      "registration_id": "OG.0003968",
+      "name": "Steven Balodis",
+      "review_status": "source_supported_pending_editorial",
+      "publication_approved": false,
+      "before": {
+        "directory_name": "Steven Balodis",
+        "directory_business": "Columbia Chrome",
+        "public_enrichment": null
+      },
+      "identity": {
+        "assessment": "About page names Steve Balodis at Columbia Chrome; Steve/Steven remains a proposed name variant.",
+        "source_ids": [
+          "columbia-about"
+        ],
+        "legal_identity_verified": false
+      },
+      "limitations": [
+        "The original rates lead yielded no readable text. Do not publish rates. Use inspected species/location pages instead; do not turn childhood fishing locations into offered trips."
+      ],
+      "exclusions": [],
+      "failed_or_limited_fetches": [
+        {
+          "url": "https://columbiachromefishing.com/rates/",
+          "result": "no_readable_text",
+          "fallback_source_id": "columbia-home"
+        }
+      ],
+      "existing_facts": [],
+      "proposed_additions": [
+        {
+          "field": "advertised_waters",
+          "value": "Columbia River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "columbia-waters",
+            "url": "https://columbiachromefishing.com/where-we-fish/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Columbia River; Astoria and Buoy 10",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "The original rates lead yielded no readable text. Do not publish rates. Use inspected species/location pages instead; do not turn childhood fishing locations into offered trips."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Buoy 10",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "columbia-waters",
+            "url": "https://columbiachromefishing.com/where-we-fish/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Columbia River; Astoria and Buoy 10",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "The original rates lead yielded no readable text. Do not publish rates. Use inspected species/location pages instead; do not turn childhood fishing locations into offered trips."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "display_names",
+          "value": "Steve Balodis",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "columbia-about",
+            "url": "https://columbiachromefishing.com/about/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Steve Balodis identification; excludes credential self-claims",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "The original rates lead yielded no readable text. Do not publish rates. Use inspected species/location pages instead; do not turn childhood fishing locations into offered trips."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "searchAliases",
+          "target_note": "Source-listed name; identity and alias need editorial approval."
+        }
+      ],
+      "unsupported_fields": [
+        {
+          "field": "advertised_species",
+          "value": "Salmon",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "columbia-home",
+            "url": "https://columbiachromefishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Guided trips; species and About Steve Balodis link",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "The original rates lead yielded no readable text. Do not publish rates. Use inspected species/location pages instead; do not turn childhood fishing locations into offered trips."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Steelhead",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "columbia-home",
+            "url": "https://columbiachromefishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Guided trips; species and About Steve Balodis link",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "The original rates lead yielded no readable text. Do not publish rates. Use inspected species/location pages instead; do not turn childhood fishing locations into offered trips."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Sturgeon",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "columbia-home",
+            "url": "https://columbiachromefishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Guided trips; species and About Steve Balodis link",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "The original rates lead yielded no readable text. Do not publish rates. Use inspected species/location pages instead; do not turn childhood fishing locations into offered trips."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Walleye",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "columbia-home",
+            "url": "https://columbiachromefishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Guided trips; species and About Steve Balodis link",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "The original rates lead yielded no readable text. Do not publish rates. Use inspected species/location pages instead; do not turn childhood fishing locations into offered trips."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Shad",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "columbia-home",
+            "url": "https://columbiachromefishing.com/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Guided trips; species and About Steve Balodis link",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "The original rates lead yielded no readable text. Do not publish rates. Use inspected species/location pages instead; do not turn childhood fishing locations into offered trips."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_locations",
+          "value": "Astoria, Oregon",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "columbia-waters",
+            "url": "https://columbiachromefishing.com/where-we-fish/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Columbia River; Astoria and Buoy 10",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "The original rates lead yielded no readable text. Do not publish rates. Use inspected species/location pages instead; do not turn childhood fishing locations into offered trips."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        }
+      ],
+      "conflicts": [],
+      "withheld_reason": null,
+      "identity_sources": [
+        {
+          "source_id": "columbia-about",
+          "url": "https://columbiachromefishing.com/about/",
+          "source_type": "operator_site",
+          "retrieval_method": "parsed_page",
+          "locator": "Steve Balodis identification; excludes credential self-claims",
+          "source_content_date": null,
+          "reviewed_on": "2026-11-15"
+        }
+      ]
+    },
+    {
+      "registration_id": "OG.0003993",
+      "name": "Jon Ferguson",
+      "review_status": "source_supported_pending_editorial",
+      "publication_approved": false,
+      "before": {
+        "directory_name": "Jon Ferguson",
+        "directory_business": "Ferg's Guided Fishing ",
+        "public_enrichment": null
+      },
+      "identity": {
+        "assessment": "Meet the Captain section explicitly names Jon Ferguson as owner/operator.",
+        "source_ids": [
+          "ferg"
+        ],
+        "legal_identity_verified": false
+      },
+      "limitations": [
+        "Species and waters describe separate trip offers, not every possible pairing. No current availability or licensing is verified."
+      ],
+      "exclusions": [],
+      "failed_or_limited_fetches": [],
+      "existing_facts": [
+        {
+          "field": "display_names",
+          "value": "Jon Ferguson",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "ferg",
+            "url": "https://fergs.fishing/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Fishing Opportunities; Meet the Captain: Jon Ferguson; excludes testimonials",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Species and waters describe separate trip offers, not every possible pairing. No current availability or licensing is verified."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "baseline": "directory registry"
+        },
+        {
+          "field": "business_names",
+          "value": "FERG's Guided Fishing",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "ferg",
+            "url": "https://fergs.fishing/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Fishing Opportunities; Meet the Captain: Jon Ferguson; excludes testimonials",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Species and waters describe separate trip offers, not every possible pairing. No current availability or licensing is verified."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "baseline": "directory registry"
+        }
+      ],
+      "proposed_additions": [
+        {
+          "field": "advertised_waters",
+          "value": "Columbia River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "ferg",
+            "url": "https://fergs.fishing/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Fishing Opportunities; Meet the Captain: Jon Ferguson; excludes testimonials",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Species and waters describe separate trip offers, not every possible pairing. No current availability or licensing is verified."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Willamette River",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "ferg",
+            "url": "https://fergs.fishing/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Fishing Opportunities; Meet the Captain: Jon Ferguson; excludes testimonials",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Species and waters describe separate trip offers, not every possible pairing. No current availability or licensing is verified."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Pacific Ocean",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "ferg",
+            "url": "https://fergs.fishing/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Fishing Opportunities; Meet the Captain: Jon Ferguson; excludes testimonials",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Species and waters describe separate trip offers, not every possible pairing. No current availability or licensing is verified."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Buoy 10",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "ferg",
+            "url": "https://fergs.fishing/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Fishing Opportunities; Meet the Captain: Jon Ferguson; excludes testimonials",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Species and waters describe separate trip offers, not every possible pairing. No current availability or licensing is verified."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Lake Merwin",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "ferg",
+            "url": "https://fergs.fishing/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Fishing Opportunities; Meet the Captain: Jon Ferguson; excludes testimonials",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Species and waters describe separate trip offers, not every possible pairing. No current availability or licensing is verified."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        },
+        {
+          "field": "advertised_waters",
+          "value": "Yale Lake",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "ferg",
+            "url": "https://fergs.fishing/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Fishing Opportunities; Meet the Captain: Jon Ferguson; excludes testimonials",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Species and waters describe separate trip offers, not every possible pairing. No current availability or licensing is verified."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "target_field": "advertisedWaters",
+          "target_note": "Source-advertised water, not proof of individual expertise; source type requires editorial mapping."
+        }
+      ],
+      "unsupported_fields": [
+        {
+          "field": "advertised_species",
+          "value": "Chinook Salmon",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "ferg",
+            "url": "https://fergs.fishing/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Fishing Opportunities; Meet the Captain: Jon Ferguson; excludes testimonials",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Species and waters describe separate trip offers, not every possible pairing. No current availability or licensing is verified."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Coho Salmon",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "ferg",
+            "url": "https://fergs.fishing/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Fishing Opportunities; Meet the Captain: Jon Ferguson; excludes testimonials",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Species and waters describe separate trip offers, not every possible pairing. No current availability or licensing is verified."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        },
+        {
+          "field": "advertised_species",
+          "value": "Kokanee",
+          "scope": "operator_advertises",
+          "source": {
+            "source_id": "ferg",
+            "url": "https://fergs.fishing/",
+            "source_type": "operator_site",
+            "retrieval_method": "parsed_page",
+            "locator": "Fishing Opportunities; Meet the Captain: Jon Ferguson; excludes testimonials",
+            "source_content_date": null,
+            "reviewed_on": "2026-11-15"
+          },
+          "limitations": [
+            "Species and waters describe separate trip offers, not every possible pairing. No current availability or licensing is verified."
+          ],
+          "publication_approved": false,
+          "additional_sources": [],
+          "reason": "No equivalent field in the current MVP enrichment schema."
+        }
+      ],
+      "conflicts": [],
+      "withheld_reason": null,
+      "identity_sources": [
+        {
+          "source_id": "ferg",
+          "url": "https://fergs.fishing/",
+          "source_type": "operator_site",
+          "retrieval_method": "parsed_page",
+          "locator": "Fishing Opportunities; Meet the Captain: Jon Ferguson; excludes testimonials",
+          "source_content_date": null,
+          "reviewed_on": "2026-11-15"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Review proposal only; no publication authorization or live database mapping.",
+    "Business offerings do not establish individual expertise or species-water-method combinations.",
+    "Review date is not an original publication date or proof of a direct capture.",
+    "Conflicts cover exact directory identity mismatches and explicit exclusions; semantic contradictions require editorial review."
+  ],
+  "counts": {
+    "existing_facts": 7,
+    "proposed_additions": 56,
+    "unsupported_fields": 92,
+    "conflicts": 0,
+    "withheld_records": 3,
+    "eligible_records": 17
+  },
+  "input_sha256": {
+    "BATCH13_SOURCE_REVIEW_20261115.json": "da334c7ae8e3629691b50a88c7db6b149266e88993b28a5ea9e55efab2c82437",
+    "oregon-guides.json": "3f0671e58d8d9f5615ba15668b7043fbc4f11859dafb10cf91068a5eb2a62081",
+    "guide-enrichment.json": "7b4cccd460ea2c0d73edab5d8fad8399332778c037078a758a3becca3cefa786"
+  }
+}

@@ -34,6 +34,10 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_chinook_wdfw_watch.py' -v
       - name: Test historical NOAA tide source, clock-time and publication safeguards
         run: python -m unittest discover -s tests -p 'test_noaa_astoria_2026_watch.py' -v
+      - name: Verify unpublished Batch 13 enrichment proposal
+        run: |
+          python -m unittest discover -s tests -p 'test_batch13_enrichment_proposal.py' -v
+          python scripts/batch13_enrichment_proposal.py --check
       - name: Check source-backed Chinook methodology and accuracy disclosures
         run: node --test tests/methodology.test.mjs
       - name: Verify guide profile provenance and honest review evidence labels
