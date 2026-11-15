@@ -1,0 +1,2 @@
+\set ON_ERROR_STOP on
+SELECT public.fixture_assert((SELECT count(*)=1 FROM public.guide_claims WHERE guide_id='10000000-0000-0000-0000-000000000009' AND status='approved') AND (SELECT status='pending' FROM public.guide_claims WHERE id='20000000-0000-0000-0000-000000000010') AND (SELECT count(*)=1 FROM public.moderation_audit WHERE target_id IN ('20000000-0000-0000-0000-000000000009','20000000-0000-0000-0000-000000000010')),'concurrent competing claims: one approved, loser pending, one audit');

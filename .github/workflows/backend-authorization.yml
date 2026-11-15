@@ -23,7 +23,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y postgresql postgresql-contrib
           echo "$(pg_config --bindir)" >> "$GITHUB_PATH"
-      - name: Reconstruct observed schema and test synthetic roles
+      - name: Test captured baseline, locked proposal, enabled fixtures, and concurrent claims
         run: |
           python3 -m unittest discover -s tests/backend-audit -p 'test_*.py' -v
           scripts/backend-audit/run-local.sh
