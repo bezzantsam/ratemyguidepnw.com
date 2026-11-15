@@ -70,7 +70,7 @@ test('batch-08 source-backed profiles and operator links are now in the public d
  'OG.0000441','OG.0000443','OG.0000450','OG.0000460','OG.0000461',
  'OG.0000462','OG.0000468','OG.0000469'
  ];
- assert.ok(Object.keys(enrich).length>=46);
+ assert.ok(Object.keys(enrich).length>=57);
  let waters=0;
  for(const id of added){
   const row=enrich[id];
@@ -87,4 +87,30 @@ test('batch-08 source-backed profiles and operator links are now in the public d
  assert.equal(waters,87);
  for(const held of ['OG.0000868','OG.0000449'])assert.equal(enrich[held],undefined);
  assert.match(read('components/GuideEnrichmentPanel.tsx'),/Visit guide website/);
+});
+
+test('batch 09 adds 11 sourced profiles and preserves four non-published research holds',()=>{
+ const enrich=JSON.parse(read('lib/guide-enrichment.json'));
+ const added=[
+ 'OG.0000470','OG.0000476','OG.0000484.BRO','OG.0000485',
+ 'OG.0000495','OG.0000502','OG.0000508','OG.0000509',
+ 'OG.0000518','OG.0000520','OG.0000527'
+ ];
+ let claims=0;
+ for(const id of added){
+  const row=enrich[id];
+  assert.ok(row, id);
+  assert.ok(row.searchAliases.length||row.advertisedWaters.length);
+  assert.ok(row.sourceLinks?.length);
+  for(const source of row.sourceLinks) assert.match(source.url,/^https:\/\//);
+  for(const water of row.advertisedWaters){
+   assert.match(water.sourceUrl,/^https:\/\//);
+   assert.equal(water.observedOn,'2026-11-14');
+   claims++;
+  }
+ }
+ assert.equal(claims,48);
+ for(const held of ['OG.0000489','OG.0000511','OG.0000519','OG.0000525']){
+  assert.equal(enrich[held],undefined);
+ }
 });
