@@ -50,7 +50,7 @@ export default function GuideEnrichmentPanel({registration}:{registration:string
     <a href={source.url} target="_blank" rel="noopener noreferrer nofollow">{source.label} ↗</a>
     {' · '}{sourceLabels[source.sourceType]} · Observed {source.observedOn}
    </li>)}</ul>
-   <p className="muted">A commercial source may report an affiliation without verifying credentials, legal identity or current service availability.</p>
+   <p className="muted">A commercial source may report an affiliation; it does not verify credentials, legal identity or current service availability.</p>
   </div>:null}
   <p className="muted">Angler reviews belong to the individual guide. A business link, shared website or nickname never merges two captain identities or their reviews.</p>
  </section>;
