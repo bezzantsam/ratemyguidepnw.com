@@ -4,10 +4,12 @@ import {chromium} from 'playwright-core';
 import {mkdirSync,readdirSync,readFileSync} from 'node:fs';
 import {join} from 'node:path';
 
-const origin='http://127.0.0.1:3157';
-const fakeApi='http://127.0.0.1:59999';
+const origin=process.env.TEST_BASE_URL;
+const fakeApi=process.env.TEST_API_URL;
+for(const value of [origin,fakeApi]){if(!value||!/^http:\/\/127\.0\.0\.1:\d+$/.test(value))throw new Error('Isolated loopback server URLs are required')}
+if(origin===fakeApi)throw new Error('App and backend must use separate owned ports');
 const executablePath=process.env.BROWSER_EXECUTABLE;
-if(!executablePath) throw new Error('Set BROWSER_EXECUTABLE to a local Chromium/Chrome executable. Serve the isolated build on 127.0.0.1:3157.');
+if(!executablePath) throw new Error('Set BROWSER_EXECUTABLE and use the isolated browser runner.');
 
 test('public MVP discovery and fail-closed identity flow in a browser', {timeout:120000}, async()=>{
  const browser=await chromium.launch({executablePath,headless:true});
@@ -93,7 +95,7 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
   assert.equal(await page.evaluate(()=>document.activeElement?.getAttribute('type')),'search','removing a search returns focus to the search box');
   await page.evaluate(()=>Object.defineProperty(navigator,'clipboard',{value:undefined,configurable:true}));
   await page.getByRole('button',{name:'Copy search link'}).click();
-  assert.match(await page.getByLabel('Search link',{exact:true}).inputValue(),/^http:\/\/127\.0\.0\.1:3157\/guides/);
+  assert.ok((await page.getByLabel('Search link',{exact:true}).inputValue()).startsWith(origin+'/guides'));
   await page.goto(`${origin}/guides/og-0000047?returnTo=${encodeURIComponent('https://evil.test')}`,{waitUntil:'domcontentloaded'});
   assert.equal(await page.getByRole('link',{name:'← Search guides'}).getAttribute('href'),'/guides');
   await page.goto(origin,{waitUntil:'domcontentloaded'});

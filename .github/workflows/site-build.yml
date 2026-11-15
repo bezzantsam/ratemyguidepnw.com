@@ -48,23 +48,19 @@ jobs:
         run: npm run test:mvp
       - name: TypeScript check
         run: npm run typecheck
-      - name: Build Next.js production assets with an isolated backend
-        run: bash scripts/build-fixture-browser.sh
+      - name: Verify browser build isolation and process cleanup
+        run: npm run test:isolation
       - name: Install Chromium for browser regression
         run: npx playwright-core install --with-deps chromium
-      - name: Run isolated browser regression
+      - name: Build and smoke test ordinary production data in an isolated snapshot
         shell: bash
         run: |
           set -euo pipefail
-          node node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 3157 > /tmp/mvp-server.log 2>&1 &
-          server=$!
-          trap 'kill "$server" 2>/dev/null || true' EXIT
-          ready=false
-          for attempt in {1..60}; do
-            if curl --silent --fail http://127.0.0.1:3157/ > /dev/null; then ready=true; break; fi
-            if ! kill -0 "$server" 2>/dev/null; then cat /tmp/mvp-server.log; exit 1; fi
-            sleep 1
-          done
-          if [ "$ready" != true ]; then cat /tmp/mvp-server.log; exit 1; fi
           export BROWSER_EXECUTABLE="$(node --input-type=module -e "import {chromium} from 'playwright-core'; console.log(chromium.executablePath())")"
-          npm run test:browser
+          node scripts/browser-isolation.mjs ordinary "$(git rev-parse 'HEAD^{tree}')"
+      - name: Build and test synthetic discovery in a separate isolated snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          export BROWSER_EXECUTABLE="$(node --input-type=module -e "import {chromium} from 'playwright-core'; console.log(chromium.executablePath())")"
+          bash scripts/build-fixture-browser.sh "$(git rev-parse 'HEAD^{tree}')"
