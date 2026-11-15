@@ -8,19 +8,22 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test:intel": "node --test tests/chinook-release.test.mjs tests/chinook-review-gate.test.mjs tests/build-efficiency.test.mjs",
-    "check": "npm run test:intel && npm run typecheck && npm run build"
+    "test:mvp": "node --test tests/mvp-directory-integration.test.mjs tests/washington-stable-ids.test.mjs tests/washington-identity-safety.test.mjs tests/guide-trust.test.mjs tests/captain-publication-gate.test.mjs",
+    "check": "npm run test:intel && npm run test:mvp && npm run typecheck && npm run build",
+    "test:browser": "node --test tests/mvp-browser.test.mjs"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.58.0",
+    "lucide-react": "^0.468.0",
     "next": "^15.5.0",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "lucide-react": "^0.468.0",
-    "@supabase/supabase-js": "^2.58.0"
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "playwright-core": "1.65.1",
     "typescript": "^5.8.0"
   }
 }
