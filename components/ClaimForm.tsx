@@ -2,13 +2,14 @@
 
 import {useEffect,useState} from 'react';
 import AuthPanel,{client} from './AuthPanel';
+import {matchesPublicGuideIdentity} from '@/lib/guide-db-identity';
 
 /**
  * A claim and its private evidence must be one database transaction.
  * The draft request_guide_claim() function is SECURITY INVOKER and subject
  * to live grants/RLS. No approved/verified/publication state comes from here.
  */
-export default function ClaimForm({name,listing,submitEnabled=false}:{name:string;listing:string;submitEnabled?:boolean}){
+export default function ClaimForm({name,listing,expectedBusiness=null,submitEnabled=false}:{name:string;listing:string;expectedBusiness?:string|null;submitEnabled?:boolean}){
   const [claimant,setClaimant]=useState('');
   const [business,setBusiness]=useState('');
   const [proof,setProof]=useState('');
@@ -45,9 +46,13 @@ export default function ClaimForm({name,listing,submitEnabled=false}:{name:strin
       }
       const publicSlug=listing.toLowerCase().replace(/[^a-z0-9]+/g,'-');
       const {data:guide,error:lookupError}=await client.from('guides')
-        .select('id').eq('slug',publicSlug).maybeSingle();
+        .select('id,full_name,outfit_name').eq('slug',publicSlug).maybeSingle();
       if(lookupError||!guide){
         setStatus('This directory listing is not yet connected for claims.');
+        return;
+      }
+      if(!matchesPublicGuideIdentity({name,business:expectedBusiness},guide)){
+        setStatus('Profile claiming is unavailable: this directory identity does not match its database record.');
         return;
       }
       // The server derives claimant_id from auth.uid(), inserts claim+evidence

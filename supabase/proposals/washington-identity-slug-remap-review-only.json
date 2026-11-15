@@ -1,0 +1,1101 @@
+{
+  "schema_version": 1,
+  "mode": "read_only_snapshot_reconciliation_no_database_writes",
+  "observed_on": "2026-11-14",
+  "source": "RateMyGuidePNW Supabase guide rows compared with lib/washington-raw.json and reviewed lib/washington-stable-ids.json",
+  "database_project": "rate-my-guides",
+  "counts": {
+    "expected": 158,
+    "matches": 158,
+    "unchanged": 26,
+    "slug_remaps_required": 132,
+    "ambiguous": 0
+  },
+  "warning": "This is a review-only observation, not SQL. Re-read live data and check all references immediately before any approved database change. A complete authenticated migration/rollback plan is mandatory.",
+  "proposed_changes": [
+    {
+      "old_slug": "wa-027",
+      "new_slug": "wa-026",
+      "registered_name": "Darrell Johnson",
+      "registered_business": "Far Corners Adventures",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-028",
+      "new_slug": "wa-027",
+      "registered_name": "David Godfrey",
+      "registered_business": "Salmon Seattle",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-029",
+      "new_slug": "wa-028",
+      "registered_name": "David Loper",
+      "registered_business": "Take Down Guide Service",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-030",
+      "new_slug": "wa-029",
+      "registered_name": "Desmond Enquist",
+      "registered_business": "Hookinitup Guide Service",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-031",
+      "new_slug": "wa-030",
+      "registered_name": "Douglas Saint-Denis",
+      "registered_business": "365 Charters",
+      "source": "WSGA/CAPS",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-032",
+      "new_slug": "wa-031",
+      "registered_name": "Dustin Rhodes",
+      "registered_business": "Fish Intimidators",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-033",
+      "new_slug": "wa-032",
+      "registered_name": "Eamon Hoffman",
+      "registered_business": null,
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-034",
+      "new_slug": "wa-033",
+      "registered_name": "Eric Linde",
+      "registered_business": "Linde’s Sportfishing",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-035",
+      "new_slug": "wa-034",
+      "registered_name": "Erik Brigham",
+      "registered_business": "Top Guides NW",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-036",
+      "new_slug": "wa-035",
+      "registered_name": "Greg Kain",
+      "registered_business": "Kains Fishing Adventures",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-037",
+      "new_slug": "wa-036",
+      "registered_name": "Ian Winder",
+      "registered_business": "Big Foot Fishing",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-038",
+      "new_slug": "wa-037",
+      "registered_name": "Jack Mitchell",
+      "registered_business": "The Evening Hatch",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-039",
+      "new_slug": "wa-038",
+      "registered_name": "Jackson Phillip",
+      "registered_business": "Miss Penny Sportfishing",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-040",
+      "new_slug": "wa-039",
+      "registered_name": "Jacob Munden",
+      "registered_business": "Mundens Rising Son Adventures",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-041",
+      "new_slug": "wa-040",
+      "registered_name": "Jared Cady",
+      "registered_business": "GetEm Dry",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-042",
+      "new_slug": "wa-041",
+      "registered_name": "Jason Ray",
+      "registered_business": "JD Rays Guide Service",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-044",
+      "new_slug": "wa-042",
+      "registered_name": "Jerome Jefferson",
+      "registered_business": "Twin J Charters",
+      "source": "WSGA/CAPS",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-045",
+      "new_slug": "wa-043",
+      "registered_name": "John Petrisin-Connolly",
+      "registered_business": "John Thomas Adventures",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-046",
+      "new_slug": "wa-044",
+      "registered_name": "John Kaiser",
+      "registered_business": "Tenacity Outdoors",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-047",
+      "new_slug": "wa-045",
+      "registered_name": "John Thiel",
+      "registered_business": "Alpha Angler Charters",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-048",
+      "new_slug": "wa-046",
+      "registered_name": "Jon Blank",
+      "registered_business": "Jon’s NW Outdoors",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-049",
+      "new_slug": "wa-047",
+      "registered_name": "Keith Robbins",
+      "registered_business": "A Spot Tail Guide Service",
+      "source": "WSGA/CAPS",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-050",
+      "new_slug": "wa-048",
+      "registered_name": "Kohl Baxter",
+      "registered_business": null,
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-051",
+      "new_slug": "wa-049",
+      "registered_name": "Luis SanDiego",
+      "registered_business": null,
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-053",
+      "new_slug": "wa-050",
+      "registered_name": "Mark Coleman",
+      "registered_business": "All Rivers & Saltwater Charters",
+      "source": "WSGA/CAPS",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-054",
+      "new_slug": "wa-051",
+      "registered_name": "Mark Maneval",
+      "registered_business": "Cascade Fishing Guides",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-055",
+      "new_slug": "wa-052",
+      "registered_name": "Matt Chandler",
+      "registered_business": "Get Hooked NW",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-056",
+      "new_slug": "wa-053",
+      "registered_name": "Matt Eleazer",
+      "registered_business": "East Fork Outfitters",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-057",
+      "new_slug": "wa-054",
+      "registered_name": "Matt Hartley",
+      "registered_business": null,
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-058",
+      "new_slug": "wa-055",
+      "registered_name": "Mike Ainsworth",
+      "registered_business": "First Light Guide Service",
+      "source": "WSGA/CAPS",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-059",
+      "new_slug": "wa-056",
+      "registered_name": "Mike Amodeo",
+      "registered_business": "Amodeo Fishing",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-060",
+      "new_slug": "wa-057",
+      "registered_name": "Mike Horne",
+      "registered_business": "Here Fishy Fishy Guide Service",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-061",
+      "new_slug": "wa-058",
+      "registered_name": "Mike Zavadlov",
+      "registered_business": "Mike Z Guide Service",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-062",
+      "new_slug": "wa-059",
+      "registered_name": "Mitchell Coleman",
+      "registered_business": "All Rivers & Saltwater Charters",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-063",
+      "new_slug": "wa-060",
+      "registered_name": "Nathan Schepker",
+      "registered_business": "Top Fly Guide Service",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-064",
+      "new_slug": "wa-061",
+      "registered_name": "Nate Hayes",
+      "registered_business": "Hayes Outdoor Adventures",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-065",
+      "new_slug": "wa-062",
+      "registered_name": "Neils Humphries",
+      "registered_business": "Riverdog Outfitters",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-066",
+      "new_slug": "wa-063",
+      "registered_name": "Nic Norbeck",
+      "registered_business": "Elite Guide Service",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-068",
+      "new_slug": "wa-064",
+      "registered_name": "Patric Gaffney",
+      "registered_business": "Gaffney’s Fishing Guide Service",
+      "source": "WSGA/local",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-069",
+      "new_slug": "wa-065",
+      "registered_name": "Robert (RJ) Bennett",
+      "registered_business": "Lower Columbia Guide Service",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-070",
+      "new_slug": "wa-066",
+      "registered_name": "Robert Fittro",
+      "registered_business": null,
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-071",
+      "new_slug": "wa-067",
+      "registered_name": "Robert Kratzer",
+      "registered_business": "Anglers Guide Service",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-072",
+      "new_slug": "wa-068",
+      "registered_name": "Robert Nowowiejski",
+      "registered_business": "Rob’s Guide Service",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-073",
+      "new_slug": "wa-069",
+      "registered_name": "Rob Hyatt",
+      "registered_business": "Another Adventure Outdoors",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-074",
+      "new_slug": "wa-070",
+      "registered_name": "Ryan McCaughan",
+      "registered_business": "Riverside Guide Service",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-075",
+      "new_slug": "wa-071",
+      "registered_name": "Ryan Bullock",
+      "registered_business": "Rain Coast Guides",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-076",
+      "new_slug": "wa-072",
+      "registered_name": "Sean Orr",
+      "registered_business": "RWA West Fishing Adventures",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-077",
+      "new_slug": "wa-073",
+      "registered_name": "Steven Hammond",
+      "registered_business": "Hammond Fishing Adventures",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-078",
+      "new_slug": "wa-074",
+      "registered_name": "Thomas Browning",
+      "registered_business": "Browning’s Sportfishing",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-079",
+      "new_slug": "wa-075",
+      "registered_name": "Thor Ostrom",
+      "registered_business": "Thunder Outdoors Fishing",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-080",
+      "new_slug": "wa-076",
+      "registered_name": "Toby Wyatt",
+      "registered_business": "Reel Time Fishing",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-081",
+      "new_slug": "wa-077",
+      "registered_name": "Todd Stoffel",
+      "registered_business": "Stoffel Sportfishing",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-082",
+      "new_slug": "wa-078",
+      "registered_name": "Todd Daniels",
+      "registered_business": "Tall Tails Guide Service",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-084",
+      "new_slug": "wa-079",
+      "registered_name": "Travis Choquette",
+      "registered_business": "Fish Hunters Guide Service",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-085",
+      "new_slug": "wa-080",
+      "registered_name": "Tyler Jackson",
+      "registered_business": "Jackson Outdoors",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-086",
+      "new_slug": "wa-081",
+      "registered_name": "Verdie Goodner",
+      "registered_business": "Goodner’s Guide Service",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-087",
+      "new_slug": "wa-082",
+      "registered_name": "Wade Giesbrecht",
+      "registered_business": "Fish Intimidators",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-088",
+      "new_slug": "wa-083",
+      "registered_name": "Wayne Morris",
+      "registered_business": "Renegade Fishing Charters",
+      "source": "WSGA/CAPS",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-089",
+      "new_slug": "wa-084",
+      "registered_name": "William (Billy) Herdman",
+      "registered_business": null,
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-090",
+      "new_slug": "wa-085",
+      "registered_name": "William Stoll",
+      "registered_business": "Miracle Lead Adventures",
+      "source": "WSGA",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-091",
+      "new_slug": "wa-086",
+      "registered_name": "Mathew Messing",
+      "registered_business": "Messin Around Fishing Charters",
+      "source": "CAPS",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-092",
+      "new_slug": "wa-087",
+      "registered_name": "Erik Boston",
+      "registered_business": "All Star Fishing Charters",
+      "source": "CAPS",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-093",
+      "new_slug": "wa-088",
+      "registered_name": "Jeff Christen",
+      "registered_business": "Axis Fishing Charters",
+      "source": "CAPS",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-094",
+      "new_slug": "wa-089",
+      "registered_name": "Chris Hoag",
+      "registered_business": "Big King Salmon Charters",
+      "source": "CAPS",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-095",
+      "new_slug": "wa-090",
+      "registered_name": "Rich Olson",
+      "registered_business": "Northwest Fishing Charters",
+      "source": "CAPS",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-096",
+      "new_slug": "wa-091",
+      "registered_name": "Murphy Pierson",
+      "registered_business": "Puget Sound Sports Fishing",
+      "source": "CAPS",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-097",
+      "new_slug": "wa-092",
+      "registered_name": "Dale Drogseth",
+      "registered_business": "Ruby D Charters",
+      "source": "CAPS",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-098",
+      "new_slug": "wa-093",
+      "registered_name": "Lisa Cepa",
+      "registered_business": "Why Knot Go Fish",
+      "source": "CAPS",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-099",
+      "new_slug": "wa-094",
+      "registered_name": "Gary Krein",
+      "registered_business": "All Star Fishing Charters",
+      "source": "CAPS",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-100",
+      "new_slug": "wa-095",
+      "registered_name": "Lawrence St.Luce",
+      "registered_business": "No Worries Fishing Charters",
+      "source": "CAPS",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-101",
+      "new_slug": "wa-096",
+      "registered_name": "Nick Kester",
+      "registered_business": "All Star Fishing Charters",
+      "source": "CAPS",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-102",
+      "new_slug": "wa-097",
+      "registered_name": "Justin Wong",
+      "registered_business": "Cut Plug Charter",
+      "source": "CAPS",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-103",
+      "new_slug": "wa-098",
+      "registered_name": "Carl Nyman",
+      "registered_business": "Fish Finders Private Charters",
+      "source": "CAPS",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-104",
+      "new_slug": "wa-099",
+      "registered_name": "Paul Kim",
+      "registered_business": "Fish PNW Guide Service",
+      "source": "CAPS",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-105",
+      "new_slug": "wa-100",
+      "registered_name": "Matt McCulloch",
+      "registered_business": "Tyee Charters",
+      "source": "CAPS",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-106",
+      "new_slug": "wa-101",
+      "registered_name": "Nathan Sperring",
+      "registered_business": "The Fishing Fanatic's Guide Service",
+      "source": "localfishingguides",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-107",
+      "new_slug": "wa-102",
+      "registered_name": "Bruce Hewitt",
+      "registered_business": "Going Fishing Guide Service",
+      "source": "localfishingguides",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-108",
+      "new_slug": "wa-103",
+      "registered_name": "Brad Wagner",
+      "registered_business": "Bobber Down Guide Service",
+      "source": "localfishingguides",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-109",
+      "new_slug": "wa-104",
+      "registered_name": "Nick Hendrickson",
+      "registered_business": "Olympic Peninsula Guide Service",
+      "source": "localfishingguides",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-110",
+      "new_slug": "wa-105",
+      "registered_name": "David Mallahan",
+      "registered_business": "Dave's Guide Service",
+      "source": "localfishingguides",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-111",
+      "new_slug": "wa-106",
+      "registered_name": "Tony Fana",
+      "registered_business": "REEL Obsession Fishing Guide Service",
+      "source": "localfishingguides",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-112",
+      "new_slug": "wa-107",
+      "registered_name": "Owen Mansfield",
+      "registered_business": "Rip Some Lips Guide Service",
+      "source": "localfishingguides",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-113",
+      "new_slug": "wa-108",
+      "registered_name": "Keith Colston",
+      "registered_business": "Stay Bent Fishing Tours",
+      "source": "localfishingguides",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-114",
+      "new_slug": "wa-109",
+      "registered_name": "Shawn",
+      "registered_business": "STS Guide Service",
+      "source": "localfishingguides",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-115",
+      "new_slug": "wa-110",
+      "registered_name": "Chris Benson",
+      "registered_business": "Tri City Guide Service",
+      "source": "localfishingguides",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-116",
+      "new_slug": "wa-111",
+      "registered_name": "Jeremy Wisdom",
+      "registered_business": "Wisdom Guide Service",
+      "source": "localfishingguides",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-117",
+      "new_slug": "wa-112",
+      "registered_name": "George",
+      "registered_business": "Preszlers Guide Service",
+      "source": "localfishingguides",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-118",
+      "new_slug": "wa-113",
+      "registered_name": "Dan Ponciano",
+      "registered_business": "Columbia River Fishing Guide",
+      "source": "localfishingguides",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-119",
+      "new_slug": "wa-114",
+      "registered_name": "Stuart Hurd",
+      "registered_business": "Hurd's Guide Services",
+      "source": "localfishingguides",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-120",
+      "new_slug": "wa-115",
+      "registered_name": "Adam Hocking",
+      "registered_business": "Steel Dreams Guide Service",
+      "source": "localfishingguides",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-121",
+      "new_slug": "wa-116",
+      "registered_name": "Jesse Kroetch",
+      "registered_business": "CastCadia Outfitters",
+      "source": "localfishingguides",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-122",
+      "new_slug": "wa-117",
+      "registered_name": "Lance Fisher",
+      "registered_business": "Lance Fisher Fishing",
+      "source": "localfishingguides",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-123",
+      "new_slug": "wa-118",
+      "registered_name": "Pete",
+      "registered_business": "Pete's Fishing Guide Service",
+      "source": "localfishingguides",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-124",
+      "new_slug": "wa-119",
+      "registered_name": "Wayne",
+      "registered_business": "Skagit River Guide Service",
+      "source": "localfishingguides",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-125",
+      "new_slug": "wa-120",
+      "registered_name": "Debra Stevens",
+      "registered_business": "Fishcatcher Charters",
+      "source": "NACO",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-126",
+      "new_slug": "wa-121",
+      "registered_name": "Brett Basim",
+      "registered_business": "Bretts Guide Service",
+      "source": "NACO",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-127",
+      "new_slug": "wa-122",
+      "registered_name": "Dave Brickles",
+      "registered_business": "Mutineer Charters",
+      "source": "NACO",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-128",
+      "new_slug": "wa-123",
+      "registered_name": "Derek Floyd",
+      "registered_business": "Camano Island",
+      "source": "NACO",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-129",
+      "new_slug": "wa-124",
+      "registered_name": "Michael Jablinske",
+      "registered_business": "All Season Charters",
+      "source": "NACO",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-130",
+      "new_slug": "wa-125",
+      "registered_name": "Len Osborne",
+      "registered_business": "All Star Fishing Charters",
+      "source": "NACO",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-131",
+      "new_slug": "wa-126",
+      "registered_name": "Jason Noorlander",
+      "registered_business": "Outlander Charters",
+      "source": "NACO",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-132",
+      "new_slug": "wa-127",
+      "registered_name": "Randy Jones",
+      "registered_business": "Venture Charters",
+      "source": "NACO",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-133",
+      "new_slug": "wa-128",
+      "registered_name": "Randy Lato",
+      "registered_business": "All-Ways Fishing",
+      "source": "NACO",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-134",
+      "new_slug": "wa-129",
+      "registered_name": "Chris West",
+      "registered_business": "Deep Sea",
+      "source": "NACO",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-135",
+      "new_slug": "wa-130",
+      "registered_name": "Michael Jamboretz",
+      "registered_business": "Jambos Sportfishing",
+      "source": "NACO",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-136",
+      "new_slug": "wa-131",
+      "registered_name": "David Drewry",
+      "registered_business": "Peninsula Sportsman LLC",
+      "source": "NACO",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-137",
+      "new_slug": "wa-132",
+      "registered_name": "Derek Anderson",
+      "registered_business": "Screamin Reels Guide Service",
+      "source": "NACO",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-138",
+      "new_slug": "wa-133",
+      "registered_name": "Ryan Mckitrick",
+      "registered_business": "Blue Eyes Sportsfishing",
+      "source": "NACO",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-139",
+      "new_slug": "wa-134",
+      "registered_name": "Tom Sawin",
+      "registered_business": "Captain and Crew Charters",
+      "source": "NACO",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-140",
+      "new_slug": "wa-135",
+      "registered_name": "Steven Kesling",
+      "registered_business": "Adventure Charters",
+      "source": "NACO",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-141",
+      "new_slug": "wa-136",
+      "registered_name": "Thomas Lines",
+      "registered_business": "Tight Lines Sport Fishing",
+      "source": "NACO",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-142",
+      "new_slug": "wa-137",
+      "registered_name": "Bradley Shride",
+      "registered_business": "Onco Sport Fishing",
+      "source": "NACO",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-143",
+      "new_slug": "wa-138",
+      "registered_name": "Scotty Crawford",
+      "registered_business": "Chrome Inc. Guide Service",
+      "source": "NW Fishing",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-144",
+      "new_slug": "wa-139",
+      "registered_name": "Danny Houfek",
+      "registered_business": "D&H Sport Fishing",
+      "source": "NW Fishing",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-145",
+      "new_slug": "wa-140",
+      "registered_name": "Michael Handy",
+      "registered_business": "Drifters Fishing Guide",
+      "source": "NW Fishing",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-146",
+      "new_slug": "wa-141",
+      "registered_name": "Paul Lewis",
+      "registered_business": "Fast Action Fishing",
+      "source": "NW Fishing",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-147",
+      "new_slug": "wa-142",
+      "registered_name": "Tyler Basballe",
+      "registered_business": "Ripple Effects Charters",
+      "source": "NW Fishing",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-148",
+      "new_slug": "wa-143",
+      "registered_name": "Brianna Bruce",
+      "registered_business": "Livin' Life Adventures",
+      "source": "NW Fishing",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-149",
+      "new_slug": "wa-144",
+      "registered_name": "Shelby Ross",
+      "registered_business": "Ross Outdoor Adventures",
+      "source": "NW Fishing",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-150",
+      "new_slug": "wa-145",
+      "registered_name": "Steve Morris",
+      "registered_business": "SJM Guide Service",
+      "source": "NW Fishing",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-151",
+      "new_slug": "wa-146",
+      "registered_name": "Torrey Banes",
+      "registered_business": "Torrey's Sportfishing Adventures",
+      "source": "NW Fishing",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-152",
+      "new_slug": "wa-147",
+      "registered_name": "Lance Effrig",
+      "registered_business": "Washington Guide Services",
+      "source": "NW Fishing",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-153",
+      "new_slug": "wa-148",
+      "registered_name": "Craig Dowdy",
+      "registered_business": "YJ Guide Service",
+      "source": "NW Fishing",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-154",
+      "new_slug": "wa-149",
+      "registered_name": "Keith Jensen",
+      "registered_business": "Big Wally’s Guide Service",
+      "source": "Fishin Magician",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-155",
+      "new_slug": "wa-150",
+      "registered_name": "Darrell",
+      "registered_business": "Darrell and Dad’s Family Guide Service",
+      "source": "Fishin Magician",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-156",
+      "new_slug": "wa-151",
+      "registered_name": "B.J. Nielson",
+      "registered_business": "B.J.’s Guide Service LLC",
+      "source": "Fishin Magician",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-157",
+      "new_slug": "wa-152",
+      "registered_name": "Mike Sherer",
+      "registered_business": "Wenatchee Fly Co",
+      "source": "Web",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-158",
+      "new_slug": "wa-153",
+      "registered_name": "Trevor",
+      "registered_business": "Chrome City Guide Service",
+      "source": "Web",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-159",
+      "new_slug": "wa-154",
+      "registered_name": "Black Star",
+      "registered_business": "Black Star Fishing Co.",
+      "source": "Web",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-160",
+      "new_slug": "wa-155",
+      "registered_name": "Kfish",
+      "registered_business": "Kfish's Guide Service",
+      "source": "Web",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-161",
+      "new_slug": "wa-156",
+      "registered_name": "Anadromy",
+      "registered_business": "Anadromy Fly Fishing",
+      "source": "Web",
+      "review_status": "pending_manual_review"
+    },
+    {
+      "old_slug": "wa-162",
+      "new_slug": "wa-157",
+      "registered_name": "Dave Grove",
+      "registered_business": "Captain Dave's Guide Service",
+      "source": "NW Fishing",
+      "review_status": "pending_manual_review"
+    }
+  ],
+  "unchanged_slug_ids": [
+    "wa-000",
+    "wa-001",
+    "wa-002",
+    "wa-003",
+    "wa-004",
+    "wa-005",
+    "wa-006",
+    "wa-007",
+    "wa-008",
+    "wa-009",
+    "wa-010",
+    "wa-011",
+    "wa-012",
+    "wa-013",
+    "wa-014",
+    "wa-015",
+    "wa-016",
+    "wa-017",
+    "wa-018",
+    "wa-019",
+    "wa-020",
+    "wa-021",
+    "wa-022",
+    "wa-023",
+    "wa-024",
+    "wa-025"
+  ]
+}
