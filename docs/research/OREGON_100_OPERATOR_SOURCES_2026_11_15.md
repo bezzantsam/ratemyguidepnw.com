@@ -18,7 +18,7 @@ This batch intentionally skips inaccessible or visibly mismatched candidate doma
 | OG.0000653 | Hammer Down Guide Service | https://www.hammerdownguideservice.com/ | 0 |
 | OG.0000655 | Chasin Tails Guide Service LLC | https://www.chasintailsguideservice.com/ | 0 |
 | OG.0000657 | Phillz Guide Service | https://www.phillzguideservice.com/ | 0 |
-| OG.0000659 | Western Fishing Adventures LTD | https://www.deschutesriverjetboats.com/ | 1 |
+| OG.0000659 | Western Fishing Adventures LTD | https://www.deschutesriverjetboats.com/ | 0 |
 | OG.0000662 | Daxfly Fly Fishing | https://www.daxfly.com/ | 0 |
 | OG.0000664 | Dreams on the Fly AC Outfitters LLC | https://www.dreamsonthefly.com/ | 0 |
 | OG.0000672 | Red's Guide Service LLC | https://www.redsguideservice.com/ | 1 |
@@ -109,6 +109,6 @@ This batch intentionally skips inaccessible or visibly mismatched candidate doma
 | OG.0002751 | Pacific Roots Adventures LLC | https://www.pacificrootsadventures.com/ | 2 |
 | OG.0002783 | Chasin The Bite Guide Service | https://chasinthebite.com/ | 0 |
 
-**Data decisions:** Every added profile has a dated public business-source link. The 51 source-link-only records intentionally omit waterway claims. The 49 records with specific advertised fisheries have 88 named waterway entries. Fishery names describe what the cited page advertises, not officially permitted waters, current dates, observed catch, or guaranteed availability. Existing profile data is preserved unchanged.
+**Data decisions:** Every added profile has a dated public business-source link. The 52 source-link-only records intentionally omit waterway claims. The 48 records with specific advertised fisheries have 87 named waterway entries. Fishery names describe what the cited page advertises, not officially permitted waters, current dates, observed catch, or guaranteed availability. Existing profile data is preserved unchanged.
 
 **Review gate:** This is a draft proposal stacked on `feature/mvp-profile-enrichment-and-captain-sales`. Review the operator/identity match, link accessibility, and specific waterways for each profile before merge. If any row fails, remove or revise it; do not auto-publish an unresolved claim.
