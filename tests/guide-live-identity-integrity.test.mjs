@@ -74,10 +74,13 @@ test('every guide review read is protected by BOTH live identity fields',()=>{
 
 test('captain claim and seasonal offer screens protect ownership lookups from identity drift',()=>{
  const page=file('app/claim/[id]/page.tsx');
+ assert.match(page,/expectedBusiness=\{g\.business\}/);
  assert.match(page,/business=\{g\.business\}/);
  for(const component of ['components/ClaimForm.tsx','components/CaptainFisheryEditor.tsx']){
    const source=file(component);
-   assert.match(source,/matchesPublicGuideIdentity\(\{name,business\},guide\)/);
+   if(component.includes('ClaimForm'))
+     assert.match(source,/matchesPublicGuideIdentity\(\{name,business:expectedBusiness\},guide\)/);
+   else assert.match(source,/matchesPublicGuideIdentity\(\{name,business\},guide\)/);
    assert.match(source,/select\('id,full_name,outfit_name'\)/);
  }
 });
