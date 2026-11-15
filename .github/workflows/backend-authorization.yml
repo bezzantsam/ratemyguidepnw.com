@@ -1,0 +1,29 @@
+name: Backend authorization contract
+on:
+  pull_request:
+    paths:
+      - 'docs/backend-catalog-snapshot.json'
+      - 'docs/backend-identity-authorization.md'
+      - 'scripts/backend-audit/**'
+      - 'tests/backend-audit/**'
+      - '.github/workflows/backend-authorization.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  local-postgres-authorization:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install disposable PostgreSQL
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql postgresql-contrib
+          echo "$(pg_config --bindir)" >> "$GITHUB_PATH"
+      - name: Reconstruct observed schema and test synthetic roles
+        run: |
+          python3 -m unittest discover -s tests/backend-audit -p 'test_*.py' -v
+          scripts/backend-audit/run-local.sh
