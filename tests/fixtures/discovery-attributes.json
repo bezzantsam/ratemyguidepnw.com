@@ -1,0 +1,105 @@
+[
+  {
+    "guide_id": "OG.0000047",
+    "kind": "species",
+    "value": "Salmon",
+    "source": {
+      "url": "https://fixture.invalid/source",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-01-01",
+      "locator": "Synthetic test evidence; not a real offering"
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0000047",
+    "kind": "method",
+    "value": "Fly fishing",
+    "source": {
+      "url": "https://fixture.invalid/source",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-01-01",
+      "locator": "Synthetic test evidence; not a real offering"
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0000047",
+    "kind": "trip_type",
+    "value": "Fixture day trip",
+    "source": {
+      "url": "https://fixture.invalid/source",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-01-01",
+      "locator": "Synthetic test evidence; not a real offering"
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0000047",
+    "kind": "business_name",
+    "value": "Fixture Source Outfit",
+    "source": {
+      "url": "https://fixture.invalid/source",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-01-01",
+      "locator": "Synthetic test evidence; not a real offering"
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0000050",
+    "kind": "species",
+    "value": "Chinook Salmon",
+    "source": {
+      "url": "https://fixture.invalid/source",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-01-01",
+      "locator": "Synthetic test evidence; not a real offering"
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "relationship": {
+      "species": "Chinook Salmon",
+      "method": "Trolling",
+      "waterway": "Fixture River"
+    }
+  },
+  {
+    "guide_id": "OG.0000047",
+    "kind": "species",
+    "value": "Pending Secret Species",
+    "source": {
+      "url": "https://fixture.invalid/source",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-01-01",
+      "locator": "Synthetic test evidence; not a real offering"
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "pending",
+    "publication_approved": false
+  },
+  {
+    "guide_id": "OG.0000047",
+    "kind": "method",
+    "value": "Rejected Secret Method",
+    "source": {
+      "url": "https://fixture.invalid/source",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-01-01",
+      "locator": "Synthetic test evidence; not a real offering"
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "rejected",
+    "publication_approved": false
+  }
+]

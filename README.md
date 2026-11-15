@@ -58,10 +58,10 @@ The August 2026 WDFW report has now been independently compared against the orig
 
 ### Local MVP browser regression
 
-Install the project dependencies and use a local Chromium or Chrome executable. Build with an isolated dummy Supabase address, then serve the build in a separate terminal:
+Install the project dependencies and use a local Chromium or Chrome executable. Build with an isolated dummy Supabase address and synthetic discovery fixtures, then serve the build in a separate terminal:
 
 ```sh
-NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:59999 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=local-test-key npm run build
+bash scripts/build-fixture-browser.sh
 npm start -- --hostname 127.0.0.1 --port 3157
 ```
 
@@ -72,3 +72,7 @@ BROWSER_EXECUTABLE='/path/to/chrome' npm run test:browser
 ```
 
 The browser test intercepts the dummy backend, blocks external origins and rejects writes. It requires the dummy URL to be compiled into the build so the mocked review and identity checks are exercised. Do not use production credentials for this test.
+
+### Synthetic discovery fixtures
+
+The approved-attribute dataset is initially empty. The isolated fixture build temporarily substitutes synthetic records and a dummy backend, then restores the original data file. These fixtures describe no real offerings. Never deploy the fixture build; ordinary builds use the separately reviewed data file. The extended Batch 13 proposal is generated with `python3 scripts/extended_enrichment_proposal.py` and checked with `--check`; it does not authorize publication.

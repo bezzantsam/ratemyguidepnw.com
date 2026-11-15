@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {chromium} from 'playwright-core';
-import {mkdirSync} from 'node:fs';
+import {mkdirSync,readdirSync,readFileSync} from 'node:fs';
 import {join} from 'node:path';
 
 const origin='http://127.0.0.1:3157';
@@ -31,6 +31,39 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
   await page.getByRole('heading',{name:'Find a captain'}).waitFor();
   await page.goto(`${origin}/guides`,{waitUntil:'domcontentloaded'});
   const q=page.getByRole('searchbox',{name:'Captain, business, operating name, or registration'});
+  // Synthetic approved fixtures exercise filters without publishing candidate research.
+  await page.getByText('Synthetic test fixture — not a real offering.').first().waitFor();
+  const species=page.getByLabel('Source-listed species');const method=page.getByLabel('Source-listed fishing method');
+  await species.selectOption({label:'Salmon'});await method.selectOption({label:'Fly fishing'});
+  await page.getByRole('link',{name:/John Hanson/}).first().waitFor();
+  assert.equal(await page.getByRole('link',{name:/Shea Fisher/}).count(),0,'broad Salmon does not imply Chinook');
+  assert.equal(new URL(page.url()).searchParams.get('species'),'Salmon');
+  await page.getByLabel('Advertised fishing water (pilot)').selectOption({label:'Fixture River'});
+  await page.getByRole('button',{name:'Remove waterway: Fixture River'}).click();
+  assert.equal(await species.inputValue(),'Salmon');assert.equal(await method.inputValue(),'Fly fishing');
+  const filteredUrl=page.url();await page.reload({waitUntil:'domcontentloaded'});
+  await page.waitForFunction(()=>document.querySelector('select')!==null&&new URLSearchParams(location.search).get('method')==='Fly fishing');
+  await page.getByRole('link',{name:/John Hanson/}).first().click();
+  await page.getByText('Synthetic test fixture — not a real offering.').waitFor();
+  await page.getByText('Separate items do not establish a combined trip.',{exact:false}).waitFor();
+  assert.doesNotMatch(await page.content(),/Pending Secret Species|Rejected Secret Method/,'unapproved attributes do not reach the profile HTML or serialized props');
+  await page.getByRole('link',{name:'← Search guides'}).click();
+  await page.waitForURL(filteredUrl);await page.getByRole('link',{name:/John Hanson/}).first().waitFor();
+  await species.selectOption({label:'Chinook Salmon'});
+  assert.equal(await page.getByRole('link',{name:/John Hanson/}).count(),0);
+  assert.equal(await page.getByRole('link',{name:/Shea Fisher/}).count(),0,'different method prevents a match');
+  await method.selectOption({label:'Trolling'});await page.getByRole('link',{name:/Shea Fisher/}).first().waitFor();
+  await page.getByRole('link',{name:/Shea Fisher/}).first().click();
+  await page.getByText('Source explicitly connects:',{exact:false}).waitFor();
+  await page.getByRole('link',{name:'← Search guides'}).click();
+  await page.getByRole('link',{name:/Shea Fisher/}).first().waitFor();
+  await page.goBack();await page.getByRole('heading',{name:'Shea Fisher',exact:true}).waitFor();
+  await page.goForward();
+  try{await page.getByRole('link',{name:/Shea Fisher/}).first().waitFor()}catch(e){throw new Error(`Forward restore failed at ${page.url()} with text ${(await page.locator('main').innerText()).slice(0,1000)}: ${e.message}`)}
+  const html=await page.content();assert.doesNotMatch(html,/Pending Secret Species|Rejected Secret Method/);
+  function staticFiles(dir){return readdirSync(dir,{withFileTypes:true}).flatMap(e=>e.isDirectory()?staticFiles(join(dir,e.name)):[join(dir,e.name)])}
+  for(const file of staticFiles('.next/static'))if(/\.(js|json)$/.test(file))assert.doesNotMatch(readFileSync(file,'utf8'),/Pending Secret Species|Rejected Secret Method/);
+  await page.getByRole('button',{name:'Clear all filters'}).click();
   // A shareable URL survives refresh and profile navigation, including page 2.
   await page.goto(`${origin}/guides?state=Oregon&area=Coos-Coquille&page=2`,{waitUntil:'domcontentloaded'});
   await page.waitForFunction(()=>new URLSearchParams(location.search).get('page')==='2');

@@ -9,8 +9,8 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
  const [selection,setSelection]=useState<DirectoryState>(DEFAULT_DIRECTORY_STATE);
  const [copyStatus,setCopyStatus]=useState('');
  const [fallback,setFallback]=useState(false);
- const searchRef=useRef<HTMLInputElement>(null),areaRef=useRef<HTMLSelectElement>(null),waterRef=useRef<HTMLSelectElement>(null),allRef=useRef<HTMLButtonElement>(null);
- const {query:q,state,area,waterway,page}=selection;
+ const searchRef=useRef<HTMLInputElement>(null),areaRef=useRef<HTMLSelectElement>(null),waterRef=useRef<HTMLSelectElement>(null),speciesRef=useRef<HTMLSelectElement>(null),methodRef=useRef<HTMLSelectElement>(null),allRef=useRef<HTMLButtonElement>(null);
+ const {query:q,state,area,waterway,species,method,page}=selection;
  const size=DIRECTORY_PAGE_SIZE;
  useEffect(()=>{
   function restore(){
@@ -37,8 +37,8 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
   catch{setFallback(true);setCopyStatus('Copy the search link from the field below.')}
  }
  const filtered=useMemo(()=>filterDirectoryEntries(entries,{
-  state,sourceZone:area,advertisedWater:waterway,query:q
- }),[entries,q,state,area,waterway]);
+  state,sourceZone:area,advertisedWater:waterway,species,method,query:q
+ }),[entries,q,state,area,waterway,species,method]);
 
  const areas=useMemo(()=>
   ['All areas',...new Set(entries.filter(g=>state==='All'||g.states.includes(state as 'Oregon'|'Washington'))
@@ -50,12 +50,15 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
     .flatMap(g=>g.advertisedWaters))].sort((a,b)=>a==='All advertised waters'?-1:b==='All advertised waters'?1:a.localeCompare(b)),
  [entries,state]);
 
+ const speciesOptions=useMemo(()=>[...new Set(entries.filter(g=>state==='All'||g.states.includes(state as 'Oregon'|'Washington')).flatMap(g=>g.advertisedSpecies??[]))].sort(),[entries,state]);
+ const methodOptions=useMemo(()=>[...new Set(entries.filter(g=>state==='All'||g.states.includes(state as 'Oregon'|'Washington')).flatMap(g=>g.advertisedMethods??[]))].sort(),[entries,state]);
  const pages=Math.max(1,Math.ceil(filtered.length/size)),current=Math.min(page,pages);
- const setRegion=(s:DirectoryState['state'])=>change({state:s,area:'All areas',waterway:'All advertised waters',page:1});
+ const setRegion=(s:DirectoryState['state'])=>change({state:s,area:'All areas',waterway:'All advertised waters',species:'All species',method:'All methods',page:1});
 
  return <section className="directory-panel">
   <h2>Find a captain</h2>
   <p className="directory-source-disclosure">Imported location and registration fields are historical source categories, not confirmed fishing ports. Advertised fishing waters are a small, source-linked research pilot and do not certify active operations or licensing.</p>
+  {entries.some(g=>g.testFixture)&&<p className="directory-source-disclosure">Synthetic test fixture — not a real offering.</p>}
   <div className="state-switch" aria-label="Filter guides by state">
    {(['All','Oregon','Washington'] as const).map(s=><button key={s} ref={s==='All'?allRef:undefined} type="button" className={state===s?'active':''}
     aria-pressed={state===s} onClick={()=>setRegion(s)}>{s==='All'?'All guides':s}</button>)}
@@ -75,7 +78,14 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
      {waters.map(a=><option key={a}>{a}</option>)}
     </select>
    </label>
+   {speciesOptions.length>0&&<label>Source-listed species
+    <select ref={speciesRef} value={species} onChange={e=>change({species:e.target.value,page:1})}><option>All species</option>{speciesOptions.map(x=><option key={x}>{x}</option>)}</select>
+   </label>}
+   {methodOptions.length>0&&<label>Source-listed fishing method
+    <select ref={methodRef} value={method} onChange={e=>change({method:e.target.value,page:1})}><option>All methods</option>{methodOptions.map(x=><option key={x}>{x}</option>)}</select>
+   </label>}
   </div>
+  {(speciesOptions.length>0||methodOptions.length>0)&&<p className="muted">Filters match separately sourced offerings; they do not establish a specific trip or a guide’s personal expertise.</p>}
   <p className="muted">Search recognizes common nicknames and small spelling mistakes. Check the captain and business name before choosing a profile.</p>
   <div className="search-actions">
    <button type="button" onClick={()=>void copyLink()}>Copy search link</button>
@@ -84,10 +94,12 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
    <span role="status">{copyStatus}</span>
    {fallback&&<label>Search link<input readOnly value={typeof window==='undefined'?'':window.location.origin+directoryUrl(selection)} onFocus={e=>e.currentTarget.select()}/></label>}
   </div>
-  {(q||state!=='All'||area!=='All areas'||waterway!=='All advertised waters')&&<div className="active-filters" aria-label="Active filters"><strong>Active filters:</strong>
+  {(q||state!=='All'||area!=='All areas'||waterway!=='All advertised waters'||species!=='All species'||method!=='All methods')&&<div className="active-filters" aria-label="Active filters"><strong>Active filters:</strong>
    {q&&<button type="button" onClick={()=>{change({query:'',page:1});searchRef.current?.focus()}}>Remove search: {q}</button>}
    {state!=='All'&&<button type="button" onClick={()=>{setRegion('All');allRef.current?.focus()}}>Remove state: {state}</button>}
    {area!=='All areas'&&<button type="button" onClick={()=>{change({area:'All areas',page:1});areaRef.current?.focus()}}>Remove area: {area}</button>}
+   {species!=='All species'&&<button type="button" onClick={()=>{change({species:'All species',page:1});speciesRef.current?.focus()}}>Remove species: {species}</button>}
+   {method!=='All methods'&&<button type="button" onClick={()=>{change({method:'All methods',page:1});methodRef.current?.focus()}}>Remove method: {method}</button>}
    {waterway!=='All advertised waters'&&<button type="button" onClick={()=>{change({waterway:'All advertised waters',page:1});waterRef.current?.focus()}}>Remove waterway: {waterway}</button>}
   </div>}
   <div className="results-heading" role="status" aria-live="polite" aria-atomic="true"><strong>{filtered.length.toLocaleString()} captain listings</strong>
@@ -103,7 +115,7 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
       </div>
       {(guideSearchScore(g,q)??0)>=60&&<p className="guide-meta"><strong>Similar spelling match</strong> · Confirm the person and business.</p>}
       <p className="outfit-name">{g.business||'Fishing guide'}</p>
-      {g.searchAliases.length>0&&<p className="guide-meta">Also listed publicly as: {g.searchAliases.join(' · ')}</p>}
+      {g.searchAliases.length>0&&<p className="guide-meta">Source-listed names (business or person): {g.searchAliases.join(' · ')}</p>}
       {g.advertisedWaters.length>0&&<p className="guide-meta">Advertised waters (source-linked): {g.advertisedWaters.slice(0,3).join(' · ')}{g.advertisedWaters.length>3?' · + more':''}</p>}
       <p className="guide-meta">{g.source==='Oregon registry'?'Imported registration zones':'Imported directory areas / notes'}: {g.areas.slice(0,3).join(' · ')||'Not specified'}{g.areas.length>3?' · + more':''}</p>
       <p className="guide-submeta">Imported source listing · Review information on profile · Current credentials not independently checked</p>
