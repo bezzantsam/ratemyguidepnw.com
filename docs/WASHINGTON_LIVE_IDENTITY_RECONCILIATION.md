@@ -19,7 +19,7 @@ Compared the deployed Supabase `rate-my-guides` guide table to every imported Or
 
 **Impact:** Slug-only database lookups could retrieve reviews or approved captain-claim records for a different person. The affected page must never present those relationships as the displayed captain's until corrected.
 
-The live database used an older ordinal `wa-NNN` identifier sequence, while the current site uses stable IDs from `lib/washington-stable-ids.json`. The positional shift is visible from `wa-026` onward, with additional shifts further down. Five older database-only values `wa-158` through `wa-162` are retained in the historical dataset but are not in the site's 158 current source entries. These are historic source rows, **not** new people to add or auto-merge.
+The live database used an older ordinal `wa-NNN` identifier sequence, while the current site uses stable IDs from `lib/washington-stable-ids.json`. The positional shift is visible from `wa-026` onward, with additional shifts further down. Five live slug labels `wa-158` through `wa-162` have no matching current stable-ID label, but their underlying named guide records DO match current imported entries under different stable IDs. These are outdated slug assignments, **not** five additional people to import or merge.
 
 ## Safeguard in this PR
 
