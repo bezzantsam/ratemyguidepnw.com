@@ -73,7 +73,8 @@ test('Wolfe Pack lists two brothers as separate captain identities and shared ou
  assert.equal(group.profileIds.length,2);
  assert.ok(group.profileIds.includes(douglas.registration));
  assert.equal(identity.relatedOutfitterGroup(douglas.registration).id,group.id);
- assert.match(group.sourceUrl,/southernoregon\\.org\\/cities\\/camas-valley/);
+ assert.ok(group.sourceUrl.startsWith('https://www.southernoregon.org/'));
+ assert.ok(group.sourceUrl.includes('/cities/camas-valley/'));
  // Never make a brother a nickname/alias or reuse another captain's review UUID.
  assert.equal(group.profileIds[0]===group.profileIds[1],false);
 });
