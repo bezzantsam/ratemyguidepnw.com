@@ -1,6 +1,6 @@
 import type {DirectoryEntry} from './directory';
 
-export type DirectoryFilters={state:string;sourceZone:string;advertisedWater:string;query:string;sourceLinkedOnly?:boolean};
+export type DirectoryFilters={state:string;sourceZone:string;advertisedWater:string;query:string;sourceLinkedOnly?:boolean;advertisedSpecies?:string;advertisedTechnique?:string};
 
 /** Search expansions only. These do NOT add identity aliases or credential evidence. */
 const nicknameFamilies=[
@@ -36,7 +36,7 @@ const cache=new WeakMap<DirectoryEntry,SearchIndex>();
 function indexFor(entry:DirectoryEntry):SearchIndex {
  let index=cache.get(entry);if(index)return index;
  const identity=[entry.name,entry.business??'',...entry.searchAliases,...(entry.crew??[]).map(member=>member.name)].map(normalizeGuideSearch).filter(Boolean);
- const context=[...entry.areas,...entry.advertisedWaters].map(normalizeGuideSearch).filter(Boolean);
+ const context=[...entry.areas,...entry.advertisedWaters,...(entry.advertisedSpecies??[]),...(entry.advertisedTechniques??[]),...(entry.advertisedTripTypes??[])].map(normalizeGuideSearch).filter(Boolean);
  index={identity,context,tokens:[...new Set(identity.flatMap(value=>value.split(' ')))],contextTokens:[...new Set(context.flatMap(value=>value.split(' ')))],firstName:normalizeGuideSearch(entry.name).split(' ')[0],id:entry.id.toLowerCase()};
  cache.set(entry,index);return index;
 }
@@ -76,6 +76,8 @@ export function guideSearchScore(entry:DirectoryEntry,query:string):number|null 
 export function filterDirectoryEntries(entries:DirectoryEntry[],filters:DirectoryFilters):DirectoryEntry[]{
  return entries.filter(entry=>
   (!filters.sourceLinkedOnly || entry.hasPublicSource===true)&&
+  (!filters.advertisedSpecies || filters.advertisedSpecies==='All advertised species' || (entry.advertisedSpecies??[]).includes(filters.advertisedSpecies))&&
+  (!filters.advertisedTechnique || filters.advertisedTechnique==='All advertised techniques' || (entry.advertisedTechniques??[]).includes(filters.advertisedTechnique))&&
   (filters.state==='All'||entry.states.includes(filters.state as 'Oregon'|'Washington'))&&
   (filters.sourceZone==='All areas'||entry.areas.includes(filters.sourceZone))&&
   (filters.advertisedWater==='All advertised waters'||entry.advertisedWaters.includes(filters.advertisedWater))
