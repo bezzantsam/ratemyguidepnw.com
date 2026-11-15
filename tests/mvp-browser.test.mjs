@@ -134,6 +134,11 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
   await page.getByRole('link',{name:/John Hanson/}).first().waitFor();assert.equal(page.url(),recoveredUrl);
   await page.goBack();await page.getByText('No matching guides.',{exact:false}).waitFor();assert.equal(page.url(),emptyUrl);
   await page.goForward();await page.getByRole('link',{name:/John Hanson/}).first().waitFor();
+  await page.getByRole('link',{name:/John Hanson/}).first().click();
+  await page.getByRole('heading',{name:'John Hanson',exact:true}).waitFor();
+  await page.getByRole('link',{name:'← Search guides'}).click();
+  await page.waitForURL(recoveredUrl);await page.getByRole('link',{name:/John Hanson/}).first().waitFor();
+  assert.equal(await species.inputValue(),'Salmon');assert.equal(await method.inputValue(),'Fly fishing');
   await page.getByRole('button',{name:'Clear all filters'}).click();
   await q.fill('');await page.getByRole('button',{name:'Oregon',exact:true}).click();
   await page.getByLabel('Imported source area / notes (unverified)').selectOption({label:'Coos-Coquille'});
