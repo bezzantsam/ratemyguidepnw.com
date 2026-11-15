@@ -1,0 +1,37 @@
+name: Batch 13 next ten source review
+
+on:
+  pull_request:
+    paths:
+      - 'docs/research/BATCH13_NEXT10*'
+      - 'scripts/batch13_next10_review.py'
+      - 'tests/test_batch13_next10_review.py'
+      - 'lib/oregon-guides.json'
+      - '.github/workflows/batch13-next10-review.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'docs/research/BATCH13_NEXT10*'
+      - 'scripts/batch13_next10_review.py'
+      - 'tests/test_batch13_next10_review.py'
+      - 'lib/oregon-guides.json'
+      - '.github/workflows/batch13-next10-review.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  source-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check identity, attribution, holds and honest completion counts
+        run: |
+          python scripts/batch13_next10_review.py
+          python -m unittest discover -s tests -p 'test_batch13_next10_review.py' -v
