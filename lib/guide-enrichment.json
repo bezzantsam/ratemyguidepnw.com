@@ -5715,56 +5715,6 @@
       }
     ]
   },
-  "OG.0002298": {
-    "searchAliases": [],
-    "advertisedWaters": [],
-    "registryWebsite": {
-      "url": "https://hayescustomboats.com",
-      "importedValue": "hayescustomboats.com",
-      "sourceType": "oregon_registry_import",
-      "verificationStatus": "unverified_registry_reference"
-    }
-  },
-  "OG.0003361": {
-    "searchAliases": [],
-    "advertisedWaters": [],
-    "registryWebsite": {
-      "url": "https://verticaljigsandlures.com",
-      "importedValue": "verticaljigsandlures.com",
-      "sourceType": "oregon_registry_import",
-      "verificationStatus": "unverified_registry_reference"
-    }
-  },
-  "OG.0001059": {
-    "searchAliases": [],
-    "advertisedWaters": [],
-    "registryWebsite": {
-      "url": "https://www.sundancekayak.com",
-      "importedValue": "www.sundancekayak.com",
-      "sourceType": "oregon_registry_import",
-      "verificationStatus": "unverified_registry_reference"
-    }
-  },
-  "OG.0002938": {
-    "searchAliases": [],
-    "advertisedWaters": [],
-    "registryWebsite": {
-      "url": "https://Good2GoTaxi.com",
-      "importedValue": "Good2GoTaxi.com",
-      "sourceType": "oregon_registry_import",
-      "verificationStatus": "unverified_registry_reference"
-    }
-  },
-  "OG.0000743": {
-    "searchAliases": [],
-    "advertisedWaters": [],
-    "registryWebsite": {
-      "url": "https://www.craterlakezipline.com",
-      "importedValue": "www.craterlakezipline.com",
-      "sourceType": "oregon_registry_import",
-      "verificationStatus": "unverified_registry_reference"
-    }
-  },
   "OG.0003609": {
     "searchAliases": [],
     "advertisedWaters": [],
@@ -5920,16 +5870,6 @@
     ],
     "advertisedTechniques": [],
     "advertisedTripTypes": []
-  },
-  "OG.0000964": {
-    "searchAliases": [],
-    "advertisedWaters": [],
-    "registryWebsite": {
-      "url": "https://www.coralseascuba.com",
-      "importedValue": "www.coralseascuba.com",
-      "sourceType": "oregon_registry_import",
-      "verificationStatus": "unverified_registry_reference"
-    }
   },
   "OG.0002044": {
     "searchAliases": [],
@@ -7395,12 +7335,6 @@
         "sourceUrl": "https://fishermanmikes.com/about-mike/",
         "sourceType": "operator_site",
         "observedOn": "2026-11-15"
-      },
-      {
-        "name": "Nestucca River",
-        "sourceUrl": "https://fishermanmikes.com/about-mike/",
-        "sourceType": "operator_site",
-        "observedOn": "2026-11-15"
       }
     ],
     "sourceLinks": [
@@ -7525,18 +7459,6 @@
       },
       {
         "name": "Willamette River",
-        "sourceUrl": "https://www.trevinhoytfishing.com/pricing",
-        "sourceType": "operator_site",
-        "observedOn": "2026-11-15"
-      },
-      {
-        "name": "Siuslaw River",
-        "sourceUrl": "https://www.trevinhoytfishing.com/pricing",
-        "sourceType": "operator_site",
-        "observedOn": "2026-11-15"
-      },
-      {
-        "name": "Siletz River",
         "sourceUrl": "https://www.trevinhoytfishing.com/pricing",
         "sourceType": "operator_site",
         "observedOn": "2026-11-15"
@@ -7692,9 +7614,9 @@
     "advertisedWaters": [],
     "sourceLinks": [
       {
-        "label": "Operator business website",
+        "label": "Public third-party business directory",
         "url": "https://www.discoverwinchesterbay.com/fishingguide",
-        "sourceType": "operator_site",
+        "sourceType": "third_party_directory",
         "observedOn": "2026-11-15"
       }
     ],
@@ -7702,25 +7624,18 @@
       {
         "name": "Salmon",
         "sourceUrl": "https://www.discoverwinchesterbay.com/fishingguide",
-        "sourceType": "operator_site",
+        "sourceType": "third_party_directory",
         "observedOn": "2026-11-15"
       },
       {
         "name": "Sturgeon",
         "sourceUrl": "https://www.discoverwinchesterbay.com/fishingguide",
-        "sourceType": "operator_site",
+        "sourceType": "third_party_directory",
         "observedOn": "2026-11-15"
       }
     ],
     "advertisedTechniques": [],
-    "advertisedTripTypes": [
-      {
-        "name": "third_party_directory",
-        "sourceUrl": "https://www.discoverwinchesterbay.com/fishingguide",
-        "sourceType": "operator_site",
-        "observedOn": "2026-11-15"
-      }
-    ]
+    "advertisedTripTypes": []
   },
   "OG.0001393": {
     "searchAliases": [],
@@ -7770,12 +7685,6 @@
       },
       {
         "name": "Steelhead",
-        "sourceUrl": "https://www.willamettevalleyfishing.com/about",
-        "sourceType": "operator_site",
-        "observedOn": "2026-11-15"
-      },
-      {
-        "name": "Largemouth Bass",
         "sourceUrl": "https://www.willamettevalleyfishing.com/about",
         "sourceType": "operator_site",
         "observedOn": "2026-11-15"
@@ -7888,5 +7797,65 @@
         "observedOn": "2026-11-15"
       }
     ]
+  },
+  "OG.0000206": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.finandscale.com",
+      "importedValue": "www.finandscale.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000295": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.markvanhookguideservice.com",
+      "importedValue": "www.markvanhookguideservice.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000343": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://priddygoodfishing.com",
+      "importedValue": "priddygoodfishing.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000346": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://matthalsethguideservice.com",
+      "importedValue": "matthalsethguideservice.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000353": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.fish-northwest.com",
+      "importedValue": "www.fish-northwest.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000364": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://columbiafishing.net",
+      "importedValue": "columbiafishing.net",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
   }
 }
