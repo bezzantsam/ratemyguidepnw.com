@@ -12,56 +12,6 @@
   },
   "records": [
     {
-      "registration": "OG.0002298",
-      "imported_name": "Jayson Hayes",
-      "imported_business": "Hayes Custom Boats",
-      "imported_website": "hayescustomboats.com",
-      "reported_activity": "Fishing",
-      "registry_website_url": "https://hayescustomboats.com",
-      "verificationStatus": "unverified_registry_reference",
-      "additional_public_evidence": null
-    },
-    {
-      "registration": "OG.0003361",
-      "imported_name": "Matthew Fairbank",
-      "imported_business": "Vertical Jigs and Lures LLC",
-      "imported_website": "verticaljigsandlures.com",
-      "reported_activity": "Fishing",
-      "registry_website_url": "https://verticaljigsandlures.com",
-      "verificationStatus": "unverified_registry_reference",
-      "additional_public_evidence": null
-    },
-    {
-      "registration": "OG.0001059",
-      "imported_name": "Robert Weir",
-      "imported_business": "Sundance Kayak School LLC",
-      "imported_website": "www.sundancekayak.com",
-      "reported_activity": "CanoeKayakPaddle Craft, Fishing, Scenic Tours, Whitewater, Wilderness Adventure",
-      "registry_website_url": "https://www.sundancekayak.com",
-      "verificationStatus": "unverified_registry_reference",
-      "additional_public_evidence": null
-    },
-    {
-      "registration": "OG.0002938",
-      "imported_name": "Greg Morse",
-      "imported_business": "Good2GoTaxi.com",
-      "imported_website": "Good2GoTaxi.com",
-      "reported_activity": "Bird Watching, Fishing, Scenic Tours",
-      "registry_website_url": "https://Good2GoTaxi.com",
-      "verificationStatus": "unverified_registry_reference",
-      "additional_public_evidence": null
-    },
-    {
-      "registration": "OG.0000743",
-      "imported_name": "Darren Roe",
-      "imported_business": "Crater Lake Zipline LLC",
-      "imported_website": "www.craterlakezipline.com",
-      "reported_activity": "Bird Watching, CanoeKayakPaddle Craft, Fishing, Nature Eco Hikes, Scenic Tours",
-      "registry_website_url": "https://www.craterlakezipline.com",
-      "verificationStatus": "unverified_registry_reference",
-      "additional_public_evidence": null
-    },
-    {
       "registration": "OG.0003609",
       "imported_name": "Trever Adams",
       "imported_business": "Meat Without Feet LLC",
@@ -160,16 +110,6 @@
       "registry_website_url": "https://www.fergs.fishing",
       "verificationStatus": "unverified_registry_reference",
       "additional_public_evidence": "https://fergs.fishing/"
-    },
-    {
-      "registration": "OG.0000964",
-      "imported_name": "Todd Bingham",
-      "imported_business": "Coral Sea Scuba & Water Sports LLC",
-      "imported_website": "www.coralseascuba.com",
-      "reported_activity": "Fishing",
-      "registry_website_url": "https://www.coralseascuba.com",
-      "verificationStatus": "unverified_registry_reference",
-      "additional_public_evidence": null
     },
     {
       "registration": "OG.0002044",
@@ -1010,6 +950,66 @@
       "registry_website_url": "https://Performanceoutdoorsoregon.com",
       "verificationStatus": "unverified_registry_reference",
       "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000206",
+      "imported_name": "Claudiu Pop",
+      "imported_business": "FinandScale.com",
+      "imported_website": "www.finandscale.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.finandscale.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000295",
+      "imported_name": "Richard VanHook",
+      "imported_business": "Mark VanHook Guide Service",
+      "imported_website": "www.markvanhookguideservice.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.markvanhookguideservice.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000343",
+      "imported_name": "Wayne Priddy",
+      "imported_business": "Priddy Good Fishing",
+      "imported_website": "priddygoodfishing.com",
+      "reported_activity": "Bird Watching, Fishing, Scenic Tours",
+      "registry_website_url": "https://priddygoodfishing.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000346",
+      "imported_name": "Matthew Halseth",
+      "imported_business": "Matt Halseth Guide Service",
+      "imported_website": "matthalsethguideservice.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://matthalsethguideservice.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000353",
+      "imported_name": "Herman Fleishman",
+      "imported_business": "Northwest Fishing Adventures LLC",
+      "imported_website": "www.fish-northwest.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.fish-northwest.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000364",
+      "imported_name": "William Gaither",
+      "imported_business": "NW Hawghunters",
+      "imported_website": "columbiafishing.net",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://columbiafishing.net",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
     }
   ],
   "promoted_held_ids": [
@@ -1161,8 +1161,7 @@
         "Steelhead"
       ],
       "waters": [
-        "North Santiam River",
-        "Nestucca River"
+        "North Santiam River"
       ],
       "techniques": [],
       "tripTypes": [
@@ -1205,9 +1204,7 @@
       ],
       "waters": [
         "McKenzie River",
-        "Willamette River",
-        "Siuslaw River",
-        "Siletz River"
+        "Willamette River"
       ],
       "techniques": [
         "Trolling"
@@ -1294,7 +1291,7 @@
     {
       "registration": "OG.0001063",
       "sourceUrl": "https://www.discoverwinchesterbay.com/fishingguide",
-      "sourceType": "operator_site",
+      "sourceType": "third_party_directory",
       "reviewStatus": "editorial_confirmation_required",
       "species": [
         "Salmon",
@@ -1302,9 +1299,7 @@
       ],
       "waters": [],
       "techniques": [],
-      "tripTypes": [
-        "third_party_directory"
-      ]
+      "tripTypes": []
     },
     {
       "registration": "OG.0001395",
@@ -1356,8 +1351,7 @@
       "reviewStatus": "editorial_confirmation_required",
       "species": [
         "Trout",
-        "Steelhead",
-        "Largemouth Bass"
+        "Steelhead"
       ],
       "waters": [
         "McKenzie River",
@@ -1531,5 +1525,39 @@
         "Fly fishing instruction"
       ]
     }
+  ],
+  "qa_exclusions": [
+    {
+      "registration": "OG.0002298",
+      "reason": "Website describes a boat/gear retailer, taxi, zipline, scuba operator, or kayak school rather than a clearly advertised fishing guide; retain the underlying registry row but do not label the URL as a fishing-guide business site."
+    },
+    {
+      "registration": "OG.0003361",
+      "reason": "Website describes a boat/gear retailer, taxi, zipline, scuba operator, or kayak school rather than a clearly advertised fishing guide; retain the underlying registry row but do not label the URL as a fishing-guide business site."
+    },
+    {
+      "registration": "OG.0001059",
+      "reason": "Website describes a boat/gear retailer, taxi, zipline, scuba operator, or kayak school rather than a clearly advertised fishing guide; retain the underlying registry row but do not label the URL as a fishing-guide business site."
+    },
+    {
+      "registration": "OG.0002938",
+      "reason": "Website describes a boat/gear retailer, taxi, zipline, scuba operator, or kayak school rather than a clearly advertised fishing guide; retain the underlying registry row but do not label the URL as a fishing-guide business site."
+    },
+    {
+      "registration": "OG.0000743",
+      "reason": "Website describes a boat/gear retailer, taxi, zipline, scuba operator, or kayak school rather than a clearly advertised fishing guide; retain the underlying registry row but do not label the URL as a fishing-guide business site."
+    },
+    {
+      "registration": "OG.0000964",
+      "reason": "Website describes a boat/gear retailer, taxi, zipline, scuba operator, or kayak school rather than a clearly advertised fishing guide; retain the underlying registry row but do not label the URL as a fishing-guide business site."
+    }
+  ],
+  "qa_replacements": [
+    "OG.0000206",
+    "OG.0000295",
+    "OG.0000343",
+    "OG.0000346",
+    "OG.0000353",
+    "OG.0000364"
   ]
 }
