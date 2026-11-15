@@ -30,7 +30,7 @@ export default function ForGuides(){
       <section className="card founding-offer" aria-labelledby="paid-guide-title">
         <p className="eyebrow">FOUNDING CAPTAIN · PRICE TEST</p>
         <h2 id="paid-guide-title">Better profile, direct bookings</h2>
-        <p className="founding-offer-price">${FOUNDING_CAPTAIN_YEARLY_TEST_PRICE}<span>/year proposed</span></p>
+        <p className="founding-offer-price">{"$"}{FOUNDING_CAPTAIN_YEARLY_TEST_PRICE}<span>/year proposed</span></p>
         <ul>
           <li>A biography, guide photos, boat details and featured fishing specialties</li>
           <li>A clear direct link to your own booking site or business contact</li>
