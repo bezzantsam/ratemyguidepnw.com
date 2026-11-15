@@ -5530,5 +5530,387 @@
         "observedOn": "2026-11-15"
       }
     ]
+  },
+  "OG.0000137": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Public business directory or registry",
+        "url": "https://www.madrivermanufacturing.com/pro-staff.aspx",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000382": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Bitterroot River",
+        "sourceUrl": "https://www.khfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Pacific Ocean",
+        "sourceUrl": "https://www.khfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.khfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000387": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://grievesfishing.com/trips/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Umpqua River",
+        "sourceUrl": "https://grievesfishing.com/trips/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Elk River",
+        "sourceUrl": "https://grievesfishing.com/trips/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Sixes River",
+        "sourceUrl": "https://grievesfishing.com/trips/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Chetco River",
+        "sourceUrl": "https://grievesfishing.com/trips/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://grievesfishing.com/trips/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000408": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Klamath River",
+        "sourceUrl": "https://alansguideservice.com/fish/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Trinity River",
+        "sourceUrl": "https://alansguideservice.com/fish/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Smith River",
+        "sourceUrl": "https://alansguideservice.com/fish/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://alansguideservice.com/fish/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Chetco River",
+        "sourceUrl": "https://alansguideservice.com/fish/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://alansguideservice.com/fish/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000415": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Kilchis River",
+        "sourceUrl": "https://www.madrivermanufacturing.com/pro-staff.aspx",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Wilson River",
+        "sourceUrl": "https://www.madrivermanufacturing.com/pro-staff.aspx",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Trask River",
+        "sourceUrl": "https://www.madrivermanufacturing.com/pro-staff.aspx",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Nestucca River",
+        "sourceUrl": "https://www.madrivermanufacturing.com/pro-staff.aspx",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "South Santiam River",
+        "sourceUrl": "https://www.madrivermanufacturing.com/pro-staff.aspx",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Public business directory or registry",
+        "url": "https://www.madrivermanufacturing.com/pro-staff.aspx",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000427": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "McKenzie River",
+        "sourceUrl": "https://enickeloutfitters.com/about/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://enickeloutfitters.com/about/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Deschutes River",
+        "sourceUrl": "https://enickeloutfitters.com/about/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://enickeloutfitters.com/about/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000741": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://kastking.com/pages/pro-guide",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://kastking.com/pages/pro-guide",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Public business directory or registry",
+        "url": "https://kastking.com/pages/pro-guide",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001116": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Deschutes River",
+        "sourceUrl": "https://www.nbflyfish.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.nbflyfish.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000617": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://jongeyerfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Umpqua River",
+        "sourceUrl": "https://jongeyerfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Chetco River",
+        "sourceUrl": "https://jongeyerfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Coquille River",
+        "sourceUrl": "https://jongeyerfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Elk River",
+        "sourceUrl": "https://jongeyerfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Sixes River",
+        "sourceUrl": "https://jongeyerfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Lost Creek Lake",
+        "sourceUrl": "https://jongeyerfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Fish Lake",
+        "sourceUrl": "https://jongeyerfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://jongeyerfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0002596": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Lower Deschutes River",
+        "sourceUrl": "https://www.outfishingadventures.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.outfishingadventures.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0002329": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://plughoffoutfitters.com/trips",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Snake River",
+        "sourceUrl": "https://plughoffoutfitters.com/trips",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Hanford Reach",
+        "sourceUrl": "https://plughoffoutfitters.com/trips",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Buoy 10",
+        "sourceUrl": "https://plughoffoutfitters.com/trips",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Deschutes River",
+        "sourceUrl": "https://plughoffoutfitters.com/trips",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Klickitat River",
+        "sourceUrl": "https://plughoffoutfitters.com/trips",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://plughoffoutfitters.com/trips",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000782": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Public business directory or registry",
+        "url": "https://www.blm.gov/sites/default/files/uploads/deschutes_shuttles.pdf",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-15"
+      }
+    ]
   }
 }
