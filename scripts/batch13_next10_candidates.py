@@ -18,9 +18,9 @@ REPORT = ROOT / 'docs/research/BATCH13_NEXT10_CANDIDATE_REPORT.md'
 FIELDS = {'advertised_species': 'species', 'advertised_methods': 'method', 'advertised_trip_types': 'trip_type'}
 
 
-def build(review, selection_bytes, registry):
+def build(review, selection_bytes, registry, *, validate_fn=review_validator.validate):
     """Validate exact identities and group boundaries before producing any output."""
-    review_validator.validate(review, selection_bytes, registry)
+    validate_fn(review, selection_bytes, registry)
     sources = review['sources']
     def source(source_id):
         item = sources[source_id]
