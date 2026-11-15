@@ -1,0 +1,1515 @@
+{
+  "OG.0002254": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Wilson River",
+        "sourceUrl": "https://fishingwithbeck.com/salmon-fishing/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Trask River",
+        "sourceUrl": "https://fishingwithbeck.com/salmon-fishing/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Kilchis River",
+        "sourceUrl": "https://fishingwithbeck.com/salmon-fishing/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Nestucca River",
+        "sourceUrl": "https://fishingwithbeck.com/salmon-fishing/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0004087": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://www.uppercolumbiaguide.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://www.uppercolumbiaguide.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Clearwater River",
+        "sourceUrl": "https://www.uppercolumbiaguide.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0003904": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://dgcolumbiaadventures.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://dgcolumbiaadventures.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Buoy 10",
+        "sourceUrl": "https://dgcolumbiaadventures.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0002882": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://cksportfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://cksportfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Columbia River estuary (Astoria)",
+        "sourceUrl": "https://cksportfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Klickitat River mouth",
+        "sourceUrl": "https://cksportfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0003348": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Tillamook Bay",
+        "sourceUrl": "https://www.valleycoastoutdoors.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Pacific Ocean",
+        "sourceUrl": "https://www.valleycoastoutdoors.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://www.valleycoastoutdoors.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://www.valleycoastoutdoors.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Clackamas River",
+        "sourceUrl": "https://www.valleycoastoutdoors.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Sandy River",
+        "sourceUrl": "https://www.valleycoastoutdoors.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Wilson River",
+        "sourceUrl": "https://www.valleycoastoutdoors.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Trask River",
+        "sourceUrl": "https://www.valleycoastoutdoors.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Nestucca River",
+        "sourceUrl": "https://www.valleycoastoutdoors.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Siletz River",
+        "sourceUrl": "https://www.valleycoastoutdoors.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0001778": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://peelthereel.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://peelthereel.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0004079": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://reeladrenaline.fishing/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0001248": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://riversideguide.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000429": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://fishfeverguides.com/our-trips/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Alsea River",
+        "sourceUrl": "https://fishfeverguides.com/our-trips/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Yaquina River",
+        "sourceUrl": "https://fishfeverguides.com/our-trips/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Siletz River",
+        "sourceUrl": "https://fishfeverguides.com/our-trips/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Santiam River",
+        "sourceUrl": "https://fishfeverguides.com/our-trips/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Pacific Ocean",
+        "sourceUrl": "https://fishfeverguides.com/our-trips/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000430": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Umpqua River",
+        "sourceUrl": "https://assets.simpleviewinc.com/simpleview/image/upload/v1/clients/roseburgor/Fishing_Guides_2026_33148df7-218a-4b1c-ba7d-d67ce0d55fb4.pdf",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000433": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://ospreyguideadventures.com/salmon-fishing-guide-oregon/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://ospreyguideadventures.com/salmon-fishing-guide-oregon/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Tillamook Bay",
+        "sourceUrl": "https://ospreyguideadventures.com/salmon-fishing-guide-oregon/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Alsea Bay",
+        "sourceUrl": "https://ospreyguideadventures.com/salmon-fishing-guide-oregon/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Alsea River",
+        "sourceUrl": "https://ospreyguideadventures.com/steelhead-fishing-guide-oregon/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Siletz River",
+        "sourceUrl": "https://ospreyguideadventures.com/steelhead-fishing-guide-oregon/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Nestucca River",
+        "sourceUrl": "https://ospreyguideadventures.com/steelhead-fishing-guide-oregon/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Wilson River",
+        "sourceUrl": "https://ospreyguideadventures.com/steelhead-fishing-guide-oregon/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Deschutes River",
+        "sourceUrl": "https://ospreyguideadventures.com/steelhead-fishing-guide-oregon/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000436": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://willamettevalleyoutfittersllc.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://willamettevalleyoutfittersllc.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "McKenzie River",
+        "sourceUrl": "https://willamettevalleyoutfittersllc.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Elk River",
+        "sourceUrl": "https://willamettevalleyoutfittersllc.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Sixes River",
+        "sourceUrl": "https://willamettevalleyoutfittersllc.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Siletz River",
+        "sourceUrl": "https://willamettevalleyoutfittersllc.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Umpqua River",
+        "sourceUrl": "https://willamettevalleyoutfittersllc.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Siuslaw River",
+        "sourceUrl": "https://willamettevalleyoutfittersllc.com/un-portfolio-category/oregon-fisheries/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Winchester Bay",
+        "sourceUrl": "https://willamettevalleyoutfittersllc.com/un-portfolio-category/oregon-fisheries/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Nestucca River",
+        "sourceUrl": "https://pautzke.com/kyle-buschelman/",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Santiam River",
+        "sourceUrl": "https://pautzke.com/kyle-buschelman/",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://pautzke.com/kyle-buschelman/",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000437": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://bansemerfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Chetco River",
+        "sourceUrl": "https://bansemerfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Elk River",
+        "sourceUrl": "https://bansemerfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Sixes River",
+        "sourceUrl": "https://bansemerfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Klamath River",
+        "sourceUrl": "https://bansemerfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Smith River",
+        "sourceUrl": "https://bansemerfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000441": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Umpqua River",
+        "sourceUrl": "https://www.wolfepackfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Coquille River",
+        "sourceUrl": "https://www.wolfepackfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Elk River",
+        "sourceUrl": "https://www.wolfepackfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Sixes River",
+        "sourceUrl": "https://www.wolfepackfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000443": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://nicholsguidedfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://nicholsguidedfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Sandy River",
+        "sourceUrl": "https://nicholsguidedfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Tillamook Bay",
+        "sourceUrl": "https://nicholsguidedfishing.com/services/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Clackamas River",
+        "sourceUrl": "https://nicholsguidedfishing.com/services/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000450": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Deschutes River",
+        "sourceUrl": "https://flyfishersplace.com/guide-service/meet-the-guides/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "McKenzie River",
+        "sourceUrl": "https://flyfishersplace.com/guide-service/meet-the-guides/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Crooked River",
+        "sourceUrl": "https://flyfishersplace.com/guide-service/guide-trip-options/deschutes-river-guide-trips/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "North Fork Santiam River",
+        "sourceUrl": "https://flyfishersplace.com/guide-service/guide-trip-options/deschutes-river-guide-trips/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Fall River",
+        "sourceUrl": "https://flyfishersplace.com/guide-service/guide-trip-options/deschutes-river-guide-trips/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "East Lake",
+        "sourceUrl": "https://flyfishersplace.com/guide-service/guide-trip-options/cascade-lakes-fly-fishing-guide-trips/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Three Creeks Lake",
+        "sourceUrl": "https://flyfishersplace.com/guide-service/guide-trip-options/cascade-lakes-fly-fishing-guide-trips/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Crane Prairie Reservoir",
+        "sourceUrl": "https://flyfishersplace.com/guide-service/guide-trip-options/cascade-lakes-fly-fishing-guide-trips/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000460": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Wilson River",
+        "sourceUrl": "https://finsfeathersfurs.net/fishing-season-schedule.php",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Trask River",
+        "sourceUrl": "https://finsfeathersfurs.net/fishing-season-schedule.php",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Kilchis River",
+        "sourceUrl": "https://finsfeathersfurs.net/fishing-season-schedule.php",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Siletz River",
+        "sourceUrl": "https://finsfeathersfurs.net/fishing-season-schedule.php",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://finsfeathersfurs.net/fishing-season-schedule.php",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://finsfeathersfurs.net/fishing-season-schedule.php",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Tillamook Bay",
+        "sourceUrl": "https://finsfeathersfurs.net/fishing-season-schedule.php",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Nushagak River",
+        "sourceUrl": "https://finsfeathersfurs.net/fishing-season-schedule.php",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000461": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://portlandoregonfishingtrips.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://portlandoregonfishingtrips.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000462": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://letsgocatching.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://letsgocatching.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Sandy River",
+        "sourceUrl": "https://letsgocatching.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "John Day River",
+        "sourceUrl": "https://letsgocatching.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000468": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://goinsoutdooradventures.com/about/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://goinsoutdooradventures.com/about/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Tillamook Bay",
+        "sourceUrl": "https://goinsoutdooradventures.com/about/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Nehalem Bay",
+        "sourceUrl": "https://goinsoutdooradventures.com/about/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Nestucca Bay",
+        "sourceUrl": "https://goinsoutdooradventures.com/about/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Nestucca River",
+        "sourceUrl": "https://goinsoutdooradventures.com/about/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Wilson River",
+        "sourceUrl": "https://goinsoutdooradventures.com/about/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Trask River",
+        "sourceUrl": "https://goinsoutdooradventures.com/about/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Kilchis River",
+        "sourceUrl": "https://goinsoutdooradventures.com/about/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Siletz River",
+        "sourceUrl": "https://goinsoutdooradventures.com/about/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Pacific Ocean",
+        "sourceUrl": "https://goinsoutdooradventures.com/about/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000469": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Umpqua River",
+        "sourceUrl": "https://fishonnorthwest.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://fishonnorthwest.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://fishonnorthwest.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "McKenzie River",
+        "sourceUrl": "https://fishonnorthwest.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Siuslaw River",
+        "sourceUrl": "https://fishonnorthwest.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Coos River",
+        "sourceUrl": "https://fishonnorthwest.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Elk River",
+        "sourceUrl": "https://fishonnorthwest.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Sixes River",
+        "sourceUrl": "https://fishonnorthwest.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Lake Creek",
+        "sourceUrl": "https://fishonnorthwest.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Nestucca River",
+        "sourceUrl": "https://fishonnorthwest.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Coquille River",
+        "sourceUrl": "https://fishonnorthwest.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000470": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Deschutes River",
+        "sourceUrl": "https://www.rsoutdoorsfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Yakima River",
+        "sourceUrl": "https://www.rsoutdoorsfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000476": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "McKenzie River",
+        "sourceUrl": "https://www.twodudesflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://www.twodudesflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000484.BRO": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "John Day River",
+        "sourceUrl": "https://www.wildsteelheaders.org/marty-and-mia-sheppard-support-the-john-day-steelhead-project/",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Grande Ronde River",
+        "sourceUrl": "https://www.wildsteelheaders.org/marty-and-mia-sheppard-support-the-john-day-steelhead-project/",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Sandy River",
+        "sourceUrl": "https://www.wildsteelheaders.org/marty-and-mia-sheppard-support-the-john-day-steelhead-project/",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Deschutes River",
+        "sourceUrl": "https://www.wildsteelheaders.org/marty-and-mia-sheppard-support-the-john-day-steelhead-project/",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000485": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Klamath River",
+        "sourceUrl": "https://www.goldriverguides.com/locations",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Chetco River",
+        "sourceUrl": "https://www.goldriverlodge.com/who-we-are",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000495": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Grande Ronde River",
+        "sourceUrl": "https://www.granderondeflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Wallowa River",
+        "sourceUrl": "https://www.granderondeflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000502": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "McKenzie River",
+        "sourceUrl": "https://hollowaybrosfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Middle Fork Willamette River",
+        "sourceUrl": "https://hollowaybrosfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://hollowaybrosfishing.com/trips/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "North Umpqua River",
+        "sourceUrl": "https://hollowaybrosfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Sixes River",
+        "sourceUrl": "https://hollowaybrosfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Lake Creek",
+        "sourceUrl": "https://hollowaybrosfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000508": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://brettgesh.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "North Umpqua River",
+        "sourceUrl": "https://brettgesh.com/guided-fishing-trips/steelhead-fishing/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Umpqua River",
+        "sourceUrl": "https://brettgesh.com/guided-fishing-trips/steelhead-fishing/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "South Umpqua River",
+        "sourceUrl": "https://brettgesh.com/guided-fishing-trips/steelhead-fishing/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "South Fork Coquille River",
+        "sourceUrl": "https://brettgesh.com/guided-fishing-trips/steelhead-fishing/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://brettgesh.com/guided-fishing-trips/spring-salmon-fishing/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "McKenzie River",
+        "sourceUrl": "https://brettgesh.com/guided-fishing-trips/spring-salmon-fishing/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000509": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://fishwithruss.com/fishing-information/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Nehalem Bay",
+        "sourceUrl": "https://fishwithruss.com/fishing-information/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Wilson River",
+        "sourceUrl": "https://fishwithruss.com/fishing-information/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Trask River",
+        "sourceUrl": "https://fishwithruss.com/fishing-information/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Kilchis River",
+        "sourceUrl": "https://fishwithruss.com/fishing-information/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Pacific Ocean",
+        "sourceUrl": "https://fishwithruss.com/fishing-information/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000518": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "McKenzie River",
+        "sourceUrl": "https://www.helfrich.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "John Day River",
+        "sourceUrl": "https://www.helfrich.com/helfrich-outfitters-fly-fishing-guide/choose-your-adventure/john-day-river-fishing-guided-trips/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://www.helfrich.com/helfrich-outfitters-fly-fishing-guide/choose-your-adventure/john-day-river-fishing-guided-trips/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://www.helfrich.com/helfrich-outfitters-fly-fishing-guide/contact-helfrich-outfitter/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000520": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://malonesfishing.com/schedule-pricing/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Umpqua River",
+        "sourceUrl": "https://malonesfishing.com/schedule-pricing/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Chetco River",
+        "sourceUrl": "https://malonesfishing.com/schedule-pricing/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Coquille River",
+        "sourceUrl": "https://malonesfishing.com/schedule-pricing/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Elk River",
+        "sourceUrl": "https://malonesfishing.com/schedule-pricing/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Sixes River",
+        "sourceUrl": "https://malonesfishing.com/schedule-pricing/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000527": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Alsea River",
+        "sourceUrl": "https://www.nwcfishing.com/oregon.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Siletz River",
+        "sourceUrl": "https://www.nwcfishing.com/oregon.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Nestucca River",
+        "sourceUrl": "https://www.nwcfishing.com/oregon.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Wilson River",
+        "sourceUrl": "https://www.nwcfishing.com/oregon.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Kilchis River",
+        "sourceUrl": "https://www.nwcfishing.com/oregon.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Umpqua River",
+        "sourceUrl": "https://www.nwcfishing.com/oregon.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Kenai River",
+        "sourceUrl": "https://www.nwcfishing.com/oregon.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000528": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Owyhee River",
+        "sourceUrl": "https://bottorffguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000544": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Pacific Ocean",
+        "sourceUrl": "https://southcoasttours.net/tours/port-orford-ocean-kayak-fishing-tour/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000545": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Williamson River",
+        "sourceUrl": "https://www.southernoregonflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://www.southernoregonflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Klamath Lake",
+        "sourceUrl": "https://www.southernoregonflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000548": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://www.stevesguidedadventures.com/steelhead-fishing.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Klickitat River",
+        "sourceUrl": "https://www.clacka.com/pro-staff/steve-leonard/",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Kalama River",
+        "sourceUrl": "https://www.clacka.com/pro-staff/steve-leonard/",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Washougal River",
+        "sourceUrl": "https://www.clacka.com/pro-staff/steve-leonard/",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "East Fork Lewis River",
+        "sourceUrl": "https://www.clacka.com/pro-staff/steve-leonard/",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000549": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://wildmanoutdooradventures.com/home",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Pacific Ocean",
+        "sourceUrl": "https://wildmanoutdooradventures.com/home",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000550": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://fishwithcarson.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Umpqua River",
+        "sourceUrl": "https://www.carsonsguideservice.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Coquille River",
+        "sourceUrl": "https://www.carsonsguideservice.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Elk River",
+        "sourceUrl": "https://www.carsonsguideservice.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Sixes River",
+        "sourceUrl": "https://www.carsonsguideservice.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000555": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://www.fishtroycorgain.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://www.fishtroycorgain.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Winchester Bay",
+        "sourceUrl": "https://www.fishtroycorgain.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Umpqua River",
+        "sourceUrl": "https://www.fishtroycorgain.com/fishing-reports",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Coos River",
+        "sourceUrl": "https://www.fishtroycorgain.com/fishing-reports",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Coquille River",
+        "sourceUrl": "https://www.fishtroycorgain.com/fishing-reports",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Smith River",
+        "sourceUrl": "https://www.fishtroycorgain.com/fishing-reports",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Pacific Ocean",
+        "sourceUrl": "https://www.fishtroycorgain.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000561": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Deschutes River",
+        "sourceUrl": "https://www.silveysflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Sandy River",
+        "sourceUrl": "https://www.silveysflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000563": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Deschutes River",
+        "sourceUrl": "https://www.belozerswhitewaterfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000567": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Umpqua River",
+        "sourceUrl": "https://reelmellofishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Chetco River",
+        "sourceUrl": "https://reelmellofishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://reelmellofishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000571": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://goldbeachguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Chetco River",
+        "sourceUrl": "https://goldbeachguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Elk River",
+        "sourceUrl": "https://goldbeachguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Sixes River",
+        "sourceUrl": "https://goldbeachguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000572": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://www.midcolumbiariverguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Snake River",
+        "sourceUrl": "https://captainexperiences.com/guides/mid-columbia-river-guide-service",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000575": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://traveloregon.com/plan-your-trip/guides-tours/guides-charters/bill-urie-guide-service/",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000581": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Coquille River",
+        "sourceUrl": "https://fishoregon.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Coos River",
+        "sourceUrl": "https://fishoregon.com/contact-us/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Umpqua River",
+        "sourceUrl": "https://fishoregon.com/contact-us/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://goldbeachoregon.com/fishing-guides/",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000585": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Pacific Ocean",
+        "sourceUrl": "https://brookingsfishing.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Chetco River",
+        "sourceUrl": "https://brookingsfishing.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://wildriversfishing.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Coos River",
+        "sourceUrl": "https://wildriversfishing.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Coquille River",
+        "sourceUrl": "https://wildriversfishing.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Elk River",
+        "sourceUrl": "https://wildriversfishing.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Sixes River",
+        "sourceUrl": "https://wildriversfishing.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Smith River",
+        "sourceUrl": "https://wildriversfishing.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  }
+}
