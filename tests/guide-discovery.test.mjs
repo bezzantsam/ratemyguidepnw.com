@@ -25,7 +25,7 @@ test('all editorial enrichments match existing imported profiles',()=>{
   assert.ok(known.has(registration),'unknown registration '+registration);
   assert.match(registration,/^(OG\.\d{7}(?:\.[A-Za-z0-9&-]{1,12})?|wa-\d{3,})$/);
   assert.ok(Array.isArray(enriched[registration].searchAliases));
-  assert.ok(enriched[registration].advertisedWaters.length > 0 || enriched[registration].searchAliases.length > 0 || (enriched[registration].sourceLinks?.length ?? 0) > 0,
+  assert.ok(enriched[registration].advertisedWaters.length > 0 || enriched[registration].searchAliases.length > 0 || (enriched[registration].sourceLinks?.length ?? 0) > 0 || !!enriched[registration].registryWebsite,
    'source-link-only editorial enrichment is valid when no fishery is established: '+registration);
  }
 });
@@ -100,6 +100,11 @@ test('profile UI distinguishes public operating claims from historical licensing
 
 test('new business evidence has safe dated links and pending research never feeds public enrichment',()=>{
  for(const entry of Object.values(enriched)){
+  if(entry.registryWebsite){
+   assert.equal(entry.registryWebsite.sourceType,'oregon_registry_import');
+   assert.equal(entry.registryWebsite.verificationStatus,'unverified_registry_reference');
+   const u=new URL(entry.registryWebsite.url);assert.equal(u.protocol,'https:');assert.equal(u.username,'');assert.equal(u.password,'');
+  }
   for(const source of entry.sourceLinks??[]){
    const url=new URL(source.url);
    assert.equal(url.protocol,'https:');
