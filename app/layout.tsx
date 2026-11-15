@@ -30,6 +30,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <Link href="/saved">Saved Guides</Link>
             <Link href="/intel/buoy-10-chinook">Chinook Intel</Link>
             <Link href="/reviews">Dock Talk</Link>
+            <Link href="/for-guides">For Captains</Link>
             <Link href="/about">About</Link>
           </nav>
         </header>
