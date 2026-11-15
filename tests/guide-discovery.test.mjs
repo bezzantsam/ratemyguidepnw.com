@@ -23,7 +23,7 @@ test('all editorial enrichments match existing imported profiles',()=>{
  assert.ok(Object.keys(enriched).length > 0);
  for(const registration of Object.keys(enriched)){
   assert.ok(known.has(registration),'unknown registration '+registration);
-  assert.match(registration,/^(OG\.\d{7}|wa-\d{3,})$/);
+  assert.match(registration,/^(OG\.\d{7}(?:\.[A-Za-z0-9&-]{1,12})?|wa-\d{3,})$/);
   assert.ok(Array.isArray(enriched[registration].searchAliases));
   assert.ok(enriched[registration].advertisedWaters.length > 0 || enriched[registration].searchAliases.length > 0);
  }
