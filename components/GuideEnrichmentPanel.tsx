@@ -31,7 +31,7 @@ export default function GuideEnrichmentPanel({registration}:{registration:string
  if(!hasEvidence&&!hasOfferings&&!enrichment.registryWebsite)return null;
  return <section className="section card guide-enrichment" aria-labelledby="guide-enrichment-title">
   <p className="eyebrow">PUBLIC SOURCE RESEARCH · NOT CAPTAIN VERIFIED</p>
-  <h2 id="guide-enrichment-title">Fishing services and public business sources</h2>
+  <h2 id="guide-enrichment-title">{enrichment.advertisedWaters.length||hasOfferings ? 'Fishing services and public business sources' : 'Public business sources'}</h2>
   <p className="muted">Named fishing waters, species and techniques are taken from attributed public operator or third-party materials. They are not verified departure ports, certified expertise, current bookings, active licenses, or RateMyGuidePNW endorsements. Confirm availability with the operator before booking.</p>
   {operatorLink&&<p><a className="button" href={operatorLink.url} target="_blank" rel="noopener noreferrer nofollow">Visit guide website ↗</a> <span className="muted">External website, current trip availability unconfirmed.</span></p>}
   {enrichment.registryWebsite&&<p className="muted">
