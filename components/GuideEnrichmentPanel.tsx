@@ -8,12 +8,14 @@ const sourceLabels={
 /** Informational source references, never an official license or identity check. */
 export default function GuideEnrichmentPanel({registration}:{registration:string}){
  const enrichment=guideEnrichmentFor(registration);
+ const operatorLink=enrichment?.sourceLinks?.find(source=>source.sourceType==='operator_site');
  if(!enrichment || (enrichment.advertisedWaters.length === 0 && !enrichment.sourceLinks?.length))return null;
 
  return <section className="section card guide-enrichment" aria-labelledby="guide-enrichment-title">
    <p className="eyebrow">PUBLIC SOURCE RESEARCH · LIMITED PILOT</p>
    <h2 id="guide-enrichment-title">{enrichment.advertisedWaters.length ? 'Publicly advertised fishing waters' : 'Public business sources'}</h2>
    <p className="muted">These are named on linked operator or third-party pages, not verified departure ports, current bookings, active licenses, or endorsements by RateMyGuidePNW. Confirm availability directly before booking.</p>
+   {operatorLink&&<p><a className="button" href={operatorLink.url} target="_blank" rel="noopener noreferrer">Visit guide website ↗</a><span className="muted">Check current trips, availability and booking directly with the operator.</span></p>}
    {enrichment.searchAliases.length>0&&<p><strong>Other public search names:</strong> {enrichment.searchAliases.join(' · ')}</p>}
    <ul className="guide-enrichment-waters">
      {enrichment.advertisedWaters.map(water=>
