@@ -47,18 +47,17 @@ test('search list labels do not imply account claiming or review counts', () => 
   }
 });
 
-test('guide profiles still load real Supabase moderation/review components', () => {
+test('guide profiles preserve trust panels and guard review access', () => {
   for (const path of ['app/guides/[slug]/page.tsx','app/washington/[id]/page.tsx']) {
     const code=read(path);
-    assert.match(code, /<CaptainDetails/);
-    assert.match(code, /<CaptainMedia/);
     assert.match(code, /<CaptainReviews/);
     assert.match(code, /<GuideTrustPanel/);
     assert.doesNotMatch(code, /<strong>No reviews yet<\/strong>/);
   }
   const review=read('components/CaptainReviews.tsx');
   assert.match(review, /public_angler_reviews/);
-  assert.match(review, /status:'pending'/);
+  assert.match(review, /Review submissions are not currently available/);
+  assert.match(review, /matchesPublicGuideIdentity/);
 });
 
 test('explanation provides neutral distinctions and accessible source disclosure', () => {
