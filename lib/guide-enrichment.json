@@ -2828,14 +2828,7 @@
   },
   "OG.0000659": {
     "searchAliases": [],
-    "advertisedWaters": [
-      {
-        "name": "Deschutes River",
-        "sourceUrl": "https://www.deschutesriverjetboats.com/",
-        "sourceType": "operator_site",
-        "observedOn": "2026-11-15"
-      }
-    ],
+    "advertisedWaters": [],
     "sourceLinks": [
       {
         "label": "Operator website",
