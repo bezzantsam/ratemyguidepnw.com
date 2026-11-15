@@ -23,6 +23,10 @@ export default function Home() {
         </div>
         <ArrowUpRight className="home-intel-feature-arrow" size={24} aria-hidden="true" />
       </Link>
+      <section className="home-captain-cta" aria-label="For fishing guides">
+        <div><strong>Own a fishing guide business?</strong><p>Claim your free listing and help us build a profile that sends anglers to you directly.</p></div>
+        <Link className="button" href="/for-guides">For Captains →</Link>
+      </section>
       <UnifiedSearch entries={directoryEntries} />
       <p className="muted" style={{ marginTop: 22 }}>
         <ShieldCheck size={15} aria-hidden="true" style={{ verticalAlign: 'middle', marginRight: 6 }} />
