@@ -2026,5 +2026,608 @@
         "observedOn": "2026-11-14"
       }
     ]
+  },
+  "OG.0000528": {
+    "searchAliases": [
+      "Bottorff Guide Service"
+    ],
+    "advertisedWaters": [
+      {
+        "name": "Owyhee River",
+        "sourceUrl": "https://bottorffguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Guide website",
+        "url": "https://bottorffguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "label": "Guide website",
+        "url": "https://bottorffguideservice.com/trip-pricing",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000544": {
+    "searchAliases": [
+      "Dave Lacey",
+      "South Coast Tours"
+    ],
+    "advertisedWaters": [
+      {
+        "name": "Pacific Ocean",
+        "sourceUrl": "https://southcoasttours.net/tours/port-orford-ocean-kayak-fishing-tour/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Guide website",
+        "url": "https://southcoasttours.net/about-south-coast-tours/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "label": "Guide website",
+        "url": "https://southcoasttours.net/tours/port-orford-ocean-kayak-fishing-tour/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000545": {
+    "searchAliases": [
+      "Nate Bailey",
+      "On The Fly Guide Service"
+    ],
+    "advertisedWaters": [
+      {
+        "name": "Williamson River",
+        "sourceUrl": "https://www.southernoregonflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://www.southernoregonflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Klamath Lake",
+        "sourceUrl": "https://www.southernoregonflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Guide website",
+        "url": "https://www.southernoregonflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "label": "Guide website",
+        "url": "https://www.southernoregonflyfishing.com/oregonguidedflyfishing/williamsonriverflyfishing",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000548": {
+    "searchAliases": [
+      "Steve Leonard"
+    ],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://www.stevesguidedadventures.com/steelhead-fishing.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Klickitat River",
+        "sourceUrl": "https://www.clacka.com/pro-staff/steve-leonard/",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Kalama River",
+        "sourceUrl": "https://www.clacka.com/pro-staff/steve-leonard/",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Washougal River",
+        "sourceUrl": "https://www.clacka.com/pro-staff/steve-leonard/",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "East Fork Lewis River",
+        "sourceUrl": "https://www.clacka.com/pro-staff/steve-leonard/",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Guide website",
+        "url": "https://www.stevesguidedadventures.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "label": "Guide website",
+        "url": "https://www.stevesguidedadventures.com/steelhead-fishing.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000549": {
+    "searchAliases": [
+      "Phil Mattson",
+      "Wildman Outdoor Adventures"
+    ],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://wildmanoutdooradventures.com/home",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Pacific Ocean",
+        "sourceUrl": "https://wildmanoutdooradventures.com/home",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Guide website",
+        "url": "https://wildmanoutdooradventures.com/home",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "label": "Guide website",
+        "url": "https://wildmanoutdooradventures.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000550": {
+    "searchAliases": [
+      "Chris Carson"
+    ],
+    "advertisedWaters": [
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://fishwithcarson.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Umpqua River",
+        "sourceUrl": "https://www.carsonsguideservice.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Coquille River",
+        "sourceUrl": "https://www.carsonsguideservice.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Elk River",
+        "sourceUrl": "https://www.carsonsguideservice.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Sixes River",
+        "sourceUrl": "https://www.carsonsguideservice.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Guide website",
+        "url": "https://fishwithcarson.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "label": "Guide website",
+        "url": "https://www.carsonsguideservice.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000555": {
+    "searchAliases": [
+      "Fish Troy Corgain"
+    ],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://www.fishtroycorgain.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://www.fishtroycorgain.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Winchester Bay",
+        "sourceUrl": "https://www.fishtroycorgain.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Umpqua River",
+        "sourceUrl": "https://www.fishtroycorgain.com/fishing-reports",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Coos River",
+        "sourceUrl": "https://www.fishtroycorgain.com/fishing-reports",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Coquille River",
+        "sourceUrl": "https://www.fishtroycorgain.com/fishing-reports",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Smith River",
+        "sourceUrl": "https://www.fishtroycorgain.com/fishing-reports",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Pacific Ocean",
+        "sourceUrl": "https://www.fishtroycorgain.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Guide website",
+        "url": "https://www.fishtroycorgain.com/about",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "label": "Guide website",
+        "url": "https://www.fishtroycorgain.com/fishing-reports",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000561": {
+    "searchAliases": [
+      "Silvey's Fly Fishing"
+    ],
+    "advertisedWaters": [
+      {
+        "name": "Deschutes River",
+        "sourceUrl": "https://www.silveysflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Sandy River",
+        "sourceUrl": "https://www.silveysflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Guide website",
+        "url": "https://www.silveysflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "label": "Guide website",
+        "url": "https://www.silveysflyfishing.com/guided-trip-rates",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000563": {
+    "searchAliases": [
+      "Jon Belozer",
+      "Belozer's Whitewater Fishing"
+    ],
+    "advertisedWaters": [
+      {
+        "name": "Deschutes River",
+        "sourceUrl": "https://www.belozerswhitewaterfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Guide website",
+        "url": "https://www.belozerswhitewaterfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "label": "Guide website",
+        "url": "https://www.belozerswhitewaterfishing.com/our-guides",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000567": {
+    "searchAliases": [
+      "Joe Mello",
+      "Reel Mello Fishing Guide Service"
+    ],
+    "advertisedWaters": [
+      {
+        "name": "Umpqua River",
+        "sourceUrl": "https://reelmellofishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Chetco River",
+        "sourceUrl": "https://reelmellofishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://reelmellofishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Guide website",
+        "url": "https://reelmellofishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000571": {
+    "searchAliases": [
+      "Gene Garner"
+    ],
+    "advertisedWaters": [
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://goldbeachguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Chetco River",
+        "sourceUrl": "https://goldbeachguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Elk River",
+        "sourceUrl": "https://goldbeachguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Sixes River",
+        "sourceUrl": "https://goldbeachguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Guide website",
+        "url": "https://goldbeachguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000572": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://www.midcolumbiariverguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Snake River",
+        "sourceUrl": "https://captainexperiences.com/guides/mid-columbia-river-guide-service",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Guide website",
+        "url": "https://www.midcolumbiariverguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "label": "Guide website",
+        "url": "https://www.midcolumbiariverguideservice.com/rates-booking",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000575": {
+    "searchAliases": [
+      "Bill Urie"
+    ],
+    "advertisedWaters": [
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://traveloregon.com/plan-your-trip/guides-tours/guides-charters/bill-urie-guide-service/",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Public guide directory",
+        "url": "https://traveloregon.com/plan-your-trip/guides-tours/guides-charters/bill-urie-guide-service/",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000581": {
+    "searchAliases": [
+      "Tim Schlund",
+      "Fish Oregon Guide Service"
+    ],
+    "advertisedWaters": [
+      {
+        "name": "Coquille River",
+        "sourceUrl": "https://fishoregon.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Coos River",
+        "sourceUrl": "https://fishoregon.com/contact-us/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Umpqua River",
+        "sourceUrl": "https://fishoregon.com/contact-us/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://goldbeachoregon.com/fishing-guides/",
+        "sourceType": "third_party_directory",
+        "observedOn": "2026-11-14"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Guide website",
+        "url": "https://fishoregon.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "label": "Guide website",
+        "url": "https://fishoregon.com/contact-us/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
+  },
+  "OG.0000585": {
+    "searchAliases": [
+      "Andy Martin",
+      "Brookings Fishing Charters",
+      "Wild Rivers Fishing"
+    ],
+    "advertisedWaters": [
+      {
+        "name": "Pacific Ocean",
+        "sourceUrl": "https://brookingsfishing.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Chetco River",
+        "sourceUrl": "https://brookingsfishing.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://wildriversfishing.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Coos River",
+        "sourceUrl": "https://wildriversfishing.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Coquille River",
+        "sourceUrl": "https://wildriversfishing.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Elk River",
+        "sourceUrl": "https://wildriversfishing.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Sixes River",
+        "sourceUrl": "https://wildriversfishing.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "name": "Smith River",
+        "sourceUrl": "https://wildriversfishing.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Guide website",
+        "url": "https://brookingsfishing.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      },
+      {
+        "label": "Guide website",
+        "url": "https://wildriversfishing.com/about.html",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-14"
+      }
+    ]
   }
 }
