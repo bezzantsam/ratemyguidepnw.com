@@ -137,3 +137,17 @@ a.dock-ticker-item:hover{color:white;text-decoration:underline}
 .trust-policy-footer{margin-top:24px;max-width:900px}
 @media(max-width:830px){.trust-evidence-grid{grid-template-columns:1fr}.trust-next-steps{grid-template-columns:1fr}.trust-panel-heading{align-items:flex-start}}
 @media(max-width:500px){.trust-term{grid-template-columns:1fr;gap:8px;padding:17px}.trust-panel{padding:16px}.trust-evidence-item{padding:17px}}
+
+/* Directory controls wrap on small screens without changing input focus. */
+.search-actions,.active-filters{display:flex;align-items:center;flex-wrap:wrap;gap:.5rem;margin:1rem 0}
+.search-actions label{flex:1 1 100%;min-width:0}
+.search-actions input{max-width:100%;width:100%}
+.active-filters button{max-width:100%;white-space:normal;overflow-wrap:anywhere}
+
+.directory-panel .directory-source-disclosure,.directory-panel > .muted{color:#405e56;padding:0 25px}
+.directory-panel .search-actions,.directory-panel .active-filters{padding:0 25px}
+.search-actions button,.search-actions a,.active-filters button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:8px 12px;border:1px solid #88aaa0;border-radius:8px;background:#fff;color:#193f36;font:inherit;font-weight:700;cursor:pointer}
+.search-actions a{text-decoration:none}
+.search-actions button:focus-visible,.search-actions a:focus-visible,.active-filters button:focus-visible{outline:3px solid #1574d4;outline-offset:2px}
+.search-actions input{padding:10px;color:#193538;background:#fff;border:1px solid #88aaa0;border-radius:8px}
+@media(max-width:680px){.directory-panel .directory-source-disclosure,.directory-panel > .muted,.directory-panel .search-actions,.directory-panel .active-filters{padding-left:15px;padding-right:15px}}

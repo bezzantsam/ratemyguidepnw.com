@@ -1,13 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {chromium} from 'playwright-core';
+import {mkdirSync} from 'node:fs';
+import {join} from 'node:path';
 
 const origin='http://127.0.0.1:3157';
 const fakeApi='http://127.0.0.1:59999';
 const executablePath=process.env.BROWSER_EXECUTABLE;
 if(!executablePath) throw new Error('Set BROWSER_EXECUTABLE to a local Chromium/Chrome executable. Serve the isolated build on 127.0.0.1:3157.');
 
-test('public MVP discovery and fail-closed identity flow in a browser', {timeout:90000}, async()=>{
+test('public MVP discovery and fail-closed identity flow in a browser', {timeout:120000}, async()=>{
  const browser=await chromium.launch({executablePath,headless:true});
  const context=await browser.newContext({viewport:{width:1280,height:800}});
  const requests=[];const blocked=[];const errors=[];
@@ -23,13 +25,52 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
   if(url.origin===origin||url.protocol==='data:'||url.protocol==='blob:')return route.continue();
   blocked.push(url.origin);return route.abort();
  });
- const page=await context.newPage();page.setDefaultTimeout(10000);page.on('pageerror',e=>errors.push(e.message));
+ const page=await context.newPage();page.setDefaultTimeout(15000);page.on('pageerror',e=>errors.push(`${page.url()}: ${e.message}`));
  try{
   await page.goto(origin,{waitUntil:'domcontentloaded'});
   await page.getByRole('heading',{name:'Find a captain'}).waitFor();
   await page.goto(`${origin}/guides`,{waitUntil:'domcontentloaded'});
   const q=page.getByRole('searchbox',{name:'Captain, business, operating name, or registration'});
-  await q.fill('John Hanson');await page.getByRole('link',{name:/John Hanson/}).first().waitFor();
+  // A shareable URL survives refresh and profile navigation, including page 2.
+  await page.goto(`${origin}/guides?state=Oregon&area=Coos-Coquille&page=2`,{waitUntil:'domcontentloaded'});
+  await page.waitForFunction(()=>new URLSearchParams(location.search).get('page')==='2');
+  await page.getByText('Page 2 of',{exact:false}).first().waitFor();
+  const saved=page.url();await page.reload({waitUntil:'domcontentloaded'});
+  await page.getByText('Page 2 of',{exact:false}).first().waitFor();
+  assert.equal(page.url(),saved);
+  await page.locator('.guide-result').first().click();
+  await page.getByRole('link',{name:'← Search guides'}).click();
+  await page.getByText('Page 2 of',{exact:false}).first().waitFor();assert.equal(page.url(),saved);
+  await page.getByRole('button',{name:'Clear all filters'}).click();
+  await page.waitForURL(`${origin}/guides`);
+  await page.goBack();await page.getByText('Page 2 of',{exact:false}).first().waitFor();
+  await page.goForward();await page.waitForURL(`${origin}/guides`);
+  await page.goto(`${origin}/guides?state=Oregon&state=Washington&area=obsolete&page=999999999&q=a&q=b`,{waitUntil:'domcontentloaded'});
+  await page.waitForFunction(()=>location.search==='');assert.equal(await q.inputValue(),'');
+  await page.goto(`${origin}/guides?state=Oregon&page=999999`,{waitUntil:'domcontentloaded'});
+  await page.waitForFunction(()=>new URLSearchParams(location.search).get('page')!=='999999');
+  assert.ok(Number(new URL(page.url()).searchParams.get('page'))>1);
+  await page.goto(`${origin}/guides?state=Oregon&area=Coos-Coquille&water=Wilson+River`,{waitUntil:'domcontentloaded'});
+  await page.getByRole('button',{name:'Washington',exact:true}).click();
+  assert.equal(await page.getByLabel('Imported source area / notes (unverified)').inputValue(),'All areas');
+  assert.equal(await page.getByLabel('Advertised fishing water (pilot)').inputValue(),'All advertised waters');
+  await page.goto(`${origin}/guides?state=Oregon&q=John`,{waitUntil:'domcontentloaded'});
+  await page.waitForFunction(()=>document.querySelector('input[type=search]')?.value==='John');
+  await page.getByRole('button',{name:'Remove search: John'}).click();assert.equal(await q.inputValue(),'');
+  assert.equal(await page.evaluate(()=>document.activeElement?.getAttribute('type')),'search','removing a search returns focus to the search box');
+  await page.evaluate(()=>Object.defineProperty(navigator,'clipboard',{value:undefined,configurable:true}));
+  await page.getByRole('button',{name:'Copy search link'}).click();
+  assert.match(await page.getByLabel('Search link',{exact:true}).inputValue(),/^http:\/\/127\.0\.0\.1:3157\/guides/);
+  await page.goto(`${origin}/guides/og-0000047?returnTo=${encodeURIComponent('https://evil.test')}`,{waitUntil:'domcontentloaded'});
+  assert.equal(await page.getByRole('link',{name:'← Search guides'}).getAttribute('href'),'/guides');
+  await page.goto(origin,{waitUntil:'domcontentloaded'});
+  await q.fill('John Hanson');await page.getByRole('link',{name:'Open search in directory'}).click();
+  await page.waitForURL(/\/guides\?q=John/);await page.waitForFunction(()=>document.querySelector('input[type=search]')?.value==='John Hanson');
+  if(process.env.BROWSER_SCREENSHOT_DIR){mkdirSync(process.env.BROWSER_SCREENSHOT_DIR,{recursive:true});await page.screenshot({path:join(process.env.BROWSER_SCREENSHOT_DIR,'desktop.png'),fullPage:true})}
+  await q.fill('');const historyBefore=await page.evaluate(()=>history.length);await q.focus();await page.keyboard.type('John Hanson');
+  assert.equal(await page.evaluate(()=>history.length),historyBefore,'typing replaces history');
+  assert.equal(await page.evaluate(()=>document.activeElement?.getAttribute('type')),'search','typing preserves focus');
+  await page.getByRole('link',{name:/John Hanson/}).first().waitFor();
   await q.fill('Billy Davis');await page.getByRole('link',{name:/William Davis/}).first().waitFor();
   await q.fill('John Hansno');await page.getByRole('link',{name:/John Hanson/}).first().waitFor();
   await q.fill('zzzxqv nonexistent');await page.getByText('No matching guides.',{exact:false}).waitFor();
@@ -79,5 +120,6 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
   await page.getByRole('link',{name:/John Hanson/}).first().waitFor();
   await page.keyboard.press('Tab');
   assert.ok(await page.evaluate(()=>document.activeElement?.tagName==='SELECT'),'keyboard moves from search to area filter');
+  if(process.env.BROWSER_SCREENSHOT_DIR)await page.screenshot({path:join(process.env.BROWSER_SCREENSHOT_DIR,'mobile.png'),fullPage:true});
  }finally{await context.close();await browser.close()}
 });

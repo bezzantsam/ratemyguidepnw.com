@@ -43,3 +43,27 @@ test('the public data loader does not import research queues',()=>{
  assert.doesNotMatch(source,/research|batch13|pendingEntities/i);
  assert.match(read('components/GuideEnrichmentPanel.tsx'),/sourceUrl/);
 });
+
+function loadUrl(){
+ const exports={};
+ const query={};
+ vm.runInNewContext(ts.transpileModule(read('lib/directory-query.ts'),{compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText,{exports:query});
+ vm.runInNewContext(ts.transpileModule(read('lib/directory-url.ts'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText,{exports,URL,URLSearchParams,require:name=>{if(name==='./directory-query')return query;throw new Error(name)}});
+ return exports;
+}
+test('directory URL state handles duplicates, obsolete filters and out of range pages',()=>{
+ const {parseDirectoryState,directoryUrl}=loadUrl();
+ const parsed=parseDirectoryState('?state=Washington&area=Coastal&water=Columbia+River&page=999&q=william',rows);
+ assert.equal(parsed.page,1);assert.equal(parsed.area,'Coastal');assert.equal(parsed.waterway,'Columbia River');
+ assert.match(directoryUrl(parsed),/^\/guides\?/);
+ const invalid=parseDirectoryState('?state=Oregon&state=Washington&area=unknown&water=unknown&page=-4&q=a&q=b',rows);
+ assert.equal(invalid.state,'All');assert.equal(invalid.query,'');assert.equal(invalid.area,'All areas');assert.equal(invalid.waterway,'All advertised waters');assert.equal(invalid.page,1);
+ const incompatible=parseDirectoryState('?state=Oregon&water=Columbia+River',rows);
+ assert.equal(incompatible.waterway,'All advertised waters');
+ assert.equal(parseDirectoryState('?q='+('x'.repeat(2050)),rows).query,'');
+});
+test('return paths reject external, ambiguous and malformed URLs',()=>{
+ const {safeDirectoryReturn}=loadUrl();
+ assert.equal(safeDirectoryReturn('/guides?state=Oregon&page=2'),'/guides?state=Oregon&page=2');
+ for(const value of ['//evil.test/guides','https://evil.test/guides','/guides/../admin','/guides?state=Oregon&state=Washington','/guides?next=https://evil.test','/guides#x','/guides\\evil'])assert.equal(safeDirectoryReturn(value),'/guides');
+});
