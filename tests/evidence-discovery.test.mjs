@@ -90,3 +90,14 @@ test('empty approved coverage hides controls while approved fixtures render them
  const present=renderToStaticMarkup(React.createElement(exports.default,{entries:[{...base,advertisedSpecies:['Salmon'],advertisedMethods:['Fly fishing']}]}));
  assert.match(present,/Source-listed species/);assert.match(present,/Source-listed fishing method/);
 });
+
+test('next-ten pending candidates never reach the public loader',()=>{
+ const pending=JSON.parse(read('docs/research/BATCH13_NEXT10_PENDING_CANDIDATES.json'));
+ const ids=new Set(pending.attributes.map(x=>x.guide_id));
+ assert.equal(pending.attributes.length,44);
+ assert.ok(pending.attributes.every(x=>x.editorial_status==='pending'&&x.publication_approved===false));
+ assert.equal(approvedAttributes(pending.attributes,ids).length,0);
+ const waters=JSON.parse(read('docs/research/BATCH13_NEXT10_PENDING_WATERS.json')).waters;
+ assert.equal(waters.length,13);assert.ok(waters.every(x=>!('kind' in x)&&x.editorial_status==='pending'&&x.publication_approved===false));
+ assert.equal(approvedAttributes(waters,ids).length,0);
+});
