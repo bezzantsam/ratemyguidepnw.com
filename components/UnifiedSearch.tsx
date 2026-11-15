@@ -4,11 +4,13 @@ import {useEffect,useMemo,useRef,useState} from 'react';
 import {DEFAULT_DIRECTORY_STATE,DIRECTORY_PAGE_SIZE,directoryUrl,parseDirectoryState,type DirectoryState} from '@/lib/directory-url';
 import type {DirectoryEntry} from '@/lib/directory';
 import {filterDirectoryEntries,guideSearchScore} from '@/lib/directory-query';
+import DirectoryEmptyState from './DirectoryEmptyState';
 
 export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
  const [selection,setSelection]=useState<DirectoryState>(DEFAULT_DIRECTORY_STATE);
  const [copyStatus,setCopyStatus]=useState('');
  const [fallback,setFallback]=useState(false);
+ const resultsRef=useRef<HTMLDivElement>(null);
  const searchRef=useRef<HTMLInputElement>(null),areaRef=useRef<HTMLSelectElement>(null),waterRef=useRef<HTMLSelectElement>(null),speciesRef=useRef<HTMLSelectElement>(null),methodRef=useRef<HTMLSelectElement>(null),allRef=useRef<HTMLButtonElement>(null);
  const {query:q,state,area,waterway,species,method,page}=selection;
  const size=DIRECTORY_PAGE_SIZE;
@@ -102,7 +104,7 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
    {method!=='All methods'&&<button type="button" onClick={()=>{change({method:'All methods',page:1});methodRef.current?.focus()}}>Remove method: {method}</button>}
    {waterway!=='All advertised waters'&&<button type="button" onClick={()=>{change({waterway:'All advertised waters',page:1});waterRef.current?.focus()}}>Remove waterway: {waterway}</button>}
   </div>}
-  <div className="results-heading" role="status" aria-live="polite" aria-atomic="true"><strong>{filtered.length.toLocaleString()} captain listings</strong>
+  <div ref={resultsRef} tabIndex={-1} className="results-heading" role="status" aria-live="polite" aria-atomic="true"><strong>{filtered.length.toLocaleString()} captain listings</strong>
    <span>{q.trim()?'Closest matches first':'A–Z'} · Page {current} of {pages}</span>
   </div>
   <div className="guide-results">{filtered.slice((current-1)*size,current*size).map(g=>
@@ -123,7 +125,7 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
     </Link>
    </div>)}
   </div>
-  {!filtered.length&&<p className="empty-results">No matching guides. Try another name, remove a filter, or clear all filters.</p>}
+  {!filtered.length&&<DirectoryEmptyState entries={entries} selection={selection} onChoose={next=>{change(next);resultsRef.current?.focus()}}/>}
   {pages>1&&<div className="pager"><button disabled={current===1} onClick={()=>change({page:Math.max(1,current-1)})}>← Previous</button>
    <span>Page {current} / {pages}</span>
    <button disabled={current===pages} onClick={()=>change({page:Math.min(pages,current+1)})}>Next →</button>
