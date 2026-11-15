@@ -1,6 +1,7 @@
 'use client';
 import {useEffect,useId,useState} from 'react';
 import {client} from './AuthPanel';
+import {matchesPublicGuideIdentity} from '@/lib/guide-db-identity';
 import {
   BOOKING_STYLES, FISH_CARE, MAX_OFFERINGS, MAX_VESSELS,
   TARGET_SPECIES, TRIP_DURATIONS, VESSEL_TYPES, WATERWAY_SUGGESTIONS,
@@ -19,7 +20,7 @@ const durationLabels:Record<(typeof TRIP_DURATIONS)[number],string>={
   unspecified:'Contact to confirm',half_day:'Half day',full_day:'Full day',multi_day:'Multi-day',
 };
 
-export default function CaptainFisheryEditor({listing,name,submitEnabled=false}:{listing:string;name:string;submitEnabled?:boolean}){
+export default function CaptainFisheryEditor({listing,name,business=null,submitEnabled=false}:{listing:string;name:string;business?:string|null;submitEnabled?:boolean}){
   const suggestionsId=useId();
   const [draft,setDraft]=useState<CaptainFisheryDraft>(makeEmptyCaptainDraft);
   const [ready,setReady]=useState(false);
@@ -59,9 +60,13 @@ export default function CaptainFisheryEditor({listing,name,submitEnabled=false}:
       setGuideUuid('');
       if(!auth.user)return;
       const slug=listing.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/-$/,'');
-      const {data:guide,error:guideError}=await client!.from('guides').select('id')
+      const {data:guide,error:guideError}=await client!.from('guides').select('id,full_name,outfit_name')
         .eq('slug',slug).maybeSingle();
       if(!active||guideError||!guide)return;
+      if(!matchesPublicGuideIdentity({name,business},guide)){
+        setMessage('Captain submission is unavailable: directory identity needs reconciliation.');
+        return;
+      }
       const {data:claims,error}=await client!.from('guide_claims').select('id')
         .eq('guide_id',guide.id).eq('claimant_id',auth.user.id).eq('status','approved').limit(1);
       if(!active||error||!claims?.length)return;
@@ -73,7 +78,7 @@ export default function CaptainFisheryEditor({listing,name,submitEnabled=false}:
       void Promise.resolve().then(check);
     });
     return ()=>{active=false;subscription.unsubscribe()};
-  },[listing]);
+  },[listing,name,business]);
 
   function changeVessel(id:string,patch:Partial<CaptainVessel>){
     setDraft(d=>({...d,vessels:d.vessels.map(v=>v.id===id?{...v,...patch}:v)}));
