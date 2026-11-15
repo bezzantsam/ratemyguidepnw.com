@@ -60,6 +60,25 @@ test('Fisher names and shared outfitters never collapse individual captain ident
  assert.notEqual(fishers.profileIds[0],fishers.profileIds[1]);
 });
 
+test('Wolfe Pack lists two brothers as separate captain identities and shared outfitters only',()=>{
+ const richard=oregon.find(row=>row.registration==='OG.0000441');
+ const douglas=oregon.find(row=>row.registration==='OG.0000359');
+ assert.equal(richard.name,'Richard Wolfe');
+ assert.equal(douglas.name,'Douglas Wolfe');
+ assert.equal(identity.isExplicitlyDistinctCaptain(richard.registration,douglas.registration),true);
+ assert.equal(identity.isExplicitlyDistinctCaptain(douglas.registration,richard.registration),true);
+ const group=identity.relatedOutfitterGroup(richard.registration);
+ assert.equal(group.id,'wolfe-pack');
+ assert.equal(group.basis,'public_operator_roster');
+ assert.equal(group.profileIds.length,2);
+ assert.ok(group.profileIds.includes(douglas.registration));
+ assert.equal(identity.relatedOutfitterGroup(douglas.registration).id,group.id);
+ assert.ok(group.sourceUrl.startsWith('https://www.southernoregon.org/'));
+ assert.ok(group.sourceUrl.includes('/cities/camas-valley/'));
+ // Never make a brother a nickname/alias or reuse another captain's review UUID.
+ assert.equal(group.profileIds[0]===group.profileIds[1],false);
+});
+
 test('River Dog and All Rivers shared business affiliation preserves two WA profiles each',()=>{
  const expected=[
   ['river-dog-outfitters','Andy Lockey','Neils Humphries'],
