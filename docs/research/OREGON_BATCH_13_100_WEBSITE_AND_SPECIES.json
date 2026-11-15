@@ -952,46 +952,6 @@
       "additional_public_evidence": null
     },
     {
-      "registration": "OG.0000206",
-      "imported_name": "Claudiu Pop",
-      "imported_business": "FinandScale.com",
-      "imported_website": "www.finandscale.com",
-      "reported_activity": "Fishing",
-      "registry_website_url": "https://www.finandscale.com",
-      "verificationStatus": "unverified_registry_reference",
-      "additional_public_evidence": null
-    },
-    {
-      "registration": "OG.0000295",
-      "imported_name": "Richard VanHook",
-      "imported_business": "Mark VanHook Guide Service",
-      "imported_website": "www.markvanhookguideservice.com",
-      "reported_activity": "Fishing",
-      "registry_website_url": "https://www.markvanhookguideservice.com",
-      "verificationStatus": "unverified_registry_reference",
-      "additional_public_evidence": null
-    },
-    {
-      "registration": "OG.0000343",
-      "imported_name": "Wayne Priddy",
-      "imported_business": "Priddy Good Fishing",
-      "imported_website": "priddygoodfishing.com",
-      "reported_activity": "Bird Watching, Fishing, Scenic Tours",
-      "registry_website_url": "https://priddygoodfishing.com",
-      "verificationStatus": "unverified_registry_reference",
-      "additional_public_evidence": null
-    },
-    {
-      "registration": "OG.0000346",
-      "imported_name": "Matthew Halseth",
-      "imported_business": "Matt Halseth Guide Service",
-      "imported_website": "matthalsethguideservice.com",
-      "reported_activity": "Fishing",
-      "registry_website_url": "https://matthalsethguideservice.com",
-      "verificationStatus": "unverified_registry_reference",
-      "additional_public_evidence": null
-    },
-    {
       "registration": "OG.0000353",
       "imported_name": "Herman Fleishman",
       "imported_business": "Northwest Fishing Adventures LLC",
@@ -1008,6 +968,46 @@
       "imported_website": "columbiafishing.net",
       "reported_activity": "Fishing",
       "registry_website_url": "https://columbiafishing.net",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000665",
+      "imported_name": "Timothy Pickett",
+      "imported_business": "Southern Oregon Outfitters",
+      "imported_website": "cathunts.com",
+      "reported_activity": "Fishing, Hunting",
+      "registry_website_url": "https://cathunts.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000691",
+      "imported_name": "Mark Lottis",
+      "imported_business": "Lottis Marine LLC",
+      "imported_website": "www.5starcharters.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.5starcharters.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000729",
+      "imported_name": "Robert Grubb",
+      "imported_business": "AWA LLC",
+      "imported_website": "www.AirWaterArt.com",
+      "reported_activity": "Bird Watching, CanoeKayakPaddle Craft, Fishing, Nature Eco Hikes, Photography, Scenic Tours, Whitewater, Wilderness Adventure",
+      "registry_website_url": "https://www.AirWaterArt.com",
+      "verificationStatus": "unverified_registry_reference",
+      "additional_public_evidence": null
+    },
+    {
+      "registration": "OG.0000382",
+      "imported_name": "Kevin Hawkins",
+      "imported_business": "Kevin A Hawkins Fishing",
+      "imported_website": "www.khfishing.com",
+      "reported_activity": "Fishing",
+      "registry_website_url": "https://www.khfishing.com",
       "verificationStatus": "unverified_registry_reference",
       "additional_public_evidence": null
     }
@@ -1553,11 +1553,26 @@
     }
   ],
   "qa_replacements": [
-    "OG.0000206",
-    "OG.0000295",
-    "OG.0000343",
-    "OG.0000346",
     "OG.0000353",
-    "OG.0000364"
-  ]
+    "OG.0000364",
+    "OG.0000665",
+    "OG.0000691",
+    "OG.0000729",
+    "OG.0000382"
+  ],
+  "qa_overlap_corrections": {
+    "removed": [
+      "OG.0000206",
+      "OG.0000295",
+      "OG.0000343",
+      "OG.0000346"
+    ],
+    "added": [
+      "OG.0000665",
+      "OG.0000691",
+      "OG.0000729",
+      "OG.0000382"
+    ],
+    "reason": "Exclude all records previously reviewed in Batch 11 or 12 to make Batch 13 exactly 100 new identities."
+  }
 }
