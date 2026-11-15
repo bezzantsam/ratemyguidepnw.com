@@ -7798,46 +7798,6 @@
       }
     ]
   },
-  "OG.0000206": {
-    "searchAliases": [],
-    "advertisedWaters": [],
-    "registryWebsite": {
-      "url": "https://www.finandscale.com",
-      "importedValue": "www.finandscale.com",
-      "sourceType": "oregon_registry_import",
-      "verificationStatus": "unverified_registry_reference"
-    }
-  },
-  "OG.0000295": {
-    "searchAliases": [],
-    "advertisedWaters": [],
-    "registryWebsite": {
-      "url": "https://www.markvanhookguideservice.com",
-      "importedValue": "www.markvanhookguideservice.com",
-      "sourceType": "oregon_registry_import",
-      "verificationStatus": "unverified_registry_reference"
-    }
-  },
-  "OG.0000343": {
-    "searchAliases": [],
-    "advertisedWaters": [],
-    "registryWebsite": {
-      "url": "https://priddygoodfishing.com",
-      "importedValue": "priddygoodfishing.com",
-      "sourceType": "oregon_registry_import",
-      "verificationStatus": "unverified_registry_reference"
-    }
-  },
-  "OG.0000346": {
-    "searchAliases": [],
-    "advertisedWaters": [],
-    "registryWebsite": {
-      "url": "https://matthalsethguideservice.com",
-      "importedValue": "matthalsethguideservice.com",
-      "sourceType": "oregon_registry_import",
-      "verificationStatus": "unverified_registry_reference"
-    }
-  },
   "OG.0000353": {
     "searchAliases": [],
     "advertisedWaters": [],
@@ -7854,6 +7814,46 @@
     "registryWebsite": {
       "url": "https://columbiafishing.net",
       "importedValue": "columbiafishing.net",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000665": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://cathunts.com",
+      "importedValue": "cathunts.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000691": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.5starcharters.com",
+      "importedValue": "www.5starcharters.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000729": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.AirWaterArt.com",
+      "importedValue": "www.AirWaterArt.com",
+      "sourceType": "oregon_registry_import",
+      "verificationStatus": "unverified_registry_reference"
+    }
+  },
+  "OG.0000382": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "registryWebsite": {
+      "url": "https://www.khfishing.com",
+      "importedValue": "www.khfishing.com",
       "sourceType": "oregon_registry_import",
       "verificationStatus": "unverified_registry_reference"
     }
