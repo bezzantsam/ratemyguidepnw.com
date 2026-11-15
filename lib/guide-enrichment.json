@@ -2629,5 +2629,1775 @@
         "observedOn": "2026-11-14"
       }
     ]
+  },
+  "OG.0000186": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Middle Rogue River",
+        "sourceUrl": "https://www.originflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.originflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000281": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Siletz River",
+        "sourceUrl": "https://grantsnwguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Alsea River",
+        "sourceUrl": "https://grantsnwguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "North Santiam River",
+        "sourceUrl": "https://grantsnwguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "South Santiam River",
+        "sourceUrl": "https://grantsnwguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://grantsnwguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://grantsnwguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Buoy 10",
+        "sourceUrl": "https://grantsnwguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://grantsnwguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000290": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Klamath River",
+        "sourceUrl": "https://wildwatersflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://wildwatersflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Williamson River",
+        "sourceUrl": "https://wildwatersflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://wildwatersflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000305": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://www.alwayscatchin.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.alwayscatchin.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000329": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://bigjohnsonsguideservice.net/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000332": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.portlandfishingguides.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000334": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.galeforceguides.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000653": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.hammerdownguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000655": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.chasintailsguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000657": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.phillzguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000659": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.deschutesriverjetboats.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000662": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.daxfly.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000664": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.dreamsonthefly.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000672": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Sandy River",
+        "sourceUrl": "https://www.redsguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.redsguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000674": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Chetco River",
+        "sourceUrl": "https://www.parrishguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Coquille River",
+        "sourceUrl": "https://www.parrishguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Elk River",
+        "sourceUrl": "https://www.parrishguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Sixes River",
+        "sourceUrl": "https://www.parrishguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://www.parrishguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Umpqua River",
+        "sourceUrl": "https://www.parrishguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.parrishguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000678": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.wildtimesguides.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000689": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Coos River",
+        "sourceUrl": "https://www.indigenousadventuresfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Coquille River",
+        "sourceUrl": "https://www.indigenousadventuresfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Umpqua River",
+        "sourceUrl": "https://www.indigenousadventuresfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Elk River",
+        "sourceUrl": "https://www.indigenousadventuresfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Sixes River",
+        "sourceUrl": "https://www.indigenousadventuresfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.indigenousadventuresfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000695": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://rogueriversportfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://rogueriversportfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000711": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Tillamook Bay",
+        "sourceUrl": "https://www.profishguide.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.profishguide.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000726": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Pacific Ocean",
+        "sourceUrl": "https://www.haystackfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.haystackfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000352": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.dunlevyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000361": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.redwoodcoastfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000365": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.campbellsguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000376": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Nestucca River",
+        "sourceUrl": "https://www.tannersguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Wilson River",
+        "sourceUrl": "https://www.tannersguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Trask River",
+        "sourceUrl": "https://www.tannersguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Kilchis River",
+        "sourceUrl": "https://www.tannersguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.tannersguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000381": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Coquille River",
+        "sourceUrl": "https://caseysguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Elk River",
+        "sourceUrl": "https://caseysguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "McKenzie River",
+        "sourceUrl": "https://caseysguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Umpqua River",
+        "sourceUrl": "https://caseysguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://caseysguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000417": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.rrotrips.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000740": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.reelluckycharters.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000758": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.nwrafting.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000761": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.rowadventures.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000785": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.jodysmithguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000827": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Lower Deschutes River",
+        "sourceUrl": "https://www.legendaryflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Crooked River",
+        "sourceUrl": "https://www.legendaryflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Williamson River",
+        "sourceUrl": "https://www.legendaryflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Lake Billy Chinook",
+        "sourceUrl": "https://www.legendaryflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.legendaryflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000828": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.riverborneoutfitters.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000860": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://www.inthezonefishing.net/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.inthezonefishing.net/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000865": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.big-k.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000590": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Deschutes River",
+        "sourceUrl": "https://www.alexgonsiewski.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.alexgonsiewski.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000594": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.outfishingadventures.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001070": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.speylesson.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001084": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Buoy 10",
+        "sourceUrl": "https://firstpassoutfitters.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://firstpassoutfitters.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://firstpassoutfitters.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000874": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://www.columbiasalmonguide.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.columbiasalmonguide.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000880": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Lower Deschutes River",
+        "sourceUrl": "https://www.justaddwaterflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "McKenzie River",
+        "sourceUrl": "https://www.justaddwaterflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "North Santiam River",
+        "sourceUrl": "https://www.justaddwaterflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.justaddwaterflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000886": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://calebsguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://calebsguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000889": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://flybynyteguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000895": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.oregoncoastangling.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000916": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.kellysadventures.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000933": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://www.tightlinesfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.tightlinesfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000949": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://www.johncarlguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.johncarlguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000951": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.speywater.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000958": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Deschutes River",
+        "sourceUrl": "https://www.deschutesriveranglers.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.deschutesriveranglers.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000978": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Deschutes River",
+        "sourceUrl": "https://www.harrisanglers.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Clackamas River",
+        "sourceUrl": "https://www.harrisanglers.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.harrisanglers.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000983": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://www.thefishinholeflyshop.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.thefishinholeflyshop.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0000988": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://extremeguideservice.net/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://extremeguideservice.net/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001962": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://www.herefishyfishygs.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.herefishyfishygs.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001988": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Pacific Ocean",
+        "sourceUrl": "https://pacificcharterservices.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://pacificcharterservices.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0002015": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Nehalem Bay",
+        "sourceUrl": "https://hammerheadfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://hammerheadfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0002078": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.hucksguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0002174": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://preszlersguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0002194": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://coastalfishingadventuresllc.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0002472": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.hbdsportfish.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0002476": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://fishingwithdavidpyle.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0002484": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.whitepine-outfitters.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0002544": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Buoy 10",
+        "sourceUrl": "https://www.rtguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://www.rtguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.rtguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0002616": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://redbandbecomingguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0002624": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Snake River",
+        "sourceUrl": "https://hdriverexcursions.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://hdriverexcursions.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0002637": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Deschutes River",
+        "sourceUrl": "https://www.northfork-outfitters.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Grande Ronde River",
+        "sourceUrl": "https://www.northfork-outfitters.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.northfork-outfitters.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0002643": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "McKenzie River",
+        "sourceUrl": "https://fishingwithferris.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Umpqua River",
+        "sourceUrl": "https://fishingwithferris.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://fishingwithferris.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0002644": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://feistyfish.net/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001151": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.helfrichoutfitter.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001243": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.sterfly.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001159": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.chrisvsguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001174": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Tillamook Bay",
+        "sourceUrl": "https://www.kingtidesfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.kingtidesfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001179": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://www.fishinggoldbeach.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.fishinggoldbeach.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001261": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://www.hammondguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.hammondguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001185": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://fly-fishing-guide-oregon.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001263": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.brandonsguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001200": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://reeltimefishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001205": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.stsguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001214": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.schmidtysguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001225.F&F": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.flyandfield.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001330": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://www.fishhuntersguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Willamette River",
+        "sourceUrl": "https://www.fishhuntersguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.fishhuntersguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001336": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.woodysguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001346": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://www.worthingtonflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Klamath River",
+        "sourceUrl": "https://www.worthingtonflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Umpqua River",
+        "sourceUrl": "https://www.worthingtonflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Williamson River",
+        "sourceUrl": "https://www.worthingtonflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.worthingtonflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001390": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Williamson River",
+        "sourceUrl": "https://www.grizzlypeakflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.grizzlypeakflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001629": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.odohertyoutfitters.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001670": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://roguecoastsportfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://roguecoastsportfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001788": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Grande Ronde River",
+        "sourceUrl": "https://www.granderondeflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.granderondeflyfishing.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001789": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://gofishwithmike.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://gofishwithmike.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001849": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "McKenzie River",
+        "sourceUrl": "https://www.mbflyguide.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.mbflyguide.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001916": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Pacific Ocean",
+        "sourceUrl": "https://www.oarangling.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.oarangling.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001922": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.natesrogueadventures.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0001925": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.southernoregonanglerscharter.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0002277": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.getsumguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0002297": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://troyoregon.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0002351": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Rogue River",
+        "sourceUrl": "https://www.jeffersonstateoutfitter.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.jeffersonstateoutfitter.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0002356": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://anadromoustraditions.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0002385": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://premierguideservice.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0002442": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Owyhee River",
+        "sourceUrl": "https://www.owyheeflyfisher.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.owyheeflyfisher.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0002448": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Lower Deschutes River",
+        "sourceUrl": "https://www.sagebrushoutfitters.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.sagebrushoutfitters.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0002655": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Columbia River",
+        "sourceUrl": "https://gofishingwithdave.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Cowlitz River",
+        "sourceUrl": "https://gofishingwithdave.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://gofishingwithdave.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0002751": {
+    "searchAliases": [],
+    "advertisedWaters": [
+      {
+        "name": "Nehalem Bay",
+        "sourceUrl": "https://www.pacificrootsadventures.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      },
+      {
+        "name": "Tillamook Bay",
+        "sourceUrl": "https://www.pacificrootsadventures.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://www.pacificrootsadventures.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
+  },
+  "OG.0002783": {
+    "searchAliases": [],
+    "advertisedWaters": [],
+    "sourceLinks": [
+      {
+        "label": "Operator website",
+        "url": "https://chasinthebite.com/",
+        "sourceType": "operator_site",
+        "observedOn": "2026-11-15"
+      }
+    ]
   }
 }
