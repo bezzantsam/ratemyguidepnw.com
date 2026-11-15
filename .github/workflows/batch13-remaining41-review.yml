@@ -1,0 +1,51 @@
+name: Final 41 guide source review and population bundle
+
+on:
+  pull_request:
+    paths:
+      - 'docs/research/**'
+      - 'scripts/batch13_*.py'
+      - 'tests/test_batch13_*.py'
+      - 'lib/oregon-guides.json'
+      - '.github/workflows/batch13-remaining41-review.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  final41-source-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Preserve prior validators and proposal contracts
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python -m unittest discover -s tests -p 'test_batch13_next10*.py' -v
+          python scripts/batch13_next10_review.py
+          python scripts/batch13_next10b_review.py
+          python scripts/batch13_next10_candidates.py --check
+      - name: Test final-batch evidence and conversion boundaries
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: python -m unittest discover -s tests -p 'test_batch13_remaining41.py' -v
+      - name: Validate actual registry and prior lineage; build pending population files
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python scripts/batch13_remaining41.py --output-dir outputs/batch13-remaining41
+          python scripts/batch13_remaining41.py --output-dir outputs/batch13-remaining41 --check
+          git diff --exit-code -- lib docs/research
+      - name: Archive review-only population bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: batch13-remaining41-pending-population
+          path: outputs/batch13-remaining41/
+          if-no-files-found: error
+          retention-days: 30
