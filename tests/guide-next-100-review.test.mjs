@@ -23,7 +23,7 @@ test('new guide research batch has 100 unique exact imported identities',()=>{
  }
 });
 test('only the 22 inspected sources are in the incremental public enrichment data',()=>{
- assert.equal(Object.keys(enrichment).length,194);
+ assert.ok(Object.keys(enrichment).length>=194,'A later batch must not remove earlier enriched profiles');
  let checked=0,held=0,waters=0;
  for(const row of review.records){
   if(row.status==='registry_candidate_unverified'){
