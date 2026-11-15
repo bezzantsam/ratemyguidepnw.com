@@ -1,0 +1,159 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync, existsSync} from 'node:fs';
+import {resolve, dirname, extname} from 'node:path';
+import {createRequire} from 'node:module';
+import vm from 'node:vm';
+import ts from 'typescript';
+import {renderToStaticMarkup} from 'react-dom/server';
+
+const require = createRequire(import.meta.url);
+const cache = new Map();
+function load(file) {
+  const path = resolve(file);
+  if (cache.has(path)) return cache.get(path);
+  if (path.endsWith('.json')) return JSON.parse(readFileSync(path, 'utf8'));
+  const exports = {};
+  cache.set(path, exports);
+  const js = ts.transpileModule(readFileSync(path, 'utf8'), {compilerOptions: {
+    module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020,
+    jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true,
+  }}).outputText;
+  vm.runInNewContext(js, {exports, require: name => {
+    if (!name.startsWith('.') && !name.startsWith('@/')) return require(name);
+    let dependency = name.startsWith('@/') ? resolve(name.slice(2)) : resolve(dirname(path), name);
+    if (!extname(dependency)) dependency += existsSync(dependency + '.ts') ? '.ts' : '.tsx';
+    return load(dependency);
+  }}, {filename: path});
+  return exports;
+}
+
+const {directoryEntries} = load('lib/directory.ts');
+const {filterDirectoryEntries} = load('lib/directory-query.ts');
+const {charterCrewFor, CHARTER_CREW_ASSIGNMENTS} = load('lib/charter-crew.ts');
+const CrewPanel = load('components/CharterCrewPanel.tsx').default;
+const Search = load('components/UnifiedSearch.tsx').default;
+const filters = {state: 'All', sourceZone: 'All areas', advertisedWater: 'All advertised waters', query: ''};
+
+test('Austin search resolves to Walt with a separate crew identity, never a captain alias', () => {
+  const before = JSON.stringify(directoryEntries);
+  const matches = filterDirectoryEntries(directoryEntries, {...filters, query: '  AUSTIN ROWE  '});
+  assert.ok(matches.length >= 1);
+  const captain = matches[0];
+  assert.equal(captain.id, 'OG.0003297');
+  assert.equal(captain.name, 'Walter Rowe');
+  assert.equal(captain.href, '/guides/og-0003297');
+  assert.equal(captain.searchAliases.some(name => /austin/i.test(name)), false);
+  assert.equal(captain.crew[0].personId, 'crew-austin-rowe');
+  assert.equal(captain.crew[0].role, 'deckhand');
+  assert.equal(directoryEntries.some(entry => entry.id === captain.crew[0].personId), false);
+  assert.equal(JSON.stringify(directoryEntries), before);
+  assert.equal(filterDirectoryEntries(directoryEntries, {...filters, query: 'Walt Rowe'})[0].id, captain.id);
+});
+
+test('crew search still respects state and advertised-water filters', () => {
+  assert.equal(filterDirectoryEntries(directoryEntries, {...filters, query: 'Austin Rowe', state: 'Washington'}).length, 0);
+  assert.equal(filterDirectoryEntries(directoryEntries, {...filters, query: 'Austin Rowe', advertisedWater: 'Buoy 10'}).length, 0);
+  const legacy = {id: 'legacy', name: 'Old listing', business: null, states: ['Oregon'],
+    areas: [], searchAliases: [], advertisedWaters: [], href: '/guides/legacy', source: 'test'};
+  assert.equal(filterDirectoryEntries([legacy], {...filters, query: 'Austin'}).length, 0);
+  assert.equal(filterDirectoryEntries([legacy], {...filters, query: 'Old listing'}).length, 1);
+});
+
+test('every crew assignment has a known captain, separate person ID and explicit evidence limits', () => {
+  const keys = new Set();
+  for (const assignment of CHARTER_CREW_ASSIGNMENTS) {
+    assert.ok(directoryEntries.some(entry => entry.id === assignment.captainProfileId));
+    assert.notEqual(assignment.personId, assignment.captainProfileId);
+    const key = assignment.personId + ':' + assignment.captainProfileId;
+    assert.equal(keys.has(key), false);
+    keys.add(key);
+    assert.equal(assignment.context, 'saltwater_charter');
+    assert.equal(assignment.credentialStatus, 'unknown');
+    assert.equal(assignment.evidence.basis, 'firsthand_founder_report');
+    assert.match(assignment.evidence.reportedOn, /^\d{4}-\d{2}-\d{2}$/);
+  }
+  assert.equal(charterCrewFor('unknown').length, 0);
+  assert.equal(charterCrewFor('OG.0000410').length, 0);
+});
+
+test('rendered profile explains the deckhand role, optional feedback and unverified assignment', () => {
+  const html = renderToStaticMarkup(CrewPanel({publicId: 'OG.0003297'}));
+  assert.match(html, /Austin Rowe/);
+  assert.match(html, /Deckhand/);
+  assert.match(html, /trip participant/);
+  assert.match(html, /credentials have not been independently checked/);
+  assert.match(html, /Naming a crew member is optional/);
+  assert.match(html, /do not receive a separate rating/);
+  assert.match(html, /href="#reviews"/);
+  assert.doesNotMatch(html, /<select|<input|<form|Verified Trip/);
+  assert.equal(renderToStaticMarkup(CrewPanel({publicId: 'OG.0000410'})), '');
+  assert.equal(renderToStaticMarkup(CrewPanel({publicId: 'unknown'})), '');
+});
+
+test('rendered search card distinguishes reported crew from captain aliases', () => {
+  const matches = filterDirectoryEntries(directoryEntries, {...filters, query: 'Austin Rowe'});
+  // Render through React so UnifiedSearch hooks execute normally.
+  const html = renderToStaticMarkup(require('react').createElement(Search, {entries: matches}));
+  assert.match(html, /Walter Rowe/);
+  assert.match(html, /Reported crew: Austin Rowe \(deckhand\)/);
+  assert.match(html, /current assignment unconfirmed/);
+  assert.doesNotMatch(html, /Also listed publicly as:[^<]*Austin/);
+  assert.match(html, /href="\/guides\/og-0003297"/);
+});
+
+test('requested operating names find existing people without creating duplicate profiles', () => {
+  for (const [query, id] of [['Nick Popov','OG.0001778'],['Cliff Sallee','OG.0004079'],['Dre Menefee','OG.0003348'],['Dan Coelho','OG.0003549'],["Bonk 'Em All",'wa-021'],['Beach Bandit','OG.0003790']]) {
+    const matches=filterDirectoryEntries(directoryEntries,{...filters,query});
+    assert.ok(matches.some(row=>row.id===id),query);
+  }
+  const bandit=directoryEntries.find(row=>row.id==='OG.0003790');
+  assert.equal(bandit.name,'William Sanborn');
+  assert.equal(bandit.advertisedWaters.length,0,'shore activities alone do not establish named waterways');
+  const dre=directoryEntries.find(row=>row.id==='OG.0003348');
+  assert.equal(dre.searchAliases.includes('Valley Coast LLC'),false);
+  assert.equal(directoryEntries.find(row=>row.id==='OG.0003549').advertisedWaters.length,0);
+});
+
+test('source-only profiles render evidence and dates without claiming fishing waters', () => {
+  const Panel=load('components/GuideEnrichmentPanel.tsx').default;
+  const html=renderToStaticMarkup(Panel({registration:'wa-021'}));
+  assert.match(html,/Public business sources/);
+  assert.match(html,/https:\/\/bonkemall.com\//);
+  assert.match(html,/Observed 2026-11-14/);
+  assert.match(html,/does not verify credentials/);
+  assert.doesNotMatch(html,/<h2[^>]*>Publicly advertised fishing waters/);
+  assert.equal(renderToStaticMarkup(Panel({registration:'unknown'})),'');
+});
+
+test('Billy Bandit and misspelled names resolve without changing personal identities',()=>{
+ for(const query of ['Billy Bandit','Bill Sanborn','billy sanbrn','William Sanbron']){
+  const matches=filterDirectoryEntries(directoryEntries,{...filters,query});
+  assert.equal(matches[0]?.id,'OG.0003790',query);
+ }
+ for(const [query,id] of [['Cameron Kenendy','OG.0002882'],['Dre Menefe','OG.0003348'],['popov nick','OG.0001778']]){
+  assert.ok(filterDirectoryEntries(directoryEntries,{...filters,query}).some(entry=>entry.id===id),query);
+ }
+ const ambiguous=filterDirectoryEntries(directoryEntries,{...filters,query:'bandti guide'});
+ assert.ok(ambiguous.some(entry=>entry.id==='OG.0003790'));
+ assert.ok(ambiguous.some(entry=>entry.id==='OG.0000914'),'ambiguous business spelling keeps both people');
+ const original=directoryEntries.find(entry=>entry.id==='OG.0003790');
+ assert.equal(original.name,'William Sanborn');
+ assert.equal(original.searchAliases.includes('Billy'),false,'nickname expansion is not an asserted identity alias');
+ assert.equal(filterDirectoryEntries(directoryEntries,{...filters,query:'Billy Bandit',state:'Washington'}).length,0);
+ assert.equal(filterDirectoryEntries(directoryEntries,{...filters,query:'Billy Bandit',advertisedWater:'Buoy 10'}).length,0);
+});
+
+test('exact matches outrank fuzzy matches, short queries are not autocorrected, and all terms matter',()=>{
+ const seed=directoryEntries[0];
+ const records=[{...seed,id:'a',name:'Jon Smith',business:null,searchAliases:[],areas:[],advertisedWaters:[],crew:[]},
+ {...seed,id:'b',name:'John Smith',business:null,searchAliases:[],areas:[],advertisedWaters:[],crew:[]}];
+ assert.equal(filterDirectoryEntries(records,{...filters,query:'John Smith'})[0].id,'b');
+ assert.equal(filterDirectoryEntries(records,{...filters,query:'Jon Smith'})[0].id,'a');
+ assert.equal(filterDirectoryEntries(records,{...filters,query:'Jom'}).length,0);
+ assert.equal(filterDirectoryEntries(records,{...filters,query:'John Smith nowhere'}).length,0);
+ assert.equal(filterDirectoryEntries(directoryEntries,{...filters,query:'OG.000379X'}).length,0);
+ assert.equal(filterDirectoryEntries(directoryEntries,{...filters,query:'OG.0003790'})[0].id,'OG.0003790');
+ assert.equal(filterDirectoryEntries(records,{...filters,query:'   '}).length,2);
+ assert.equal(filterDirectoryEntries(records,{...filters,query:'!!!'}).length,0);
+});

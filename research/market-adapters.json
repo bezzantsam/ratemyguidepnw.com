@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "markets": {
+    "pnw": {
+      "label": "Pacific Northwest",
+      "country": "US",
+      "jurisdictions": ["US-OR", "US-WA"],
+      "status": "pilot"
+    }
+  },
+  "source_adapters": {
+    "US-OR": {
+      "id_prefix": "OG.",
+      "adapter": "oregon_historical_directory",
+      "live_credential_verified": false
+    },
+    "US-WA": {
+      "id_prefix": "wa-",
+      "adapter": "washington_third_party_directory",
+      "live_credential_verified": false
+    }
+  }
+}
