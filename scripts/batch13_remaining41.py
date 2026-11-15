@@ -2,6 +2,7 @@
 """Validate all final Batch 13 records and emit an unpublished population bundle."""
 import argparse
 import csv
+import copy
 import hashlib
 import io
 import ipaddress
@@ -27,8 +28,32 @@ HOLD_IDS = {'OG.0002727','OG.0002817','OG.0002938','OG.0003060','OG.0003154','OG
 def blob(data):
     return hashlib.sha1(b'blob '+str(len(data)).encode()+b'\0'+data).hexdigest()
 
+def registry_comparison(review, registry):
+    """Retain both exact strings for the one inspected historical whitespace mismatch.
+
+    No general trimming, fuzzy matching, public-data edit or identity approval.
+    The comparison-only copy cannot change the caller's registry.
+    """
+    comparison = copy.deepcopy(registry)
+    discrepancies = []
+    for original, item in zip(registry, comparison):
+        if item.get('registration') != 'OG.0003288' or item.get('business') != 'Tenacity Outdoors ':
+            continue
+        record = next((r for r in review['records'] if r['registration_id'] == 'OG.0003288'), None)
+        core.require(record is not None and record['review_status'] == 'name_variant_hold'
+                     and record['facts'] == [] and record['imported_business'] == 'Tenacity Outdoors',
+                     'Whitespace exception requires the unchanged held manifest record')
+        core.require(item.get('name') == 'John Kaiser' and item.get('website') == 'tenacityoutdoors.com',
+                     'Whitespace exception cannot change the person or source domain')
+        discrepancies.append({'guide_id':'OG.0003288','field':'business',
+            'registry_value':original['business'],'manifest_value':record['imported_business'],
+            'resolution':'Comparison-only handling of one inspected trailing ASCII space; both source strings retained; identity remains held.'})
+        item['business'] = record['imported_business']
+    return comparison, discrepancies
+
 def validate(review, selection_bytes, registry):
-    result = core.validate(review, selection_bytes, registry, selection_path=SELECTION,
+    comparison, discrepancies = registry_comparison(review, registry)
+    result = core.validate(review, selection_bytes, comparison, selection_path=SELECTION,
         expected_prior_count=70, selection_count=41, statuses=STATUSES,
         source_types={'operator_site','industry_directory','tourism_directory'},
         source_methods={'parsed_page','indexed_page_text'},
@@ -65,6 +90,7 @@ def validate(review, selection_bytes, registry):
         for f in r['facts']:
             core.require('Lake Sturgeon' not in f['advertised_species'], 'Unsupported species label')
             core.require('Fintruder' not in f['advertised_waters'], 'Boat name became water')
+    result['registry_discrepancies'] = discrepancies
     return result
 
 def validate_repository(review, selection_bytes, registry):
@@ -80,6 +106,7 @@ def validate_repository(review, selection_bytes, registry):
     core.require(selection['previously_checked_registration_ids']==expected_prior, 'Prior 70 IDs do not reconcile')
     core.require(selection['manifest_registration_ids']==old_selection['manifest_registration_ids'], 'Manifest universe differs')
     core.require(len(registry)==1027,'Unexpected complete-registry size; review changes explicitly')
+    core.require(blob(core.REGISTRY.read_bytes())=='a0d2515e171f4204ade4b87a4d6c8508108ec766', 'Complete registry snapshot changed; inspect before reuse')
     return validate(review,selection_bytes,registry)
 
 def build(review, selection_bytes, registry):
@@ -89,6 +116,10 @@ def build(review, selection_bytes, registry):
     result=converter.build(review,selection_bytes,registry,validate_fn=validate)
     result['batch_id']='batch13-remaining41-20261115'
     result['coverage']=review['scope']
+    _, discrepancies = registry_comparison(review, registry)
+    result['registry_discrepancies'] = discrepancies
+    for hold in result['holds']:
+        hold['registry_discrepancies'] = [d for d in discrepancies if d['guide_id'] == hold['guide_id']]
     result['input_sha256']={'review':hashlib.sha256(REVIEW.read_bytes()).hexdigest(),
                             'selection':hashlib.sha256(selection_bytes).hexdigest()}
     result['limitations'] += ['Seven records have only unsuccessful retrieval attempts; indexed-only sources are held.',
@@ -112,6 +143,9 @@ def render(result):
             rel='; relationship: '+json.dumps(a['relationship'],ensure_ascii=False) if 'relationship' in a else ''
             lines.append(f"- {a.get('kind','waterway')}: {a['value']}{rel} — {a['source']['url']} ({a['source']['locator']})")
         lines += ['Limitations: '+' '.join(first['limitations']),'']
+    lines += ['## Original registry discrepancies','']
+    for discrepancy in result.get('registry_discrepancies', []):
+        lines += [json.dumps(discrepancy, ensure_ascii=False), '']
     lines += ['## Holds','']
     for r in result['holds']:
         lines += [f"### {r['guide_id']} — {r['name']} ({r['review_status']})",r['reason']]
