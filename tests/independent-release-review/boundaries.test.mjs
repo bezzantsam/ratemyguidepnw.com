@@ -49,7 +49,7 @@ test('duplicate and malformed URL fields do not select a different valid filter'
 });
 
 test('an unrelated same-name Washington record is not silently suppressed', () => {
-  const api = load('lib/washington.ts', {'./washington-raw.json': [], './washington-stable-ids.json': {}, './washington-reconciled': {reconciledWashingtonCaptains: []}});
+  const api = load('lib/washington.ts', {'./washington-raw.json': [], './washington-stable-ids.json': {}, './washington-reconciled': load('lib/washington-reconciled.ts')});
   const row = {name:'Tony Fisher', business:'Unrelated hypothetical outfit', source:'Unreviewed source', notes:null};
   assert.throws(() => api.mapWashingtonGuides([row]), /needs a reviewed stable ID assignment/);
 });
