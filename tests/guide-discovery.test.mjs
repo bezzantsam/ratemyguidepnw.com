@@ -25,7 +25,8 @@ test('all editorial enrichments match existing imported profiles',()=>{
   assert.ok(known.has(registration),'unknown registration '+registration);
   assert.match(registration,/^(OG\.\d{7}(?:\.[A-Za-z0-9&-]{1,12})?|wa-\d{3,})$/);
   assert.ok(Array.isArray(enriched[registration].searchAliases));
-  assert.ok(enriched[registration].advertisedWaters.length > 0 || enriched[registration].searchAliases.length > 0);
+  assert.ok(enriched[registration].advertisedWaters.length > 0 || enriched[registration].searchAliases.length > 0 || (enriched[registration].sourceLinks?.length ?? 0) > 0,
+   'source-link-only editorial enrichment is valid when no fishery is established: '+registration);
  }
 });
 
