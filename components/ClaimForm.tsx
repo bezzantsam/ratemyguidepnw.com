@@ -9,7 +9,7 @@ import {matchesPublicGuideIdentity} from '@/lib/guide-db-identity';
  * The draft request_guide_claim() function is SECURITY INVOKER and subject
  * to live grants/RLS. No approved/verified/publication state comes from here.
  */
-export default function ClaimForm({name,listing,business=null,submitEnabled=false}:{name:string;listing:string;business?:string|null;submitEnabled?:boolean}){
+export default function ClaimForm({name,listing,expectedBusiness=null,submitEnabled=false}:{name:string;listing:string;expectedBusiness?:string|null;submitEnabled?:boolean}){
   const [claimant,setClaimant]=useState('');
   const [business,setBusiness]=useState('');
   const [proof,setProof]=useState('');
@@ -51,7 +51,7 @@ export default function ClaimForm({name,listing,business=null,submitEnabled=fals
         setStatus('This directory listing is not yet connected for claims.');
         return;
       }
-      if(!matchesPublicGuideIdentity({name,business},guide)){
+      if(!matchesPublicGuideIdentity({name,business:expectedBusiness},guide)){
         setStatus('Profile claiming is unavailable: this directory identity does not match its database record.');
         return;
       }
