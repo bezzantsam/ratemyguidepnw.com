@@ -17,6 +17,7 @@ export const DO_NOT_MERGE_PAIRS = [
   ['wa-005','wa-062'], // Andy Lockey vs Neils Humphries
   ['wa-050','wa-059'], // Mark vs Mitchell Coleman
   ['OG.0000329','OG.0000726'], // Mark Lytle vs Joseph Hay
+  ['OG.0000441','OG.0000359'], // Richard vs Douglas 'Scott' Wolfe: brothers, separate registrations
 ] as const satisfies ReadonlyArray<readonly [string,string]>;
 
 const pairKey=(a:string,b:string)=>[a,b].sort().join('|');
@@ -54,6 +55,13 @@ export const OUTFITTER_GROUPS:readonly OutfitterGroup[]=[
     displayName:'Fishers Catch Outfitters',
     profileIds:['OG.0003043','OG.0003998'],
     basis:'matching_imported_business',
+  },
+  {
+    id:'wolfe-pack',
+    displayName:'Wolfe Pack Guide Service',
+    profileIds:['OG.0000441','OG.0000359'],
+    basis:'public_operator_roster',
+    sourceUrl:'https://www.southernoregon.org/cities/camas-valley/guides-tours/guides-charters/wolfe-pack-guide-service/',
   },
 ];
 
