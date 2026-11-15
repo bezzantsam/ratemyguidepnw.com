@@ -14,7 +14,7 @@ test('Batch 12 never repeats already enriched or previous review assignments',()
  assert.equal(batch.selection.baseline_enriched_count,194);
  assert.equal(batch.counts.source_inspected,19);
  assert.equal(batch.counts.registry_only,81);
- assert.equal(Object.keys(enrichment).length,213);
+ assert.ok(Object.keys(enrichment).length>=213,'Batch 12 sources must not disappear when newer batches are added');
  const existing=new Set(prior.records.map(x=>x.directory_id));
  const imported=new Map(directory.map(x=>[x.registration,x]));
  for(const r of batch.records){
