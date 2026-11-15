@@ -307,3 +307,19 @@ a.dock-ticker-item:hover{color:white;text-decoration:underline}
 
 .research-claim{border-left:3px solid #b39c67;padding:4px 14px;margin:12px 0;background:#1d3b3b;border-radius:0 8px 8px 0}
 .research-claim small{display:block;margin:10px 0;color:#c6d3c9}
+
+
+/* Captains pilot: make the first commercial experiment clear and usable. */
+.home-captain-cta{margin:24px 0;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;background:#17383b;border:1px solid #557775;border-radius:14px;padding:20px 24px}
+.home-captain-cta strong{font-size:20px;color:#fff}
+.home-captain-cta p{margin:5px 0;color:#c8dad3}
+.home-captain-cta .button{margin:0}
+.for-guides .grid{margin:30px 0;align-items:stretch}
+.founding-offer{display:flex;flex-direction:column;align-items:flex-start}
+.founding-offer h2{font-size:29px;margin:10px 0}
+.founding-offer-price{font-size:42px;font-weight:900;color:#f1d18b;margin:7px 0 14px}
+.founding-offer-price span{font-size:15px;font-weight:500;color:#d0ddd5;margin-left:8px}
+.founding-offer ul{padding-left:22px;line-height:1.8;color:#e5f0ea;flex:1}
+.founding-offer li{margin-bottom:8px}
+.founding-offer .button{margin:14px 0}
+@media(max-width:680px){.for-guides .grid{grid-template-columns:1fr}.home-captain-cta .button{width:100%;text-align:center}}
