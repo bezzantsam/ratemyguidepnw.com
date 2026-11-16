@@ -35,6 +35,10 @@ jobs:
         env:
           PYTHONDONTWRITEBYTECODE: '1'
         run: python -m unittest discover -s tests -p 'test_batch13_remaining41*.py' -v
+      - name: Verify additive hold follow-up without altering baseline approvals
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: python -m unittest discover -s tests -p 'test_batch13_hold_followup10.py' -v
       - name: Validate actual registry and prior lineage; build pending population files
         env:
           PYTHONDONTWRITEBYTECODE: '1'
