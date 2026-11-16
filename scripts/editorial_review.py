@@ -20,6 +20,8 @@ import batch13_consolidated as consolidated
 BUNDLE=ROOT/'docs/research/BATCH13_CONSOLIDATED_POPULATION.json'
 FOLLOWUP=ROOT/'docs/research/BATCH13_HOLD_FOLLOWUP10_20261115.json'
 FOLLOWUP_HASH='d29d9258ff1a91217a8654c437fe90d812c33216665a48156baa4f0544f7beab'
+FOLLOWUP16=ROOT/'docs/research/BATCH13_HOLD_FOLLOWUP16_20261116.json'
+FOLLOWUP16_HASH='8dd05d9bf273db63d39fc31f2c758c5036126eaad38830587d73872b8c3892e4'
 ATTRS=ROOT/'lib/approved-guide-attributes.json'
 WATERS=ROOT/'lib/guide-enrichment.json'
 HOLDS=ROOT/'lib/guide-evidence-holds.json'
@@ -67,6 +69,10 @@ def load_model():
  spec=importlib.util.spec_from_file_location('followup_validator',ROOT/'tests/test_batch13_hold_followup10.py')
  module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
  followup=read(FOLLOWUP);module.validate(followup,(ROOT/module.BASE_PATH).read_bytes())
+ require(filehash(FOLLOWUP16)==FOLLOWUP16_HASH,'Follow-up 16 evidence changed')
+ spec16=importlib.util.spec_from_file_location('followup16_validator',ROOT/'tests/test_batch13_hold_followup16.py')
+ module16=importlib.util.module_from_spec(spec16);spec16.loader.exec_module(module16)
+ followup16=read(FOLLOWUP16);module16.validate(followup16,module16.BASE.read_bytes(),FOLLOWUP.read_bytes())
  index={r['guide_id']:r for r in bundle['index']};held={r['guide_id']:r for r in bundle['holds']}
  require(len(index)==111 and len(held)==59,'Unexpected input coverage')
  sources={}
@@ -78,6 +84,9 @@ def load_model():
  for row in followup['records']:
   for sid in row['source_ids']:register(followup['sources'][sid])
  followby={r['registration_id']:r for r in followup['records']}
+ follow16by={r['registration_id']:r for r in followup16['records']}
+ for row in followup16['records']:
+  for sid in row['source_ids']:register(followup16['sources'][sid])
  triage={}
  for line in (ROOT/'docs/qa/identity-hold-triage.md').read_text(encoding='utf-8').splitlines():
   cells=[v.strip() for v in line.split('|')]
@@ -106,7 +115,8 @@ def load_model():
  for h in bundle['holds']:
   ident=h['guide_id'];options=[register(s) for s in h['sources'].values()]
   if ident in followby:options += [register(followup['sources'][s]) for s in followby[ident]['source_ids']]
-  needed=followby.get(ident,{}).get('next_evidence_needed') or triage.get(ident) or requirements.get(h['review_status'])
+  if ident in follow16by:options += [register(followup16['sources'][s]) for s in follow16by[ident]['source_ids']]
+  needed=follow16by.get(ident,{}).get('next_evidence_needed') or followby.get(ident,{}).get('next_evidence_needed') or triage.get(ident) or requirements.get(h['review_status'])
   require(bool(needed),'Hold lacks a review requirement: '+ident)
   add('hold',h,evidence_options=sorted(set(options)),next_evidence_needed=needed)
  for c in bundle['conflicts']:
@@ -126,11 +136,23 @@ def load_model():
      'evidence_scope':fact['evidence_scope'],'identity_evidence':{'assessment':row['finding']},'limitations':[row['next_evidence_needed']],
      'editorial_status':'pending','publication_approved':False,'blocked_by_baseline_hold':True}
    add('attribute',item,src,origin='followup')
+ for row in followup16['records']:
+  require(row['registration_id'] in held,'Follow-up 16 cannot introduce an unheld record')
+  for field,category in (('candidate_facts','attribute'),('candidate_waterways','waterway'),('explicit_relationships','relationship')):
+   for fact in row[field]:
+    src=evidence(followup16['sources'][fact['source_id']]);relationship={k:fact[k] for k in ('species','method','waterway') if k in fact}
+    item={'guide_id':row['registration_id'],'kind':fact.get('kind','species' if category=='relationship' else 'waterway'),
+      'value':fact.get('value',fact.get('species')),'source':src,'evidence_scope':fact['evidence_scope'],
+      'identity_evidence':{'assessment':row['finding']},'limitations':[row['next_evidence_needed']],
+      'editorial_status':'pending','publication_approved':False,'blocked_by_baseline_hold':True}
+    if category=='relationship':item['relationship']=relationship
+    add(category,item,src,origin='followup16')
  require(len({x['item_id'] for x in items})==len(items),'Duplicate item identities')
  for item in items:require(item['guide_id'] in index,'Unknown guide ID')
  follow_evidence={r['registration_id']:{'record':r,'sources':{sid:followup['sources'][sid] for sid in r['source_ids']}} for r in followup['records']}
+ follow16_evidence={r['registration_id']:{'record':r,'sources':{sid:followup16['sources'][sid] for sid in r['source_ids']}} for r in followup16['records']}
  model={'schema_version':1,'candidate_sha256':filehash(BUNDLE),'followup_sha256':filehash(FOLLOWUP),
-        'baseline_sha256':baseline_hash(),'guides':bundle['index'],'items':items,'sources':sources,'followup':follow_evidence}
+        'followup16_sha256':filehash(FOLLOWUP16),'baseline_sha256':baseline_hash(),'guides':bundle['index'],'items':items,'sources':sources,'followup':follow_evidence,'followup16':follow16_evidence}
  model['model_sha256']=digest(model)
  return model
 
@@ -210,7 +232,7 @@ def generate_patch(doc,model,attrs,waters,hard_holds,known,validate_product=True
   proc=subprocess.run(['node',str(ROOT/'scripts/editorial/contract-check.mjs')],input=json.dumps({'attributes':after_attrs,'known':sorted(known)}),text=True,capture_output=True,cwd=ROOT)
   require(proc.returncode==0,'Actual discovery contract rejected patch: '+proc.stderr.strip())
  return {'schema_version':1,'status':'dry_run_only_not_applied','publication_approved':False,'baseline_sha256':model['baseline_sha256'],
-   'candidate_sha256':model['candidate_sha256'],'followup_sha256':model['followup_sha256'],'model_sha256':model['model_sha256'],
+   'candidate_sha256':model['candidate_sha256'],'followup_sha256':model['followup_sha256'],'followup16_sha256':model.get('followup16_sha256'),'model_sha256':model['model_sha256'],
    'editor':doc['editor'],'decisions':copy.deepcopy(doc['decisions']),'changes':changes,
    'review_context':[copy.deepcopy(lookup[d['item_id']]) for d in doc['decisions']],
    'evidence':{sid:copy.deepcopy(model['sources'][sid]) for sid in sorted({d['evidence_id'] for d in doc['decisions'] if d['evidence_id']})},

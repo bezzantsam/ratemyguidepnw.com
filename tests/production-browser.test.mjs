@@ -9,7 +9,7 @@ if(origin===api||!browserPath)throw new Error('Distinct owned ports and a browse
 test('ordinary production data contains no synthetic discovery or unapproved controls',{timeout:120000},async()=>{
  const browser=await chromium.launch({executablePath:browserPath,headless:true});const context=await browser.newContext();
  const blocked=[],writes=[],errors=[],backendRequests=[];
- const pendingMarkers=['Silas Stardance / Riverhawk Guide Service entry only; adjacent pro-staff entries excluded.','Guided Trips: named rivers and general targets; separate lower Middle Fork Willamette paragraph explicitly describes spey fishing for summer steelhead.','About Us paragraphs, reached through the WSGA member link','Synthetic test reason'];
+ const pendingMarkers=['Silas Stardance / Riverhawk Guide Service entry only; adjacent pro-staff entries excluded.','Guided Trips: named rivers and general targets; separate lower Middle Fork Willamette paragraph explicitly describes spey fishing for summer steelhead.','About Us paragraphs, reached through the WSGA member link','The guide is called Tonie, not the full registry name.','No named captain was established in the inspected text; do not infer albacore','Synthetic test reason'];
  await context.route('**/*',async route=>{
   const req=route.request(),url=new URL(req.url());
   if(url.origin===api){backendRequests.push(req.url());if(req.method()!=='GET')writes.push(req.method());return route.fulfill({status:503,contentType:'application/json',body:'{"error":"backend unavailable"}'})}
