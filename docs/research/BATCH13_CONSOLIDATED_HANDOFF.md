@@ -4,6 +4,10 @@ This is an unpublished research and integration candidate. It does not approve i
 
 Sources: directory checkpoint `60afe401f035639ec4c2cec46143bbaffe80ee7f` (#102), identity repair `4d108dff1202d4c45b75765aa32ce15ddbb13f3d` (#108; includes #107 review), completed research `5345d06473e0f8a508b5cc134b27399ca392cf68` (#105), and only the original manifest, supplemental 30 review and associated tests from `3d8c90dbc415f32355a187fb413503204446ea8f` (#99). PRs #102, #105, #107, #108, and #99 overlap this candidate; do not independently merge overlapping work without reconciliation. No backend repair from #106 is included.
 
+## Additive follow-up and editorial workflow
+
+The separate [ten-record follow-up](BATCH13_HOLD_FOLLOWUP10_20261115.md) at `8a9500f2c8cb9b85020a1cdd86dd8a784ea5461b` supplies two blocked Marc Bush species leads and further evidence for ten existing IDs. It replaces no snapshot and removes no hold. The [offline editorial workflow](../qa/editorial-review-workflow.md) presents the original and follow-up evidence separately and generates unapplied decision-based patches.
+
 ## Files and accounting
 
 `BATCH13_CONSOLIDATED_POPULATION.json` contains the 111-entry index, pending attributes and separate waterways, explicit relationships, detailed holds, registry conflicts, unsupported fields, exclusions and a field-level decision ledger. The `source` on each entry is one attributable citation; identical source-specific facts are deduplicated, while different sources and relationships remain separate. `BATCH13_CONSOLIDATED_POPULATION.csv` is a 444-row, spreadsheet-safe view of candidate attributes and waters; JSON remains authoritative for holds, conflicts, identity evidence and field accounting. `scripts/batch13_consolidated.py --check` verifies both outputs against pinned inputs and existing converters.

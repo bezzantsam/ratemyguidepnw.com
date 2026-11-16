@@ -37,7 +37,7 @@ function itemView(item){const r=item.record,box=node('article',undefined,'item')
  sel.addEventListener('change',()=>{reason.disabled=!sel.value;if(ev)ev.disabled=!sel.value;setDecision(item,{action:sel.value,reason:reason.value,evidence_id:ev?.value||item.source_id||''})});
  reason.addEventListener('input',()=>setDecision(item,{reason:reason.value}));if(ev)ev.addEventListener('change',()=>setDecision(item,{evidence_id:ev.value}));return box}
 function render(){results.replaceChildren();const q=search.value.trim().toLowerCase(),cat=filter.value;let count=0;
- for(const g of MODEL.guides){const info=g.registry_identity;const hay=[g.guide_id,info.name,info.business,info.website].join(' ').toLowerCase();if(q&&!hay.includes(q))continue;
+ for(const g of MODEL.guides){const info=g.registry_identity;const aliases=MODEL.items.filter(x=>x.guide_id===g.guide_id&&['person_name','business_name'].includes(x.record.kind)).map(x=>x.record.value);const hay=[g.guide_id,info.name,info.business,info.website,...aliases].join(' ').toLowerCase();if(q&&!hay.includes(q))continue;
  const found=MODEL.items.filter(x=>x.guide_id===g.guide_id&&(cat==='all'||x.category===cat||(cat==='candidates'&&['attribute','waterway','relationship'].includes(x.category))));if(!found.length)continue;count++;
  const group=node('details',undefined,'guide');group.append(node('summary',g.guide_id+' · '+info.name+' · '+(info.business||'No business listed')));
  group.append(node('p','Registry name: '+info.name+' | Business: '+JSON.stringify(info.business)+' | Website: '+(info.website||'not listed')));

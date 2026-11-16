@@ -18,6 +18,8 @@ test('offline review exports, merges and rejects stale or malformed decisions',{
   browser=await chromium.launch({executablePath,headless:true});one=await context();two=await context();
   const page=await one.newPage();page.on('pageerror',err=>errors.push(err.message));await page.goto(pathToFileURL(html).href);
   await page.getByLabel('Editor label').fill('Synthetic reviewer');
+  await page.getByLabel('Search name, business, or registration').fill("Bob Rees' Fishing Guide Service");
+  await page.locator('details.guide summary').getByText('OG.0000741',{exact:false}).waitFor();
   await page.getByLabel('Search name, business, or registration').fill('OG.0003060');
   await page.getByLabel('Show',{exact:true}).selectOption('hold');
   const guide=page.locator('details.guide').first();await guide.locator('summary').click();
