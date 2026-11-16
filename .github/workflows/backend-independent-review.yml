@@ -11,7 +11,7 @@ permissions:
   contents: read
 jobs:
   independent-synthetic-oracle:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
@@ -20,8 +20,8 @@ jobs:
       - name: Install disposable PostgreSQL
         run: |
           sudo apt-get update
-          sudo apt-get install -y postgresql postgresql-contrib
-          echo "$(pg_config --bindir)" >> "$GITHUB_PATH"
+          sudo apt-get install -y postgresql-17
+          echo "/usr/lib/postgresql/17/bin" >> "$GITHUB_PATH"
       - name: Verify characterization, expected strict failure, candidate pass, and preflight
         run: python3 tests/backend-independent-review/ci_modes.py --output-dir "$RUNNER_TEMP/backend-independent-preflight"
       - name: Upload synthetic preflight outputs
