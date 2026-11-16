@@ -42,8 +42,8 @@ test('search list labels do not imply account claiming or review counts', () => 
     assert.doesNotMatch(code, />Unclaimed</);
     assert.doesNotMatch(code, /No reviews yet/);
     assert.match(code, /Source listing|Imported source listing/);
-    assert.match(code, /Reviews on profile|Review information on profile/);
-    assert.match(code, /See reviews/);
+    assert.match(code, /Review data unavailable/);
+    assert.match(code, /Reviews unavailable/);
   }
 });
 

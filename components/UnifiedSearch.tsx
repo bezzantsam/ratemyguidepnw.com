@@ -110,7 +110,7 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
   <div className="guide-results">{filtered.slice((current-1)*size,current*size).map(g=>
    <div className="saved-guide-row" key={g.id}>
     <Link className="guide-result" href={{pathname:g.href,query:{returnTo:directoryUrl(selection)}}}>
-     <div className="rating-tile"><strong>—</strong><span>See reviews</span></div>
+     <div className="rating-tile"><strong>—</strong><span>Reviews unavailable</span></div>
      <div className="guide-result-body">
       <div className="guide-result-top"><h3>{g.name}</h3>
        <span className="listing-chip">{g.states.join(' + ')}</span>
@@ -120,7 +120,7 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
       {g.searchAliases.length>0&&<p className="guide-meta">Source-listed names (business or person): {g.searchAliases.join(' · ')}</p>}
       {g.advertisedWaters.length>0&&<p className="guide-meta">Advertised waters (source-linked): {g.advertisedWaters.slice(0,3).join(' · ')}{g.advertisedWaters.length>3?' · + more':''}</p>}
       <p className="guide-meta">{g.source==='Oregon registry'?'Imported registration zones':'Imported directory areas / notes'}: {g.areas.slice(0,3).join(' · ')||'Not specified'}{g.areas.length>3?' · + more':''}</p>
-      <p className="guide-submeta">Imported source listing · Review information on profile · Current credentials not independently checked</p>
+      <p className="guide-submeta">Imported source listing · Review data unavailable · Current credentials not independently checked</p>
      </div><span className="result-chevron">›</span>
     </Link>
    </div>)}

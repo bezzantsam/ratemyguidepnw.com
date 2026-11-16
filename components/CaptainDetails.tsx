@@ -3,8 +3,7 @@
  * human-reviewed publication service exists. This component intentionally
  * makes NO Supabase calls and cannot read pending owner-provided copy.
  *
- * Keep the captain's structured 1–4-vessel / 1–8-seasonal-trip draft workflow
- * available on the claim page. It sends proposals, never edits public records.
+ * Claim and draft submission paths are unavailable in the read-only directory.
  */
 export default function CaptainDetails({slug}:{slug:string}) {
   return (

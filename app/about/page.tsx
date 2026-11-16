@@ -27,8 +27,8 @@ export default function About() {
       </p>
       <h2>Fairness and moderation</h2>
       <p>
-        Reviews should reflect real firsthand experiences. We use account-based submissions,
-        moderation and a captain response and dispute process as these features are rolled out.
+        Reviews should reflect real firsthand experiences. Review submissions, moderation
+        and a captain response and dispute process are not currently available.
         Public anonymity is not a promise of absolute anonymity.
       </p>
       <h2>Launch status</h2>

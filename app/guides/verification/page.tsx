@@ -20,12 +20,12 @@ const terms = [
   },
   {
     heading: 'Claimed guide profile',
-    description: 'A guide can request control of the public listing. The claim process is meant to check who controls an account before owner editing is authorized. It does not establish fishing ability, safety, a current guide license, or any USCG credential.',
+    description: 'Claim requests and owner editing are unavailable. A future claim process must check who controls an account before owner editing is authorized. It does not establish fishing ability, safety, a current guide license, or any USCG credential.',
     warning: 'Without a publicly verified claim-state lookup, we do not label imported directory results as “Unclaimed.”',
   },
   {
     heading: 'Published angler review',
-    description: 'Reviews are submitted from authenticated accounts and pass a moderation step before publication. Reviewer identities are not displayed in published reviews.',
+    description: 'Review data and submissions are currently unavailable. A future review process requires authenticated submissions and moderation before publication.',
     warning: 'Authentication and moderation do not, by themselves, mean the reviewer supplied independently confirmed booking or completed-trip evidence.',
   },
   {
@@ -76,7 +76,7 @@ export default function GuideVerificationExplained() {
           <KeyRound size={26} aria-hidden="true" />
           <h2>Are you listed as a captain?</h2>
           <p>
-            You can request your listing through the profile page. Establishing
+            Claims are currently unavailable. Establishing
             control of a page never gives anyone the ability to change independent
             angler reviews.
           </p>
@@ -86,11 +86,11 @@ export default function GuideVerificationExplained() {
           <UserRoundCheck size={26} aria-hidden="true" />
           <h2>Have you taken a trip?</h2>
           <p>
-            Use the guide profile&apos;s review form to describe a firsthand
-            experience. Reviews go through moderation before appearing publicly,
-            and should disclose relevant personal or financial relationships.
+            Review submissions are currently unavailable. Any future review should
+            describe a firsthand experience and disclose relevant personal or
+            financial relationships.
           </p>
-          <Link className="button" href="/guides">Find a guide to review</Link>
+          <Link className="button" href="/guides">Browse guide listings</Link>
         </div>
       </section>
       <p className="muted trust-policy-footer">
