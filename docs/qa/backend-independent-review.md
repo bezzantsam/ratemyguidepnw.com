@@ -29,3 +29,23 @@ The inherited-role fixture is deliberately adversarial and its existence on any 
 - `python3 tests/backend-independent-review/run.py` — exit 0; all characterization and safety checks passed, with the inherited-grant bypass explicitly reported as **EXPECTED FAILURE**.
 - `python3 tests/backend-independent-review/run.py --strict` — exit 1 as expected for that regression; no other test failed.
 - The initial sandboxed run could not initialize PostgreSQL because shared-memory creation returned `Operation not permitted`; both completed runs used approved local execution outside the sandbox.
+
+## Narrow candidate delta — inherited-grant regression only
+
+The exact failing checks at the reviewed commit are:
+
+```sql
+SELECT has_table_privilege('authenticated', 'public.reviews', 'INSERT');
+SELECT has_function_privilege('authenticated',
+  'public.admin_decide_review(uuid,boolean,text)', 'EXECUTE');
+```
+
+Both return `true` in the synthetic inherited-role fixture after the original lockdown. The fixture then actually inserts a pending review and calls the moderation RPC as the respective authenticated actors; the result is not based only on catalog inspection.
+
+[`candidate-inherited-delta.sql`](../../tests/backend-independent-review/candidate-inherited-delta.sql) is the smallest local delta for the **known synthetic grantee**: revoke that role's review INSERT and moderation EXECUTE, then abort the transaction if either `anon` or `authenticated` retains effective review INSERT, including a column-only grant, or moderation EXECUTE. It adds no grants. The test proves both operations return SQLSTATE `42501`, the target review, guide aggregate and audit remain unchanged, and the synthetic role's unrelated species SELECT remains granted. A separate synthetic inherited column grant makes the guard abort; it is not silently removed.
+
+- `python3 tests/backend-independent-review/run.py` — exit 0, still prints the unpatched `EXPECTED FAILURE`.
+- `python3 tests/backend-independent-review/run.py --strict` — exit 1, still red on the unpatched proposal.
+- `python3 tests/backend-independent-review/run.py --strict --candidate` — exit 0; strict regression and existing baseline, locked, enabled and concurrent-session checks pass with the delta applied only to the inherited-grant fixture.
+
+This is **not a hosted migration or a generic cleanup of unknown roles**. The grantee name is a local fixture. Revoking from a shared role affects all of its members, so a real role must first be identified and its consumers reviewed. The guard is intentionally limited to the two operations in this regression; it is not proof that every other inherited table, column, function or storage privilege is closed. Hosted Auth/JWT, Data API configuration, storage policies and actual role memberships remain unverified and outside this pass.

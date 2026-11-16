@@ -26,6 +26,7 @@ def required(name):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--strict', action='store_true', help='exit nonzero if the conditional inherited-grant bypass reproduces')
+    parser.add_argument('--candidate', action='store_true', help='apply the fixture-specific review delta in the inherited-grant database only')
     args = parser.parse_args()
     initdb, pgctl, psql = (required(x) for x in ('initdb','pg_ctl','psql'))
     # A clean environment avoids loading connection settings or credentials.
@@ -80,6 +81,8 @@ def main():
                 elif database=='qa_enabled':
                     file(database, TESTS/'enabled.sql')
                 else:
+                    if args.candidate:
+                        file(database, TESTS/'candidate-inherited-delta.sql')
                     regression=run(dbcmd(database)+['-f',str(TESTS/'regression-inherited.sql')],check=False)
                     if regression.returncode:
                         if 'assertion failed: inherited roles must not retain customer write or moderation execute' not in regression.stdout:
@@ -88,6 +91,15 @@ def main():
                         file(database, TESTS/'inherited-after.sql')
                     else:
                         print('PASS inherited-role regression: effective privileges are blocked', flush=True)
+                        if args.candidate:
+                            file(database, TESTS/'inherited-blocked.sql')
+                            # A different inherited column grant must trip the
+                            # check rather than silently broadening the delta.
+                            sql(database, 'CREATE ROLE qa_shadow NOLOGIN; GRANT qa_shadow TO authenticated; GRANT INSERT (body) ON public.reviews TO qa_shadow;')
+                            guard=run(dbcmd(database)+['-f',str(TESTS/'candidate-inherited-delta.sql')],check=False)
+                            if guard.returncode == 0 or 'Inherited review write or moderation execute remains for authenticated' not in guard.stdout:
+                                raise RuntimeError('candidate failed to reject another inherited column grant:\n'+guard.stdout)
+                            print('PASS candidate aborts on additional inherited column grant', flush=True)
             file('qa_enabled',TESTS/'race-setup.sql')
             a_sql="BEGIN; SET ROLE authenticated; SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000004',false); SELECT public.admin_decide_claim('20000000-0000-0000-0000-000000000009',true,'race A'); SELECT pg_sleep(7); COMMIT;"
             b_sql="BEGIN; SET ROLE authenticated; SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000005',false); SELECT public.admin_decide_claim('20000000-0000-0000-0000-000000000010',true,'race B'); COMMIT;"
