@@ -5,7 +5,7 @@ import DockTalkTicker from '@/components/DockTalkTicker';
 
 export const metadata: Metadata = {
   title: 'RateMyGuidePNW | Real Trips. Real Talk.',
-  description: 'Independent Pacific Northwest fishing guide reviews and source-backed Chinook fishing intel',
+  description: 'Browse Oregon and Washington fishing-guide listings with transparent source information. Reviews and profile claims are currently unavailable.',
   robots: { index: false, follow: false },
 };
 
@@ -20,7 +20,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <Link className="brand" href="/">RateMyGuide<span>PNW</span></Link>
           <nav aria-label="Main navigation">
             <Link href="/guides">Find a Guide</Link>
-            <Link href="/intel/buoy-10-chinook">Chinook Intel</Link>
+            <Link href="/guides/verification">About the Listings</Link>
             <Link href="/reviews">Dock Talk</Link>
             <Link href="/about">About</Link>
           </nav>

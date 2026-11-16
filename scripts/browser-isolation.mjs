@@ -80,6 +80,7 @@ export async function runIsolated({repo,tree,mode,browser,signal,hooks={}}){
    await (hooks.command??command)('npm',['run','build'],dir,env,signal);
    app=await (hooks.launchApp??launchApp)(dir,env,signal);
    env.TEST_BASE_URL=app.url;
+   if(mode==='ordinary')await (hooks.command??command)('node',['scripts/read-only-launch-smoke.mjs','--base-url',app.url],dir,env,signal);
    await (hooks.command??command)('node',['--test',mode==='synthetic'?'tests/mvp-browser.test.mjs':'tests/production-browser.test.mjs'],dir,env,signal);
    if(backend.writes())throw new Error('Mock backend received a write');
    if(backend.requests())throw new Error('Read-only directory unexpectedly contacted the unavailable backend');

@@ -1,0 +1,30 @@
+name: Read-only launch preparation
+
+on:
+  pull_request:
+    paths:
+      - 'app/page.tsx'
+      - 'app/layout.tsx'
+      - 'scripts/read-only-launch-smoke.mjs'
+      - 'scripts/browser-isolation.mjs'
+      - 'tests/read-only-launch-*.test.mjs'
+      - 'package.json'
+      - 'vercel.json'
+      - '.github/workflows/read-only-launch-prep.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  launch-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test GET-only smoke runner and public scope boundaries
+        run: npm run test:launch

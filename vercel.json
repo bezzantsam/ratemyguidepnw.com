@@ -1,7 +1,8 @@
 {
   "git": {
     "deploymentEnabled": {
-      "codex/directory-identity-copy-fix": false
+      "codex/directory-identity-copy-fix": false,
+      "coordinator/rmg-launch-prep": false
     }
   }
 }
