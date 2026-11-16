@@ -13,7 +13,7 @@ def visual(model,decisions=None):
  hard={x['guide_id'] for x in e.read(e.HOLDS)['held_guides']};held|=hard
  attrs=[];waters={};changes=[]
  if decisions is None:
-  selected=[x for x in model['items'] if x['category'] in ('attribute','relationship','waterway') and x['guide_id'] not in held and x.get('origin') not in ('followup','baseline_hold')]
+  selected=[x for x in model['items'] if x['category'] in ('attribute','relationship','waterway') and x['guide_id'] not in held and x.get('origin') not in ('followup','followup16','baseline_hold')]
   for item in selected:
    r=item['record'];src=model['sources'][item['source_id']]
    if not e.safe_source(src) or src.get('retrieval_method')!='parsed_page':continue
@@ -39,7 +39,7 @@ def visual(model,decisions=None):
   changes=patch['changes'];mode='decision-file rehearsal'
  return {'mode':mode,'attributes':attrs,'waters':waters,'changes':changes,'publication_approved':False,
          'counts':{'guides':len({x['guide_id'] for x in attrs}|set(waters)),'attributes':len(attrs),'waters':sum(map(len,waters.values())),'changes':len(changes)},
-         'candidate_sha256':model['candidate_sha256'],'followup_sha256':model['followup_sha256'],'baseline_sha256':model['baseline_sha256']}
+         'candidate_sha256':model['candidate_sha256'],'followup_sha256':model['followup_sha256'],'followup16_sha256':model['followup16_sha256'],'baseline_sha256':model['baseline_sha256']}
 
 def main():
  p=argparse.ArgumentParser();p.add_argument('--decisions',type=Path);p.add_argument('--output',type=Path,required=True);a=p.parse_args()

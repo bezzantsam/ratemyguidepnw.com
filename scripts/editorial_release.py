@@ -20,7 +20,7 @@ def check_git_base(commit):
  actual=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
  require(commit==actual,'Base commit does not match current HEAD')
  require(not subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],cwd=ROOT,text=True).strip(),'Commit or stash tracked changes before packaging')
- for path in (editorial.ATTRS,editorial.WATERS,editorial.HOLDS,editorial.REGISTRY,editorial.CONTRACT,editorial.BUNDLE,editorial.FOLLOWUP):
+ for path in (editorial.ATTRS,editorial.WATERS,editorial.HOLDS,editorial.REGISTRY,editorial.CONTRACT,editorial.BUNDLE,editorial.FOLLOWUP,editorial.FOLLOWUP16):
   rel=path.relative_to(ROOT).as_posix();old=subprocess.check_output(['git','show',commit+':'+rel],cwd=ROOT)
   require(old==path.read_bytes(),'Base file differs from commit: '+rel)
 
@@ -43,7 +43,7 @@ def build_package(doc,model,attrs,waters,holds,known,base_commit,raw_before,deci
   value=change['after'];report.append('- '+change['guide_id']+' — '+value.get('kind','waterway')+': '+value.get('value',value.get('name',''))+' | before: absent | after: '+editorial.canonical(value))
  if not changes:report.append('No product changes were proposed.')
  result={'schema_version':1,'status':'unapplied_release_rehearsal','base_commit':base_commit,
-  'input_hashes':{'baseline_sha256':model['baseline_sha256'],'candidate_sha256':model['candidate_sha256'],'followup_sha256':model['followup_sha256'],'model_sha256':model['model_sha256'],'decision_sha256':sha_bytes(decision_bytes)},
+  'input_hashes':{'baseline_sha256':model['baseline_sha256'],'candidate_sha256':model['candidate_sha256'],'followup_sha256':model['followup_sha256'],'followup16_sha256':model.get('followup16_sha256'),'model_sha256':model['model_sha256'],'decision_sha256':sha_bytes(decision_bytes)},
   'test_evidence':evidence or {'status':'not_supplied','required_checks':['editorial unit tests','release package tests','ordinary and synthetic isolated browsers','visual preview browser'],'note':'Run the documented checks; no test pass is implied.'},
   'decision_artifact':decision_bytes.decode(),'decisions':copy.deepcopy(doc['decisions']),'review_context':patch['review_context'],'evidence':patch['evidence'],
   'counts':{'affected_guides':len(ids),'distinct_facts':len(facts),'source_specific_additions':len(changes),'removals':0,'unresolved_items':len(unresolved)},
@@ -57,7 +57,7 @@ def build_package(doc,model,attrs,waters,holds,known,base_commit,raw_before,deci
 def validate_package(package,model,commit,decision_bytes,raw_before,proposed_state=None):
  require(package.get('schema_version')==1 and package.get('publication_approved') is False,'Invalid package')
  require(package.get('base_commit')==commit,'Stale base commit')
- require(package['input_hashes']=={'baseline_sha256':model['baseline_sha256'],'candidate_sha256':model['candidate_sha256'],'followup_sha256':model['followup_sha256'],'model_sha256':model['model_sha256'],'decision_sha256':sha_bytes(decision_bytes)},'Stale inputs')
+ require(package['input_hashes']=={'baseline_sha256':model['baseline_sha256'],'candidate_sha256':model['candidate_sha256'],'followup_sha256':model['followup_sha256'],'followup16_sha256':model.get('followup16_sha256'),'model_sha256':model['model_sha256'],'decision_sha256':sha_bytes(decision_bytes)},'Stale inputs')
  require(package['decision_artifact'].encode()==decision_bytes,'Changed decision artifact')
  require(package['before_files']==raw_before and state_hash(package['before_files'])==package['before_hash'],'Changed before files')
  require(state_hash(package['after_files'])==package['after_hash'],'Changed proposed output')

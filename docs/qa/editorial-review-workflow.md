@@ -47,3 +47,11 @@ BROWSER_EXECUTABLE='/path/to/chromium' node --test tests/editorial-review-browse
 ```
 
 No identity, fact, editorial decision or publication is approved by generating a page or patch.
+
+## November 16 additive evidence
+
+The existing editor now displays the sixteen-record recheck alongside the original hold and earlier follow-up. The follow-up remains separate and pinned by SHA-256; it adds no manifest records or publication approvals. Its 21 attributes, six waterways and four explicit relationships remain blocked by their original holds. Parsed and indexed representations remain distinct, and operator offerings remain business-scoped.
+
+Open a fresh review page with `python3 scripts/editorial_review.py open --output outputs/editorial-review/followup16.html`. The version-1 decision-file format is unchanged: the `model_sha256` binds the entire current evidence model, including the new follow-up hash. A decision file from an earlier model is rejected without being overwritten or imported. The page lists each decision's guide and item ID and whether the item/evidence still matches or changed; all require reconsideration in the current model. The release package also records the explicit follow-up-16 hash.
+
+A small recommendation-only pack is at [editorial-first-release-review.md](editorial-first-release-review.md). It does not contain decisions or authorize publication. Regenerate it with `python3 scripts/editorial_first_batch.py`; validate its bytes with `python3 scripts/editorial_first_batch.py --check`.

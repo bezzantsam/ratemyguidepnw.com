@@ -35,7 +35,16 @@ test('offline review exports, merges and rejects stale or malformed decisions',{
   const restored=other.locator('details.guide').first();await restored.locator('summary').click();assert.equal(await restored.getByLabel('Reason for hold OG.0003060').inputValue(),'Synthetic review: retain the hold');
   const stale={...doc,candidate_sha256:'stale'};await other.locator('#import').setInputFiles({name:'stale.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(stale))});
   await other.getByText('Import rejected: Stale or mismatched candidate_sha256').waitFor();
+  await other.getByLabel('Decisions requiring reconsideration').getByText('item and evidence still match',{exact:false}).waitFor();
   assert.equal(await restored.getByLabel('Reason for hold OG.0003060').inputValue(),'Synthetic review: retain the hold');
+  const changed={...doc,model_sha256:'old-model',decisions:[{...doc.decisions[0],item_id:'old-changed-item'}]};
+  await other.locator('#import').setInputFiles({name:'old.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(changed))});
+  await other.getByLabel('Decisions requiring reconsideration').getByText('old-changed-item',{exact:false}).waitFor();
+  assert.match(await other.getByLabel('Decisions requiring reconsideration').innerText(),/item or evidence changed/);
+  await other.getByLabel('Search name, business, or registration').fill('OG.0003191');
+  const follow16=other.locator('details.guide').first();await follow16.locator('summary').click();
+  await follow16.getByText('November 16 follow-up:',{exact:false}).waitFor();
+  await follow16.getByText('Tonie',{exact:false}).first().waitFor();
   await other.locator('#import').setInputFiles({name:'duplicate.json',mimeType:'application/json',buffer:Buffer.from('{"schema_version":1,"schema_version":1}')});
   await other.getByText('Import rejected: Duplicate JSON key: schema_version').waitFor();
   await other.evaluate(()=>localStorage.setItem('ratemyguide-editorial-v1-old-version',JSON.stringify({editor:'Old',decisions:{}})));

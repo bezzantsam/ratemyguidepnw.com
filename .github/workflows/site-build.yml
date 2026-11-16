@@ -48,6 +48,8 @@ jobs:
           python -m unittest discover -s tests -p 'test_editorial_review.py' -v
           python -m unittest discover -s tests -p 'test_editorial_release.py' -v
           python -m unittest discover -s tests -p 'test_editorial_visual_data.py' -v
+          python -m unittest discover -s tests -p 'test_editorial_followup16.py' -v
+          python scripts/editorial_first_batch.py --check
           node --test tests/editorial-visual-adapter.test.mjs
       - name: Check source-backed Chinook methodology and accuracy disclosures
         run: node --test tests/methodology.test.mjs
