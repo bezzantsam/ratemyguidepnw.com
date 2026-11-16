@@ -50,7 +50,7 @@ export function snapshotTree(repo,tree,dir){
  execFileSync('tar',['-xf',archive,'-C',dir],{stdio:'inherit'});
  return rm(archive);
 }
-async function launchApp(dir,env,signal){
+export async function launchApp(dir,env,signal){
  const {child,done}=spawnOwned(process.execPath,['scripts/isolated-test-server.mjs'],{cwd:dir,env,stdio:['ignore','pipe','inherit']},signal);
  // Attach a handler immediately so a failed server never becomes an unhandled rejection.
  const ended=done.then(()=>{throw new Error('Server exited before cleanup')},e=>{throw e});

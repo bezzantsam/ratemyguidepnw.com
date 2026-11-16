@@ -1,6 +1,6 @@
 import {oregonGuides,guideSlug} from './registry';
 import {washingtonGuides} from './washington';
-import {washingtonRecordForOregon} from './washington-reconciled';
+import {washingtonRecordForOregon} from './washington';
 import {advertisedWaterwayNames,guideSearchTerms} from './guide-enrichment';
 import {attributesFor} from './guide-attributes-server';
 

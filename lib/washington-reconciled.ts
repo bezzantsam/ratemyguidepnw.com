@@ -17,5 +17,49 @@ export const reconciledWashingtonCaptains:WashingtonCaptain[]=[
 // All Star Fishing Charters, Riverdog Outfitters, Fish Intimidators,
 // All Rivers & Saltwater Charters each have multiple named captains and
 // must remain separate people even if business names/websites match.
-export function washingtonRecordForOregon(registration:string){return reconciledWashingtonCaptains.find(x=>x.oregonRegistration===registration)}
+// These source-key allocations are proposals only. No public URL or identity
+// match is created until each held source record has been reviewed.
+export const unresolvedWashingtonSourceHolds = [
+ {key:'["daniel benowitz","phd guide service","wsga"]',proposedId:'wa-158'},
+ {key:'["jeffrey keightley sr.","astoria fishing","wsga"]',proposedId:'wa-159'},
+ {key:'["marc bush","twisted waters guide service","wsga"]',proposedId:'wa-160'},
+ {key:'["nicholas ney","neys fishing adventures","wsga"]',proposedId:'wa-161'},
+ {key:'["tony fisher","fishers catch outfitters","wsga/local"]',proposedId:'wa-162'},
+] as const;
+
+export type IdentityLinkDecision = {
+ oregonRegistration:string;
+ washingtonSourceKey:string;
+ status:'approved'|'pending'|'ambiguous'|'rejected';
+ evidence:{url:string;locator:string;reviewer:string;reviewedOn:string};
+};
+// Existing research pointers are not identity decisions. No real link has
+// been approved; future decisions must identify an exact source record.
+export const identityLinkDecisions:IdentityLinkDecision[]=[];
+const text=(value:unknown):value is string=>typeof value==='string'&&value.trim().length>0&&value.length<=1024&&!/[\u0000-\u001f\u007f]/.test(value);
+function validDecision(value:unknown):value is IdentityLinkDecision {
+ if(!value||typeof value!=='object'||Array.isArray(value))return false;
+ const x=value as Record<string,unknown>;
+ if(x.status!=='approved'||!text(x.oregonRegistration)||!/^OG\.\d+$/.test(x.oregonRegistration)||!text(x.washingtonSourceKey))return false;
+ try{const key=JSON.parse(x.washingtonSourceKey);if(!Array.isArray(key)||key.length!==3||!text(key[0])||typeof key[1]!=='string'||!text(key[2])||key.some((part:unknown)=>typeof part!=='string'||part!==part.trim().normalize('NFKC').toLowerCase().replace(/\s+/g,' '))||JSON.stringify(key)!==x.washingtonSourceKey)return false}catch{return false}
+ if(!x.evidence||typeof x.evidence!=='object'||Array.isArray(x.evidence))return false;
+ const e=x.evidence as Record<string,unknown>;
+ if(!text(e.url)||!text(e.locator)||!text(e.reviewer)||!text(e.reviewedOn)||!/^\d{4}-\d{2}-\d{2}$/.test(e.reviewedOn))return false;
+ const date=new Date(e.reviewedOn+'T00:00:00Z');
+ if(Number.isNaN(date.valueOf())||date.toISOString().slice(0,10)!==e.reviewedOn||e.reviewedOn>new Date().toISOString().slice(0,10))return false;
+ try{const u=new URL(e.url);return u.protocol==='https:'&&!!u.hostname&&!u.username&&!u.password}catch{return false}
+}
+/** Conflicting decisions sharing either endpoint fail closed, including pending ones. */
+export function approvedIdentityLinks(decisions:readonly unknown[]):IdentityLinkDecision[] {
+ return decisions.filter((item):item is IdentityLinkDecision=>{
+  if(!validDecision(item))return false;
+  return decisions.filter(other=>!!other&&typeof other==='object'&&!Array.isArray(other)&&
+   (((other as Record<string,unknown>).oregonRegistration===item.oregonRegistration)||((other as Record<string,unknown>).washingtonSourceKey===item.washingtonSourceKey))).length===1;
+ });
+}
+/** Return only the approved decision, never unrelated source associations. */
+export function washingtonRecordForOregon(registration:string,decisions:readonly unknown[]=identityLinkDecisions,sourceKeys:ReadonlySet<string>=new Set()){
+ const approved=approvedIdentityLinks(decisions).find(x=>x.oregonRegistration===registration&&sourceKeys.has(x.washingtonSourceKey));
+ return approved&&reconciledWashingtonCaptains.filter(x=>x.oregonRegistration===registration).length===1?approved:undefined;
+}
 export const washingtonOnlyCaptains=reconciledWashingtonCaptains.filter(x=>!x.oregonRegistration);

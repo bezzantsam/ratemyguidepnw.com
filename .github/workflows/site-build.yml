@@ -40,6 +40,15 @@ jobs:
           python scripts/batch13_enrichment_proposal.py --check
           python -m unittest discover -s tests -p 'test_extended_enrichment_proposal.py' -v
           python scripts/extended_enrichment_proposal.py --check
+      - name: Verify consolidated Batch 13 population handoff
+        run: |
+          python -m unittest discover -s tests -p 'test_batch13*.py' -v
+          node --test tests/guide-batch13-next30*.test.mjs
+          python scripts/batch13_consolidated.py --check
+          python -m unittest discover -s tests -p 'test_editorial_review.py' -v
+          python -m unittest discover -s tests -p 'test_editorial_release.py' -v
+          python -m unittest discover -s tests -p 'test_editorial_visual_data.py' -v
+          node --test tests/editorial-visual-adapter.test.mjs
       - name: Check source-backed Chinook methodology and accuracy disclosures
         run: node --test tests/methodology.test.mjs
       - name: Verify guide profile provenance and honest review evidence labels
@@ -52,6 +61,11 @@ jobs:
         run: npm run test:isolation
       - name: Install Chromium for browser regression
         run: npx playwright-core install --with-deps chromium
+      - name: Test offline editorial review export and import
+        shell: bash
+        run: |
+          export BROWSER_EXECUTABLE="$(node --input-type=module -e "import {chromium} from 'playwright-core'; console.log(chromium.executablePath())")"
+          node --test tests/editorial-review-browser.test.mjs
       - name: Build and smoke test ordinary production data in an isolated snapshot
         shell: bash
         run: |
@@ -64,3 +78,16 @@ jobs:
           set -euo pipefail
           export BROWSER_EXECUTABLE="$(node --input-type=module -e "import {chromium} from 'playwright-core'; console.log(chromium.executablePath())")"
           bash scripts/build-fixture-browser.sh "$(git rev-parse 'HEAD^{tree}')"
+      - name: Exercise unapproved editorial visual rehearsal
+        shell: bash
+        run: |
+          set -euo pipefail
+          export BROWSER_EXECUTABLE="$(node --input-type=module -e "import {chromium} from 'playwright-core'; console.log(chromium.executablePath())")"
+          node scripts/editorial-visual.mjs --test --screenshots "$RUNNER_TEMP/ratemyguide-visual-screenshots"
+      - name: Preserve QA-only preview screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: unapproved-editorial-preview-qa
+          path: ${{ runner.temp }}/ratemyguide-visual-screenshots/*.png
+          if-no-files-found: error
+          retention-days: 7

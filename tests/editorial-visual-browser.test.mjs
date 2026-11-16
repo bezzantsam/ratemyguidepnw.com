@@ -1,0 +1,41 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdirSync,readFileSync} from 'node:fs';
+import {join} from 'node:path';
+import {createHash} from 'node:crypto';
+import {chromium} from 'playwright-core';
+const preview=process.env.TEST_BASE_URL,ordinary=process.env.TEST_ORDINARY_URL,api=process.env.TEST_API_URL,executablePath=process.env.BROWSER_EXECUTABLE,shots=process.env.EDITORIAL_SCREENSHOTS;
+for(const value of [preview,ordinary,api])if(!/^http:\/\/127\.0\.0\.1:\d+$/.test(value||''))throw Error('Owned loopback URLs required');
+if(new Set([preview,ordinary,api]).size!==3||!executablePath||!shots)throw Error('Separate owned ports, browser and screenshot directory required');
+test('unapproved source-backed preview follows the actual directory journey',{timeout:120000},async()=>{
+ const data=JSON.parse(readFileSync('lib/__editorial_visual__.json','utf8'));
+ assert.ok(data.attributes.length>0);assert.ok(data.attributes.every(x=>x.editorial_status==='pending'&&x.publication_approved===false));
+ for(const id of ['OG.0003060','OG.0003288','OG.0003993'])assert.ok(!data.attributes.some(x=>x.guide_id===id)&&!data.waters[id],id+' remains held');
+ assert.equal(createHash('sha256').update(readFileSync('lib/approved-guide-attributes.json')).digest('hex'),process.env.TEST_APPROVED_SHA256);
+ mkdirSync(shots,{recursive:true});const browser=await chromium.launch({executablePath,headless:true});const context=await browser.newContext({viewport:{width:1280,height:800}});const blocked=[],writes=[],errors=[];
+ await context.route('**/*',route=>{const req=route.request(),url=new URL(req.url());if(url.origin===api){if(req.method()!=='GET')writes.push(req.method());return route.fulfill({status:req.method()==='GET'?200:403,contentType:'application/json',body:'[]'})}if([preview,ordinary].includes(url.origin)||['data:','blob:'].includes(url.protocol))return route.continue();blocked.push(url.origin);return route.abort()});
+ const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
+ try{
+  await page.goto(`${ordinary}/guides?q=Kelsey+Helfrich`,{waitUntil:'domcontentloaded'});await page.getByRole('link',{name:/Kelsey Helfrich/}).first().waitFor();
+  assert.equal(await page.getByText('Unapproved editorial preview',{exact:false}).count(),0);
+  await page.screenshot({path:join(shots,'ordinary-desktop.png'),fullPage:true});
+  await page.goto(`${preview}/guides?q=Kelsey+Helfrich`,{waitUntil:'domcontentloaded'});await page.getByText('Unapproved editorial preview',{exact:false}).first().waitFor();
+  await page.getByLabel('Source-listed species').selectOption({label:'Rainbow Trout'});await page.getByLabel('Source-listed fishing method').selectOption({label:'Fly fishing'});
+  await page.getByLabel('Advertised fishing water (pilot)').selectOption({label:'McKenzie River'});
+  const saved=page.url();await page.getByRole('link',{name:/Kelsey Helfrich/}).first().waitFor();await page.screenshot({path:join(shots,'preview-directory-desktop.png'),fullPage:true});
+  await page.getByRole('link',{name:/Kelsey Helfrich/}).first().click();await page.getByRole('heading',{name:'Kelsey Helfrich',exact:true}).waitFor();
+  await page.getByText('Separate items do not establish a combined trip.',{exact:false}).waitFor();
+  assert.equal(await page.locator('.guide-enrichment li').filter({hasText:'method: Fly fishing'}).count(),2,'two independently attributed sources remain visible');
+  await page.getByText('Source explicitly connects: Rainbow Trout · Fly fishing · McKenzie River',{exact:false}).waitFor();
+  await page.getByText('Source explicitly connects: Steelhead · Fly fishing · Rogue River',{exact:false}).waitFor();
+  await page.screenshot({path:join(shots,'preview-profile-desktop.png'),fullPage:true});
+  await page.setViewportSize({width:375,height:812});await page.screenshot({path:join(shots,'preview-profile-mobile.png'),fullPage:true});
+  await page.getByRole('link',{name:'← Search guides'}).click();await page.waitForURL(saved);await page.getByRole('link',{name:/Kelsey Helfrich/}).first().waitFor();
+  await page.screenshot({path:join(shots,'preview-directory-mobile.png'),fullPage:true});
+  await page.goto(`${preview}/guides?q=Kevin+Hawkins+Fishing`,{waitUntil:'domcontentloaded'});await page.getByRole('link',{name:/Kevin Hawkins/}).first().waitFor();await page.getByText('Source-listed names (business or person): Kevin Hawkins Fishing',{exact:false}).first().waitFor();
+  await page.goto(`${preview}/guides?q=Marc+Bush`,{waitUntil:'domcontentloaded'});const marc=page.getByRole('link',{name:/Marc Bush/}).first();await marc.waitFor();assert.equal(await marc.locator('.listing-chip').innerText(),'Oregon');
+  await marc.click();await page.getByRole('heading',{name:'Marc Bush',exact:true}).waitFor();assert.equal(await page.getByRole('heading',{name:'Also listed in Washington'}).count(),0);assert.equal(await page.getByText('species: Salmon',{exact:false}).count(),0);
+  await page.goto(`${preview}/editorial-changes`,{waitUntil:'domcontentloaded'});await page.getByRole('heading',{name:'Proposed changes'}).waitFor();await page.getByText('Unapproved editorial preview',{exact:false}).first().waitFor();
+  assert.deepEqual(writes,[]);assert.deepEqual(blocked,[]);assert.deepEqual(errors,[]);
+ }finally{await context.close();await browser.close()}
+});

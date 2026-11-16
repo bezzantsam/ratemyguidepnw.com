@@ -6,7 +6,9 @@ import ts from 'typescript';
 
 const rows=JSON.parse(readFileSync('lib/washington-raw.json','utf8'));
 const allocations=JSON.parse(readFileSync('lib/washington-stable-ids.json','utf8'));
-const excluded=new Set(['tony fisher','shane magnuson','casey weigel','marc bush','nicholas ney','daniel benowitz','jeffrey keightley sr.']);
+const reconciled={};
+vm.runInNewContext(ts.transpileModule(readFileSync('lib/washington-reconciled.ts','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText,{exports:reconciled,URL,Date,Set});
+const heldKeys=new Set(reconciled.unresolvedWashingtonSourceHolds.map(x=>x.key));
 const source=readFileSync('lib/washington.ts','utf8');
 const compiled=ts.transpileModule(source,{
  compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020,esModuleInterop:true,resolveJsonModule:true}
@@ -17,16 +19,17 @@ function load(assigned=allocations){
  const require=path=>{
   if(path==='./washington-raw.json')return rows;
   if(path==='./washington-stable-ids.json')return assigned;
-  if(path==='./washington-reconciled')return {reconciledWashingtonCaptains:[]};
+  if(path==='./washington-reconciled')return reconciled;
   throw new Error('unexpected import '+path);
  };
- vm.runInNewContext(compiled,{module,exports:module.exports,require,Set,Error});
+ vm.runInNewContext(compiled,{module,exports:module.exports,require,Set,Error,URL,Date});
  return module.exports;
 }
 
 test('all preexisting WA guide URLs exactly match the old source-order IDs',()=>{
  const guides=load().washingtonGuides;
- const formerlyListed=rows.filter(row=>!excluded.has(row.name.toLowerCase()));
+ const api=load();
+ const formerlyListed=rows.filter(row=>allocations[api.washingtonSourceKey(row)]);
  assert.equal(formerlyListed.length,158);
  assert.equal(guides.length,formerlyListed.length);
  for(let i=0;i<formerlyListed.length;i++){
@@ -36,14 +39,15 @@ test('all preexisting WA guide URLs exactly match the old source-order IDs',()=>
  }
 });
 
-test('reordering and adding excluded cross-state sources never shifts known public URLs',()=>{
+test('reordering preserves URLs and a new same-name source requires review',()=>{
  const api=load();
  const original=Object.fromEntries(api.washingtonGuides.map(row=>[api.washingtonSourceKey(row),row.id]));
  const after=api.mapWashingtonGuides([...rows].reverse());
  const reordered=Object.fromEntries(after.map(row=>[api.washingtonSourceKey(row),row.id]));
  assert.deepEqual(reordered,original);
  const excludedSource={name:'Tony Fisher',business:'Different Import',source:'WDFW',notes:null};
- assert.equal(api.mapWashingtonGuides([excludedSource,...rows]).length,158);
+ // The former name-only suppression silently discarded distinct people.
+ assert.throws(()=>api.mapWashingtonGuides([excludedSource,...rows]),/needs a reviewed stable ID assignment/);
 });
 
 test('new source identities must receive explicit reviewed ID before import',()=>{
@@ -55,7 +59,7 @@ test('new source identities must receive explicit reviewed ID before import',()=
 
 test('duplicate source identities never produce a public link',()=>{
  const api=load();
- const known=rows.find(row=>!excluded.has(row.name.toLowerCase()));
+ const known=rows.find(row=>heldKeys.has(api.washingtonSourceKey(row)));
  assert.throws(()=>api.mapWashingtonGuides([...rows,known]),/Duplicate Washington source identity key/);
 });
 

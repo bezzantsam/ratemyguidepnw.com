@@ -8,7 +8,7 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test:intel": "node --test tests/chinook-release.test.mjs tests/chinook-review-gate.test.mjs tests/build-efficiency.test.mjs",
-    "test:mvp": "node --test tests/mvp-directory-integration.test.mjs tests/washington-stable-ids.test.mjs tests/washington-identity-safety.test.mjs tests/guide-trust.test.mjs tests/captain-publication-gate.test.mjs tests/evidence-discovery.test.mjs tests/directory-recovery.test.mjs",
+    "test:mvp": "node --test tests/mvp-directory-integration.test.mjs tests/washington-stable-ids.test.mjs tests/cross-state-identity.test.mjs tests/consolidated-discovery.test.mjs tests/independent-release-review/boundaries.test.mjs tests/washington-identity-safety.test.mjs tests/guide-trust.test.mjs tests/captain-publication-gate.test.mjs tests/evidence-discovery.test.mjs tests/directory-recovery.test.mjs",
     "check": "npm run test:intel && npm run test:mvp && npm run typecheck && npm run build",
     "test:browser": "node --test tests/mvp-browser.test.mjs",
     "test:isolation": "node --test tests/browser-isolation.test.mjs"
