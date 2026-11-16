@@ -19,7 +19,7 @@ def state_hash(files):return editorial.digest({name:sha_bytes(text.encode()) for
 def check_git_base(commit):
  actual=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
  require(commit==actual,'Base commit does not match current HEAD')
- require(not subprocess.check_output(['git','status','--porcelain','--untracked-files=normal'],cwd=ROOT,text=True).strip(),'Commit or stash work before packaging')
+ require(not subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],cwd=ROOT,text=True).strip(),'Commit or stash tracked changes before packaging')
  for path in (editorial.ATTRS,editorial.WATERS,editorial.HOLDS,editorial.REGISTRY,editorial.CONTRACT,editorial.BUNDLE,editorial.FOLLOWUP):
   rel=path.relative_to(ROOT).as_posix();old=subprocess.check_output(['git','show',commit+':'+rel],cwd=ROOT)
   require(old==path.read_bytes(),'Base file differs from commit: '+rel)

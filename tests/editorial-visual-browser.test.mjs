@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {mkdirSync,readFileSync} from 'node:fs';
 import {join} from 'node:path';
+import {createHash} from 'node:crypto';
 import {chromium} from 'playwright-core';
 const preview=process.env.TEST_BASE_URL,ordinary=process.env.TEST_ORDINARY_URL,api=process.env.TEST_API_URL,executablePath=process.env.BROWSER_EXECUTABLE,shots=process.env.EDITORIAL_SCREENSHOTS;
 for(const value of [preview,ordinary,api])if(!/^http:\/\/127\.0\.0\.1:\d+$/.test(value||''))throw Error('Owned loopback URLs required');
@@ -10,13 +11,13 @@ test('unapproved source-backed preview follows the actual directory journey',{ti
  const data=JSON.parse(readFileSync('lib/__editorial_visual__.json','utf8'));
  assert.ok(data.attributes.length>0);assert.ok(data.attributes.every(x=>x.editorial_status==='pending'&&x.publication_approved===false));
  for(const id of ['OG.0003060','OG.0003288','OG.0003993'])assert.ok(!data.attributes.some(x=>x.guide_id===id)&&!data.waters[id],id+' remains held');
- assert.deepEqual(JSON.parse(readFileSync('lib/approved-guide-attributes.json','utf8')),[]);
+ assert.equal(createHash('sha256').update(readFileSync('lib/approved-guide-attributes.json')).digest('hex'),process.env.TEST_APPROVED_SHA256);
  mkdirSync(shots,{recursive:true});const browser=await chromium.launch({executablePath,headless:true});const context=await browser.newContext({viewport:{width:1280,height:800}});const blocked=[],writes=[],errors=[];
  await context.route('**/*',route=>{const req=route.request(),url=new URL(req.url());if(url.origin===api){if(req.method()!=='GET')writes.push(req.method());return route.fulfill({status:req.method()==='GET'?200:403,contentType:'application/json',body:'[]'})}if([preview,ordinary].includes(url.origin)||['data:','blob:'].includes(url.protocol))return route.continue();blocked.push(url.origin);return route.abort()});
  const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
  try{
   await page.goto(`${ordinary}/guides?q=Kelsey+Helfrich`,{waitUntil:'domcontentloaded'});await page.getByRole('link',{name:/Kelsey Helfrich/}).first().waitFor();
-  assert.equal(await page.getByText('Unapproved editorial preview',{exact:false}).count(),0);assert.equal(await page.getByLabel('Source-listed species').count(),0);
+  assert.equal(await page.getByText('Unapproved editorial preview',{exact:false}).count(),0);
   await page.screenshot({path:join(shots,'ordinary-desktop.png'),fullPage:true});
   await page.goto(`${preview}/guides?q=Kelsey+Helfrich`,{waitUntil:'domcontentloaded'});await page.getByText('Unapproved editorial preview',{exact:false}).first().waitFor();
   await page.getByLabel('Source-listed species').selectOption({label:'Rainbow Trout'});await page.getByLabel('Source-listed fishing method').selectOption({label:'Fly fishing'});

@@ -3,6 +3,7 @@ import {tmpdir} from 'node:os';
 import {join,resolve} from 'node:path';
 import {spawn,execFileSync} from 'node:child_process';
 import {pathToFileURL} from 'node:url';
+import {createHash} from 'node:crypto';
 import {snapshotTree,openMockBackend,launchApp,command} from './browser-isolation.mjs';
 
 function replaceOnce(text,oldValue,newValue){if(!text.includes(oldValue)||text.indexOf(oldValue)!==text.lastIndexOf(oldValue))throw Error('Preview adapter no longer matches product source');return text.replace(oldValue,newValue)}
@@ -33,7 +34,7 @@ export async function runVisual({repo,tree,decisions,test=false,screenshots,sign
   await writeFile(join(previewDir,'lib/__editorial_visual__.json'),await readFile(overlay));await preparePreview(previewDir,ordinary.url);
   await command('npm',['install','--no-audit','--no-fund'],previewDir,env,signal);await command('npm',['run','build'],previewDir,env,signal);preview=await launchApp(previewDir,env,signal);
   console.log(`Ordinary directory: ${ordinary.url}/guides\nUnapproved editorial preview: ${preview.url}/guides\nChanges: ${preview.url}/editorial-changes`);
-  if(test){await command('node',['--test','tests/editorial-visual-browser.test.mjs'],previewDir,{...env,TEST_BASE_URL:preview.url,TEST_ORDINARY_URL:ordinary.url,BROWSER_EXECUTABLE:process.env.BROWSER_EXECUTABLE||'',EDITORIAL_SCREENSHOTS:resolve(screenshots)},signal);if(backend.writes())throw Error('Mock backend received a write')}
+  if(test){const approvedHash=createHash('sha256').update(await readFile(join(normalDir,'lib/approved-guide-attributes.json'))).digest('hex');await command('node',['--test','tests/editorial-visual-browser.test.mjs'],previewDir,{...env,TEST_BASE_URL:preview.url,TEST_ORDINARY_URL:ordinary.url,TEST_APPROVED_SHA256:approvedHash,BROWSER_EXECUTABLE:process.env.BROWSER_EXECUTABLE||'',EDITORIAL_SCREENSHOTS:resolve(screenshots)},signal);if(backend.writes())throw Error('Mock backend received a write')}
   else {opener(ordinary.url+'/guides');opener(preview.url+'/guides');console.log('Press Ctrl+C to stop these owned preview servers.');await new Promise(resolve=>signal.aborted?resolve():signal.addEventListener('abort',resolve,{once:true}))}
  }finally{try{if(preview)await preview.stop()}finally{try{if(ordinary)await ordinary.stop()}finally{try{if(backend)await backend.close()}finally{await rm(root,{recursive:true,force:true})}}}}
 }
