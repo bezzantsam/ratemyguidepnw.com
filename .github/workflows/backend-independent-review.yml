@@ -1,0 +1,41 @@
+name: Independent backend review oracle
+on:
+  pull_request:
+    paths:
+      - 'tests/backend-independent-review/**'
+      - 'scripts/backend-audit/**'
+      - 'docs/backend-catalog-snapshot.json'
+      - '.github/workflows/backend-independent-review.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independent-synthetic-oracle:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install disposable PostgreSQL
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error https://www.postgresql.org/media/keys/ACCC4CF8.asc -o "$RUNNER_TEMP/pgdg-key.asc"
+          gpg --show-keys --with-colons "$RUNNER_TEMP/pgdg-key.asc" > "$RUNNER_TEMP/pgdg-key-info"
+          fingerprint="$(awk -F: '$1 == "fpr" {print $10; exit}' "$RUNNER_TEMP/pgdg-key-info")"
+          test "$fingerprint" = "B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8"
+          sudo install -d /usr/share/postgresql-common/pgdg
+          sudo install -m 0644 "$RUNNER_TEMP/pgdg-key.asc" /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc
+          printf '%s\n' 'deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt noble-pgdg main' | sudo tee /etc/apt/sources.list.d/pgdg.list > /dev/null
+          sudo apt-get update
+          sudo apt-get install -y postgresql-17
+          echo "/usr/lib/postgresql/17/bin" >> "$GITHUB_PATH"
+      - name: Verify characterization, expected strict failure, candidate pass, and preflight
+        run: python3 tests/backend-independent-review/ci_modes.py --output-dir "$RUNNER_TEMP/backend-independent-preflight"
+      - name: Upload synthetic preflight outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-independent-synthetic-preflight
+          path: ${{ runner.temp }}/backend-independent-preflight/
+          if-no-files-found: error
+          retention-days: 7
