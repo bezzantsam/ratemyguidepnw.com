@@ -21,7 +21,7 @@ export default function CaptainDetails({slug}:{slug:string}) {
         is displayed separately above.
       </p>
       <p className="muted">
-        Are you this captain? Use the free “Claim this profile” option on this page
+        Are you this captain? Use the “Claiming currently unavailable” link on this page
         to find the current onboarding instructions. New details are not
         published directly from this page.
       </p>

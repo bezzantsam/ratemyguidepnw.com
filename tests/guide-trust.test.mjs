@@ -55,9 +55,10 @@ test('guide profiles preserve trust panels and guard review access', () => {
     assert.doesNotMatch(code, /<strong>No reviews yet<\/strong>/);
   }
   const review=read('components/CaptainReviews.tsx');
-  assert.match(review, /public_angler_reviews/);
+  // This read-only release does not load any database review rows, including Washington.
+  assert.match(review, /Review data is unavailable/);
   assert.match(review, /Review submissions are not currently available/);
-  assert.match(review, /matchesPublicGuideIdentity/);
+  assert.doesNotMatch(review, /createClient|\.from\(|\.rpc\(/);
 });
 
 test('explanation provides neutral distinctions and accessible source disclosure', () => {

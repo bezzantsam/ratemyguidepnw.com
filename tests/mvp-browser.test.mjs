@@ -19,10 +19,7 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
   const request=route.request();const url=new URL(request.url());
   if(url.origin===fakeApi){
    requests.push({method:request.method(),path:url.pathname,query:url.search});
-   if(request.method()!=='GET')return route.fulfill({status:403,body:'Writes forbidden in browser tests'});
-   if(url.pathname==='/rest/v1/guides')return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify([{id:'fixture-john',full_name:'John Hanson',outfit_name:"Jack's Guide Service"}])});
-   if(url.pathname==='/rest/v1/public_angler_reviews')return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify([{id:'fixture-review',body:'Local fixture review for navigation test',quality:4,published_at:'2024-01-01T00:00:00Z',would_book_again:true}])});
-   return route.fulfill({status:200,contentType:'application/json',body:'[]'});
+   return route.fulfill({status:503,contentType:'application/json',body:'{"error":"backend unavailable"}'});
   }
   if(url.origin===origin||url.protocol==='data:'||url.protocol==='blob:')return route.continue();
   blocked.push(url.origin);return route.abort();
@@ -155,19 +152,10 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
   await page.getByRole('button',{name:'Oregon',exact:true}).click();await q.fill('John Hanson');
   await page.getByRole('link',{name:/John Hanson/}).first().click();
   await page.getByRole('heading',{name:'John Hanson',exact:true}).waitFor();
-  await page.getByText('Local fixture review for navigation test').waitFor();
-  assert.ok(requests.some(r=>r.path==='/rest/v1/guides'&&r.query.includes('og-0000047')),'mocked Oregon guide request was exercised');
-  assert.ok(requests.some(r=>r.path==='/rest/v1/public_angler_reviews'),'mocked review request was exercised');
-  const priorReviews=requests.filter(r=>r.path==='/rest/v1/public_angler_reviews').length;
-  await Promise.all([
-   page.waitForResponse(response=>response.url().startsWith(`${fakeApi}/rest/v1/guides?`) && response.url().includes('og-0000050')),
-   page.goto(`${origin}/guides/og-0000050`,{waitUntil:'domcontentloaded'}),
-  ]);
+  await page.getByText('Review data is unavailable.').waitFor();
+  await page.goto(`${origin}/guides/og-0000050`,{waitUntil:'domcontentloaded'});
   await page.getByRole('heading',{name:'Shea Fisher',exact:true}).waitFor();
   await page.getByText('Review data is unavailable.').waitFor();
-  await page.waitForTimeout(300);
-  assert.equal(await page.getByText('Local fixture review for navigation test').count(),0);
-  assert.equal(requests.filter(r=>r.path==='/rest/v1/public_angler_reviews').length,priorReviews,'mismatched guide must not trigger a review lookup');
   await page.getByRole('link',{name:'← Search guides'}).click();
   await page.getByRole('button',{name:'Washington',exact:true}).click();await q.fill('Aaron O’Leary');
   const before=requests.length;await page.getByRole('link',{name:/Aaron O’Leary/}).first().click();
@@ -175,11 +163,11 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
   await page.getByText('Review data is unavailable.').waitFor();
   assert.equal(await page.getByText('Local fixture review for navigation test').count(),0);
   await page.getByText('Review submissions are not currently available.').waitFor();
-  await page.getByRole('link',{name:'Claim this profile →'}).click();
+  await page.getByRole('link',{name:'Claiming currently unavailable →'}).click();
   await page.getByText('Profile claim submissions are not currently available.').waitFor();
   await page.waitForTimeout(300);
   assert.deepEqual(requests.slice(before).filter(r=>r.path.startsWith('/rest/v1/')),[],'Washington profile and claim must not query guide data');
-  assert.deepEqual(requests.filter(r=>r.method!=='GET'),[],'browser must not issue database writes');
+  assert.deepEqual(requests,[],'directory must not access the unavailable backend');
   assert.deepEqual(blocked,[],'no external network requests');assert.deepEqual(errors,[],'no uncaught page errors');
   await page.setViewportSize({width:375,height:812});await page.goto(`${origin}/guides`,{waitUntil:'domcontentloaded'});
   await q.waitFor();

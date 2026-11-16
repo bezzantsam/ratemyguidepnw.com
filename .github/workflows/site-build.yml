@@ -71,7 +71,15 @@ jobs:
         run: |
           set -euo pipefail
           export BROWSER_EXECUTABLE="$(node --input-type=module -e "import {chromium} from 'playwright-core'; console.log(chromium.executablePath())")"
+          export BROWSER_SCREENSHOT_DIR="$RUNNER_TEMP/ratemyguide-read-only-screenshots"
           node scripts/browser-isolation.mjs ordinary "$(git rev-parse 'HEAD^{tree}')"
+      - name: Preserve read-only directory QA screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: read-only-directory-qa
+          path: ${{ runner.temp }}/ratemyguide-read-only-screenshots/*.png
+          if-no-files-found: error
+          retention-days: 7
       - name: Build and test synthetic discovery in a separate isolated snapshot
         shell: bash
         run: |

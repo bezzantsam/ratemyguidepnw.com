@@ -16,10 +16,9 @@ test('guide row requires the matching name and business',()=>{
 });
 test('Washington review targets are closed until a database identity mapping is reviewed',()=>{
  const source=read('components/CaptainReviews.tsx');
- assert.match(source,/slug\.startsWith\('wa-'\)\)return/);
- assert.match(source,/\.maybeSingle\(\)/);
- assert.match(source,/error\|\|!g\|\|!matchesPublicGuideIdentity/);
- assert.doesNotMatch(source,/\.insert\(|\.upsert\(|\.rpc\(/);
+ // With no reviewed WA database mapping, this candidate makes no review queries at all.
+ assert.match(source,/Review data is unavailable/);
+ assert.doesNotMatch(source,/createClient|\.from\(|\.maybeSingle\(|\.insert\(|\.upsert\(|\.rpc\(/);
 });
 test('claim targets cannot be submitted',()=>{
  assert.doesNotMatch(read('components/ClaimForm.tsx'),/\.insert\(|\.upsert\(|\.rpc\(/);
