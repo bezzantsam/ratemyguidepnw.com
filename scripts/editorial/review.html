@@ -9,10 +9,10 @@
 'use strict';
 const MODEL=/*__REVIEW_DATA__*/;
 const byId=new Map(MODEL.items.map(x=>[x.item_id,x]));const guides=new Map(MODEL.guides.map(x=>[x.guide_id,x]));
-const storageKey='ratemyguide-editorial-v1-'+MODEL.model_sha256;let saved={editor:'',decisions:{}};let durable=false,storageBlocked=false;
-try{const raw=localStorage.getItem(storageKey);if(raw){const parsed=JSON.parse(raw);if(!parsed||typeof parsed!=='object'||!parsed.decisions)throw Error('Invalid saved work');saved=parsed}durable=true}catch{storageBlocked=true}
+const storageKey='ratemyguide-editorial-v1-'+MODEL.model_sha256;let saved={editor:'',decisions:{}};let durable=false,storageBlocked=false,olderWork=false;
+try{for(let i=0;i<localStorage.length;i++){const key=localStorage.key(i);if(key?.startsWith('ratemyguide-editorial-v1-')&&key!==storageKey)olderWork=true}const raw=localStorage.getItem(storageKey);if(raw){const parsed=JSON.parse(raw);if(!parsed||typeof parsed!=='object'||!parsed.decisions)throw Error('Invalid saved work');saved=parsed}durable=true}catch{storageBlocked=true}
 const editor=document.getElementById('editor'),search=document.getElementById('search'),filter=document.getElementById('filter'),results=document.getElementById('results'),status=document.getElementById('status');editor.value=saved.editor||'';
-if(storageBlocked)status.textContent='Saved browser work could not be read; import a backup before continuing. Browser storage will not be overwritten.';
+if(storageBlocked)status.textContent='Saved browser work could not be read; import a backup before continuing. Browser storage will not be overwritten.';else if(olderWork)status.textContent='Saved work for a different review version exists. Open that version to export it; stale decisions cannot be imported here.';
 function persist(){saved.editor=editor.value;if(storageBlocked){durable=false;return}try{localStorage.setItem(storageKey,JSON.stringify(saved));durable=true}catch{durable=false;status.textContent='Browser storage unavailable. Export your decisions before closing.'}}
 window.addEventListener('beforeunload',e=>{if(!durable&&Object.keys(saved.decisions).length){e.preventDefault();e.returnValue=''}});
 editor.addEventListener('input',persist);search.addEventListener('input',render);filter.addEventListener('change',render);

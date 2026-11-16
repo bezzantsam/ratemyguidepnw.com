@@ -38,6 +38,8 @@ test('offline review exports, merges and rejects stale or malformed decisions',{
   assert.equal(await restored.getByLabel('Reason for hold OG.0003060').inputValue(),'Synthetic review: retain the hold');
   await other.locator('#import').setInputFiles({name:'duplicate.json',mimeType:'application/json',buffer:Buffer.from('{"schema_version":1,"schema_version":1}')});
   await other.getByText('Import rejected: Duplicate JSON key: schema_version').waitFor();
+  await other.evaluate(()=>localStorage.setItem('ratemyguide-editorial-v1-old-version',JSON.stringify({editor:'Old',decisions:{}})));
+  await other.reload();await other.getByText('Saved work for a different review version exists.',{exact:false}).waitFor();
   assert.deepEqual(blocked,[]);assert.deepEqual(errors,[]);assert.deepEqual(readFileSync('lib/approved-guide-attributes.json'),before);
  }finally{if(one)await one.close();if(two)await two.close();if(browser)await browser.close();rmSync(dir,{recursive:true,force:true})}
 });
