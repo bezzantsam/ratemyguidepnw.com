@@ -1,0 +1,54 @@
+name: Local backend HTTP acceptance
+on:
+  pull_request:
+    paths:
+      - 'tests/backend-http-acceptance/**'
+      - 'tests/backend-independent-review/**'
+      - 'scripts/backend-audit/**'
+      - 'docs/backend-catalog-snapshot.json'
+      - '.github/workflows/backend-http-acceptance.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  local-postgrest-acceptance:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install PostgreSQL 17 from verified upstream repository
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error https://www.postgresql.org/media/keys/ACCC4CF8.asc -o "$RUNNER_TEMP/pgdg-key.asc"
+          gpg --show-keys --with-colons "$RUNNER_TEMP/pgdg-key.asc" > "$RUNNER_TEMP/pgdg-key-info"
+          fingerprint="$(awk -F: '$1 == "fpr" {print $10; exit}' "$RUNNER_TEMP/pgdg-key-info")"
+          test "$fingerprint" = "B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8"
+          sudo install -d /usr/share/postgresql-common/pgdg
+          sudo install -m 0644 "$RUNNER_TEMP/pgdg-key.asc" /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc
+          printf '%s\n' 'deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt noble-pgdg main' | sudo tee /etc/apt/sources.list.d/pgdg.list > /dev/null
+          sudo apt-get update
+          sudo apt-get install -y postgresql-17 xz-utils
+          echo "/usr/lib/postgresql/17/bin" >> "$GITHUB_PATH"
+      - name: Download and verify pinned PostgREST 12.2.12
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/http-acceptance"
+          curl --fail --location --silent --show-error https://github.com/PostgREST/postgrest/releases/download/v12.2.12/postgrest-v12.2.12-linux-static-x86-64.tar.xz -o "$RUNNER_TEMP/http-acceptance/postgrest.tar.xz"
+          printf '%s  %s\n' '5de4092f1719da3353c40bf96c8dec6913f2254a7cd0b61cc05f233153b557d5' "$RUNNER_TEMP/http-acceptance/postgrest.tar.xz" | sha256sum --check
+          tar -xJf "$RUNNER_TEMP/http-acceptance/postgrest.tar.xz" -C "$RUNNER_TEMP/http-acceptance" postgrest
+          printf '%s  %s\n' '16dbc82fd830db6a28a03231ec99fcd28139fd4558bebe402586d9534376cec1' "$RUNNER_TEMP/http-acceptance/postgrest" | sha256sum --check
+      - name: Preserve independent SQL and preflight oracle
+        run: python3 tests/backend-independent-review/ci_modes.py --output-dir "$RUNNER_TEMP/http-acceptance/preflight"
+      - name: Run local signed-token HTTP acceptance
+        run: python3 tests/backend-http-acceptance/run.py --postgrest "$RUNNER_TEMP/http-acceptance/postgrest" --results "$RUNNER_TEMP/http-acceptance/results.json"
+      - name: Upload sanitized results
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-http-synthetic-results
+          path: |
+            ${{ runner.temp }}/http-acceptance/results.json
+            ${{ runner.temp }}/http-acceptance/preflight/
+          if-no-files-found: error
+          retention-days: 7
