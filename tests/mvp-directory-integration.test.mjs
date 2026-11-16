@@ -14,6 +14,11 @@ const rows=[
  {id:'OG.0000010',name:'Oregon Guide',business:null,states:['Oregon'],areas:['Coastal'],advertisedWaters:[],searchAliases:[]},
 ];
 const ids=(f)=>Array.from(filter(rows,{...all,...f}),x=>x.id);
+test('directory introduction does not promise cross-state deduplication',()=>{
+ const source=read('app/guides/page.tsx');
+ assert.match(source,/Oregon and Washington guide listings/);
+ assert.doesNotMatch(source,/shared captains appear once/i);
+});
 test('nickname, aliases and water searches select the intended guide',()=>{
  assert.deepEqual(ids({query:'billy example'}),['wa-001']);
  assert.deepEqual(ids({query:'River Outfitters'}),['wa-001']);

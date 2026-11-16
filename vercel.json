@@ -1,0 +1,7 @@
+{
+  "git": {
+    "deploymentEnabled": {
+      "codex/directory-identity-copy-fix": false
+    }
+  }
+}

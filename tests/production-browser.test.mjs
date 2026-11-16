@@ -20,6 +20,9 @@ test('ordinary production data contains no synthetic discovery or unapproved con
  try{
   await page.goto(`${origin}/guides`,{waitUntil:'networkidle'});
   await page.getByRole('heading',{name:'Find a captain'}).waitFor();
+  const introduction=await page.locator('main > p.lead').innerText();
+  assert.match(introduction,/Browse [\d,]+ Oregon and Washington guide listings\./);
+  assert.doesNotMatch(introduction,/shared captains appear once/i);
   assert.equal(await page.getByLabel('Source-listed species').count(),0);
   assert.equal(await page.getByLabel('Source-listed fishing method').count(),0);
   assert.doesNotMatch(await page.content(),/Pending Secret Species|Rejected Secret Method|Synthetic test fixture|Fixture Source Outfit|Synthetic Captain Alias|Unapproved editorial preview|__editorial_visual__/);
