@@ -18,7 +18,7 @@ const known=new Set(['OG.0000047','OG.0000050','OG.0001116','OG.0000782','OG.000
 const clone=x=>JSON.parse(JSON.stringify(x));
 test('only approved, attributed and uniquely identified facts pass',()=>{
  const approved=approvedAttributes(fixture,known);
- assert.equal(approved.length,5);
+ assert.equal(approved.length,6);
  assert.ok(approved.every(x=>x.editorial_status==='approved'&&x.publication_approved));
  for(const change of [x=>delete x.source.url,x=>delete x.source.locator,x=>x.source.reviewed_on='2026-02-30',x=>x.source.reviewed_on='2999-01-01',x=>x.guide_id='OG.9999999',x=>x.editorial_status='unknown',x=>x.publication_approved=false]){
   const record=clone(fixture[0]);change(record);assert.equal(approvedAttributes([record],known).length,0);

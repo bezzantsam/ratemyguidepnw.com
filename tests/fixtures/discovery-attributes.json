@@ -76,6 +76,20 @@
   },
   {
     "guide_id": "OG.0000047",
+    "kind": "person_name",
+    "value": "Synthetic Captain Alias",
+    "source": {
+      "url": "https://fixture.invalid/industry",
+      "source_type": "industry_directory",
+      "reviewed_on": "2026-01-01",
+      "locator": "Synthetic directory evidence; not a real person"
+    },
+    "evidence_scope": "industry_lists",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0000047",
     "kind": "species",
     "value": "Pending Secret Species",
     "source": {

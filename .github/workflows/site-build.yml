@@ -40,6 +40,11 @@ jobs:
           python scripts/batch13_enrichment_proposal.py --check
           python -m unittest discover -s tests -p 'test_extended_enrichment_proposal.py' -v
           python scripts/extended_enrichment_proposal.py --check
+      - name: Verify consolidated Batch 13 population handoff
+        run: |
+          python -m unittest discover -s tests -p 'test_batch13*.py' -v
+          node --test tests/guide-batch13-next30*.test.mjs
+          python scripts/batch13_consolidated.py --check
       - name: Check source-backed Chinook methodology and accuracy disclosures
         run: node --test tests/methodology.test.mjs
       - name: Verify guide profile provenance and honest review evidence labels

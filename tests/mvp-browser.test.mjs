@@ -48,6 +48,8 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
   await page.getByRole('link',{name:/John Hanson/}).first().click();
   await page.getByText('Synthetic test fixture — not a real offering.').waitFor();
   await page.getByText('Separate items do not establish a combined trip.',{exact:false}).waitFor();
+  await page.getByText('person name: Synthetic Captain Alias').waitFor();
+  await page.getByText('Industry directory',{exact:false}).first().waitFor();
   assert.doesNotMatch(await page.content(),/Pending Secret Species|Rejected Secret Method/,'unapproved attributes do not reach the profile HTML or serialized props');
   await page.getByRole('link',{name:'← Search guides'}).click();
   await page.waitForURL(filteredUrl);await page.getByRole('link',{name:/John Hanson/}).first().waitFor();

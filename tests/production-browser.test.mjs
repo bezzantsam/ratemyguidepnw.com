@@ -9,6 +9,7 @@ if(origin===api||!browserPath)throw new Error('Distinct owned ports and a browse
 test('ordinary production data contains no synthetic discovery or unapproved controls',{timeout:120000},async()=>{
  const browser=await chromium.launch({executablePath:browserPath,headless:true});const context=await browser.newContext();
  const blocked=[],writes=[],errors=[];
+ const pendingMarkers=['Silas Stardance / Riverhawk Guide Service entry only; adjacent pro-staff entries excluded.','Guided Trips: named rivers and general targets; separate lower Middle Fork Willamette paragraph explicitly describes spey fishing for summer steelhead.'];
  await context.route('**/*',async route=>{
   const req=route.request(),url=new URL(req.url());
   if(url.origin===api){if(req.method()!=='GET')writes.push(req.method());return route.fulfill({status:req.method()==='GET'?200:403,contentType:'application/json',body:'[]'})}
@@ -21,9 +22,15 @@ test('ordinary production data contains no synthetic discovery or unapproved con
   await page.getByRole('heading',{name:'Find a captain'}).waitFor();
   assert.equal(await page.getByLabel('Source-listed species').count(),0);
   assert.equal(await page.getByLabel('Source-listed fishing method').count(),0);
-  assert.doesNotMatch(await page.content(),/Pending Secret Species|Rejected Secret Method|Synthetic test fixture|Fixture Source Outfit/);
+  assert.doesNotMatch(await page.content(),/Pending Secret Species|Rejected Secret Method|Synthetic test fixture|Fixture Source Outfit|Synthetic Captain Alias/);
+  for(const marker of pendingMarkers)assert.ok(!(await page.content()).includes(marker),'pending research leaked into directory HTML');
   function files(dir){return readdirSync(dir,{withFileTypes:true}).flatMap(e=>e.isDirectory()?files(join(dir,e.name)):[join(dir,e.name)])}
-  for(const file of files('.next/static'))if(/\.(js|json)$/.test(file))assert.doesNotMatch(readFileSync(file,'utf8'),/Pending Secret Species|Rejected Secret Method|Fixture Source Outfit/);
+  for(const file of files('.next/static'))if(/\.(js|json)$/.test(file)){
+   const body=readFileSync(file,'utf8');assert.doesNotMatch(body,/Pending Secret Species|Rejected Secret Method|Fixture Source Outfit|Synthetic Captain Alias/);
+   for(const marker of pendingMarkers)assert.ok(!body.includes(marker),'pending research leaked into '+file);
+  }
+  await page.goto(`${origin}/guides/og-0001599`,{waitUntil:'domcontentloaded'});
+  for(const marker of pendingMarkers)assert.ok(!(await page.content()).includes(marker),'pending research leaked into profile HTML');
   // The seven research associations have no approved identity decisions.
   for(const id of ['0003043','0004087','0000053','0003060','0004017','0003982','0000609']){
    await page.goto(`${origin}/guides/og-${id}`,{waitUntil:'domcontentloaded'});

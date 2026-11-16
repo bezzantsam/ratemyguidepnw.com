@@ -1,0 +1,597 @@
+{
+  "schema_version": 1,
+  "batch_id": "batch13-next10b-20261115",
+  "reviewed_on": "2026-11-15",
+  "status": "source_review_staged_not_for_publication",
+  "selection_snapshot": {
+    "path": "docs/research/BATCH13_NEXT10B_SELECTION_20261115.json",
+    "sha256": "55e1bc46e2bde8cec6f7af99ed11bb676efcc89135454656dd390a72933d99b8"
+  },
+  "scope": {
+    "checked_records": 10,
+    "previously_checked": 60,
+    "cumulative_checked": 70,
+    "original_candidates": 111,
+    "remaining_unchecked": 41,
+    "records_with_readable_source_evidence": 8,
+    "records_without_readable_source_evidence": 2,
+    "counts_by_status": {
+      "historical_source_hold": 1,
+      "identity_review_hold": 2,
+      "name_variant_hold": 1,
+      "retrieval_limited": 2,
+      "source_supported_pending_editorial": 4
+    }
+  },
+  "policy": {
+    "publication_approved": false,
+    "owner_claims_verified": false,
+    "current_credentials_verified": false,
+    "reviews_copied": false,
+    "source_bytes_archived": false,
+    "notes": [
+      "Review date is the date of this inspection, not source publication or direct-server capture time. Parsed content may be cached.",
+      "Source support means attributable candidate business claims, not legal identity, verified licensing or current trip availability.",
+      "Held observations cannot be used as candidate attributes. Original registry fields remain unchanged.",
+      "No private contacts, copied reviews, ratings, prices or credential claims are included.",
+      "Explicit relationships preserve only source-stated connections. Independent lists must not be multiplied into invented trips."
+    ]
+  },
+  "sources": {
+    "home-identity": {
+      "url": "https://kofflerboats.com/fishing-guides/fishing-guides-drift-boats/",
+      "source_type": "industry_directory",
+      "method": "parsed_page",
+      "reviewed_on": "2026-11-15",
+      "content_date": null,
+      "locator": "Oregon guide listing: Mitzner, Jason / Home Waters Guide Service, linked to the imported operator domain. Supplier directory; no current ownership verification."
+    },
+    "home-trips": {
+      "url": "https://homewatersflyfishing.com/pages/guided-trips-test",
+      "source_type": "operator_site",
+      "method": "parsed_page",
+      "reviewed_on": "2026-11-15",
+      "content_date": null,
+      "locator": "Guided Trips: named rivers and general targets; separate lower Middle Fork Willamette paragraph explicitly describes spey fishing for summer steelhead."
+    },
+    "keys-home": {
+      "url": "https://keystotheoutdoors.com/",
+      "source_type": "operator_site",
+      "method": "parsed_page",
+      "reviewed_on": "2026-11-15",
+      "content_date": null,
+      "locator": "About Shane Tyner names the current operator and distinguishes Shannon Keys; The Rivers sections explicitly associate salmon/steelhead with named rivers. Testimonials excluded."
+    },
+    "upfront-about": {
+      "url": "https://upfrontoutfitters.com/about-us",
+      "source_type": "operator_site",
+      "method": "parsed_page",
+      "reviewed_on": "2026-11-15",
+      "content_date": null,
+      "locator": "Business biography names Mike Jenkins; it does not explicitly establish the imported Michael name variant."
+    },
+    "upfront-fishing": {
+      "url": "https://upfrontoutfitters.com/oregon-fishing",
+      "source_type": "operator_site",
+      "method": "parsed_page",
+      "reviewed_on": "2026-11-15",
+      "content_date": null,
+      "locator": "Oregon Coast Charter Fishing identifies Upfront Ocean Adventures as a division and describes Newport ocean trips. Individual identity remains unresolved."
+    },
+    "lured-bio": {
+      "url": "https://www.luredbythebead.com/meet-randy.html",
+      "source_type": "operator_site",
+      "method": "parsed_page",
+      "reviewed_on": "2026-11-15",
+      "content_date": null,
+      "locator": "Meet Randy: explicit Randy Bales heading on the registry-linked Lured domain. Personal fishing history is not a current trip list."
+    },
+    "lured-rates": {
+      "url": "https://www.luredbythebead.com/rates.html",
+      "source_type": "operator_site",
+      "method": "parsed_page",
+      "reviewed_on": "2026-11-15",
+      "content_date": null,
+      "locator": "Separate booking headings for a drift boat, a 22ft sled and a 23ft Columbia boat. Prices, capacity and available dates omitted."
+    },
+    "making-home": {
+      "url": "https://buoy10fish.com/",
+      "source_type": "operator_site",
+      "method": "parsed_page",
+      "reviewed_on": "2026-11-15",
+      "content_date": null,
+      "locator": "Making Memories business and service descriptions on an alternate domain. The personal name in testimonial material is not accepted as identity evidence."
+    },
+    "mikoleit-home": {
+      "url": "https://www.mikoleitsguideservice.com/",
+      "source_type": "operator_site",
+      "method": "parsed_page",
+      "reviewed_on": "2026-11-15",
+      "content_date": null,
+      "locator": "About: Captain Jacob Mikoleit, inshore ocean fishing near Depoe Bay, and salmon/steelhead on unnamed tributaries."
+    },
+    "mikoleit-trips": {
+      "url": "https://www.mikoleitsguideservice.com/rates-1",
+      "source_type": "operator_site",
+      "method": "parsed_page",
+      "reviewed_on": "2026-11-15",
+      "content_date": null,
+      "locator": "Trips & Pricing: tributary salmon/steelhead, ocean salmon/bottomfish plus crab combo, bottomfishing, and halibut. Prices excluded."
+    },
+    "joel-home": {
+      "url": "https://www.joelsfishing.com/",
+      "source_type": "operator_site",
+      "method": "parsed_page",
+      "reviewed_on": "2026-11-15",
+      "content_date": null,
+      "locator": "Homepage names the business and lists river trips, boat platforms and fly-fishing options; independent Joel Gibson identity association is not established here."
+    },
+    "joel-umpqua": {
+      "url": "https://www.joelsfishing.com/south-umpqua-river-fishing-guide/",
+      "source_type": "operator_site",
+      "method": "parsed_page",
+      "reviewed_on": "2026-11-15",
+      "content_date": null,
+      "locator": "South Umpqua offering and broader Umpqua fishery description; route wording, general fishery information and current guide offerings require separate review."
+    },
+    "cornelison-home": {
+      "url": "https://cornelisonfishing.com/",
+      "source_type": "historical_restored_site",
+      "method": "parsed_page",
+      "reviewed_on": "2026-11-15",
+      "content_date": null,
+      "locator": "Homepage explicitly labels itself a restored historical website and names TJ Cornelison, not the full imported Timothy name."
+    },
+    "cornelison-archive": {
+      "url": "https://cornelisonfishing.com/archive-notes.html",
+      "source_type": "historical_restored_site",
+      "method": "parsed_page",
+      "reviewed_on": "2026-11-15",
+      "content_date": null,
+      "locator": "Restoration disclosure says historical statements were retained, booking forms cannot submit, and source date/season inconsistencies remain."
+    }
+  },
+  "records": [
+    {
+      "registration_id": "OG.0001599",
+      "imported_name": "Jason Mitzner",
+      "imported_business": "Home Waters Guide Service",
+      "registry_website": "www.Homewatersflyfishing.com",
+      "review_status": "source_supported_pending_editorial",
+      "identity": {
+        "assessment": "Koffler lists Jason Mitzner with Home Waters Guide Service and links the same registry domain. Current operator trip pages support company offerings; the operator pages inspected do not independently name a current owner.",
+        "source_ids": [
+          "home-identity"
+        ],
+        "legal_identity_verified": false
+      },
+      "facts": [
+        {
+          "source_id": "home-trips",
+          "scope": "operator_advertises",
+          "advertised_waters": [
+            "McKenzie River",
+            "Middle Fork Willamette River"
+          ],
+          "advertised_species": [
+            "Rainbow Trout",
+            "Cutthroat Trout",
+            "Summer Steelhead"
+          ],
+          "advertised_methods": [
+            "Fly fishing"
+          ],
+          "advertised_trip_types": [
+            "Drift boat fishing",
+            "Full-day fishing",
+            "Half-day fishing"
+          ],
+          "explicit_relationships": []
+        },
+        {
+          "source_id": "home-trips",
+          "scope": "operator_advertises",
+          "advertised_waters": [
+            "Middle Fork Willamette River"
+          ],
+          "advertised_species": [
+            "Summer Steelhead"
+          ],
+          "advertised_methods": [
+            "Spey fishing"
+          ],
+          "advertised_trip_types": [],
+          "explicit_relationships": [
+            {
+              "waterway": "Middle Fork Willamette River",
+              "species": "Summer Steelhead",
+              "method": "Spey fishing"
+            }
+          ]
+        }
+      ],
+      "held_observations": [],
+      "limitations": [
+        "Supplier identity attribution is not ownership or credential verification; operator offerings do not establish Jason personally guides every trip.",
+        "Keep the broad target and river lists independent. The lower Middle Fork steelhead/spey association is explicit; do not expand it to every trout species or every river.",
+        "The named business must not be confused with another Home Waters Guide Service in California. Seasonal descriptions do not establish current booking availability."
+      ],
+      "failed_or_limited_fetches": [],
+      "publication_approved": false,
+      "current_credentials_verified": false
+    },
+    {
+      "registration_id": "OG.0001660",
+      "imported_name": "Shane Tyner",
+      "imported_business": "Keys to the Outdoors",
+      "registry_website": "www.keystotheoutdoors.com",
+      "review_status": "source_supported_pending_editorial",
+      "identity": {
+        "assessment": "Operator homepage explicitly names Shane Tyner and describes taking over Keys to the Outdoors from Shannon Keys. Shane, Shannon and other named people remain separate identities.",
+        "source_ids": [
+          "keys-home"
+        ],
+        "legal_identity_verified": false
+      },
+      "facts": [
+        {
+          "source_id": "keys-home",
+          "scope": "operator_advertises",
+          "advertised_waters": [
+            "Coos River",
+            "Coquille River",
+            "Elk River",
+            "Sixes River",
+            "Umpqua River"
+          ],
+          "advertised_species": [
+            "Salmon",
+            "Steelhead",
+            "Smallmouth Bass",
+            "American Shad"
+          ],
+          "advertised_methods": [],
+          "advertised_trip_types": [
+            "Family-friendly fishing"
+          ],
+          "explicit_relationships": [
+            {
+              "waterway": "Coquille River",
+              "species": "Steelhead"
+            },
+            {
+              "waterway": "Coquille River",
+              "species": "Salmon"
+            },
+            {
+              "waterway": "Coos River",
+              "species": "Salmon"
+            },
+            {
+              "waterway": "Elk River",
+              "species": "Steelhead"
+            },
+            {
+              "waterway": "Elk River",
+              "species": "Salmon"
+            },
+            {
+              "waterway": "Sixes River",
+              "species": "Steelhead"
+            },
+            {
+              "waterway": "Sixes River",
+              "species": "Salmon"
+            },
+            {
+              "waterway": "Umpqua River",
+              "species": "Steelhead"
+            },
+            {
+              "waterway": "Umpqua River",
+              "species": "Salmon"
+            }
+          ]
+        }
+      ],
+      "held_observations": [],
+      "limitations": [
+        "Old testimonials about Shannon are not reviews of Shane; no testimonial content or rating is copied.",
+        "River/species links come from operator river sections. Do not add an Umpqua smallmouth relationship from a customer review or narrow Salmon to Chinook without source support.",
+        "A described boat door is not verified wheelchair accessibility. Calendar wording is not checked against current regulations or trip availability."
+      ],
+      "failed_or_limited_fetches": [],
+      "publication_approved": false,
+      "current_credentials_verified": false
+    },
+    {
+      "registration_id": "OG.0001821",
+      "imported_name": "Michael Jenkins",
+      "imported_business": "Upfront Outfitters",
+      "registry_website": "www.upfrontoutfitters.com",
+      "review_status": "name_variant_hold",
+      "identity": {
+        "assessment": "Registry identifies Michael Jenkins. Operator pages identify Mike Jenkins with Upfront Outfitters and its fishing division; this review does not independently resolve Michael/Mike or distinguish every same-family guide.",
+        "source_ids": [
+          "upfront-about"
+        ],
+        "legal_identity_verified": false
+      },
+      "facts": [],
+      "held_observations": [
+        {
+          "source_id": "upfront-fishing",
+          "note": "The site advertises a Newport-based fishing division with ocean salmon, halibut, lingcod/rockfish and crabbing offerings. Retain as an identity-review lead, not approved attributes of Michael."
+        }
+      ],
+      "limitations": [
+        "The homepage alone emphasizes hunting, but a separate fishing page exists; do not label the business non-fishing.",
+        "Do not transfer another guide or family member to this registration. Division names, regulations, prices, success claims and personal biography details are not published."
+      ],
+      "failed_or_limited_fetches": [],
+      "publication_approved": false,
+      "current_credentials_verified": false
+    },
+    {
+      "registration_id": "OG.0001973",
+      "imported_name": "Randy Bales",
+      "imported_business": "Lured LLC",
+      "registry_website": "www.luredbythebead.com",
+      "review_status": "source_supported_pending_editorial",
+      "identity": {
+        "assessment": "The registry-linked operator site has an explicit Randy Bales biography and separate Lured Guide Service booking pages.",
+        "source_ids": [
+          "lured-bio"
+        ],
+        "legal_identity_verified": false
+      },
+      "facts": [
+        {
+          "source_id": "lured-rates",
+          "scope": "operator_advertises",
+          "advertised_waters": [],
+          "advertised_species": [],
+          "advertised_methods": [],
+          "advertised_trip_types": [
+            "Drift boat fishing",
+            "Sled boat fishing"
+          ],
+          "explicit_relationships": []
+        }
+      ],
+      "held_observations": [],
+      "limitations": [
+        "Kokanee product categories and bead marketing are not guided-trip species or methods. Personal steelhead/trout history is not a current guided offering.",
+        "The 23ft Columbia heading describes a boat, not evidence of Columbia River trips. No waterway, target species, price or current availability is inferred."
+      ],
+      "failed_or_limited_fetches": [],
+      "publication_approved": false,
+      "current_credentials_verified": false
+    },
+    {
+      "registration_id": "OG.0002044",
+      "imported_name": "Daniel Young",
+      "imported_business": "Making Memories Guide Service",
+      "registry_website": "danyoungsmakingmemoriesguideservice.com",
+      "review_status": "identity_review_hold",
+      "identity": {
+        "assessment": "The imported domain could not be inspected. A different domain advertises Making Memories Guide Service, but the imported Daniel Young identity and domain relationship remain unresolved without relying on testimonial text.",
+        "source_ids": [
+          "making-home"
+        ],
+        "legal_identity_verified": false
+      },
+      "facts": [],
+      "held_observations": [
+        {
+          "source_id": "making-home",
+          "note": "Alternate-site service headings describe Astoria-area salmon, steelhead, sturgeon, crabbing and clamming. Preserve as a lead only until domain and identity review."
+        }
+      ],
+      "limitations": [
+        "Dan/Daniel equivalence and the alternate domain are not automatically accepted. Do not replace the registry website.",
+        "Do not copy review summaries, success metrics, credentials, retention rules or booking availability."
+      ],
+      "failed_or_limited_fetches": [
+        {
+          "url": "https://danyoungsmakingmemoriesguideservice.com/",
+          "result": "tool_unavailable"
+        },
+        {
+          "url": "https://www.danyoungsmakingmemoriesguideservice.com/",
+          "result": "tool_unavailable"
+        }
+      ],
+      "publication_approved": false,
+      "current_credentials_verified": false
+    },
+    {
+      "registration_id": "OG.0002062",
+      "imported_name": "Jacob Mikoleit",
+      "imported_business": "",
+      "registry_website": "mikoleitsguideservice.com",
+      "review_status": "source_supported_pending_editorial",
+      "identity": {
+        "assessment": "The operator homepage explicitly identifies Jacob Mikoleit. The imported business field is absent; the source business name is not silently written into the registry.",
+        "source_ids": [
+          "mikoleit-home"
+        ],
+        "legal_identity_verified": false
+      },
+      "facts": [
+        {
+          "source_id": "mikoleit-home",
+          "scope": "operator_advertises",
+          "advertised_waters": [
+            "Pacific Ocean near Depoe Bay"
+          ],
+          "advertised_species": [
+            "Salmon",
+            "Steelhead"
+          ],
+          "advertised_methods": [],
+          "advertised_trip_types": [],
+          "explicit_relationships": []
+        },
+        {
+          "source_id": "mikoleit-trips",
+          "scope": "operator_advertises",
+          "advertised_waters": [],
+          "advertised_species": [
+            "Salmon",
+            "Steelhead",
+            "Bottomfish",
+            "Crab",
+            "Halibut"
+          ],
+          "advertised_methods": [
+            "Bottom fishing"
+          ],
+          "advertised_trip_types": [
+            "Ocean fishing and crabbing combo"
+          ],
+          "explicit_relationships": []
+        }
+      ],
+      "held_observations": [],
+      "limitations": [
+        "The homepage places salmon/steelhead on unnamed tributaries and ocean fishing near Depoe Bay. Independent lists do not assert ocean steelhead trips.",
+        "Bottomfish and Crab remain broad source labels; do not expand to individual rockfish species or Dungeness crab. No named tributary or Buoy 10 trip is inferred from marketplace listings.",
+        "The www site was readable after the bare domain failed. The original URL and absent business field remain unchanged. Prices and availability are omitted."
+      ],
+      "failed_or_limited_fetches": [
+        {
+          "url": "https://mikoleitsguideservice.com/",
+          "result": "tool_unavailable"
+        }
+      ],
+      "publication_approved": false,
+      "current_credentials_verified": false
+    },
+    {
+      "registration_id": "OG.0002276",
+      "imported_name": "David Simpson",
+      "imported_business": "Corkem Fishing Northwest",
+      "registry_website": "www.corkemfishingnw.com",
+      "review_status": "retrieval_limited",
+      "identity": {
+        "assessment": "Neither registry-domain variant yielded readable operator content. No sufficiently attributable business source was accepted for David Simpson.",
+        "source_ids": [],
+        "legal_identity_verified": false
+      },
+      "facts": [],
+      "held_observations": [],
+      "limitations": [
+        "A tool-reported 404 and directory/search snippets do not establish closure or prove where this guide fishes. No factual attributes are proposed."
+      ],
+      "failed_or_limited_fetches": [
+        {
+          "url": "https://www.corkemfishingnw.com/",
+          "result": "tool_unavailable"
+        },
+        {
+          "url": "https://corkemfishingnw.com/",
+          "result": "http_404"
+        }
+      ],
+      "publication_approved": false,
+      "current_credentials_verified": false
+    },
+    {
+      "registration_id": "OG.0002413",
+      "imported_name": "Steven Brinkley",
+      "imported_business": "Hukit Outfitters LLC",
+      "registry_website": "hukitoutfitters.net",
+      "review_status": "retrieval_limited",
+      "identity": {
+        "assessment": "Registry-domain variants were unavailable and the public Guidefitter profile returned 403. Search snippets alone are not accepted as source-reviewed offerings.",
+        "source_ids": [],
+        "legal_identity_verified": false
+      },
+      "facts": [],
+      "held_observations": [],
+      "limitations": [
+        "Registry-listed areas do not establish specific waters or species. No closure inference or current licensing claim follows from failed access."
+      ],
+      "failed_or_limited_fetches": [
+        {
+          "url": "https://hukitoutfitters.net/",
+          "result": "tool_unavailable"
+        },
+        {
+          "url": "https://www.hukitoutfitters.net/",
+          "result": "tool_unavailable"
+        },
+        {
+          "url": "https://www.guidefitter.com/hukitoutfitters2",
+          "result": "http_403"
+        }
+      ],
+      "publication_approved": false,
+      "current_credentials_verified": false
+    },
+    {
+      "registration_id": "OG.0002470",
+      "imported_name": "Joel Gibson",
+      "imported_business": "Joel's Guide Service LLC",
+      "registry_website": "joelsfishing.com",
+      "review_status": "identity_review_hold",
+      "identity": {
+        "assessment": "The www domain advertises Joel’s Guide Service and references Joel, but the inspected primary pages do not independently establish the full Joel Gibson identity. A contact-address string is not treated as identity verification.",
+        "source_ids": [
+          "joel-home"
+        ],
+        "legal_identity_verified": false
+      },
+      "facts": [],
+      "held_observations": [
+        {
+          "source_id": "joel-umpqua",
+          "note": "The site describes South Umpqua winter steelhead and broader Umpqua fishing. Preserve the trip evidence for identity review; general fishery descriptions and questionable route wording are not approved access guidance."
+        }
+      ],
+      "limitations": [
+        "A third-party unclaimed directory names Joel Gibson; this review does not use that alone to resolve identity.",
+        "Childhood fishing locations are not current guide waters. Source date/season inconsistencies, licenses, prices, personal family details and contacts are not copied.",
+        "The original bare domain is retained even though its www variant was readable."
+      ],
+      "failed_or_limited_fetches": [
+        {
+          "url": "https://joelsfishing.com/",
+          "result": "tool_unavailable"
+        }
+      ],
+      "publication_approved": false,
+      "current_credentials_verified": false
+    },
+    {
+      "registration_id": "OG.0002606",
+      "imported_name": "Timothy Cornelison",
+      "imported_business": "Cornelison's Guided Fishing",
+      "registry_website": "cornelisonfishing.com",
+      "review_status": "historical_source_hold",
+      "identity": {
+        "assessment": "The site explicitly identifies itself as a restored historical copy and names TJ Cornelison. Neither current operation nor Timothy/TJ equivalence is established by the restored pages.",
+        "source_ids": [
+          "cornelison-home",
+          "cornelison-archive"
+        ],
+        "legal_identity_verified": false
+      },
+      "facts": [],
+      "held_observations": [
+        {
+          "source_id": "cornelison-archive",
+          "note": "The restoration notes disclose historical content, non-submitting archived forms, an invalid source calendar date and inconsistent fly-fishing seasons. These cannot become current booking or trip claims."
+        }
+      ],
+      "limitations": [
+        "Historical advertising remains historical even when its domain is reachable today. Do not infer closure or current availability.",
+        "Retain the imported Timothy identity and original URL. No inferred current Rogue River attributes, credentials, prices or season promises."
+      ],
+      "failed_or_limited_fetches": [],
+      "publication_approved": false,
+      "current_credentials_verified": false
+    }
+  ]
+}

@@ -36,22 +36,27 @@ def https_url(value):
             'Source URL must be HTTPS without credentials')
 
 
-def validate(review, selection_bytes, registry):
+def validate(review, selection_bytes, registry, *, selection_path=SELECTION, expected_prior_count=50,
+             source_types=frozenset({'operator_site'}), statuses=frozenset(STATUSES),
+             fetch_results=frozenset({'tool_unavailable'}), selection_count=10,
+             source_methods=frozenset({'parsed_page'})):
     """Check identity, provenance, hold boundaries and totals; not semantic truth."""
     selection = json.loads(selection_bytes)
     require(review['schema_version'] == selection['schema_version'] == 1, 'Unsupported schema')
     require(review['status'] == 'source_review_staged_not_for_publication', 'Review must remain staged')
     require(review['selection_snapshot'] == {
-        'path': str(SELECTION.relative_to(ROOT)),
+        'path': str(selection_path.relative_to(ROOT)),
         'sha256': hashlib.sha256(selection_bytes).hexdigest()}, 'Selection checksum mismatch')
     manifest = selection['manifest_registration_ids']
     prior = selection['previously_checked_registration_ids']
     strings(manifest)
     strings(prior)
-    require(len(manifest) == 111 and len(prior) == 50 and set(prior) <= set(manifest),
+    require(len(manifest) == 111 and len(prior) == expected_prior_count and set(prior) <= set(manifest),
             'Invalid prior review universe')
+    require(isinstance(selection_count, int) and selection_count > 0, 'Invalid selection count')
     selected = selection['selected_registry_records']
-    expected_ids = sorted(set(manifest) - set(prior))[:10]
+    expected_ids = sorted(set(manifest) - set(prior))[:selection_count]
+    require(len(expected_ids) == selection_count, 'Insufficient unchecked IDs')
     require([r['registration_id'] for r in selected] == expected_ids, 'Selection overlaps or skips unchecked IDs')
     records = review['records']
     require([r['registration_id'] for r in records] == expected_ids, 'Review IDs differ from selection')
@@ -64,7 +69,7 @@ def validate(review, selection_bytes, registry):
     sources = review['sources']
     for source in sources.values():
         https_url(source['url'])
-        require(source['source_type'] == 'operator_site' and source['method'] == 'parsed_page',
+        require(source['source_type'] in source_types and source['method'] in source_methods,
                 'Unexpected source provenance')
         require(isinstance(source['locator'], str) and source['locator'].strip(), 'Missing source locator')
         require(date.fromisoformat(source['reviewed_on']) == reviewed_on, 'Inconsistent source review date')
@@ -86,7 +91,7 @@ def validate(review, selection_bytes, registry):
                 registry_value = ''
             require(row[field] == original[field] == registry_value,
                     'Imported identity changed: ' + ident + ' ' + field)
-        require(row['review_status'] in STATUSES, 'Unknown review status')
+        require(row['review_status'] in statuses, 'Unknown review status')
         require(row.get('publication_approved') is False and row.get('current_credentials_verified') is False
                 and row['identity'].get('legal_identity_verified') is False, 'Record approval must remain false')
         require(isinstance(row['identity']['assessment'], str) and row['identity']['assessment'].strip(),
@@ -104,6 +109,10 @@ def validate(review, selection_bytes, registry):
             require(set(fact) == {'source_id', 'scope', 'explicit_relationships', *ATTRIBUTES},
                     'Unexpected candidate field')
             use_source(fact['source_id'])
+            require(sources[fact['source_id']]['source_type'] == 'operator_site',
+                    'Candidate facts require operator evidence')
+            require(sources[fact['source_id']]['method'] == 'parsed_page',
+                    'Indexed-only text cannot supply candidate facts')
             require(fact['scope'] == 'operator_advertises', 'Unsupported fact scope')
             for field in ATTRIBUTES:
                 strings(fact[field])
@@ -126,7 +135,7 @@ def validate(review, selection_bytes, registry):
             use_source(held['source_id'])
         for attempt in row['failed_or_limited_fetches']:
             https_url(attempt['url'])
-            require(attempt['result'] == 'tool_unavailable', 'Unsubstantiated retrieval outcome')
+            require(attempt['result'] in fetch_results, 'Unsubstantiated retrieval outcome')
         if row['review_status'] == 'retrieval_limited':
             require(not row['identity']['source_ids'] and not row['held_observations']
                     and bool(row['failed_or_limited_fetches']), 'Invalid retrieval-limited record')
