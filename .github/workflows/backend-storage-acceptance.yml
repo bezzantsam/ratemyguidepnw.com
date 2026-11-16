@@ -1,0 +1,56 @@
+name: Local storage authorization acceptance
+on:
+  pull_request:
+    paths:
+      - 'tests/backend-storage-acceptance/**'
+      - 'tests/backend-independent-review/fixtures.sql'
+      - 'scripts/backend-audit/reconstruct.py'
+      - 'docs/backend-catalog-snapshot.json'
+      - '.github/workflows/backend-storage-acceptance.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic-storage-http:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.19.5'
+      - name: Install PostgreSQL 17 and local build prerequisites
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error https://www.postgresql.org/media/keys/ACCC4CF8.asc -o "$RUNNER_TEMP/pgdg-key.asc"
+          gpg --show-keys --with-colons "$RUNNER_TEMP/pgdg-key.asc" > "$RUNNER_TEMP/pgdg-key-info"
+          fingerprint="$(awk -F: '$1 == "fpr" {print $10; exit}' "$RUNNER_TEMP/pgdg-key-info")"
+          test "$fingerprint" = "B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8"
+          sudo install -d /usr/share/postgresql-common/pgdg
+          sudo install -m 0644 "$RUNNER_TEMP/pgdg-key.asc" /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc
+          printf '%s\n' 'deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt noble-pgdg main' | sudo tee /etc/apt/sources.list.d/pgdg.list > /dev/null
+          sudo apt-get update
+          sudo apt-get install -y postgresql-17 python3-setuptools
+          echo "/usr/lib/postgresql/17/bin" >> "$GITHUB_PATH"
+      - name: Build exact upstream Storage service
+        run: |
+          set -euo pipefail
+          git init "$RUNNER_TEMP/storage-source"
+          git -C "$RUNNER_TEMP/storage-source" remote add origin https://github.com/supabase/storage.git
+          git -C "$RUNNER_TEMP/storage-source" fetch --depth=1 origin c8f93e5164ba564fccd66596b318c5e8e2136604
+          git -C "$RUNNER_TEMP/storage-source" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/storage-source" rev-parse HEAD)" = c8f93e5164ba564fccd66596b318c5e8e2136604
+          cd "$RUNNER_TEMP/storage-source"
+          npm ci --no-audit --no-fund
+          npm run build
+      - name: Run isolated Storage API acceptance
+        run: python3 tests/backend-storage-acceptance/run.py --storage-source "$RUNNER_TEMP/storage-source" --results "$RUNNER_TEMP/storage-acceptance-results.json"
+      - name: Upload sanitized results only
+        uses: actions/upload-artifact@v4
+        with:
+          name: local-storage-synthetic-results
+          path: ${{ runner.temp }}/storage-acceptance-results.json
+          if-no-files-found: error
+          retention-days: 7
