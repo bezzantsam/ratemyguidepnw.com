@@ -14,6 +14,7 @@ import json
 import os
 from pathlib import Path
 import platform
+import re
 import secrets
 import shutil
 import socket
@@ -83,7 +84,8 @@ def main():
         libdir=subprocess.run([pgconfig,'--libdir'],env=clean,text=True,check=True,stdout=subprocess.PIPE).stdout.strip()
         clean['DYLD_LIBRARY_PATH']=libdir
     version=subprocess.run([str(binary),'--version'],env=clean,text=True,check=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=10).stdout.strip()
-    if not version.startswith('PostgREST '+VERSION+' '): raise RuntimeError('unexpected PostgREST version')
+    if not re.search(r'(?<![0-9.])'+re.escape(VERSION)+r'(?![0-9.])',version):
+        raise RuntimeError('unexpected PostgREST version')
     snapshot=hashlib.sha256((ROOT/'docs/backend-catalog-snapshot.json').read_bytes()).hexdigest()
     results={'postgrest_version':version,'postgresql_version':postgres_version,'captured_snapshot_sha256':snapshot,'mode':'synthetic-local-only','states':{},'jwt':{},'limitations':['No hosted Auth, OAuth, email, session revocation, gateway, storage or hosted configuration tested','Synthetic auth.uid shim; JWTs signed by run-owned test key','Audience claim absent accepted; issuer not enforced in this configuration']}
     with tempfile.TemporaryDirectory(prefix='ratemyguide-http-') as directory:
