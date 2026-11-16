@@ -9,7 +9,7 @@ if(origin===api||!browserPath)throw new Error('Distinct owned ports and a browse
 test('ordinary production data contains no synthetic discovery or unapproved controls',{timeout:120000},async()=>{
  const browser=await chromium.launch({executablePath:browserPath,headless:true});const context=await browser.newContext();
  const blocked=[],writes=[],errors=[];
- const pendingMarkers=['Silas Stardance / Riverhawk Guide Service entry only; adjacent pro-staff entries excluded.','Guided Trips: named rivers and general targets; separate lower Middle Fork Willamette paragraph explicitly describes spey fishing for summer steelhead.'];
+ const pendingMarkers=['Silas Stardance / Riverhawk Guide Service entry only; adjacent pro-staff entries excluded.','Guided Trips: named rivers and general targets; separate lower Middle Fork Willamette paragraph explicitly describes spey fishing for summer steelhead.','About Us paragraphs, reached through the WSGA member link','Synthetic test reason'];
  await context.route('**/*',async route=>{
   const req=route.request(),url=new URL(req.url());
   if(url.origin===api){if(req.method()!=='GET')writes.push(req.method());return route.fulfill({status:req.method()==='GET'?200:403,contentType:'application/json',body:'[]'})}
