@@ -1,0 +1,33 @@
+name: Independent backend review oracle
+on:
+  pull_request:
+    paths:
+      - 'tests/backend-independent-review/**'
+      - 'scripts/backend-audit/**'
+      - 'docs/backend-catalog-snapshot.json'
+      - '.github/workflows/backend-independent-review.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independent-synthetic-oracle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install disposable PostgreSQL
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql postgresql-contrib
+          echo "$(pg_config --bindir)" >> "$GITHUB_PATH"
+      - name: Verify characterization, expected strict failure, candidate pass, and preflight
+        run: python3 tests/backend-independent-review/ci_modes.py --output-dir "$RUNNER_TEMP/backend-independent-preflight"
+      - name: Upload synthetic preflight outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-independent-synthetic-preflight
+          path: ${{ runner.temp }}/backend-independent-preflight/
+          if-no-files-found: error
+          retention-days: 7

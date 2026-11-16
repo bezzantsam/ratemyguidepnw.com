@@ -23,7 +23,7 @@ CREATE FUNCTION public.qa_assert(ok boolean, label text) RETURNS void LANGUAGE p
 CREATE FUNCTION public.qa_expect(sql_text text,expected_state text,expected_message text DEFAULT NULL) RETURNS void LANGUAGE plpgsql SECURITY INVOKER AS $$
 DECLARE got_state text; got_message text; denied boolean := false;
 BEGIN
- BEGIN EXECUTE sql_text; EXCEPTION WHEN OTHERS THEN GET STACKED DIAGNOSTICS got_state=RETURNED_SQLSTATE,got_message=MESSAGE_TEXT; denied:=true; END;
+ BEGIN EXECUTE sql_text; EXCEPTION WHEN insufficient_privilege OR undefined_column OR raise_exception THEN GET STACKED DIAGNOSTICS got_state=RETURNED_SQLSTATE,got_message=MESSAGE_TEXT; denied:=true; END;
  IF NOT denied THEN RAISE EXCEPTION 'unexpected success: %',sql_text; END IF;
  IF got_state IS DISTINCT FROM expected_state OR (expected_message IS NOT NULL AND got_message IS DISTINCT FROM expected_message) THEN RAISE EXCEPTION 'wrong error %, % for %',got_state,got_message,sql_text; END IF;
 END $$;

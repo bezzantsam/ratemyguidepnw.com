@@ -4,6 +4,7 @@
 No .env, remote connection string, shell, hosted service, or real JWT is used.
 """
 import argparse
+import json
 import os
 from pathlib import Path
 import shutil
@@ -11,6 +12,8 @@ import subprocess
 import sys
 import tempfile
 import time
+sys.dont_write_bytecode=True
+import preflight
 
 ROOT = Path(__file__).resolve().parents[2]
 TESTS = ROOT / 'tests/backend-independent-review'
@@ -27,6 +30,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--strict', action='store_true', help='exit nonzero if the conditional inherited-grant bypass reproduces')
     parser.add_argument('--candidate', action='store_true', help='apply the fixture-specific review delta in the inherited-grant database only')
+    parser.add_argument('--preflight-json', help='write synthetic catalog results as JSON')
+    parser.add_argument('--preflight-report', help='write synthetic catalog summary as Markdown')
     args = parser.parse_args()
     initdb, pgctl, psql = (required(x) for x in ('initdb','pg_ctl','psql'))
     # A clean environment avoids loading connection settings or credentials.
@@ -36,6 +41,7 @@ def main():
         data = socket / 'data'
         started = False
         inherited_defect = False
+        preflight_results = {}
         def run(argv, *, text=None, check=True, extra_env=None):
             result = subprocess.run(argv, input=text, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env={**env, **(extra_env or {})}, timeout=90)
             if check and result.returncode:
@@ -61,6 +67,10 @@ def main():
                 file(database, TESTS/'fixtures.sql')
                 if database=='qa_baseline':
                     file(database, TESTS/'baseline.sql')
+                    absent=preflight.collect(lambda query: run(dbcmd(database)+['-Atq'],text=query).stdout.strip())
+                    if 'guide_media' not in absent['coverage']['missing_expected_tables'] or absent['coverage']['storage_definitions']!='uninspected':
+                        raise RuntimeError('incomplete baseline catalog was not reported as incomplete')
+                    print('PASS preflight marks missing local table and uninspected storage', flush=True)
                     continue
                 file(database, TESTS/'drift.sql')
                 if database=='qa_inherited':
@@ -81,8 +91,32 @@ def main():
                 elif database=='qa_enabled':
                     file(database, TESTS/'enabled.sql')
                 else:
+                    file(database, TESTS/'preflight-fixtures.sql')
+                    # The catalog query uses only the private socket created
+                    # above, and never calls application functions.
+                    def catalog_query(query):
+                        return run(dbcmd(database)+['-Atq'],text='BEGIN READ ONLY;\n'+query+'\nCOMMIT;').stdout.strip()
+                    readonly=run(dbcmd(database)+['-Atq'],text='BEGIN READ ONLY; CREATE TABLE public.qa_readonly_probe (id int); COMMIT;',check=False)
+                    if readonly.returncode==0 or 'cannot execute CREATE TABLE in a read-only transaction' not in readonly.stdout:
+                        raise RuntimeError('read-only transaction oracle failed: '+readonly.stdout)
+                    # ACL says PUBLIC can insert this column, but the synthetic
+                    # table's RLS has no anonymous INSERT policy.
+                    rls_test="SET ROLE anon; SELECT public.qa_expect($q$INSERT INTO public.guide_media(caption) VALUES ('synthetic')$q$,'42501','new row violates row-level security policy for table \"guide_media\"'); RESET ROLE;"
+                    run(dbcmd(database)+['-Atq'],text=rls_test)
+                    before=preflight.collect(catalog_query)
+                    preflight.assert_adversarial(before)
+                    preflight_results['before_candidate']=before
+                    read=run(dbcmd(database)+['-Atq'],text="SET ROLE anon; SELECT id FROM public.public_angler_reviews ORDER BY id; RESET ROLE;").stdout.strip()
+                    if read != '30000000-0000-0000-0000-000000000001':
+                        raise RuntimeError('preflight fixture permitted-read result is not the known published row: '+read)
+                    print('PASS read-only preflight: privilege graph, PUBLIC, overload, RLS, coverage and known-row read', flush=True)
+                    print('PASS synthetic ACL-versus-RLS and read-only transaction oracles', flush=True)
                     if args.candidate:
                         file(database, TESTS/'candidate-inherited-delta.sql')
+                        after=preflight.collect(catalog_query)
+                        preflight.assert_after_candidate(after)
+                        preflight_results['after_candidate']=after
+                        print('PASS preflight reports unexpected grants surviving narrow candidate', flush=True)
                     regression=run(dbcmd(database)+['-f',str(TESTS/'regression-inherited.sql')],check=False)
                     if regression.returncode:
                         if 'assertion failed: inherited roles must not retain customer write or moderation execute' not in regression.stdout:
@@ -131,6 +165,11 @@ def main():
                         process.communicate(timeout=10)
             file('qa_enabled',TESTS/'race-check.sql')
             print('PASS concurrent sessions: observed blocking, one success, exact loser error', flush=True)
+            if args.preflight_json:
+                Path(args.preflight_json).write_text(json.dumps(preflight_results,sort_keys=True,indent=2)+'\n')
+            if args.preflight_report:
+                sections=[preflight.summarize(value,key) for key,value in preflight_results.items()]
+                Path(args.preflight_report).write_text('\n'.join(sections))
             if inherited_defect:
                 print('EXPECTED FAILURE: inherited role grants bypass the proposed default-off revocations (synthetic condition)', flush=True)
             if args.strict and inherited_defect:
