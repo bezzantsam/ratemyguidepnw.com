@@ -1,0 +1,40 @@
+name: Batch 13 second ten source review
+
+on:
+  pull_request:
+    paths:
+      - 'docs/research/BATCH13_NEXT10*'
+      - 'scripts/batch13_next10_review.py'
+      - 'scripts/batch13_next10b_review.py'
+      - 'tests/test_batch13_next10b_review.py'
+      - 'lib/oregon-guides.json'
+      - '.github/workflows/batch13-next10b-review.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'docs/research/BATCH13_NEXT10*'
+      - 'scripts/batch13_next10_review.py'
+      - 'scripts/batch13_next10b_review.py'
+      - 'tests/test_batch13_next10b_review.py'
+      - 'lib/oregon-guides.json'
+      - '.github/workflows/batch13-next10b-review.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  source-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check second ten identities, history, holds and source types
+        run: |
+          python scripts/batch13_next10b_review.py
+          python -m unittest discover -s tests -p 'test_batch13_next10*.py' -v
+          python scripts/batch13_next10_candidates.py --check
