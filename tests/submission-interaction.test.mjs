@@ -38,7 +38,7 @@ function setup(onSubmit) {
 }
 function enterReview(render) {
   const tree=render();
-  for(const [suffix,value] of [['-quality','5'],['-intensity','3'],['-again','no'],['-body','A firsthand description of the fishing trip. '.repeat(3)]]) {
+  for(const [suffix,value] of [['-quality','5'],['-intensity','3'],['-again','no'],['-relationship','none'],['-body','A firsthand description of the fishing trip. '.repeat(3)]]) {
     const control=find(tree,node=>node.props?.id?.endsWith(suffix));
     assert.ok(control,suffix);
     control.props.onChange({target:{value}});
@@ -59,6 +59,7 @@ test('submission sends user answers once and shows only the confirmed receipt',a
   assert.equal(captured.intensity,3);
   assert.equal(captured.wouldBookAgain,false);
   assert.equal(captured.firsthand,true);
+  assert.equal(captured.relationship,'none');
   resolveSubmission({status:'pending'});
   await Promise.all([first,second]);
   const result=render();
@@ -81,11 +82,13 @@ test('claim submission preserves the persisted denied state',async()=>{
   const model=compile('components/launch/submission-model.ts');
   const views=compile('components/launch/SubmissionViews.tsx',{react:hooks.react,'./submission-model':model});
   let captured;
-  const render=()=>{hooks.reset();return views.ClaimSubmission({onSubmit:async statement=>{captured=statement;return {status:'denied'}}})};
+  const render=()=>{hooks.reset();return views.ClaimSubmission({onSubmit:async draft=>{captured=draft;return {status:'denied'}}})};
+  find(render(),node=>node.props?.id?.endsWith('-claimant')).props.onChange({target:{value:' A Guide '}});
   find(render(),node=>node.type==='textarea').props.onChange({target:{value:' I operate this listed business. '}});
   await render().props.onSubmit({preventDefault(){}});
   const result=render();
-  assert.equal(captured,'I operate this listed business.');
+  assert.equal(captured.claimantName,'A Guide');
+  assert.equal(captured.evidence,'I operate this listed business.');
   assert.equal(result.type,views.SubmissionStatus);
   assert.equal(result.props.receipt.status,'denied');
 });
