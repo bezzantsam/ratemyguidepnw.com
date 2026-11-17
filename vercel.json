@@ -1,0 +1,7 @@
+{
+  "git": {
+    "deploymentEnabled": {
+      "codex/washington-market-expansion": false
+    }
+  }
+}
