@@ -17,6 +17,7 @@ function compile(path, imports={}) {
 }
 const model=compile('components/launch/submission-model.ts');
 const views=compile('components/launch/SubmissionViews.tsx',{'./submission-model':model});
+const queue=compile('components/launch/ModerationQueue.tsx',{'./submission-model':model,'./SubmissionViews':views});
 
 test('review validation requires a bounded rating, useful narrative and firsthand attestation',()=>{
   const valid={rating:5,body:'A thoughtful account of the fishing trip.',firsthand:true};
@@ -49,4 +50,16 @@ test('status renders the actual receipt and does not imply that sign-in verifies
   assert.match(review,/I personally took this trip/);
   const claim=renderToStaticMarkup(React.createElement(views.ClaimSubmission,{onSubmit:async()=>({status:'pending'})}));
   assert.match(claim,/does not give control over angler reviews/);
+});
+
+test('moderation queue renders submitted text safely and does not invent pending entries',()=>{
+  const empty=renderToStaticMarkup(React.createElement(queue.ModerationQueue,{items:[],onDecide:async()=>({status:'approved'})}));
+  assert.match(empty,/No pending submissions/);
+  assert.doesNotMatch(empty,/>Approve</);
+  const items=[{id:'r1',kind:'review',guideName:'Example guide',description:'<script>unsafe</script>',submittedAt:'2026-11-17'}];
+  const html=renderToStaticMarkup(React.createElement(queue.ModerationQueue,{items,onDecide:async()=>({status:'approved'})}));
+  assert.match(html,/&lt;script&gt;unsafe&lt;\/script&gt;/);
+  assert.doesNotMatch(html,/<script>unsafe<\/script>/);
+  assert.match(html,/>Approve</);
+  assert.match(html,/>Reject</);
 });
