@@ -18,6 +18,7 @@ function compile(path, imports={}) {
 const model=compile('components/launch/submission-model.ts');
 const views=compile('components/launch/SubmissionViews.tsx',{'./submission-model':model});
 const queue=compile('components/launch/ModerationQueue.tsx',{'./submission-model':model,'./SubmissionViews':views});
+const published=compile('components/launch/PublishedReviews.tsx');
 
 test('review validation requires a bounded rating, useful narrative and firsthand attestation',()=>{
   const valid={rating:5,body:'A thoughtful account of the fishing trip.',firsthand:true};
@@ -62,4 +63,19 @@ test('moderation queue renders submitted text safely and does not invent pending
   assert.doesNotMatch(html,/<script>unsafe<\/script>/);
   assert.match(html,/>Approve</);
   assert.match(html,/>Reject</);
+});
+
+test('review display uses the full backend aggregate and fails closed on another guide or unpublished content',()=>{
+  const page={guideKey:'OR:1',total:9,average:4.2,reviews:[{id:'r1',guideKey:'OR:1',status:'published',rating:5,body:'A real trip account.',publishedAt:'2026-11-17'}]};
+  assert.equal(published.validReviewPage('OR:1',page),true);
+  const html=renderToStaticMarkup(React.createElement(published.PublishedReviews,{guideKey:'OR:1',state:{status:'ready',page}}));
+  assert.match(html,/4\.2 \/ 5/);
+  assert.match(html,/9 published reviews/);
+  for(const changed of [{...page,guideKey:'WA:1'},{...page,reviews:[{...page.reviews[0],guideKey:'WA:1'}]},{...page,reviews:[{...page.reviews[0],status:'pending'}]},{...page,total:0,average:null}]) {
+    assert.equal(published.validReviewPage('OR:1',changed),false);
+    const invalid=renderToStaticMarkup(React.createElement(published.PublishedReviews,{guideKey:'OR:1',state:{status:'ready',page:changed}}));
+    assert.match(invalid,/temporarily unavailable/);
+    assert.doesNotMatch(invalid,/A real trip account/);
+  }
+  assert.equal(published.validReviewPage('OR:1',{guideKey:'OR:1',total:0,average:null,reviews:[]}),true);
 });
