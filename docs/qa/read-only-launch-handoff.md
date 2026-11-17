@@ -66,7 +66,7 @@ Limits: it does not execute JavaScript, prove that there are no write endpoints,
 1. Pin the candidate SHA and its successful CI runs. Obtain focused review of this follow-on diff, particularly the homepage/navigation and smoke runner. Preserve the earlier acceptance record rather than claiming it covers new changes.
 2. Select the intended main-facing candidate without merging donor PRs blindly. This branch inherits #112 and #116, but not the optional #114 editorial follow-up or backend proposals. Preserve all donor work. Review the exact candidate-to-main diff and rerun tests if combined with newer changes.
 3. Confirm the actual hosting project/team, production branch, current deployment ID, custom domains and rollback target through authorized access. Do not guess them. A merge to an auto-deployed main branch may publish immediately; no merge is authorized by this document.
-4. Review the build environment and output. Keep privileged keys and live backend credentials out of this read-only build. Record resolved Node/npm/dependency versions. No committed npm lockfile existed at the parent checkpoint: dependency resolution remains a reproducibility gap, not something this task silently fixes with an untested lockfile.
+4. Review the build environment and output. Keep privileged keys and live backend credentials out of this read-only build. Record resolved Node/npm/dependency versions. No committed npm lockfile existed at the parent checkpoint. The follow-on now supplies a registry-generated lock and frozen install paths; verify the final candidate passes those checks rather than relying on the parent build.
 5. Confirm the indexing decision explicitly. This candidate stays noindex and pre-launch. Removing those protections needs an approved release decision and an exact tested change; simply merging this branch does not make search indexing ready.
 6. With explicit deployment approval, test the intended production-environment artifact at an authorized address before assigning the live domain where supported. Match its SHA/build to the hosting release record; the GET smoke runner cannot establish that on its own.
 7. Inspect desktop/mobile pages and run the GET smoke check on the exact release and canonical domain. Check HTTPS and the actual server-artifact exposure rules. Stop on failed routes, unsupported claims, leaked candidate markers, auth challenges or unexpected backend activity. Do not work around failures by enabling reviews/claims or relaxing identity rules.
@@ -76,7 +76,7 @@ Limits: it does not execute JavaScript, prove that there are no write endpoints,
 
 - Full application/browser CI for the new commit and focused independent review.
 - Exact deployment/project/environment and rollback inventory.
-- Dependency lockfile/reproducible build follow-up.
+- Exact-head frozen-install and runtime validation; verify the served runtime at authorized deployment.
 - Owner approval for merge/deployment and indexing state.
 - Optional field-level editorial decisions stay separate; no bulk approval.
 - Hosted backend verification stays separate before any future feature activation.
@@ -90,3 +90,7 @@ Local evidence for this preparation: 21 new tests passed on Node 22.16.0, includ
 - Node fetch and abort signals: https://nodejs.org/api/globals.html
 
 These references explain platform behavior; they do not verify this account's hosted configuration.
+
+## Runtime and lockfile follow-on
+
+The repository now declares Node 22.x, carries a registry-generated npm lockfile and uses frozen installation in CI, disposable browser snapshots, editorial previews and the Vercel install command. See [dependency-reproducibility.md](dependency-reproducibility.md) for the exact generation evidence and limitations. This addresses the repository-side runtime choice and dependency graph; actual hosted runtime must still be verified when deployment is authorized. No live project setting or domain was changed.

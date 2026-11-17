@@ -1,0 +1,30 @@
+{
+  "schema": "rmg-lock-generation/1",
+  "head": "f07d6445c0e17feb37bfdb7fd352e9143194b2d2",
+  "node": "v22.23.4",
+  "npm": "10.9.9",
+  "package_sha256": "37d1b346b7431a1f2ce86babd0bbbfa9e4dc3bbbf0e9b7bfe068e1231857e214",
+  "lock_sha256": "31390161f2ebf56638e0ecc74621e7b754318c324cd92c9ace043646c9880354",
+  "package_count": 70,
+  "dependencies": {
+    "@supabase/supabase-js": "2.119.0",
+    "@types/node": "22.20.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "lucide-react": "0.468.0",
+    "next": "15.5.29",
+    "playwright-core": "1.65.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "typescript": "5.9.3"
+  },
+  "lifecycle_scripts_executed": false,
+  "clean_install_passed": true,
+  "application_build_tested": false,
+  "workflow_run": 44010547469,
+  "artifact_id": 14295549522,
+  "artifact_zip_sha256": "43f4d0b4ddc8dc7c1059b204a57d77651c21672a99cb104193d95f88cd663b6c",
+  "note": "Generated from unchanged dependency ranges plus engines.node=22.x. Later package.json script additions are not lockfile root dependency inputs. This records generation/ignore-scripts installation, not the final application build.",
+  "committed_lock_sha256": "32e3c8e817e343fbfb4870d3ae504572683ac098988cd0a6c7017a939532af90",
+  "representation": "JSON compacted with no data changes; parsed object equals the original generated lock."
+}
