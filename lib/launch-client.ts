@@ -15,7 +15,7 @@ type Options = Readonly<{enabled?:boolean;getAccessToken:()=>Promise<string|null
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const REVIEW_STATES=['pending','published','rejected','removed'];
 const CLAIM_STATES=['pending','approved','denied'];
-const ERRORS=new Set(['invalid_input','sign_in_required','forbidden','not_found','conflict','json_required','limit_or_conflict','service_unavailable']);
+const ERRORS=new Set(['invalid_input','sign_in_required','forbidden','not_found','conflict','json_required','rate_limited','limit_or_conflict','service_unavailable']);
 function record(value:unknown):Record<string,unknown> | null {return value && typeof value==='object' && !Array.isArray(value) ? value as Record<string,unknown> : null;}
 function validSource(source:GuideSource):boolean {
   return (source.jurisdiction==='OR'||source.jurisdiction==='WA') && typeof source.sourceId==='string' && source.sourceId.length>0 && source.sourceId.length<=100 && !/[\x00-\x1f\x7f]/.test(source.sourceId);

@@ -26,8 +26,8 @@ export function validateReviewDraft(draft: ReviewDraft): string | null {
   if (!Number.isInteger(draft.quality) || draft.quality < 1 || draft.quality > 5) return 'Choose a quality rating from 1 to 5.';
   if (!Number.isInteger(draft.intensity) || draft.intensity < 1 || draft.intensity > 5) return 'Choose an intensity rating from 1 to 5.';
   if (typeof draft.wouldBookAgain !== 'boolean') return 'Choose whether you would book again.';
-  const length = Array.from(draft.body.trim()).length;
-  if (length < 80 || length > 3000) return 'Describe your experience in 80 to 3,000 characters.';
+  const body = draft.body.trim();
+  if (Array.from(body).length < 80 || body.length > 3000) return 'Describe your experience in 80 to 3,000 characters.';
   if (!draft.firsthand) return 'Confirm that you personally took the trip.';
   if (!draft.relationship || !['none','personal','financial','other'].includes(draft.relationship)) return 'Choose the relationship that applies to you.';
   if (draft.tripMonth !== null && !/^\d{4}-(0[1-9]|1[0-2])$/.test(draft.tripMonth)) return 'Enter a valid trip month.';
@@ -35,12 +35,12 @@ export function validateReviewDraft(draft: ReviewDraft): string | null {
 }
 
 export function validateClaimStatement(value: string): string | null {
-  const length = Array.from(value.trim()).length;
-  return length >= 8 && length <= 1200 ? null : 'Explain your connection to this listing in 8 to 1,200 characters.';
+  const evidence = value.trim();
+  return Array.from(evidence).length >= 20 && evidence.length <= 2000 ? null : 'Explain your connection to this listing in 20 to 2,000 characters.';
 }
 
 export function validateClaimDraft(draft: ClaimDraft): string | null {
-  if (!draft.claimantName.trim() || Array.from(draft.claimantName.trim()).length > 120) return 'Enter your name, up to 120 characters.';
-  if (Array.from(draft.businessName.trim()).length > 120) return 'Use at most 120 characters for the business name.';
+  if (Array.from(draft.claimantName.trim()).length < 2 || draft.claimantName.trim().length > 120) return 'Enter your name in 2 to 120 characters.';
+  if (draft.businessName.trim().length > 160) return 'Use at most 160 characters for the business name.';
   return validateClaimStatement(draft.evidence);
 }
