@@ -1,0 +1,26 @@
+name: Backend synthetic authorization check
+on:
+  push:
+    branches:
+      - codex/rmg-backend-synthetic-ci-20261117
+permissions:
+  contents: read
+jobs:
+  synthetic-postgres:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Run 06 synthetic Postgres 17 checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -x /usr/lib/postgresql/17/bin/initdb ]; then
+            sudo apt-get update -qq
+            sudo apt-get install -y postgresql-17 postgresql-contrib-17
+          fi
+          export PATH="/usr/lib/postgresql/17/bin:$PATH"
+          pg_config --version
+          bash tests/backend-launch/run-local.sh

@@ -1,0 +1,113 @@
+-- LOCAL REVIEW CANDIDATE ONLY. Depends on 01-authorization-lockdown.sql.
+-- Not a Supabase migration until generated and reviewed against a fresh hosted catalog.
+BEGIN;
+CREATE SCHEMA IF NOT EXISTS rmg_private;
+REVOKE ALL ON SCHEMA rmg_private FROM PUBLIC, anon, authenticated;
+GRANT USAGE ON SCHEMA rmg_private TO anon, authenticated;
+
+-- Maps only independently reviewed source IDs. No records are automatically matched.
+CREATE TABLE rmg_private.guide_identity_map (
+ jurisdiction text NOT NULL CHECK (jurisdiction IN ('OR','WA')),
+ source_id text NOT NULL CHECK (length(source_id) BETWEEN 1 AND 100),
+ guide_id uuid NOT NULL REFERENCES public.guides(id),
+ reviewed_at timestamptz NOT NULL,
+ review_reference text NOT NULL CHECK (length(review_reference) BETWEEN 1 AND 1000),
+ PRIMARY KEY (jurisdiction,source_id), UNIQUE (jurisdiction,guide_id)
+);
+ALTER TABLE rmg_private.guide_identity_map ENABLE ROW LEVEL SECURITY;
+REVOKE ALL ON rmg_private.guide_identity_map FROM PUBLIC, anon, authenticated;
+ALTER TABLE public.reviews ADD COLUMN firsthand_attested boolean NOT NULL DEFAULT false;
+ALTER TABLE public.reviews ADD COLUMN relationship_disclosure text;
+ALTER TABLE public.reviews ADD CONSTRAINT reviews_relationship_disclosure_check
+ CHECK (relationship_disclosure IS NULL OR relationship_disclosure IN ('none','personal','financial','other'));
+GRANT SELECT (relationship_disclosure) ON public.reviews TO anon,authenticated;
+CREATE OR REPLACE VIEW public.public_angler_reviews WITH (security_invoker=true) AS
+ SELECT id,guide_id,quality,intensity,would_book_again,catch_outcome,body,trip_month,published_at,
+ communication,professionalism,safety,equipment,knowledge,effort,value_rating,trip_context,relationship_disclosure
+ FROM public.reviews WHERE status='published' AND published_at IS NOT NULL;
+CREATE OR REPLACE VIEW public.admin_pending_reviews WITH (security_invoker=true) AS
+ SELECT r.id,r.guide_id,g.full_name AS guide_name,r.body,r.quality,r.safety,r.communication,r.professionalism,r.created_at,r.trip_month,r.firsthand_attested,r.relationship_disclosure
+ FROM public.reviews r JOIN public.guides g ON g.id=r.guide_id
+ WHERE r.status='pending' AND public.is_site_admin();
+GRANT SELECT (firsthand_attested) ON public.reviews TO authenticated;
+
+CREATE FUNCTION rmg_private.require_actor() RETURNS uuid LANGUAGE plpgsql SECURITY DEFINER SET search_path='' AS $$
+DECLARE actor uuid := auth.uid();
+BEGIN
+ IF actor IS NULL OR NOT EXISTS (SELECT 1 FROM auth.users u WHERE u.id=actor AND u.email_confirmed_at IS NOT NULL AND COALESCE(u.is_anonymous,false)=false AND u.deleted_at IS NULL)
+ THEN RAISE EXCEPTION 'Authentication required' USING ERRCODE='42501'; END IF;
+ RETURN actor;
+END $$;
+CREATE FUNCTION rmg_private.resolve_guide(p_jurisdiction text,p_source_id text) RETURNS uuid LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path='' AS $$
+DECLARE gid uuid;
+BEGIN
+ IF p_jurisdiction NOT IN ('OR','WA') OR p_source_id IS NULL OR length(p_source_id) NOT BETWEEN 1 AND 100 THEN RAISE EXCEPTION 'Invalid guide identity' USING ERRCODE='22023'; END IF;
+ SELECT m.guide_id INTO gid FROM rmg_private.guide_identity_map m JOIN public.guides g ON g.id=m.guide_id WHERE m.jurisdiction=p_jurisdiction AND m.source_id=p_source_id AND g.listing_status='published';
+ IF gid IS NULL THEN RAISE EXCEPTION 'Guide mapping unavailable' USING ERRCODE='P0002'; END IF;
+ RETURN gid;
+END $$;
+CREATE FUNCTION rmg_private.submit_review(p_jurisdiction text,p_source_id text,p_quality smallint,p_intensity smallint,p_rebook boolean,p_body text,p_firsthand boolean,p_relationship text) RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path='' AS $$
+DECLARE actor uuid := rmg_private.require_actor(); gid uuid; rid uuid;
+BEGIN
+ IF p_quality IS NULL OR p_quality NOT BETWEEN 1 AND 5 OR p_intensity IS NULL OR p_intensity NOT BETWEEN 1 AND 5 OR p_rebook IS NULL OR p_body IS NULL OR char_length(btrim(p_body)) NOT BETWEEN 80 AND 3000 OR p_firsthand IS DISTINCT FROM true OR p_relationship IS NULL OR p_relationship NOT IN ('none','personal','financial','other') THEN RAISE EXCEPTION 'Invalid review' USING ERRCODE='22023'; END IF;
+ gid:=rmg_private.resolve_guide(p_jurisdiction,p_source_id);
+ PERFORM pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended(actor::text, 84011));
+ -- Serialize with claim approvals on the same guide before checking ownership.
+ PERFORM 1 FROM public.guides WHERE id=gid FOR UPDATE;
+ IF EXISTS(SELECT 1 FROM public.guide_claims c WHERE c.guide_id=gid AND c.claimant_id=actor AND c.status='approved') THEN RAISE EXCEPTION 'Owner cannot review own guide' USING ERRCODE='42501'; END IF;
+ IF (SELECT count(*) FROM public.reviews r WHERE r.author_id=actor AND r.created_at>now()-interval '24 hours')>=3 THEN RAISE EXCEPTION 'Review limit reached' USING ERRCODE='P0001'; END IF;
+ INSERT INTO public.reviews(guide_id,author_id,quality,intensity,would_book_again,body,firsthand_attested,relationship_disclosure,status,published_at) VALUES(gid,actor,p_quality,p_intensity,p_rebook,btrim(p_body),true,p_relationship,'pending',NULL) RETURNING id INTO rid;
+ RETURN jsonb_build_object('id',rid,'status','pending');
+END $$;
+CREATE FUNCTION rmg_private.submit_claim(p_jurisdiction text,p_source_id text,p_name text,p_business text,p_evidence text) RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path='' AS $$
+DECLARE actor uuid := rmg_private.require_actor(); gid uuid; cid uuid;
+BEGIN
+ IF p_name IS NULL OR length(btrim(p_name)) NOT BETWEEN 2 AND 120 OR length(coalesce(p_business,''))>160 OR p_evidence IS NULL OR length(btrim(p_evidence)) NOT BETWEEN 20 AND 2000 THEN RAISE EXCEPTION 'Invalid claim' USING ERRCODE='22023'; END IF;
+ gid:=rmg_private.resolve_guide(p_jurisdiction,p_source_id);
+ PERFORM pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended(actor::text, 84012));
+ SELECT c.id INTO cid FROM public.guide_claims c WHERE c.claimant_id=actor AND c.guide_id=gid AND c.status='pending' ORDER BY c.created_at DESC LIMIT 1;
+ IF cid IS NOT NULL THEN RETURN jsonb_build_object('id',cid,'status','pending','existing',true); END IF;
+ IF (SELECT count(*) FROM public.guide_claims c WHERE c.claimant_id=actor AND c.created_at>now()-interval '24 hours')>=3 THEN RAISE EXCEPTION 'Claim limit reached' USING ERRCODE='P0001'; END IF;
+ INSERT INTO public.guide_claims(guide_id,claimant_id,status) VALUES(gid,actor,'pending') RETURNING id INTO cid;
+ INSERT INTO public.claim_evidence(claim_id,claimant_name,business_name,public_evidence) VALUES(cid,btrim(p_name),btrim(coalesce(p_business,'')),btrim(p_evidence));
+ RETURN jsonb_build_object('id',cid,'status','pending','existing',false);
+END $$;
+CREATE FUNCTION rmg_private.own_status(p_kind text,p_id uuid) RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path='' AS $$
+DECLARE actor uuid := rmg_private.require_actor(); result jsonb;
+BEGIN
+ IF p_kind='review' THEN SELECT jsonb_build_object('id',r.id,'status',r.status) INTO result FROM public.reviews r WHERE r.id=p_id AND r.author_id=actor;
+ ELSIF p_kind='claim' THEN SELECT jsonb_build_object('id',c.id,'status',c.status) INTO result FROM public.guide_claims c WHERE c.id=p_id AND c.claimant_id=actor;
+ ELSE RAISE EXCEPTION 'Invalid request' USING ERRCODE='22023'; END IF;
+ IF result IS NULL THEN RAISE EXCEPTION 'Not found' USING ERRCODE='P0002'; END IF;
+ RETURN result;
+END $$;
+CREATE FUNCTION rmg_private.edit_details(p_jurisdiction text,p_source_id text,p_boat text,p_gear text,p_years smallint,p_expertise text,p_species text) RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path='' AS $$
+DECLARE actor uuid:=rmg_private.require_actor();gid uuid;
+BEGIN
+ IF p_boat IS NULL OR length(p_boat)>500 OR p_gear IS NULL OR length(p_gear)>500 OR (p_years IS NOT NULL AND p_years NOT BETWEEN 0 AND 100) OR p_expertise IS NULL OR length(p_expertise)>1000 OR p_species IS NULL OR length(p_species)>500 THEN RAISE EXCEPTION 'Invalid profile details' USING ERRCODE='22023'; END IF;
+ gid:=rmg_private.resolve_guide(p_jurisdiction,p_source_id);
+ PERFORM 1 FROM public.guides WHERE id=gid FOR UPDATE;
+ IF NOT EXISTS(SELECT 1 FROM public.guide_claims WHERE guide_id=gid AND claimant_id=actor AND status='approved') THEN RAISE EXCEPTION 'Not authorized' USING ERRCODE='42501'; END IF;
+ INSERT INTO public.guide_details(guide_id,boat,gear,years_experience,expertise,targeted_species,updated_at) VALUES(gid,btrim(p_boat),btrim(p_gear),p_years,btrim(p_expertise),btrim(p_species),now()) ON CONFLICT(guide_id) DO UPDATE SET boat=excluded.boat,gear=excluded.gear,years_experience=excluded.years_experience,expertise=excluded.expertise,targeted_species=excluded.targeted_species,updated_at=excluded.updated_at;
+ RETURN jsonb_build_object('status','saved');
+END $$;
+-- Public wrappers are invokers; narrow private functions independently check authorization.
+CREATE FUNCTION public.rmg_resolve_guide(p_jurisdiction text,p_source_id text) RETURNS uuid LANGUAGE sql STABLE SECURITY INVOKER SET search_path='' AS $$SELECT rmg_private.resolve_guide($1,$2)$$;
+CREATE FUNCTION public.rmg_review_summary(p_jurisdiction text,p_source_id text) RETURNS jsonb LANGUAGE sql STABLE SECURITY INVOKER SET search_path='' AS $$
+ SELECT jsonb_build_object('count',count(*),'averageQuality',round(avg(quality)::numeric,2),'wouldBookAgainPercent',round(100.0*avg(would_book_again::int),2))
+ FROM public.public_angler_reviews WHERE guide_id=rmg_private.resolve_guide($1,$2)
+$$;
+CREATE FUNCTION public.rmg_submit_review(p_jurisdiction text,p_source_id text,p_quality smallint,p_intensity smallint,p_rebook boolean,p_body text,p_firsthand boolean,p_relationship text) RETURNS jsonb LANGUAGE sql SECURITY INVOKER SET search_path='' AS $$SELECT rmg_private.submit_review($1,$2,$3,$4,$5,$6,$7,$8)$$;
+CREATE FUNCTION public.rmg_submit_claim(p_jurisdiction text,p_source_id text,p_name text,p_business text,p_evidence text) RETURNS jsonb LANGUAGE sql SECURITY INVOKER SET search_path='' AS $$SELECT rmg_private.submit_claim($1,$2,$3,$4,$5)$$;
+CREATE FUNCTION public.rmg_own_status(p_kind text,p_id uuid) RETURNS jsonb LANGUAGE sql SECURITY INVOKER SET search_path='' AS $$SELECT rmg_private.own_status($1,$2)$$;
+CREATE FUNCTION public.rmg_edit_details(p_jurisdiction text,p_source_id text,p_boat text,p_gear text,p_years smallint,p_expertise text,p_species text) RETURNS jsonb LANGUAGE sql SECURITY INVOKER SET search_path='' AS $$SELECT rmg_private.edit_details($1,$2,$3,$4,$5,$6,$7)$$;
+REVOKE ALL ON ALL FUNCTIONS IN SCHEMA rmg_private FROM PUBLIC,anon,authenticated;
+GRANT EXECUTE ON FUNCTION rmg_private.resolve_guide(text,text) TO anon,authenticated;
+GRANT EXECUTE ON FUNCTION rmg_private.submit_review(text,text,smallint,smallint,boolean,text,boolean,text),rmg_private.submit_claim(text,text,text,text,text),rmg_private.own_status(text,uuid),rmg_private.edit_details(text,text,text,text,smallint,text,text) TO authenticated;
+REVOKE ALL ON FUNCTION public.rmg_resolve_guide(text,text),public.rmg_review_summary(text,text),public.rmg_submit_review(text,text,smallint,smallint,boolean,text,boolean,text),public.rmg_submit_claim(text,text,text,text,text),public.rmg_own_status(text,uuid),public.rmg_edit_details(text,text,text,text,smallint,text,text) FROM PUBLIC,anon,authenticated;
+GRANT EXECUTE ON FUNCTION public.rmg_resolve_guide(text,text),public.rmg_review_summary(text,text) TO anon,authenticated;
+GRANT EXECUTE ON FUNCTION public.rmg_submit_review(text,text,smallint,smallint,boolean,text,boolean,text),public.rmg_submit_claim(text,text,text,text,text),public.rmg_own_status(text,uuid),public.rmg_edit_details(text,text,text,text,smallint,text,text) TO authenticated;
+-- Grant only the already-hardened, authenticated operator functions; each
+-- function independently checks site_admins and the target state.
+GRANT EXECUTE ON FUNCTION public.admin_decide_review(uuid,boolean,text),public.admin_decide_claim(uuid,boolean,text) TO authenticated;
+COMMIT;
