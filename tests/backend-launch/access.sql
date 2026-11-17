@@ -28,7 +28,7 @@ END$$;
 SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000005',false);
 SELECT public.fixture_assert((public.rmg_edit_details('OR','fixture-1','Boat','Gear',5::smallint,'Expertise','Species')->>'status')='saved','approved owner may edit allowed fields');
 DO $$BEGIN
- BEGIN PERFORM public.rmg_submit_review('OR','fixture-1',5::smallint,4::smallint,true,repeat('s',80),true,'none'); RAISE EXCEPTION 'owner review accepted'; EXCEPTION WHEN raise_exception THEN IF SQLERRM='owner review accepted' THEN RAISE; END IF; END;
+ BEGIN PERFORM public.rmg_submit_review('OR','fixture-1',5::smallint,4::smallint,true,repeat('s',80),true,'none'); RAISE EXCEPTION 'owner review accepted'; EXCEPTION WHEN insufficient_privilege THEN NULL; END;
 END$$;
 RESET ROLE;
 UPDATE auth.users SET is_anonymous=true WHERE id='00000000-0000-0000-0000-000000000006';
