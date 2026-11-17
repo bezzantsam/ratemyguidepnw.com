@@ -1,11 +1,11 @@
 'use client';
 
 import {useId, useRef, useState} from 'react';
-import {type ReviewDraft, type SubmissionReceipt, isSubmissionReceipt, validateClaimStatement, validateReviewDraft} from './submission-model';
+import {type ClaimDraft, type RelationshipDisclosure, type ReviewDraft, type SubmissionReceipt, isSubmissionReceipt, validateClaimDraft, validateReviewDraft} from './submission-model';
 
 /** These views are not connected to a backend until the reviewed integration supplies one. */
 type SubmitReview = (draft: ReviewDraft) => Promise<SubmissionReceipt>;
-type SubmitClaim = (statement: string) => Promise<SubmissionReceipt>;
+type SubmitClaim = (draft: ClaimDraft) => Promise<SubmissionReceipt>;
 
 export function SubmissionStatus({kind, receipt}: {kind: 'review' | 'claim'; receipt: SubmissionReceipt}) {
   if (!isSubmissionReceipt(receipt,kind)) return <p role="status">Submission status is temporarily unavailable.</p>;
@@ -26,6 +26,7 @@ export function ReviewSubmission({onSubmit}: {onSubmit: SubmitReview}) {
   const [wouldBookAgain, setWouldBookAgain] = useState('');
   const [body, setBody] = useState('');
   const [tripMonth, setTripMonth] = useState('');
+  const [relationship, setRelationship] = useState<RelationshipDisclosure | ''>('');
   const [firsthand, setFirsthand] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -35,7 +36,7 @@ export function ReviewSubmission({onSubmit}: {onSubmit: SubmitReview}) {
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (submitting.current) return;
-    const draft = {quality: Number(quality), intensity: Number(intensity), wouldBookAgain: wouldBookAgain === '' ? null : wouldBookAgain === 'yes', body: body.trim(), firsthand, tripMonth: tripMonth || null};
+    const draft = {quality: Number(quality), intensity: Number(intensity), wouldBookAgain: wouldBookAgain === '' ? null : wouldBookAgain === 'yes', body: body.trim(), firsthand, tripMonth: tripMonth || null, relationship:relationship || null};
     const problem = validateReviewDraft(draft);
     if (problem) { setError(problem); return; }
     submitting.current = true; setBusy(true); setError('');
@@ -59,8 +60,14 @@ export function ReviewSubmission({onSubmit}: {onSubmit: SubmitReview}) {
     <select id={`${prefix}-again`} value={wouldBookAgain} onChange={event=>setWouldBookAgain(event.target.value)} required>
       <option value="">Choose an answer</option><option value="yes">Yes</option><option value="no">No</option>
     </select>
-    <label htmlFor={`${prefix}-month`}>Trip month, if you remember it</label>
-    <input type="month" id={`${prefix}-month`} value={tripMonth} onChange={event=>setTripMonth(event.target.value)} />
+    <label htmlFor={`${prefix}-relationship`}>Your relationship to this guide or business</label>
+    <select id={`${prefix}-relationship`} value={relationship} onChange={event=>setRelationship(event.target.value as RelationshipDisclosure | '')} required>
+      <option value="">Choose an answer</option><option value="none">None</option><option value="personal">Personal</option><option value="financial">Financial</option><option value="other">Other</option>
+    </select>
+    <details><summary>Tell us more</summary>
+      <label htmlFor={`${prefix}-month`}>Trip month, if you remember it</label>
+      <input type="month" id={`${prefix}-month`} value={tripMonth} onChange={event=>setTripMonth(event.target.value)} />
+    </details>
     <label htmlFor={`${prefix}-body`}>Your experience</label>
     <p id={`${prefix}-body-help`}>Write 80 to 3,000 characters.</p>
     <textarea id={`${prefix}-body`} aria-describedby={`${prefix}-body-help`} value={body} onChange={event=>setBody(event.target.value)} minLength={80} maxLength={6000} required />
@@ -72,6 +79,8 @@ export function ReviewSubmission({onSubmit}: {onSubmit: SubmitReview}) {
 
 export function ClaimSubmission({onSubmit}: {onSubmit: SubmitClaim}) {
   const prefix = useId();
+  const [claimantName, setClaimantName] = useState('');
+  const [businessName, setBusinessName] = useState('');
   const [statement, setStatement] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -80,10 +89,11 @@ export function ClaimSubmission({onSubmit}: {onSubmit: SubmitClaim}) {
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (submitting.current) return;
-    const problem = validateClaimStatement(statement);
+    const draft = {claimantName:claimantName.trim(),businessName:businessName.trim(),evidence:statement.trim()};
+    const problem = validateClaimDraft(draft);
     if (problem) { setError(problem); return; }
     submitting.current = true; setBusy(true); setError('');
-    try { const result = await onSubmit(statement.trim()); if (!isSubmissionReceipt(result,'claim')) throw new Error('Invalid receipt'); setReceipt(result); }
+    try { const result = await onSubmit(draft); if (!isSubmissionReceipt(result,'claim')) throw new Error('Invalid receipt'); setReceipt(result); }
     catch { setError('We could not confirm your submission. Check your claim status before trying again.'); }
     finally { submitting.current = false; setBusy(false); }
   }
@@ -91,6 +101,10 @@ export function ClaimSubmission({onSubmit}: {onSubmit: SubmitClaim}) {
   return <form onSubmit={submit} className="card">
     <h3>Request this listing</h3>
     <p>Tell us how you are connected to this guide or business and give a public way to check it. A registration number or matching name alone is not proof. Do not upload an identity document. A claim does not give control over angler reviews.</p>
+    <label htmlFor={`${prefix}-claimant`}>Your name</label>
+    <input id={`${prefix}-claimant`} autoComplete="name" value={claimantName} onChange={event=>setClaimantName(event.target.value)} maxLength={120} required />
+    <label htmlFor={`${prefix}-business`}>Business name, if applicable</label>
+    <input id={`${prefix}-business`} value={businessName} onChange={event=>setBusinessName(event.target.value)} maxLength={120} />
     <label htmlFor={`${prefix}-claim`}>Your connection to this listing</label>
     <p id={`${prefix}-claim-help`}>Write 8 to 1,200 characters.</p>
     <textarea id={`${prefix}-claim`} aria-describedby={`${prefix}-claim-help`} value={statement} onChange={event=>setStatement(event.target.value)} minLength={8} maxLength={2400} required />

@@ -21,7 +21,7 @@ const queue=compile('components/launch/ModerationQueue.tsx',{'./submission-model
 const published=compile('components/launch/PublishedReviews.tsx');
 
 test('review validation requires both ratings, rebooking answer, narrative and firsthand attestation',()=>{
-  const valid={quality:5,intensity:3,wouldBookAgain:true,body:'A thoughtful account of the fishing trip. '.repeat(3),firsthand:true,tripMonth:null};
+  const valid={quality:5,intensity:3,wouldBookAgain:true,body:'A thoughtful account of the fishing trip. '.repeat(3),firsthand:true,tripMonth:null,relationship:'none'};
   assert.equal(model.validateReviewDraft(valid),null);
   for(const rating of [0,6,1.5,NaN]) {
     assert.ok(model.validateReviewDraft({...valid,quality:rating}));
@@ -32,6 +32,7 @@ test('review validation requires both ratings, rebooking answer, narrative and f
   assert.ok(model.validateReviewDraft({...valid,body:'   short   '}));
   assert.ok(model.validateReviewDraft({...valid,body:'x'.repeat(3001)}));
   assert.ok(model.validateReviewDraft({...valid,firsthand:false}));
+  assert.ok(model.validateReviewDraft({...valid,relationship:null}));
   assert.ok(model.validateReviewDraft({...valid,tripMonth:'2026-13'}));
   assert.equal(model.validateReviewDraft({...valid,tripMonth:'2026-11'}),null);
   assert.ok(model.validateReviewDraft({...valid,body:'🎣'.repeat(79)}));
@@ -42,6 +43,8 @@ test('claim validation rejects empty and excessively long explanations',()=>{
   assert.ok(model.validateClaimStatement('  '));
   assert.ok(model.validateClaimStatement('x'.repeat(1201)));
   assert.equal(model.validateClaimStatement('I operate the listed guide business.'),null);
+  assert.ok(model.validateClaimDraft({claimantName:'',businessName:'',evidence:'I operate the listed guide business.'}));
+  assert.equal(model.validateClaimDraft({claimantName:'A Guide',businessName:'',evidence:'I operate the listed guide business.'}),null);
 });
 
 test('a missing, malformed or unknown receipt is never treated as successful',()=>{
@@ -61,6 +64,7 @@ test('status renders the actual receipt and does not imply that sign-in verifies
   const review=renderToStaticMarkup(React.createElement(views.ReviewSubmission,{onSubmit:async()=>({status:'pending'})}));
   assert.match(review,/Signing in confirms your account, not that a trip occurred/);
   assert.match(review,/I personally took this trip/);
+  assert.match(review,/<summary>Tell us more<\/summary>/);
   const claim=renderToStaticMarkup(React.createElement(views.ClaimSubmission,{onSubmit:async()=>({status:'pending'})}));
   assert.match(claim,/does not give control over angler reviews/);
 });
