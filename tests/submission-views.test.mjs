@@ -21,7 +21,7 @@ const queue=compile('components/launch/ModerationQueue.tsx',{'./submission-model
 const published=compile('components/launch/PublishedReviews.tsx');
 
 test('review validation requires both ratings, rebooking answer, narrative and firsthand attestation',()=>{
-  const valid={quality:5,intensity:3,wouldBookAgain:true,body:'A thoughtful account of the fishing trip. '.repeat(3),firsthand:true};
+  const valid={quality:5,intensity:3,wouldBookAgain:true,body:'A thoughtful account of the fishing trip. '.repeat(3),firsthand:true,tripMonth:null};
   assert.equal(model.validateReviewDraft(valid),null);
   for(const rating of [0,6,1.5,NaN]) {
     assert.ok(model.validateReviewDraft({...valid,quality:rating}));
@@ -32,11 +32,15 @@ test('review validation requires both ratings, rebooking answer, narrative and f
   assert.ok(model.validateReviewDraft({...valid,body:'   short   '}));
   assert.ok(model.validateReviewDraft({...valid,body:'x'.repeat(3001)}));
   assert.ok(model.validateReviewDraft({...valid,firsthand:false}));
+  assert.ok(model.validateReviewDraft({...valid,tripMonth:'2026-13'}));
+  assert.equal(model.validateReviewDraft({...valid,tripMonth:'2026-11'}),null);
+  assert.ok(model.validateReviewDraft({...valid,body:'🎣'.repeat(79)}));
+  assert.equal(model.validateReviewDraft({...valid,body:'🎣'.repeat(80)}),null);
 });
 
 test('claim validation rejects empty and excessively long explanations',()=>{
   assert.ok(model.validateClaimStatement('  '));
-  assert.ok(model.validateClaimStatement('x'.repeat(1001)));
+  assert.ok(model.validateClaimStatement('x'.repeat(1201)));
   assert.equal(model.validateClaimStatement('I operate the listed guide business.'),null);
 });
 
@@ -62,11 +66,14 @@ test('status renders the actual receipt and does not imply that sign-in verifies
 });
 
 test('moderation queue renders submitted text safely and does not invent pending entries',()=>{
-  const empty=renderToStaticMarkup(React.createElement(queue.ModerationQueue,{items:[],onDecide:async()=>({status:'approved'})}));
+  const error=renderToStaticMarkup(React.createElement(queue.ModerationQueue,{state:{status:'error'},onDecide:async()=>({status:'approved'})}));
+  assert.match(error,/temporarily unavailable/);
+  assert.doesNotMatch(error,/No pending submissions/);
+  const empty=renderToStaticMarkup(React.createElement(queue.ModerationQueue,{state:{status:'ready',items:[]},onDecide:async()=>({status:'approved'})}));
   assert.match(empty,/No pending submissions/);
   assert.doesNotMatch(empty,/>Approve</);
   const items=[{id:'r1',kind:'review',guideName:'Example guide',description:'<script>unsafe</script>',submittedAt:'2026-11-17'}];
-  const html=renderToStaticMarkup(React.createElement(queue.ModerationQueue,{items,onDecide:async()=>({status:'approved'})}));
+  const html=renderToStaticMarkup(React.createElement(queue.ModerationQueue,{state:{status:'ready',items},onDecide:async()=>({status:'approved'})}));
   assert.match(html,/&lt;script&gt;unsafe&lt;\/script&gt;/);
   assert.doesNotMatch(html,/<script>unsafe<\/script>/);
   assert.match(html,/>Approve</);

@@ -8,6 +8,7 @@ type SubmitReview = (draft: ReviewDraft) => Promise<SubmissionReceipt>;
 type SubmitClaim = (statement: string) => Promise<SubmissionReceipt>;
 
 export function SubmissionStatus({kind, receipt}: {kind: 'review' | 'claim'; receipt: SubmissionReceipt}) {
+  if (!isSubmissionReceipt(receipt,kind)) return <p role="status">Submission status is temporarily unavailable.</p>;
   const label = kind === 'review' ? 'Review' : 'Claim request';
   const next = receipt.status === 'pending'
     ? 'It is waiting for an independent moderator.'
@@ -24,6 +25,7 @@ export function ReviewSubmission({onSubmit}: {onSubmit: SubmitReview}) {
   const [intensity, setIntensity] = useState('');
   const [wouldBookAgain, setWouldBookAgain] = useState('');
   const [body, setBody] = useState('');
+  const [tripMonth, setTripMonth] = useState('');
   const [firsthand, setFirsthand] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -33,7 +35,7 @@ export function ReviewSubmission({onSubmit}: {onSubmit: SubmitReview}) {
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (submitting.current) return;
-    const draft = {quality: Number(quality), intensity: Number(intensity), wouldBookAgain: wouldBookAgain === '' ? null : wouldBookAgain === 'yes', body: body.trim(), firsthand};
+    const draft = {quality: Number(quality), intensity: Number(intensity), wouldBookAgain: wouldBookAgain === '' ? null : wouldBookAgain === 'yes', body: body.trim(), firsthand, tripMonth: tripMonth || null};
     const problem = validateReviewDraft(draft);
     if (problem) { setError(problem); return; }
     submitting.current = true; setBusy(true); setError('');
@@ -44,12 +46,12 @@ export function ReviewSubmission({onSubmit}: {onSubmit: SubmitReview}) {
   if (receipt) return <SubmissionStatus kind="review" receipt={receipt}/>;
   return <form onSubmit={submit} className="card">
     <h3>Share your trip experience</h3>
-    <p>Write about a trip you personally took. Your review is checked before publication. Signing in confirms your account, not that a trip occurred.</p>
+    <p>Write about a trip you personally took. State any personal or paid connection, or say that you have none. Your review is checked before publication. Signing in confirms your account, not that a trip occurred.</p>
     <label htmlFor={`${prefix}-quality`}>Overall quality</label>
     <select id={`${prefix}-quality`} value={quality} onChange={event=>setQuality(event.target.value)} required>
       <option value="">Choose a rating</option>{[1,2,3,4,5].map(value=><option key={value} value={value}>{value} / 5</option>)}
     </select>
-    <label htmlFor={`${prefix}-intensity`}>Trip intensity</label>
+    <label htmlFor={`${prefix}-intensity`}>Trip intensity (1–5)</label>
     <select id={`${prefix}-intensity`} value={intensity} onChange={event=>setIntensity(event.target.value)} required>
       <option value="">Choose a rating</option>{[1,2,3,4,5].map(value=><option key={value} value={value}>{value} / 5</option>)}
     </select>
@@ -57,9 +59,11 @@ export function ReviewSubmission({onSubmit}: {onSubmit: SubmitReview}) {
     <select id={`${prefix}-again`} value={wouldBookAgain} onChange={event=>setWouldBookAgain(event.target.value)} required>
       <option value="">Choose an answer</option><option value="yes">Yes</option><option value="no">No</option>
     </select>
+    <label htmlFor={`${prefix}-month`}>Trip month, if you remember it</label>
+    <input type="month" id={`${prefix}-month`} value={tripMonth} onChange={event=>setTripMonth(event.target.value)} />
     <label htmlFor={`${prefix}-body`}>Your experience</label>
     <p id={`${prefix}-body-help`}>Write 80 to 3,000 characters.</p>
-    <textarea id={`${prefix}-body`} aria-describedby={`${prefix}-body-help`} value={body} onChange={event=>setBody(event.target.value)} minLength={80} maxLength={3000} required />
+    <textarea id={`${prefix}-body`} aria-describedby={`${prefix}-body-help`} value={body} onChange={event=>setBody(event.target.value)} minLength={80} maxLength={6000} required />
     <label><input type="checkbox" checked={firsthand} onChange={event=>setFirsthand(event.target.checked)} required/> I personally took this trip.</label>
     {error && <p role="alert">{error}</p>}
     <button type="submit" disabled={busy}>{busy ? 'Submitting…' : 'Submit review'}</button>
@@ -86,9 +90,10 @@ export function ClaimSubmission({onSubmit}: {onSubmit: SubmitClaim}) {
   if (receipt) return <SubmissionStatus kind="claim" receipt={receipt}/>;
   return <form onSubmit={submit} className="card">
     <h3>Request this listing</h3>
-    <p>Tell us how you are connected to this guide or business. A moderator will review the request. A claim does not give control over angler reviews.</p>
+    <p>Tell us how you are connected to this guide or business and give a public way to check it. A registration number or matching name alone is not proof. Do not upload an identity document. A claim does not give control over angler reviews.</p>
     <label htmlFor={`${prefix}-claim`}>Your connection to this listing</label>
-    <textarea id={`${prefix}-claim`} value={statement} onChange={event=>setStatement(event.target.value)} minLength={20} maxLength={1000} required />
+    <p id={`${prefix}-claim-help`}>Write 8 to 1,200 characters.</p>
+    <textarea id={`${prefix}-claim`} aria-describedby={`${prefix}-claim-help`} value={statement} onChange={event=>setStatement(event.target.value)} minLength={8} maxLength={2400} required />
     {error && <p role="alert">{error}</p>}
     <button type="submit" disabled={busy}>{busy ? 'Submitting…' : 'Submit claim request'}</button>
   </form>;
