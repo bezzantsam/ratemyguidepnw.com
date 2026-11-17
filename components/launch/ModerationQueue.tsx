@@ -14,6 +14,7 @@ export type ModerationItem = Readonly<{
 }>;
 type Decision = 'approve' | 'reject';
 type Decide = (item: ModerationItem, decision: Decision, reason: string) => Promise<SubmissionReceipt>;
+export type QueueLoadState = Readonly<{status:'loading'}> | Readonly<{status:'error'}> | Readonly<{status:'ready';items:readonly ModerationItem[]}>;
 
 function QueueItem({item, onDecide}: {item: ModerationItem; onDecide: Decide}) {
   const id = useId();
@@ -47,9 +48,11 @@ function QueueItem({item, onDecide}: {item: ModerationItem; onDecide: Decide}) {
   </article>;
 }
 
-export function ModerationQueue({items, onDecide}: {items: readonly ModerationItem[]; onDecide: Decide}) {
+export function ModerationQueue({state, onDecide}: {state: QueueLoadState; onDecide: Decide}) {
   return <section aria-labelledby="moderation-queue-heading">
     <h2 id="moderation-queue-heading">Pending submissions</h2>
-    {items.length === 0 ? <p>No pending submissions.</p> : items.map(item=><QueueItem key={`${item.kind}:${item.id}`} item={item} onDecide={onDecide}/>)}
+    {state.status === 'loading' ? <p role="status">Loading submissions…</p> :
+      state.status === 'error' ? <p role="status">The moderation queue is temporarily unavailable.</p> :
+      state.items.length === 0 ? <p>No pending submissions.</p> : state.items.map(item=><QueueItem key={`${item.kind}:${item.id}`} item={item} onDecide={onDecide}/>)}
   </section>;
 }
