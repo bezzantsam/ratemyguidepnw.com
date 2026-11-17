@@ -1,0 +1,82 @@
+{
+  "baseline": {
+    "population": "repository static snapshot; source rows are not people or current production DB counts",
+    "raw_washington_source_rows": 163,
+    "displayed_washington_person_rows": 158,
+    "oregon_registry_rows": 1027,
+    "washington_raw_rows_excluded_from_wa_display": 5,
+    "wa_rows_without_raw_website_field": 163,
+    "wa_displayed_with_operator_site_evidence": 0,
+    "wa_displayed_with_no_operator_site_evidence": 158,
+    "wa_displayed_with_approved_species": 0,
+    "wa_displayed_with_source_linked_waters": 0,
+    "wa_displayed_with_source_notes": 52,
+    "same_normalized_person_name_groups_review_only": {},
+    "same_normalized_business_groups_review_only": {
+      "riverdog outfitters": [
+        "wa-005",
+        "wa-062"
+      ],
+      "fish intimidators": [
+        "wa-031",
+        "wa-082"
+      ],
+      "all rivers saltwater charters": [
+        "wa-050",
+        "wa-059"
+      ],
+      "all star fishing charters": [
+        "wa-087",
+        "wa-094",
+        "wa-096",
+        "wa-125"
+      ]
+    },
+    "warning": "Shared business can represent different captains; neither grouped names nor businesses establish duplicate people. Source notes are not verified service areas."
+  },
+  "candidate_rows": 79,
+  "search_query": "",
+  "matching_review_rows": 79,
+  "triage_counts": {
+    "possible_existing_match": 23,
+    "no_match_found_in_snapshot": 56
+  },
+  "operator_site_observed": 17,
+  "directory_link_not_independently_verified": 37,
+  "species_mentioned": 15,
+  "waterbody_mentioned": 11,
+  "species_and_waterbody_mentioned": 9,
+  "manual_review_required": 79,
+  "hosted_exact_outfit_match_candidates": 15,
+  "hosted_snapshot": {
+    "observed_at": "2026-11-17T19:01:22Z",
+    "project": "rate-my-guides",
+    "candidate_file_sha256": "105ccea0514c81d4b965c84044d369331a9a8eb2d2b201b20d2b5e218eb8d8fc",
+    "all_guide_rows": 1185,
+    "published_rows": 1185,
+    "missing_jurisdiction": 1185,
+    "missing_website": 1185,
+    "exact_published_business_match_candidate_ids": [
+      "wa-market-001",
+      "wa-market-004",
+      "wa-market-005",
+      "wa-market-013",
+      "wa-market-014",
+      "wa-market-024",
+      "wa-market-025",
+      "wa-market-035",
+      "wa-market-038",
+      "wa-market-048",
+      "wa-market-053",
+      "wa-market-063",
+      "wa-market-074",
+      "wa-market-075",
+      "wa-market-078"
+    ],
+    "match_method": "Published guides only; exact lowercased alphanumeric outfit name, length >= 6. Slugs and people are not identities and were not merged. Snapshot does not include aliases, phone or fuzzy matching.",
+    "warning": "Point-in-time aggregate. Project deployment role not established; all state jurisdiction values are null, so Washington DB counts cannot be determined."
+  },
+  "actual_verified_net_new": null,
+  "input_sha256": "105ccea0514c81d4b965c84044d369331a9a8eb2d2b201b20d2b5e218eb8d8fc",
+  "note": "No-match is a provisional candidate, not proof of a unique new guide. All business/person relationships, site links, license and publication remain unverified."
+}

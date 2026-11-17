@@ -1,0 +1,28 @@
+{
+  "observed_at": "2026-11-17T19:01:22Z",
+  "project": "rate-my-guides",
+  "candidate_file_sha256": "105ccea0514c81d4b965c84044d369331a9a8eb2d2b201b20d2b5e218eb8d8fc",
+  "all_guide_rows": 1185,
+  "published_rows": 1185,
+  "missing_jurisdiction": 1185,
+  "missing_website": 1185,
+  "exact_published_business_match_candidate_ids": [
+    "wa-market-001",
+    "wa-market-004",
+    "wa-market-005",
+    "wa-market-013",
+    "wa-market-014",
+    "wa-market-024",
+    "wa-market-025",
+    "wa-market-035",
+    "wa-market-038",
+    "wa-market-048",
+    "wa-market-053",
+    "wa-market-063",
+    "wa-market-074",
+    "wa-market-075",
+    "wa-market-078"
+  ],
+  "match_method": "Published guides only; exact lowercased alphanumeric outfit name, length >= 6. Slugs and people are not identities and were not merged. Snapshot does not include aliases, phone or fuzzy matching.",
+  "warning": "Point-in-time aggregate. Project deployment role not established; all state jurisdiction values are null, so Washington DB counts cannot be determined."
+}
