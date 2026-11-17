@@ -1,6 +1,6 @@
 /** Internal presentation types; the backend wire contract is agreed separately. */
 export type SubmissionStatus = 'pending' | 'published' | 'rejected' | 'removed' | 'approved' | 'denied';
-export type SubmissionReceipt = Readonly<{ status: SubmissionStatus; message?: string }>;
+export type SubmissionReceipt = Readonly<{ id:string; status: SubmissionStatus; message?: string }>;
 export type RelationshipDisclosure = 'none' | 'personal' | 'financial' | 'other';
 export type ReviewDraft = Readonly<{
   quality: number;
@@ -18,7 +18,7 @@ export function isSubmissionReceipt(value: unknown, kind: 'review' | 'claim'): v
   if (!value || typeof value !== 'object') return false;
   const receipt = value as Record<string, unknown>;
   const allowed = kind === 'review' ? ['pending','published','rejected','removed'] : ['pending','approved','denied'];
-  return typeof receipt.status === 'string' && allowed.includes(receipt.status) &&
+  return typeof receipt.id === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(receipt.id) && typeof receipt.status === 'string' && allowed.includes(receipt.status) &&
     (receipt.message === undefined || typeof receipt.message === 'string');
 }
 
