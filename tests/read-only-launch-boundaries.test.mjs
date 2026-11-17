@@ -22,5 +22,6 @@ test('automatic deployments are disabled for this work branch, not silently chan
   assert.deepEqual(config.git.deploymentEnabled,{
     'codex/directory-identity-copy-fix':false,
     'coordinator/rmg-launch-prep':false,
+    'codex/beta-completion':false,
   });
 });

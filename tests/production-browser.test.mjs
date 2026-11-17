@@ -41,6 +41,17 @@ test('ordinary production data contains no synthetic discovery or unapproved con
    assert.equal(await page.getByRole('heading',{name:'Also listed in Washington'}).count(),0,id);
    assert.doesNotMatch(await page.locator('main').innerText(),/This captain has a matching listing|We maintain a single captain profile/,id);
   }
+  // Exercise a reviewed operator-site link without contacting the third party.
+  await page.goto(`${origin}/guides/og-0002254`,{waitUntil:'domcontentloaded'});
+  const operator=page.getByRole('link',{name:'Visit listed operator page ↗'});
+  assert.equal(await operator.getAttribute('href'),'https://fishingwithbeck.com/salmon-fishing/');
+  assert.equal(await operator.getAttribute('target'),'_blank');
+  assert.match(await operator.getAttribute('rel'),/noopener/);
+  await context.route('https://fishingwithbeck.com/salmon-fishing/',route=>route.fulfill({status:200,contentType:'text/html',body:'<title>Intercepted operator link</title>'}));
+  const [operatorTab]=await Promise.all([context.waitForEvent('page'),operator.click()]);
+  await operatorTab.waitForLoadState('domcontentloaded');
+  assert.equal(await operatorTab.title(),'Intercepted operator link');
+  await operatorTab.close();
   await page.goto(`${origin}/washington`,{waitUntil:'domcontentloaded'});
   assert.equal(await page.getByRole('heading',{name:'Reviewed cross-state links'}).count(),0);
   assert.doesNotMatch(await page.locator('main').innerText(),/linked Oregon–Washington captain profiles|Shared profiles prevent reviews/);

@@ -39,3 +39,21 @@ export function advertisedWaterwayNames(registration: string): string[] {
 export function guideSearchTerms(registration: string): string[] {
   return guideEnrichmentFor(registration)?.searchAliases ?? [];
 }
+
+/** Use only an attributed operator URL; never turn a third-party listing into a booking link. */
+export function operatorSourceUrl(enrichment: GuideEnrichment | null): string | null {
+  if (!enrichment) return null;
+  const candidates = [
+    ...(enrichment.sourceLinks ?? []).filter(link => link.sourceType === 'operator_site').map(link => link.url),
+    ...enrichment.advertisedWaters.filter(water => water.sourceType === 'operator_site').map(water => water.sourceUrl),
+  ];
+  for (const candidate of candidates) {
+    try {
+      const parsed = new URL(candidate);
+      const host = parsed.hostname.toLowerCase();
+      if (parsed.protocol === 'https:' && host.includes('.') && !host.endsWith('.localhost') &&
+          !host.endsWith('.local') && !/^\d+(?:\.\d+){3}$/.test(host) && !parsed.username && !parsed.password) return candidate;
+    } catch { /* Preserve the source record but never make an invalid URL a button. */ }
+  }
+  return null;
+}
