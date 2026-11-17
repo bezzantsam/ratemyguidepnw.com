@@ -1,0 +1,13 @@
+{
+  "status": "blocked_before_authorized_capture",
+  "source_url": "https://waguidesassociation.org/our-members/",
+  "capture_time": null,
+  "source_row_count": null,
+  "matched_existing_count": null,
+  "exact_source_duplicate_count": null,
+  "net_new_candidate_count": null,
+  "manual_review_count": null,
+  "reason": "Source host DNS failed in the shell and the web reader did not return robots.txt. No authorized raw source snapshot or real-data dry run was created.",
+  "licensing_independently_verified": false,
+  "production_write": false
+}
