@@ -46,6 +46,17 @@ test('malformed success, unknown errors and wrong-owner status fail closed',asyn
   await assert.rejects(create({id:'20000000-0000-4000-8000-000000000002',status:'pending'}).ownStatus('review',id),errorCode('service_unavailable'));
   const client=createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async()=>response({error:'raw database error'},false)});
   await assert.rejects(client.session(),errorCode('service_unavailable'));
+  const limited=createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async()=>response({error:'rate_limited'},false)});
+  await assert.rejects(limited.session(),errorCode('rate_limited'));
+});
+
+test('own status preserves only states valid for that submission type',async()=>{
+  for(const [kind,status] of [['review','removed'],['review','published'],['claim','denied'],['claim','approved']]) {
+    const client=createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async()=>response({id,status})});
+    const result=await client.ownStatus(kind,id);assert.equal(result.status,status);
+  }
+  const wrong=createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async()=>response({id,status:'approved'})});
+  await assert.rejects(wrong.ownStatus('review',id),errorCode('service_unavailable'));
 });
 
 test('public results distinguish a valid empty set from an error and never attach auth',async()=>{

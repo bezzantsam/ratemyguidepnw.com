@@ -38,11 +38,14 @@ test('review validation requires both ratings, rebooking answer, narrative and f
   assert.equal(model.validateReviewDraft({...valid,tripMonth:'2026-11'}),null);
   assert.ok(model.validateReviewDraft({...valid,body:'🎣'.repeat(79)}));
   assert.equal(model.validateReviewDraft({...valid,body:'🎣'.repeat(80)}),null);
+  assert.ok(model.validateReviewDraft({...valid,body:'🎣'.repeat(1501)}));
 });
 
 test('claim validation rejects empty and excessively long explanations',()=>{
   assert.ok(model.validateClaimStatement('  '));
-  assert.ok(model.validateClaimStatement('x'.repeat(1201)));
+  assert.ok(model.validateClaimStatement('x'.repeat(2001)));
+  assert.ok(model.validateClaimStatement('x'.repeat(19)));
+  assert.equal(model.validateClaimStatement('x'.repeat(20)),null);
   assert.equal(model.validateClaimStatement('I operate the listed guide business.'),null);
   assert.ok(model.validateClaimDraft({claimantName:'',businessName:'',evidence:'I operate the listed guide business.'}));
   assert.equal(model.validateClaimDraft({claimantName:'A Guide',businessName:'',evidence:'I operate the listed guide business.'}),null);

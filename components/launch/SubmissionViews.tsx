@@ -71,7 +71,7 @@ export function ReviewSubmission({onSubmit, allowTripMonth=false}: {onSubmit: Su
     </details>}
     <label htmlFor={`${prefix}-body`}>Your experience</label>
     <p id={`${prefix}-body-help`}>Write 80 to 3,000 characters.</p>
-    <textarea id={`${prefix}-body`} aria-describedby={`${prefix}-body-help`} value={body} onChange={event=>setBody(event.target.value)} minLength={80} maxLength={6000} required />
+    <textarea id={`${prefix}-body`} aria-describedby={`${prefix}-body-help`} value={body} onChange={event=>setBody(event.target.value)} minLength={80} maxLength={3000} required />
     <label><input type="checkbox" checked={firsthand} onChange={event=>setFirsthand(event.target.checked)} required/> I personally took this trip.</label>
     {error && <p role="alert">{error}</p>}
     <button type="submit" disabled={busy}>{busy ? 'Submitting…' : 'Submit review'}</button>
@@ -103,12 +103,12 @@ export function ClaimSubmission({onSubmit}: {onSubmit: SubmitClaim}) {
     <h3>Request this listing</h3>
     <p>Tell us how you are connected to this guide or business and give a public way to check it. A registration number or matching name alone is not proof. Do not upload an identity document. A claim does not give control over angler reviews.</p>
     <label htmlFor={`${prefix}-claimant`}>Your name</label>
-    <input id={`${prefix}-claimant`} autoComplete="name" value={claimantName} onChange={event=>setClaimantName(event.target.value)} maxLength={120} required />
+    <input id={`${prefix}-claimant`} autoComplete="name" value={claimantName} onChange={event=>setClaimantName(event.target.value)} minLength={2} maxLength={120} required />
     <label htmlFor={`${prefix}-business`}>Business name, if applicable</label>
-    <input id={`${prefix}-business`} value={businessName} onChange={event=>setBusinessName(event.target.value)} maxLength={120} />
+    <input id={`${prefix}-business`} value={businessName} onChange={event=>setBusinessName(event.target.value)} maxLength={160} />
     <label htmlFor={`${prefix}-claim`}>Your connection to this listing</label>
-    <p id={`${prefix}-claim-help`}>Write 8 to 1,200 characters.</p>
-    <textarea id={`${prefix}-claim`} aria-describedby={`${prefix}-claim-help`} value={statement} onChange={event=>setStatement(event.target.value)} minLength={8} maxLength={2400} required />
+    <p id={`${prefix}-claim-help`}>Write 20 to 2,000 characters.</p>
+    <textarea id={`${prefix}-claim`} aria-describedby={`${prefix}-claim-help`} value={statement} onChange={event=>setStatement(event.target.value)} minLength={20} maxLength={2000} required />
     {error && <p role="alert">{error}</p>}
     <button type="submit" disabled={busy}>{busy ? 'Submitting…' : 'Submit claim request'}</button>
   </form>;
