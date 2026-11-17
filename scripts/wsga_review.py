@@ -218,22 +218,24 @@ def main():
     manifest = json.loads((capture_dir/'capture.json').read_text())
     raw = (capture_dir/'members.html').read_bytes()
     robots_data = (capture_dir/'robots.txt').read_bytes()
-    if manifest.get('source_url') != SOURCE or manifest.get('sha256') != hashlib.sha256(raw).hexdigest() or manifest.get('robots_sha256') != hashlib.sha256(robots_data).hexdigest() or manifest.get('user_agent') != 'RateMyGuidePNW-Research':
+    if manifest.get('source_url') != SOURCE or manifest.get('sha256') != hashlib.sha256(raw).hexdigest() or manifest.get('robots_sha256') != hashlib.sha256(robots_data).hexdigest() or manifest.get('user_agent') != 'RateMyGuidePNW-Research' or manifest.get('terms_reviewed') is not True:
         raise ValueError('capture manifest does not match source and snapshot')
     robots_text = robots_data.decode('utf-8-sig')
     if not re.search(r'^\s*user-agent\s*:', robots_text, re.I | re.M): raise ValueError('invalid robots snapshot')
     robots = RobotFileParser(); robots.parse(robots_text.splitlines())
     if not robots.can_fetch(manifest['user_agent'], SOURCE): raise ValueError('robots snapshot disallows source')
     rows = parse(raw.decode('utf-8-sig'), manifest['captured_at'])
-    washington = json.loads(Path('lib/washington-raw.json').read_text())
-    oregon = json.loads(Path('lib/oregon-guides.json').read_text())
-    curated = curated_links(Path('lib/washington-reconciled.ts').read_text())
+    paths = ('lib/washington-raw.json', 'lib/oregon-guides.json', 'lib/washington-reconciled.ts')
+    baseline = {path: Path(path).read_bytes() for path in paths}
+    washington = json.loads(baseline[paths[0]])
+    oregon = json.loads(baseline[paths[1]])
+    curated = curated_links(baseline[paths[2]].decode('utf-8'))
     results = reconcile(rows, washington, oregon, curated)
     output = Path(args.out); output.mkdir(parents=True, exist_ok=False, mode=0o700)
     summary = {k: sum(r['classification'] == k for r in results) for k in ('exact_source_duplicate', 'likely_duplicate_review', 'anomaly_review', 'net_new_candidate')}
     summary['matched_existing'] = sum(bool(r['matches']) for r in results)
     summary['manual_review'] = summary['likely_duplicate_review'] + summary['anomaly_review']
-    report = {'source': SOURCE, 'capture_time': manifest['captured_at'], 'source_sha256': hashlib.sha256(raw).hexdigest(), 'source_row_count': len(rows), 'counts': summary, 'records': results}
+    report = {'source': SOURCE, 'capture_time': manifest['captured_at'], 'source_sha256': hashlib.sha256(raw).hexdigest(), 'source_row_count': len(rows), 'baseline_sha256': {path: hashlib.sha256(data).hexdigest() for path, data in baseline.items()}, 'counts': summary, 'records': results}
     (output/'wsga-review.json').write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')
     with (output/'wsga-review.csv').open('w', newline='', encoding='utf-8') as f:
         columns = ['source_row','name','business','website_urls','emails','phones','source_url','captured_at','classification','matches','missing_fields','anomalies']

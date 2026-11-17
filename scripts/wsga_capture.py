@@ -35,7 +35,8 @@ def fetch(url, opener):
         return data
 
 
-def capture(output, opener=None, wait=time.sleep):
+def capture(output, opener=None, wait=time.sleep, *, terms_reviewed=False):
+    if not terms_reviewed: raise ValueError('site terms must be reviewed before capture')
     opener = opener or build_opener(SameHostHTTPS())
     # No retries and no fallback if robots is missing, blocked, or unreadable.
     robots_bytes = fetch(ROBOTS, opener)
@@ -52,7 +53,7 @@ def capture(output, opener=None, wait=time.sleep):
     out = Path(output); out.mkdir(parents=True, exist_ok=False, mode=0o700)
     (out/'robots.txt').write_bytes(robots_bytes)
     (out/'members.html').write_bytes(html)
-    (out/'capture.json').write_text(json.dumps({'source_url':PAGE,'captured_at':captured,'sha256':hashlib.sha256(html).hexdigest(),'robots_sha256':hashlib.sha256(robots_bytes).hexdigest(),'user_agent':AGENT,'robots_delay_seconds':delay},indent=2)+'\n')
+    (out/'capture.json').write_text(json.dumps({'source_url':PAGE,'captured_at':captured,'sha256':hashlib.sha256(html).hexdigest(),'robots_sha256':hashlib.sha256(robots_bytes).hexdigest(),'user_agent':AGENT,'robots_delay_seconds':delay,'terms_reviewed':True},indent=2)+'\n')
     return captured
 
 
@@ -61,7 +62,7 @@ def main():
     p.add_argument('--out', required=True, help='new private directory')
     p.add_argument('--terms-reviewed', action='store_true', required=True, help='operator has reviewed applicable site terms')
     args = p.parse_args()
-    print('Captured at', capture(args.out))
+    print('Captured at', capture(args.out, terms_reviewed=args.terms_reviewed))
 
 
 if __name__ == '__main__': main()

@@ -81,13 +81,14 @@ class ReviewTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             cap = Path(d)/'capture'; cap.mkdir()
             (cap/'members.html').write_bytes(raw); (cap/'robots.txt').write_bytes(robots)
-            manifest = {'source_url':review.SOURCE, 'captured_at':STAMP, 'sha256':hashlib.sha256(raw).hexdigest(), 'robots_sha256':hashlib.sha256(robots).hexdigest(), 'user_agent':'RateMyGuidePNW-Research'}
+            manifest = {'source_url':review.SOURCE, 'captured_at':STAMP, 'sha256':hashlib.sha256(raw).hexdigest(), 'robots_sha256':hashlib.sha256(robots).hexdigest(), 'user_agent':'RateMyGuidePNW-Research', 'terms_reviewed':True}
             (cap/'capture.json').write_text(json.dumps(manifest))
             out = Path(d)/'result'
             run = subprocess.run([sys.executable, 'scripts/wsga_review.py', '--capture-dir', str(cap), '--out', str(out)], cwd=root, text=True, capture_output=True)
             self.assertEqual(run.returncode, 0, run.stderr)
             report = json.loads((out/'wsga-review.json').read_text())
             self.assertEqual(report['source_row_count'], 6)
+            self.assertEqual(len(report['baseline_sha256']), 3)
             with (out/'wsga-review.csv').open(newline='') as f: self.assertEqual(len(list(csv.DictReader(f))), 6)
             (cap/'members.html').write_bytes(raw+b'tampered')
             run = subprocess.run([sys.executable, 'scripts/wsga_review.py', '--capture-dir', str(cap), '--out', str(Path(d)/'bad')], cwd=root, text=True, capture_output=True)
@@ -110,12 +111,17 @@ class Opener:
 
 
 class CaptureTests(unittest.TestCase):
+    def test_terms_must_be_checked_before_any_request(self):
+        op = Opener(b'User-agent: *\nAllow: /')
+        with self.assertRaises(ValueError): capture.capture('/unused', op)
+        self.assertEqual(op.urls, [])
+
     def test_disallow_and_robots_failure_do_not_fetch_page(self):
         import tempfile
         for robots in (b'User-agent: *\nDisallow: /our-members/', b'<html>error</html>', OSError('unavailable')):
             op = Opener(robots)
             with tempfile.TemporaryDirectory() as d:
-                with self.assertRaises((ValueError, OSError)): capture.capture(Path(d)/'new', op, lambda _: None)
+                with self.assertRaises((ValueError, OSError)): capture.capture(Path(d)/'new', op, lambda _: None, terms_reviewed=True)
                 self.assertEqual(op.urls, [capture.ROBOTS])
 
     def test_one_page_request_after_delay(self):
@@ -123,7 +129,7 @@ class CaptureTests(unittest.TestCase):
         op = Opener(b'User-agent: *\nAllow: /\nCrawl-delay: 3')
         delays = []
         with tempfile.TemporaryDirectory() as d:
-            capture.capture(Path(d)/'new', op, delays.append)
+            capture.capture(Path(d)/'new', op, delays.append, terms_reviewed=True)
             self.assertEqual(op.urls, [capture.ROBOTS, capture.PAGE])
             self.assertEqual(delays, [3])
             self.assertTrue((Path(d)/'new'/'capture.json').exists())

@@ -16,7 +16,7 @@ On 2026-11-17 direct shell `curl` of `https://waguidesassociation.org/robots.txt
 
 ## Safe review procedure
 
-1. Inspect current source terms and network permission; use the user-approved public source only. On an environment where its robots file is readable, run the command below once. It fetches robots then the directory at least two seconds later, honors longer bounded crawl-delay, follows only same-host HTTPS redirects and stops on robots failure or disallow. It stores the unmodified source bytes, robots and SHA-256/timestamp manifest in a **new private directory**. HTTPS verification remains enabled. `--terms-reviewed` records the operator's affirmative check; it is not a substitute for that check.
+1. Inspect current source terms and network permission; use the user-approved public source only. On an environment where its robots file is readable, run the command below once. It fetches robots then the directory at least two seconds later, honors longer bounded crawl-delay, follows only same-host HTTPS redirects and stops on robots failure or disallow. It stores the unmodified source bytes, robots and SHA-256/timestamp manifest in a **new private directory**. HTTPS verification remains enabled. `--terms-reviewed` records the operator's affirmative check in the capture manifest; it is not a substitute for that check.
 
    ```sh
    python3 scripts/wsga_capture.py --terms-reviewed --out /private/path/wsga-capture
@@ -29,4 +29,4 @@ On 2026-11-17 direct shell `curl` of `https://waguidesassociation.org/robots.txt
 
 ## Validation
 
-`python3 -m unittest discover -s tests -p 'test_wsga_review.py' -v`: 10 tests pass, including synthetic shared businesses, absent business/website, email-only, memorial exclusion, malformed/mismatched links, duplicate rows, cautious cross-state matching, capture hashes and robots disallow. A synthetic end-to-end run makes both CSV and JSON; it is not live-source evidence. Ten existing NOAA tests also passed. The broader Python discovery attempted 21 tests but had one import error because `beautifulsoup4` is not installed in this environment; no network install was attempted. Existing production, dataset, environment and checkout files were preserved.
+`python3 -m unittest discover -s tests -p 'test_wsga_review.py' -v`: 11 tests pass, including a terms-review gate, synthetic shared businesses, absent business/website, email-only, memorial exclusion, malformed/mismatched links, duplicate rows, cautious cross-state matching, capture hashes and robots disallow. A synthetic end-to-end run makes both CSV and JSON; it is not live-source evidence. Ten existing NOAA tests also passed. The broader Python discovery attempted 21 tests but had one import error because `beautifulsoup4` is not installed in this environment; no network install was attempted. Existing production, dataset, environment and checkout files were preserved.
