@@ -19,6 +19,7 @@ const model=compile('components/launch/submission-model.ts');
 const views=compile('components/launch/SubmissionViews.tsx',{'./submission-model':model});
 const queue=compile('components/launch/ModerationQueue.tsx',{'./submission-model':model,'./SubmissionViews':views});
 const published=compile('components/launch/PublishedReviews.tsx');
+const receiptId='10000000-0000-4000-8000-000000000001';
 
 test('review validation requires both ratings, rebooking answer, narrative and firsthand attestation',()=>{
   const valid={quality:5,intensity:3,wouldBookAgain:true,body:'A thoughtful account of the fishing trip. '.repeat(3),firsthand:true,tripMonth:null,relationship:'none'};
@@ -48,23 +49,25 @@ test('claim validation rejects empty and excessively long explanations',()=>{
 });
 
 test('a missing, malformed or unknown receipt is never treated as successful',()=>{
-  for(const receipt of [undefined,null,{}, {status:'approved'}, {status:'published',message:42}]) assert.equal(model.isSubmissionReceipt(receipt,'review'),false);
-  assert.equal(model.isSubmissionReceipt({status:'pending'},'review'),true);
-  assert.equal(model.isSubmissionReceipt({status:'published'},'review'),true);
-  assert.equal(model.isSubmissionReceipt({status:'removed'},'review'),true);
-  assert.equal(model.isSubmissionReceipt({status:'denied'},'claim'),true);
-  assert.equal(model.isSubmissionReceipt({status:'rejected'},'claim'),false);
+  for(const receipt of [undefined,null,{}, {status:'pending'}, {id:receiptId,status:'approved'}, {id:receiptId,status:'published',message:42}]) assert.equal(model.isSubmissionReceipt(receipt,'review'),false);
+  assert.equal(model.isSubmissionReceipt({id:receiptId,status:'pending'},'review'),true);
+  assert.equal(model.isSubmissionReceipt({id:receiptId,status:'published'},'review'),true);
+  assert.equal(model.isSubmissionReceipt({id:receiptId,status:'removed'},'review'),true);
+  assert.equal(model.isSubmissionReceipt({id:receiptId,status:'denied'},'claim'),true);
+  assert.equal(model.isSubmissionReceipt({id:receiptId,status:'rejected'},'claim'),false);
 });
 
 test('status renders the actual receipt and does not imply that sign-in verifies a trip',()=>{
   for(const status of ['pending','approved','denied']) {
-    const html=renderToStaticMarkup(React.createElement(views.SubmissionStatus,{kind:'claim',receipt:{status}}));
+    const html=renderToStaticMarkup(React.createElement(views.SubmissionStatus,{kind:'claim',receipt:{id:receiptId,status}}));
     assert.match(html,new RegExp(`Claim request: ${status}`));
   }
-  const review=renderToStaticMarkup(React.createElement(views.ReviewSubmission,{onSubmit:async()=>({status:'pending'})}));
+  const review=renderToStaticMarkup(React.createElement(views.ReviewSubmission,{onSubmit:async()=>({status:'pending'}),allowTripMonth:true}));
   assert.match(review,/Signing in confirms your account, not that a trip occurred/);
   assert.match(review,/I personally took this trip/);
   assert.match(review,/<summary>Tell us more<\/summary>/);
+  const basic=renderToStaticMarkup(React.createElement(views.ReviewSubmission,{onSubmit:async()=>({status:'pending'})}));
+  assert.doesNotMatch(basic,/Trip month/);
   const claim=renderToStaticMarkup(React.createElement(views.ClaimSubmission,{onSubmit:async()=>({status:'pending'})}));
   assert.match(claim,/does not give control over angler reviews/);
 });

@@ -19,7 +19,7 @@ export function SubmissionStatus({kind, receipt}: {kind: 'review' | 'claim'; rec
   return <div role="status"><strong>{label}: {receipt.status}</strong><p>{next}</p>{receipt.message && <p>{receipt.message}</p>}</div>;
 }
 
-export function ReviewSubmission({onSubmit}: {onSubmit: SubmitReview}) {
+export function ReviewSubmission({onSubmit, allowTripMonth=false}: {onSubmit: SubmitReview; allowTripMonth?:boolean}) {
   const prefix = useId();
   const [quality, setQuality] = useState('');
   const [intensity, setIntensity] = useState('');
@@ -36,7 +36,8 @@ export function ReviewSubmission({onSubmit}: {onSubmit: SubmitReview}) {
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (submitting.current) return;
-    const draft = {quality: Number(quality), intensity: Number(intensity), wouldBookAgain: wouldBookAgain === '' ? null : wouldBookAgain === 'yes', body: body.trim(), firsthand, tripMonth: tripMonth || null, relationship:relationship || null};
+    if (!allowTripMonth && tripMonth) {setError('Trip month is no longer available. Refresh before submitting.');return;}
+    const draft = {quality: Number(quality), intensity: Number(intensity), wouldBookAgain: wouldBookAgain === '' ? null : wouldBookAgain === 'yes', body: body.trim(), firsthand, tripMonth: allowTripMonth ? tripMonth || null : null, relationship:relationship || null};
     const problem = validateReviewDraft(draft);
     if (problem) { setError(problem); return; }
     submitting.current = true; setBusy(true); setError('');
@@ -64,10 +65,10 @@ export function ReviewSubmission({onSubmit}: {onSubmit: SubmitReview}) {
     <select id={`${prefix}-relationship`} value={relationship} onChange={event=>setRelationship(event.target.value as RelationshipDisclosure | '')} required>
       <option value="">Choose an answer</option><option value="none">None</option><option value="personal">Personal</option><option value="financial">Financial</option><option value="other">Other</option>
     </select>
-    <details><summary>Tell us more</summary>
+    {allowTripMonth && <details><summary>Tell us more</summary>
       <label htmlFor={`${prefix}-month`}>Trip month, if you remember it</label>
       <input type="month" id={`${prefix}-month`} value={tripMonth} onChange={event=>setTripMonth(event.target.value)} />
-    </details>
+    </details>}
     <label htmlFor={`${prefix}-body`}>Your experience</label>
     <p id={`${prefix}-body-help`}>Write 80 to 3,000 characters.</p>
     <textarea id={`${prefix}-body`} aria-describedby={`${prefix}-body-help`} value={body} onChange={event=>setBody(event.target.value)} minLength={80} maxLength={6000} required />

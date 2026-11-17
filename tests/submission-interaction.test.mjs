@@ -6,6 +6,7 @@ import {createRequire} from 'node:module';
 
 const require=createRequire(import.meta.url);
 const ts=require('typescript');
+const receiptId='10000000-0000-4000-8000-000000000001';
 function compile(path, imports={}) {
   const code=ts.transpileModule(readFileSync(path,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX}}).outputText;
   const exports={};
@@ -60,7 +61,7 @@ test('submission sends user answers once and shows only the confirmed receipt',a
   assert.equal(captured.wouldBookAgain,false);
   assert.equal(captured.firsthand,true);
   assert.equal(captured.relationship,'none');
-  resolveSubmission({status:'pending'});
+  resolveSubmission({id:receiptId,status:'pending'});
   await Promise.all([first,second]);
   const result=render();
   assert.equal(result.type,views.SubmissionStatus);
@@ -82,7 +83,7 @@ test('claim submission preserves the persisted denied state',async()=>{
   const model=compile('components/launch/submission-model.ts');
   const views=compile('components/launch/SubmissionViews.tsx',{react:hooks.react,'./submission-model':model});
   let captured;
-  const render=()=>{hooks.reset();return views.ClaimSubmission({onSubmit:async draft=>{captured=draft;return {status:'denied'}}})};
+  const render=()=>{hooks.reset();return views.ClaimSubmission({onSubmit:async draft=>{captured=draft;return {id:receiptId,status:'denied'}}})};
   find(render(),node=>node.props?.id?.endsWith('-claimant')).props.onChange({target:{value:' A Guide '}});
   find(render(),node=>node.type==='textarea').props.onChange({target:{value:' I operate this listed business. '}});
   await render().props.onSubmit({preventDefault(){}});
@@ -99,10 +100,10 @@ test('moderation requires a rejection reason and waits for the actual decision',
   const views=compile('components/launch/SubmissionViews.tsx',{react:hooks.react,'./submission-model':model});
   const queue=compile('components/launch/ModerationQueue.tsx',{react:hooks.react,'./submission-model':model,'./SubmissionViews':views});
   let calls=0,resolveDecision,captured;
-  const item={id:'c1',kind:'claim',guideName:'Guide',description:'Evidence',submittedAt:'2026-11-17'};
+  const item={id:receiptId,kind:'claim',guideName:'Guide',description:'Evidence',submittedAt:'2026-11-17'};
   const onDecide=(...args)=>{calls++;captured=args;return new Promise(resolve=>{resolveDecision=resolve})};
   const container=queue.ModerationQueue({state:{status:'ready',items:[item]},onDecide});
-  const element=find(container,node=>node.props?.item?.id==='c1');
+  const element=find(container,node=>node.props?.item?.id===receiptId);
   const render=()=>{hooks.reset();return element.type(element.props)};
   const reject=()=>find(render(),node=>node.type==='button'&&node.props.children==='Reject');
   reject().props.onClick();
@@ -112,10 +113,10 @@ test('moderation requires a rejection reason and waits for the actual decision',
   const button=reject();
   button.props.onClick();button.props.onClick();
   assert.equal(calls,1);
-  assert.equal(captured[0].id,'c1');
+  assert.equal(captured[0].id,receiptId);
   assert.equal(captured[1],'reject');
   assert.equal(captured[2],'Evidence does not match.');
-  resolveDecision({status:'denied'});
+  resolveDecision({id:receiptId,status:'denied'});
   await new Promise(resolve=>setImmediate(resolve));
   const status=find(render(),node=>node.type===views.SubmissionStatus);
   assert.equal(status.props.receipt.status,'denied');
