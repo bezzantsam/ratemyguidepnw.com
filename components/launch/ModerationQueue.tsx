@@ -28,8 +28,8 @@ function QueueItem({item, onDecide}: {item: ModerationItem; onDecide: Decide}) {
     processing.current = true; setBusy(true); setError('');
     try {
       const result = await onDecide(item, decision, reason.trim());
-      const expected = decision === 'approve' ? 'approved' : 'rejected';
-      if (!isSubmissionReceipt(result) || result.status !== expected) throw new Error('Unconfirmed decision');
+      const expected = item.kind === 'review' ? decision === 'approve' ? 'published' : 'rejected' : decision === 'approve' ? 'approved' : 'denied';
+      if (!isSubmissionReceipt(result,item.kind) || result.status !== expected) throw new Error('Unconfirmed decision');
       setReceipt(result);
     } catch { setError('The decision could not be confirmed. Refresh the queue before trying again.'); }
     finally { processing.current = false; setBusy(false); }

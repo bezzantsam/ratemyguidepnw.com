@@ -20,12 +20,17 @@ const views=compile('components/launch/SubmissionViews.tsx',{'./submission-model
 const queue=compile('components/launch/ModerationQueue.tsx',{'./submission-model':model,'./SubmissionViews':views});
 const published=compile('components/launch/PublishedReviews.tsx');
 
-test('review validation requires a bounded rating, useful narrative and firsthand attestation',()=>{
-  const valid={rating:5,body:'A thoughtful account of the fishing trip.',firsthand:true};
+test('review validation requires both ratings, rebooking answer, narrative and firsthand attestation',()=>{
+  const valid={quality:5,intensity:3,wouldBookAgain:true,body:'A thoughtful account of the fishing trip. '.repeat(3),firsthand:true};
   assert.equal(model.validateReviewDraft(valid),null);
-  for(const rating of [0,6,1.5,NaN]) assert.ok(model.validateReviewDraft({...valid,rating}));
+  for(const rating of [0,6,1.5,NaN]) {
+    assert.ok(model.validateReviewDraft({...valid,quality:rating}));
+    assert.ok(model.validateReviewDraft({...valid,intensity:rating}));
+  }
+  assert.ok(model.validateReviewDraft({...valid,wouldBookAgain:null}));
+  assert.equal(model.validateReviewDraft({...valid,wouldBookAgain:false}),null);
   assert.ok(model.validateReviewDraft({...valid,body:'   short   '}));
-  assert.ok(model.validateReviewDraft({...valid,body:'x'.repeat(501)}));
+  assert.ok(model.validateReviewDraft({...valid,body:'x'.repeat(3001)}));
   assert.ok(model.validateReviewDraft({...valid,firsthand:false}));
 });
 
@@ -36,13 +41,16 @@ test('claim validation rejects empty and excessively long explanations',()=>{
 });
 
 test('a missing, malformed or unknown receipt is never treated as successful',()=>{
-  for(const receipt of [undefined,null,{}, {status:'published'}, {status:'approved',message:42}]) assert.equal(model.isSubmissionReceipt(receipt),false);
-  assert.equal(model.isSubmissionReceipt({status:'pending'}),true);
-  assert.equal(model.isSubmissionReceipt({status:'rejected',message:'Please provide more detail.'}),true);
+  for(const receipt of [undefined,null,{}, {status:'approved'}, {status:'published',message:42}]) assert.equal(model.isSubmissionReceipt(receipt,'review'),false);
+  assert.equal(model.isSubmissionReceipt({status:'pending'},'review'),true);
+  assert.equal(model.isSubmissionReceipt({status:'published'},'review'),true);
+  assert.equal(model.isSubmissionReceipt({status:'removed'},'review'),true);
+  assert.equal(model.isSubmissionReceipt({status:'denied'},'claim'),true);
+  assert.equal(model.isSubmissionReceipt({status:'rejected'},'claim'),false);
 });
 
 test('status renders the actual receipt and does not imply that sign-in verifies a trip',()=>{
-  for(const status of ['pending','approved','rejected']) {
+  for(const status of ['pending','approved','denied']) {
     const html=renderToStaticMarkup(React.createElement(views.SubmissionStatus,{kind:'claim',receipt:{status}}));
     assert.match(html,new RegExp(`Claim request: ${status}`));
   }
