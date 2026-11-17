@@ -70,6 +70,20 @@ test('ordinary production data contains no synthetic discovery or unapproved con
    await page.getByRole('link',{name:/John Hanson/}).first().waitFor();assert.equal(page.url(),saved);
    if(process.env.BROWSER_SCREENSHOT_DIR){mkdirSync(process.env.BROWSER_SCREENSHOT_DIR,{recursive:true});await page.screenshot({path:join(process.env.BROWSER_SCREENSHOT_DIR,`ordinary-${label}.png`),fullPage:true})}
    await page.getByRole('link',{name:/John Hanson/}).first().click();await page.getByRole('heading',{name:'John Hanson',exact:true}).waitFor();await page.getByText('Review data is unavailable.').waitFor();
+   const canonical=await page.locator('link[rel="canonical"]').getAttribute('href');
+   assert.match(canonical,/^https:\/\/ratemyguidepnw\.com\/guides\/og-[a-z0-9-]+$/);
+   assert.equal(await page.locator('meta[property="og:url"]').getAttribute('content'),canonical);
+   await page.evaluate(()=>{
+    Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async value=>{window.__sharedProfileCopy=value}}});
+    Object.defineProperty(navigator,'share',{configurable:true,value:async data=>{window.__sharedProfileUrl=data.url}});
+   });
+   await page.getByRole('button',{name:'Copy profile link'}).click();
+   assert.equal(await page.evaluate(()=>window.__sharedProfileCopy),canonical);
+   await page.getByRole('button',{name:'Share profile'}).click();
+   assert.equal(await page.evaluate(()=>window.__sharedProfileUrl),canonical);
+   await page.getByText('Sharing dialog closed.').waitFor();
+   assert.equal(await page.getByRole('button',{name:'Copy review request link'}).count(),0);
+   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+1),'profile does not overflow');
    await page.getByRole('link',{name:'← Search guides'}).click();await page.waitForURL(saved);await page.goBack();await page.getByRole('heading',{name:'John Hanson',exact:true}).waitFor();await page.goForward();await page.waitForURL(saved);
    await page.getByRole('searchbox',{name:'Captain, business, operating name, or registration'}).fill('zzzxqv nonexistent');await page.getByText('No matching guides.',{exact:false}).waitFor();await page.getByRole('list',{name:'Ways to adjust your search'}).getByRole('button',{name:/Clear search text/}).click();assert.ok(await page.locator('.guide-result').count()>0);
   }
