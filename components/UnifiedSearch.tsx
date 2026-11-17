@@ -68,7 +68,7 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
   <div className="searchbar">
    <label>Captain, business, operating name, or registration
     <input ref={searchRef} type="search" value={q} maxLength={120} onChange={e=>change({query:e.target.value,page:1},true)}
-     placeholder="Try Billy Bandit, Josiah Darr or a river"/>
+     placeholder="Try Oregon Adventure Guide Service or Reel Em Up Fishing Adventures"/>
    </label>
    <label>Imported source area / notes (unverified)
     <select ref={areaRef} value={area} onChange={e=>change({area:e.target.value,page:1})}>
