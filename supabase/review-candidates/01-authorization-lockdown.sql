@@ -6,7 +6,7 @@ BEGIN;
 DO $$
 DECLARE obj regclass; col record; role_name text; op text;
 BEGIN
- FOREACH obj IN ARRAY ARRAY[to_regclass('public.reviews'),to_regclass('public.guide_claims'),to_regclass('public.claim_evidence'),to_regclass('public.guide_details'),to_regclass('public.guide_media')] LOOP
+ FOREACH obj IN ARRAY ARRAY[to_regclass('public.reviews'),to_regclass('public.guide_claims'),to_regclass('public.claim_evidence'),to_regclass('public.guide_details'),to_regclass('public.guide_media'),to_regclass('public.guides'),to_regclass('public.site_admins'),to_regclass('public.moderation_audit')] LOOP
   IF obj IS NULL THEN CONTINUE; END IF;
   FOREACH role_name IN ARRAY ARRAY['PUBLIC','anon','authenticated'] LOOP
    EXECUTE format('REVOKE INSERT, UPDATE, DELETE, TRUNCATE, REFERENCES, TRIGGER ON TABLE %s FROM %s',obj,CASE WHEN role_name='PUBLIC' THEN 'PUBLIC' ELSE quote_ident(role_name) END);
