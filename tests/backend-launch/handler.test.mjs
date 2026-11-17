@@ -27,3 +27,7 @@ test('moderation uses server-side membership and never invokes action for nonadm
  const r=await handleLaunch(req(action,'token'),b.factory,env);assert.equal(r.status,403);assert.equal(b.calls.some(c=>c[0]==='admin_decide_claim'),false);
 });
 test('unavailable configuration fails closed',async()=>{const b=backend();const r=await handleLaunch(req(review,'token'),b.factory,{});assert.equal(r.status,503);assert.equal(b.calls.length,0)});
+test('rate limits and ordinary database conflicts have distinct safe errors',async()=>{
+ let b=backend({rpcError:{code:'P4290',message:'private internal text'}}),r=await handleLaunch(req(review,'token'),b.factory,env);assert.equal(r.status,429);assert.deepEqual(await r.json(),{error:'rate_limited'});
+ b=backend({rpcError:{code:'P0001',message:'private internal text'}});r=await handleLaunch(req(review,'token'),b.factory,env);assert.equal(r.status,409);assert.deepEqual(await r.json(),{error:'conflict'});
+});
