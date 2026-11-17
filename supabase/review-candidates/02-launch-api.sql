@@ -55,7 +55,7 @@ BEGIN
  -- Serialize with claim approvals on the same guide before checking ownership.
  PERFORM 1 FROM public.guides WHERE id=gid FOR UPDATE;
  IF EXISTS(SELECT 1 FROM public.guide_claims c WHERE c.guide_id=gid AND c.claimant_id=actor AND c.status='approved') THEN RAISE EXCEPTION 'Owner cannot review own guide' USING ERRCODE='42501'; END IF;
- IF (SELECT count(*) FROM public.reviews r WHERE r.author_id=actor AND r.created_at>now()-interval '24 hours')>=3 THEN RAISE EXCEPTION 'Review limit reached' USING ERRCODE='P0001'; END IF;
+ IF (SELECT count(*) FROM public.reviews r WHERE r.author_id=actor AND r.created_at>now()-interval '24 hours')>=3 THEN RAISE EXCEPTION 'Review limit reached' USING ERRCODE='P4290'; END IF;
  INSERT INTO public.reviews(guide_id,author_id,quality,intensity,would_book_again,body,firsthand_attested,relationship_disclosure,status,published_at) VALUES(gid,actor,p_quality,p_intensity,p_rebook,btrim(p_body),true,p_relationship,'pending',NULL) RETURNING id INTO rid;
  RETURN jsonb_build_object('id',rid,'status','pending');
 END $$;
@@ -67,7 +67,7 @@ BEGIN
  PERFORM pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended(actor::text, 84012));
  SELECT c.id INTO cid FROM public.guide_claims c WHERE c.claimant_id=actor AND c.guide_id=gid AND c.status='pending' ORDER BY c.created_at DESC LIMIT 1;
  IF cid IS NOT NULL THEN RETURN jsonb_build_object('id',cid,'status','pending','existing',true); END IF;
- IF (SELECT count(*) FROM public.guide_claims c WHERE c.claimant_id=actor AND c.created_at>now()-interval '24 hours')>=3 THEN RAISE EXCEPTION 'Claim limit reached' USING ERRCODE='P0001'; END IF;
+ IF (SELECT count(*) FROM public.guide_claims c WHERE c.claimant_id=actor AND c.created_at>now()-interval '24 hours')>=3 THEN RAISE EXCEPTION 'Claim limit reached' USING ERRCODE='P4290'; END IF;
  INSERT INTO public.guide_claims(guide_id,claimant_id,status) VALUES(gid,actor,'pending') RETURNING id INTO cid;
  INSERT INTO public.claim_evidence(claim_id,claimant_name,business_name,public_evidence) VALUES(cid,btrim(p_name),btrim(coalesce(p_business,'')),btrim(p_evidence));
  RETURN jsonb_build_object('id',cid,'status','pending','existing',false);
