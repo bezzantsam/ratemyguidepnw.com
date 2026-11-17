@@ -76,10 +76,11 @@ export async function runIsolated({repo,tree,mode,browser,signal,hooks={}}){
    const userConfig=join(dir,'.npm-user-config'),globalConfig=join(dir,'.npm-global-config');
    await writeFile(userConfig,'');await writeFile(globalConfig,'');
    const env={PATH:process.env.PATH||'',TMPDIR:dir,CI:'true',NEXT_TELEMETRY_DISABLED:'1',npm_config_cache:join(dir,'.npm-cache'),npm_config_userconfig:userConfig,npm_config_globalconfig:globalConfig,NEXT_PUBLIC_SUPABASE_URL:backend.url,NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:'local-test-key',RC_SECRET_CANARY:'rc-secret-canary-27f7bf9015',BROWSER_SCREENSHOT_DIR:process.env.BROWSER_SCREENSHOT_DIR||'',BROWSER_EXECUTABLE:browser,TEST_API_URL:backend.url};
-   await (hooks.command??command)('npm',['install','--no-audit','--no-fund'],dir,env,signal);
+   await (hooks.command??command)('npm',['ci','--no-audit','--no-fund'],dir,env,signal);
    await (hooks.command??command)('npm',['run','build'],dir,env,signal);
    app=await (hooks.launchApp??launchApp)(dir,env,signal);
    env.TEST_BASE_URL=app.url;
+   if(mode==='ordinary')await (hooks.command??command)('node',['scripts/read-only-launch-smoke.mjs','--base-url',app.url],dir,env,signal);
    await (hooks.command??command)('node',['--test',mode==='synthetic'?'tests/mvp-browser.test.mjs':'tests/production-browser.test.mjs'],dir,env,signal);
    if(backend.writes())throw new Error('Mock backend received a write');
    if(backend.requests())throw new Error('Read-only directory unexpectedly contacted the unavailable backend');

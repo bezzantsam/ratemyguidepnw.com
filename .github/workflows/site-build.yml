@@ -18,9 +18,13 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
-      - name: Install website dependencies
-        run: npm install --no-audit --no-fund
+          node-version-file: .nvmrc
+      - name: Verify Node and committed dependency lock
+        run: npm run test:dependencies
+      - name: Install locked website dependencies
+        run: |
+          npm ci --no-audit --no-fund
+          git diff --exit-code -- package-lock.json
       - name: Verify public Chinook evidence and private data separation
         run: npm run test:intel
       - uses: actions/setup-python@v5

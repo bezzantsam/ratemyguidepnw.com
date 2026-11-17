@@ -1,0 +1,36 @@
+name: Read-only launch preparation
+
+on:
+  pull_request:
+    paths:
+      - 'app/page.tsx'
+      - 'app/layout.tsx'
+      - 'scripts/read-only-launch-smoke.mjs'
+      - 'scripts/browser-isolation.mjs'
+      - 'tests/read-only-launch-*.test.mjs'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.nvmrc'
+      - 'scripts/check-release-dependencies.mjs'
+      - 'tests/release-dependencies.test.mjs'
+      - 'vercel.json'
+      - '.github/workflows/read-only-launch-prep.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  launch-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: Verify frozen dependency contract without network access
+        run: npm run test:dependencies
+      - name: Test GET-only smoke runner and public scope boundaries
+        run: npm run test:launch

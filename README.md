@@ -1,64 +1,46 @@
-# RateMyGuidePNW — Phase 1 Starter
+# RateMyGuidePNW — read-only directory launch candidate
 
-Independent Pacific Northwest fishing-guide review directory, built with Next.js App Router, TypeScript, and a Supabase PostgreSQL migration.
+Independent Oregon and Washington fishing-guide discovery, built with Next.js App Router and TypeScript. Registry listings and attributed business information are not current license verification, personal endorsements, ownership verification or booking availability.
 
-**Pre-launch product.** The directory now contains real Oregon and Washington registry-source listings, but they are **not** current license verification, confirmed guide endorsements or proof of Buoy 10 Chinook operations. The site includes Supabase-backed review/auth/moderation components; production readiness, review authenticity and administrator bootstrap still require validation. No fictional ratings are passed off as real. This repository is PUBLIC: never commit credentials.
+**Pre-launch, read-only scope:** search, filtering, stable profile links and listing-source explanations are available in the candidate. Reviews, profile claims, moderation, owner edits and media uploads are unavailable. The ordinary directory must work without a live backend. This application restriction does not prove the separately hosted database or API is secure. Never commit credentials to this public repository.
 
-## Local development
+## Local development and validation
 
-```bash
-npm install
-npm run typecheck
+Use **Node 22.x** (declared in `.nvmrc` and `package.json`). The committed npm v3 lockfile records the dependency graph; routine installation must not resolve a new one.
+
+```sh
+node --version
+npm run verify:dependencies
+npm ci --no-audit --no-fund
 npm run dev
-# Open http://localhost:3000
-npm run build
+# Open the actual local URL printed by Next.js.
+npm run check
+npm run test:isolation
 ```
 
-**Build integrity:** `npm run check` runs the Chinook public-release evidence tests, TypeScript check and production build. The directory uses static registry records, while live published-review components use their separate Supabase project when configured.
+`verify:dependencies` runs offline. `test:dependencies` checks missing/stale locks, runtime agreement, registry/integrity metadata and install-path boundaries. `check` includes dependency, scientific-data, directory/identity, launch-smoke, TypeScript and production-build checks. Every build runs the offline dependency guard first. These checks are not a complete security audit or editorial approval.
 
-## Routes
+## Public application scope
 
-- `/` — landing page with sample waterways and review feed
-- `/guides` and `/guides/[slug]` — directory and sample guide details
-- `/waterways` and `/waterways/[slug]` — fishery directory
-- `/reviews` — fictional review feed
-- `/about` — mission and pre-launch status
+- `/` and `/guides`: guide discovery and URL-backed filters.
+- `/guides/[slug]`: Oregon source-record profiles.
+- `/washington` and `/washington/[id]`: Washington directory and stable source-record profiles.
+- `/guides/verification`: explanations of evidence and unavailable verification.
+- `/waterways` and `/waterways/[slug]`: source-context browsing.
+- `/reviews`, `/claim/[id]` and `/admin`: explicit unavailable states, not working submission or moderation interfaces.
+- `/about`: mission and pre-launch context.
 
-## Database
+The directory uses static registry data, not a live licensing lookup or a completed database import. The Oregon source has 1,027 registrations. Washington source allocations and unresolved cross-state links are governed by separate tests; matching names alone must not merge people. No guide ratings are invented.
 
-`supabase/migrations/0001_initial.sql` provides initial region, waterway, guide, review, identity-claim and moderation tables with read-only public RLS policies, plus rating-refresh logic. Review migration, roles, definer functions and policies with a database/security engineer before deploying to production. No browser-side insert/update/delete policies are provided by design.
+## Separate research and editorial work
 
-## Next milestones
+Chrome.ai remains a separate research/ML portfolio project. Legacy `/intel/*` pages, public-source datasets and scientific checks remain preserved in this repository; research promotion has been removed from the RMG homepage/navigation. This is not a claim that every legacy route has already been extracted. Historical implementation records remain in Git history and `docs/chinook-intel-integration.md`. Public historical source provenance is recorded in `docs/chinook-2026-source-audit.md`; it is not prospective forecast skill.
 
-1. Validate CI and Vercel preview of the Chinook Intel page without private Chrome-AI credentials.
-2. Finish real user authentication, review submission and moderator/administrator acceptance tests; enhance fraud safeguards and human escalation.
-3. Review the production security checklist and choose a commercial-compliant Vercel plan before charging.
-4. Separately authorize an approved aggregate-data release pipeline from private Chrome-AI, never direct database merging.
-5. Only then consider GoDaddy DNS changes. Do not point the custom domain at unfinished review or research experiences.
+Pending research, held observations and proposed Washington identities do not become approved facts through a build or merge. The offline editorial workflow and clearly labeled disposable preview are documented in `docs/qa/editorial-review-workflow.md` and `docs/qa/editorial-visual-rehearsal.md`. Optional later research PRs are not silently included in this candidate.
 
-No API keys or secrets are committed. Only `.env.example` placeholders are included.
+## Isolated browser validation
 
-## Oregon registry integration (2026-11-01)
-
-The web directory now reads `lib/oregon-guides.json` with **1,027** unique registrations extracted from the uploaded `oregon_fishing_guides.csv`. Fields retained in this public repository: name, registration ID, business name, website as unlinked text, service areas, activity, and CSV registration status. No phone numbers or emails are committed. The directory supports client-side search by name, outfit, registration and service area. Each guide has a stable individual page under `/guides/og-...` and a draft 'Are you this captain?' message. No ownership claim function is active.
-
-**Important:** this is a static JSON-backed registry directory, not a Supabase database import. The uploaded file's ACTIVE status is not real-time license verification. The original CSV's service areas are broad regulatory regions, not evidence a guide fishes a particular named river. Review functionality, ratings and captain verification are not live.
-
-Deployment and build validation are pending Vercel/Supabase connection and a network-enabled build environment.
-
-## Chrome-AI × RateMyGuidePNW Chinook Intel V1 (November 13, 2026)
-
-The site now has a source-backed, methodology-only **[Buoy 10 Chinook Intel](/intel/buoy-10-chinook)** page. It displays the first five actual WDFW preliminary sample days from August 2026, the official source and count denominators, a 2027 seven-day forecast evaluation disclosure, and a searchable subset of real Lower Columbia River-area registry listings. **No private 2027 model predictions, unreviewed scoring claims or fabricated guide reviews are displayed.**
-
-The core Chrome-AI repo, models and forecasts remain **private and separate**. See [the integration design](docs/chinook-intel-integration.md). The website presents approved public evidence alongside a completely separate customer-review trust lane.
-
-### Approved historical Chinook expansion
-
-The August 2026 WDFW report has now been independently compared against the original archived source (all 31 dates and sampled totals), and the August 25 hatchery-Chinook rule was cross-checked against Washington's emergency order. The extended **1,373 retained Chinook / 5,087 sampled anglers** sample table is in a **separate, SHA-pinned, reviewed 2026 dataset** for production. The source bot's continuously updated review PR remains open; new agency changes never replace this public historical release automatically. This remains **preliminary agency sample data**, not individual catch odds or verified 2027 ML performance. See [audit details](docs/chinook-2026-source-audit.md).
-
-### Isolated MVP browser regression
-
-Install the project dependencies and choose a local Chromium or Chrome executable. The runner requires an explicit Git tree object: it copies only tracked source from that tree, excluding environment files, into a disposable workspace. It installs its own dependencies, starts a private dummy backend and app server on separate assigned ports, and cleans up afterward. It does not use the checkout’s `.next` output or live credentials.
+Choose a local Chromium/Chrome executable and an explicit Git tree. The runners copy tracked source, excluding credentials and local environment files, into disposable workspaces. Each uses `npm ci`, its own dummy backend and app ports, and its own cleanup. No shared `.next` output or live credentials are used.
 
 ```sh
 TREE=$(git rev-parse 'HEAD^{tree}')
@@ -66,4 +48,10 @@ BROWSER_EXECUTABLE='/path/to/chrome' node scripts/browser-isolation.mjs ordinary
 BROWSER_EXECUTABLE='/path/to/chrome' bash scripts/build-fixture-browser.sh "$TREE"
 ```
 
-To test intentional staged changes before committing, use `TREE=$(git write-tree)` instead. Unstaged and untracked files are excluded; stage only the changes intended for that snapshot. The synthetic mode uses visibly labeled test records only inside its disposable workspace. Never deploy a fixture build. The extended Batch 13 proposal is checked with `python3 scripts/extended_enrichment_proposal.py --check`; it does not authorize publication.
+For deliberately staged changes, `git write-tree` supplies the test tree; unstaged/untracked work is excluded. Synthetic builds are test-only and must never be deployed.
+
+## Release boundary
+
+See `docs/qa/read-only-launch-handoff.md` and `docs/qa/dependency-reproducibility.md`. Vercel's repository engine override selects Node 22.x for a future authorized deployment, with a frozen install command. Its minor/patch versions remain platform-managed; no existing hosted deployment or setting is changed by these files.
+
+Before release, review the exact candidate and CI evidence, confirm the intended hosting project/domain and rollback target, and obtain explicit merge/deployment/indexing approval. The candidate remains pre-launch/noindex. Backend migrations and local authorization/storage proposals are separate work: do not apply them or enable writes as part of the directory release.
