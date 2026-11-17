@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - codex/rmg-backend-synthetic-ci-20261117
+  pull_request:
+    branches:
+      - codex/beta-completion
 permissions:
   contents: read
 jobs:
