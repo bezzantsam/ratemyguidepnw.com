@@ -21,6 +21,9 @@ python3 "$root/tests/backend-launch/reconstruct.py" > "$tmp/schema.sql"
 python3 "$root/tests/backend-launch/assemble-reporting-migration.py" > "$tmp/reporting-body.sql"
 cmp "$tmp/reporting-body.sql" "$root/supabase/review-candidates/review-reporting-migration-body.sql"
 "${ps[@]}" -1 -f "$tmp/reporting-body.sql" >/dev/null
+python3 "$root/tests/backend-launch/assemble-month-recovery-migration.py" > "$tmp/month-body.sql"
+cmp "$tmp/month-body.sql" "$root/supabase/review-candidates/review-month-recovery-migration-body.sql"
+"${ps[@]}" -1 -f "$tmp/month-body.sql" >/dev/null
 "${ps[@]}" >/dev/null <<'SQL'
 SET ROLE authenticated;
 SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000002',false);
@@ -35,7 +38,24 @@ BEGIN;
 \i '$root/tests/backend-launch/revisions.sql'
 ROLLBACK;
 SQL
+"${ps[@]}" >/dev/null <<SQL
+BEGIN;
+\i '$root/tests/backend-launch/month-recovery.sql'
+ROLLBACK;
+SQL
 "${ps[@]}" -c "INSERT INTO rmg_private.guide_identity_map(jurisdiction,source_id,guide_id,reviewed_at,review_reference) VALUES ('OR','fixture-one','10000000-0000-0000-0000-000000000001',now(),'fixture'),('OR','fixture-two','10000000-0000-0000-0000-000000000002',now(),'fixture');" >/dev/null
+"${ps[@]}" >/dev/null <<'SQL'
+BEGIN READ ONLY;
+SET ROLE anon;
+SELECT public.fixture_assert(NOT (public.rmg_review_write_availability('OR','fixture-one')->>'available')::boolean,'read-only transaction is not reported writable');
+ROLLBACK;
+SQL
+if [[ -n "${RMG_INDEPENDENT_SQL_DIR:-}" ]]; then
+ for name in independent-boundaries.sql independent-privacy-gate.sql; do
+  [[ -f "$RMG_INDEPENDENT_SQL_DIR/$name" ]] || { echo 'Missing independent QA assertion file' >&2; exit 1; }
+  "${ps[@]}" -f "$RMG_INDEPENDENT_SQL_DIR/$name" >/dev/null
+ done
+fi
 "${ps[@]}" -f "$root/tests/backend-launch/reporting.sql"
 # Two sessions deliberately overlap a retry against the same actor/review.
 cat > "$tmp/first.sql" <<'SQL'
@@ -93,3 +113,5 @@ PY
 fi
 "${ps[@]}" -f "$root/supabase/review-candidates/disable-review-reporting.sql" >/dev/null
 "${ps[@]}" -c "SELECT public.fixture_assert(NOT has_function_privilege('authenticated','public.rmg_report_review(text,text,uuid,text)','EXECUTE') AND (SELECT count(*)>=12 FROM public.review_flags),'emergency reporting disable revokes access and retains reports');"
+"${ps[@]}" -f "$root/supabase/review-candidates/disable-review-v26.sql" >/dev/null
+"${ps[@]}" -c "SELECT public.fixture_assert(NOT has_function_privilege('authenticated','public.rmg_submit_review_v2(text,text,smallint,smallint,boolean,text,boolean,text,jsonb,text)','EXECUTE') AND (SELECT count(*)>=14 FROM public.reviews),'v2.6 disable revokes access and retains reviews');"
