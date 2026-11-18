@@ -17,6 +17,7 @@ RESET ROLE;
 SET ROLE authenticated;
 SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000004',false);
 SELECT public.fixture_assert(jsonb_array_length(public.rmg_revision_queue(0,100))=1,'authorized operator receives pending revision');
+SELECT public.fixture_assert(public.rmg_revision_queue(0,100)->0->>'guide_name'='Fixture two' AND public.rmg_revision_queue(0,100)->0->>'jurisdiction'='OR' AND public.rmg_revision_queue(0,100)->0->>'source_id'='fixture-2' AND NOT (public.rmg_revision_queue(0,100)->0 ? 'submitter_id'),'revision queue identifies mapped guide without exposing submitter ID');
 SELECT public.rmg_decide_revision(current_setting('tests.revision_id')::uuid,true,'Independent review of proposed edit');
 RESET ROLE;
 SET ROLE anon;

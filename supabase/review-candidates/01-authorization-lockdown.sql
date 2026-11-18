@@ -55,7 +55,9 @@ DECLARE actor uuid := auth.uid(); target public.reviews%ROWTYPE;
 BEGIN
  IF actor IS NULL OR NOT public.is_site_admin() THEN RAISE EXCEPTION 'Not authorized'; END IF;
  IF NOT EXISTS(SELECT 1 FROM auth.users u WHERE u.id=actor AND u.email_confirmed_at IS NOT NULL AND NOT coalesce(u.is_anonymous,false) AND u.deleted_at IS NULL) THEN RAISE EXCEPTION 'Not authorized'; END IF;
+ IF NOT COALESCE((SELECT enabled FROM rmg_private.launch_control WHERE singleton),false) THEN RAISE EXCEPTION 'Unavailable' USING ERRCODE='P5030'; END IF;
  IF p_approve IS NULL THEN RAISE EXCEPTION 'Decision required'; END IF;
+ IF length(coalesce(p_reason,''))>500 THEN RAISE EXCEPTION 'Invalid reason'; END IF;
  IF p_approve AND length(btrim(coalesce(p_reason,''))) < 20 THEN RAISE EXCEPTION 'Record manual review evidence'; END IF;
  SELECT * INTO target FROM public.reviews WHERE id=p_id FOR UPDATE;
  IF NOT FOUND THEN RAISE EXCEPTION 'Not found'; END IF;
@@ -75,7 +77,9 @@ DECLARE actor uuid := auth.uid(); gid uuid; target public.guide_claims%ROWTYPE;
 BEGIN
  IF actor IS NULL OR NOT public.is_site_admin() THEN RAISE EXCEPTION 'Not authorized'; END IF;
  IF NOT EXISTS(SELECT 1 FROM auth.users u WHERE u.id=actor AND u.email_confirmed_at IS NOT NULL AND NOT coalesce(u.is_anonymous,false) AND u.deleted_at IS NULL) THEN RAISE EXCEPTION 'Not authorized'; END IF;
+ IF NOT COALESCE((SELECT enabled FROM rmg_private.launch_control WHERE singleton),false) THEN RAISE EXCEPTION 'Unavailable' USING ERRCODE='P5030'; END IF;
  IF p_approve IS NULL THEN RAISE EXCEPTION 'Decision required'; END IF;
+ IF length(coalesce(p_reason,''))>500 THEN RAISE EXCEPTION 'Invalid reason'; END IF;
  IF p_approve AND length(btrim(coalesce(p_reason,''))) < 20 THEN RAISE EXCEPTION 'Record manual ownership verification'; END IF;
  SELECT guide_id INTO gid FROM public.guide_claims WHERE id=p_id;
  IF gid IS NULL THEN RAISE EXCEPTION 'Not found'; END IF;

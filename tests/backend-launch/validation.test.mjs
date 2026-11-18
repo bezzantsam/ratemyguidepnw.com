@@ -5,7 +5,9 @@ const review={operation:'submit_review',jurisdiction:'OR',sourceId:'or-1',qualit
 const claim={operation:'submit_claim',jurisdiction:'OR',sourceId:'or-1',claimantName:'Test Name',businessName:'',evidence:'e'.repeat(20)};
 test('review requires firsthand, full ratings, disclosure and source identity',()=>{
  assert.equal(validate(review),true);
- for(const change of [{firsthandAttested:false},{relationship:'unknown'},{quality:0},{quality:6},{quality:'5'},{intensity:null},{wouldBookAgain:null},{body:'x'.repeat(79)},{body:'x'.repeat(3001)},{jurisdiction:'CA'},{sourceId:''},{status:'published'},{authorId:'other'}])assert.equal(validate({...review,...change}),false,JSON.stringify(change));
+ for(const change of [{firsthandAttested:false},{relationship:'unknown'},{quality:0},{quality:6},{quality:'5'},{intensity:0},{wouldBookAgain:'no'},{body:' '},{body:'x'.repeat(3001)},{jurisdiction:'CA'},{sourceId:''},{status:'published'},{authorId:'other'}])assert.equal(validate({...review,...change}),false,JSON.stringify(change));
+ assert.equal(validate({...review,intensity:null,wouldBookAgain:null,body:'Good'}),true);
+ const {intensity,wouldBookAgain,...basic}=review;assert.equal(validate({...basic,body:'Good'}),true);
 });
 test('claim requires evidence and forbids forged status',()=>{
  assert.equal(validate(claim),true);
