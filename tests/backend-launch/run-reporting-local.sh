@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+set -euo pipefail
+root=$(cd "$(dirname "$0")/../.." && pwd)
+available=$(df -Pk "${TMPDIR:-/tmp}" | awk 'NR==2 {print $4}')
+[[ "$available" =~ ^[0-9]+$ && "$available" -ge 153600 ]] || { echo 'Need at least 150 MiB free for one disposable PostgreSQL fixture' >&2; exit 1; }
+tmp=$(mktemp -d "${TMPDIR:-/tmp}/rmg-report-06.XXXXXXXX")
+started=0
+postgrest_pid=''
+cleanup() { if [[ -n "$postgrest_pid" ]]; then kill "$postgrest_pid" 2>/dev/null || true; wait "$postgrest_pid" 2>/dev/null || true; fi; if [[ "$started" == 1 ]]; then pg_ctl -D "$tmp/data" -m immediate -w stop >/dev/null; fi; rm -rf -- "$tmp"; }
+trap cleanup EXIT
+unset PGHOST PGHOSTADDR PGPORT PGDATABASE PGUSER PGPASSWORD PGSERVICE PGSERVICEFILE PGOPTIONS PGSSLMODE
+initdb -D "$tmp/data" --username=audit_owner --auth=trust --no-locale >/dev/null
+pg_ctl -D "$tmp/data" -o "-c listen_addresses='' -c unix_socket_directories='$tmp' -p 55443" -w start >/dev/null
+started=1
+ps=(psql -X -v ON_ERROR_STOP=1 -h "$tmp" -p 55443 -U audit_owner -d postgres)
+python3 "$root/tests/backend-launch/reconstruct.py" > "$tmp/schema.sql"
+"${ps[@]}" -f "$tmp/schema.sql" >/dev/null
+"${ps[@]}" -f "$root/tests/backend-launch/fixtures.sql" >/dev/null
+"${ps[@]}" -c "ALTER TABLE auth.users ADD COLUMN email_confirmed_at timestamptz, ADD COLUMN is_anonymous boolean NOT NULL DEFAULT false, ADD COLUMN deleted_at timestamptz; UPDATE auth.users SET email_confirmed_at=now(); CREATE TABLE public.review_flags(id uuid PRIMARY KEY DEFAULT gen_random_uuid(), review_id uuid NOT NULL REFERENCES public.reviews(id), reporter_id uuid NOT NULL REFERENCES auth.users(id), reason text NOT NULL, created_at timestamptz NOT NULL DEFAULT now(), UNIQUE(review_id,reporter_id)); ALTER TABLE public.review_flags ENABLE ROW LEVEL SECURITY; GRANT ALL ON public.review_flags TO anon,authenticated;" >/dev/null
+"${ps[@]}" -f "$root/supabase/review-candidates/launch-combined.sql" >/dev/null
+python3 "$root/tests/backend-launch/assemble-reporting-migration.py" > "$tmp/reporting-body.sql"
+cmp "$tmp/reporting-body.sql" "$root/supabase/review-candidates/review-reporting-migration-body.sql"
+"${ps[@]}" -1 -f "$tmp/reporting-body.sql" >/dev/null
+"${ps[@]}" >/dev/null <<'SQL'
+SET ROLE authenticated;
+SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000002',false);
+DO $$BEGIN BEGIN PERFORM public.rmg_report_review('OR','fixture-one','30000000-0000-0000-0000-000000000001','other'); RAISE EXCEPTION 'disabled report unexpectedly succeeded'; EXCEPTION WHEN SQLSTATE 'P5030' THEN NULL; END; END$$;
+SQL
+"${ps[@]}" -c "UPDATE rmg_private.launch_control SET enabled=true WHERE singleton;" >/dev/null
+# Run the existing authorization, revision, ratings and identity checks after
+# the additive migration, then discard their synthetic writes before reporting tests.
+"${ps[@]}" >/dev/null <<SQL
+BEGIN;
+\i '$root/tests/backend-launch/access.sql'
+\i '$root/tests/backend-launch/revisions.sql'
+ROLLBACK;
+SQL
+"${ps[@]}" -c "INSERT INTO rmg_private.guide_identity_map(jurisdiction,source_id,guide_id,reviewed_at,review_reference) VALUES ('OR','fixture-one','10000000-0000-0000-0000-000000000001',now(),'fixture'),('OR','fixture-two','10000000-0000-0000-0000-000000000002',now(),'fixture');" >/dev/null
+"${ps[@]}" -f "$root/tests/backend-launch/reporting.sql"
+# Two sessions deliberately overlap a retry against the same actor/review.
+cat > "$tmp/first.sql" <<'SQL'
+SET ROLE authenticated;
+SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000003',false);
+BEGIN;
+SELECT public.rmg_report_review('OR','rate-1','70000000-0000-0000-0000-000000000001','other');
+SELECT pg_sleep(3);
+COMMIT;
+SQL
+cat > "$tmp/second.sql" <<'SQL'
+SET ROLE authenticated;
+SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000003',false);
+SELECT public.rmg_report_review('OR','rate-1','70000000-0000-0000-0000-000000000001','other');
+SQL
+PGAPPNAME=rmg_report_first "${ps[@]}" -qAt -f "$tmp/first.sql" > "$tmp/first.log" 2>&1 & first=$!
+ready=0
+for attempt in {1..100}; do
+ if [[ $("${ps[@]}" -Atc "SELECT count(*) FROM pg_stat_activity WHERE application_name='rmg_report_first' AND wait_event='PgSleep'") == 1 ]]; then ready=1; break; fi
+ if ! kill -0 "$first" 2>/dev/null; then break; fi
+ sleep 0.02
+done
+[[ "$ready" == 1 ]] || { wait "$first" || true; echo 'First report transaction did not reach overlap' >&2; exit 1; }
+PGAPPNAME=rmg_report_second "${ps[@]}" -qAt -f "$tmp/second.sql" > "$tmp/second.log" 2>&1 & second=$!
+blocked=0
+for attempt in {1..100}; do
+ if [[ $("${ps[@]}" -Atc "SELECT count(*) FROM pg_stat_activity WHERE application_name='rmg_report_second' AND cardinality(pg_blocking_pids(pid))>0") == 1 ]]; then blocked=1; break; fi
+ if ! kill -0 "$second" 2>/dev/null; then break; fi
+ sleep 0.02
+done
+[[ "$blocked" == 1 ]] || { wait "$second" || true; wait "$first" || true; echo 'Retry did not block behind first transaction' >&2; exit 1; }
+wait "$first"
+wait "$second"
+grep -q '"existing": true' "$tmp/second.log"
+"${ps[@]}" -c "SELECT public.fixture_assert((SELECT count(*)=1 FROM public.review_flags WHERE reporter_id='00000000-0000-0000-0000-000000000003' AND review_id='70000000-0000-0000-0000-000000000001'),'concurrent report retries persist one row');"
+if [[ -n "${RMG_REPORT_POSTGREST:-}" ]]; then
+ [[ -x "$RMG_REPORT_POSTGREST" ]] || { echo 'PostgREST executable not found' >&2; exit 1; }
+ "${ps[@]}" >/dev/null <<'SQL'
+CREATE OR REPLACE FUNCTION auth.uid() RETURNS uuid LANGUAGE sql STABLE AS $$SELECT coalesce(nullif(current_setting('request.jwt.claim.sub',true),''),nullif(current_setting('request.jwt.claims',true),'')::jsonb->>'sub')::uuid$$;
+SQL
+ port=$(python3 -c 'import socket; s=socket.socket(); s.bind(("127.0.0.1",0)); print(s.getsockname()[1]); s.close()')
+ secret=$(python3 -c 'import secrets;print(secrets.token_urlsafe(48))')
+ db_uri=$(python3 -c 'import sys,urllib.parse; print("postgresql://audit_owner@/postgres?host="+urllib.parse.quote(sys.argv[1],safe="")+"&port=55443")' "$tmp")
+ DYLD_FALLBACK_LIBRARY_PATH="${RMG_REPORT_PQ_LIB_DIR:-}" PGRST_DB_URI="$db_uri" PGRST_DB_SCHEMAS=public PGRST_DB_ANON_ROLE=anon PGRST_JWT_SECRET="$secret" PGRST_SERVER_HOST=127.0.0.1 PGRST_SERVER_PORT="$port" "$RMG_REPORT_POSTGREST" >"$tmp/postgrest.log" 2>&1 & postgrest_pid=$!
+ if ! RMG_REPORT_TEST_URL="http://127.0.0.1:$port" RMG_REPORT_TEST_SECRET="$secret" python3 "$root/tests/backend-launch/reporting-http.py"; then
+  RMG_REPORT_LOG="$tmp/postgrest.log" RMG_REPORT_TEST_SECRET="$secret" python3 - <<'PY'
+import os,pathlib,re
+s=pathlib.Path(os.environ['RMG_REPORT_LOG']).read_text(errors='replace').replace(os.environ['RMG_REPORT_TEST_SECRET'],'[redacted]')
+s=re.sub(r'(?i)bearer\s+\S+','Bearer [redacted]',s)
+for line in s.splitlines()[-8:]: print(line[:500])
+PY
+  exit 1
+ fi
+ kill "$postgrest_pid"; wait "$postgrest_pid" || true; postgrest_pid=''
+fi
+"${ps[@]}" -f "$root/supabase/review-candidates/disable-review-reporting.sql" >/dev/null
+"${ps[@]}" -c "SELECT public.fixture_assert(NOT has_function_privilege('authenticated','public.rmg_report_review(text,text,uuid,text)','EXECUTE') AND (SELECT count(*)>=12 FROM public.review_flags),'emergency reporting disable revokes access and retains reports');"
