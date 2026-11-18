@@ -18,15 +18,16 @@ ALTER TABLE rmg_private.guide_identity_map ENABLE ROW LEVEL SECURITY;
 REVOKE ALL ON rmg_private.guide_identity_map FROM PUBLIC, anon, authenticated;
 ALTER TABLE public.reviews ADD COLUMN firsthand_attested boolean NOT NULL DEFAULT false;
 ALTER TABLE public.reviews ADD COLUMN relationship_disclosure text;
+ALTER TABLE public.reviews ADD COLUMN trip_responses jsonb;
 ALTER TABLE public.reviews ADD CONSTRAINT reviews_relationship_disclosure_check
  CHECK (relationship_disclosure IS NULL OR relationship_disclosure IN ('none','personal','financial','other'));
-GRANT SELECT (relationship_disclosure) ON public.reviews TO anon,authenticated;
+GRANT SELECT (relationship_disclosure,trip_responses) ON public.reviews TO anon,authenticated;
 CREATE OR REPLACE VIEW public.public_angler_reviews WITH (security_invoker=true) AS
  SELECT id,guide_id,quality,intensity,would_book_again,catch_outcome,body,trip_month,published_at,
- communication,professionalism,safety,equipment,knowledge,effort,value_rating,trip_context,relationship_disclosure
+ communication,professionalism,safety,equipment,knowledge,effort,value_rating,trip_context,relationship_disclosure,trip_responses
  FROM public.reviews WHERE status='published' AND published_at IS NOT NULL;
 CREATE OR REPLACE VIEW public.admin_pending_reviews WITH (security_invoker=true) AS
- SELECT r.id,r.guide_id,g.full_name AS guide_name,r.body,r.quality,r.safety,r.communication,r.professionalism,r.created_at,r.trip_month,r.firsthand_attested,r.relationship_disclosure
+ SELECT r.id,r.guide_id,g.full_name AS guide_name,r.body,r.quality,r.safety,r.communication,r.professionalism,r.created_at,r.trip_month,r.firsthand_attested,r.relationship_disclosure,r.trip_responses
  FROM public.reviews r JOIN public.guides g ON g.id=r.guide_id
  WHERE r.status='pending' AND public.is_site_admin();
 GRANT SELECT (firsthand_attested) ON public.reviews TO authenticated;
@@ -46,17 +47,53 @@ BEGIN
  IF gid IS NULL THEN RAISE EXCEPTION 'Guide mapping unavailable' USING ERRCODE='P0002'; END IF;
  RETURN gid;
 END $$;
-CREATE FUNCTION rmg_private.submit_review(p_jurisdiction text,p_source_id text,p_quality smallint,p_intensity smallint,p_rebook boolean,p_body text,p_firsthand boolean,p_relationship text) RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path='' AS $$
+-- Optional, versioned, allowlisted answers. Absent keys mean unanswered;
+-- {state:not_applicable} is distinct from {state:answered,value:false or 1}.
+CREATE FUNCTION rmg_private.valid_trip_responses(doc jsonb) RETURNS boolean LANGUAGE plpgsql IMMUTABLE SET search_path='' AS $$
+DECLARE item record; answer jsonb; val jsonb; value_text text;
+BEGIN
+ IF doc IS NULL THEN RETURN true; END IF;
+ IF jsonb_typeof(doc) IS DISTINCT FROM 'object' THEN RETURN false; END IF;
+ IF doc->'version' IS DISTINCT FROM '1'::jsonb OR jsonb_typeof(doc->'answers') IS DISTINCT FROM 'object' THEN RETURN false; END IF;
+ IF EXISTS (SELECT 1 FROM jsonb_object_keys(doc) k WHERE k NOT IN ('version','answers')) THEN RETURN false; END IF;
+ FOR item IN SELECT key,value FROM jsonb_each(doc->'answers') LOOP
+  answer:=item.value;
+  IF item.key NOT IN ('target_species','setting','teaching_requested','teaching_experience','children_present','guide_patience','effort','attentiveness','organization','cleanliness','agreed_duration_minutes','actual_duration_minutes','duration_change_reason','response_slow_catch','dog_present','dog_previously_disclosed','conversation_preference','respect_for_boundaries') OR jsonb_typeof(answer) IS DISTINCT FROM 'object' THEN RETURN false; END IF;
+  IF EXISTS (SELECT 1 FROM jsonb_object_keys(answer) k WHERE k NOT IN ('state','value')) THEN RETURN false; END IF;
+  IF answer->>'state'='not_applicable' THEN IF answer ? 'value' THEN RETURN false; END IF; CONTINUE; END IF;
+  IF answer->>'state' IS DISTINCT FROM 'answered' OR NOT (answer ? 'value') THEN RETURN false; END IF;
+  val:=answer->'value'; value_text:=val #>> '{}';
+  IF item.key IN ('teaching_requested','children_present','dog_present','dog_previously_disclosed') THEN
+   IF jsonb_typeof(val)<>'boolean' THEN RETURN false; END IF;
+  ELSIF item.key IN ('teaching_experience','guide_patience','effort','attentiveness','organization','cleanliness','response_slow_catch','respect_for_boundaries') THEN
+   IF jsonb_typeof(val)<>'number' OR value_text !~ '^[1-5]$' THEN RETURN false; END IF;
+  ELSIF item.key IN ('agreed_duration_minutes','actual_duration_minutes') THEN
+   IF jsonb_typeof(val)<>'number' OR value_text !~ '^(0|[1-9][0-9]{0,3})$' THEN RETURN false; END IF;
+   IF value_text::integer>1440 THEN RETURN false; END IF;
+  ELSIF item.key='target_species' THEN
+   IF jsonb_typeof(val)<>'string' OR value_text NOT IN ('chinook','coho','steelhead','other','unknown') THEN RETURN false; END IF;
+  ELSIF item.key='setting' THEN
+   IF jsonb_typeof(val)<>'string' OR value_text NOT IN ('river','ocean','estuary','other','unknown') THEN RETURN false; END IF;
+  ELSIF item.key='duration_change_reason' THEN
+   IF jsonb_typeof(val)<>'string' OR value_text NOT IN ('weather','safety','customer_request','guide_decision','other','unknown') THEN RETURN false; END IF;
+  ELSIF item.key='conversation_preference' THEN
+   IF jsonb_typeof(val)<>'string' OR value_text NOT IN ('talkative','quiet','no_preference') THEN RETURN false; END IF;
+  END IF;
+ END LOOP;
+ RETURN true;
+END $$;
+ALTER TABLE public.reviews ADD CONSTRAINT reviews_trip_responses_v1_check CHECK (rmg_private.valid_trip_responses(trip_responses));
+CREATE FUNCTION rmg_private.submit_review(p_jurisdiction text,p_source_id text,p_quality smallint,p_intensity smallint,p_rebook boolean,p_body text,p_firsthand boolean,p_relationship text,p_trip_responses jsonb DEFAULT NULL) RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path='' AS $$
 DECLARE actor uuid := rmg_private.require_actor(); gid uuid; rid uuid;
 BEGIN
- IF p_quality IS NULL OR p_quality NOT BETWEEN 1 AND 5 OR p_intensity IS NULL OR p_intensity NOT BETWEEN 1 AND 5 OR p_rebook IS NULL OR p_body IS NULL OR char_length(btrim(p_body)) NOT BETWEEN 80 AND 3000 OR p_firsthand IS DISTINCT FROM true OR p_relationship IS NULL OR p_relationship NOT IN ('none','personal','financial','other') THEN RAISE EXCEPTION 'Invalid review' USING ERRCODE='22023'; END IF;
+ IF p_quality IS NULL OR p_quality NOT BETWEEN 1 AND 5 OR p_intensity IS NULL OR p_intensity NOT BETWEEN 1 AND 5 OR p_rebook IS NULL OR p_body IS NULL OR char_length(btrim(p_body)) NOT BETWEEN 80 AND 3000 OR p_firsthand IS DISTINCT FROM true OR p_relationship IS NULL OR p_relationship NOT IN ('none','personal','financial','other') OR NOT rmg_private.valid_trip_responses(p_trip_responses) THEN RAISE EXCEPTION 'Invalid review' USING ERRCODE='22023'; END IF;
  gid:=rmg_private.resolve_guide(p_jurisdiction,p_source_id);
  PERFORM pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended(actor::text, 84011));
  -- Serialize with claim approvals on the same guide before checking ownership.
  PERFORM 1 FROM public.guides WHERE id=gid FOR UPDATE;
  IF EXISTS(SELECT 1 FROM public.guide_claims c WHERE c.guide_id=gid AND c.claimant_id=actor AND c.status='approved') THEN RAISE EXCEPTION 'Owner cannot review own guide' USING ERRCODE='42501'; END IF;
  IF (SELECT count(*) FROM public.reviews r WHERE r.author_id=actor AND r.created_at>now()-interval '24 hours')>=3 THEN RAISE EXCEPTION 'Review limit reached' USING ERRCODE='P4290'; END IF;
- INSERT INTO public.reviews(guide_id,author_id,quality,intensity,would_book_again,body,firsthand_attested,relationship_disclosure,status,published_at) VALUES(gid,actor,p_quality,p_intensity,p_rebook,btrim(p_body),true,p_relationship,'pending',NULL) RETURNING id INTO rid;
+ INSERT INTO public.reviews(guide_id,author_id,quality,intensity,would_book_again,body,firsthand_attested,relationship_disclosure,trip_responses,status,published_at) VALUES(gid,actor,p_quality,p_intensity,p_rebook,btrim(p_body),true,p_relationship,p_trip_responses,'pending',NULL) RETURNING id INTO rid;
  RETURN jsonb_build_object('id',rid,'status','pending');
 END $$;
 CREATE FUNCTION rmg_private.submit_claim(p_jurisdiction text,p_source_id text,p_name text,p_business text,p_evidence text) RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path='' AS $$
@@ -97,16 +134,16 @@ CREATE FUNCTION public.rmg_review_summary(p_jurisdiction text,p_source_id text) 
  SELECT jsonb_build_object('count',count(*),'averageQuality',round(avg(quality)::numeric,2),'wouldBookAgainPercent',round(100.0*avg(would_book_again::int),2))
  FROM public.public_angler_reviews WHERE guide_id=rmg_private.resolve_guide($1,$2)
 $$;
-CREATE FUNCTION public.rmg_submit_review(p_jurisdiction text,p_source_id text,p_quality smallint,p_intensity smallint,p_rebook boolean,p_body text,p_firsthand boolean,p_relationship text) RETURNS jsonb LANGUAGE sql SECURITY INVOKER SET search_path='' AS $$SELECT rmg_private.submit_review($1,$2,$3,$4,$5,$6,$7,$8)$$;
+CREATE FUNCTION public.rmg_submit_review(p_jurisdiction text,p_source_id text,p_quality smallint,p_intensity smallint,p_rebook boolean,p_body text,p_firsthand boolean,p_relationship text,p_trip_responses jsonb DEFAULT NULL) RETURNS jsonb LANGUAGE sql SECURITY INVOKER SET search_path='' AS $$SELECT rmg_private.submit_review($1,$2,$3,$4,$5,$6,$7,$8,$9)$$;
 CREATE FUNCTION public.rmg_submit_claim(p_jurisdiction text,p_source_id text,p_name text,p_business text,p_evidence text) RETURNS jsonb LANGUAGE sql SECURITY INVOKER SET search_path='' AS $$SELECT rmg_private.submit_claim($1,$2,$3,$4,$5)$$;
 CREATE FUNCTION public.rmg_own_status(p_kind text,p_id uuid) RETURNS jsonb LANGUAGE sql SECURITY INVOKER SET search_path='' AS $$SELECT rmg_private.own_status($1,$2)$$;
 CREATE FUNCTION public.rmg_edit_details(p_jurisdiction text,p_source_id text,p_boat text,p_gear text,p_years smallint,p_expertise text,p_species text) RETURNS jsonb LANGUAGE sql SECURITY INVOKER SET search_path='' AS $$SELECT rmg_private.edit_details($1,$2,$3,$4,$5,$6,$7)$$;
 REVOKE ALL ON ALL FUNCTIONS IN SCHEMA rmg_private FROM PUBLIC,anon,authenticated;
 GRANT EXECUTE ON FUNCTION rmg_private.resolve_guide(text,text) TO anon,authenticated;
-GRANT EXECUTE ON FUNCTION rmg_private.submit_review(text,text,smallint,smallint,boolean,text,boolean,text),rmg_private.submit_claim(text,text,text,text,text),rmg_private.own_status(text,uuid),rmg_private.edit_details(text,text,text,text,smallint,text,text) TO authenticated;
-REVOKE ALL ON FUNCTION public.rmg_resolve_guide(text,text),public.rmg_review_summary(text,text),public.rmg_submit_review(text,text,smallint,smallint,boolean,text,boolean,text),public.rmg_submit_claim(text,text,text,text,text),public.rmg_own_status(text,uuid),public.rmg_edit_details(text,text,text,text,smallint,text,text) FROM PUBLIC,anon,authenticated;
+GRANT EXECUTE ON FUNCTION rmg_private.submit_review(text,text,smallint,smallint,boolean,text,boolean,text,jsonb),rmg_private.submit_claim(text,text,text,text,text),rmg_private.own_status(text,uuid),rmg_private.edit_details(text,text,text,text,smallint,text,text) TO authenticated;
+REVOKE ALL ON FUNCTION public.rmg_resolve_guide(text,text),public.rmg_review_summary(text,text),public.rmg_submit_review(text,text,smallint,smallint,boolean,text,boolean,text,jsonb),public.rmg_submit_claim(text,text,text,text,text),public.rmg_own_status(text,uuid),public.rmg_edit_details(text,text,text,text,smallint,text,text) FROM PUBLIC,anon,authenticated;
 GRANT EXECUTE ON FUNCTION public.rmg_resolve_guide(text,text),public.rmg_review_summary(text,text) TO anon,authenticated;
-GRANT EXECUTE ON FUNCTION public.rmg_submit_review(text,text,smallint,smallint,boolean,text,boolean,text),public.rmg_submit_claim(text,text,text,text,text),public.rmg_own_status(text,uuid),public.rmg_edit_details(text,text,text,text,smallint,text,text) TO authenticated;
+GRANT EXECUTE ON FUNCTION public.rmg_submit_review(text,text,smallint,smallint,boolean,text,boolean,text,jsonb),public.rmg_submit_claim(text,text,text,text,text),public.rmg_own_status(text,uuid),public.rmg_edit_details(text,text,text,text,smallint,text,text) TO authenticated;
 -- Grant only the already-hardened, authenticated operator functions; each
 -- function independently checks site_admins and the target state.
 GRANT EXECUTE ON FUNCTION public.admin_decide_review(uuid,boolean,text),public.admin_decide_claim(uuid,boolean,text) TO authenticated;

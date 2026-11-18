@@ -20,9 +20,10 @@ SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000003'
 DO $$BEGIN
  BEGIN PERFORM public.rmg_submit_review('OR','fixture-2',5::smallint,4::smallint,true,repeat('s',80),false,'none'); RAISE EXCEPTION 'missing attestation accepted'; EXCEPTION WHEN invalid_parameter_value THEN NULL; END;
  BEGIN PERFORM public.rmg_submit_review('OR','fixture-2',5::smallint,4::smallint,true,repeat('s',80),true,'fake'); RAISE EXCEPTION 'bad relationship accepted'; EXCEPTION WHEN invalid_parameter_value THEN NULL; END;
+ BEGIN PERFORM public.rmg_submit_review('OR','fixture-2',5::smallint,4::smallint,true,repeat('s',80),true,'none','{"version":1,"answers":{"religion":{"state":"answered","value":"x"}}}'::jsonb); RAISE EXCEPTION 'profiling field accepted'; EXCEPTION WHEN invalid_parameter_value THEN NULL; END;
  BEGIN INSERT INTO public.reviews(guide_id,author_id,quality,intensity,would_book_again,body,status) VALUES ('10000000-0000-0000-0000-000000000002','00000000-0000-0000-0000-000000000003',5,4,true,repeat('s',80),'published'); RAISE EXCEPTION 'direct write accepted'; EXCEPTION WHEN insufficient_privilege THEN NULL; END;
 END$$;
-SELECT public.fixture_assert((public.rmg_submit_review('OR','fixture-2',5::smallint,4::smallint,true,repeat('x',90),true,'personal')->>'status')='pending','review persisted pending with attestation and disclosure');
+SELECT public.fixture_assert((public.rmg_submit_review('OR','fixture-2',5::smallint,4::smallint,true,repeat('x',90),true,'personal','{"version":1,"answers":{"children_present":{"state":"answered","value":false},"guide_patience":{"state":"not_applicable"},"effort":{"state":"answered","value":1}}}'::jsonb)->>'status')='pending','review persisted pending with attestation and disclosure');
 SELECT public.fixture_assert((SELECT count(*)=1 FROM public.reviews WHERE status='published'),'pending review not published');
 SELECT public.fixture_assert((public.rmg_submit_claim('OR','fixture-1','Synthetic Name','',repeat('e',40))->>'status')='pending','claim persisted pending');
 SELECT public.fixture_assert((public.rmg_submit_claim('OR','fixture-1','Synthetic Name','',repeat('e',40))->>'existing')='true','duplicate pending claim returns existing receipt');
@@ -53,6 +54,7 @@ DO $$BEGIN
 END$$;
 RESET ROLE;
 SELECT public.fixture_assert((SELECT count(*)=1 FROM public.reviews WHERE author_id='00000000-0000-0000-0000-000000000003' AND guide_id='10000000-0000-0000-0000-000000000002' AND firsthand_attested AND relationship_disclosure='personal'),'attestation and relationship persisted');
+SELECT public.fixture_assert((SELECT trip_responses->'answers'->'children_present'->'value'='false'::jsonb AND trip_responses->'answers'->'guide_patience'->>'state'='not_applicable' AND NOT (trip_responses->'answers' ? 'dog_present') FROM public.reviews WHERE author_id='00000000-0000-0000-0000-000000000003' AND guide_id='10000000-0000-0000-0000-000000000002'),'false, not applicable, and missing remain distinct');
 SELECT public.fixture_assert((SELECT average_quality=5 AND review_count=1 FROM public.guides WHERE id='10000000-0000-0000-0000-000000000001'),'rating counts published reviews only');
 SELECT set_config('tests.review_id',(SELECT id::text FROM public.reviews WHERE author_id='00000000-0000-0000-0000-000000000003' AND guide_id='10000000-0000-0000-0000-000000000002'),false);
 SET ROLE authenticated;

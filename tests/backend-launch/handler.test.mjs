@@ -31,3 +31,15 @@ test('rate limits and ordinary database conflicts have distinct safe errors',asy
  let b=backend({rpcError:{code:'P4290',message:'private internal text'}}),r=await handleLaunch(req(review,'token'),b.factory,env);assert.equal(r.status,429);assert.deepEqual(await r.json(),{error:'rate_limited'});
  b=backend({rpcError:{code:'P0001',message:'private internal text'}});r=await handleLaunch(req(review,'token'),b.factory,env);assert.equal(r.status,409);assert.deepEqual(await r.json(),{error:'conflict'});
 });
+test('safe return rejects external destinations before configuration access',async()=>{
+ let r=await handleLaunch(req({operation:'safe_return',returnTo:'/guides/og-123?intent=review#write-review'}),()=>{throw Error('must not call')},{});
+ assert.equal(r.status,200);assert.deepEqual(await r.json(),{returnTo:'/guides/og-123?intent=review#write-review'});
+ r=await handleLaunch(req({operation:'safe_return',returnTo:'//evil.example/'}),()=>{throw Error('must not call')},{});assert.equal(r.status,400);
+});
+test('public review links bind a published review to the mapped guide',async()=>{
+ const calls=[];const row={id:'00000000-0000-0000-0000-000000000001',body:'published'};
+ const chain={select(v){calls.push(['select',v]);return this},eq(k,v){calls.push(['eq',k,v]);return this},async maybeSingle(){return {data:row,error:null}}};
+ const factory=()=>({rpc:async(name,p)=>{calls.push([name,p]);return {data:'mapped-uuid',error:null}},from:name=>{calls.push(['from',name]);return chain}});
+ const r=await handleLaunch(req({operation:'review_detail',jurisdiction:'OR',sourceId:'og-1',id:row.id}),factory,env);
+ assert.equal(r.status,200);assert.deepEqual(await r.json(),{review:row});assert.ok(calls.some(c=>c[0]==='eq'&&c[1]==='guide_id'&&c[2]==='mapped-uuid'));assert.ok(calls.some(c=>c[0]==='eq'&&c[1]==='id'&&c[2]===row.id));assert.ok(!calls.find(c=>c[0]==='select')[1].includes('author_id'));
+});
