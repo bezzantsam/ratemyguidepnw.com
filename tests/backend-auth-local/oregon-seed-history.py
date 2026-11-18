@@ -66,7 +66,10 @@ def rejected(expected):
                       'not found', 'failed to begin', 'failed to execute', 'statement timeout',
                       'migration history', 'migration up', 'authentication failed', 'lock timeout')
         seen = [item for item in categories if item in output]
-        raise SystemExit('CLI expected rejection missing: ' + expected + '; exit=' + str(result.returncode) + '; fixed diagnostic categories=' + ','.join(seen))
+        safe_words = set('error failed invalid unexpected found local remote database migration migrations version versions files directory pending applied must host address network connect refused running stack service timeout token too long scanner parse parsing read query execute script transaction statement could not create apply executing prior missing flag unknown unrecognized try rerun path use set empty no yes true false unhandled internal was the is a to of for and in with on at from up by before after because while'.split())
+        words = ' '.join(word for word in re.findall(r'[a-z]+', output) if word in safe_words)
+        states = ','.join(re.findall(r'(?i)sqlstate[ :]*([0-9a-z]{5})', output))
+        raise SystemExit('CLI expected rejection missing: ' + expected + '; exit=' + str(result.returncode) + '; fixed categories=' + ','.join(seen) + '; SQLSTATE=' + states + '; filtered diagnostic words=' + words[:800])
     if history(version) != '0': raise SystemExit('Rejected seed was recorded as applied')
 
 # Prerequisite only: exact launch body on reconstructed schema, without a hosted connection.
