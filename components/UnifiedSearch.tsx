@@ -6,13 +6,14 @@ import type {DirectoryEntry} from '@/lib/directory';
 import {filterDirectoryEntries,guideSearchScore} from '@/lib/directory-query';
 import DirectoryEmptyState from './DirectoryEmptyState';
 
-export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
+export default function UnifiedSearch({entries,reviewMode=false,reviewEnabled=false}:{entries:DirectoryEntry[];reviewMode?:boolean;reviewEnabled?:boolean}){
  const [selection,setSelection]=useState<DirectoryState>(DEFAULT_DIRECTORY_STATE);
  const [copyStatus,setCopyStatus]=useState('');
  const [fallback,setFallback]=useState(false);
  const resultsRef=useRef<HTMLDivElement>(null);
  const searchRef=useRef<HTMLInputElement>(null),areaRef=useRef<HTMLSelectElement>(null),waterRef=useRef<HTMLSelectElement>(null),speciesRef=useRef<HTMLSelectElement>(null),methodRef=useRef<HTMLSelectElement>(null),allRef=useRef<HTMLButtonElement>(null);
  const {query:q,state,area,waterway,species,method,page}=selection;
+ const routeBase=reviewMode?'/write-review':'/guides';
  const size=DIRECTORY_PAGE_SIZE;
  useEffect(()=>{
   function restore(){
@@ -34,7 +35,7 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
   }
  }
  async function copyLink(){
-  const url=window.location.origin+directoryUrl(selection);
+  const url=window.location.origin+routeBase+directoryUrl(selection).slice('/guides'.length);
   try{if(!navigator.clipboard?.writeText)throw new Error('Clipboard unavailable');await navigator.clipboard.writeText(url);setCopyStatus('Search link copied.');setFallback(false)}
   catch{setFallback(true);setCopyStatus('Copy the search link from the field below.')}
  }
@@ -58,7 +59,7 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
  const setRegion=(s:DirectoryState['state'])=>change({state:s,area:'All areas',waterway:'All advertised waters',species:'All species',method:'All methods',page:1});
 
  return <section className="directory-panel">
-  <h2>Find a captain</h2>
+  <h2>{reviewMode?'Find the guide you fished with':'Find a captain'}</h2>
   <p className="directory-source-disclosure">Imported location and registration fields are historical source categories, not confirmed fishing ports. Advertised fishing waters are a small, source-linked research pilot and do not certify active operations or licensing.</p>
   {entries.some(g=>g.testFixture)&&<p className="directory-source-disclosure">Synthetic test fixture — not a real offering.</p>}
   <div className="state-switch" aria-label="Filter guides by state">
@@ -94,7 +95,7 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
    <Link href={directoryUrl(selection)}>Open search in directory</Link>
    <button type="button" onClick={()=>change(DEFAULT_DIRECTORY_STATE)}>Clear all filters</button>
    <span role="status">{copyStatus}</span>
-   {fallback&&<label>Search link<input readOnly value={typeof window==='undefined'?'':window.location.origin+directoryUrl(selection)} onFocus={e=>e.currentTarget.select()}/></label>}
+   {fallback&&<label>Search link<input readOnly value={typeof window==='undefined'?'':window.location.origin+routeBase+directoryUrl(selection).slice('/guides'.length)} onFocus={e=>e.currentTarget.select()}/></label>}
   </div>
   {(q||state!=='All'||area!=='All areas'||waterway!=='All advertised waters'||species!=='All species'||method!=='All methods')&&<div className="active-filters" aria-label="Active filters"><strong>Active filters:</strong>
    {q&&<button type="button" onClick={()=>{change({query:'',page:1});searchRef.current?.focus()}}>Remove search: {q}</button>}
@@ -109,18 +110,18 @@ export default function UnifiedSearch({entries}:{entries:DirectoryEntry[]}){
   </div>
   <div className="guide-results">{filtered.slice((current-1)*size,current*size).map(g=>
    <div className="saved-guide-row" key={g.id}>
-    <Link className="guide-result" href={{pathname:g.href,query:{returnTo:directoryUrl(selection)}}}>
-     <div className="rating-tile"><strong>—</strong><span>Reviews unavailable</span></div>
+    <Link className="guide-result" href={reviewMode&&reviewEnabled?{pathname:g.href,query:{intent:'review'},hash:'write-review'}:{pathname:g.href,query:{returnTo:directoryUrl(selection)}}}>
+     <div className="rating-tile"><strong>—</strong><span>{reviewEnabled?'View reviews':'Reviews unavailable'}</span></div>
      <div className="guide-result-body">
       <div className="guide-result-top"><h3>{g.name}</h3>
        <span className="listing-chip">{g.states.join(' + ')}</span>
       </div>
       {(guideSearchScore(g,q)??0)>=60&&<p className="guide-meta"><strong>Similar spelling match</strong> · Confirm the person and business.</p>}
       <p className="outfit-name">{g.business||'Fishing guide'}</p>
-      {g.searchAliases.length>0&&<p className="guide-meta">Source-listed names (business or person): {g.searchAliases.join(' · ')}</p>}
+      {g.searchAliases.length>0&&<p className="guide-meta">Other names (business or person): {g.searchAliases.join(' · ')}</p>}
       {g.advertisedWaters.length>0&&<p className="guide-meta">Advertised waters (source-linked): {g.advertisedWaters.slice(0,3).join(' · ')}{g.advertisedWaters.length>3?' · + more':''}</p>}
       <p className="guide-meta">{g.source==='Oregon registry'?'Imported registration zones':'Imported directory areas / notes'}: {g.areas.slice(0,3).join(' · ')||'Not specified'}{g.areas.length>3?' · + more':''}</p>
-      <p className="guide-submeta">Imported source listing · Review data unavailable · Current credentials not independently checked</p>
+      <p className="guide-submeta">Imported source listing · {reviewEnabled?'See profile for reviews':'Review data unavailable'} · Current credentials not independently checked</p>
      </div><span className="result-chevron">›</span>
     </Link>
    </div>)}
