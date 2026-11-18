@@ -6,7 +6,7 @@ permissions:
   contents: read
 jobs:
   browser-auth:
-    if: "!contains(github.event.head_commit.message, '[auth-only]')"
+    if: "!contains(github.event.head_commit.message, '[auth-only]') && !contains(github.event.head_commit.message, '[seed-only]')"
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -32,7 +32,7 @@ jobs:
           export BROWSER_EXECUTABLE="$(node --input-type=module -e "import {chromium} from 'playwright-core'; console.log(chromium.executablePath())")"
           bash tests/backend-auth-local/run-ci.sh "$GITHUB_WORKSPACE/tests/independent-qa/independent-browser-local.py"
   readiness:
-    if: "!contains(github.event.head_commit.message, '[auth-only]')"
+    if: "!contains(github.event.head_commit.message, '[auth-only]') && !contains(github.event.head_commit.message, '[seed-only]')"
     runs-on: ubuntu-latest
     timeout-minutes: 10
     services:
@@ -87,3 +87,18 @@ jobs:
           RMG_FIXTURE_SCHEMA_ONLY: '1'
           RMG_FINAL_LAUNCH_FIXTURE: '1'
         run: bash tests/backend-auth-local/run-ci.sh "$GITHUB_WORKSPACE/tests/independent-qa/independent-auth-final.py"
+  seed-history-atomicity:
+    if: "contains(github.event.head_commit.message, '[seed-only]')"
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Verify independent assertion hash
+        run: echo 'a9d0e1f633c389eae08ad4074a2c47dc03199a8a8534ad52686bcfbb88b337c5  tests/independent-qa/independent-history-atomicity.py' | sha256sum --check
+      - name: Challenge seed and history atomicity in disposable Supabase
+        env:
+          RMG_FIXTURE_SCHEMA_ONLY: '1'
+          RMG_FINAL_LAUNCH_FIXTURE: '1'
+        run: bash tests/backend-auth-local/run-ci.sh "$GITHUB_WORKSPACE/tests/independent-qa/independent-history-atomicity.py"
