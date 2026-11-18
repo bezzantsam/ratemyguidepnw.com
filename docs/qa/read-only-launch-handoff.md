@@ -1,3 +1,5 @@
+> **Current direction (2026-11-17):** See [review-first architecture and backlog](../architecture/review-first-20261117.md). Rating a guide is the primary action; discovery and claims support it. This document records the historical read-only stage and does not establish acceptance of working reviews. Reconcile implementation only after active handoffs.
+
 # RMG read-only launch preparation
 
 ## Scope and checkpoint
