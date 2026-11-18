@@ -1,8 +1,6 @@
-name: Independent synthetic Storage HTTP QA
+name: Independent synthetic Storage HTTP QA (prior candidate)
 on:
-  pull_request:
-    branches:
-      - codex/beta-completion
+  workflow_dispatch:
 permissions:
   contents: read
 jobs:

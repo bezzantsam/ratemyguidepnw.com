@@ -78,6 +78,11 @@ test('own submission discovery accepts only valid actor-scoped receipts and pres
   const create=items=>createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async()=>response({items,offset:0,limit:50})});
   const [item]=await create([row]).mySubmissions();
   assert.equal(item.status,'published');assert.equal(item.sourceId,'OG.0002254');
+  assert.equal(item.identities[0].sourceId,'OG.0002254');
+  const [cross]=await create([{...row,identities:[{jurisdiction:'OR',source_id:'OG.0002254'},{jurisdiction:'WA',source_id:'wa-123'}]}]).mySubmissions();
+  assert.equal(cross.identities[1].sourceId,'wa-123');
+  await assert.rejects(create([{...row,identities:[{jurisdiction:'OR',source_id:'OG.0002254'},{jurisdiction:'OR',source_id:'OG.0002254'}]}]).mySubmissions(),errorCode('service_unavailable'));
+  await assert.rejects(create([{...row,identities:[{jurisdiction:'WA',source_id:'wa-123'}]}]).mySubmissions(),errorCode('service_unavailable'));
   await assert.rejects(create([{...row,status:'approved'}]).mySubmissions(),errorCode('service_unavailable'));
   await assert.rejects(create([{...row,jurisdiction:null}]).mySubmissions(),errorCode('service_unavailable'));
 });
@@ -113,6 +118,15 @@ test('owner declaration readback is attributed and save requires a real receipt'
   await client.editDetails(source,details);assert.equal(payload.operation,'edit_details');assert.equal(payload.yearsExperience,0);
   const bad=createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async()=>response({status:'unknown'})});
   await assert.rejects(bad.editDetails(source,details),errorCode('service_unavailable'));
+});
+
+test('claim and owner fields enforce the retained database limits before sending',async()=>{
+  let calls=0;const client=createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async()=>{calls++;return response({id,status:'pending'})}});
+  await assert.rejects(client.submitClaim(source,{claimantName:'A Guide',businessName:'',evidence:'x'.repeat(1201)}),errorCode('invalid_input'));
+  const base={boat:'',gear:'',yearsExperience:null,expertise:'',species:''};
+  for(const changes of [{boat:'x'.repeat(251)},{gear:'x'.repeat(501)},{expertise:'x'.repeat(501)},{species:'x'.repeat(351)},{yearsExperience:81}])await assert.rejects(client.editDetails(source,{...base,...changes}),errorCode('invalid_input'));
+  assert.equal(calls,0);
+  await client.submitClaim(source,{claimantName:'A Guide',businessName:'',evidence:'x'.repeat(1200)});assert.equal(calls,1);
 });
 
 test('operator queue requires authorization and does not approve a revision without guide identity',async()=>{

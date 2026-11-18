@@ -39,7 +39,7 @@ export function validateReviewDraft(draft: ReviewDraft): string | null {
 
 export function validateClaimStatement(value: string): string | null {
   const evidence = value.trim();
-  return Array.from(evidence).length >= 20 && evidence.length <= 2000 ? null : 'Explain your connection to this listing in 20 to 2,000 characters.';
+  return Array.from(evidence).length >= 20 && evidence.length <= 1200 ? null : 'Explain your connection to this listing in 20 to 1,200 characters.';
 }
 
 export function validateClaimDraft(draft: ClaimDraft): string | null {

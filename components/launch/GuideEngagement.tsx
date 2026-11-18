@@ -25,11 +25,11 @@ function OwnerEditor({initial,onSave}:{initial:OwnerDetails|null;onSave:(value:O
   }
   return <form className="card" onSubmit={submit}>
     <h3>Edit captain-declared details</h3><p>These details are supplied by the approved captain and are not independently verified.</p>
-    <label>Boat<input value={value.boat} maxLength={500} onChange={e=>setValue({...value,boat:e.target.value})}/></label>
+    <label>Boat<input value={value.boat} maxLength={250} onChange={e=>setValue({...value,boat:e.target.value})}/></label>
     <label>Gear<input value={value.gear} maxLength={500} onChange={e=>setValue({...value,gear:e.target.value})}/></label>
-    <label>Years of experience<input type="number" min="0" max="100" step="1" value={value.yearsExperience??''} onChange={e=>setValue({...value,yearsExperience:e.target.value===''?null:Number(e.target.value)})}/></label>
-    <label>Expertise<textarea value={value.expertise} maxLength={1000} onChange={e=>setValue({...value,expertise:e.target.value})}/></label>
-    <label>Species<input value={value.species} maxLength={500} onChange={e=>setValue({...value,species:e.target.value})}/></label>
+    <label>Years of experience<input type="number" min="0" max="80" step="1" value={value.yearsExperience??''} onChange={e=>setValue({...value,yearsExperience:e.target.value===''?null:Number(e.target.value)})}/></label>
+    <label>Expertise<textarea value={value.expertise} maxLength={500} onChange={e=>setValue({...value,expertise:e.target.value})}/></label>
+    <label>Species<input value={value.species} maxLength={350} onChange={e=>setValue({...value,species:e.target.value})}/></label>
     <button type="submit" disabled={busy}>{busy?'Saving…':'Save details'}</button>{message&&<p role="status">{message}</p>}
   </form>;
 }
@@ -54,7 +54,7 @@ export function GuideEngagement({source,profilePath,guideName}:{source:GuideSour
   },[api,loadSubmissions]);
   useEffect(()=>{void loadReviews();void loadDetails();void refreshSession();if(!authClient)return;const {data:{subscription}}=authClient.auth.onAuthStateChange((_event,next)=>{authEpoch.current++;setSession(next?'loading':'signed_out');setSubmissions(null);setRevision(null);window.setTimeout(()=>void refreshSession(),0)});return()=>{authEpoch.current++;subscription.unsubscribe()}},[loadReviews,loadDetails,refreshSession]);
   useEffect(()=>{let generation=0;function openReview(){const id=publishedReviewIdFromHash(window.location.hash),current=++generation;if(!id){setSelected(null);return}setSelected({status:'loading',id});void api.publicReview(stableSource,id).then(r=>{if(current===generation)setSelected({status:'ready',review:{...r,guideKey,status:'published',rating:r.quality}})}).catch(()=>{if(current===generation)setSelected({status:'error',id})})}window.addEventListener('hashchange',openReview);openReview();return()=>{generation++;window.removeEventListener('hashchange',openReview)}},[api,guideKey,stableSource]);
-  const own=(submissions??[]).filter(item=>item.jurisdiction===source.jurisdiction&&item.sourceId===source.sourceId);
+  const own=(submissions??[]).filter(item=>item.identities.some(identity=>identity.jurisdiction===source.jurisdiction&&identity.sourceId===source.sourceId));
   const owner=own.some(item=>item.kind==='claim'&&item.status==='approved');
   async function editReview(id:string){setRevisionError('');try{setRevision({id,initial:await api.reviewDetail(source,id)})}catch{setRevisionError('This review cannot be edited right now. Its published version has not changed.')}}
   async function saveDetails(value:OwnerDetails){await api.editDetails(source,value);const saved=await api.profileDetails(source);if(!saved||saved.boat!==value.boat.trim()||saved.gear!==value.gear.trim()||saved.expertise!==value.expertise.trim()||saved.species!==value.species.trim()||saved.yearsExperience!==value.yearsExperience)throw new Error('No confirmed readback');setDetails({status:'ready',value:saved})}
