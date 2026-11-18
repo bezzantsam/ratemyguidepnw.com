@@ -31,8 +31,9 @@ ALTER TABLE public.guide_media ENABLE ROW LEVEL SECURITY;
 CREATE POLICY fixture_media_owner ON public.guide_media FOR ALL TO authenticated USING (true) WITH CHECK (true);
 GRANT SELECT,INSERT,UPDATE,DELETE ON public.guide_media TO authenticated;
 '''
-schema += (root / 'supabase/review-candidates/launch-combined.sql').read_text()
-schema += '''
+if os.environ.get('RMG_FIXTURE_SCHEMA_ONLY') != '1':
+    schema += (root / 'supabase/review-candidates/launch-combined.sql').read_text()
+    schema += '''
 INSERT INTO public.guides(id,slug,full_name,listing_status) VALUES
  ('10000000-0000-0000-0000-000000000001','fixture-one','Synthetic guide one','published'),
  ('10000000-0000-0000-0000-000000000002','fixture-two','Synthetic guide two','published');
@@ -43,5 +44,8 @@ DO $$ BEGIN IF (SELECT enabled FROM rmg_private.launch_control WHERE singleton) 
 '''
 # No credentials in process arguments. Container name is tied to our unique project.
 subprocess.run(['docker', 'exec', '-i', 'supabase_db_' + project, 'psql', '-X', '-U', 'postgres', '-d', 'postgres', '-v', 'ON_ERROR_STOP=1', '-q'], input=schema, text=True, check=True, stdout=subprocess.DEVNULL)
-print('Synthetic schema, exact candidate, two fictional guide mappings installed; launch gate remains off.')
+if os.environ.get('RMG_FIXTURE_SCHEMA_ONLY') == '1':
+    print('Synthetic pre-migration schema installed; no candidate applied.')
+else:
+    print('Synthetic schema, exact candidate, two fictional guide mappings installed; launch gate remains off.')
 
