@@ -62,3 +62,19 @@ wait "$second_pid"
 if ! grep -q '"existing": true' "$tmp/second.log"; then cat "$tmp/second.log"; exit 1; fi
 "${ps[@]}" -f "$root/supabase/review-candidates/emergency-disable.sql" >/dev/null
 "${ps[@]}" -f "$root/tests/backend-launch/rollback.sql"
+
+# Separately test the supported alternative without the direct storage policy.
+# The test database reproduces only the observed storage-policy predicates.
+"${ps[@]}" -c 'CREATE DATABASE indirect_storage_test' >/dev/null
+indirect=(psql -X -v ON_ERROR_STOP=1 -h "$tmp" -p 55442 -U audit_owner -d indirect_storage_test)
+sed '/^CREATE ROLE /d' "$tmp/schema.sql" > "$tmp/indirect-schema.sql"
+"${indirect[@]}" -f "$tmp/indirect-schema.sql" >/dev/null
+"${indirect[@]}" -f "$root/tests/backend-launch/fixtures.sql" >/dev/null
+"${indirect[@]}" -c "ALTER TABLE auth.users ADD COLUMN email_confirmed_at timestamptz, ADD COLUMN is_anonymous boolean NOT NULL DEFAULT false, ADD COLUMN deleted_at timestamptz; UPDATE auth.users SET email_confirmed_at=now();" >/dev/null
+"${indirect[@]}" -f "$root/supabase/review-candidates/01-authorization-lockdown.sql" >/dev/null
+"${indirect[@]}" -f "$root/supabase/review-candidates/02-launch-api.sql" >/dev/null
+"${indirect[@]}" -f "$root/tests/backend-launch/storage-existing-fixture.sql" >/dev/null
+"${indirect[@]}" -f "$root/tests/backend-launch/storage-indirect-map.sql" >/dev/null
+"${indirect[@]}" -f "$root/tests/backend-launch/storage-indirect-before.sql"
+"${indirect[@]}" -f "$root/supabase/review-candidates/05-storage-via-claim-visibility.sql" >/dev/null
+"${indirect[@]}" -f "$root/tests/backend-launch/storage-indirect-after.sql"
