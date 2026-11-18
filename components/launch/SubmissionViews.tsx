@@ -2,6 +2,8 @@
 
 import {useId, useRef, useState} from 'react';
 import {type ClaimDraft, type RelationshipDisclosure, type ReviewDraft, type SubmissionReceipt, isSubmissionReceipt, validateClaimDraft, validateReviewDraft} from './submission-model';
+import {TripDetails} from './TripDetails';
+import {encodeTripResponses,type TripDraft} from './trip-responses';
 
 /** These views are not connected to a backend until the reviewed integration supplies one. */
 type SubmitReview = (draft: ReviewDraft) => Promise<SubmissionReceipt>;
@@ -11,21 +13,22 @@ export function SubmissionStatus({kind, receipt}: {kind: 'review' | 'claim'; rec
   if (!isSubmissionReceipt(receipt,kind)) return <p role="status">Submission status is temporarily unavailable.</p>;
   const label = kind === 'review' ? 'Review' : 'Claim request';
   const next = receipt.status === 'pending'
-    ? 'It is waiting for an independent moderator.'
+    ? kind === 'review' ? 'Your review is pending. It is not on the public page.' : 'Your claim request is pending review.'
     : receipt.status === 'published' ? 'Your review has been published.'
     : receipt.status === 'removed' ? 'Your review is no longer published.'
     : receipt.status === 'approved' ? 'Your claim has been approved.'
-    : 'It was not approved. See any explanation below.';
+    : 'It was not approved.';
   return <div role="status"><strong>{label}: {receipt.status}</strong><p>{next}</p>{receipt.message && <p>{receipt.message}</p>}</div>;
 }
 
-export function ReviewSubmission({onSubmit, allowTripMonth=false}: {onSubmit: SubmitReview; allowTripMonth?:boolean}) {
+export function ReviewSubmission({onSubmit, allowTripMonth=false, allowTripResponses=false}: {onSubmit: SubmitReview; allowTripMonth?:boolean;allowTripResponses?:boolean}) {
   const prefix = useId();
   const [quality, setQuality] = useState('');
   const [intensity, setIntensity] = useState('');
   const [wouldBookAgain, setWouldBookAgain] = useState('');
   const [body, setBody] = useState('');
   const [tripMonth, setTripMonth] = useState('');
+  const [tripDraft, setTripDraft] = useState<TripDraft>({});
   const [relationship, setRelationship] = useState<RelationshipDisclosure | ''>('');
   const [firsthand, setFirsthand] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -37,7 +40,10 @@ export function ReviewSubmission({onSubmit, allowTripMonth=false}: {onSubmit: Su
     event.preventDefault();
     if (submitting.current) return;
     if (!allowTripMonth && tripMonth) {setError('Trip month is no longer available. Refresh before submitting.');return;}
-    const draft = {quality: Number(quality), intensity: Number(intensity), wouldBookAgain: wouldBookAgain === '' ? null : wouldBookAgain === 'yes', body: body.trim(), firsthand, tripMonth: allowTripMonth ? tripMonth || null : null, relationship:relationship || null};
+    if (!allowTripResponses && Object.keys(tripDraft).length) {setError('Trip details are no longer available. Refresh before submitting.');return;}
+    const details=encodeTripResponses(tripDraft);
+    if(details.error) {setError(details.error);return;}
+    const draft = {quality: Number(quality), intensity: Number(intensity), wouldBookAgain: wouldBookAgain === '' ? null : wouldBookAgain === 'yes', body: body.trim(), firsthand, tripMonth: allowTripMonth ? tripMonth || null : null, relationship:relationship || null,...(allowTripResponses&&details.value?{tripResponses:details.value}:{})};
     const problem = validateReviewDraft(draft);
     if (problem) { setError(problem); return; }
     submitting.current = true; setBusy(true); setError('');
@@ -69,6 +75,7 @@ export function ReviewSubmission({onSubmit, allowTripMonth=false}: {onSubmit: Su
       <label htmlFor={`${prefix}-month`}>Trip month, if you remember it</label>
       <input type="month" id={`${prefix}-month`} value={tripMonth} onChange={event=>setTripMonth(event.target.value)} />
     </details>}
+    {allowTripResponses && <TripDetails draft={tripDraft} onChange={setTripDraft}/>}
     <label htmlFor={`${prefix}-body`}>Your experience</label>
     <p id={`${prefix}-body-help`}>Write 80 to 3,000 characters.</p>
     <textarea id={`${prefix}-body`} aria-describedby={`${prefix}-body-help`} value={body} onChange={event=>setBody(event.target.value)} minLength={80} maxLength={3000} required />

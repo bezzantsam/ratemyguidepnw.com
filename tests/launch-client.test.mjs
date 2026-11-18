@@ -40,6 +40,13 @@ test('optional trip details cannot be silently discarded by the draft backend',a
   assert.equal(called,false);
 });
 
+test('versioned trip answers reach the draft endpoint without changing false or not applicable',async()=>{
+  let payload;const client=createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async(_url,init)=>{payload=JSON.parse(init.body);return response({id,status:'pending'})}});
+  const tripResponses={version:1,answers:{dog_present:{state:'answered',value:false},children_present:{state:'not_applicable'}}};
+  await client.submitReview(source,{...draft,tripResponses});
+  assert.deepEqual(payload.tripResponses,tripResponses);
+});
+
 test('malformed success, unknown errors and wrong-owner status fail closed',async()=>{
   const create=data=>createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async()=>response(data)});
   await assert.rejects(create({status:'pending'}).submitReview(source,draft),errorCode('service_unavailable'));

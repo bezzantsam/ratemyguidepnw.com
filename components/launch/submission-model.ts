@@ -1,3 +1,5 @@
+import type {TripResponses} from './trip-responses';
+
 /** Internal presentation types; the backend wire contract is agreed separately. */
 export type SubmissionStatus = 'pending' | 'published' | 'rejected' | 'removed' | 'approved' | 'denied';
 export type SubmissionReceipt = Readonly<{ id:string; status: SubmissionStatus; message?: string }>;
@@ -10,6 +12,7 @@ export type ReviewDraft = Readonly<{
   firsthand: boolean;
   tripMonth: string | null;
   relationship: RelationshipDisclosure | null;
+  tripResponses?: TripResponses | null;
 }>;
 export type ClaimDraft = Readonly<{claimantName:string; businessName:string; evidence:string}>;
 
