@@ -35,6 +35,7 @@ test('automatic deployments are disabled for this work branch, not silently chan
     'codex/directory-identity-copy-fix':false,
     'coordinator/rmg-launch-prep':false,
     'codex/beta-completion':false,
+    'codex/rmg-mobile-css-08':false,
     'codex/rmg-guide-search-corrections-20261117':false,
   });
 });
