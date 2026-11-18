@@ -173,3 +173,13 @@ nav a{display:inline-flex;align-items:center;min-height:44px}
 @media(max-width:680px){.launch-form,.launch-controls,.profile-sharing{overflow-wrap:anywhere}.launch-actions button,.profile-sharing-actions button{max-width:100%}}
 
 .state-switch button{min-width:44px;min-height:44px}
+
+/* Keep review actions and long content usable without changing other pages. */
+#reviews article{min-width:0;overflow-wrap:anywhere}
+#reviews a[href="#write-review"]{display:inline-flex;align-items:center;min-height:44px;max-width:100%;overflow-wrap:anywhere;text-decoration:underline;text-underline-offset:3px}
+#reviews a[href="#write-review"]:focus-visible{outline:3px solid #f1d487;outline-offset:3px}
+@media(max-width:680px){
+  .launch-form>*,.launch-form details>*{min-width:0}
+  .launch-form :is(input:not([type=checkbox]),select,textarea){min-width:0}
+  .launch-actions button,.profile-sharing-actions button{white-space:normal;overflow-wrap:anywhere}
+}
