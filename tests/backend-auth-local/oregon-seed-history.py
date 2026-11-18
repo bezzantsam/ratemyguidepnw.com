@@ -61,7 +61,12 @@ def rejected(expected):
     result = command('migration', 'up', '--local')
     output = (result.stdout + result.stderr).decode(errors='replace').lower()
     if result.returncode == 0 or expected.lower() not in output:
-        raise SystemExit('CLI expected rejection missing: ' + expected)
+        categories = ('division by zero', 'syntax error', 'permission denied', 'already exists',
+                      'does not exist', 'duplicate', 'violates', 'invalid input', 'connection',
+                      'not found', 'failed to begin', 'failed to execute', 'statement timeout',
+                      'migration history', 'migration up', 'authentication failed', 'lock timeout')
+        seen = [item for item in categories if item in output]
+        raise SystemExit('CLI expected rejection missing: ' + expected + '; exit=' + str(result.returncode) + '; fixed diagnostic categories=' + ','.join(seen))
     if history(version) != '0': raise SystemExit('Rejected seed was recorded as applied')
 
 # Prerequisite only: exact launch body on reconstructed schema, without a hosted connection.
