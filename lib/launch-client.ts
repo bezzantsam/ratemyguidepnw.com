@@ -192,9 +192,14 @@ export function createLaunchClient(options:Options) {
           return {id:row.id,kind,guideName,reviewId,createdAt:row.created_at,description:`Claimant: ${name||'Unavailable'}\nBusiness: ${business||'Not supplied'}\nEvidence: ${evidence||'Unavailable'}`,canApprove:!!guideName&&!!name.trim()&&!!evidence.trim()};
         }
         if(typeof row.body!=='string'||!row.body.trim()||!Number.isInteger(row.quality)||(row.quality as number)<1||(row.quality as number)>5)throw new LaunchClientError('service_unavailable');
-        const trip=describeTripResponses(row.trip_responses), relationship=typeof row.relationship_disclosure==='string'?row.relationship_disclosure:'Unavailable';
-        let month='';if(kind==='revision'&&row.trip_month_specified!==undefined){if(typeof row.trip_month_specified!=='boolean')throw new LaunchClientError('service_unavailable');if(row.trip_month_specified)month=`\nTrip month: ${readTripMonth(row.trip_month)??'cleared'}`;}
-        return {id:row.id,kind,guideName,reviewId,createdAt:row.created_at,description:`Rating: ${row.quality} / 5\nRelationship: ${relationship}${month}\n${row.body}\n${trip===null?'Trip details unavailable':trip.join('\n')}`,canApprove:!!guideName&&trip!==null&&['none','personal','financial','other'].includes(relationship)&&(kind==='revision'||row.firsthand_attested===true)};
+        const trip=Object.hasOwn(row,'trip_responses')?describeTripResponses(row.trip_responses):null, relationship=typeof row.relationship_disclosure==='string'?row.relationship_disclosure:'Unavailable';
+        const hasIntensity=Object.hasOwn(row,'intensity')&&(row.intensity===null||(Number.isInteger(row.intensity)&&(row.intensity as number)>=1&&(row.intensity as number)<=5));
+        const hasRebook=Object.hasOwn(row,'would_book_again')&&(row.would_book_again===null||typeof row.would_book_again==='boolean');
+        const hasMonth=Object.hasOwn(row,'trip_month')&&(kind==='review'||typeof row.trip_month_specified==='boolean');
+        const month=hasMonth?(kind==='revision'&&row.trip_month_specified===false?'Unchanged':readTripMonth(row.trip_month)??(kind==='revision'?'Cleared':'Not supplied')):'Unavailable';
+        const intensity=hasIntensity?(row.intensity===null?'Not answered':`${row.intensity} / 5`):'Unavailable';
+        const rebook=hasRebook?(row.would_book_again===null?'Not answered':row.would_book_again?'Yes':'No'):'Unavailable';
+        return {id:row.id,kind,guideName,reviewId,createdAt:row.created_at,description:`Rating: ${row.quality} / 5\nRelationship: ${relationship}\nTrip month: ${month}\nTrip intensity: ${intensity}\nWould book again: ${rebook}\n${row.body}\n${trip===null?'Trip details unavailable':trip.join('\n')}`,canApprove:!!guideName&&hasMonth&&hasIntensity&&hasRebook&&trip!==null&&['none','personal','financial','other'].includes(relationship)&&(kind==='revision'||row.firsthand_attested===true)};
       });
     },
     async operatorDecide(kind:OwnedKind,id:string,approve:boolean,reason:string):Promise<{id:string;status:string}> {

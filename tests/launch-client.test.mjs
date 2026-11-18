@@ -148,6 +148,19 @@ test('operator queue requires authorization and does not approve a revision with
   assert.equal(tokenRequested,true);assert.equal(item.reviewId,id);assert.equal(item.canApprove,false);
 });
 
+test('moderators see review and revision trip values and cannot approve missing values',async()=>{
+  const row={id,guide_name:'Fixture guide',body:'A firsthand trip.',quality:4,intensity:3,would_book_again:false,trip_month:'2026-07-01',relationship_disclosure:'none',trip_responses:null,firsthand_attested:true,created_at:'2026-11-17T00:00:00Z'};
+  const create=value=>createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async()=>response({items:[value],offset:0,limit:50})});
+  const review=(await create(row).operatorQueue('review'))[0];
+  assert.equal(review.canApprove,true);assert.match(review.description,/Trip month: 2026-07/);assert.match(review.description,/Trip intensity: 3 \/ 5/);assert.match(review.description,/Would book again: No/);
+  const skipped=(await create({...row,intensity:null,would_book_again:null,trip_month:null}).operatorQueue('review'))[0];
+  assert.match(skipped.description,/Trip intensity: Not answered/);assert.match(skipped.description,/Would book again: Not answered/);assert.match(skipped.description,/Trip month: Not supplied/);
+  for(const key of ['intensity','would_book_again','trip_month','trip_responses']){const incomplete={...row};delete incomplete[key];const item=(await create(incomplete).operatorQueue('review'))[0];assert.equal(item.canApprove,false,`missing ${key} must disable approval`)}
+  const revision={...row,review_id:id,trip_month_specified:false};
+  assert.match((await create(revision).operatorQueue('revision'))[0].description,/Trip month: Unchanged/);
+  assert.match((await create({...revision,trip_month_specified:true,trip_month:null}).operatorQueue('revision'))[0].description,/Trip month: Cleared/);
+});
+
 test('moderator actions reject generic or mismatched receipts rather than inventing an outcome',async()=>{
   const create=value=>createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async()=>response(value)});
   await assert.rejects(create({status:'decided'}).operatorDecide('review',id,true,'Manual evidence has been reviewed.'),errorCode('service_unavailable'));
