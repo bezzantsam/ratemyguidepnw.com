@@ -115,6 +115,15 @@ test('owner declaration readback is attributed and save requires a real receipt'
   await assert.rejects(bad.editDetails(source,details),errorCode('service_unavailable'));
 });
 
+test('claim and owner fields enforce the retained database limits before sending',async()=>{
+  let calls=0;const client=createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async()=>{calls++;return response({id,status:'pending'})}});
+  await assert.rejects(client.submitClaim(source,{claimantName:'A Guide',businessName:'',evidence:'x'.repeat(1201)}),errorCode('invalid_input'));
+  const base={boat:'',gear:'',yearsExperience:null,expertise:'',species:''};
+  for(const changes of [{boat:'x'.repeat(251)},{gear:'x'.repeat(501)},{expertise:'x'.repeat(501)},{species:'x'.repeat(351)},{yearsExperience:81}])await assert.rejects(client.editDetails(source,{...base,...changes}),errorCode('invalid_input'));
+  assert.equal(calls,0);
+  await client.submitClaim(source,{claimantName:'A Guide',businessName:'',evidence:'x'.repeat(1200)});assert.equal(calls,1);
+});
+
 test('operator queue requires authorization and does not approve a revision without guide identity',async()=>{
   let tokenRequested=false;
   const row={id,review_id:id,body:'An edited trip report.',quality:4,relationship_disclosure:'none',trip_responses:null,created_at:'2026-11-17T00:00:00Z'};

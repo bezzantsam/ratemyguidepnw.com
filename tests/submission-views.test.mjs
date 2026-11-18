@@ -46,7 +46,8 @@ test('basic review requires a rating, nonempty narrative, disclosure and firstha
 
 test('claim validation rejects empty and excessively long explanations',()=>{
   assert.ok(model.validateClaimStatement('  '));
-  assert.ok(model.validateClaimStatement('x'.repeat(2001)));
+  assert.ok(model.validateClaimStatement('x'.repeat(1201)));
+  assert.equal(model.validateClaimStatement('x'.repeat(1200)),null);
   assert.ok(model.validateClaimStatement('x'.repeat(19)));
   assert.equal(model.validateClaimStatement('x'.repeat(20)),null);
   assert.equal(model.validateClaimStatement('I operate the listed guide business.'),null);
