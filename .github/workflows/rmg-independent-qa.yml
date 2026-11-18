@@ -1,0 +1,70 @@
+name: Independent disposable launch acceptance
+on:
+  push:
+    branches: [codex/rmg-independent-qa-20261117]
+permissions:
+  contents: read
+jobs:
+  browser-auth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: Verify independent assertion hashes
+        run: |
+          echo '294876f0f4f52016bf2ef55ed3aae190ff1c1eeb6dc4cc37bb7b08219e3d9a23  tests/independent-qa/independent-browser-local.cjs' | sha256sum --check
+          echo 'b4b17bc41244b906e7fcad6609a58cfebfbf857a132d1757dd83d25eae9d017e  tests/independent-qa/independent-browser-local.py' | sha256sum --check
+      - name: Install locked browser dependencies
+        run: |
+          npm ci --no-audit --no-fund
+          npx playwright-core install --with-deps chromium
+      - name: Run independent browser against disposable services
+        env:
+          RMG_FIXTURE_SCHEMA_ONLY: '1'
+          RMG_FINAL_LAUNCH_FIXTURE: '1'
+        run: |
+          export BROWSER_EXECUTABLE="$(node --input-type=module -e "import {chromium} from 'playwright-core'; console.log(chromium.executablePath())")"
+          bash tests/backend-auth-local/run-ci.sh "$GITHUB_WORKSPACE/tests/independent-qa/independent-browser-local.py"
+  readiness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: fixture-only
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      PGHOST: 127.0.0.1
+      PGPORT: '5432'
+      PGUSER: postgres
+      PGPASSWORD: fixture-only
+      PGDATABASE: postgres
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install PostgreSQL client
+        run: sudo apt-get update -qq && sudo apt-get install -y postgresql-client
+      - name: Apply exact synthetic fixture and unchanged independent assertion
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo '6ad463af6736ad4691aee92fa2102ee1955ef8f2b57cdf27fd7ac49ff6496b5f  tests/independent-qa/readiness-schema-repro.sql' | sha256sum --check
+          echo 'e76030edd1cfe5d9b61ef48cf8132a96536f01f13e3030016890ab549b076f78  supabase/review-candidates/final-launch-migration-body.sql' | sha256sum --check
+          python3 tests/backend-launch/reconstruct.py | psql -X -q -v ON_ERROR_STOP=1
+          psql -X -q -v ON_ERROR_STOP=1 -f tests/backend-launch/fixtures.sql
+          psql -X -q -v ON_ERROR_STOP=1 -c "ALTER TABLE auth.users ADD COLUMN email_confirmed_at timestamptz, ADD COLUMN is_anonymous boolean NOT NULL DEFAULT false, ADD COLUMN deleted_at timestamptz; UPDATE auth.users SET email_confirmed_at=now(); CREATE TABLE public.review_flags(id uuid PRIMARY KEY DEFAULT gen_random_uuid(),review_id uuid NOT NULL REFERENCES public.reviews(id),reporter_id uuid NOT NULL REFERENCES auth.users(id),reason text NOT NULL,created_at timestamptz NOT NULL DEFAULT now(),UNIQUE(review_id,reporter_id)); ALTER TABLE public.review_flags ENABLE ROW LEVEL SECURITY; GRANT ALL ON public.review_flags TO anon,authenticated;"
+          psql -X -q -v ON_ERROR_STOP=1 -1 -f supabase/review-candidates/final-launch-migration-body.sql
+          psql -X -q -v ON_ERROR_STOP=1 -c "UPDATE rmg_private.launch_control SET enabled=true WHERE singleton; INSERT INTO rmg_private.guide_identity_map(jurisdiction,source_id,guide_id,reviewed_at,review_reference) VALUES ('OR','fixture-one','10000000-0000-0000-0000-000000000001',now(),'fixture'),('OR','fixture-two','10000000-0000-0000-0000-000000000002',now(),'fixture');"
+          psql -X -v ON_ERROR_STOP=1 -f tests/independent-qa/readiness-schema-repro.sql
