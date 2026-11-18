@@ -47,8 +47,10 @@ test('2027 forecast accuracy is never presented as validated', () => {
   assert.doesNotMatch(page, /CHROME_AI_FORECAST_DATABASE_URL|service_role|createClient\(/);
 });
 
-test('methodology is reachable from about page and returns to Chinook Intel', () => {
-  assert.match(about, /href="\/intel\/methodology"/);
+test('research source is retained while RMG public routes are unavailable', () => {
+  assert.doesNotMatch(about, /href="\/intel/);
+  assert.match(page, /notFound\(\)/);
+  assert.match(readFileSync('app/intel/buoy-10-chinook/page.tsx', 'utf8'), /notFound\(\)/);
   assert.match(page, /href="\/intel\/buoy-10-chinook"/);
   assert.match(page, /export const metadata/);
   assert.match(page, /aria-label="Breadcrumb"/);

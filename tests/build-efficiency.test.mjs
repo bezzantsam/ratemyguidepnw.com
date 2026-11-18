@@ -29,10 +29,8 @@ test('only cached, published public reviews can enter shared layout', () => {
 test('website remains prelaunch and does not expose private Chrome-AI data', () => {
   const code=readFileSync('app/layout.tsx','utf8');
   assert.match(code,/robots: \{ index: false, follow: false \}/);
-  assert.match(code,/DockTalkTicker/);
-  // RMG and the Chrome portfolio project remain separate. The legacy research
-  // routes retain their own evidence tests, but are not directory navigation.
-  assert.match(code,/href="\/guides\/verification"/);
+  assert.doesNotMatch(code,/DockTalkTicker/);
+  assert.match(code,/href="\/write-review"/);
   assert.doesNotMatch(code,/Chinook Intel|href=["']\/intel/);
   assert.doesNotMatch(code,/service_role|CHROME_AI_FORECAST_DATABASE_URL/);
 });

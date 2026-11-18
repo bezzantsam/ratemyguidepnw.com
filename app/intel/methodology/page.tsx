@@ -1,13 +1,14 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import { ArrowLeft, ArrowUpRight, BookOpen, Database, FlaskConical, LockKeyhole, ShieldCheck } from 'lucide-react';
 import release from '@/lib/chinook-public-release.json';
 import reviewedHistory from '@/data/chinook-2026-reviewed.json';
 import './methodology.css';
 
 export const metadata: Metadata = {
-  title: 'How We Know | Chinook Intel Methodology | RateMyGuidePNW',
-  description: 'Follow the sources behind Buoy 10 Chinook research: WDFW creel samples, NOAA tides, preliminary data checks, and transparent forecast validation.',
+  title: 'Page not found | RateMyGuidePNW',
+  description: 'This page is not available.',
 };
 
 const rows = reviewedHistory.seasons[0].rows;
@@ -31,6 +32,7 @@ const statements = [
 ];
 
 export default function ChinookMethodology() {
+  notFound(); // Preserve the research source while removing the RMG public route.
   return (
     <main className="methodology-page">
       <nav className="methodology-breadcrumb" aria-label="Breadcrumb">

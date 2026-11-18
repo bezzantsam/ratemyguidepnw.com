@@ -21,7 +21,7 @@ jobs:
         run: |
           set -euo pipefail
           git rev-parse HEAD 'HEAD^{tree}'
-          printf '%s  %s\n' 74afb69db957037086c0e5ffddd2a8d312bed4ded3e446ba3f145284a351686d supabase/review-candidates/launch-combined.sql 91c90f5efa8598855fad1b92f0aafd21dcc54a9b009e2a4c14c3ba9eb71e272f tests/backend-auth-local/run-ci.sh 35e53e43a454d57ea0d1f24431a57bef216428b150076ec3eb8cc99b604ea62d tests/backend-auth-local/prepare.py a5b6805bc75787450c648fe20fdde38f279d6eb5ab296c69bd4b5d8ae3566013 tests/independent-qa/owner-review-first-local.py bd7b789a35126da73cd06b9aea155132415150d43199b1d0b4e1cbe7265e3c90 tests/independent-qa/owner-review-first-local.cjs | sha256sum -c -
+          printf '%s  %s\n' 74afb69db957037086c0e5ffddd2a8d312bed4ded3e446ba3f145284a351686d supabase/review-candidates/launch-combined.sql 91c90f5efa8598855fad1b92f0aafd21dcc54a9b009e2a4c14c3ba9eb71e272f tests/backend-auth-local/run-ci.sh 35e53e43a454d57ea0d1f24431a57bef216428b150076ec3eb8cc99b604ea62d tests/backend-auth-local/prepare.py a5b6805bc75787450c648fe20fdde38f279d6eb5ab296c69bd4b5d8ae3566013 tests/independent-qa/owner-review-first-local.py fbfd1081d3a30c62e371ea00a1de9d4666533f78d1b265d806774f61caa3d30f tests/independent-qa/owner-review-first-local.cjs | sha256sum -c -
       - name: Install locked browser dependencies
         run: npm ci --no-audit --no-fund
       - name: Install Chromium and OS dependencies
