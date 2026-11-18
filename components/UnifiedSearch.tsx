@@ -128,9 +128,10 @@ export default function UnifiedSearch({entries,reviewMode=false,reviewEnabled=fa
        <span className="listing-chip">{g.states.join(' + ')}</span>
       </div>
       {g.displayName&&g.displayName!==g.name&&<p className="guide-meta">Listed as {g.name}</p>}
+      {g.preferredName&&<p className="guide-meta">{g.preferredName.provenance==='captain'?'Captain-declared name':'Editorially corrected name'}: {g.preferredName.name}</p>}
       {(guideSearchScore(g,q)??0)>=60&&<p className="guide-meta"><strong>Similar spelling match</strong> · Confirm the person and business.</p>}
       <p className="outfit-name">{g.business||'Fishing guide'}</p>
-      {g.searchAliases.some(name=>!g.editorialSearchAliases?.some(alias=>alias.value===name))&&<p className="guide-meta">Other names (business or person): {g.searchAliases.filter(name=>!g.editorialSearchAliases?.some(alias=>alias.value===name)).join(' · ')}</p>}
+      {g.searchAliases.some(name=>name!==g.preferredName?.name&&!g.editorialSearchAliases?.some(alias=>alias.value===name))&&<p className="guide-meta">Other names (business or person): {g.searchAliases.filter(name=>name!==g.preferredName?.name&&!g.editorialSearchAliases?.some(alias=>alias.value===name)).join(' · ')}</p>}
       {g.editorialSearchAliases?.map(alias=><p className="guide-meta" key={`${alias.value}:${alias.attributedTo}`}>Editorial search name supplied by {alias.attributedTo}: {alias.value}</p>)}
       {g.advertisedWaters.length>0&&<p className="guide-meta">Advertised waters (source-linked): {g.advertisedWaters.slice(0,3).join(' · ')}{g.advertisedWaters.length>3?' · + more':''}</p>}
       <p className="guide-meta">{g.source==='Oregon registry'?'Imported registration zones':'Imported directory areas / notes'}: {g.areas.slice(0,3).join(' · ')||'Not specified'}{g.areas.length>3?' · + more':''}</p>

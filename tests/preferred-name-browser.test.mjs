@@ -40,14 +40,14 @@ test('preferred names remain attached to the source record and support owner and
  }
  try{
   const owner=await make(false),page=await owner.newPage();await page.goto(origin,{waitUntil:'networkidle'});
-  const search=page.getByRole('searchbox');await search.fill('Scott Wolfe');const entry=page.locator('.guide-result').filter({hasText:'Douglas'});await entry.waitFor();assert.match(await entry.innerText(),/Douglas “Scott” Wolfe/);
-  await entry.click();await page.waitForURL(/\/guides\/og-0000359/);await page.getByRole('heading',{name:'Douglas “Scott” Wolfe',exact:true}).waitFor();
+  const search=page.getByRole('searchbox');await search.fill('Scott Wolfe');const entry=page.locator('.guide-result').filter({hasText:'Douglas'});await entry.waitFor();assert.match(await entry.innerText(),/Douglas “Scott” Wolfe/);assert.match(await entry.innerText(),/Captain-declared name: Scott/);
+  await entry.click();await page.waitForURL(/\/guides\/og-0000359/);await page.getByRole('heading',{name:'Douglas “Scott” Wolfe',exact:true}).waitFor();await page.getByText('Captain-declared name: Scott').waitFor();
   await page.getByRole('heading',{name:'Name you go by'}).waitFor();assert.equal(await page.getByLabel('Name you go by',{exact:true}).inputValue(),'Scott');await page.getByLabel('Name you go by',{exact:true}).fill('李明');await page.getByRole('button',{name:'Save name'}).click();
   await page.getByText('Your name was saved.',{exact:false}).waitFor();await page.getByRole('heading',{name:'Douglas “李明” Wolfe',exact:true}).waitFor();
   await page.getByRole('button',{name:'Clear my name'}).click();await page.getByRole('heading',{name:'Douglas Wolfe',exact:true}).waitFor();assert.equal(ownerName,null);
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);await owner.close();
   ownerName='Scott';adminName='Editorial';const overridden=await make(false),ownerPage=await overridden.newPage();await ownerPage.goto(`${origin}/guides/og-0000359`,{waitUntil:'networkidle'});
-  await ownerPage.getByText('An editorial correction currently takes precedence over your saved name.').waitFor();assert.equal(await ownerPage.getByLabel('Name you go by',{exact:true}).inputValue(),'Scott');await overridden.close();ownerName=null;adminName=null;
+  await ownerPage.getByText('An editorial correction currently takes precedence over your saved name.').waitFor();await ownerPage.getByText('Editorially corrected name: Editorial').waitFor();assert.equal(await ownerPage.getByLabel('Name you go by',{exact:true}).inputValue(),'Scott');await overridden.close();ownerName=null;adminName=null;
   const admin=await make(true),moderator=await admin.newPage();await moderator.goto(`${origin}/admin`,{waitUntil:'networkidle'});await moderator.getByRole('heading',{name:'Editorial name corrections'}).waitFor();
   await moderator.getByLabel('Source listing ID').fill('OG.0000359');await moderator.getByRole('button',{name:'Review name'}).click();await moderator.getByText('Editorial name: None').waitFor();
   await moderator.getByLabel('Name you go by',{exact:true}).fill('Scott');await moderator.getByLabel('Correction reason').fill('User supplied editorial correction');await moderator.getByRole('button',{name:'Save correction'}).click();await moderator.getByText('Editorial name change saved.').waitFor();assert.equal(adminName,'Scott');

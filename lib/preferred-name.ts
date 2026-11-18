@@ -12,7 +12,7 @@ import type {PreferredName} from './launch-client';
 /** Replace only overlaid entries so cached search indexes never retain old names. */
 export function applyPreferredNames(entries:DirectoryEntry[],names:PreferredName[]):DirectoryEntry[]{
  const byId=new Map(names.map(name=>[`${name.jurisdiction}:${name.sourceId}`,name]));
- return entries.map(entry=>{const jurisdiction=entry.id.startsWith('OG.')?'OR':'WA';const preferred=byId.get(`${jurisdiction}:${entry.id}`);return preferred?{...entry,displayName:preferredDisplayName(entry.name,preferred.name),searchAliases:[...entry.searchAliases,preferred.name]}:entry});
+ return entries.map(entry=>{const jurisdiction=entry.id.startsWith('OG.')?'OR':'WA';const preferred=byId.get(`${jurisdiction}:${entry.id}`);return preferred?{...entry,displayName:preferredDisplayName(entry.name,preferred.name),preferredName:{name:preferred.name,provenance:preferred.provenance},searchAliases:[...entry.searchAliases,preferred.name]}:entry});
 }
 
 /** Fetch the complete search index in bounded batches; stop on failure and retain source names. */
