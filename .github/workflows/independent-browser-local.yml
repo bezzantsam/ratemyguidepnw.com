@@ -1,8 +1,6 @@
 name: Independent browser through real local services
 on:
-  pull_request:
-    branches:
-      - codex/beta-completion
+  workflow_dispatch:
 permissions:
   contents: read
 jobs:
