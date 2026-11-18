@@ -90,7 +90,7 @@ test('real loopback HTTP positive and error cases use no write methods',async t=
     const r=ROUTES.find(r=>r.path===req.url);res.writeHead(broken?503:r.status,{'content-type':'text/html'});res.end(bodyFor(r));
   });
   assert.equal((await runSmoke(origin)).passed,true);broken=true;assert.equal((await runSmoke(origin)).passed,false);
-  assert.equal(methods.length,14);assert.ok(methods.every(m=>m==='GET'));
+  assert.equal(methods.length,ROUTES.length*2);assert.ok(methods.every(m=>m==='GET'));
 });
 test('real request timeout fails closed',async t=>{
   const {origin}=await withServer(t,()=>{});
