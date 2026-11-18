@@ -3,8 +3,9 @@
 import {useCallback,useEffect,useMemo,useRef,useState} from 'react';
 import AuthPanel,{client as authClient} from '@/components/AuthPanel';
 import {createLaunchClient,type GuideSource,type OwnSubmission,type OwnerDetails} from '@/lib/launch-client';
+import {publishedReviewIdFromHash} from '@/lib/canonical-share';
 import {ProfileSharing} from './ProfileSharing';
-import {PublishedReviews,type ReviewLoadState} from './PublishedReviews';
+import {PublishedReviews,ReviewCard,type PublishedReview,type ReviewLoadState} from './PublishedReviews';
 import {ClaimSubmission,ReviewSubmission} from './SubmissionViews';
 import type {ReviewDraft} from './submission-model';
 
@@ -41,6 +42,7 @@ export function GuideEngagement({source,profilePath,guideName}:{source:GuideSour
   const [session,setSession]=useState<'loading'|'signed_out'|'signed_in'|'error'>('loading');
   const [submissions,setSubmissions]=useState<OwnSubmission[]|null>(null),[nextOffset,setNextOffset]=useState(0),[more,setMore]=useState(false),[statusError,setStatusError]=useState(false);
   const [revision,setRevision]=useState<{id:string;initial:ReviewDraft}|null>(null),[revisionError,setRevisionError]=useState('');
+  const [selected,setSelected]=useState<{status:'loading'|'error';id:string}|{status:'ready';review:PublishedReview}|null>(null);
   const authEpoch=useRef(0);
   const loadReviews=useCallback(async()=>{try{const result=await api.publicReviews(stableSource);setReviews({status:'ready',page:{guideKey,total:result.count,average:result.averageQuality,reviews:result.reviews.map(r=>({...r,guideKey,status:'published' as const,rating:r.quality}))}})}catch{setReviews({status:'error'})}},[api,guideKey,stableSource]);
   const loadDetails=useCallback(async()=>{try{setDetails({status:'ready',value:await api.profileDetails(stableSource)})}catch{setDetails({status:'error'})}},[api,stableSource]);
@@ -51,12 +53,16 @@ export function GuideEngagement({source,profilePath,guideName}:{source:GuideSour
     catch{if(epoch===authEpoch.current){setSession('error');setSubmissions(null)}}
   },[api,loadSubmissions]);
   useEffect(()=>{void loadReviews();void loadDetails();void refreshSession();if(!authClient)return;const {data:{subscription}}=authClient.auth.onAuthStateChange((_event,next)=>{authEpoch.current++;setSession(next?'loading':'signed_out');setSubmissions(null);setRevision(null);window.setTimeout(()=>void refreshSession(),0)});return()=>{authEpoch.current++;subscription.unsubscribe()}},[loadReviews,loadDetails,refreshSession]);
+  useEffect(()=>{let generation=0;function openReview(){const id=publishedReviewIdFromHash(window.location.hash),current=++generation;if(!id){setSelected(null);return}setSelected({status:'loading',id});void api.publicReview(stableSource,id).then(r=>{if(current===generation)setSelected({status:'ready',review:{...r,guideKey,status:'published',rating:r.quality}})}).catch(()=>{if(current===generation)setSelected({status:'error',id})})}window.addEventListener('hashchange',openReview);openReview();return()=>{generation++;window.removeEventListener('hashchange',openReview)}},[api,guideKey,stableSource]);
   const own=(submissions??[]).filter(item=>item.jurisdiction===source.jurisdiction&&item.sourceId===source.sourceId);
   const owner=own.some(item=>item.kind==='claim'&&item.status==='approved');
   async function editReview(id:string){setRevisionError('');try{setRevision({id,initial:await api.reviewDetail(source,id)})}catch{setRevisionError('This review cannot be edited right now. Its published version has not changed.')}}
   async function saveDetails(value:OwnerDetails){await api.editDetails(source,value);const saved=await api.profileDetails(source);if(!saved||saved.boat!==value.boat.trim()||saved.gear!==value.gear.trim()||saved.expertise!==value.expertise.trim()||saved.species!==value.species.trim()||saved.yearsExperience!==value.yearsExperience)throw new Error('No confirmed readback');setDetails({status:'ready',value:saved})}
   return <>
-    <section className="section" id="reviews"><PublishedReviews guideKey={guideKey} state={reviews}/></section>
+    <section className="section" id="reviews">
+      {selected?.status==='loading'&&<p role="status">Loading the linked review…</p>}{selected?.status==='error'&&<p role="status">The linked review is unavailable.</p>}{selected?.status==='ready'&&<><h2>Linked angler review</h2><ReviewCard review={selected.review} profilePath={profilePath} guideName={guideName}/></>}
+      <PublishedReviews guideKey={guideKey} state={selected?.status==='ready'&&reviews.status==='ready'?{status:'ready',page:{...reviews.page,reviews:reviews.page.reviews.filter(r=>r.id!==selected.review.id)}}:reviews} profilePath={profilePath} guideName={guideName}/>
+    </section>
     {details.status==='ready'&&details.value&&<section className="card"><h2>Captain-declared details</h2><p>These details were supplied by the approved captain and are not independently verified.</p>{details.value.boat&&<p><strong>Boat:</strong> {details.value.boat}</p>}{details.value.gear&&<p><strong>Gear:</strong> {details.value.gear}</p>}{details.value.yearsExperience!==null&&<p><strong>Years of experience:</strong> {details.value.yearsExperience}</p>}{details.value.expertise&&<p><strong>Expertise:</strong> {details.value.expertise}</p>}{details.value.species&&<p><strong>Species:</strong> {details.value.species}</p>}</section>}
     <section className="section" id="write-review"><h2>Review or claim this listing</h2>
       {reviews.status==='ready'?<><p>Sign in to submit a firsthand review or request ownership of this listing.</p><AuthPanel profilePath={profilePath} onSignedIn={()=>void refreshSession()}/>

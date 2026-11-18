@@ -56,6 +56,17 @@ test('auth round trip preserves only the selected guide and review intent',()=>{
   assert.throws(()=>exports.guideAuthRedirectPath('/admin','//evil.example'));
 });
 
+test('published review links preserve a validated ID and cannot cross guide or auth boundaries',()=>{
+  const profile='/guides/og-0002254',id='10000000-0000-4000-8000-000000000001',other='20000000-0000-4000-8000-000000000002';
+  assert.equal(exports.canonicalPublishedReviewUrl(profile,id),`https://ratemyguidepnw.com${profile}#review-${id}`);
+  assert.equal(exports.guideAuthRedirectPath(`${profile}#review-${id}`,profile),`${profile}?review=${id}`);
+  assert.equal(exports.guideAuthRestoredPath(profile,`?review=${id}`,'',profile),`${profile}#review-${id}`);
+  assert.equal(exports.guideAuthRestoredPath(profile,`?review=${id}`,'#access_token=secret',profile),null);
+  assert.equal(exports.guideAuthRestoredPath(profile,`?review=${id}`,`#review-${other}`,profile),null);
+  assert.equal(exports.guideAuthRedirectPath(`/guides/og-0000050#review-${id}`,profile),profile);
+  assert.throws(()=>exports.canonicalPublishedReviewUrl(profile,'not-a-review'));
+});
+
 test('social metadata points to the canonical guide and makes no verification or rating claim',()=>{
   const metadata=exports.profileShareMetadata('/washington/wa-000','Example Guide','Example Fishing');
   assert.equal(metadata.alternates.canonical,'https://ratemyguidepnw.com/washington/wa-000');
