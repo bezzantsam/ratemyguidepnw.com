@@ -98,3 +98,24 @@ combined=(psql -X -v ON_ERROR_STOP=1 -h "$tmp" -p 55442 -U audit_owner -d combin
 "${combined[@]}" -f "$root/tests/backend-launch/revisions.sql"
 "${combined[@]}" -f "$root/supabase/review-candidates/emergency-disable.sql" >/dev/null
 "${combined[@]}" -f "$root/tests/backend-launch/rollback.sql"
+
+# Test the registration-based seed with fictional guide IDs and names only.
+python3 "$root/supabase/review-candidates/assemble-oregon-seed.py" "$root/lib/oregon-guides.json" > "$tmp/expected-oregon-seed.sql"
+cmp "$tmp/expected-oregon-seed.sql" "$root/supabase/review-candidates/oregon-mapping-seed.sql"
+python3 "$root/supabase/review-candidates/assemble-oregon-seed.py" "$root/tests/backend-launch/fixtures/synthetic-oregon.json" > "$tmp/synthetic-seed.sql"
+"${ps[@]}" -c 'CREATE DATABASE seed_test' >/dev/null
+seed=(psql -X -v ON_ERROR_STOP=1 -h "$tmp" -p 55442 -U audit_owner -d seed_test)
+"${seed[@]}" -f "$tmp/indirect-schema.sql" >/dev/null
+"${seed[@]}" -f "$root/tests/backend-launch/fixtures.sql" >/dev/null
+"${seed[@]}" -c "ALTER TABLE auth.users ADD COLUMN email_confirmed_at timestamptz, ADD COLUMN is_anonymous boolean NOT NULL DEFAULT false, ADD COLUMN deleted_at timestamptz; UPDATE auth.users SET email_confirmed_at=now();" >/dev/null
+"${seed[@]}" -f "$root/supabase/review-candidates/launch-combined.sql" >/dev/null
+"${seed[@]}" -c "INSERT INTO public.guides(id,slug,full_name,license_number,listing_status) VALUES ('90000000-0000-0000-0000-000000000001','og-qatest001','Synthetic one','OG.QATEST001','published'),('90000000-0000-0000-0000-000000000002','og-qatest002','Synthetic two','OG.QATEST002','published'),('90000000-0000-0000-0000-000000000003','og-qatest003','Synthetic three','OG.QATEST003','published')" >/dev/null
+"${seed[@]}" -f "$tmp/synthetic-seed.sql" >/dev/null
+"${seed[@]}" -f "$tmp/synthetic-seed.sql" >/dev/null
+"${seed[@]}" -c "SELECT public.fixture_assert((SELECT count(*)=3 FROM rmg_private.guide_identity_map),'seed is idempotent for exact source matches')"
+"${seed[@]}" -c "UPDATE public.guides SET slug='changed-slug' WHERE license_number='OG.QATEST003'" >/dev/null
+if "${seed[@]}" -f "$tmp/synthetic-seed.sql" >"$tmp/seed-drift.log" 2>&1; then echo 'source drift unexpectedly accepted' >&2; exit 1; fi
+"${seed[@]}" -c "SELECT public.fixture_assert((SELECT count(*)=3 FROM rmg_private.guide_identity_map),'seed rejects source drift without changing mappings')"
+"${seed[@]}" -c "UPDATE public.guides SET slug='og-qatest003' WHERE license_number='OG.QATEST003'; UPDATE rmg_private.guide_identity_map SET guide_id='10000000-0000-0000-0000-000000000001' WHERE source_id='OG.QATEST001'" >/dev/null
+if "${seed[@]}" -f "$tmp/synthetic-seed.sql" >"$tmp/seed-conflict.log" 2>&1; then echo 'conflicting mapping unexpectedly accepted' >&2; exit 1; fi
+"${seed[@]}" -c "SELECT public.fixture_assert((SELECT count(*)=3 FROM rmg_private.guide_identity_map),'seed rejects preexisting mapping conflict without further writes')"
