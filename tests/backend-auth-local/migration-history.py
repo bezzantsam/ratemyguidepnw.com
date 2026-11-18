@@ -7,6 +7,7 @@ from pathlib import Path
 import re
 import subprocess
 import sys
+import time
 from urllib.parse import urlsplit
 
 root = Path(__file__).resolve().parents[2]
@@ -64,3 +65,27 @@ if command('migration', 'up', '--local').returncode:
 if history_count(version) != '1' or sql('SELECT enabled FROM rmg_private.launch_control WHERE singleton;') != 'f':
     raise SystemExit('Migration history or default-off gate incorrect')
 print('PASS local CLI generated migration applied once with default-off gate and history')
+rollback = (root / 'supabase/review-candidates/emergency-disable-migration-body.sql').read_bytes()
+if hashlib.sha256(rollback).hexdigest() != '769333a38e66d394b80fcd95a71bbc97130c1e3e6465322decb9d37eb44a3b5d':
+    raise SystemExit('Unexpected emergency-disable body hash')
+sql("""INSERT INTO public.guides(id,slug,full_name,listing_status) VALUES ('10000000-0000-0000-0000-000000000001','fixture-one','Synthetic guide','published');
+INSERT INTO rmg_private.guide_identity_map(jurisdiction,source_id,guide_id,reviewed_at,review_reference) VALUES ('OR','fixture-one','10000000-0000-0000-0000-000000000001',now(),'Synthetic fixture');
+UPDATE rmg_private.launch_control SET enabled=true WHERE singleton;""")
+time.sleep(1.1)  # CLI-generated versions have one-second resolution.
+if command('migration', 'new', 'rmg_emergency_disable_local').returncode:
+    raise SystemExit('CLI emergency migration new failed')
+paths = list((work / 'supabase/migrations').glob('*_rmg_emergency_disable_local.sql'))
+if len(paths) != 1 or not re.fullmatch(r'[0-9]{14}_rmg_emergency_disable_local\.sql', paths[0].name):
+    raise SystemExit('Unexpected emergency migration file')
+rollback_path = paths[0]; rollback_version = rollback_path.name.split('_', 1)[0]
+if rollback_version <= version: raise SystemExit('Emergency version must follow launch version')
+rollback_path.write_bytes(rollback)
+if command('migration', 'up', '--local').returncode:
+    raise SystemExit('CLI emergency migration failed')
+if history_count(rollback_version) != '1' or sql('SELECT enabled FROM rmg_private.launch_control WHERE singleton;') != 'f':
+    raise SystemExit('Emergency migration history or gate incorrect')
+if sql('SELECT count(*) FROM rmg_private.guide_identity_map;') != '1':
+    raise SystemExit('Emergency disable did not preserve mappings')
+if sql("SELECT has_function_privilege('authenticated','public.rmg_own_status(text,uuid)','EXECUTE');") != 'f':
+    raise SystemExit('Emergency disable did not revoke RPC execution')
+print('PASS local emergency migration disables RPCs, records history and preserves fixture mapping')
