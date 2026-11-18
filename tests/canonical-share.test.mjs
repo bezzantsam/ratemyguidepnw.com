@@ -10,8 +10,8 @@ const exports={};vm.runInNewContext(code,{exports});
 
 test('profile and review links use the public origin and preserve a stable guide identity',()=>{
   for(const path of ['/guides/og-0002254','/guides/og-0001225-f-f','/washington/wa-000']) {
-    assert.equal(exports.canonicalProfileUrl(path),'https://ratemyguidepnw.com'+path);
-    assert.equal(exports.canonicalReviewRequestUrl(path),'https://ratemyguidepnw.com'+path+'?intent=review#write-review');
+    assert.equal(exports.canonicalProfileUrl(path),'https://ratemyguidepnw.vercel.app'+path);
+    assert.equal(exports.canonicalReviewRequestUrl(path),'https://ratemyguidepnw.vercel.app'+path+'?intent=review#write-review');
   }
 });
 
@@ -20,9 +20,9 @@ test('every current source-backed profile path can be represented canonically',(
   const washington=JSON.parse(readFileSync('lib/washington-stable-ids.json','utf8'));
   for(const record of oregon) {
     const slug=record.registration.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/-$/,'');
-    assert.equal(exports.canonicalProfileUrl(`/guides/${slug}`),`https://ratemyguidepnw.com/guides/${slug}`);
+    assert.equal(exports.canonicalProfileUrl(`/guides/${slug}`),`https://ratemyguidepnw.vercel.app/guides/${slug}`);
   }
-  for(const id of Object.values(washington)) assert.equal(exports.canonicalProfileUrl(`/washington/${id}`),`https://ratemyguidepnw.com/washington/${id}`);
+  for(const id of Object.values(washington)) assert.equal(exports.canonicalProfileUrl(`/washington/${id}`),`https://ratemyguidepnw.vercel.app/washington/${id}`);
 });
 
 test('reject external, noncanonical, malformed, or query-bearing paths',()=>{
@@ -58,7 +58,7 @@ test('auth round trip preserves only the selected guide and review intent',()=>{
 
 test('published review links preserve a validated ID and cannot cross guide or auth boundaries',()=>{
   const profile='/guides/og-0002254',id='10000000-0000-4000-8000-000000000001',other='20000000-0000-4000-8000-000000000002';
-  assert.equal(exports.canonicalPublishedReviewUrl(profile,id),`https://ratemyguidepnw.com${profile}#review-${id}`);
+  assert.equal(exports.canonicalPublishedReviewUrl(profile,id),`https://ratemyguidepnw.vercel.app${profile}#review-${id}`);
   assert.equal(exports.guideAuthRedirectPath(`${profile}#review-${id}`,profile),`${profile}?review=${id}`);
   assert.equal(exports.guideAuthRestoredPath(profile,`?review=${id}`,'',profile),`${profile}#review-${id}`);
   assert.equal(exports.guideAuthRestoredPath(profile,`?review=${id}`,'#access_token=secret',profile),null);
@@ -69,9 +69,9 @@ test('published review links preserve a validated ID and cannot cross guide or a
 
 test('social metadata points to the canonical guide and makes no verification or rating claim',()=>{
   const metadata=exports.profileShareMetadata('/washington/wa-000','Example Guide','Example Fishing');
-  assert.equal(metadata.alternates.canonical,'https://ratemyguidepnw.com/washington/wa-000');
+  assert.equal(metadata.alternates.canonical,'https://ratemyguidepnw.vercel.app/washington/wa-000');
   assert.equal(metadata.openGraph.url,metadata.alternates.canonical);
-  assert.equal(metadata.openGraph.images[0].url,'https://ratemyguidepnw.com/share-card.png');
+  assert.equal(metadata.openGraph.images[0].url,'https://ratemyguidepnw.vercel.app/share-card.png');
   assert.match(metadata.title,/Example Guide/);
   assert.match(metadata.description,/Example Fishing/);
   assert.doesNotMatch(metadata.description,/verified|licensed|five.star/i);

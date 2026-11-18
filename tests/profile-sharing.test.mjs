@@ -28,7 +28,7 @@ test('native sharing uses the canonical profile, and makes no post-publication c
   let shared;
   const render=harness({share:async data=>{shared=data}});
   button(render(),'Share profile').props.onClick();await flush();
-  assert.equal(shared.url,'https://ratemyguidepnw.com/guides/og-0002254');
+  assert.equal(shared.url,'https://ratemyguidepnw.vercel.app/guides/og-0002254');
   assert.match(find(render(),node=>node.props?.role==='status').props.children,/dialog closed/i);
   assert.doesNotMatch(find(render(),node=>node.props?.role==='status').props.children,/published|posted/i);
   assert.equal(button(render(),'Copy review request link'),undefined);
@@ -38,14 +38,14 @@ test('copy fallback exposes the canonical link when clipboard access is denied',
   const render=harness({clipboard:{writeText:async()=>{throw new Error('denied')}}});
   button(render(),'Copy profile link').props.onClick();await flush();
   const field=find(render(),node=>node.type==='input'&&node.props.readOnly);
-  assert.equal(field.props.value,'https://ratemyguidepnw.com/guides/og-0002254');
+  assert.equal(field.props.value,'https://ratemyguidepnw.vercel.app/guides/og-0002254');
 });
 
 test('when native sharing is unavailable the share action copies the profile link',async()=>{
   let copied;
   const render=harness({clipboard:{writeText:async value=>{copied=value}}});
   button(render(),'Share profile').props.onClick();await flush();
-  assert.equal(copied,'https://ratemyguidepnw.com/guides/og-0002254');
+  assert.equal(copied,'https://ratemyguidepnw.vercel.app/guides/og-0002254');
   assert.match(find(render(),node=>node.props?.role==='status').props.children,/Link copied/);
 });
 
@@ -53,7 +53,7 @@ test('review request actions appear only when enabled and copy the direct canoni
   let copied;
   const render=harness({clipboard:{writeText:async value=>{copied=value}}},true);
   button(render(),'Copy review request link').props.onClick();await flush();
-  assert.equal(copied,'https://ratemyguidepnw.com/guides/og-0002254?intent=review#write-review');
+  assert.equal(copied,'https://ratemyguidepnw.vercel.app/guides/og-0002254?intent=review#write-review');
   assert.ok(button(render(),'Download review request QR code'));
 });
 

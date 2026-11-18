@@ -1,5 +1,5 @@
 /** Public share links are independent of the current request or preview host. */
-export const PUBLIC_ORIGIN = 'https://ratemyguidepnw.com';
+export const PUBLIC_ORIGIN = 'https://ratemyguidepnw.vercel.app';
 const PROFILE_PATH = /^\/(?:guides\/og-\d{7}(?:-[a-z0-9]+)*|washington\/wa-\d{3,})$/;
 const REVIEW_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
