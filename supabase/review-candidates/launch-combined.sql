@@ -224,7 +224,7 @@ END $$;
 CREATE FUNCTION rmg_private.submit_claim(p_jurisdiction text,p_source_id text,p_name text,p_business text,p_evidence text) RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path='' AS $$
 DECLARE actor uuid := rmg_private.require_actor(); gid uuid; cid uuid;
 BEGIN
- IF p_name IS NULL OR length(btrim(p_name)) NOT BETWEEN 2 AND 120 OR length(coalesce(p_business,''))>160 OR p_evidence IS NULL OR length(btrim(p_evidence)) NOT BETWEEN 20 AND 2000 THEN RAISE EXCEPTION 'Invalid claim' USING ERRCODE='22023'; END IF;
+ IF p_name IS NULL OR length(btrim(p_name)) NOT BETWEEN 2 AND 120 OR length(coalesce(p_business,''))>160 OR p_evidence IS NULL OR length(btrim(p_evidence)) NOT BETWEEN 20 AND 1200 THEN RAISE EXCEPTION 'Invalid claim' USING ERRCODE='22023'; END IF;
  gid:=rmg_private.resolve_guide(p_jurisdiction,p_source_id);
  PERFORM pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended(actor::text, 84012));
  SELECT c.id INTO cid FROM public.guide_claims c WHERE c.claimant_id=actor AND c.guide_id=gid AND c.status='pending' ORDER BY c.created_at DESC LIMIT 1;
@@ -246,7 +246,7 @@ END $$;
 CREATE FUNCTION rmg_private.edit_details(p_jurisdiction text,p_source_id text,p_boat text,p_gear text,p_years smallint,p_expertise text,p_species text) RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path='' AS $$
 DECLARE actor uuid:=rmg_private.require_actor();gid uuid;
 BEGIN
- IF p_boat IS NULL OR length(p_boat)>500 OR p_gear IS NULL OR length(p_gear)>500 OR (p_years IS NOT NULL AND p_years NOT BETWEEN 0 AND 100) OR p_expertise IS NULL OR length(p_expertise)>1000 OR p_species IS NULL OR length(p_species)>500 THEN RAISE EXCEPTION 'Invalid profile details' USING ERRCODE='22023'; END IF;
+ IF p_boat IS NULL OR length(p_boat)>250 OR p_gear IS NULL OR length(p_gear)>500 OR (p_years IS NOT NULL AND p_years NOT BETWEEN 0 AND 80) OR p_expertise IS NULL OR length(p_expertise)>500 OR p_species IS NULL OR length(p_species)>350 THEN RAISE EXCEPTION 'Invalid profile details' USING ERRCODE='22023'; END IF;
  gid:=rmg_private.resolve_guide(p_jurisdiction,p_source_id);
  PERFORM 1 FROM public.guides WHERE id=gid FOR UPDATE;
  IF NOT EXISTS(SELECT 1 FROM public.guide_claims WHERE guide_id=gid AND claimant_id=actor AND status='approved') THEN RAISE EXCEPTION 'Not authorized' USING ERRCODE='42501'; END IF;

@@ -44,6 +44,7 @@ test('authorized moderator receives the persisted database decision',async()=>{
 test('rate limits and ordinary database conflicts have distinct safe errors',async()=>{
  let b=backend({rpcError:{code:'P4290',message:'private internal text'}}),r=await handleLaunch(req(review,'token'),b.factory,env);assert.equal(r.status,429);assert.deepEqual(await r.json(),{error:'rate_limited'});
  b=backend({rpcError:{code:'P0001',message:'private internal text'}});r=await handleLaunch(req(review,'token'),b.factory,env);assert.equal(r.status,409);assert.deepEqual(await r.json(),{error:'conflict'});
+ b=backend({rpcError:{code:'23514',message:'private constraint name'}});r=await handleLaunch(req(review,'token'),b.factory,env);assert.equal(r.status,400);assert.deepEqual(await r.json(),{error:'invalid_input'});
 });
 test('safe return rejects external destinations before configuration access',async()=>{
  let r=await handleLaunch(req({operation:'safe_return',returnTo:'/guides/og-123?intent=review#write-review'}),()=>{throw Error('must not call')},{RMG_LAUNCH_ENABLED:'true'});
