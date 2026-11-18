@@ -1,4 +1,7 @@
 import {ReviewShare} from './ReviewShare';
+import {ReportReview} from './ReportReview';
+import type {ReportReason} from '@/lib/launch-client';
+type ReportAction=(id:string,reason:ReportReason)=>Promise<{id:string;status:'submitted';existing:boolean}>;
 
 /** Display data is supplied by the published-only backend adapter. */
 export type PublishedReview = Readonly<{
@@ -8,6 +11,7 @@ export type PublishedReview = Readonly<{
   rating: number;
   body: string;
   publishedAt: string;
+  tripMonth?: string | null;
   tripDetails?: readonly string[] | null;
 }>;
 export type PublishedReviewPage = Readonly<{
@@ -24,7 +28,7 @@ export function validReviewPage(requestedGuide: string, page: PublishedReviewPag
   const ids = new Set<string>();
   return page.reviews.every(review=>{
     if (!review || typeof review.id !== 'string' || !review.id || ids.has(review.id) || review.guideKey !== requestedGuide || review.status !== 'published' ||
-        !Number.isInteger(review.rating) || review.rating < 1 || review.rating > 5 || typeof review.body !== 'string' || !review.body.trim() || typeof review.publishedAt !== 'string' || !review.publishedAt || (review.tripDetails!==undefined&&review.tripDetails!==null&&(!Array.isArray(review.tripDetails)||!review.tripDetails.every((item:unknown)=>typeof item==='string')))) return false;
+        !Number.isInteger(review.rating) || review.rating < 1 || review.rating > 5 || typeof review.body !== 'string' || !review.body.trim() || typeof review.publishedAt !== 'string' || !review.publishedAt || (review.tripMonth!==undefined&&review.tripMonth!==null&&!/^(?!0000)\d{4}-(0[1-9]|1[0-2])$/.test(review.tripMonth)) || (review.tripDetails!==undefined&&review.tripDetails!==null&&(!Array.isArray(review.tripDetails)||!review.tripDetails.every((item:unknown)=>typeof item==='string')))) return false;
     ids.add(review.id);
     return true;
   });
@@ -32,15 +36,16 @@ export function validReviewPage(requestedGuide: string, page: PublishedReviewPag
 
 export type ReviewLoadState = Readonly<{status:'loading'}> | Readonly<{status:'error'}> | Readonly<{status:'ready'; page:PublishedReviewPage}>;
 
-export function ReviewCard({review,profilePath,guideName}:{review:PublishedReview;profilePath?:string;guideName?:string}) {
+export function ReviewCard({review,profilePath,guideName,onReport,allowSignIn=true}:{review:PublishedReview;profilePath?:string;guideName?:string;onReport?:ReportAction;allowSignIn?:boolean}) {
   return <article className="card" id={`review-${review.id}`}>
-    <p><strong>{review.rating} / 5</strong> · Published {review.publishedAt}</p><p>{review.body}</p>
+    <p><strong>{review.rating} / 5</strong> · Published {review.publishedAt}</p><p>{review.body}</p>{review.tripMonth&&<p>Trip month reported by the angler: {review.tripMonth}</p>}
     {review.tripDetails===null?<p>Trip details are temporarily unavailable.</p>:!!review.tripDetails?.length&&<details><summary>Trip details reported by the angler</summary><ul>{review.tripDetails.map((item,index)=><li key={index}>{item}</li>)}</ul></details>}
     {profilePath&&guideName&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(review.id)&&<ReviewShare profilePath={profilePath} reviewId={review.id} guideName={guideName}/>}
+    <ReportReview onReport={onReport?(reason=>onReport(review.id,reason)):undefined} allowSignIn={allowSignIn}/>
   </article>;
 }
 
-export function PublishedReviews({guideKey, state,profilePath,guideName}: {guideKey:string; state:ReviewLoadState;profilePath?:string;guideName?:string}) {
+export function PublishedReviews({guideKey, state,profilePath,guideName,onReport,allowSignIn=true}: {guideKey:string; state:ReviewLoadState;profilePath?:string;guideName?:string;onReport?:ReportAction;allowSignIn?:boolean}) {
   if (state.status === 'loading') return <p role="status">Loading reviews…</p>;
   if (state.status === 'error' || !validReviewPage(guideKey, state.page)) return <p role="status">Reviews are temporarily unavailable.</p>;
   const {page} = state;
@@ -48,6 +53,6 @@ export function PublishedReviews({guideKey, state,profilePath,guideName}: {guide
   return <section aria-labelledby="published-reviews-heading">
     <h2 id="published-reviews-heading">Angler reviews</h2>
     <p><strong>{page.average?.toFixed(1)} / 5</strong> · {page.total} {page.total === 1 ? 'published review' : 'published reviews'}</p>
-    {page.reviews.map(review=><ReviewCard key={review.id} review={review} profilePath={profilePath} guideName={guideName}/>)}
+    {page.reviews.map(review=><ReviewCard key={review.id} review={review} profilePath={profilePath} guideName={guideName} onReport={onReport} allowSignIn={allowSignIn}/>)}
   </section>;
 }

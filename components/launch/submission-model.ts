@@ -33,7 +33,7 @@ export function validateReviewDraft(draft: ReviewDraft): string | null {
   if (Array.from(body).length < 1 || body.length > 3000) return 'Describe your experience in 1 to 3,000 characters.';
   if (!draft.firsthand) return 'Confirm that you personally took the trip.';
   if (!draft.relationship || !['none','personal','financial','other'].includes(draft.relationship)) return 'Choose the relationship that applies to you.';
-  if (draft.tripMonth !== null && !/^\d{4}-(0[1-9]|1[0-2])$/.test(draft.tripMonth)) return 'Enter a valid trip month.';
+  if (draft.tripMonth !== null && !/^(?!0000)\d{4}-(0[1-9]|1[0-2])$/.test(draft.tripMonth)) return 'Enter a valid trip month.';
   return null;
 }
 

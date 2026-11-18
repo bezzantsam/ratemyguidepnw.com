@@ -20,7 +20,7 @@ const trip=compile('components/launch/trip-responses.ts');
 const details=compile('components/launch/TripDetails.tsx',{'./trip-responses':trip});
 const views=compile('components/launch/SubmissionViews.tsx',{'./submission-model':model,'./trip-responses':trip,'./TripDetails':details});
 const queue=compile('components/launch/ModerationQueue.tsx',{'./submission-model':model,'./SubmissionViews':views});
-const published=compile('components/launch/PublishedReviews.tsx',{'./ReviewShare':{ReviewShare:()=>null}});
+const published=compile('components/launch/PublishedReviews.tsx',{'./ReviewShare':{ReviewShare:()=>null},'./ReportReview':{ReportReview:()=>null}});
 const receiptId='10000000-0000-4000-8000-000000000001';
 
 test('basic review requires a rating, nonempty narrative, disclosure and firsthand attestation',()=>{
@@ -73,10 +73,11 @@ test('status renders the actual receipt and does not imply that sign-in verifies
   assert.match(pending,/Your review is pending\. It is not on the public page\./);
   const denied=renderToStaticMarkup(React.createElement(views.SubmissionStatus,{kind:'claim',receipt:{id:receiptId,status:'denied'}}));
   assert.doesNotMatch(denied,/explanation below/);
-  const review=renderToStaticMarkup(React.createElement(views.ReviewSubmission,{onSubmit:async()=>({status:'pending'}),allowTripMonth:true}));
+  const review=renderToStaticMarkup(React.createElement(views.ReviewSubmission,{onSubmit:async()=>({status:'pending'}),allowTripResponses:true}));
   assert.match(review,/Signing in confirms your account, not that a trip occurred/);
   assert.match(review,/I personally took this trip/);
   assert.match(review,/<summary>Tell us more<\/summary>/);
+  assert.match(review,/Trip month \(optional\)/);
   const basic=renderToStaticMarkup(React.createElement(views.ReviewSubmission,{onSubmit:async()=>({status:'pending'})}));
   assert.doesNotMatch(basic,/Trip month/);
   const claim=renderToStaticMarkup(React.createElement(views.ClaimSubmission,{onSubmit:async()=>({status:'pending'})}));

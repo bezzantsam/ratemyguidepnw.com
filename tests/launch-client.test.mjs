@@ -32,7 +32,7 @@ test('submission sends explicit fields with a bearer token and retains a real pe
   const body=JSON.parse(request.init.body);
   assert.equal(body.operation,'submit_review');assert.equal(body.sourceId,source.sourceId);assert.equal(body.jurisdiction,'OR');
   assert.equal(body.firsthandAttested,true);assert.equal(body.wouldBookAgain,false);assert.equal(body.relationship,'none');
-  assert.equal('tripMonth' in body,false);assert.equal('userId' in body,false);assert.equal('status' in body,false);
+  assert.equal(body.tripMonth,null);assert.equal('userId' in body,false);assert.equal('status' in body,false);
 });
 
 test('basic review transmits skipped intensity and rebooking as null, not invented values',async()=>{
@@ -41,10 +41,20 @@ test('basic review transmits skipped intensity and rebooking as null, not invent
   assert.equal(payload.intensity,null);assert.equal(payload.wouldBookAgain,null);assert.equal(payload.body,'Good trip.');
 });
 
-test('optional trip details cannot be silently discarded by the draft backend',async()=>{
-  let called=false;const client=createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async()=>{called=true;return response({})}});
-  await assert.rejects(client.submitReview(source,{...draft,tripMonth:'2026-11'}),errorCode('optional_detail_unsupported'));
-  assert.equal(called,false);
+test('write readiness and own-review lookup distinguish unavailable, empty and persisted states',async()=>{
+  const create=value=>createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async()=>response(value)});
+  assert.equal(await create({available:true}).reviewWriteAvailability(source),true);
+  assert.equal(await create({available:false}).reviewWriteAvailability(source),false);
+  await assert.rejects(create({}).reviewWriteAvailability(source),errorCode('service_unavailable'));
+  assert.equal(await create({review:null}).ownReviewForGuide(source),null);
+  assert.equal((await create({review:{id,status:'published'}}).ownReviewForGuide(source)).id,id);
+  await assert.rejects(create({review:{id,status:'approved'}}).ownReviewForGuide(source),errorCode('service_unavailable'));
+});
+
+test('optional trip month reaches the agreed endpoint without an invented day',async()=>{
+  let payload;const client=createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async(_url,init)=>{payload=JSON.parse(init.body);return response({id,status:'pending'})}});
+  await client.submitReview(source,{...draft,tripMonth:'2026-11'});assert.equal(payload.tripMonth,'2026-11');
+  await assert.rejects(client.submitReview(source,{...draft,tripMonth:'0000-11'}),errorCode('invalid_input'));
 });
 
 test('versioned trip answers reach the draft endpoint without changing false or not applicable',async()=>{
@@ -96,10 +106,10 @@ test('review revisions send explicit user answers and require a persisted pendin
 });
 
 test('review edit loads only the requested public review and retains supported optional answers',async()=>{
-  const review={id,quality:4,intensity:3,would_book_again:false,body:draft.body,relationship_disclosure:'none',published_at:'2026-11-17T00:00:00Z',trip_responses:{version:1,answers:{dog_present:{state:'answered',value:false}}}};
+  const review={id,quality:4,intensity:3,would_book_again:false,body:draft.body,relationship_disclosure:'none',published_at:'2026-11-17T00:00:00Z',trip_month:'2026-07-01',trip_responses:{version:1,answers:{dog_present:{state:'answered',value:false}}}};
   const create=r=>createLaunchClient({enabled:true,getAccessToken:async()=>null,fetcher:async()=>response({review:r})});
   const initial=await create(review).reviewDetail(source,id);
-  assert.equal(initial.firsthand,false);assert.equal(initial.tripResponses.answers.dog_present.value,false);
+  assert.equal(initial.firsthand,false);assert.equal(initial.tripResponses.answers.dog_present.value,false);assert.equal(initial.tripMonth,'2026-07');
   await assert.rejects(create({...review,id:'20000000-0000-4000-8000-000000000002'}).reviewDetail(source,id),errorCode('service_unavailable'));
   await assert.rejects(create({...review,trip_responses:{version:2,answers:{}}}).reviewDetail(source,id),errorCode('service_unavailable'));
 });
@@ -143,6 +153,27 @@ test('moderator actions reject generic or mismatched receipts rather than invent
   await assert.rejects(create({status:'decided'}).operatorDecide('review',id,true,'Manual evidence has been reviewed.'),errorCode('service_unavailable'));
   await assert.rejects(create({id,status:'rejected'}).operatorDecide('review',id,true,'Manual evidence has been reviewed.'),errorCode('service_unavailable'));
   assert.equal((await create({id,status:'published'}).operatorDecide('review',id,true,'Manual evidence has been reviewed.')).status,'published');
+});
+
+test('reports require a persisted receipt, retain prior-report status and never accept an invalid reason',async()=>{
+  let calls=0,payload;const create=value=>createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async(_url,init)=>{calls++;payload=JSON.parse(init.body);return response(value)}});
+  const client=create({id,status:'submitted',existing:true});
+  assert.equal((await client.reportReview(source,id,'other')).existing,true);assert.equal(payload.operation,'report_review');assert.equal(payload.reviewId,id);
+  await assert.rejects(client.reportReview(source,id,'invented'),errorCode('invalid_input'));assert.equal(calls,1);
+  for(const value of [{id,status:'submitted'},{id,status:'pending',existing:false},{id:'bad',status:'submitted',existing:false}])await assert.rejects(create(value).reportReview(source,id,'other'),errorCode('service_unavailable'));
+  assert.equal((await create({id,status:'resolved'}).resolveReport(id)).status,'resolved');
+  await assert.rejects(create({id,status:'submitted'}).resolveReport(id),errorCode('service_unavailable'));
+});
+
+test('report queue never exposes hidden review text and duplicate requires a confirmed 409',async()=>{
+  const row={id,review_id:id,reason:'other',review_status:'removed',public_review_body:null,guide_name:'Guide',created_at:'2026-11-17T00:00:00Z'};
+  const create=value=>createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async()=>response({items:[value],offset:0,limit:50})});
+  assert.match((await create(row).operatorQueue('report'))[0].description,/not public/);
+  await assert.rejects(create({...row,public_review_body:'private draft'}).operatorQueue('report'),errorCode('service_unavailable'));
+  for(const [status,expected] of [[409,'duplicate_review'],[503,'service_unavailable']]){
+    const client=createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async()=>({ok:false,status,json:async()=>({error:'duplicate_review'})})});
+    await assert.rejects(client.submitReview(source,draft),errorCode(expected));
+  }
 });
 
 test('public results distinguish a valid empty set from an error and never attach auth',async()=>{
