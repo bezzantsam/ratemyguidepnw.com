@@ -1,0 +1,34 @@
+name: Owner review-first browser through real local services
+on:
+  pull_request:
+    branches:
+      - codex/beta-completion
+permissions:
+  contents: read
+jobs:
+  browser-local:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: Verify exact candidate and independent test
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rev-parse HEAD 'HEAD^{tree}'
+          printf '%s  %s\n' 74afb69db957037086c0e5ffddd2a8d312bed4ded3e446ba3f145284a351686d supabase/review-candidates/launch-combined.sql 91c90f5efa8598855fad1b92f0aafd21dcc54a9b009e2a4c14c3ba9eb71e272f tests/backend-auth-local/run-ci.sh 35e53e43a454d57ea0d1f24431a57bef216428b150076ec3eb8cc99b604ea62d tests/backend-auth-local/prepare.py a5b6805bc75787450c648fe20fdde38f279d6eb5ab296c69bd4b5d8ae3566013 tests/independent-qa/owner-review-first-local.py 49e5b42f70276c343a2fe356e4ee186e57b545f6e1eaea5ada7f0437086183d8 tests/independent-qa/owner-review-first-local.cjs | sha256sum -c -
+      - name: Install locked browser dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Install Chromium and OS dependencies
+        run: npx playwright-core install --with-deps chromium
+      - name: Exercise actual browser, Next and local services
+        shell: bash
+        run: |
+          set -euo pipefail
+          export BROWSER_EXECUTABLE="$(node --input-type=module -e "import {chromium} from 'playwright-core'; console.log(chromium.executablePath())")"
+          bash tests/backend-auth-local/run-ci.sh "$GITHUB_WORKSPACE/tests/independent-qa/owner-review-first-local.py"

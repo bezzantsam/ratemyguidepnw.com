@@ -4,7 +4,8 @@
       "codex/directory-identity-copy-fix": false,
       "coordinator/rmg-launch-prep": false,
       "codex/beta-completion": false,
-      "codex/rmg-guide-search-corrections-20261117": false
+      "codex/rmg-guide-search-corrections-20261117": false,
+      "codex/rmg-backend-synthetic-ci-20261117": false
     }
   },
   "installCommand": "node scripts/check-release-dependencies.mjs && npm ci --no-audit --no-fund"

@@ -1,0 +1,35 @@
+name: Backend synthetic authorization check
+on:
+  push:
+    branches:
+      - codex/rmg-backend-synthetic-ci-20261117
+  pull_request:
+    branches:
+      - codex/beta-completion
+permissions:
+  contents: read
+jobs:
+  synthetic-postgres:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Run 06 synthetic Postgres 17 checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -x /usr/lib/postgresql/17/bin/initdb ]; then
+            curl --fail --silent --show-error --location https://www.postgresql.org/media/keys/ACCC4CF8.asc -o "$RUNNER_TEMP/pgdg.asc"
+            fingerprint="$(gpg --show-keys --with-colons "$RUNNER_TEMP/pgdg.asc" | awk -F: '$1=="fpr" {print $10;exit}')"
+            test "$fingerprint" = B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
+            sudo install -m 644 "$RUNNER_TEMP/pgdg.asc" /usr/share/keyrings/rmg-pgdg.asc
+            echo 'deb [signed-by=/usr/share/keyrings/rmg-pgdg.asc] https://apt.postgresql.org/pub/repos/apt noble-pgdg main' | sudo tee /etc/apt/sources.list.d/rmg-pgdg.list >/dev/null
+            sudo apt-get update -qq
+            sudo apt-get install -y postgresql-17
+          fi
+          export PATH="/usr/lib/postgresql/17/bin:$PATH"
+          postgres --version
+          test "$(postgres --version | awk '{print $3}' | cut -d. -f1)" = 17
+          bash tests/backend-launch/run-local.sh

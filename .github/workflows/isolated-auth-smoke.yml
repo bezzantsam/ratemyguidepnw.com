@@ -1,0 +1,24 @@
+name: Isolated Supabase Auth setup smoke
+on:
+  pull_request:
+    branches:
+      - codex/beta-completion
+permissions:
+  contents: read
+jobs:
+  local-auth-smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Verify frozen fixture and candidate SQL
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rev-parse HEAD 'HEAD^{tree}'
+          printf '%s  %s\n' 74afb69db957037086c0e5ffddd2a8d312bed4ded3e446ba3f145284a351686d supabase/review-candidates/launch-combined.sql 91c90f5efa8598855fad1b92f0aafd21dcc54a9b009e2a4c14c3ba9eb71e272f tests/backend-auth-local/run-ci.sh 35e53e43a454d57ea0d1f24431a57bef216428b150076ec3eb8cc99b604ea62d tests/backend-auth-local/prepare.py 6bb332a7c133b90215a8a97a1c9642c04e01747a213fd5fd84004c83cceb5f7e tests/backend-auth-local/smoke.py | sha256sum -c -
+      - name: Exercise isolated local service setup
+        shell: bash
+        run: bash tests/backend-auth-local/run-ci.sh "$GITHUB_WORKSPACE/tests/backend-auth-local/smoke.py"
