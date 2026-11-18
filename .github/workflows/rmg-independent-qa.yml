@@ -6,6 +6,7 @@ permissions:
   contents: read
 jobs:
   browser-auth:
+    if: "!contains(github.event.head_commit.message, '[auth-only]')"
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -31,6 +32,7 @@ jobs:
           export BROWSER_EXECUTABLE="$(node --input-type=module -e "import {chromium} from 'playwright-core'; console.log(chromium.executablePath())")"
           bash tests/backend-auth-local/run-ci.sh "$GITHUB_WORKSPACE/tests/independent-qa/independent-browser-local.py"
   readiness:
+    if: "!contains(github.event.head_commit.message, '[auth-only]')"
     runs-on: ubuntu-latest
     timeout-minutes: 10
     services:
@@ -68,3 +70,20 @@ jobs:
           psql -X -q -v ON_ERROR_STOP=1 -1 -f supabase/review-candidates/final-launch-migration-body.sql
           psql -X -q -v ON_ERROR_STOP=1 -c "UPDATE rmg_private.launch_control SET enabled=true WHERE singleton; INSERT INTO rmg_private.guide_identity_map(jurisdiction,source_id,guide_id,reviewed_at,review_reference) VALUES ('OR','fixture-one','10000000-0000-0000-0000-000000000001',now(),'fixture'),('OR','fixture-two','10000000-0000-0000-0000-000000000002',now(),'fixture');"
           psql -X -v ON_ERROR_STOP=1 -f tests/independent-qa/readiness-schema-repro.sql
+  cross-user-authorization:
+    if: "contains(github.event.head_commit.message, '[auth-only]')"
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Verify independent assertion hashes
+        run: |
+          echo '99005d1d0aff73945be34eb461d043c50e7d19a97ee3fd0845ac66704a9f9874  tests/independent-qa/independent-auth-final.py' | sha256sum --check
+          echo '08c43f44c92928899b83a2abc56345783da03c2a5cdbe7253a56fd8cb529f417  tests/independent-qa/independent-auth-postgrest-v2.py' | sha256sum --check
+      - name: Run independent Auth and cross-user authorization checks
+        env:
+          RMG_FIXTURE_SCHEMA_ONLY: '1'
+          RMG_FINAL_LAUNCH_FIXTURE: '1'
+        run: bash tests/backend-auth-local/run-ci.sh "$GITHUB_WORKSPACE/tests/independent-qa/independent-auth-final.py"
