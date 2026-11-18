@@ -36,5 +36,9 @@ test('versioned answers distinguish missing, not applicable, false and a rating'
 test('auth return accepts only allowed internal destinations and intent',()=>{
  assert.equal(safeReturnTo('/guides/og-123?intent=review#write-review'),'/guides/og-123?intent=review#write-review');
  assert.equal(safeReturnTo('/claim/OG.A%26B'),'/claim/OG.A%26B');
- for(const bad of ['https://evil.example/','//evil.example/','/\\evil.example','/%2f%2fevil.example','/guides/a?token=secret','/guides/a#private','/other','/guides/a\n'])assert.equal(safeReturnTo(bad),null,bad);
+ const id='00000000-0000-0000-0000-000000000001',other='00000000-0000-0000-0000-000000000002';
+ assert.equal(safeReturnTo(`/guides/og-123?review=${id}`),`/guides/og-123?review=${id}`);
+ assert.equal(safeReturnTo(`/washington/wa-123#review-${id}`),`/washington/wa-123#review-${id}`);
+ assert.equal(safeReturnTo(`/guides/og-123?review=${id}#review-${id}`),`/guides/og-123?review=${id}#review-${id}`);
+ for(const bad of ['https://evil.example/','//evil.example/','/\\evil.example','/%2f%2fevil.example','/guides/a?token=secret','/guides/a#private','/other','/guides/a\n',`/guides/a?review=${id}&x=1`,`/guides/a?review=${id}#review-${other}`,`/admin?review=${id}`,`/guides/a?intent=review#review-${id}`,`/guides/a?review=${id}#write-review`])assert.equal(safeReturnTo(bad),null,bad);
 });

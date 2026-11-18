@@ -89,3 +89,7 @@ For both `submit_review` and `submit_revision`, only quality (integer 1–5), no
 `operator_decide` now returns actual transactional `{id,status}` for all kinds: review `published|rejected`, claim `approved|denied`, revision `approved|rejected`. Nonpending/replayed decisions are conflicts. The moderator-only revision queue includes `guide_name` and a reviewed `jurisdiction`/`source_id` where available (otherwise null), with no submitter ID.
 
 These changes have passed local mocked Node tests, but the current successor still requires exact synthetic PostgreSQL, independent security and hosted integration tests.
+
+## v2.2 coordinated published-review return destination
+
+On an exact allowed profile path only, `safe_return` additionally accepts `?review=<UUID>` for the sign-in callback and/or `#review-<UUID>` for the canonical published-review link. If both occur, UUIDs must match. It rejects these query/fragment forms on claim/admin paths, extra parameters, mismatched IDs and mixed write-review intent. After Auth consumes its fragment, the frontend restores the canonical `#review-<UUID>` and calls `review_detail` to confirm that the mapped guide owns a currently published review. No token or private draft belongs in the share URL.
