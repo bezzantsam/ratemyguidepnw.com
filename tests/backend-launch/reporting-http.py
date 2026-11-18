@@ -52,24 +52,35 @@ code,duplicate=request('/rpc/rmg_submit_review',review_args,author)
 require(code!=200 and isinstance(duplicate,dict) and duplicate.get('code')=='P4091','confirmed duplicate code not preserved over PostgREST')
 code,ready=request('/rpc/rmg_review_write_availability',{'p_jurisdiction':'OR','p_source_id':'fixture-two'})
 require(code==200 and ready=={'available':True},'local write readiness unavailable')
-month_args={**review_args,'p_source_id':'fixture-two','p_trip_month':'2026-07'}
+trip={'version':1,'answers':{
+ 'target_species':{'state':'answered','value':'steelhead'},'setting':{'state':'answered','value':'river'},
+ 'teaching_requested':{'state':'answered','value':False},'teaching_experience':{'state':'not_applicable'},
+ 'children_present':{'state':'answered','value':True},'guide_patience':{'state':'answered','value':4},
+ 'effort':{'state':'answered','value':5},'attentiveness':{'state':'answered','value':3},
+ 'organization':{'state':'answered','value':2},'cleanliness':{'state':'answered','value':1},
+ 'agreed_duration_minutes':{'state':'answered','value':0},'actual_duration_minutes':{'state':'answered','value':1440},
+ 'duration_change_reason':{'state':'answered','value':'weather'},'response_slow_catch':{'state':'not_applicable'},
+ 'dog_present':{'state':'answered','value':False},'dog_previously_disclosed':{'state':'not_applicable'},
+ 'conversation_preference':{'state':'answered','value':'quiet'},'respect_for_boundaries':{'state':'answered','value':5}}}
+month_args={**review_args,'p_source_id':'fixture-two','p_trip_month':'2026-07','p_trip_responses':trip}
 code,submitted=request('/rpc/rmg_submit_review_v2',month_args,reporter)
 require(code==200 and submitted.get('status')=='pending','month review receipt missing')
 code,owned=request('/rpc/rmg_own_review_for_guide',{'p_jurisdiction':'OR','p_source_id':'fixture-two'},reporter)
 require(code==200 and owned.get('id')==submitted.get('id') and owned.get('status')=='pending','guide recovery failed')
 code,decision=request('/rpc/rmg_decide_submission',{'p_kind':'review','p_id':submitted['id'],'p_approve':True,'p_reason':'Independent review of synthetic trip'},moderator)
 require(code==200 and decision.get('status')=='published','month review publication failed')
-code,published=request('/public_angler_reviews?id=eq.'+submitted['id']+'&select=id,trip_month')
-require(code==200 and len(published)==1 and published[0]['trip_month']=='2026-07-01','published month did not persist')
-revision_args={'p_review_id':submitted['id'],'p_quality':4,'p_intensity':None,'p_rebook':None,'p_body':'Synthetic revision','p_firsthand':True,'p_relationship':'none','p_trip_responses':None,'p_trip_month_specified':True,'p_trip_month':'2026-08'}
+code,published=request('/public_angler_reviews?id=eq.'+submitted['id']+'&select=id,trip_month,trip_responses')
+require(code==200 and len(published)==1 and published[0]['trip_month']=='2026-07-01' and published[0]['trip_responses']==trip,'published trip answers or month did not persist')
+changed_trip={'version':1,'answers':{**trip['answers'],'target_species':{'state':'answered','value':'coho'}}}
+revision_args={'p_review_id':submitted['id'],'p_quality':4,'p_intensity':None,'p_rebook':None,'p_body':'Synthetic revision','p_firsthand':True,'p_relationship':'none','p_trip_responses':changed_trip,'p_trip_month_specified':True,'p_trip_month':'2026-08'}
 code,revision=request('/rpc/rmg_submit_revision_v2',revision_args,reporter)
 require(code==200 and revision.get('status')=='pending','month revision receipt missing')
-code,published=request('/public_angler_reviews?id=eq.'+submitted['id']+'&select=id,trip_month')
-require(code==200 and published[0]['trip_month']=='2026-07-01','unreviewed month became public')
+code,published=request('/public_angler_reviews?id=eq.'+submitted['id']+'&select=id,trip_month,trip_responses')
+require(code==200 and published[0]['trip_month']=='2026-07-01' and published[0]['trip_responses']==trip,'unreviewed month or trip answers became public')
 code,decision=request('/rpc/rmg_decide_revision',{'p_id':revision['id'],'p_approve':True,'p_reason':'Independent review of synthetic revision'},moderator)
 require(code==200 and decision.get('status')=='approved','month revision approval failed')
-code,published=request('/public_angler_reviews?id=eq.'+submitted['id']+'&select=id,trip_month')
-require(code==200 and published[0]['trip_month']=='2026-08-01','approved month edit missing')
+code,published=request('/public_angler_reviews?id=eq.'+submitted['id']+'&select=id,trip_month,trip_responses')
+require(code==200 and published[0]['trip_month']=='2026-08-01' and published[0]['trip_responses']==changed_trip,'approved month or trip edit missing')
 code,_=request('/rpc/rmg_report_review',args);require(code in (401,403,404),'anonymous report unexpectedly available')
 code,first=request('/rpc/rmg_report_review',args,reporter);require(code==200 and first.get('status')=='submitted' and first.get('existing') is False,'persisted report receipt missing')
 code,retry=request('/rpc/rmg_report_review',args,reporter);require(code==200 and retry.get('id')==first.get('id') and retry.get('existing') is True,'report retry not idempotent')

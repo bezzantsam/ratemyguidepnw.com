@@ -17,13 +17,19 @@ python3 "$root/tests/backend-launch/reconstruct.py" > "$tmp/schema.sql"
 "${ps[@]}" -f "$tmp/schema.sql" >/dev/null
 "${ps[@]}" -f "$root/tests/backend-launch/fixtures.sql" >/dev/null
 "${ps[@]}" -c "ALTER TABLE auth.users ADD COLUMN email_confirmed_at timestamptz, ADD COLUMN is_anonymous boolean NOT NULL DEFAULT false, ADD COLUMN deleted_at timestamptz; UPDATE auth.users SET email_confirmed_at=now(); CREATE TABLE public.review_flags(id uuid PRIMARY KEY DEFAULT gen_random_uuid(), review_id uuid NOT NULL REFERENCES public.reviews(id), reporter_id uuid NOT NULL REFERENCES auth.users(id), reason text NOT NULL, created_at timestamptz NOT NULL DEFAULT now(), UNIQUE(review_id,reporter_id)); ALTER TABLE public.review_flags ENABLE ROW LEVEL SECURITY; GRANT ALL ON public.review_flags TO anon,authenticated;" >/dev/null
-"${ps[@]}" -f "$root/supabase/review-candidates/launch-combined.sql" >/dev/null
 python3 "$root/tests/backend-launch/assemble-reporting-migration.py" > "$tmp/reporting-body.sql"
 cmp "$tmp/reporting-body.sql" "$root/supabase/review-candidates/review-reporting-migration-body.sql"
-"${ps[@]}" -1 -f "$tmp/reporting-body.sql" >/dev/null
 python3 "$root/tests/backend-launch/assemble-month-recovery-migration.py" > "$tmp/month-body.sql"
 cmp "$tmp/month-body.sql" "$root/supabase/review-candidates/review-month-recovery-migration-body.sql"
-"${ps[@]}" -1 -f "$tmp/month-body.sql" >/dev/null
+python3 "$root/tests/backend-launch/assemble-final-launch.py" launch > "$tmp/final-launch.sql"
+cmp "$tmp/final-launch.sql" "$root/supabase/review-candidates/final-launch-migration-body.sql"
+# The runner owns the transaction. A failure after the complete body must roll it all back.
+baseline_query="SELECT md5(concat_ws('|',(SELECT relacl::text FROM pg_class WHERE oid='public.reviews'::regclass),(SELECT relacl::text FROM pg_class WHERE oid='public.review_flags'::regclass),(SELECT proacl::text||pg_get_functiondef(oid) FROM pg_proc WHERE oid='public.admin_decide_review(uuid,boolean,text)'::regprocedure),(SELECT count(*)::text FROM public.reviews),(SELECT count(*)::text FROM public.guide_claims),(SELECT count(*)::text FROM public.review_flags)))"
+baseline=$("${ps[@]}" -Atc "$baseline_query")
+if "${ps[@]}" -1 -f "$tmp/final-launch.sql" -c 'SELECT 1/0' >"$tmp/injected-failure.log" 2>&1; then echo 'Injected final-migration failure unexpectedly succeeded' >&2; exit 1; fi
+[[ "$baseline" == "$("${ps[@]}" -Atc "$baseline_query")" ]] || { echo 'Injected failure changed sampled baseline grants, function or row counts' >&2; exit 1; }
+"${ps[@]}" -c "SELECT public.fixture_assert(to_regnamespace('rmg_private') IS NULL AND NOT EXISTS (SELECT 1 FROM pg_attribute WHERE attrelid='public.review_flags'::regclass AND attname='status' AND NOT attisdropped) AND EXISTS (SELECT 1 FROM pg_constraint WHERE conrelid='public.reviews'::regclass AND conname='reviews_body_check' AND pg_get_constraintdef(oid) LIKE '%80%'),'final migration failure rolled back base and additive changes');"
+"${ps[@]}" -1 -f "$tmp/final-launch.sql" >/dev/null
 "${ps[@]}" >/dev/null <<'SQL'
 SET ROLE authenticated;
 SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000002',false);
@@ -115,3 +121,11 @@ fi
 "${ps[@]}" -c "SELECT public.fixture_assert(NOT has_function_privilege('authenticated','public.rmg_report_review(text,text,uuid,text)','EXECUTE') AND (SELECT count(*)>=12 FROM public.review_flags),'emergency reporting disable revokes access and retains reports');"
 "${ps[@]}" -f "$root/supabase/review-candidates/disable-review-v26.sql" >/dev/null
 "${ps[@]}" -c "SELECT public.fixture_assert(NOT has_function_privilege('authenticated','public.rmg_submit_review_v2(text,text,smallint,smallint,boolean,text,boolean,text,jsonb,text)','EXECUTE') AND (SELECT count(*)>=14 FROM public.reviews),'v2.6 disable revokes access and retains reviews');"
+python3 "$root/tests/backend-launch/assemble-final-launch.py" disable > "$tmp/final-disable.sql"
+cmp "$tmp/final-disable.sql" "$root/supabase/review-candidates/final-launch-disable-body.sql"
+counts_query="SELECT concat_ws(',',(SELECT count(*) FROM public.reviews),(SELECT count(*) FROM public.review_flags),(SELECT count(*) FROM rmg_private.review_revisions),(SELECT count(*) FROM public.guide_claims),(SELECT count(*) FROM public.moderation_audit),(SELECT count(*) FROM rmg_private.guide_identity_map))"
+before=$("${ps[@]}" -Atc "$counts_query")
+"${ps[@]}" -1 -f "$tmp/final-disable.sql" >/dev/null
+after=$("${ps[@]}" -Atc "$counts_query")
+[[ "$before" == "$after" ]] || { echo 'Emergency disable changed retained row counts' >&2; exit 1; }
+"${ps[@]}" -c "SELECT public.fixture_assert((SELECT NOT enabled FROM rmg_private.launch_control WHERE singleton) AND NOT has_function_privilege('authenticated','public.rmg_submit_review_v2(text,text,smallint,smallint,boolean,text,boolean,text,jsonb,text)','EXECUTE') AND NOT has_function_privilege('authenticated','public.rmg_report_review(text,text,uuid,text)','EXECUTE'),'final disable closes launch gate and v2 RPCs without deleting rows');"

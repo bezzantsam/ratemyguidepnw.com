@@ -136,3 +136,35 @@ This successor requires the separate v2.6 migration **after** v2.4 and v2.5. Exi
 - `submit_review` and `submit_revision` accept optional `tripMonth`: `"YYYY-MM"` with year 0001–9999 and month 01–12, or `null`. It is stored as the first day of that month in the existing `reviews.trip_month` date field; public review reads return a date such as `"2026-07-01"`. No day, firsthand verification or timezone is inferred. Omitted/null on a new review means no month. On a revision, **omitted preserves** the published month, **null clears** it, and a month replaces it only after approval. The moderator revision queue includes `trip_month` and `trip_month_specified`. Pending/rejected revisions never change the published month or rating.
 - Authenticated `{operation:"own_review_for_guide",jurisdiction:"OR"|"WA",sourceId:string}` returns `{review:null}` when the actor has no review of that mapped guide, otherwise `{review:{id:uuid,status:"pending"|"published"|"rejected"|"removed"}}`. It returns no content or other user's data. Unmapped guides and service failures remain errors, not empty results. Use this lookup after `duplicate_review` or an uncertain submission instead of guessing or searching paginated history.
 - Public `{operation:"review_write_availability",jurisdiction:"OR"|"WA",sourceId:string}` returns `{available:boolean}` only after checking the mapped guide, server/DB gates, database read-only/recovery state and v2 submit-function execution grants. A missing mapping, failed check or unavailable service is an error, not availability. This is an **advisory readiness check**, not proof that Auth email delivery, capacity or a later write will succeed. 01 must fail closed on false or errors and clear write/share/QR availability after a `launch_unavailable` or `service_unavailable` write failure. A network-unknown outcome must remain unknown; neither readiness nor a public-read response is a submission receipt.
+
+## Final integration examples and migration pin
+
+`POST /api/launch` takes JSON; authenticated operations also require `Authorization: Bearer <confirmed-user-session>`. Example requests and responses (IDs and guide source are fictional):
+
+```json
+{"operation":"submit_review","jurisdiction":"OR","sourceId":"fixture-one","quality":5,"body":"Good trip","firsthandAttested":true,"relationship":"none","tripMonth":"2026-07","tripResponses":{"version":1,"answers":{"dog_present":{"state":"answered","value":false},"effort":{"state":"not_applicable"}}}}
+{"id":"30000000-0000-0000-0000-000000000001","status":"pending"}
+```
+
+```json
+{"operation":"report_review","jurisdiction":"OR","sourceId":"fixture-one","reviewId":"30000000-0000-0000-0000-000000000001","reason":"not_firsthand"}
+{"id":"40000000-0000-0000-0000-000000000001","status":"submitted","existing":false}
+```
+
+```json
+{"operation":"operator_queue","kind":"report","offset":0,"limit":10}
+{"items":[],"offset":0,"limit":10}
+{"operation":"resolve_report","id":"40000000-0000-0000-0000-000000000001"}
+{"id":"40000000-0000-0000-0000-000000000001","status":"resolved"}
+```
+
+```json
+{"operation":"own_review_for_guide","jurisdiction":"OR","sourceId":"fixture-one"}
+{"review":{"id":"30000000-0000-0000-0000-000000000001","status":"pending"}}
+{"operation":"review_write_availability","jurisdiction":"OR","sourceId":"fixture-one"}
+{"available":true}
+```
+
+An actual duplicate returns HTTP 409 `{"error":"duplicate_review"}`; an unrelated conflict returns HTTP 409 `{"error":"conflict"}`. A disabled gate returns HTTP 503 `{"error":"launch_unavailable"}` and an unavailable dependency HTTP 503 `{"error":"service_unavailable"}`. An unknown network result has no receipt: recover with `own_review_for_guide` rather than fabricating a success or a duplicate. A report success can be shown only when its validated persisted receipt arrives.
+
+The preferred unapplied one-transaction runner body combines v2.4, reporting and v2.6 in that order: `supabase/review-candidates/final-launch-migration-body.sql`, SHA-256 `9495e7bcbe794d6e6d3f136db5514a6e3a596080a145cf7ea85e16678b201c37`. It supersedes the older v2.6 hash `c0c7c4...`, whose readiness check did not test authenticated private-schema usage. `supabase/review-candidates/HOSTED-PLAN.md` records preconditions, alternate ordering and data-preserving recovery; 01 alone executes hosted changes.
