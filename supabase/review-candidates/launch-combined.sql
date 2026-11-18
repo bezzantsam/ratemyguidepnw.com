@@ -333,7 +333,8 @@ DECLARE actor uuid:=rmg_private.require_actor(); result jsonb;
 BEGIN
  IF p_offset IS NULL OR p_offset NOT BETWEEN 0 AND 100000 OR p_limit IS NULL OR p_limit NOT BETWEEN 1 AND 100 THEN RAISE EXCEPTION 'Invalid pagination' USING ERRCODE='22023'; END IF;
  SELECT COALESCE(jsonb_agg(to_jsonb(q) ORDER BY q.created_at DESC,q.id),'[]'::jsonb) INTO result FROM (
-  SELECT z.kind,z.id,z.status,z.created_at,z.review_id,m.jurisdiction,m.source_id FROM (
+  SELECT z.kind,z.id,z.status,z.created_at,z.review_id,m.jurisdiction,m.source_id,
+   COALESCE((SELECT jsonb_agg(jsonb_build_object('jurisdiction',i.jurisdiction,'source_id',i.source_id) ORDER BY i.jurisdiction,i.source_id) FROM rmg_private.guide_identity_map i WHERE i.guide_id=z.guide_id),'[]'::jsonb) AS identities FROM (
    SELECT 'review'::text kind,r.id,r.status,r.created_at,NULL::uuid review_id,r.guide_id FROM public.reviews r WHERE r.author_id=actor
    UNION ALL SELECT 'claim',c.id,c.status,c.created_at,NULL::uuid,c.guide_id FROM public.guide_claims c WHERE c.claimant_id=actor
    UNION ALL SELECT 'revision',v.id,v.status,v.created_at,v.review_id,r.guide_id FROM rmg_private.review_revisions v JOIN public.reviews r ON r.id=v.review_id WHERE v.submitter_id=actor

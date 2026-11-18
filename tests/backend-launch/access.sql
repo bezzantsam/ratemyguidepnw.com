@@ -5,8 +5,14 @@ INSERT INTO public.guides(id,slug,full_name,listing_status) VALUES
 INSERT INTO rmg_private.guide_identity_map(jurisdiction,source_id,guide_id,reviewed_at,review_reference) VALUES
  ('OR','fixture-1','10000000-0000-0000-0000-000000000001',now(),'synthetic reviewed identity'),
  ('OR','fixture-2','10000000-0000-0000-0000-000000000002',now(),'synthetic reviewed identity'),
+ ('WA','wa-777','10000000-0000-0000-0000-000000000002',now(),'synthetic reviewed identity'),
  ('OR','fixture-4','10000000-0000-0000-0000-000000000004',now(),'synthetic reviewed identity'),
  ('OR','fixture-5','10000000-0000-0000-0000-000000000005',now(),'synthetic reviewed identity');
+DO $$BEGIN
+ BEGIN INSERT INTO rmg_private.guide_identity_map VALUES ('OR','fixture-2','10000000-0000-0000-0000-000000000001',now(),'synthetic'); RAISE EXCEPTION 'duplicate source identity accepted'; EXCEPTION WHEN unique_violation THEN NULL; END;
+ BEGIN INSERT INTO rmg_private.guide_identity_map VALUES ('WA','wa-888','10000000-0000-0000-0000-000000000002',now(),'synthetic'); RAISE EXCEPTION 'duplicate state mapping accepted'; EXCEPTION WHEN unique_violation THEN NULL; END;
+ BEGIN INSERT INTO rmg_private.guide_identity_map VALUES ('CA','fixture-9','10000000-0000-0000-0000-000000000001',now(),'synthetic'); RAISE EXCEPTION 'invalid jurisdiction accepted'; EXCEPTION WHEN check_violation THEN NULL; END;
+END$$;
 SET ROLE anon;
 SELECT public.fixture_assert(public.rmg_resolve_guide('OR','fixture-1')='10000000-0000-0000-0000-000000000001','public reviewed mapping resolves');
 SELECT public.fixture_assert(public.rmg_profile_details('OR','fixture-1') IS NULL,'legacy details are not labeled as captain declarations without provenance');
