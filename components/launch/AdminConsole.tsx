@@ -3,6 +3,7 @@
 import {useCallback,useEffect,useMemo,useRef,useState} from 'react';
 import AuthPanel,{client as authClient} from '@/components/AuthPanel';
 import {createLaunchClient,type OperatorItem,type SubmissionKind} from '@/lib/launch-client';
+import {PreferredNameModeration} from './PreferredNameModeration';
 
 /** Access and every operation are independently checked by the server. */
 export function AdminConsole() {
@@ -35,7 +36,7 @@ export function AdminConsole() {
   }
   return <main className="launch-controls"><p className="eyebrow">SITE OPERATIONS</p><h1>Moderation</h1><AuthPanel onSignedIn={()=>void refreshAccess()}/>
     {access==='loading'&&<p role="status">Checking operator access…</p>}{access==='signed_out'&&<p>Sign in with an authorized operator account.</p>}{access==='denied'&&<p role="status">This account does not have operator access.</p>}{access==='error'&&<p role="status">Operator access is temporarily unavailable.</p>}
-    {access==='operator'&&<section><h2>Pending submissions</h2><label>Submission type <select value={kind} onChange={e=>{queueEpoch.current++;setItems(null);setKind(e.target.value as SubmissionKind);setOffset(0);setMessage('')}}><option value="review">Reviews</option><option value="claim">Claims</option><option value="revision">Review edits</option><option value="report">Review reports</option></select></label>
+    {access==='operator'&&<>{process.env.NEXT_PUBLIC_RMG_PREFERRED_NAMES_ENABLED==='true'&&<PreferredNameModeration review={source=>api.profileNameReview(source)} save={(source,name,reason)=>api.adminSetProfileName(source,name,reason)}/>}<section><h2>Pending submissions</h2><label>Submission type <select value={kind} onChange={e=>{queueEpoch.current++;setItems(null);setKind(e.target.value as SubmissionKind);setOffset(0);setMessage('')}}><option value="review">Reviews</option><option value="claim">Claims</option><option value="revision">Review edits</option><option value="report">Review reports</option></select></label>
       {error&&<p role="alert">{error}</p>}{message&&<p role="status">{message}</p>}
       {items===null?!error&&<p role="status">Loading submissions…</p>:items.length===0?<p>No pending submissions on this page.</p>:items.map(item=><article className="card" key={`${item.kind}:${item.id}`}>
         <h3>{item.kind==='review'?'Review':item.kind==='claim'?'Claim request':item.kind==='revision'?'Review edit':'Review report'} · {item.guideName??'Listing unavailable'}</h3>{item.reviewId&&<p>Review reference: {item.reviewId}</p>}<p>Submitted: {item.createdAt}</p><p style={{whiteSpace:'pre-wrap'}}>{item.description}</p>
@@ -43,6 +44,6 @@ export function AdminConsole() {
         <div className="launch-actions"><button type="button" disabled={!item.canApprove} onClick={()=>void decide(item,true)}>Approve</button><button type="button" onClick={()=>void decide(item,false)}>Reject</button></div></>}
       </article>)}
       <div>{offset>0&&<button type="button" onClick={()=>setOffset(Math.max(0,offset-50))}>Previous page</button>}{items?.length===50&&<button type="button" onClick={()=>setOffset(offset+50)}>Next page</button>} <button type="button" onClick={()=>void load()}>Refresh queue</button></div>
-    </section>}
+    </section></>}
   </main>;
 }

@@ -23,9 +23,10 @@ test('synthetic browser connects mapped review, claim, moderation and published 
    if(url.origin===authOrigin){if(url.pathname==='/auth/v1/user')return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(session.user)});state.blocked.push(`auth:${url.pathname}`);return route.abort()}
    if(url.origin===origin&&url.pathname==='/api/launch'){
     const input=req.postDataJSON(),headers=req.headers();state.requests.push({actor,operation:input.operation,input});
-    if(!['public_reviews','profile_details','review_detail','review_write_availability'].includes(input.operation)&&headers.authorization!==`Bearer ${tokens[actor]}`)return route.fulfill({status:401,contentType:'application/json',body:'{"error":"sign_in_required"}'});
+    if(!['public_reviews','profile_details','review_detail','review_write_availability','profile_names_v1'].includes(input.operation)&&headers.authorization!==`Bearer ${tokens[actor]}`)return route.fulfill({status:401,contentType:'application/json',body:'{"error":"sign_in_required"}'});
     let data;
     switch(input.operation){
+     case 'profile_names_v1':data={names:[]};break;
      case 'public_reviews':data={summary:{count:state.review?.status==='published'?1:0,averageQuality:state.review?.status==='published'?state.review.quality:null},reviews:state.review?.status==='published'?[{id:reviewId,quality:state.review.quality,body:state.review.body,published_at:'2026-11-17T00:00:00Z',trip_month:state.review.tripMonth?`${state.review.tripMonth}-01`:null,trip_responses:state.review.tripResponses??null}]:[],limit:100};break;
      case 'review_write_availability':data={available:true};break;
      case 'own_review_for_guide':data={review:actor===reviewer&&state.review?{id:reviewId,status:state.review.status}:null};break;

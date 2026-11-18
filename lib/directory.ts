@@ -8,6 +8,8 @@ import {editorialGuideCorrections} from './editorial-guide-corrections';
 export type DirectoryEntry={
   id:string;
   name:string;
+  /** Optional display-only preferred name; source identity remains `name` and `id`. */
+  displayName?:string;
   business:string|null;
   states:('Oregon'|'Washington')[];
   /** Source-imported broad registration zones, NOT verified launch locations. */
