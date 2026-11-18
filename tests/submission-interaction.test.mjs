@@ -7,6 +7,8 @@ import {createRequire} from 'node:module';
 const require=createRequire(import.meta.url);
 const ts=require('typescript');
 const receiptId='10000000-0000-4000-8000-000000000001';
+const trip=compile('components/launch/trip-responses.ts');
+const details={TripDetails:function TripDetails(){}};
 function compile(path, imports={}) {
   const code=ts.transpileModule(readFileSync(path,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX}}).outputText;
   const exports={};
@@ -30,13 +32,24 @@ function find(element, predicate) {
   for(const child of [element.props?.children].flat(Infinity)) {const match=find(child,predicate);if(match)return match}
   return undefined;
 }
-function setup(onSubmit) {
+function setup(onSubmit,allowTripResponses=false) {
   const hooks=hookHarness();
   const model=compile('components/launch/submission-model.ts');
-  const views=compile('components/launch/SubmissionViews.tsx',{react:hooks.react,'./submission-model':model});
-  const render=()=>{hooks.reset();return views.ReviewSubmission({onSubmit})};
+  const views=compile('components/launch/SubmissionViews.tsx',{react:hooks.react,'./submission-model':model,'./trip-responses':trip,'./TripDetails':details});
+  const render=()=>{hooks.reset();return views.ReviewSubmission({onSubmit,allowTripResponses})};
   return {render,views};
 }
+
+test('optional trip answers are validated and passed without inventing unanswered values',async()=>{
+  let captured;const {render}=setup(async draft=>{captured=draft;return {id:receiptId,status:'pending'}},true);
+  enterReview(render);
+  find(render(),node=>node.type===details.TripDetails).props.onChange({dog_present:'value:no',children_present:'na',actual_duration_minutes:'value:0'});
+  await render().props.onSubmit({preventDefault(){}});
+  assert.equal(captured.tripResponses.answers.dog_present.value,false);
+  assert.equal(captured.tripResponses.answers.children_present.state,'not_applicable');
+  assert.equal(captured.tripResponses.answers.actual_duration_minutes.value,0);
+  assert.equal(Object.hasOwn(captured.tripResponses.answers,'guide_patience'),false);
+});
 function enterReview(render) {
   const tree=render();
   for(const [suffix,value] of [['-quality','5'],['-intensity','3'],['-again','no'],['-relationship','none'],['-body','A firsthand description of the fishing trip. '.repeat(3)]]) {
@@ -81,7 +94,7 @@ test('an unconfirmed submission stays on the form and offers no false success',a
 test('claim submission preserves the persisted denied state',async()=>{
   const hooks=hookHarness();
   const model=compile('components/launch/submission-model.ts');
-  const views=compile('components/launch/SubmissionViews.tsx',{react:hooks.react,'./submission-model':model});
+  const views=compile('components/launch/SubmissionViews.tsx',{react:hooks.react,'./submission-model':model,'./trip-responses':trip,'./TripDetails':details});
   let captured;
   const render=()=>{hooks.reset();return views.ClaimSubmission({onSubmit:async draft=>{captured=draft;return {id:receiptId,status:'denied'}}})};
   find(render(),node=>node.props?.id?.endsWith('-claimant')).props.onChange({target:{value:' A Guide '}});
@@ -97,7 +110,7 @@ test('claim submission preserves the persisted denied state',async()=>{
 test('moderation requires a rejection reason and waits for the actual decision',async()=>{
   const hooks=hookHarness();
   const model=compile('components/launch/submission-model.ts');
-  const views=compile('components/launch/SubmissionViews.tsx',{react:hooks.react,'./submission-model':model});
+  const views=compile('components/launch/SubmissionViews.tsx',{react:hooks.react,'./submission-model':model,'./trip-responses':trip,'./TripDetails':details});
   const queue=compile('components/launch/ModerationQueue.tsx',{react:hooks.react,'./submission-model':model,'./SubmissionViews':views});
   let calls=0,resolveDecision,captured;
   const item={id:receiptId,kind:'claim',guideName:'Guide',description:'Evidence',submittedAt:'2026-11-17'};

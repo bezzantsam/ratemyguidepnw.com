@@ -16,7 +16,9 @@ function compile(path, imports={}) {
   return exports;
 }
 const model=compile('components/launch/submission-model.ts');
-const views=compile('components/launch/SubmissionViews.tsx',{'./submission-model':model});
+const trip=compile('components/launch/trip-responses.ts');
+const details=compile('components/launch/TripDetails.tsx',{'./trip-responses':trip});
+const views=compile('components/launch/SubmissionViews.tsx',{'./submission-model':model,'./trip-responses':trip,'./TripDetails':details});
 const queue=compile('components/launch/ModerationQueue.tsx',{'./submission-model':model,'./SubmissionViews':views});
 const published=compile('components/launch/PublishedReviews.tsx');
 const receiptId='10000000-0000-4000-8000-000000000001';
@@ -65,6 +67,10 @@ test('status renders the actual receipt and does not imply that sign-in verifies
     const html=renderToStaticMarkup(React.createElement(views.SubmissionStatus,{kind:'claim',receipt:{id:receiptId,status}}));
     assert.match(html,new RegExp(`Claim request: ${status}`));
   }
+  const pending=renderToStaticMarkup(React.createElement(views.SubmissionStatus,{kind:'review',receipt:{id:receiptId,status:'pending'}}));
+  assert.match(pending,/Your review is pending\. It is not on the public page\./);
+  const denied=renderToStaticMarkup(React.createElement(views.SubmissionStatus,{kind:'claim',receipt:{id:receiptId,status:'denied'}}));
+  assert.doesNotMatch(denied,/explanation below/);
   const review=renderToStaticMarkup(React.createElement(views.ReviewSubmission,{onSubmit:async()=>({status:'pending'}),allowTripMonth:true}));
   assert.match(review,/Signing in confirms your account, not that a trip occurred/);
   assert.match(review,/I personally took this trip/);

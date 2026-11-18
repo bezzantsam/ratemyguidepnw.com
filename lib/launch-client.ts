@@ -63,7 +63,7 @@ export function createLaunchClient(options:Options) {
       if(draft.tripMonth!==null) throw new LaunchClientError('optional_detail_unsupported');
       const body=draft.body.trim();
       if(body.length<80||body.length>3000) throw new LaunchClientError('invalid_input');
-      return receipt(await call('submit_review',{...sourceArgs(source),quality:draft.quality,intensity:draft.intensity,wouldBookAgain:draft.wouldBookAgain,body,firsthandAttested:draft.firsthand,relationship:draft.relationship},true));
+      return receipt(await call('submit_review',{...sourceArgs(source),quality:draft.quality,intensity:draft.intensity,wouldBookAgain:draft.wouldBookAgain,body,firsthandAttested:draft.firsthand,relationship:draft.relationship,...(draft.tripResponses?{tripResponses:draft.tripResponses}:{})},true));
     },
     async submitClaim(source:GuideSource,draft:ClaimDraft):Promise<PendingReceipt> {
       const claimantName=draft.claimantName.trim(),businessName=draft.businessName.trim(),evidence=draft.evidence.trim();
