@@ -23,8 +23,10 @@ export async function runLaunchJourney({repo,tree,browser,signal}){
    app=await launchApp(dir,env,signal);env.TEST_BASE_URL=app.url;
    checkIsolation('server startup');
    env.TEST_REVIEW_MODE='enabled';
-   try{await command('node',['--test','tests/launch-journey-browser.test.mjs','tests/issue-124-browser.test.mjs','tests/preferred-name-browser.test.mjs'],dir,env,signal)}catch(error){console.error(error);checkIsolation('failed browser journey');throw error}
-   checkIsolation('browser journey');
+   for(const test of ['tests/launch-journey-browser.test.mjs','tests/issue-124-browser.test.mjs','tests/preferred-name-browser.test.mjs']){
+    try{await command('node',['--test',test],dir,env,signal)}catch(error){console.error(error);checkIsolation(`failed ${test}`);throw error}
+    checkIsolation(test);
+   }
   }finally{try{if(app)await app.stop()}finally{if(backend)await backend.close()}}
  });
 }
