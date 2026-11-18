@@ -1,0 +1,30 @@
+[
+  {
+    "guide_id": "OG.0003297",
+    "expected_name": "Walter Rowe",
+    "expected_business": "Reel Time Fishing Adventures",
+    "kind": "species",
+    "value": "Halibut",
+    "status": "approved",
+    "provenance": {
+      "type": "user_editorial",
+      "attributed_to": "Sam",
+      "recorded_on": "2026-11-17",
+      "reference": "https://github.com/bezzantsam/ratemyguidepnw.com/blob/docs/rmg-guide-search-corrections-20261117/docs/editorial/guide-search-corrections-20261117.md"
+    }
+  },
+  {
+    "guide_id": "OG.0003348",
+    "expected_name": "Keondre Menefee",
+    "expected_business": "Valley Coast Outdoors",
+    "kind": "search_alias",
+    "value": "Dre Menefee",
+    "status": "approved",
+    "provenance": {
+      "type": "user_editorial",
+      "attributed_to": "Sam",
+      "recorded_on": "2026-11-17",
+      "reference": "https://github.com/bezzantsam/ratemyguidepnw.com/blob/docs/rmg-guide-search-corrections-20261117/docs/editorial/guide-search-corrections-20261117.md"
+    }
+  }
+]
