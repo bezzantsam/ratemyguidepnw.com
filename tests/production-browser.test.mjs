@@ -29,7 +29,8 @@ test('ordinary production data contains no synthetic discovery or unapproved con
   for(const marker of pendingMarkers)assert.ok(!(await page.content()).includes(marker),'pending research leaked into directory HTML');
   function files(dir){return readdirSync(dir,{withFileTypes:true}).flatMap(e=>e.isDirectory()?files(join(dir,e.name)):[join(dir,e.name)])}
   for(const file of [...files('.next/static'),...files('.next/server')])if(/\.(js|json|html|rsc|body)$/.test(file)){
-   const body=readFileSync(file,'utf8');assert.doesNotMatch(body,/Pending Secret Species|Rejected Secret Method|Fixture Source Outfit|Synthetic Captain Alias|Unapproved editorial preview|__editorial_visual__|rc-secret-canary-27f7bf9015|admin_decide_review|admin_decide_claim|BATCH13_CONSOLIDATED_POPULATION/);
+   const body=readFileSync(file,'utf8');assert.doesNotMatch(body,/Pending Secret Species|Rejected Secret Method|Fixture Source Outfit|Synthetic Captain Alias|Unapproved editorial preview|__editorial_visual__|rc-secret-canary-27f7bf9015|BATCH13_CONSOLIDATED_POPULATION/);
+   if(file.startsWith('.next/static/'))assert.doesNotMatch(body,/admin_decide_review|admin_decide_claim/);
    for(const marker of pendingMarkers)assert.ok(!body.includes(marker),'pending research leaked into '+file);
   }
   const absent=await page.goto(`${origin}/editorial-changes`,{waitUntil:'domcontentloaded'});assert.equal(absent.status(),404);

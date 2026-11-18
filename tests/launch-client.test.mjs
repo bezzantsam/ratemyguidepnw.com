@@ -8,7 +8,8 @@ function compile(path,imports={}) {
   const exports={};vm.runInNewContext(code,{exports,fetch:()=>{throw Error('unexpected network')},require:name=>imports[name]});return exports;
 }
 const model=compile('components/launch/submission-model.ts');
-const {createLaunchClient}=compile('lib/launch-client.ts',{'@/components/launch/submission-model':model});
+const trip=compile('components/launch/trip-responses.ts');
+const {createLaunchClient}=compile('lib/launch-client.ts',{'@/components/launch/submission-model':model,'@/components/launch/trip-responses':trip});
 const id='10000000-0000-4000-8000-000000000001';
 const source={jurisdiction:'OR',sourceId:'OG.0002254'};
 const draft={quality:4,intensity:3,wouldBookAgain:false,body:'A firsthand account of the trip and guide. '.repeat(3),firsthand:true,relationship:'none',tripMonth:null};
@@ -66,6 +67,55 @@ test('own status preserves only states valid for that submission type',async()=>
   await assert.rejects(wrong.ownStatus('review',id),errorCode('service_unavailable'));
 });
 
+test('own submission discovery accepts only valid actor-scoped receipts and preserves source identity',async()=>{
+  const row={id,kind:'review',status:'published',created_at:'2026-11-17T00:00:00Z',jurisdiction:'OR',source_id:'OG.0002254',review_id:null};
+  const create=items=>createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async()=>response({items,offset:0,limit:50})});
+  const [item]=await create([row]).mySubmissions();
+  assert.equal(item.status,'published');assert.equal(item.sourceId,'OG.0002254');
+  await assert.rejects(create([{...row,status:'approved'}]).mySubmissions(),errorCode('service_unavailable'));
+  await assert.rejects(create([{...row,jurisdiction:null}]).mySubmissions(),errorCode('service_unavailable'));
+});
+
+test('review revisions send explicit user answers and require a persisted pending receipt',async()=>{
+  let payload;const client=createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async(_url,init)=>{payload=JSON.parse(init.body);return response({id,status:'pending'})}});
+  assert.equal((await client.submitRevision(id,draft)).status,'pending');
+  assert.equal(payload.operation,'submit_revision');assert.equal(payload.reviewId,id);assert.equal(payload.wouldBookAgain,false);
+  assert.equal('sourceId' in payload,false);
+});
+
+test('review edit loads only the requested public review and retains supported optional answers',async()=>{
+  const review={id,quality:4,intensity:3,would_book_again:false,body:draft.body,relationship_disclosure:'none',published_at:'2026-11-17T00:00:00Z',trip_responses:{version:1,answers:{dog_present:{state:'answered',value:false}}}};
+  const create=r=>createLaunchClient({enabled:true,getAccessToken:async()=>null,fetcher:async()=>response({review:r})});
+  const initial=await create(review).reviewDetail(source,id);
+  assert.equal(initial.firsthand,false);assert.equal(initial.tripResponses.answers.dog_present.value,false);
+  await assert.rejects(create({...review,id:'20000000-0000-4000-8000-000000000002'}).reviewDetail(source,id),errorCode('service_unavailable'));
+  await assert.rejects(create({...review,trip_responses:{version:2,answers:{}}}).reviewDetail(source,id),errorCode('service_unavailable'));
+});
+
+test('owner declaration readback is attributed and save requires a real receipt',async()=>{
+  let payload;const details={boat:'Drift boat',gear:'',yearsExperience:0,expertise:'',species:''};
+  const client=createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async(_url,init)=>{payload=JSON.parse(init.body);return payload.operation==='profile_details'?response({details:{boat:'Drift boat',gear:null,years_experience:0,expertise:null,targeted_species:null},attribution:'captain_declared'}):response({status:'saved'})}});
+  assert.equal((await client.profileDetails(source)).yearsExperience,0);
+  await client.editDetails(source,details);assert.equal(payload.operation,'edit_details');assert.equal(payload.yearsExperience,0);
+  const bad=createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async()=>response({status:'unknown'})});
+  await assert.rejects(bad.editDetails(source,details),errorCode('service_unavailable'));
+});
+
+test('operator queue requires authorization and does not approve a revision without guide identity',async()=>{
+  let tokenRequested=false;
+  const row={id,review_id:id,body:'An edited trip report.',quality:4,relationship_disclosure:'none',trip_responses:null,created_at:'2026-11-17T00:00:00Z'};
+  const client=createLaunchClient({enabled:true,getAccessToken:async()=>{tokenRequested=true;return 'token'},fetcher:async()=>response({items:[row],offset:0,limit:50})});
+  const [item]=await client.operatorQueue('revision');
+  assert.equal(tokenRequested,true);assert.equal(item.reviewId,id);assert.equal(item.canApprove,false);
+});
+
+test('moderator actions reject generic or mismatched receipts rather than inventing an outcome',async()=>{
+  const create=value=>createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async()=>response(value)});
+  await assert.rejects(create({status:'decided'}).operatorDecide('review',id,true,'Manual evidence has been reviewed.'),errorCode('service_unavailable'));
+  await assert.rejects(create({id,status:'rejected'}).operatorDecide('review',id,true,'Manual evidence has been reviewed.'),errorCode('service_unavailable'));
+  assert.equal((await create({id,status:'published'}).operatorDecide('review',id,true,'Manual evidence has been reviewed.')).status,'published');
+});
+
 test('public results distinguish a valid empty set from an error and never attach auth',async()=>{
   let authRequested=false,headers;
   const client=createLaunchClient({enabled:true,getAccessToken:async()=>{authRequested=true;return 'token'},fetcher:async(_url,init)=>{headers=init.headers;return response({summary:{count:0,averageQuality:null},reviews:[]})}});
@@ -86,4 +136,12 @@ test('public results retain the full aggregate and only accept a published dated
   for(const bad of [{...review,status:'pending'},{...review,published_at:'not-a-date'}]) {
     await assert.rejects(create({summary:{count:1,averageQuality:5},reviews:[bad]}).publicReviews(source),errorCode('service_unavailable'));
   }
+});
+
+test('public review details retain explicit negatives and not applicable responses',async()=>{
+  const review={id,quality:5,body:'A published account.',published_at:'2026-11-17T00:00:00Z',trip_responses:{version:1,answers:{dog_present:{state:'answered',value:false},children_present:{state:'not_applicable'}}}};
+  const client=createLaunchClient({enabled:true,getAccessToken:async()=>null,fetcher:async()=>response({summary:{count:1,averageQuality:5},reviews:[review]})});
+  const [result]=(await client.publicReviews(source)).reviews;
+  assert.ok(result.tripDetails.some(line=>line.includes('Was a dog present? No')));
+  assert.ok(result.tripDetails.some(line=>line.includes('Were children on the trip? Not applicable')));
 });

@@ -1,11 +1,16 @@
 import {type ClaimDraft, type ReviewDraft, validateReviewDraft} from '@/components/launch/submission-model';
+import {decodeTripResponses,describeTripResponses,encodeTripResponses} from '@/components/launch/trip-responses';
 
 /** Provisional adapter for 06's draft contract. It stays disabled until integration is verified. */
 export type GuideSource = Readonly<{jurisdiction:'OR'|'WA';sourceId:string}>;
 export type PendingReceipt = Readonly<{id:string;status:'pending';existing?:boolean}>;
 export type OwnStatus = Readonly<{id:string;status:'pending'|'published'|'rejected'|'removed'|'approved'|'denied'}>;
-export type PublicReview = Readonly<{id:string;quality:number;body:string;publishedAt:string}>;
+export type PublicReview = Readonly<{id:string;quality:number;body:string;publishedAt:string;tripDetails:readonly string[]|null}>;
 export type PublicReviews = Readonly<{count:number;averageQuality:number|null;reviews:readonly PublicReview[]}>;
+export type SubmissionKind='review'|'claim'|'revision';
+export type OwnSubmission=Readonly<{id:string;kind:SubmissionKind;status:string;createdAt:string;jurisdiction:'OR'|'WA'|null;sourceId:string|null;reviewId:string|null}>;
+export type OwnerDetails=Readonly<{boat:string;gear:string;yearsExperience:number|null;expertise:string;species:string}>;
+export type OperatorItem=Readonly<{id:string;kind:SubmissionKind;guideName:string|null;reviewId:string|null;description:string;createdAt:string;canApprove:boolean}>;
 
 export class LaunchClientError extends Error {
   constructor(public readonly code:string) {super(code);this.name='LaunchClientError';}
@@ -15,6 +20,7 @@ type Options = Readonly<{enabled?:boolean;getAccessToken:()=>Promise<string|null
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const REVIEW_STATES=['pending','published','rejected','removed'];
 const CLAIM_STATES=['pending','approved','denied'];
+const REVISION_STATES=['pending','approved','rejected'];
 const ERRORS=new Set(['invalid_input','sign_in_required','forbidden','not_found','conflict','json_required','rate_limited','limit_or_conflict','service_unavailable']);
 function record(value:unknown):Record<string,unknown> | null {return value && typeof value==='object' && !Array.isArray(value) ? value as Record<string,unknown> : null;}
 function validSource(source:GuideSource):boolean {
@@ -70,12 +76,77 @@ export function createLaunchClient(options:Options) {
       if(Array.from(claimantName).length<2 || claimantName.length>120 || businessName.length>160 || Array.from(evidence).length<20 || evidence.length>2000) throw new LaunchClientError('invalid_input');
       return receipt(await call('submit_claim',{...sourceArgs(source),claimantName,businessName,evidence},true));
     },
-    async ownStatus(kind:'review'|'claim',id:string):Promise<OwnStatus> {
-      if((kind!=='review'&&kind!=='claim')||!UUID.test(id)) throw new LaunchClientError('invalid_input');
+    async ownStatus(kind:SubmissionKind,id:string):Promise<OwnStatus> {
+      if(!['review','claim','revision'].includes(kind)||!UUID.test(id)) throw new LaunchClientError('invalid_input');
       const data=record(await call('own_status',{kind,id},true));
-      const states=kind==='review'?REVIEW_STATES:CLAIM_STATES;
+      const states=kind==='review'?REVIEW_STATES:kind==='claim'?CLAIM_STATES:REVISION_STATES;
       if(!data || data.id!==id || typeof data.status!=='string' || !states.includes(data.status)) throw new LaunchClientError('service_unavailable');
       return {id,status:data.status as OwnStatus['status']};
+    },
+    async mySubmissions(offset=0,limit=50):Promise<OwnSubmission[]> {
+      if(!Number.isInteger(offset)||offset<0||offset>100000||!Number.isInteger(limit)||limit<1||limit>100) throw new LaunchClientError('invalid_input');
+      const data=record(await call('my_submissions',{offset,limit},true));
+      if(!data||data.offset!==offset||data.limit!==limit||!Array.isArray(data.items)||data.items.length>limit) throw new LaunchClientError('service_unavailable');
+      const seen=new Set<string>();
+      return data.items.map((value:unknown)=>{
+        const item=record(value);if(!item||typeof item.id!=='string'||!UUID.test(item.id)||seen.has(item.id)||!['review','claim','revision'].includes(item.kind as string)||typeof item.created_at!=='string'||!Number.isFinite(Date.parse(item.created_at)))throw new LaunchClientError('service_unavailable');
+        const kind=item.kind as SubmissionKind, states=kind==='review'?REVIEW_STATES:kind==='claim'?CLAIM_STATES:REVISION_STATES;
+        if(typeof item.status!=='string'||!states.includes(item.status)||(item.jurisdiction!==null&&item.jurisdiction!=='OR'&&item.jurisdiction!=='WA')||(item.source_id!==null&&(typeof item.source_id!=='string'||!item.source_id))||(item.jurisdiction===null)!==(item.source_id===null)||(kind==='revision'?(typeof item.review_id!=='string'||!UUID.test(item.review_id)):item.review_id!==null))throw new LaunchClientError('service_unavailable');
+        seen.add(item.id);return {id:item.id,kind,status:item.status,createdAt:item.created_at,jurisdiction:item.jurisdiction as 'OR'|'WA'|null,sourceId:item.source_id as string|null,reviewId:item.review_id as string|null};
+      });
+    },
+    async submitRevision(reviewId:string,draft:ReviewDraft):Promise<PendingReceipt> {
+      if(!UUID.test(reviewId)||validateReviewDraft(draft)||draft.tripMonth!==null||draft.wouldBookAgain===null||draft.relationship===null)throw new LaunchClientError('invalid_input');
+      return receipt(await call('submit_revision',{reviewId,quality:draft.quality,intensity:draft.intensity,wouldBookAgain:draft.wouldBookAgain,body:draft.body.trim(),firsthandAttested:draft.firsthand,relationship:draft.relationship,...(draft.tripResponses?{tripResponses:draft.tripResponses}:{})},true));
+    },
+    async reviewDetail(source:GuideSource,id:string):Promise<ReviewDraft> {
+      if(!UUID.test(id))throw new LaunchClientError('invalid_input');
+      const data=record(await call('review_detail',{...sourceArgs(source),id},false));
+      const r=record(data?.review);
+      if(!r||r.id!==id||!Number.isInteger(r.quality)||(r.quality as number)<1||(r.quality as number)>5||!Number.isInteger(r.intensity)||(r.intensity as number)<1||(r.intensity as number)>5||typeof r.would_book_again!=='boolean'||typeof r.body!=='string'||!['none','personal','financial','other'].includes(r.relationship_disclosure as string)||typeof r.published_at!=='string'||!Number.isFinite(Date.parse(r.published_at)))throw new LaunchClientError('service_unavailable');
+      const tripDraft=decodeTripResponses(r.trip_responses);if(!tripDraft)throw new LaunchClientError('service_unavailable');
+      const encoded=encodeTripResponses(tripDraft);if(encoded.error)throw new LaunchClientError('service_unavailable');
+      return {quality:r.quality as number,intensity:r.intensity as number,wouldBookAgain:r.would_book_again,body:r.body,firsthand:false,relationship:r.relationship_disclosure as ReviewDraft['relationship'],tripMonth:null,tripResponses:encoded.value};
+    },
+    async profileDetails(source:GuideSource):Promise<OwnerDetails|null> {
+      const data=record(await call('profile_details',sourceArgs(source),false));
+      if(!data||data.attribution!=='captain_declared')throw new LaunchClientError('service_unavailable');
+      if(data.details===null)return null;
+      const d=record(data.details);if(!d||![d.boat,d.gear,d.expertise,d.targeted_species].every(x=>x===null||typeof x==='string')||(d.years_experience!==null&&(!Number.isInteger(d.years_experience)||(d.years_experience as number)<0||(d.years_experience as number)>100)))throw new LaunchClientError('service_unavailable');
+      return {boat:(d.boat as string|null)??'',gear:(d.gear as string|null)??'',yearsExperience:d.years_experience as number|null,expertise:(d.expertise as string|null)??'',species:(d.targeted_species as string|null)??''};
+    },
+    async editDetails(source:GuideSource,details:OwnerDetails):Promise<void> {
+      if(typeof details.boat!=='string'||details.boat.length>500||typeof details.gear!=='string'||details.gear.length>500||typeof details.expertise!=='string'||details.expertise.length>1000||typeof details.species!=='string'||details.species.length>500||(details.yearsExperience!==null&&(!Number.isInteger(details.yearsExperience)||details.yearsExperience<0||details.yearsExperience>100)))throw new LaunchClientError('invalid_input');
+      const result=record(await call('edit_details',{...sourceArgs(source),...details},true));
+      if(result?.status!=='saved')throw new LaunchClientError('service_unavailable');
+    },
+    async operatorQueue(kind:SubmissionKind,offset=0,limit=50):Promise<OperatorItem[]> {
+      if(!['review','claim','revision'].includes(kind)||!Number.isInteger(offset)||offset<0||offset>100000||!Number.isInteger(limit)||limit<1||limit>100)throw new LaunchClientError('invalid_input');
+      const data=record(await call('operator_queue',{kind,offset,limit},true));
+      if(!data||data.offset!==offset||data.limit!==limit||!Array.isArray(data.items)||data.items.length>limit)throw new LaunchClientError('service_unavailable');
+      const seen=new Set<string>();
+      return data.items.map((value:unknown)=>{
+        const row=record(value);
+        if(!row||typeof row.id!=='string'||!UUID.test(row.id)||seen.has(row.id)||typeof row.created_at!=='string'||!Number.isFinite(Date.parse(row.created_at)))throw new LaunchClientError('service_unavailable');
+        seen.add(row.id);
+        const guideName=typeof row.guide_name==='string'&&row.guide_name.trim()?row.guide_name:null;
+        const reviewId=kind==='revision'&&typeof row.review_id==='string'&&UUID.test(row.review_id)?row.review_id:null;
+        if(kind==='revision'&&!reviewId)throw new LaunchClientError('service_unavailable');
+        if(kind==='claim') {
+          const name=typeof row.claimant_name==='string'?row.claimant_name:'',business=typeof row.business_name==='string'?row.business_name:'',evidence=typeof row.public_evidence==='string'?row.public_evidence:'';
+          return {id:row.id,kind,guideName,reviewId,createdAt:row.created_at,description:`Claimant: ${name||'Unavailable'}\nBusiness: ${business||'Not supplied'}\nEvidence: ${evidence||'Unavailable'}`,canApprove:!!guideName&&!!name.trim()&&!!evidence.trim()};
+        }
+        if(typeof row.body!=='string'||!row.body.trim()||!Number.isInteger(row.quality)||(row.quality as number)<1||(row.quality as number)>5)throw new LaunchClientError('service_unavailable');
+        const trip=describeTripResponses(row.trip_responses), relationship=typeof row.relationship_disclosure==='string'?row.relationship_disclosure:'Unavailable';
+        return {id:row.id,kind,guideName,reviewId,createdAt:row.created_at,description:`Rating: ${row.quality} / 5\nRelationship: ${relationship}\n${row.body}\n${trip===null?'Trip details unavailable':trip.join('\n')}`,canApprove:!!guideName&&trip!==null&&['none','personal','financial','other'].includes(relationship)&&(kind==='revision'||row.firsthand_attested===true)};
+      });
+    },
+    async operatorDecide(kind:SubmissionKind,id:string,approve:boolean,reason:string):Promise<{id:string;status:string}> {
+      if(!['review','claim','revision'].includes(kind)||!UUID.test(id)||typeof approve!=='boolean'||typeof reason!=='string'||reason.length>500||(approve&&reason.trim().length<20))throw new LaunchClientError('invalid_input');
+      const data=record(await call('operator_decide',{kind,id,approve,reason:reason.trim()},true));
+      const status=kind==='review'?(approve?'published':'rejected'):kind==='claim'?(approve?'approved':'denied'):(approve?'approved':'rejected');
+      if(!data||data.id!==id||data.status!==status)throw new LaunchClientError('service_unavailable');
+      return {id,status};
     },
     async publicReviews(source:GuideSource):Promise<PublicReviews> {
       const data=record(await call('public_reviews',sourceArgs(source),false));
@@ -89,7 +160,7 @@ export function createLaunchClient(options:Options) {
         const r=record(value);
         if(!r || typeof r.id!=='string' || !UUID.test(r.id) || seen.has(r.id) || (r.status!==undefined&&r.status!=='published') || !Number.isInteger(r.quality) || (r.quality as number)<1 || (r.quality as number)>5 || typeof r.body!=='string' || !r.body.trim() || typeof r.published_at!=='string' || !r.published_at || !Number.isFinite(Date.parse(r.published_at))) throw new LaunchClientError('service_unavailable');
         seen.add(r.id);
-        return {id:r.id,quality:r.quality as number,body:r.body,publishedAt:r.published_at};
+        return {id:r.id,quality:r.quality as number,body:r.body,publishedAt:r.published_at,tripDetails:describeTripResponses(r.trip_responses)};
       });
       return {count,averageQuality:average as number|null,reviews};
     },

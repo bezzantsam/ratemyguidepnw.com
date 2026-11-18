@@ -24,6 +24,15 @@ test('unknown, incomplete and out-of-range answers fail rather than being droppe
   for(const draft of [{invented:'value:x'},{effort:'value:0'},{actual_duration_minutes:'value:'},{actual_duration_minutes:'value:1441'},{dog_present:'value:maybe'},{setting:'value:mountain'}]) assert.ok(model.encodeTripResponses(draft).error);
 });
 
+test('editing round trips recognized answers and rejects unknown or malformed versions',()=>{
+  const original={version:1,answers:{dog_present:{state:'answered',value:false},children_present:{state:'not_applicable'},actual_duration_minutes:{state:'answered',value:0}}};
+  const decoded=model.decodeTripResponses(original);
+  assert.deepEqual(plain(model.encodeTripResponses(decoded).value),original);
+  assert.equal(model.decodeTripResponses({version:2,answers:{}}),null);
+  assert.equal(model.decodeTripResponses({version:1,answers:{new_field:{state:'answered',value:'x'}}}),null);
+  assert.equal(model.decodeTripResponses({version:1,answers:{dog_present:{state:'not_applicable',value:false}}}),null);
+});
+
 test('optional controls start unanswered and never collect names or free text',()=>{
   const views=compile('components/launch/TripDetails.tsx',{react:{useId:()=>':test:'},'./trip-responses':model});
   let draft={};const render=()=>views.TripDetails({draft,onChange:value=>{draft=value}});

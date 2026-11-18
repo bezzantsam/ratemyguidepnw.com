@@ -21,7 +21,7 @@ function hookHarness() {
     reset(){cursor=0},
     react:{
       useId:()=>':test:',
-      useState(initial){const slot=cursor++;if(!(slot in cells))cells[slot]=initial;return [cells[slot],value=>{cells[slot]=value}]},
+      useState(initial){const slot=cursor++;if(!(slot in cells))cells[slot]=typeof initial==='function'?initial():initial;return [cells[slot],value=>{cells[slot]=value}]},
       useRef(initial){const slot=cursor++;if(!(slot in cells))cells[slot]={current:initial};return cells[slot]},
     },
   };
