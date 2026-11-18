@@ -2,6 +2,9 @@
 -- Source snapshot SHA-256 3f0671e58d8d9f5615ba15668b7043fbc4f11859dafb10cf91068a5eb2a62081, 1027 unique source IDs.
 -- Revalidate source tree and hosted catalog; no hardcoded database UUIDs.
 BEGIN;
+SET LOCAL lock_timeout = '3s';
+-- Prevent guide or identity mutations between reconciliation and commit.
+LOCK TABLE public.guides, rmg_private.guide_identity_map IN SHARE ROW EXCLUSIVE MODE;
 CREATE TEMP TABLE rmg_oregon_seed_source(source_id text PRIMARY KEY) ON COMMIT DROP;
 INSERT INTO rmg_oregon_seed_source(source_id) VALUES
  ('OG.0000047'),
@@ -1042,9 +1045,20 @@ DO $$BEGIN
   JOIN rmg_private.guide_identity_map m ON m.jurisdiction='OR' AND (m.source_id=s.source_id OR m.guide_id=g.id)
   WHERE m.source_id<>s.source_id OR m.guide_id<>g.id
  ) THEN RAISE EXCEPTION 'Conflicting Oregon mapping'; END IF;
+ IF EXISTS (
+  SELECT 1 FROM rmg_oregon_seed_source s JOIN public.guides g ON g.license_number=s.source_id
+  JOIN rmg_private.guide_identity_map m ON m.guide_id=g.id AND m.jurisdiction<>'OR'
+ ) THEN RAISE EXCEPTION 'Cross-jurisdiction alias requires independent provenance review'; END IF;
 END $$;
 INSERT INTO rmg_private.guide_identity_map(jurisdiction,source_id,guide_id,reviewed_at,review_reference)
 SELECT 'OR',s.source_id,g.id,now(),'source-sha256:3f0671e58d8d9f5615ba15668b7043fbc4f11859dafb10cf91068a5eb2a62081; exact-registration+derived-slug'
 FROM rmg_oregon_seed_source s JOIN public.guides g ON g.license_number=s.source_id AND g.slug=lower(regexp_replace(s.source_id,'[^a-zA-Z0-9]+','-','g')) AND g.listing_status='published'
 ON CONFLICT (jurisdiction,source_id) DO NOTHING;
+DO $$BEGIN
+ IF EXISTS (
+  SELECT 1 FROM rmg_oregon_seed_source s JOIN public.guides g ON g.license_number=s.source_id
+  LEFT JOIN rmg_private.guide_identity_map m ON m.jurisdiction='OR' AND m.source_id=s.source_id AND m.guide_id=g.id
+  WHERE m.source_id IS NULL
+ ) THEN RAISE EXCEPTION 'Final Oregon mapping reconciliation failed'; END IF;
+END $$;
 COMMIT;
