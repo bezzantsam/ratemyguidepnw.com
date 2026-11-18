@@ -13,10 +13,13 @@ ps=(psql -X -v ON_ERROR_STOP=1 -h "$tmp" -p 55442 -U audit_owner -d postgres)
 python3 "$root/tests/backend-launch/reconstruct.py" > "$tmp/schema.sql"
 "${ps[@]}" -f "$tmp/schema.sql" >/dev/null
 "${ps[@]}" -f "$root/tests/backend-launch/fixtures.sql" >/dev/null
+"${ps[@]}" -f "$root/tests/backend-launch/storage-fixture.sql" >/dev/null
 "${ps[@]}" -c "ALTER TABLE auth.users ADD COLUMN email_confirmed_at timestamptz, ADD COLUMN is_anonymous boolean NOT NULL DEFAULT false, ADD COLUMN deleted_at timestamptz; UPDATE auth.users SET email_confirmed_at=now();" >/dev/null
 "${ps[@]}" -f "$root/supabase/review-candidates/01-authorization-lockdown.sql" >/dev/null
 "${ps[@]}" -f "$root/supabase/review-candidates/02-launch-api.sql" >/dev/null
+"${ps[@]}" -f "$root/supabase/review-candidates/03-disable-uploads.sql" >/dev/null
 "${ps[@]}" -f "$root/tests/backend-launch/access.sql"
+"${ps[@]}" -f "$root/tests/backend-launch/storage.sql"
 # Two independent database sessions race the same actor/guide pending claim.
 # The first intentionally holds the transaction open; prove the second blocked.
 "${ps[@]}" -c "UPDATE auth.users SET is_anonymous=false WHERE id='00000000-0000-0000-0000-000000000006'" >/dev/null
