@@ -16,6 +16,8 @@ export type DirectoryEntry={
   advertisedWaters:string[];
   /** Search terms from attributed sources, including editorial input; NOT legal identity verification. */
   searchAliases:string[];
+  /** User-provided editorial search names, displayed separately from imported source names. */
+  editorialSearchAliases?:{value:string;attributedTo:string}[];
   advertisedSpecies?:string[];
   advertisedMethods?:string[];
   advertisedTrips?:string[];
@@ -39,6 +41,7 @@ function discovery(id:string){
 export const directoryEntries:DirectoryEntry[]=[
  ...oregonGuides.map(g=>{
   const editorial=editorialGuideCorrections({id:g.registration,name:g.name,business:g.business});
+  const editorialAliases=editorial.filter(x=>x.kind==='search_alias').map(x=>({value:x.value,attributedTo:x.provenance.attributed_to}));
   const sourced=discovery(g.registration);
   return ({
    id:g.registration,name:g.name,business:g.business,
@@ -47,7 +50,8 @@ export const directoryEntries:DirectoryEntry[]=[
    advertisedWaters:[...new Set([...advertisedWaterwayNames(g.registration),...sourced.linkedWaters])],
    ...sourced,
    advertisedSpecies:[...new Set([...sourced.advertisedSpecies,...editorial.filter(x=>x.kind==='species').map(x=>x.value)])],
-   searchAliases:[...guideSearchTerms(g.registration),...sourced.sourceNames,...editorial.filter(x=>x.kind==='search_alias').map(x=>x.value)],
+   searchAliases:[...guideSearchTerms(g.registration),...sourced.sourceNames,...editorialAliases.map(x=>x.value)],
+   ...(editorialAliases.length?{editorialSearchAliases:editorialAliases}:{}),
    href:'/guides/'+guideSlug(g),source:'Oregon registry',
  })}),
  ...washingtonGuides.map(g=>({

@@ -13,16 +13,18 @@ export default function Home() {
         Find the guide you fished with and share your firsthand experience.
       </p>
       <p><Link className="button" href="/write-review">Rate your guide</Link></p>
-      <UnifiedSearch entries={directoryEntries} reviewEnabled={enabled} />
-      <section style={{ marginTop: 32 }} aria-labelledby="captain-listing-heading">
-        <h2 id="captain-listing-heading">Are you listed as a captain?</h2>
-        <p>{enabled?'Find your listing to request ownership. Establishing control of a page never gives anyone the ability to change independent angler reviews.':'Claims are currently unavailable. Establishing control of a page never gives anyone the ability to change independent angler reviews.'}</p>
-        <Link href="/guides"><strong>Find your listing</strong></Link>
-      </section>
+      {!enabled && <p role="status">Review submissions are not open yet.</p>}
+      <UnifiedSearch entries={directoryEntries} reviewMode reviewEnabled={enabled} />
       <section style={{ marginTop: 32 }} aria-labelledby="angler-trip-heading">
-        <h2 id="angler-trip-heading">Have you taken a trip?</h2>
-        <p>{enabled?'Find your guide to share a firsthand experience and disclose relevant personal or financial relationships. Submissions are reviewed before publication.':'Review submissions are currently unavailable. Any future review should describe a firsthand experience and disclose relevant personal or financial relationships.'}</p>
-        <Link href="/guides"><strong>Browse guide listings</strong></Link>
+        <h2 id="angler-trip-heading">How was your trip?</h2>
+        <p>Help the next angler choose. Rate your guide and share your experience.</p>
+        {!enabled && <p>Review submissions are not open yet.</p>}
+        <Link className="button" href="/write-review">Rate your guide</Link>
+      </section>
+      <section style={{ marginTop: 32 }} aria-labelledby="captain-listing-heading">
+        <h2 id="captain-listing-heading">Captain or guide?</h2>
+        <p>{!enabled && 'Claims are currently unavailable. '}Claiming never gives anyone control over independent angler reviews.</p>
+        <Link href="/guides"><strong>Find your profile</strong></Link>
       </section>
       <p className="muted" style={{ marginTop: 22 }}>
         <ShieldCheck size={15} aria-hidden="true" style={{ verticalAlign: 'middle', marginRight: 6 }} />

@@ -118,7 +118,8 @@ export default function UnifiedSearch({entries,reviewMode=false,reviewEnabled=fa
       </div>
       {(guideSearchScore(g,q)??0)>=60&&<p className="guide-meta"><strong>Similar spelling match</strong> · Confirm the person and business.</p>}
       <p className="outfit-name">{g.business||'Fishing guide'}</p>
-      {g.searchAliases.length>0&&<p className="guide-meta">Other names (business or person): {g.searchAliases.join(' · ')}</p>}
+      {g.searchAliases.some(name=>!g.editorialSearchAliases?.some(alias=>alias.value===name))&&<p className="guide-meta">Other names (business or person): {g.searchAliases.filter(name=>!g.editorialSearchAliases?.some(alias=>alias.value===name)).join(' · ')}</p>}
+      {g.editorialSearchAliases?.map(alias=><p className="guide-meta" key={`${alias.value}:${alias.attributedTo}`}>Editorial search name supplied by {alias.attributedTo}: {alias.value}</p>)}
       {g.advertisedWaters.length>0&&<p className="guide-meta">Advertised waters (source-linked): {g.advertisedWaters.slice(0,3).join(' · ')}{g.advertisedWaters.length>3?' · + more':''}</p>}
       <p className="guide-meta">{g.source==='Oregon registry'?'Imported registration zones':'Imported directory areas / notes'}: {g.areas.slice(0,3).join(' · ')||'Not specified'}{g.areas.length>3?' · + more':''}</p>
       <p className="guide-submeta">Imported source listing · {reviewEnabled?'See profile for reviews':'Review data unavailable'} · Current credentials not independently checked</p>

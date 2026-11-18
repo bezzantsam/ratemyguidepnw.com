@@ -6,11 +6,13 @@ test('RMG homepage keeps directory search and does not promote the separate rese
   const source=read('app/page.tsx');
   assert.match(source,/<h1>Rate your guide\.<\/h1>/);
   assert.match(source,/href="\/write-review">Rate your guide/);
-  assert.match(source,/<UnifiedSearch entries=\{directoryEntries\}/);
+  assert.match(source,/<UnifiedSearch entries=\{directoryEntries\} reviewMode/);
   assert.doesNotMatch(source,/href=["']\/intel|home-intel-feature|Buoy 10 Chinook Intel/);
   assert.match(source,/Review submissions are unavailable/);
-  assert.match(source,/Are you listed as a captain\?/);
-  assert.match(source,/Have you taken a trip\?/);
+  assert.match(source,/Review submissions are not open yet/);
+  assert.match(source,/Captain or guide\?/);
+  assert.match(source,/How was your trip\?/);
+  assert.ok(source.indexOf('How was your trip?')<source.indexOf('Captain or guide?'));
 });
 test('About uses the approved review-first copy without research promotion',()=>{
   const source=read('app/about/page.tsx');
