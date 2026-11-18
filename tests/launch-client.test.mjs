@@ -82,6 +82,7 @@ test('own submission discovery accepts only valid actor-scoped receipts and pres
   const [cross]=await create([{...row,identities:[{jurisdiction:'OR',source_id:'OG.0002254'},{jurisdiction:'WA',source_id:'wa-123'}]}]).mySubmissions();
   assert.equal(cross.identities[1].sourceId,'wa-123');
   await assert.rejects(create([{...row,identities:[{jurisdiction:'OR',source_id:'OG.0002254'},{jurisdiction:'OR',source_id:'OG.0002254'}]}]).mySubmissions(),errorCode('service_unavailable'));
+  await assert.rejects(create([{...row,identities:[{jurisdiction:'OR',source_id:'OG.0002254'},{jurisdiction:'OR',source_id:'OG.0000047'}]}]).mySubmissions(),errorCode('service_unavailable'));
   await assert.rejects(create([{...row,identities:[{jurisdiction:'WA',source_id:'wa-123'}]}]).mySubmissions(),errorCode('service_unavailable'));
   await assert.rejects(create([{...row,status:'approved'}]).mySubmissions(),errorCode('service_unavailable'));
   await assert.rejects(create([{...row,jurisdiction:null}]).mySubmissions(),errorCode('service_unavailable'));

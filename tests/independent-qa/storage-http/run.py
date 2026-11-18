@@ -54,7 +54,7 @@ def main():
     ROOT=Path(args.candidate_root).resolve(strict=True)
     TESTS=Path(args.fixture_dir).resolve(strict=True)
     combined=ROOT/'supabase/review-candidates/launch-combined.sql'
-    if hashlib.sha256(combined.read_bytes()).hexdigest()!='7109b8fe19f05a87b3b3e5679405185112246adee69d198dcdd1e1b56db6f1f1': raise RuntimeError('candidate combined SQL SHA mismatch')
+    if hashlib.sha256(combined.read_bytes()).hexdigest()!='74afb69db957037086c0e5ffddd2a8d312bed4ded3e446ba3f145284a351686d': raise RuntimeError('candidate combined SQL SHA mismatch')
     source=Path(args.storage_source).resolve(strict=True)
     for name,digest in PINS.items():
         if hashlib.sha256((source/name).read_bytes()).hexdigest()!=digest: raise RuntimeError('Storage source pin mismatch: '+name)

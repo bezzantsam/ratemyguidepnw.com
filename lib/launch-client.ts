@@ -97,12 +97,13 @@ export function createLaunchClient(options:Options) {
         const item=record(value);if(!item||typeof item.id!=='string'||!UUID.test(item.id)||seen.has(item.id)||!['review','claim','revision'].includes(item.kind as string)||typeof item.created_at!=='string'||!Number.isFinite(Date.parse(item.created_at)))throw new LaunchClientError('service_unavailable');
         const kind=item.kind as SubmissionKind, states=kind==='review'?REVIEW_STATES:kind==='claim'?CLAIM_STATES:REVISION_STATES;
         if(typeof item.status!=='string'||!states.includes(item.status)||(item.jurisdiction!==null&&item.jurisdiction!=='OR'&&item.jurisdiction!=='WA')||(item.source_id!==null&&(typeof item.source_id!=='string'||!item.source_id))||(item.jurisdiction===null)!==(item.source_id===null)||(kind==='revision'?(typeof item.review_id!=='string'||!UUID.test(item.review_id)):item.review_id!==null))throw new LaunchClientError('service_unavailable');
+        if(item.jurisdiction!==null&&!validSource({jurisdiction:item.jurisdiction as 'OR'|'WA',sourceId:item.source_id as string}))throw new LaunchClientError('service_unavailable');
         const identities:GuideSource[]=[];
         if(item.identities===undefined){if(item.jurisdiction!==null)identities.push({jurisdiction:item.jurisdiction as 'OR'|'WA',sourceId:item.source_id as string})}
         else {
-          if(!Array.isArray(item.identities))throw new LaunchClientError('service_unavailable');
+          if(!Array.isArray(item.identities)||item.identities.length>2)throw new LaunchClientError('service_unavailable');
           const mapped=new Set<string>();
-          for(const value of item.identities){const entry=record(value);if(!entry||typeof entry.source_id!=='string'||(entry.jurisdiction!=='OR'&&entry.jurisdiction!=='WA'))throw new LaunchClientError('service_unavailable');const identity={jurisdiction:entry.jurisdiction,sourceId:entry.source_id} as GuideSource;const key=JSON.stringify([identity.jurisdiction,identity.sourceId]);if(!validSource(identity)||mapped.has(key))throw new LaunchClientError('service_unavailable');mapped.add(key);identities.push(identity)}
+          for(const value of item.identities){const entry=record(value);if(!entry||typeof entry.source_id!=='string'||(entry.jurisdiction!=='OR'&&entry.jurisdiction!=='WA'))throw new LaunchClientError('service_unavailable');const identity={jurisdiction:entry.jurisdiction,sourceId:entry.source_id} as GuideSource;if(!validSource(identity)||mapped.has(identity.jurisdiction))throw new LaunchClientError('service_unavailable');mapped.add(identity.jurisdiction);identities.push(identity)}
           if((item.jurisdiction===null)!==(identities.length===0)||(item.jurisdiction!==null&&!identities.some(identity=>identity.jurisdiction===item.jurisdiction&&identity.sourceId===item.source_id)))throw new LaunchClientError('service_unavailable');
         }
         seen.add(item.id);return {id:item.id,kind,status:item.status,createdAt:item.created_at,jurisdiction:item.jurisdiction as 'OR'|'WA'|null,sourceId:item.source_id as string|null,reviewId:item.review_id as string|null,identities};
