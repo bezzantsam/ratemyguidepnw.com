@@ -10,7 +10,7 @@ function backend({user={id:'u',email_confirmed_at:'2026-01-01',is_anonymous:fals
 }
 test('no session or unconfirmed session cannot submit',async()=>{
  let b=backend(),r=await handleLaunch(req(review),b.factory,env);assert.equal(r.status,401);assert.equal(b.calls.length,0);
- b=backend({user:{id:'u',email_confirmed_at:null}});r=await handleLaunch(req(review,'token'),b.factory,env);assert.equal(r.status,401);assert.equal(b.calls.some(c=>c[0]==='rmg_submit_review'),false);
+ b=backend({user:{id:'u',email_confirmed_at:null}});r=await handleLaunch(req(review,'token'),b.factory,env);assert.equal(r.status,401);assert.equal(b.calls.some(c=>c[0]==='rmg_submit_review_v2'),false);
  b=backend({user:{id:'u',email_confirmed_at:'yes',is_anonymous:true}});r=await handleLaunch(req(review,'token'),b.factory,env);assert.equal(r.status,401);
 });
 test('Auth outages are not reported as invalid sign-ins',async()=>{
@@ -20,7 +20,7 @@ test('Auth outages are not reported as invalid sign-ins',async()=>{
 });
 test('submission uses verified token and returns actual persisted response',async()=>{
  const b=backend(),r=await handleLaunch(req(review,'token'),b.factory,env);
- assert.equal(r.status,200);assert.deepEqual(await r.json(),{id:'actual-id',status:'pending'});assert.deepEqual(b.calls[0],['headers',{Authorization:'Bearer token'}]);assert.equal(b.calls[1][0],'getUser');assert.equal(b.calls[2][0],'rmg_submit_review');assert.equal(b.calls[2][1].p_firsthand,true);assert.equal(b.calls[2][1].p_relationship,'none');assert.equal(r.headers.get('cache-control'),'no-store');
+ assert.equal(r.status,200);assert.deepEqual(await r.json(),{id:'actual-id',status:'pending'});assert.deepEqual(b.calls[0],['headers',{Authorization:'Bearer token'}]);assert.equal(b.calls[1][0],'getUser');assert.equal(b.calls[2][0],'rmg_submit_review_v2');assert.equal(b.calls[2][1].p_firsthand,true);assert.equal(b.calls[2][1].p_relationship,'none');assert.equal(r.headers.get('cache-control'),'no-store');
 });
 test('forged role/status, oversized bodies, private DB errors fail safely',async()=>{
  const b=backend(),a=await handleLaunch(req({...review,status:'published'},'token'),b.factory,env);assert.equal(a.status,400);assert.equal(b.calls.length,0);
@@ -39,7 +39,7 @@ test('server flag defaults off for public, auth, write and safe-return operation
 });
 test('a basic review sends missing optional answers as null',async()=>{
  const {intensity,wouldBookAgain,...basic}=review,b=backend(),r=await handleLaunch(req({...basic,body:'Good'},'token'),b.factory,env);
- assert.equal(r.status,200);const call=b.calls.find(x=>x[0]==='rmg_submit_review');assert.equal(call[1].p_intensity,null);assert.equal(call[1].p_rebook,null);
+ assert.equal(r.status,200);const call=b.calls.find(x=>x[0]==='rmg_submit_review_v2');assert.equal(call[1].p_intensity,null);assert.equal(call[1].p_rebook,null);assert.equal(call[1].p_trip_month,null);
 });
 test('authorized moderator receives the persisted database decision',async()=>{
  const id='00000000-0000-0000-0000-000000000001',b=backend({admin:true,rpcResult:{id,status:'approved'}});
