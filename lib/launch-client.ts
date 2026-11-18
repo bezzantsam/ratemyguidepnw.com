@@ -57,6 +57,11 @@ export function createLaunchClient(options:Options) {
     if(!data || typeof data.id!=='string' || !UUID.test(data.id) || data.status!=='pending' || (data.existing!==undefined&&typeof data.existing!=='boolean')) throw new LaunchClientError('service_unavailable');
     return {id:data.id,status:'pending',...(typeof data.existing==='boolean'?{existing:data.existing}:{})};
   }
+  function publicRecord(value:unknown,expectedId?:string):PublicReview {
+    const r=record(value);
+    if(!r||typeof r.id!=='string'||!UUID.test(r.id)||(expectedId!==undefined&&r.id!==expectedId)||(r.status!==undefined&&r.status!=='published')||!Number.isInteger(r.quality)||(r.quality as number)<1||(r.quality as number)>5||typeof r.body!=='string'||!r.body.trim()||typeof r.published_at!=='string'||!r.published_at||!Number.isFinite(Date.parse(r.published_at)))throw new LaunchClientError('service_unavailable');
+    return {id:r.id,quality:r.quality as number,body:r.body,publishedAt:r.published_at,tripDetails:describeTripResponses(r.trip_responses)};
+  }
   return {
     async session() {
       const data=record(await call('session',{},true));
@@ -108,6 +113,11 @@ export function createLaunchClient(options:Options) {
       const encoded=encodeTripResponses(tripDraft);if(encoded.error)throw new LaunchClientError('service_unavailable');
       return {quality:r.quality as number,intensity:r.intensity as number|null,wouldBookAgain:r.would_book_again as boolean|null,body:r.body,firsthand:false,relationship:r.relationship_disclosure as ReviewDraft['relationship'],tripMonth:null,tripResponses:encoded.value};
     },
+    async publicReview(source:GuideSource,id:string):Promise<PublicReview> {
+      if(!UUID.test(id))throw new LaunchClientError('invalid_input');
+      const data=record(await call('review_detail',{...sourceArgs(source),id},false));
+      return publicRecord(data?.review,id);
+    },
     async profileDetails(source:GuideSource):Promise<OwnerDetails|null> {
       const data=record(await call('profile_details',sourceArgs(source),false));
       if(!data||data.attribution!=='captain_declared')throw new LaunchClientError('service_unavailable');
@@ -157,10 +167,7 @@ export function createLaunchClient(options:Options) {
       if(data.reviews.length>count) throw new LaunchClientError('service_unavailable');
       const seen=new Set<string>();
       const reviews=data.reviews.map((value:unknown)=>{
-        const r=record(value);
-        if(!r || typeof r.id!=='string' || !UUID.test(r.id) || seen.has(r.id) || (r.status!==undefined&&r.status!=='published') || !Number.isInteger(r.quality) || (r.quality as number)<1 || (r.quality as number)>5 || typeof r.body!=='string' || !r.body.trim() || typeof r.published_at!=='string' || !r.published_at || !Number.isFinite(Date.parse(r.published_at))) throw new LaunchClientError('service_unavailable');
-        seen.add(r.id);
-        return {id:r.id,quality:r.quality as number,body:r.body,publishedAt:r.published_at,tripDetails:describeTripResponses(r.trip_responses)};
+        const r=publicRecord(value);if(seen.has(r.id))throw new LaunchClientError('service_unavailable');seen.add(r.id);return r;
       });
       return {count,averageQuality:average as number|null,reviews};
     },

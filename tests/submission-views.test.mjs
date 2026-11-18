@@ -20,7 +20,7 @@ const trip=compile('components/launch/trip-responses.ts');
 const details=compile('components/launch/TripDetails.tsx',{'./trip-responses':trip});
 const views=compile('components/launch/SubmissionViews.tsx',{'./submission-model':model,'./trip-responses':trip,'./TripDetails':details});
 const queue=compile('components/launch/ModerationQueue.tsx',{'./submission-model':model,'./SubmissionViews':views});
-const published=compile('components/launch/PublishedReviews.tsx');
+const published=compile('components/launch/PublishedReviews.tsx',{'./ReviewShare':{ReviewShare:()=>null}});
 const receiptId='10000000-0000-4000-8000-000000000001';
 
 test('basic review requires a rating, nonempty narrative, disclosure and firsthand attestation',()=>{

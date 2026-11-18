@@ -19,11 +19,11 @@ function find(node,predicate) {
 function setup() {
   const profile='/guides/og-0002254', cells=[];let cursor=0,effect,listener,oauth,otp,replaced;
   const location={origin:'https://preview.example',pathname:profile,search:'?intent=review',hash:'#write-review'};
-  const browser={location,history:{state:{existing:true},replaceState(_state,_title,path){replaced=path}}};
+  const browser={location,history:{state:{existing:true},replaceState(_state,_title,path){replaced=path}},dispatchEvent(){}};
   const auth={getUser:async()=>({data:{user:null}}),onAuthStateChange(fn){listener=fn;return {data:{subscription:{unsubscribe(){}}}}},signInWithOAuth:async arg=>{oauth=arg;return {error:null}},signInWithOtp:async arg=>{otp=arg;return {error:null}},signOut:async()=>{}};
   const react={useState(initial){const i=cursor++;if(!(i in cells))cells[i]=initial;return [cells[i],value=>{cells[i]=value}]},useRef(initial){const i=cursor++;if(!(i in cells))cells[i]={current:initial};return cells[i]},useEffect(fn){effect=fn}};
   const canonical=compile('lib/canonical-share.ts');
-  const panel=compile('components/AuthPanel.tsx',{react,'@supabase/supabase-js':{createClient:()=>({auth})},'@/lib/canonical-share':canonical},{window:browser,process:{env:{NEXT_PUBLIC_SUPABASE_URL:'https://example.invalid',NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:'public'}}});
+  const panel=compile('components/AuthPanel.tsx',{react,'@supabase/supabase-js':{createClient:()=>({auth})},'@/lib/canonical-share':canonical},{window:browser,Event,process:{env:{NEXT_PUBLIC_SUPABASE_URL:'https://example.invalid',NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:'public'}}});
   return {profile,location,get oauth(){return oauth},get otp(){return otp},get replaced(){return replaced},render(){cursor=0;return panel.default({profilePath:profile})},start(){effect()},emit(session){listener('SIGNED_IN',session)}};
 }
 
@@ -43,4 +43,12 @@ test('auth callback never overwrites an unconsumed token fragment',()=>{
   assert.equal(h.replaced,undefined);
   h.location.hash='';h.emit({user:{email:'angler@example.invalid'}});
   assert.equal(h.replaced,`${h.profile}?intent=review#write-review`);
+});
+
+test('a published review returns to the same review after sign-in',()=>{
+  const h=setup(),id='10000000-0000-4000-8000-000000000001';h.location.search='';h.location.hash=`#review-${id}`;
+  const tree=h.render();find(tree,n=>n.type==='button'&&n.props.children==='Continue with Google').props.onClick();
+  assert.equal(h.oauth.options.redirectTo,`https://preview.example${h.profile}?review=${id}`);
+  h.start();h.location.search=`?review=${id}`;h.location.hash='';h.emit({user:{email:'angler@example.invalid'}});
+  assert.equal(h.replaced,`${h.profile}#review-${id}`);
 });

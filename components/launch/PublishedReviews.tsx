@@ -1,4 +1,6 @@
-/** Display data is supplied by an adapter after the backend contract is agreed. */
+import {ReviewShare} from './ReviewShare';
+
+/** Display data is supplied by the published-only backend adapter. */
 export type PublishedReview = Readonly<{
   id: string;
   guideKey: string;
@@ -30,7 +32,15 @@ export function validReviewPage(requestedGuide: string, page: PublishedReviewPag
 
 export type ReviewLoadState = Readonly<{status:'loading'}> | Readonly<{status:'error'}> | Readonly<{status:'ready'; page:PublishedReviewPage}>;
 
-export function PublishedReviews({guideKey, state}: {guideKey:string; state:ReviewLoadState}) {
+export function ReviewCard({review,profilePath,guideName}:{review:PublishedReview;profilePath?:string;guideName?:string}) {
+  return <article className="card" id={`review-${review.id}`}>
+    <p><strong>{review.rating} / 5</strong> · Published {review.publishedAt}</p><p>{review.body}</p>
+    {review.tripDetails===null?<p>Trip details are temporarily unavailable.</p>:!!review.tripDetails?.length&&<details><summary>Trip details reported by the angler</summary><ul>{review.tripDetails.map((item,index)=><li key={index}>{item}</li>)}</ul></details>}
+    {profilePath&&guideName&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(review.id)&&<ReviewShare profilePath={profilePath} reviewId={review.id} guideName={guideName}/>}
+  </article>;
+}
+
+export function PublishedReviews({guideKey, state,profilePath,guideName}: {guideKey:string; state:ReviewLoadState;profilePath?:string;guideName?:string}) {
   if (state.status === 'loading') return <p role="status">Loading reviews…</p>;
   if (state.status === 'error' || !validReviewPage(guideKey, state.page)) return <p role="status">Reviews are temporarily unavailable.</p>;
   const {page} = state;
@@ -38,9 +48,6 @@ export function PublishedReviews({guideKey, state}: {guideKey:string; state:Revi
   return <section aria-labelledby="published-reviews-heading">
     <h2 id="published-reviews-heading">Angler reviews</h2>
     <p><strong>{page.average?.toFixed(1)} / 5</strong> · {page.total} {page.total === 1 ? 'published review' : 'published reviews'}</p>
-    {page.reviews.map(review=><article className="card" key={review.id}>
-      <p><strong>{review.rating} / 5</strong> · Published {review.publishedAt}</p><p>{review.body}</p>
-      {review.tripDetails===null?<p>Trip details are temporarily unavailable.</p>:!!review.tripDetails?.length&&<details><summary>Trip details reported by the angler</summary><ul>{review.tripDetails.map((item,index)=><li key={index}>{item}</li>)}</ul></details>}
-    </article>)}
+    {page.reviews.map(review=><ReviewCard key={review.id} review={review} profilePath={profilePath} guideName={guideName}/>)}
   </section>;
 }
