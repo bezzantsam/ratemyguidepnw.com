@@ -81,6 +81,22 @@ sql("""INSERT INTO public.guides(id,slug,full_name,license_number,listing_status
  'Synthetic fixture',v,'published' FROM jsonb_array_elements_text('""" + source_json + """'::jsonb) AS a(v);""")
 if sql("SELECT count(*) FROM public.guides WHERE full_name='Synthetic fixture';") != '1027' or mapping_count() != 0:
     raise SystemExit('Synthetic target setup failed')
+# First test the unmodified, exact body through the actual CLI history runner.
+initial_path, initial_version = create_migration('rmg_oregon_seed_exact_local')
+initial_path.write_bytes(body)
+initial = command('migration', 'up', '--local')
+if initial.returncode:
+    initial_output = (initial.stdout + initial.stderr).decode(errors='replace').lower()
+    state = re.findall(r'(?i)sqlstate[ :]*([0-9a-z]{5})', initial_output)
+    index = re.findall(r'(?i)at statement:[ ]*([0-9]+)', initial_output)
+    if history(initial_version) != '0' or mapping_count() != 0:
+        raise SystemExit('Unmodified failed CLI seed left history or mappings')
+    raise SystemExit('Unmodified exact seed CLI migration failed; SQLSTATE=' + ','.join(state) + '; statement=' + ','.join(index) + '; no seed mappings or history persisted')
+if history(initial_version) != '1' or mapping_count() != 1027: raise SystemExit('Unmodified seed or history incorrect')
+print('PASS unmodified exact body executed in local CLI and recorded once')
+# Reset only synthetic fixture rows, keeping the first real local history entry.
+sql("DELETE FROM rmg_private.guide_identity_map WHERE review_reference LIKE 'source-sha256:%';")
+time.sleep(1.1)
 path, version = create_migration('rmg_oregon_seed_local')
 
 # All checks reuse the exact candidate unless deliberately injecting a post-body failure.
