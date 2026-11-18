@@ -5,11 +5,16 @@ SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000003'
 SELECT set_config('tests.revision_id',public.rmg_submit_revision(current_setting('tests.review_id')::uuid,2::smallint,3::smallint,false,repeat('revised-',12),true,'none','{"version":1,"answers":{"effort":{"state":"answered","value":1}}}'::jsonb)->>'id',false);
 SELECT public.fixture_assert(public.rmg_own_status('revision',current_setting('tests.revision_id')::uuid)->>'status'='pending','author sees own pending revision');
 SELECT public.fixture_assert((SELECT count(*)=1 FROM jsonb_array_elements(public.rmg_my_submissions(0,100)) item WHERE item->>'id'=current_setting('tests.revision_id') AND item->>'kind'='revision'),'author discovers own revision without persisted client ID');
+SELECT public.fixture_assert((SELECT count(*)=1 FROM jsonb_array_elements(public.rmg_my_submissions(0,100)) item WHERE item->>'id'=current_setting('tests.revision_id') AND item->'identities' @> '[{"jurisdiction":"OR","source_id":"fixture-2"},{"jurisdiction":"WA","source_id":"wa-777"}]'::jsonb AND jsonb_array_length(item->'identities')=2),'actor submission retains both reviewed cross-state aliases in one item');
 SELECT public.fixture_assert(NOT EXISTS(SELECT 1 FROM jsonb_array_elements(public.rmg_my_submissions(0,100)) item WHERE item->>'id'='20000000-0000-0000-0000-000000000002' OR item ? 'body' OR item ? 'evidence'),'own submission list excludes other users and content');
 DO $$BEGIN
  BEGIN PERFORM public.rmg_decide_revision(current_setting('tests.revision_id')::uuid,true,'Independent review of proposed edit'); RAISE EXCEPTION 'author moderated own revision'; EXCEPTION WHEN insufficient_privilege THEN NULL; END;
  BEGIN SELECT * FROM rmg_private.review_revisions; RAISE EXCEPTION 'private revisions readable'; EXCEPTION WHEN insufficient_privilege THEN NULL; END;
 END$$;
+RESET ROLE;
+SET ROLE authenticated;
+SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000001',false);
+SELECT public.fixture_assert((SELECT count(*)=1 FROM jsonb_array_elements(public.rmg_my_submissions(0,100)) item WHERE item->>'id'='30000000-0000-0000-0000-000000000003' AND item->'identities'='[]'::jsonb),'unmapped own submission has no invented identity');
 RESET ROLE;
 SET ROLE anon;
 SELECT public.fixture_assert((SELECT quality=5 AND body=repeat('x',90) FROM public.public_angler_reviews WHERE id=current_setting('tests.review_id')::uuid),'pending revision never changes public review');
