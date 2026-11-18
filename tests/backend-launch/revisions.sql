@@ -1,4 +1,5 @@
 \set ON_ERROR_STOP on
+SELECT set_config('tests.review_id',(SELECT id::text FROM public.reviews WHERE author_id='00000000-0000-0000-0000-000000000003' AND guide_id='10000000-0000-0000-0000-000000000002'),false);
 SET ROLE authenticated;
 SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000003',false);
 SELECT set_config('tests.revision_id',public.rmg_submit_revision(current_setting('tests.review_id')::uuid,2::smallint,3::smallint,false,repeat('revised ',12),true,'none','{"version":1,"answers":{"effort":{"state":"answered","value":1}}}'::jsonb)->>'id',false);
