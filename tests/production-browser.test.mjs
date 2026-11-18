@@ -20,7 +20,10 @@ test('ordinary production data contains no synthetic discovery or unapproved con
  try{
   await page.goto(origin,{waitUntil:'domcontentloaded'});
   await page.getByRole('heading',{name:'Rate your guide.'}).waitFor();
-  await page.getByRole('link',{name:'Rate your guide',exact:true}).click();
+  const ratingLinks=page.getByRole('link',{name:'Rate your guide',exact:true});
+  assert.equal(await ratingLinks.count(),2);
+  for(const link of await ratingLinks.all())assert.equal(await link.getAttribute('href'),'/write-review');
+  await page.locator('main > p').getByRole('link',{name:'Rate your guide',exact:true}).click();
   await page.waitForURL(`${origin}/write-review`);
   await page.getByText('Review submissions are currently unavailable.',{exact:false}).waitFor();
   await page.getByRole('link',{name:'About',exact:true}).click();
