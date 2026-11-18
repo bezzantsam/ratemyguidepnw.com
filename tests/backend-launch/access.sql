@@ -28,7 +28,7 @@ SELECT public.fixture_assert((public.rmg_submit_review('OR','fixture-2',5::small
 SELECT public.fixture_assert((SELECT count(*)=1 FROM public.reviews WHERE status='published'),'pending review not published');
 SELECT public.fixture_assert((public.rmg_submit_claim('OR','fixture-1','Synthetic Name','',repeat('e',40))->>'status')='pending','claim persisted pending');
 SELECT public.fixture_assert((public.rmg_submit_claim('OR','fixture-1','Synthetic Name','',repeat('e',40))->>'existing')='true','duplicate pending claim returns existing receipt');
-SELECT public.rmg_submit_review('OR','fixture-4',5::smallint,4::smallint,true,repeat('s',80),true,'none');
+SELECT public.rmg_submit_review('OR','fixture-4',5::smallint,NULL,NULL,'Good',true,'none');
 SELECT public.rmg_submit_review('OR','fixture-5',5::smallint,4::smallint,true,repeat('s',80),true,'none');
 SELECT public.rmg_submit_claim('OR','fixture-2','Synthetic Name','',repeat('e',40));
 SELECT public.rmg_submit_claim('OR','fixture-4','Synthetic Name','',repeat('e',40));
@@ -59,15 +59,19 @@ SELECT public.fixture_assert((SELECT count(*)=1 FROM public.reviews WHERE author
 SELECT public.fixture_assert((SELECT trip_responses->'answers'->'children_present'->'value'='false'::jsonb AND trip_responses->'answers'->'guide_patience'->>'state'='not_applicable' AND NOT (trip_responses->'answers' ? 'dog_present') FROM public.reviews WHERE author_id='00000000-0000-0000-0000-000000000003' AND guide_id='10000000-0000-0000-0000-000000000002'),'false, not applicable, and missing remain distinct');
 SELECT public.fixture_assert((SELECT average_quality=5 AND review_count=1 FROM public.guides WHERE id='10000000-0000-0000-0000-000000000001'),'rating counts published reviews only');
 SELECT set_config('tests.review_id',(SELECT id::text FROM public.reviews WHERE author_id='00000000-0000-0000-0000-000000000003' AND guide_id='10000000-0000-0000-0000-000000000002'),false);
+SELECT set_config('tests.basic_review_id',(SELECT id::text FROM public.reviews WHERE author_id='00000000-0000-0000-0000-000000000003' AND guide_id='10000000-0000-0000-0000-000000000004'),false);
 SET ROLE authenticated;
 SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000004',false);
-SELECT public.admin_decide_review(current_setting('tests.review_id')::uuid,true,'Independent synthetic evidence reviewed');
-SELECT public.admin_decide_claim('20000000-0000-0000-0000-000000000002',true,'Independent ownership evidence reviewed');
+SELECT public.fixture_assert((public.rmg_decide_submission('review',current_setting('tests.review_id')::uuid,true,'Independent synthetic evidence reviewed')->>'status')='published','review decision returns published receipt');
+SELECT public.fixture_assert((public.rmg_decide_submission('review',current_setting('tests.basic_review_id')::uuid,true,'Independent synthetic evidence reviewed')->>'status')='published','basic review decision returns published receipt');
+SELECT public.fixture_assert((public.rmg_decide_submission('claim','20000000-0000-0000-0000-000000000002',true,'Independent ownership evidence reviewed')->>'status')='approved','claim decision returns approved receipt');
 RESET ROLE;
-SELECT public.fixture_assert((SELECT count(*)=2 FROM public.moderation_audit WHERE actor_id='00000000-0000-0000-0000-000000000004'),'review and ownership decisions audited');
+SELECT public.fixture_assert((SELECT count(*)=3 FROM public.moderation_audit WHERE actor_id='00000000-0000-0000-0000-000000000004'),'review and ownership decisions audited');
 SELECT public.fixture_assert((SELECT average_quality=5 AND review_count=1 FROM public.guides WHERE id='10000000-0000-0000-0000-000000000002'),'only published review contributes to guide rating');
 SET ROLE anon;
 SELECT public.fixture_assert((public.rmg_review_summary('OR','fixture-2')->>'count')::int=1,'public summary returns published count');
+SELECT public.fixture_assert((public.rmg_review_summary('OR','fixture-4')->>'wouldBookAgainResponses')::int=0 AND public.rmg_review_summary('OR','fixture-4')->'wouldBookAgainPercent'='null'::jsonb,'missing rebooking is not counted as no');
+SELECT public.fixture_assert((SELECT intensity IS NULL AND would_book_again IS NULL AND body='Good' FROM public.public_angler_reviews WHERE id=current_setting('tests.basic_review_id')::uuid),'basic text/star review retains optional nulls');
 SELECT public.fixture_assert((SELECT count(*)=0 FROM public.claim_evidence),'anonymous cannot see claim evidence');
 DO $$BEGIN
  BEGIN PERFORM author_id FROM public.reviews; RAISE EXCEPTION 'reviewer identity leaked'; EXCEPTION WHEN insufficient_privilege THEN NULL; END;

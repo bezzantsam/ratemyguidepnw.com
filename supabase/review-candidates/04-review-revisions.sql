@@ -5,9 +5,9 @@ CREATE TABLE rmg_private.review_revisions (
  review_id uuid NOT NULL REFERENCES public.reviews(id),
  submitter_id uuid NOT NULL REFERENCES auth.users(id),
  quality smallint NOT NULL CHECK (quality BETWEEN 1 AND 5),
- intensity smallint NOT NULL CHECK (intensity BETWEEN 1 AND 5),
- would_book_again boolean NOT NULL,
- body text NOT NULL CHECK (char_length(body) BETWEEN 80 AND 3000),
+ intensity smallint CHECK (intensity BETWEEN 1 AND 5),
+ would_book_again boolean,
+ body text NOT NULL CHECK (char_length(btrim(body)) BETWEEN 1 AND 3000),
  relationship_disclosure text NOT NULL CHECK (relationship_disclosure IN ('none','personal','financial','other')),
  trip_responses jsonb CHECK (rmg_private.valid_trip_responses(trip_responses)),
  status text NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','approved','rejected')),
@@ -22,7 +22,7 @@ REVOKE ALL ON rmg_private.review_revisions FROM PUBLIC,anon,authenticated;
 CREATE FUNCTION rmg_private.submit_revision(p_review_id uuid,p_quality smallint,p_intensity smallint,p_rebook boolean,p_body text,p_firsthand boolean,p_relationship text,p_trip_responses jsonb DEFAULT NULL) RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path='' AS $$
 DECLARE actor uuid:=rmg_private.require_actor(); gid uuid; original public.reviews%ROWTYPE; rid uuid;
 BEGIN
- IF p_quality IS NULL OR p_quality NOT BETWEEN 1 AND 5 OR p_intensity IS NULL OR p_intensity NOT BETWEEN 1 AND 5 OR p_rebook IS NULL OR p_body IS NULL OR char_length(btrim(p_body)) NOT BETWEEN 80 AND 3000 OR p_firsthand IS DISTINCT FROM true OR p_relationship IS NULL OR p_relationship NOT IN ('none','personal','financial','other') OR NOT rmg_private.valid_trip_responses(p_trip_responses) THEN RAISE EXCEPTION 'Invalid review revision' USING ERRCODE='22023'; END IF;
+ IF p_quality IS NULL OR p_quality NOT BETWEEN 1 AND 5 OR (p_intensity IS NOT NULL AND p_intensity NOT BETWEEN 1 AND 5) OR p_body IS NULL OR char_length(btrim(p_body)) NOT BETWEEN 1 AND 3000 OR p_firsthand IS DISTINCT FROM true OR p_relationship IS NULL OR p_relationship NOT IN ('none','personal','financial','other') OR NOT rmg_private.valid_trip_responses(p_trip_responses) THEN RAISE EXCEPTION 'Invalid review revision' USING ERRCODE='22023'; END IF;
  PERFORM pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended(actor::text,84013));
  SELECT guide_id INTO gid FROM public.reviews WHERE id=p_review_id AND author_id=actor;
  IF gid IS NULL THEN RAISE EXCEPTION 'Not found' USING ERRCODE='P0002'; END IF;
@@ -64,8 +64,21 @@ BEGIN
  IF NOT public.is_site_admin() THEN RAISE EXCEPTION 'Not authorized' USING ERRCODE='42501'; END IF;
  IF p_offset IS NULL OR p_offset NOT BETWEEN 0 AND 100000 OR p_limit IS NULL OR p_limit NOT BETWEEN 1 AND 100 THEN RAISE EXCEPTION 'Invalid pagination' USING ERRCODE='22023'; END IF;
  SELECT COALESCE(jsonb_agg(to_jsonb(q) ORDER BY q.created_at,q.id),'[]'::jsonb) INTO result FROM
-  (SELECT id,review_id,quality,intensity,would_book_again,body,relationship_disclosure,trip_responses,created_at FROM rmg_private.review_revisions WHERE status='pending' ORDER BY created_at,id OFFSET p_offset LIMIT p_limit) q;
+  (SELECT v.id,v.review_id,g.full_name AS guide_name,m.jurisdiction,m.source_id,v.quality,v.intensity,v.would_book_again,v.body,v.relationship_disclosure,v.trip_responses,v.created_at FROM rmg_private.review_revisions v JOIN public.reviews r ON r.id=v.review_id JOIN public.guides g ON g.id=r.guide_id LEFT JOIN LATERAL (SELECT jurisdiction,source_id FROM rmg_private.guide_identity_map WHERE guide_id=g.id ORDER BY jurisdiction,source_id LIMIT 1) m ON true WHERE v.status='pending' ORDER BY v.created_at,v.id OFFSET p_offset LIMIT p_limit) q;
  RETURN result;
+END $$;
+CREATE FUNCTION rmg_private.decide_submission(p_kind text,p_id uuid,p_approve boolean,p_reason text) RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path='' AS $$
+DECLARE actor uuid:=rmg_private.require_actor(); decision text;
+BEGIN
+ IF NOT public.is_site_admin() THEN RAISE EXCEPTION 'Not authorized' USING ERRCODE='42501'; END IF;
+ IF p_kind='review' THEN
+  PERFORM public.admin_decide_review(p_id,p_approve,p_reason);
+  SELECT status INTO decision FROM public.reviews WHERE id=p_id;
+ ELSIF p_kind='claim' THEN
+  PERFORM public.admin_decide_claim(p_id,p_approve,p_reason);
+  SELECT status INTO decision FROM public.guide_claims WHERE id=p_id;
+ ELSE RAISE EXCEPTION 'Invalid request' USING ERRCODE='22023'; END IF;
+ RETURN jsonb_build_object('id',p_id,'status',decision);
 END $$;
 CREATE FUNCTION rmg_private.decide_revision(p_id uuid,p_approve boolean,p_reason text) RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path='' AS $$
 DECLARE actor uuid:=rmg_private.require_actor(); vid uuid; gid uuid; original public.reviews%ROWTYPE; proposal rmg_private.review_revisions%ROWTYPE;
@@ -90,7 +103,8 @@ CREATE FUNCTION public.rmg_submit_revision(p_review_id uuid,p_quality smallint,p
 CREATE FUNCTION public.rmg_revision_queue(p_offset integer,p_limit integer) RETURNS jsonb LANGUAGE sql SECURITY INVOKER SET search_path='' AS $$SELECT rmg_private.revision_queue($1,$2)$$;
 CREATE FUNCTION public.rmg_decide_revision(p_id uuid,p_approve boolean,p_reason text) RETURNS jsonb LANGUAGE sql SECURITY INVOKER SET search_path='' AS $$SELECT rmg_private.decide_revision($1,$2,$3)$$;
 CREATE FUNCTION public.rmg_my_submissions(p_offset integer,p_limit integer) RETURNS jsonb LANGUAGE sql SECURITY INVOKER SET search_path='' AS $$SELECT rmg_private.my_submissions($1,$2)$$;
-REVOKE ALL ON FUNCTION rmg_private.submit_revision(uuid,smallint,smallint,boolean,text,boolean,text,jsonb),rmg_private.revision_queue(integer,integer),rmg_private.decide_revision(uuid,boolean,text),rmg_private.my_submissions(integer,integer) FROM PUBLIC,anon,authenticated;
-REVOKE ALL ON FUNCTION public.rmg_submit_revision(uuid,smallint,smallint,boolean,text,boolean,text,jsonb),public.rmg_revision_queue(integer,integer),public.rmg_decide_revision(uuid,boolean,text),public.rmg_my_submissions(integer,integer) FROM PUBLIC,anon,authenticated;
-GRANT EXECUTE ON FUNCTION rmg_private.submit_revision(uuid,smallint,smallint,boolean,text,boolean,text,jsonb),rmg_private.revision_queue(integer,integer),rmg_private.decide_revision(uuid,boolean,text),rmg_private.my_submissions(integer,integer),public.rmg_submit_revision(uuid,smallint,smallint,boolean,text,boolean,text,jsonb),public.rmg_revision_queue(integer,integer),public.rmg_decide_revision(uuid,boolean,text),public.rmg_my_submissions(integer,integer) TO authenticated;
+CREATE FUNCTION public.rmg_decide_submission(p_kind text,p_id uuid,p_approve boolean,p_reason text) RETURNS jsonb LANGUAGE sql SECURITY INVOKER SET search_path='' AS $$SELECT rmg_private.decide_submission($1,$2,$3,$4)$$;
+REVOKE ALL ON FUNCTION rmg_private.submit_revision(uuid,smallint,smallint,boolean,text,boolean,text,jsonb),rmg_private.revision_queue(integer,integer),rmg_private.decide_revision(uuid,boolean,text),rmg_private.my_submissions(integer,integer),rmg_private.decide_submission(text,uuid,boolean,text) FROM PUBLIC,anon,authenticated;
+REVOKE ALL ON FUNCTION public.rmg_submit_revision(uuid,smallint,smallint,boolean,text,boolean,text,jsonb),public.rmg_revision_queue(integer,integer),public.rmg_decide_revision(uuid,boolean,text),public.rmg_my_submissions(integer,integer),public.rmg_decide_submission(text,uuid,boolean,text) FROM PUBLIC,anon,authenticated;
+GRANT EXECUTE ON FUNCTION rmg_private.submit_revision(uuid,smallint,smallint,boolean,text,boolean,text,jsonb),rmg_private.revision_queue(integer,integer),rmg_private.decide_revision(uuid,boolean,text),rmg_private.my_submissions(integer,integer),rmg_private.decide_submission(text,uuid,boolean,text),public.rmg_submit_revision(uuid,smallint,smallint,boolean,text,boolean,text,jsonb),public.rmg_revision_queue(integer,integer),public.rmg_decide_revision(uuid,boolean,text),public.rmg_my_submissions(integer,integer),public.rmg_decide_submission(text,uuid,boolean,text) TO authenticated;
 COMMIT;

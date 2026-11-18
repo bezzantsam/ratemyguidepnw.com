@@ -1,11 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {handleLaunch} from '../../lib/backend-launch/handler.mjs';
-const env={NEXT_PUBLIC_SUPABASE_URL:'https://example.invalid',NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:'public-test'};
+const env={NEXT_PUBLIC_SUPABASE_URL:'https://example.invalid',NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:'public-test',RMG_LAUNCH_ENABLED:'true'};
 const review={operation:'submit_review',jurisdiction:'OR',sourceId:'or-1',quality:5,intensity:3,wouldBookAgain:true,body:'x'.repeat(80),firsthandAttested:true,relationship:'none'};
 function req(body,token){return new Request('https://example.invalid/api/launch',{method:'POST',headers:{'content-type':'application/json',...(token?{authorization:`Bearer ${token}`}:{})},body:JSON.stringify(body)})}
-function backend({user={id:'u',email_confirmed_at:'2026-01-01',is_anonymous:false},admin=false,rpcError=null}={}){
- const calls=[];const client={auth:{getUser:async token=>{calls.push(['getUser',token]);return {data:{user},error:null}}},rpc:async(name,params)=>{calls.push([name,params]);if(name==='is_site_admin')return {data:admin,error:null};return rpcError?{data:null,error:rpcError}:{data:{id:'actual-id',status:'pending'},error:null}},from:()=>{throw new Error('unexpected table query')}};
+function backend({user={id:'u',email_confirmed_at:'2026-01-01',is_anonymous:false},admin=false,rpcError=null,rpcResult={id:'actual-id',status:'pending'}}={}){
+ const calls=[];const client={auth:{getUser:async token=>{calls.push(['getUser',token]);return {data:{user},error:null}}},rpc:async(name,params)=>{calls.push([name,params]);if(name==='is_site_admin')return {data:admin,error:null};return rpcError?{data:null,error:rpcError}:{data:rpcResult,error:null}},from:()=>{throw new Error('unexpected table query')}};
  return {calls,factory:(_url,_key,opts)=>{calls.push(['headers',opts.global.headers]);return client}};
 }
 test('no session or unconfirmed session cannot submit',async()=>{
@@ -26,15 +26,29 @@ test('moderation uses server-side membership and never invokes action for nonadm
  const b=backend(),action={operation:'operator_decide',kind:'claim',id:'00000000-0000-0000-0000-000000000001',approve:true,reason:'Manual evidence was reviewed'};
  const r=await handleLaunch(req(action,'token'),b.factory,env);assert.equal(r.status,403);assert.equal(b.calls.some(c=>c[0]==='admin_decide_claim'),false);
 });
-test('unavailable configuration fails closed',async()=>{const b=backend();const r=await handleLaunch(req(review,'token'),b.factory,{});assert.equal(r.status,503);assert.equal(b.calls.length,0)});
+test('unavailable configuration fails closed',async()=>{const b=backend();const r=await handleLaunch(req(review,'token'),b.factory,{RMG_LAUNCH_ENABLED:'true'});assert.equal(r.status,503);assert.equal(b.calls.length,0)});
+test('server flag defaults off for public, auth, write and safe-return operations',async()=>{
+ for(const input of [{operation:'public_reviews',jurisdiction:'OR',sourceId:'or-1'},{operation:'session'},review,{operation:'safe_return',returnTo:'/admin'}]){
+  const b=backend(),r=await handleLaunch(req(input,'token'),b.factory,{});assert.equal(r.status,503);assert.deepEqual(await r.json(),{error:'launch_unavailable'});assert.equal(b.calls.length,0);
+ }
+});
+test('a basic review sends missing optional answers as null',async()=>{
+ const {intensity,wouldBookAgain,...basic}=review,b=backend(),r=await handleLaunch(req({...basic,body:'Good'},'token'),b.factory,env);
+ assert.equal(r.status,200);const call=b.calls.find(x=>x[0]==='rmg_submit_review');assert.equal(call[1].p_intensity,null);assert.equal(call[1].p_rebook,null);
+});
+test('authorized moderator receives the persisted database decision',async()=>{
+ const id='00000000-0000-0000-0000-000000000001',b=backend({admin:true,rpcResult:{id,status:'approved'}});
+ const r=await handleLaunch(req({operation:'operator_decide',kind:'claim',id,approve:true,reason:'Independently checked ownership'},'token'),b.factory,env);
+ assert.equal(r.status,200);assert.deepEqual(await r.json(),{id,status:'approved'});assert.equal(b.calls.at(-1)[0],'rmg_decide_submission');
+});
 test('rate limits and ordinary database conflicts have distinct safe errors',async()=>{
  let b=backend({rpcError:{code:'P4290',message:'private internal text'}}),r=await handleLaunch(req(review,'token'),b.factory,env);assert.equal(r.status,429);assert.deepEqual(await r.json(),{error:'rate_limited'});
  b=backend({rpcError:{code:'P0001',message:'private internal text'}});r=await handleLaunch(req(review,'token'),b.factory,env);assert.equal(r.status,409);assert.deepEqual(await r.json(),{error:'conflict'});
 });
 test('safe return rejects external destinations before configuration access',async()=>{
- let r=await handleLaunch(req({operation:'safe_return',returnTo:'/guides/og-123?intent=review#write-review'}),()=>{throw Error('must not call')},{});
+ let r=await handleLaunch(req({operation:'safe_return',returnTo:'/guides/og-123?intent=review#write-review'}),()=>{throw Error('must not call')},{RMG_LAUNCH_ENABLED:'true'});
  assert.equal(r.status,200);assert.deepEqual(await r.json(),{returnTo:'/guides/og-123?intent=review#write-review'});
- r=await handleLaunch(req({operation:'safe_return',returnTo:'//evil.example/'}),()=>{throw Error('must not call')},{});assert.equal(r.status,400);
+ r=await handleLaunch(req({operation:'safe_return',returnTo:'//evil.example/'}),()=>{throw Error('must not call')},{RMG_LAUNCH_ENABLED:'true'});assert.equal(r.status,400);
 });
 test('public review links bind a published review to the mapped guide',async()=>{
  const calls=[];const row={id:'00000000-0000-0000-0000-000000000001',body:'published'};

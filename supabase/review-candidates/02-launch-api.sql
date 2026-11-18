@@ -4,6 +4,13 @@ BEGIN;
 CREATE SCHEMA IF NOT EXISTS rmg_private;
 REVOKE ALL ON SCHEMA rmg_private FROM PUBLIC, anon, authenticated;
 GRANT USAGE ON SCHEMA rmg_private TO anon, authenticated;
+CREATE TABLE rmg_private.launch_control (
+ singleton boolean PRIMARY KEY DEFAULT true CHECK(singleton),
+ enabled boolean NOT NULL DEFAULT false
+);
+ALTER TABLE rmg_private.launch_control ENABLE ROW LEVEL SECURITY;
+REVOKE ALL ON rmg_private.launch_control FROM PUBLIC,anon,authenticated;
+INSERT INTO rmg_private.launch_control(singleton,enabled) VALUES(true,false);
 
 -- Maps only independently reviewed source IDs. No records are automatically matched.
 CREATE TABLE rmg_private.guide_identity_map (
@@ -26,6 +33,11 @@ REVOKE ALL ON rmg_private.profile_declarations FROM PUBLIC,anon,authenticated;
 ALTER TABLE public.reviews ADD COLUMN firsthand_attested boolean NOT NULL DEFAULT false;
 ALTER TABLE public.reviews ADD COLUMN relationship_disclosure text;
 ALTER TABLE public.reviews ADD COLUMN trip_responses jsonb;
+-- Broaden legacy review text and permit genuinely unanswered optional fields.
+ALTER TABLE public.reviews ALTER COLUMN intensity DROP NOT NULL;
+ALTER TABLE public.reviews ALTER COLUMN would_book_again DROP NOT NULL;
+ALTER TABLE public.reviews DROP CONSTRAINT reviews_body_check;
+ALTER TABLE public.reviews ADD CONSTRAINT reviews_body_check CHECK (char_length(btrim(body)) BETWEEN 1 AND 3000);
 ALTER TABLE public.reviews ADD CONSTRAINT reviews_relationship_disclosure_check
  CHECK (relationship_disclosure IS NULL OR relationship_disclosure IN ('none','personal','financial','other'));
 GRANT SELECT (relationship_disclosure,trip_responses) ON public.reviews TO anon,authenticated;
@@ -44,11 +56,13 @@ DECLARE actor uuid := auth.uid();
 BEGIN
  IF actor IS NULL OR NOT EXISTS (SELECT 1 FROM auth.users u WHERE u.id=actor AND u.email_confirmed_at IS NOT NULL AND COALESCE(u.is_anonymous,false)=false AND u.deleted_at IS NULL)
  THEN RAISE EXCEPTION 'Authentication required' USING ERRCODE='42501'; END IF;
+ IF NOT COALESCE((SELECT enabled FROM rmg_private.launch_control WHERE singleton),false) THEN RAISE EXCEPTION 'Unavailable' USING ERRCODE='P5030'; END IF;
  RETURN actor;
 END $$;
 CREATE FUNCTION rmg_private.resolve_guide(p_jurisdiction text,p_source_id text) RETURNS uuid LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path='' AS $$
 DECLARE gid uuid;
 BEGIN
+ IF NOT COALESCE((SELECT enabled FROM rmg_private.launch_control WHERE singleton),false) THEN RAISE EXCEPTION 'Unavailable' USING ERRCODE='P5030'; END IF;
  IF p_jurisdiction NOT IN ('OR','WA') OR p_source_id IS NULL OR length(p_source_id) NOT BETWEEN 1 AND 100 THEN RAISE EXCEPTION 'Invalid guide identity' USING ERRCODE='22023'; END IF;
  SELECT m.guide_id INTO gid FROM rmg_private.guide_identity_map m JOIN public.guides g ON g.id=m.guide_id WHERE m.jurisdiction=p_jurisdiction AND m.source_id=p_source_id AND g.listing_status='published';
  IF gid IS NULL THEN RAISE EXCEPTION 'Guide mapping unavailable' USING ERRCODE='P0002'; END IF;
@@ -93,7 +107,7 @@ ALTER TABLE public.reviews ADD CONSTRAINT reviews_trip_responses_v1_check CHECK 
 CREATE FUNCTION rmg_private.submit_review(p_jurisdiction text,p_source_id text,p_quality smallint,p_intensity smallint,p_rebook boolean,p_body text,p_firsthand boolean,p_relationship text,p_trip_responses jsonb DEFAULT NULL) RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path='' AS $$
 DECLARE actor uuid := rmg_private.require_actor(); gid uuid; rid uuid;
 BEGIN
- IF p_quality IS NULL OR p_quality NOT BETWEEN 1 AND 5 OR p_intensity IS NULL OR p_intensity NOT BETWEEN 1 AND 5 OR p_rebook IS NULL OR p_body IS NULL OR char_length(btrim(p_body)) NOT BETWEEN 80 AND 3000 OR p_firsthand IS DISTINCT FROM true OR p_relationship IS NULL OR p_relationship NOT IN ('none','personal','financial','other') OR NOT rmg_private.valid_trip_responses(p_trip_responses) THEN RAISE EXCEPTION 'Invalid review' USING ERRCODE='22023'; END IF;
+ IF p_quality IS NULL OR p_quality NOT BETWEEN 1 AND 5 OR (p_intensity IS NOT NULL AND p_intensity NOT BETWEEN 1 AND 5) OR p_body IS NULL OR char_length(btrim(p_body)) NOT BETWEEN 1 AND 3000 OR p_firsthand IS DISTINCT FROM true OR p_relationship IS NULL OR p_relationship NOT IN ('none','personal','financial','other') OR NOT rmg_private.valid_trip_responses(p_trip_responses) THEN RAISE EXCEPTION 'Invalid review' USING ERRCODE='22023'; END IF;
  gid:=rmg_private.resolve_guide(p_jurisdiction,p_source_id);
  PERFORM pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended(actor::text, 84011));
  -- Serialize with claim approvals on the same guide before checking ownership.
@@ -148,7 +162,7 @@ END $$;
 CREATE FUNCTION public.rmg_resolve_guide(p_jurisdiction text,p_source_id text) RETURNS uuid LANGUAGE sql STABLE SECURITY INVOKER SET search_path='' AS $$SELECT rmg_private.resolve_guide($1,$2)$$;
 CREATE FUNCTION public.rmg_profile_details(p_jurisdiction text,p_source_id text) RETURNS jsonb LANGUAGE sql STABLE SECURITY INVOKER SET search_path='' AS $$SELECT rmg_private.profile_details($1,$2)$$;
 CREATE FUNCTION public.rmg_review_summary(p_jurisdiction text,p_source_id text) RETURNS jsonb LANGUAGE sql STABLE SECURITY INVOKER SET search_path='' AS $$
- SELECT jsonb_build_object('count',count(*),'averageQuality',round(avg(quality)::numeric,2),'wouldBookAgainPercent',round(100.0*avg(would_book_again::int),2))
+ SELECT jsonb_build_object('count',count(*),'averageQuality',round(avg(quality)::numeric,2),'wouldBookAgainPercent',round(100.0*avg(would_book_again::int),2),'wouldBookAgainResponses',count(would_book_again))
  FROM public.public_angler_reviews WHERE guide_id=rmg_private.resolve_guide($1,$2)
 $$;
 CREATE FUNCTION public.rmg_submit_review(p_jurisdiction text,p_source_id text,p_quality smallint,p_intensity smallint,p_rebook boolean,p_body text,p_firsthand boolean,p_relationship text,p_trip_responses jsonb DEFAULT NULL) RETURNS jsonb LANGUAGE sql SECURITY INVOKER SET search_path='' AS $$SELECT rmg_private.submit_review($1,$2,$3,$4,$5,$6,$7,$8,$9)$$;
