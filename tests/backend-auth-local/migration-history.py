@@ -26,7 +26,7 @@ if urlsplit(status['DB_URL']).hostname != '127.0.0.1':
     raise SystemExit('Nonlocal database')
 final = os.environ.get('RMG_FINAL_LAUNCH_FIXTURE') == '1'
 body = (root / ('supabase/review-candidates/final-launch-migration-body.sql' if final else 'supabase/review-candidates/launch-migration-body.sql')).read_bytes()
-expected = '9495e7bcbe794d6e6d3f136db5514a6e3a596080a145cf7ea85e16678b201c37' if final else '209c5fe39125ef17096941dac3c814c9e57b2e0b0be4789c9f49dc0510f34b9a'
+expected = 'e76030edd1cfe5d9b61ef48cf8132a96536f01f13e3030016890ab549b076f78' if final else '7a1f4ad88c76608176609ba44bf47406197db671495d9a94dc4f43b28bb27377'
 if hashlib.sha256(body).hexdigest() != expected:
     raise SystemExit('Unexpected migration body hash')
 clean = {'PATH': os.environ['PATH'], 'HOME': os.environ['HOME'], 'TMPDIR': str(work)}

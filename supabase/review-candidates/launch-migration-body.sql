@@ -149,7 +149,7 @@ CREATE OR REPLACE VIEW public.public_angler_reviews WITH (security_invoker=true)
  communication,professionalism,safety,equipment,knowledge,effort,value_rating,trip_context,relationship_disclosure,trip_responses
  FROM public.reviews WHERE status='published' AND published_at IS NOT NULL;
 CREATE OR REPLACE VIEW public.admin_pending_reviews WITH (security_invoker=true) AS
- SELECT r.id,r.guide_id,g.full_name AS guide_name,r.body,r.quality,r.safety,r.communication,r.professionalism,r.created_at,r.trip_month,r.firsthand_attested,r.relationship_disclosure,r.trip_responses
+ SELECT r.id,r.guide_id,g.full_name AS guide_name,r.body,r.quality,r.safety,r.communication,r.professionalism,r.created_at,r.trip_month,r.firsthand_attested,r.relationship_disclosure,r.trip_responses,r.intensity,r.would_book_again
  FROM public.reviews r JOIN public.guides g ON g.id=r.guide_id
  WHERE r.status='pending' AND public.is_site_admin();
 GRANT SELECT (firsthand_attested) ON public.reviews TO authenticated;

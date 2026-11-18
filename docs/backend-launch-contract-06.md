@@ -167,4 +167,11 @@ This successor requires the separate v2.6 migration **after** v2.4 and v2.5. Exi
 
 An actual duplicate returns HTTP 409 `{"error":"duplicate_review"}`; an unrelated conflict returns HTTP 409 `{"error":"conflict"}`. A disabled gate returns HTTP 503 `{"error":"launch_unavailable"}` and an unavailable dependency HTTP 503 `{"error":"service_unavailable"}`. An unknown network result has no receipt: recover with `own_review_for_guide` rather than fabricating a success or a duplicate. A report success can be shown only when its validated persisted receipt arrives.
 
-The preferred unapplied one-transaction runner body combines v2.4, reporting and v2.6 in that order: `supabase/review-candidates/final-launch-migration-body.sql`, SHA-256 `9495e7bcbe794d6e6d3f136db5514a6e3a596080a145cf7ea85e16678b201c37`. It supersedes the older v2.6 hash `c0c7c4...`, whose readiness check did not test authenticated private-schema usage. `supabase/review-candidates/HOSTED-PLAN.md` records preconditions, alternate ordering and data-preserving recovery; 01 alone executes hosted changes.
+The preferred unapplied one-transaction runner body combines v2.4, reporting and v2.6 in that order: `supabase/review-candidates/final-launch-migration-body.sql`, SHA-256 `e76030edd1cfe5d9b61ef48cf8132a96536f01f13e3030016890ab549b076f78`. It supersedes the older v2.6 hash `c0c7c4...`, whose readiness check did not test authenticated private-schema usage. `supabase/review-candidates/HOSTED-PLAN.md` records preconditions, alternate ordering and data-preserving recovery; 01 alone executes hosted changes.
+
+
+## v2.7 moderator queue response (additive)
+
+`operator_queue` with `kind: "review"` now returns the persisted optional `intensity` (integer 1–5 or null) and `would_book_again` (boolean or null) on each initial-review item, alongside existing `trip_month` and other fields. This adds response keys only; request and error shapes are unchanged. The security-invoker view, moderator predicate, existing grants and row-level policies are unchanged. False and null remain distinct. Revisions already include these answers. This successor migration needs fresh independent review; the older SQL hash `9495e7bc…` does not contain this correction.
+
+Example: `{"operation":"operator_queue","kind":"review","offset":0,"limit":10}` → `{"items":[{"id":"30000000-0000-0000-0000-000000000002","intensity":4,"would_book_again":false,"trip_month":null}],"offset":0,"limit":10}` (item abbreviated). Non-moderators receive HTTP 403 `{"error":"forbidden"}` via the handler.

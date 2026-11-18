@@ -32,6 +32,7 @@ DO $$BEGIN
 END$$;
 SELECT public.fixture_assert((public.rmg_submit_review('OR','fixture-2',5::smallint,4::smallint,true,repeat('x',90),true,'personal','{"version":1,"answers":{"children_present":{"state":"answered","value":false},"guide_patience":{"state":"not_applicable"},"effort":{"state":"answered","value":1}}}'::jsonb)->>'status')='pending','review persisted pending with attestation and disclosure');
 SELECT public.fixture_assert((SELECT count(*)=1 FROM public.reviews WHERE status='published'),'pending review not published');
+SELECT public.fixture_assert((SELECT count(*)=0 FROM public.admin_pending_reviews),'non-moderator cannot read pending review queue');
 SELECT public.fixture_assert((public.rmg_submit_claim('OR','fixture-1','Synthetic Name','',repeat('e',1200))->>'status')='pending','claim persisted pending at evidence limit');
 DO $$BEGIN
  BEGIN PERFORM public.rmg_submit_claim('OR','fixture-1','Synthetic Name','',repeat('e',1201)); RAISE EXCEPTION 'oversized evidence accepted'; EXCEPTION WHEN invalid_parameter_value THEN NULL; END;
@@ -80,6 +81,9 @@ SELECT set_config('tests.review_id',(SELECT id::text FROM public.reviews WHERE a
 SELECT set_config('tests.basic_review_id',(SELECT id::text FROM public.reviews WHERE author_id='00000000-0000-0000-0000-000000000003' AND guide_id='10000000-0000-0000-0000-000000000004'),false);
 SET ROLE authenticated;
 SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000004',false);
+SELECT public.fixture_assert((SELECT intensity=4 AND would_book_again IS TRUE FROM public.admin_pending_reviews WHERE id=current_setting('tests.review_id')::uuid),'moderator sees persisted initial trip answers');
+SELECT public.fixture_assert((SELECT intensity IS NULL AND would_book_again IS NULL FROM public.admin_pending_reviews WHERE id=current_setting('tests.basic_review_id')::uuid),'moderator sees unanswered trip answers as null');
+SELECT public.fixture_assert((SELECT intensity=4 AND would_book_again IS FALSE FROM public.admin_pending_reviews WHERE id='30000000-0000-0000-0000-000000000002'),'moderator sees a false rebooking answer');
 DO $$BEGIN
  BEGIN PERFORM public.admin_decide_review(current_setting('tests.review_id')::uuid,true,'Independent synthetic evidence reviewed'); RAISE EXCEPTION 'legacy direct moderation still executable'; EXCEPTION WHEN insufficient_privilege THEN NULL; END;
 END$$;
@@ -90,6 +94,9 @@ RESET ROLE;
 SELECT public.fixture_assert((SELECT count(*)=3 FROM public.moderation_audit WHERE actor_id='00000000-0000-0000-0000-000000000004'),'review and ownership decisions audited');
 SELECT public.fixture_assert((SELECT average_quality=5 AND review_count=1 FROM public.guides WHERE id='10000000-0000-0000-0000-000000000002'),'only published review contributes to guide rating');
 SET ROLE anon;
+DO $$BEGIN
+ BEGIN PERFORM * FROM public.admin_pending_reviews; RAISE EXCEPTION 'anonymous review queue accepted'; EXCEPTION WHEN insufficient_privilege THEN NULL; END;
+END$$;
 SELECT public.fixture_assert((public.rmg_review_summary('OR','fixture-2')->>'count')::int=1,'public summary returns published count');
 SELECT public.fixture_assert((public.rmg_review_summary('OR','fixture-4')->>'wouldBookAgainResponses')::int=0 AND public.rmg_review_summary('OR','fixture-4')->'wouldBookAgainPercent'='null'::jsonb,'missing rebooking is not counted as no');
 SELECT public.fixture_assert((SELECT intensity IS NULL AND would_book_again IS NULL AND body='Good' FROM public.public_angler_reviews WHERE id=current_setting('tests.basic_review_id')::uuid),'basic text/star review retains optional nulls');
