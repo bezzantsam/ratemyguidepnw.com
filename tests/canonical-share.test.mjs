@@ -41,6 +41,21 @@ test('sign-in return accepts only the intended profile or that profile’s revie
   assert.throws(()=>exports.safeGuideReturnTo('/admin','//evil.example'));
 });
 
+test('auth round trip preserves only the selected guide and review intent',()=>{
+  const profile='/guides/og-0002254';
+  assert.equal(exports.guideAuthRedirectPath(`${profile}?intent=review#write-review`,profile),`${profile}?intent=review`);
+  assert.equal(exports.guideAuthRedirectPath(`${profile}?intent=review`,profile),`${profile}?intent=review`);
+  for(const candidate of ['//evil.example', '/guides/og-0000050?intent=review#write-review', `${profile}?intent=review&next=//evil.example#write-review`, `${profile}?intent=review#access_token=secret`]) {
+    assert.equal(exports.guideAuthRedirectPath(candidate,profile),profile);
+  }
+  assert.equal(exports.guideAuthRestoredPath(profile,'?intent=review','',profile),`${profile}?intent=review#write-review`);
+  assert.equal(exports.guideAuthRestoredPath(profile,'?intent=review','#write-review',profile),`${profile}?intent=review#write-review`);
+  assert.equal(exports.guideAuthRestoredPath(profile,'?intent=review','#access_token=secret',profile),null);
+  assert.equal(exports.guideAuthRestoredPath(profile,'?intent=review&next=//evil.example','',profile),null);
+  assert.equal(exports.guideAuthRestoredPath('/guides/og-0000050','?intent=review','',profile),null);
+  assert.throws(()=>exports.guideAuthRedirectPath('/admin','//evil.example'));
+});
+
 test('social metadata points to the canonical guide and makes no verification or rating claim',()=>{
   const metadata=exports.profileShareMetadata('/washington/wa-000','Example Guide','Example Fishing');
   assert.equal(metadata.alternates.canonical,'https://ratemyguidepnw.com/washington/wa-000');
