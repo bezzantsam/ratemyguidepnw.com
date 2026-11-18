@@ -25,13 +25,13 @@ const washington=compile('app/washington/[id]/page.tsx',common);
 test('both profile routes publish matching canonical social metadata for the actual listing',async()=>{
   const or=await oregon.generateMetadata({params:Promise.resolve({slug:'og-0002254'})});
   const wa=await washington.generateMetadata({params:Promise.resolve({id:'wa-000'})});
-  assert.equal(or.openGraph.url,'https://ratemyguidepnw.com/guides/og-0002254');
+  assert.equal(or.openGraph.url,'https://ratemyguidepnw.vercel.app/guides/og-0002254');
   assert.equal(or.alternates.canonical,or.openGraph.url);
   assert.match(or.openGraph.title,/OR Guide/);
   assert.match(or.openGraph.description,/Fishing Co\./);
-  assert.equal(wa.openGraph.url,'https://ratemyguidepnw.com/washington/wa-000');
+  assert.equal(wa.openGraph.url,'https://ratemyguidepnw.vercel.app/washington/wa-000');
   assert.match(wa.openGraph.title,/WA Guide/);
-  assert.equal(wa.openGraph.images[0].url,'https://ratemyguidepnw.com/share-card.png');
+  assert.equal(wa.openGraph.images[0].url,'https://ratemyguidepnw.vercel.app/share-card.png');
   await assert.rejects(oregon.generateMetadata({params:Promise.resolve({slug:'bogus'})}),/not found/);
   await assert.rejects(washington.generateMetadata({params:Promise.resolve({id:'wa-999'})}),/not found/);
 });

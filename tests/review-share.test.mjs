@@ -12,11 +12,11 @@ const flush=()=>new Promise(resolve=>setImmediate(resolve));
 test('published-review share uses its stable canonical destination and does not claim a post',async()=>{
   let shared;const render=harness({share:async value=>{shared=value}});
   find(render(),n=>n.type==='button'&&n.props.children==='Share review').props.onClick();await flush();
-  assert.equal(shared.url,`https://ratemyguidepnw.com${path}#review-${id}`);
+  assert.equal(shared.url,`https://ratemyguidepnw.vercel.app${path}#review-${id}`);
   assert.doesNotMatch(find(render(),n=>n.props?.role==='status').props.children,/posted|published/i);
 });
 test('failed review copy exposes a selectable canonical link',async()=>{
   const render=harness({clipboard:{writeText:async()=>{throw Error('denied')}}});
   find(render(),n=>n.type==='button'&&n.props.children==='Copy review link').props.onClick();await flush();
-  assert.equal(find(render(),n=>n.type==='input').props.value,`https://ratemyguidepnw.com${path}#review-${id}`);
+  assert.equal(find(render(),n=>n.type==='input').props.value,`https://ratemyguidepnw.vercel.app${path}#review-${id}`);
 });
