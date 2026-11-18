@@ -19,7 +19,7 @@ export async function runLaunchJourney({repo,tree,browser,signal}){
    checkIsolation('build');
    app=await launchApp(dir,env,signal);env.TEST_BASE_URL=app.url;
    checkIsolation('server startup');
-   await command('node',['--test','tests/launch-journey-browser.test.mjs'],dir,env,signal);
+   try{await command('node',['--test','tests/launch-journey-browser.test.mjs'],dir,env,signal)}catch(error){console.error(error);checkIsolation('failed browser journey');throw error}
    checkIsolation('browser journey');
   }finally{try{if(app)await app.stop()}finally{if(backend)await backend.close()}}
  });
