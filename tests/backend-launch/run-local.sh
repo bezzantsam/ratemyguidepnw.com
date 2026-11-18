@@ -55,3 +55,5 @@ wait "$first_pid"
 wait "$second_pid"
 "${ps[@]}" -c "SELECT public.fixture_assert((SELECT count(*)=1 FROM public.guide_claims WHERE claimant_id='00000000-0000-0000-0000-000000000006' AND guide_id='10000000-0000-0000-0000-000000000002' AND status='pending'),'concurrent duplicate claims serialize to one row')"
 if ! grep -q '"existing": true' "$tmp/second.log"; then cat "$tmp/second.log"; exit 1; fi
+"${ps[@]}" -f "$root/supabase/review-candidates/emergency-disable.sql" >/dev/null
+"${ps[@]}" -f "$root/tests/backend-launch/rollback.sql"
