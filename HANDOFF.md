@@ -1,5 +1,7 @@
 # 06 v2.7 moderator queue correction — current successor
 
+**Published implementation commit:** `8614aeb2efefb22cf0e52d801b3f41e8818e07c0` on `origin/codex/rmg-backend-launch-20261117`. A subsequent handoff-only commit may advance the branch tip. 01 integrates the precise code commit; this note does not assert receipt.
+
 01/05: the initial-review moderator queue now includes persisted `intensity` and `would_book_again`; null and false are preserved. The view remains security-invoker and moderator-only. Revision queue behavior and all earlier backend features remain intact. This is an additive response correction; see `docs/backend-launch-contract-06.md` v2.7 for the exact example and existing v2.6 operations/errors.
 
 Fresh-target single runner body: `supabase/review-candidates/final-launch-migration-body.sql`, SHA-256 `e76030edd1cfe5d9b61ef48cf8132a96536f01f13e3030016890ab549b076f78`, superseding `9495e7bc…`. It is assembled in the same order with the same preconditions and data-preserving disable body as below. Do not apply both old and new bodies. If anything has already been applied, stop and reconcile history and catalog before creating a separately reviewed migration. 01 alone executes hosted changes.
