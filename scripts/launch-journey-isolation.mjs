@@ -16,7 +16,7 @@ export async function runLaunchJourney({repo,tree,browser,signal}){
    await command('npm',['run','build'],dir,env,signal);
    app=await launchApp(dir,env,signal);env.TEST_BASE_URL=app.url;
    await command('node',['--test','tests/launch-journey-browser.test.mjs'],dir,env,signal);
-   if(backend.requests()||backend.writes())throw Error('Synthetic browser unexpectedly reached the mock backend server');
+   if(backend.requests()||backend.writes())throw Error(`Synthetic browser unexpectedly reached the mock backend server: ${JSON.stringify(backend.requestSummary())}`);
   }finally{try{if(app)await app.stop()}finally{if(backend)await backend.close()}}
  });
 }
