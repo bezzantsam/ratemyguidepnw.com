@@ -24,6 +24,16 @@ test('nickname, aliases and water searches select the intended guide',()=>{
  assert.deepEqual(ids({query:'River Outfitters'}),['wa-001']);
  assert.deepEqual(ids({advertisedWater:'Columbia River'}),['wa-001']);
 });
+test('ordinary Unicode names remain searchable without changing source identities',()=>{
+ const names=[
+  {...rows[0],id:'wa-unicode-1',name:'李明 張',searchAliases:[]},
+  {...rows[0],id:'wa-unicode-2',name:'José Núñez',searchAliases:[]},
+  {...rows[0],id:'wa-unicode-3',name:'अनिता शर्मा',searchAliases:[]},
+ ];
+ for(const [query,id] of [['李明','wa-unicode-1'],['jose nunez','wa-unicode-2'],['अनिता','wa-unicode-3']]){
+  assert.equal(Array.from(filter(names,{...all,query}),entry=>entry.id).filter(found=>found===id).length,1,query);
+ }
+});
 test('state and historical location filters intersect; identifiers never fuzzy match',()=>{
  assert.deepEqual(ids({state:'Oregon',sourceZone:'Coastal'}),['OG.0000010']);
  assert.deepEqual(ids({query:'wa-003'}),[]);
