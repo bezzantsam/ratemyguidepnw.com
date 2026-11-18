@@ -6,7 +6,7 @@ export type SubmissionReceipt = Readonly<{ id:string; status: SubmissionStatus; 
 export type RelationshipDisclosure = 'none' | 'personal' | 'financial' | 'other';
 export type ReviewDraft = Readonly<{
   quality: number;
-  intensity: number;
+  intensity: number | null;
   wouldBookAgain: boolean | null;
   body: string;
   firsthand: boolean;
@@ -27,10 +27,10 @@ export function isSubmissionReceipt(value: unknown, kind: 'review' | 'claim'): v
 
 export function validateReviewDraft(draft: ReviewDraft): string | null {
   if (!Number.isInteger(draft.quality) || draft.quality < 1 || draft.quality > 5) return 'Choose a quality rating from 1 to 5.';
-  if (!Number.isInteger(draft.intensity) || draft.intensity < 1 || draft.intensity > 5) return 'Choose an intensity rating from 1 to 5.';
-  if (typeof draft.wouldBookAgain !== 'boolean') return 'Choose whether you would book again.';
+  if (draft.intensity!==null && (!Number.isInteger(draft.intensity) || draft.intensity < 1 || draft.intensity > 5)) return 'Choose an intensity rating from 1 to 5, or leave it unanswered.';
+  if (draft.wouldBookAgain!==null && typeof draft.wouldBookAgain !== 'boolean') return 'Choose whether you would book again, or leave it unanswered.';
   const body = draft.body.trim();
-  if (Array.from(body).length < 80 || body.length > 3000) return 'Describe your experience in 80 to 3,000 characters.';
+  if (Array.from(body).length < 1 || body.length > 3000) return 'Describe your experience in 1 to 3,000 characters.';
   if (!draft.firsthand) return 'Confirm that you personally took the trip.';
   if (!draft.relationship || !['none','personal','financial','other'].includes(draft.relationship)) return 'Choose the relationship that applies to you.';
   if (draft.tripMonth !== null && !/^\d{4}-(0[1-9]|1[0-2])$/.test(draft.tripMonth)) return 'Enter a valid trip month.';

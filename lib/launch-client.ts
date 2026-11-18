@@ -64,11 +64,11 @@ export function createLaunchClient(options:Options) {
       return {authenticated:true as const,operator:data.operator};
     },
     async submitReview(source:GuideSource,draft:ReviewDraft):Promise<PendingReceipt> {
-      if(validateReviewDraft(draft) || draft.wouldBookAgain===null || draft.relationship===null) throw new LaunchClientError('invalid_input');
+      if(validateReviewDraft(draft) || draft.relationship===null) throw new LaunchClientError('invalid_input');
       // The draft backend has no trip-month input. Never silently discard it.
       if(draft.tripMonth!==null) throw new LaunchClientError('optional_detail_unsupported');
       const body=draft.body.trim();
-      if(body.length<80||body.length>3000) throw new LaunchClientError('invalid_input');
+      if(body.length<1||body.length>3000) throw new LaunchClientError('invalid_input');
       return receipt(await call('submit_review',{...sourceArgs(source),quality:draft.quality,intensity:draft.intensity,wouldBookAgain:draft.wouldBookAgain,body,firsthandAttested:draft.firsthand,relationship:draft.relationship,...(draft.tripResponses?{tripResponses:draft.tripResponses}:{})},true));
     },
     async submitClaim(source:GuideSource,draft:ClaimDraft):Promise<PendingReceipt> {
@@ -96,17 +96,17 @@ export function createLaunchClient(options:Options) {
       });
     },
     async submitRevision(reviewId:string,draft:ReviewDraft):Promise<PendingReceipt> {
-      if(!UUID.test(reviewId)||validateReviewDraft(draft)||draft.tripMonth!==null||draft.wouldBookAgain===null||draft.relationship===null)throw new LaunchClientError('invalid_input');
+      if(!UUID.test(reviewId)||validateReviewDraft(draft)||draft.tripMonth!==null||draft.relationship===null)throw new LaunchClientError('invalid_input');
       return receipt(await call('submit_revision',{reviewId,quality:draft.quality,intensity:draft.intensity,wouldBookAgain:draft.wouldBookAgain,body:draft.body.trim(),firsthandAttested:draft.firsthand,relationship:draft.relationship,...(draft.tripResponses?{tripResponses:draft.tripResponses}:{})},true));
     },
     async reviewDetail(source:GuideSource,id:string):Promise<ReviewDraft> {
       if(!UUID.test(id))throw new LaunchClientError('invalid_input');
       const data=record(await call('review_detail',{...sourceArgs(source),id},false));
       const r=record(data?.review);
-      if(!r||r.id!==id||!Number.isInteger(r.quality)||(r.quality as number)<1||(r.quality as number)>5||!Number.isInteger(r.intensity)||(r.intensity as number)<1||(r.intensity as number)>5||typeof r.would_book_again!=='boolean'||typeof r.body!=='string'||!['none','personal','financial','other'].includes(r.relationship_disclosure as string)||typeof r.published_at!=='string'||!Number.isFinite(Date.parse(r.published_at)))throw new LaunchClientError('service_unavailable');
+      if(!r||r.id!==id||!Number.isInteger(r.quality)||(r.quality as number)<1||(r.quality as number)>5||(r.intensity!==null&&(!Number.isInteger(r.intensity)||(r.intensity as number)<1||(r.intensity as number)>5))||(r.would_book_again!==null&&typeof r.would_book_again!=='boolean')||typeof r.body!=='string'||!['none','personal','financial','other'].includes(r.relationship_disclosure as string)||typeof r.published_at!=='string'||!Number.isFinite(Date.parse(r.published_at)))throw new LaunchClientError('service_unavailable');
       const tripDraft=decodeTripResponses(r.trip_responses);if(!tripDraft)throw new LaunchClientError('service_unavailable');
       const encoded=encodeTripResponses(tripDraft);if(encoded.error)throw new LaunchClientError('service_unavailable');
-      return {quality:r.quality as number,intensity:r.intensity as number,wouldBookAgain:r.would_book_again,body:r.body,firsthand:false,relationship:r.relationship_disclosure as ReviewDraft['relationship'],tripMonth:null,tripResponses:encoded.value};
+      return {quality:r.quality as number,intensity:r.intensity as number|null,wouldBookAgain:r.would_book_again as boolean|null,body:r.body,firsthand:false,relationship:r.relationship_disclosure as ReviewDraft['relationship'],tripMonth:null,tripResponses:encoded.value};
     },
     async profileDetails(source:GuideSource):Promise<OwnerDetails|null> {
       const data=record(await call('profile_details',sourceArgs(source),false));

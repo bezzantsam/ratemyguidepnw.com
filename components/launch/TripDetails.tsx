@@ -4,7 +4,7 @@ import {useId} from 'react';
 import {TRIP_FIELDS,type TripDraft} from './trip-responses';
 
 /** Optional, versioned questions; the caller must validate before submission. */
-export function TripDetails({draft,onChange}:{draft:TripDraft;onChange:(draft:TripDraft)=>void}) {
+export function TripDetails({draft,onChange,children}:{draft:TripDraft;onChange:(draft:TripDraft)=>void;children?:React.ReactNode}) {
   const prefix=useId();
   function update(key:string,value:string) {
     const next={...draft};
@@ -15,6 +15,7 @@ export function TripDetails({draft,onChange}:{draft:TripDraft;onChange:(draft:Tr
     <summary>Tell us more</summary>
     <h4>Tell us more about your trip</h4>
     <p>These questions are optional. Answer only what applies to your experience; please leave out names and other personal details.</p>
+    {children}
     {TRIP_FIELDS.map(field=>{
       const id=`${prefix}-${field.key}`, entry=draft[field.key]??'';
       const minuteMode=entry==='na'?'na':entry.startsWith('value:')?'value':'';

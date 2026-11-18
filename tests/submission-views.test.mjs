@@ -23,22 +23,23 @@ const queue=compile('components/launch/ModerationQueue.tsx',{'./submission-model
 const published=compile('components/launch/PublishedReviews.tsx');
 const receiptId='10000000-0000-4000-8000-000000000001';
 
-test('review validation requires both ratings, rebooking answer, narrative and firsthand attestation',()=>{
+test('basic review requires a rating, nonempty narrative, disclosure and firsthand attestation',()=>{
   const valid={quality:5,intensity:3,wouldBookAgain:true,body:'A thoughtful account of the fishing trip. '.repeat(3),firsthand:true,tripMonth:null,relationship:'none'};
   assert.equal(model.validateReviewDraft(valid),null);
   for(const rating of [0,6,1.5,NaN]) {
     assert.ok(model.validateReviewDraft({...valid,quality:rating}));
     assert.ok(model.validateReviewDraft({...valid,intensity:rating}));
   }
-  assert.ok(model.validateReviewDraft({...valid,wouldBookAgain:null}));
+  assert.equal(model.validateReviewDraft({...valid,intensity:null,wouldBookAgain:null}),null);
   assert.equal(model.validateReviewDraft({...valid,wouldBookAgain:false}),null);
-  assert.ok(model.validateReviewDraft({...valid,body:'   short   '}));
+  assert.equal(model.validateReviewDraft({...valid,body:'   short   '}),null);
+  assert.ok(model.validateReviewDraft({...valid,body:'   '}));
   assert.ok(model.validateReviewDraft({...valid,body:'x'.repeat(3001)}));
   assert.ok(model.validateReviewDraft({...valid,firsthand:false}));
   assert.ok(model.validateReviewDraft({...valid,relationship:null}));
   assert.ok(model.validateReviewDraft({...valid,tripMonth:'2026-13'}));
   assert.equal(model.validateReviewDraft({...valid,tripMonth:'2026-11'}),null);
-  assert.ok(model.validateReviewDraft({...valid,body:'🎣'.repeat(79)}));
+  assert.equal(model.validateReviewDraft({...valid,body:'🎣'.repeat(79)}),null);
   assert.equal(model.validateReviewDraft({...valid,body:'🎣'.repeat(80)}),null);
   assert.ok(model.validateReviewDraft({...valid,body:'🎣'.repeat(1501)}));
 });
