@@ -46,3 +46,28 @@ After the named person completes a supported verified sign-in, an authorized dat
 ### Existing storage interaction
 
 Read-only hosted inspection found an existing public `guide-photos` bucket and permissive `storage.objects` upload/delete policies for approved claimants. Approving the first owner would therefore also enable direct uploads/deletions even when the website upload UI remains disabled. `supabase/review-candidates/03-disable-uploads.sql` proposes restrictive policies denying insert/update/delete for that bucket while preserving existing policies and other buckets. The CI synthetic storage fixture must be exercised; it is not a substitute for real Storage HTTP tests, current-policy and privileges review, or a hosted migration. Emergency rollback should leave this protection in place unless explicitly reviewed.
+
+## Expanded launch interface — draft v2 (2026-11-17)
+
+The user now requires structured answers and review edits at launch; these supersede the earlier statement that optional answers are a follow-on. The implementation and SQL remain review candidates until this exact successor passes the synthetic database harness and independent review.
+
+`submit_review` additionally accepts optional `tripResponses`, either omitted/null for a basic text/star review or `{version:1,answers:{...}}`. In `answers`, **an absent key means unanswered**, `{state:"not_applicable"}` means not applicable, and `{state:"answered",value:...}` preserves an actual false/zero/rating. Unknown fields, versions, null answers, arbitrary free text and extra properties are rejected at both server and database boundaries. Accepted keys and values:
+
+- Boolean: `teaching_requested`, `children_present`, `dog_present`, `dog_previously_disclosed`.
+- Integer rating 1–5: `teaching_experience`, `guide_patience`, `effort`, `attentiveness`, `organization`, `cleanliness`, `response_slow_catch`, `respect_for_boundaries`.
+- Integer minutes 0–1440: `agreed_duration_minutes`, `actual_duration_minutes`.
+- `target_species`: `chinook`, `coho`, `steelhead`, `other`, `unknown`; `setting`: `river`, `ocean`, `estuary`, `other`, `unknown`.
+- `duration_change_reason`: `weather`, `safety`, `customer_request`, `guide_decision`, `other`, `unknown`; `conversation_preference`: `talkative`, `quiet`, `no_preference`.
+
+There are no children’s names, religious or political fields, or arbitrary text within structured answers. These are angler observations and preferences, not independently verified fact or evidence of protected traits. The public published-review fields gain `trip_responses`; pending answers and revision payloads remain private.
+
+New operations:
+
+- `{operation:"safe_return",returnTo:"/guides/og-123?intent=review#write-review"}` -> `{returnTo:<same-origin relative path>}`; no session needed. Allowed paths are `/guides/<lowercase-slug>`, `/washington/wa-<digits>`, `/claim/<OR-registration-or-WA-id>`, `/admin`; only `?intent=review` and `#write-review` may be retained. Absolute/protocol-relative URLs, backslashes, encoded slash/backslash, controls and unrecognized query/fragment are rejected with 400. This sanitizes a return destination; the browser sign-in provider configuration/redirect allowlist still requires actual verification.
+- `{operation:"review_detail",jurisdiction,sourceId,id:<review UUID>}` -> `{review:<safe published fields>}`; 404 for unmapped guide, unpublished review or guide/review mismatch. A review share URL must also use the canonical public profile route and never include account tokens or drafts.
+- `{operation:"profile_details",jurisdiction,sourceId}` -> `{details:<allowed captain-declared fields or null>,attribution:"captain_declared"}`; no claim of registry/source verification. Owner edit is `edit_details` as above; readback is this same operation. The schema does not let a captain modify source registration, names, source evidence, independent reviews or ratings.
+- `{operation:"submit_revision",reviewId,quality,intensity,wouldBookAgain,body,firsthandAttested,relationship,tripResponses?}` -> `{id,status:"pending"}`. Only the author of a published review can submit; the existing published content and rating remain public and unchanged until an independent operator approves the revision. Only one pending revision per review is accepted; rejected edits never replace the old publication. Status is obtained by `own_status` with `kind:"revision"` (`pending`, `approved`, `rejected`). Reviewer must re-attest; all review validation applies. Moderators cannot decide their own revision or revisions about a profile they own. Decisions and audit update in one transaction.
+- `{operation:"my_submissions",offset,limit}` -> `{items,offset,limit}` planned: items are only the actor's review/claim/revision IDs, actual status, created time, safe mapped `jurisdiction` and `source_id`, plus `review_id` for revisions; mapping may be null. No body, evidence or other author's information. The handler currently returns the RPC JSON directly; see the implementation and CI before integration.
+- `operator_queue` and `operator_decide` accept `kind:"revision"`. Queue gives proposed review data only to authenticated `site_admins`. Revision decisions return `{id,status:"approved"|"rejected"}`; original review/claim decisions retain `{status:"decided"}`. Successful revision approval changes the same review ID and recomputes ratings from published rows.
+
+No analytics or notification emission is implemented in this backend. Any future first-party analytics must use an allowlisted event schema without review text, email addresses or sensitive responses; notifications must only be sent according to explicit user preferences. No unapproved notification/outreach is initiated by these operations.

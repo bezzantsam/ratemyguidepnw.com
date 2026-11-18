@@ -18,6 +18,7 @@ python3 "$root/tests/backend-launch/reconstruct.py" > "$tmp/schema.sql"
 "${ps[@]}" -f "$root/supabase/review-candidates/01-authorization-lockdown.sql" >/dev/null
 "${ps[@]}" -f "$root/supabase/review-candidates/02-launch-api.sql" >/dev/null
 "${ps[@]}" -f "$root/supabase/review-candidates/03-disable-uploads.sql" >/dev/null
-sha256sum "$root/supabase/review-candidates/01-authorization-lockdown.sql" "$root/supabase/review-candidates/02-launch-api.sql" "$root/supabase/review-candidates/03-disable-uploads.sql" "$root/tests/independent-qa/independent-storage-rls.sql"
+"${ps[@]}" -f "$root/supabase/review-candidates/04-review-revisions.sql" >/dev/null
+sha256sum "$root/supabase/review-candidates/01-authorization-lockdown.sql" "$root/supabase/review-candidates/02-launch-api.sql" "$root/supabase/review-candidates/03-disable-uploads.sql" "$root/supabase/review-candidates/04-review-revisions.sql" "$root/tests/independent-qa/independent-storage-rls.sql"
 printf '%s  %s\n' b2052788f9b73119caf02f619d6d456673e59e545e0eb09496afa6c36de9a2ca "$root/tests/independent-qa/independent-storage-rls.sql" | sha256sum -c -
 "${ps[@]}" -f "$root/tests/independent-qa/independent-storage-rls.sql"

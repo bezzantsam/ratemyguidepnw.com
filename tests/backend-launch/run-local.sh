@@ -18,7 +18,9 @@ python3 "$root/tests/backend-launch/reconstruct.py" > "$tmp/schema.sql"
 "${ps[@]}" -f "$root/supabase/review-candidates/01-authorization-lockdown.sql" >/dev/null
 "${ps[@]}" -f "$root/supabase/review-candidates/02-launch-api.sql" >/dev/null
 "${ps[@]}" -f "$root/supabase/review-candidates/03-disable-uploads.sql" >/dev/null
+"${ps[@]}" -f "$root/supabase/review-candidates/04-review-revisions.sql" >/dev/null
 "${ps[@]}" -f "$root/tests/backend-launch/access.sql"
+"${ps[@]}" -f "$root/tests/backend-launch/revisions.sql"
 "${ps[@]}" -f "$root/tests/backend-launch/storage.sql"
 # Two independent database sessions race the same actor/guide pending claim.
 # The first intentionally holds the transaction open; prove the second blocked.
