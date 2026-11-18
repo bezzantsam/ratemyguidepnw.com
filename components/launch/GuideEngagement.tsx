@@ -25,11 +25,11 @@ function OwnerEditor({initial,onSave}:{initial:OwnerDetails|null;onSave:(value:O
   }
   return <form className="card" onSubmit={submit}>
     <h3>Edit captain-declared details</h3><p>These details are supplied by the approved captain and are not independently verified.</p>
-    <label>Boat<input value={value.boat} maxLength={500} onChange={e=>setValue({...value,boat:e.target.value})}/></label>
+    <label>Boat<input value={value.boat} maxLength={250} onChange={e=>setValue({...value,boat:e.target.value})}/></label>
     <label>Gear<input value={value.gear} maxLength={500} onChange={e=>setValue({...value,gear:e.target.value})}/></label>
-    <label>Years of experience<input type="number" min="0" max="100" step="1" value={value.yearsExperience??''} onChange={e=>setValue({...value,yearsExperience:e.target.value===''?null:Number(e.target.value)})}/></label>
-    <label>Expertise<textarea value={value.expertise} maxLength={1000} onChange={e=>setValue({...value,expertise:e.target.value})}/></label>
-    <label>Species<input value={value.species} maxLength={500} onChange={e=>setValue({...value,species:e.target.value})}/></label>
+    <label>Years of experience<input type="number" min="0" max="80" step="1" value={value.yearsExperience??''} onChange={e=>setValue({...value,yearsExperience:e.target.value===''?null:Number(e.target.value)})}/></label>
+    <label>Expertise<textarea value={value.expertise} maxLength={500} onChange={e=>setValue({...value,expertise:e.target.value})}/></label>
+    <label>Species<input value={value.species} maxLength={350} onChange={e=>setValue({...value,species:e.target.value})}/></label>
     <button type="submit" disabled={busy}>{busy?'Saving…':'Save details'}</button>{message&&<p role="status">{message}</p>}
   </form>;
 }

@@ -78,7 +78,7 @@ export function createLaunchClient(options:Options) {
     },
     async submitClaim(source:GuideSource,draft:ClaimDraft):Promise<PendingReceipt> {
       const claimantName=draft.claimantName.trim(),businessName=draft.businessName.trim(),evidence=draft.evidence.trim();
-      if(Array.from(claimantName).length<2 || claimantName.length>120 || businessName.length>160 || Array.from(evidence).length<20 || evidence.length>2000) throw new LaunchClientError('invalid_input');
+      if(Array.from(claimantName).length<2 || claimantName.length>120 || businessName.length>160 || Array.from(evidence).length<20 || evidence.length>1200) throw new LaunchClientError('invalid_input');
       return receipt(await call('submit_claim',{...sourceArgs(source),claimantName,businessName,evidence},true));
     },
     async ownStatus(kind:SubmissionKind,id:string):Promise<OwnStatus> {
@@ -122,11 +122,11 @@ export function createLaunchClient(options:Options) {
       const data=record(await call('profile_details',sourceArgs(source),false));
       if(!data||data.attribution!=='captain_declared')throw new LaunchClientError('service_unavailable');
       if(data.details===null)return null;
-      const d=record(data.details);if(!d||![d.boat,d.gear,d.expertise,d.targeted_species].every(x=>x===null||typeof x==='string')||(d.years_experience!==null&&(!Number.isInteger(d.years_experience)||(d.years_experience as number)<0||(d.years_experience as number)>100)))throw new LaunchClientError('service_unavailable');
+      const d=record(data.details);if(!d||![d.boat,d.gear,d.expertise,d.targeted_species].every(x=>x===null||typeof x==='string')||(d.years_experience!==null&&(!Number.isInteger(d.years_experience)||(d.years_experience as number)<0||(d.years_experience as number)>80)))throw new LaunchClientError('service_unavailable');
       return {boat:(d.boat as string|null)??'',gear:(d.gear as string|null)??'',yearsExperience:d.years_experience as number|null,expertise:(d.expertise as string|null)??'',species:(d.targeted_species as string|null)??''};
     },
     async editDetails(source:GuideSource,details:OwnerDetails):Promise<void> {
-      if(typeof details.boat!=='string'||details.boat.length>500||typeof details.gear!=='string'||details.gear.length>500||typeof details.expertise!=='string'||details.expertise.length>1000||typeof details.species!=='string'||details.species.length>500||(details.yearsExperience!==null&&(!Number.isInteger(details.yearsExperience)||details.yearsExperience<0||details.yearsExperience>100)))throw new LaunchClientError('invalid_input');
+      if(typeof details.boat!=='string'||details.boat.length>250||typeof details.gear!=='string'||details.gear.length>500||typeof details.expertise!=='string'||details.expertise.length>500||typeof details.species!=='string'||details.species.length>350||(details.yearsExperience!==null&&(!Number.isInteger(details.yearsExperience)||details.yearsExperience<0||details.yearsExperience>80)))throw new LaunchClientError('invalid_input');
       const result=record(await call('edit_details',{...sourceArgs(source),...details},true));
       if(result?.status!=='saved')throw new LaunchClientError('service_unavailable');
     },
