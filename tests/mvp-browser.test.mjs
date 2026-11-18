@@ -32,7 +32,7 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
   const q=page.getByRole('searchbox',{name:'Captain, business, operating name, or registration'});
   // Synthetic approved fixtures exercise filters without publishing candidate research.
   await page.getByText('Synthetic test fixture — not a real offering.').first().waitFor();
-  const species=page.getByLabel('Source-listed species');const method=page.getByLabel('Source-listed fishing method');
+  const species=page.getByLabel('Species',{exact:true});const method=page.getByLabel('Source-listed fishing method');
   await species.selectOption({label:'Salmon'});await method.selectOption({label:'Fly fishing'});
   await page.getByRole('link',{name:/John Hanson/}).first().waitFor();
   assert.equal(await page.getByRole('link',{name:/Shea Fisher/}).count(),0,'broad Salmon does not imply Chinook');
