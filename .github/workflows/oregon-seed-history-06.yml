@@ -1,0 +1,23 @@
+name: Oregon seed local CLI history rehearsal
+on:
+  pull_request:
+    paths:
+      - 'tests/backend-auth-local/oregon-seed-history.py'
+      - '.github/workflows/oregon-seed-history-06.yml'
+permissions:
+  contents: read
+jobs:
+  seed-history:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.base.ref == 'codex/rmg-backend-launch-20261117'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - name: Test exact seed with disposable local Supabase CLI
+        env:
+          RMG_FIXTURE_SCHEMA_ONLY: '1'
+          RMG_FINAL_LAUNCH_FIXTURE: '1'
+        run: bash tests/backend-auth-local/run-ci.sh "$GITHUB_WORKSPACE/tests/backend-auth-local/oregon-seed-history.py"

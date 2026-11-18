@@ -31,7 +31,7 @@ clean=(env -i "PATH=$PATH" "HOME=$HOME" "TMPDIR=$work")
 "${clean[@]}" "$cli" init > init.log 2>&1 || { echo 'Local Supabase init failed; inspect private runner log.' >&2; exit 1; }
 python3 - "$project" <<'PY'
 from pathlib import Path
-import re, sys, tomllib
+import re, socket, sys, tomllib
 p=Path('supabase/config.toml'); s=p.read_text()
 def change(pattern, replacement):
     global s
@@ -40,6 +40,11 @@ def change(pattern, replacement):
 change(r'^project_id\s*=.*$', 'project_id = "'+sys.argv[1]+'"')
 change(r'^site_url\s*=.*$', 'site_url = "http://127.0.0.1:3000"')
 change(r'^additional_redirect_urls\s*=.*$', 'additional_redirect_urls = ["http://127.0.0.1:3000/**"]')
+# Reserve distinct loopback ports while updating only this disposable project's config.
+reservations=[]
+for key, default in [('port',54321),('port',54322),('shadow_port',54320),('port',54329),('port',54323),('port',54324),('port',54327),('inspector_port',8083)]:
+    listener=socket.socket(); listener.bind(('127.0.0.1',0)); reservations.append(listener)
+    change(r'^'+key+r'\s*=\s*'+str(default)+r'\s*$', key+' = '+str(listener.getsockname()[1]))
 # Only the disposable local Mailpit fixture needs four synthetic confirmations.
 change(r'^email_sent\s*=.*$', 'email_sent = 20')
 match=re.search(r'(?ms)^\[auth\.email\]\s*\n(?P<body>.*?)(?=^\[|\Z)',s)
@@ -50,6 +55,7 @@ s=s[:match.start('body')]+body+s[match.end('body'):]
 c=tomllib.loads(s)
 if c['project_id'] != sys.argv[1] or not c['auth']['email']['enable_confirmations'] or c['auth']['rate_limit']['email_sent'] != 20: raise SystemExit('Config verification failed')
 p.write_text(s)
+for listener in reservations: listener.close()
 PY
 if ! "${clean[@]}" "$cli" start -x realtime,storage-api,imgproxy,edge-runtime,postgres-meta,studio,logflare,vector,supavisor > start.log 2>&1; then
   # Emit only a fixed category: the CLI log can contain local credentials.
