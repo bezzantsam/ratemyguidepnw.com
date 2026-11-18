@@ -62,6 +62,9 @@ SELECT set_config('tests.review_id',(SELECT id::text FROM public.reviews WHERE a
 SELECT set_config('tests.basic_review_id',(SELECT id::text FROM public.reviews WHERE author_id='00000000-0000-0000-0000-000000000003' AND guide_id='10000000-0000-0000-0000-000000000004'),false);
 SET ROLE authenticated;
 SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000004',false);
+DO $$BEGIN
+ BEGIN PERFORM public.admin_decide_review(current_setting('tests.review_id')::uuid,true,'Independent synthetic evidence reviewed'); RAISE EXCEPTION 'legacy direct moderation still executable'; EXCEPTION WHEN insufficient_privilege THEN NULL; END;
+END$$;
 SELECT public.fixture_assert((public.rmg_decide_submission('review',current_setting('tests.review_id')::uuid,true,'Independent synthetic evidence reviewed')->>'status')='published','review decision returns published receipt');
 SELECT public.fixture_assert((public.rmg_decide_submission('review',current_setting('tests.basic_review_id')::uuid,true,'Independent synthetic evidence reviewed')->>'status')='published','basic review decision returns published receipt');
 SELECT public.fixture_assert((public.rmg_decide_submission('claim','20000000-0000-0000-0000-000000000002',true,'Independent ownership evidence reviewed')->>'status')='approved','claim decision returns approved receipt');

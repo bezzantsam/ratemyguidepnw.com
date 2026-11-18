@@ -18,10 +18,9 @@ python3 "$root/tests/backend-launch/reconstruct.py" > "$tmp/schema.sql"
 git -C "$root" rev-parse HEAD 'HEAD^{tree}'
 python3 "$root/tests/backend-launch/assemble-migration.py" > "$tmp/expected-combined.sql"
 cmp "$tmp/expected-combined.sql" "$root/supabase/review-candidates/launch-combined.sql"
-sha256sum "$root/supabase/review-candidates/01-authorization-lockdown.sql" "$root/supabase/review-candidates/02-launch-api.sql" "$root/supabase/review-candidates/04-review-revisions.sql" "$root/supabase/review-candidates/05-storage-via-claim-visibility.sql" "$root/supabase/review-candidates/launch-combined.sql" "$root/tests/independent-qa/independent-disposable-boundaries.sql" "$root/tests/independent-qa/independent-privacy-null.sql"
-printf '%s  %s\n' aa46415d5e403895c4102f2cda6c0db47637de7e47992d2b699615c4ae85dca8 "$root/tests/independent-qa/independent-disposable-boundaries.sql" d4827c819bcdac29f7f97b33c882bf6bceaf483ce0b457147857537a914e8adf "$root/tests/independent-qa/independent-privacy-null.sql" | sha256sum -c -
+sha256sum "$root/supabase/review-candidates/01-authorization-lockdown.sql" "$root/supabase/review-candidates/02-launch-api.sql" "$root/supabase/review-candidates/04-review-revisions.sql" "$root/supabase/review-candidates/05-storage-via-claim-visibility.sql" "$root/supabase/review-candidates/launch-combined.sql" "$root/tests/independent-qa/independent-disposable-boundaries-v2.sql" "$root/tests/independent-qa/independent-privacy-null-v2.sql"
+printf '%s  %s\n' b74d6bf9f6baef22dd1f4c9051bedf0972ddfbdd6fbb0315da05994255981bfd "$root/tests/independent-qa/independent-disposable-boundaries-v2.sql" 8f3d0b570de30ead5846c8cd8dece37b25f4c2f8da9a07f612f53d622a02284a "$root/tests/independent-qa/independent-privacy-null-v2.sql" | sha256sum -c -
 "${ps[@]}" -f "$root/supabase/review-candidates/launch-combined.sql" >/dev/null
 "${ps[@]}" -f "$root/tests/backend-launch/gate.sql"
-"${ps[@]}" -c 'UPDATE rmg_private.launch_control SET enabled=true WHERE singleton' >/dev/null
-"${ps[@]}" -f "$root/tests/independent-qa/independent-disposable-boundaries.sql"
-"${ps[@]}" -f "$root/tests/independent-qa/independent-privacy-null.sql"
+"${ps[@]}" -f "$root/tests/independent-qa/independent-disposable-boundaries-v2.sql"
+"${ps[@]}" -f "$root/tests/independent-qa/independent-privacy-null-v2.sql"

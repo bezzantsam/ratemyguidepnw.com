@@ -175,7 +175,6 @@ GRANT EXECUTE ON FUNCTION rmg_private.submit_review(text,text,smallint,smallint,
 REVOKE ALL ON FUNCTION public.rmg_resolve_guide(text,text),public.rmg_profile_details(text,text),public.rmg_review_summary(text,text),public.rmg_submit_review(text,text,smallint,smallint,boolean,text,boolean,text,jsonb),public.rmg_submit_claim(text,text,text,text,text),public.rmg_own_status(text,uuid),public.rmg_edit_details(text,text,text,text,smallint,text,text) FROM PUBLIC,anon,authenticated;
 GRANT EXECUTE ON FUNCTION public.rmg_resolve_guide(text,text),public.rmg_profile_details(text,text),public.rmg_review_summary(text,text) TO anon,authenticated;
 GRANT EXECUTE ON FUNCTION public.rmg_submit_review(text,text,smallint,smallint,boolean,text,boolean,text,jsonb),public.rmg_submit_claim(text,text,text,text,text),public.rmg_own_status(text,uuid),public.rmg_edit_details(text,text,text,text,smallint,text,text) TO authenticated;
--- Grant only the already-hardened, authenticated operator functions; each
--- function independently checks site_admins and the target state.
-GRANT EXECUTE ON FUNCTION public.admin_decide_review(uuid,boolean,text),public.admin_decide_claim(uuid,boolean,text) TO authenticated;
+-- The hardened legacy decision functions remain unavailable as direct RPCs.
+-- The checked, invoker-facing receipt wrapper is added by 04-review-revisions.
 COMMIT;
