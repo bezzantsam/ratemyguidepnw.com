@@ -1,0 +1,1 @@
+INSERT INTO rmg_private.guide_identity_map(jurisdiction,source_id,guide_id,reviewed_at,review_reference) VALUES ('OR','fixture-1','10000000-0000-0000-0000-000000000001',now(),'synthetic reviewed identity');
