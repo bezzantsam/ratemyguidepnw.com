@@ -98,6 +98,14 @@ test('review edit loads only the requested public review and retains supported o
   await assert.rejects(create({...review,trip_responses:{version:2,answers:{}}}).reviewDetail(source,id),errorCode('service_unavailable'));
 });
 
+test('a shared review must match its requested ID and be a published dated result',async()=>{
+  const review={id,quality:4,body:'A published review.',published_at:'2026-11-17T00:00:00Z',trip_responses:null};
+  const create=r=>createLaunchClient({enabled:true,getAccessToken:async()=>null,fetcher:async()=>response({review:r})});
+  assert.equal((await create(review).publicReview(source,id)).id,id);
+  await assert.rejects(create({...review,status:'pending'}).publicReview(source,id),errorCode('service_unavailable'));
+  await assert.rejects(create({...review,id:'20000000-0000-4000-8000-000000000002'}).publicReview(source,id),errorCode('service_unavailable'));
+});
+
 test('owner declaration readback is attributed and save requires a real receipt',async()=>{
   let payload;const details={boat:'Drift boat',gear:'',yearsExperience:0,expertise:'',species:''};
   const client=createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async(_url,init)=>{payload=JSON.parse(init.body);return payload.operation==='profile_details'?response({details:{boat:'Drift boat',gear:null,years_experience:0,expertise:null,targeted_species:null},attribution:'captain_declared'}):response({status:'saved'})}});
