@@ -31,6 +31,14 @@ ALTER TABLE public.guide_media ENABLE ROW LEVEL SECURITY;
 CREATE POLICY fixture_media_owner ON public.guide_media FOR ALL TO authenticated USING (true) WITH CHECK (true);
 GRANT SELECT,INSERT,UPDATE,DELETE ON public.guide_media TO authenticated;
 '''
+if os.environ.get('RMG_FINAL_LAUNCH_FIXTURE') == '1':
+    if os.environ.get('RMG_FIXTURE_SCHEMA_ONLY') != '1':
+        raise SystemExit('Final launch fixture requires schema-only setup')
+    schema += '''
+CREATE TABLE public.review_flags(id uuid PRIMARY KEY DEFAULT gen_random_uuid(),review_id uuid NOT NULL REFERENCES public.reviews(id),reporter_id uuid NOT NULL REFERENCES auth.users(id),reason text NOT NULL,created_at timestamptz NOT NULL DEFAULT now(),UNIQUE(review_id,reporter_id));
+ALTER TABLE public.review_flags ENABLE ROW LEVEL SECURITY;
+GRANT ALL ON public.review_flags TO anon,authenticated;
+'''
 if os.environ.get('RMG_FIXTURE_SCHEMA_ONLY') != '1':
     schema += (root / 'supabase/review-candidates/launch-combined.sql').read_text()
     schema += '''

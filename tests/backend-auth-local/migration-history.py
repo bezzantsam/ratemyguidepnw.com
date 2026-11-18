@@ -24,8 +24,9 @@ if status_path != work / 'status.json' or cli != work / 'bin/supabase' or not wo
 status = json.loads(status_path.read_text())
 if urlsplit(status['DB_URL']).hostname != '127.0.0.1':
     raise SystemExit('Nonlocal database')
-body = (root / 'supabase/review-candidates/launch-migration-body.sql').read_bytes()
-expected = '209c5fe39125ef17096941dac3c814c9e57b2e0b0be4789c9f49dc0510f34b9a'
+final = os.environ.get('RMG_FINAL_LAUNCH_FIXTURE') == '1'
+body = (root / ('supabase/review-candidates/final-launch-migration-body.sql' if final else 'supabase/review-candidates/launch-migration-body.sql')).read_bytes()
+expected = '9495e7bcbe794d6e6d3f136db5514a6e3a596080a145cf7ea85e16678b201c37' if final else '209c5fe39125ef17096941dac3c814c9e57b2e0b0be4789c9f49dc0510f34b9a'
 if hashlib.sha256(body).hexdigest() != expected:
     raise SystemExit('Unexpected migration body hash')
 clean = {'PATH': os.environ['PATH'], 'HOME': os.environ['HOME'], 'TMPDIR': str(work)}
@@ -65,8 +66,11 @@ if command('migration', 'up', '--local').returncode:
 if history_count(version) != '1' or sql('SELECT enabled FROM rmg_private.launch_control WHERE singleton;') != 'f':
     raise SystemExit('Migration history or default-off gate incorrect')
 print('PASS local CLI generated migration applied once with default-off gate and history')
-rollback = (root / 'supabase/review-candidates/emergency-disable-migration-body.sql').read_bytes()
-if hashlib.sha256(rollback).hexdigest() != '769333a38e66d394b80fcd95a71bbc97130c1e3e6465322decb9d37eb44a3b5d':
+if final and sql("SELECT count(*) FROM information_schema.columns WHERE table_schema='public' AND table_name='review_flags' AND column_name='status';") != '1':
+    raise SystemExit('Final reporting schema missing')
+rollback = (root / ('supabase/review-candidates/final-launch-disable-body.sql' if final else 'supabase/review-candidates/emergency-disable-migration-body.sql')).read_bytes()
+rollback_hash = '42f7a9301707380b9c80b850d764d66891a189610c8d75021e4042d65baea195' if final else '769333a38e66d394b80fcd95a71bbc97130c1e3e6465322decb9d37eb44a3b5d'
+if hashlib.sha256(rollback).hexdigest() != rollback_hash:
     raise SystemExit('Unexpected emergency-disable body hash')
 sql("""INSERT INTO public.guides(id,slug,full_name,listing_status) VALUES ('10000000-0000-0000-0000-000000000001','fixture-one','Synthetic guide','published');
 INSERT INTO rmg_private.guide_identity_map(jurisdiction,source_id,guide_id,reviewed_at,review_reference) VALUES ('OR','fixture-one','10000000-0000-0000-0000-000000000001',now(),'Synthetic fixture');
@@ -88,4 +92,6 @@ if sql('SELECT count(*) FROM rmg_private.guide_identity_map;') != '1':
     raise SystemExit('Emergency disable did not preserve mappings')
 if sql("SELECT has_function_privilege('authenticated','public.rmg_own_status(text,uuid)','EXECUTE');") != 'f':
     raise SystemExit('Emergency disable did not revoke RPC execution')
+if final and sql("SELECT has_function_privilege('authenticated','public.rmg_report_review(text,text,uuid,text)','EXECUTE') OR has_function_privilege('authenticated','public.rmg_submit_review_v2(text,text,smallint,smallint,boolean,text,boolean,text,jsonb,text)','EXECUTE');") != 'f':
+    raise SystemExit('Final emergency disable did not revoke added RPCs')
 print('PASS local emergency migration disables RPCs, records history and preserves fixture mapping')

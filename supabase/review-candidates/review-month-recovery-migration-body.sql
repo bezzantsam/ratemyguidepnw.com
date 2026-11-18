@@ -70,6 +70,8 @@ BEGIN
  gid:=rmg_private.resolve_guide(p_jurisdiction,p_source_id);
  available:=NOT pg_catalog.pg_is_in_recovery() AND current_setting('transaction_read_only')='off'
   AND pg_catalog.has_table_privilege(current_user,'public.reviews','INSERT')
+  AND pg_catalog.has_schema_privilege('authenticated','public','USAGE')
+  AND pg_catalog.has_schema_privilege('authenticated','rmg_private','USAGE')
   AND pg_catalog.has_function_privilege('authenticated','public.rmg_submit_review_v2(text,text,smallint,smallint,boolean,text,boolean,text,jsonb,text)','EXECUTE')
   AND pg_catalog.has_function_privilege('authenticated','rmg_private.submit_review_v2(text,text,smallint,smallint,boolean,text,boolean,text,jsonb,text)','EXECUTE');
  RETURN jsonb_build_object('available',available);
