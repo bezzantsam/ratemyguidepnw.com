@@ -99,7 +99,7 @@ test('ordinary production data contains no synthetic discovery or unapproved con
    if(process.env.BROWSER_SCREENSHOT_DIR){mkdirSync(process.env.BROWSER_SCREENSHOT_DIR,{recursive:true});await page.screenshot({path:join(process.env.BROWSER_SCREENSHOT_DIR,`ordinary-${label}.png`),fullPage:true})}
    await page.getByRole('link',{name:/John Hanson/}).first().click();await page.getByRole('heading',{name:'John Hanson',exact:true}).waitFor();await page.getByText('Review data is unavailable.').waitFor();
    const canonical=await page.locator('link[rel="canonical"]').getAttribute('href');
-   assert.match(canonical,/^https:\/\/ratemyguidepnw\.com\/guides\/og-[a-z0-9-]+$/);
+   assert.match(canonical,/^https:\/\/ratemyguidepnw\.vercel\.app\/guides\/og-[a-z0-9-]+$/);
    assert.equal(await page.locator('meta[property="og:url"]').getAttribute('content'),canonical);
    await page.evaluate(()=>{
     Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async value=>{window.__sharedProfileCopy=value}}});
