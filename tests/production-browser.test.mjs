@@ -23,7 +23,7 @@ test('ordinary production data contains no synthetic discovery or unapproved con
   const introduction=await page.locator('main > p.lead').innerText();
   assert.match(introduction,/Browse [\d,]+ Oregon and Washington guide listings\./);
   assert.doesNotMatch(introduction,/shared captains appear once/i);
-  const species=page.getByLabel('Species',{exact:true});
+  const species=page.getByLabel('Species');
   await species.selectOption({label:'Halibut'});
   assert.equal(await page.getByRole('link',{name:/Walter Rowe/}).count(),1);
   assert.equal(await page.getByRole('link',{name:/Toby Wyatt/}).count(),0);
