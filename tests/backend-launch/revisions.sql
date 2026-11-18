@@ -2,7 +2,7 @@
 SELECT set_config('tests.review_id',(SELECT id::text FROM public.reviews WHERE author_id='00000000-0000-0000-0000-000000000003' AND guide_id='10000000-0000-0000-0000-000000000002'),false);
 SET ROLE authenticated;
 SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000003',false);
-SELECT set_config('tests.revision_id',public.rmg_submit_revision(current_setting('tests.review_id')::uuid,2::smallint,3::smallint,false,repeat('revised ',12),true,'none','{"version":1,"answers":{"effort":{"state":"answered","value":1}}}'::jsonb)->>'id',false);
+SELECT set_config('tests.revision_id',public.rmg_submit_revision(current_setting('tests.review_id')::uuid,2::smallint,3::smallint,false,repeat('revised-',12),true,'none','{"version":1,"answers":{"effort":{"state":"answered","value":1}}}'::jsonb)->>'id',false);
 SELECT public.fixture_assert(public.rmg_own_status('revision',current_setting('tests.revision_id')::uuid)->>'status'='pending','author sees own pending revision');
 SELECT public.fixture_assert((SELECT count(*)=1 FROM jsonb_array_elements(public.rmg_my_submissions(0,100)) item WHERE item->>'id'=current_setting('tests.revision_id') AND item->>'kind'='revision'),'author discovers own revision without persisted client ID');
 SELECT public.fixture_assert(NOT EXISTS(SELECT 1 FROM jsonb_array_elements(public.rmg_my_submissions(0,100)) item WHERE item->>'id'='20000000-0000-0000-0000-000000000002' OR item ? 'body' OR item ? 'evidence'),'own submission list excludes other users and content');
@@ -20,7 +20,7 @@ SELECT public.fixture_assert(jsonb_array_length(public.rmg_revision_queue(0,100)
 SELECT public.rmg_decide_revision(current_setting('tests.revision_id')::uuid,true,'Independent review of proposed edit');
 RESET ROLE;
 SET ROLE anon;
-SELECT public.fixture_assert((SELECT quality=2 AND body=repeat('revised ',12) AND trip_responses->'answers'->'effort'->>'value'='1' FROM public.public_angler_reviews WHERE id=current_setting('tests.review_id')::uuid),'approved edit updates public review');
+SELECT public.fixture_assert((SELECT quality=2 AND body=repeat('revised-',12) AND trip_responses->'answers'->'effort'->>'value'='1' FROM public.public_angler_reviews WHERE id=current_setting('tests.review_id')::uuid),'approved edit updates public review');
 SELECT public.fixture_assert((public.rmg_review_summary('OR','fixture-2')->>'averageQuality')::numeric=2,'approved edit updates aggregate');
 RESET ROLE;
 SET ROLE authenticated;
@@ -30,6 +30,6 @@ SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000004'
 SELECT public.rmg_decide_revision(current_setting('tests.rejected_revision_id')::uuid,false,'');
 RESET ROLE;
 SET ROLE anon;
-SELECT public.fixture_assert((SELECT quality=2 AND body=repeat('revised ',12) FROM public.public_angler_reviews WHERE id=current_setting('tests.review_id')::uuid),'rejected edit leaves published content unchanged');
+SELECT public.fixture_assert((SELECT quality=2 AND body=repeat('revised-',12) FROM public.public_angler_reviews WHERE id=current_setting('tests.review_id')::uuid),'rejected edit leaves published content unchanged');
 RESET ROLE;
 SELECT public.fixture_assert((SELECT count(*)=2 FROM public.moderation_audit WHERE target_type='review' AND target_id=current_setting('tests.review_id')::uuid AND reason LIKE '%revision%'),'revision decisions audited');
