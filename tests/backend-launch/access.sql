@@ -26,7 +26,10 @@ DO $$BEGIN
 END$$;
 SELECT public.fixture_assert((public.rmg_submit_review('OR','fixture-2',5::smallint,4::smallint,true,repeat('x',90),true,'personal','{"version":1,"answers":{"children_present":{"state":"answered","value":false},"guide_patience":{"state":"not_applicable"},"effort":{"state":"answered","value":1}}}'::jsonb)->>'status')='pending','review persisted pending with attestation and disclosure');
 SELECT public.fixture_assert((SELECT count(*)=1 FROM public.reviews WHERE status='published'),'pending review not published');
-SELECT public.fixture_assert((public.rmg_submit_claim('OR','fixture-1','Synthetic Name','',repeat('e',40))->>'status')='pending','claim persisted pending');
+SELECT public.fixture_assert((public.rmg_submit_claim('OR','fixture-1','Synthetic Name','',repeat('e',1200))->>'status')='pending','claim persisted pending at evidence limit');
+DO $$BEGIN
+ BEGIN PERFORM public.rmg_submit_claim('OR','fixture-1','Synthetic Name','',repeat('e',1201)); RAISE EXCEPTION 'oversized evidence accepted'; EXCEPTION WHEN invalid_parameter_value THEN NULL; END;
+END$$;
 SELECT public.fixture_assert((public.rmg_submit_claim('OR','fixture-1','Synthetic Name','',repeat('e',40))->>'existing')='true','duplicate pending claim returns existing receipt');
 SELECT public.rmg_submit_review('OR','fixture-4',5::smallint,NULL,NULL,'Good',true,'none');
 SELECT public.rmg_submit_review('OR','fixture-5',5::smallint,4::smallint,true,repeat('s',80),true,'none');
@@ -44,6 +47,15 @@ END$$;
 SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000005',false);
 SELECT public.fixture_assert((public.rmg_edit_details('OR','fixture-1','Boat','Gear',5::smallint,'Expertise','Species')->>'status')='saved','approved owner may edit allowed fields');
 SELECT public.fixture_assert((public.rmg_profile_details('OR','fixture-1')->>'boat')='Boat','owner declaration can be read back with provenance');
+SELECT public.fixture_assert((public.rmg_edit_details('OR','fixture-1',repeat('b',250),repeat('g',500),80::smallint,repeat('e',500),repeat('s',350))->>'status')='saved','profile accepts existing schema boundaries');
+DO $$BEGIN
+ BEGIN PERFORM public.rmg_edit_details('OR','fixture-1',repeat('b',251),'',NULL,'',''); RAISE EXCEPTION 'oversized boat accepted'; EXCEPTION WHEN invalid_parameter_value THEN NULL; END;
+ BEGIN PERFORM public.rmg_edit_details('OR','fixture-1','',repeat('g',501),NULL,'',''); RAISE EXCEPTION 'oversized gear accepted'; EXCEPTION WHEN invalid_parameter_value THEN NULL; END;
+ BEGIN PERFORM public.rmg_edit_details('OR','fixture-1','','',81::smallint,'',''); RAISE EXCEPTION 'oversized years accepted'; EXCEPTION WHEN invalid_parameter_value THEN NULL; END;
+ BEGIN PERFORM public.rmg_edit_details('OR','fixture-1','','',NULL,repeat('e',501),''); RAISE EXCEPTION 'oversized expertise accepted'; EXCEPTION WHEN invalid_parameter_value THEN NULL; END;
+ BEGIN PERFORM public.rmg_edit_details('OR','fixture-1','','',NULL,'',repeat('s',351)); RAISE EXCEPTION 'oversized species accepted'; EXCEPTION WHEN invalid_parameter_value THEN NULL; END;
+ RAISE NOTICE 'PASS: evidence and owner-detail limits match existing schema';
+END$$;
 DO $$BEGIN
  BEGIN PERFORM public.rmg_submit_review('OR','fixture-1',5::smallint,4::smallint,true,repeat('s',80),true,'none'); RAISE EXCEPTION 'owner review accepted'; EXCEPTION WHEN insufficient_privilege THEN NULL; END;
 END$$;

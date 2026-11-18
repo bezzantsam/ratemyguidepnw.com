@@ -13,6 +13,11 @@ test('no session or unconfirmed session cannot submit',async()=>{
  b=backend({user:{id:'u',email_confirmed_at:null}});r=await handleLaunch(req(review,'token'),b.factory,env);assert.equal(r.status,401);assert.equal(b.calls.some(c=>c[0]==='rmg_submit_review'),false);
  b=backend({user:{id:'u',email_confirmed_at:'yes',is_anonymous:true}});r=await handleLaunch(req(review,'token'),b.factory,env);assert.equal(r.status,401);
 });
+test('Auth outages are not reported as invalid sign-ins',async()=>{
+ const factory=status=>()=>({auth:{getUser:async()=>({data:{user:null},error:{status,message:'private provider detail'}})},rpc:()=>{throw Error('must not call')}});
+ let r=await handleLaunch(req(review,'token'),factory(503),env);assert.equal(r.status,503);assert.deepEqual(await r.json(),{error:'service_unavailable'});
+ r=await handleLaunch(req(review,'token'),factory(401),env);assert.equal(r.status,401);assert.deepEqual(await r.json(),{error:'sign_in_required'});
+});
 test('submission uses verified token and returns actual persisted response',async()=>{
  const b=backend(),r=await handleLaunch(req(review,'token'),b.factory,env);
  assert.equal(r.status,200);assert.deepEqual(await r.json(),{id:'actual-id',status:'pending'});assert.deepEqual(b.calls[0],['headers',{Authorization:'Bearer token'}]);assert.equal(b.calls[1][0],'getUser');assert.equal(b.calls[2][0],'rmg_submit_review');assert.equal(b.calls[2][1].p_firsthand,true);assert.equal(b.calls[2][1].p_relationship,'none');assert.equal(r.headers.get('cache-control'),'no-store');
@@ -44,6 +49,7 @@ test('authorized moderator receives the persisted database decision',async()=>{
 test('rate limits and ordinary database conflicts have distinct safe errors',async()=>{
  let b=backend({rpcError:{code:'P4290',message:'private internal text'}}),r=await handleLaunch(req(review,'token'),b.factory,env);assert.equal(r.status,429);assert.deepEqual(await r.json(),{error:'rate_limited'});
  b=backend({rpcError:{code:'P0001',message:'private internal text'}});r=await handleLaunch(req(review,'token'),b.factory,env);assert.equal(r.status,409);assert.deepEqual(await r.json(),{error:'conflict'});
+ b=backend({rpcError:{code:'23514',message:'private constraint name'}});r=await handleLaunch(req(review,'token'),b.factory,env);assert.equal(r.status,400);assert.deepEqual(await r.json(),{error:'invalid_input'});
 });
 test('safe return rejects external destinations before configuration access',async()=>{
  let r=await handleLaunch(req({operation:'safe_return',returnTo:'/guides/og-123?intent=review#write-review'}),()=>{throw Error('must not call')},{RMG_LAUNCH_ENABLED:'true'});
