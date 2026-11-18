@@ -54,4 +54,4 @@ PY
 python3 "$root/tests/backend-auth-local/prepare.py" "$work"
 # 05 receives the local CLI status privately via a file, never as a log or artifact.
 RMG_LOCAL_STATUS_FILE="$work/status.json" RMG_LOCAL_PROJECT="$project" python3 "$assertions"
-echo 'Local Auth/PostgREST independent assertions completed successfully.'
+echo 'Selected local Auth/PostgREST check completed successfully.'
