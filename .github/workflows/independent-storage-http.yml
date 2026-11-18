@@ -49,6 +49,7 @@ jobs:
           git rev-parse HEAD 'HEAD^{tree}'
           sha256sum supabase/review-candidates/launch-combined.sql tests/independent-qa/storage-http/run.py tests/independent-qa/storage-http/storage-fixture.sql tests/independent-qa/storage-http/storage-policies.sql
           printf '%s  %s\n' e9a20f204f4f29e07349951e186ea4f420cade59669f5ac8fd7e64dbdfb60af0 tests/independent-qa/storage-http/run.py fd06a8e943b8470a05495be5e79f45b9e7a66a37b47e65b17aae2a10ff40068c tests/independent-qa/storage-http/storage-fixture.sql 3865a5858596e84ff699b2c87e50f4ee82fee66bd8332a1f4b32a96760fe9c1e tests/independent-qa/storage-http/storage-policies.sql | sha256sum -c -
+          printf '%s  %s\n' 6144fba197324a811a8e856733ad27819b3f2bafb6b807d09d91abf8c93676bc tests/backend-launch/reconstruct.py 7bab10cbbd0b9246fbd9a19591b8fa21f5afc0de2d9f0e0ad47cfd018ddc9ec4 tests/backend-launch/fixture-catalog.json 7fdc9f18d42455679da639c370d11b240dfd987b762097935e0d29c8e7094cdb tests/backend-launch/fixtures.sql | sha256sum -c -
           python3 tests/independent-qa/storage-http/run.py --storage-source "$GITHUB_WORKSPACE/.storage-upstream" --candidate-root "$GITHUB_WORKSPACE" --fixture-dir "$GITHUB_WORKSPACE/tests/independent-qa/storage-http" --results "$RUNNER_TEMP/storage-http-results.json"
       - name: Preserve sanitized result
         uses: actions/upload-artifact@v4
