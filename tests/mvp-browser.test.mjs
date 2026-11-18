@@ -27,7 +27,7 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
  const page=await context.newPage();page.setDefaultTimeout(15000);page.on('pageerror',e=>errors.push(`${page.url()}: ${e.message}`));
  try{
   await page.goto(origin,{waitUntil:'domcontentloaded'});
-  await page.getByRole('heading',{name:'Find a captain'}).waitFor();
+  await page.getByRole('heading',{name:'Find the guide you fished with'}).waitFor();
   await page.goto(`${origin}/guides`,{waitUntil:'domcontentloaded'});
   const q=page.getByRole('searchbox',{name:'Captain, business, operating name, or registration'});
   // Synthetic approved fixtures exercise filters without publishing candidate research.
