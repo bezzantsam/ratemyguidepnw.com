@@ -3,6 +3,7 @@ import {washingtonGuides} from './washington';
 import {washingtonRecordForOregon} from './washington';
 import {advertisedWaterwayNames,guideSearchTerms} from './guide-enrichment';
 import {attributesFor} from './guide-attributes-server';
+import {editorialGuideCorrections} from './editorial-guide-corrections';
 
 export type DirectoryEntry={
   id:string;
@@ -13,7 +14,7 @@ export type DirectoryEntry={
   areas:string[];
   /** Independently displayed category: operating waters named in public sources. */
   advertisedWaters:string[];
-  /** Search terms from named, publicly linked sources; NOT legal identity verification. */
+  /** Search terms from attributed sources, including editorial input; NOT legal identity verification. */
   searchAliases:string[];
   advertisedSpecies?:string[];
   advertisedMethods?:string[];
@@ -36,14 +37,19 @@ function discovery(id:string){
  };
 }
 export const directoryEntries:DirectoryEntry[]=[
- ...oregonGuides.map(g=>({
+ ...oregonGuides.map(g=>{
+  const editorial=editorialGuideCorrections({id:g.registration,name:g.name,business:g.business});
+  const sourced=discovery(g.registration);
+  return ({
    id:g.registration,name:g.name,business:g.business,
    states:(washingtonRecordForOregon(g.registration)?['Oregon','Washington']:['Oregon']) as ('Oregon'|'Washington')[],
    areas:g.areas,
-   advertisedWaters:[...new Set([...advertisedWaterwayNames(g.registration),...discovery(g.registration).linkedWaters])],
-   ...discovery(g.registration),searchAliases:[...guideSearchTerms(g.registration),...discovery(g.registration).sourceNames],
+   advertisedWaters:[...new Set([...advertisedWaterwayNames(g.registration),...sourced.linkedWaters])],
+   ...sourced,
+   advertisedSpecies:[...new Set([...sourced.advertisedSpecies,...editorial.filter(x=>x.kind==='species').map(x=>x.value)])],
+   searchAliases:[...guideSearchTerms(g.registration),...sourced.sourceNames,...editorial.filter(x=>x.kind==='search_alias').map(x=>x.value)],
    href:'/guides/'+guideSlug(g),source:'Oregon registry',
- })),
+ })}),
  ...washingtonGuides.map(g=>({
    id:g.id,name:g.name,business:g.business,
    states:['Washington'] as ('Oregon'|'Washington')[],
