@@ -24,7 +24,7 @@ export function SubmissionStatus({kind, receipt}: {kind: 'review' | 'claim'; rec
 export function ReviewSubmission({onSubmit, allowTripMonth=false, allowTripResponses=false, initial, mode='review'}: {onSubmit: SubmitReview; allowTripMonth?:boolean;allowTripResponses?:boolean;initial?:ReviewDraft;mode?:'review'|'revision'}) {
   const prefix = useId();
   const [quality, setQuality] = useState(initial?String(initial.quality):'');
-  const [intensity, setIntensity] = useState(initial?String(initial.intensity):'');
+  const [intensity, setIntensity] = useState(initial?.intensity==null?'':String(initial.intensity));
   const [wouldBookAgain, setWouldBookAgain] = useState(initial?.wouldBookAgain===true?'yes':initial?.wouldBookAgain===false?'no':'');
   const [body, setBody] = useState(initial?.body??'');
   const [tripMonth, setTripMonth] = useState('');
@@ -44,7 +44,7 @@ export function ReviewSubmission({onSubmit, allowTripMonth=false, allowTripRespo
     if (!allowTripResponses && Object.keys(tripDraft).length) {setError('Trip details are no longer available. Refresh before submitting.');return;}
     const details=encodeTripResponses(tripDraft);
     if(details.error) {setError(details.error);return;}
-    const draft = {quality: Number(quality), intensity: Number(intensity), wouldBookAgain: wouldBookAgain === '' ? null : wouldBookAgain === 'yes', body: body.trim(), firsthand, tripMonth: allowTripMonth ? tripMonth || null : null, relationship:relationship || null,...(allowTripResponses&&details.value?{tripResponses:details.value}:{})};
+    const draft = {quality: Number(quality), intensity: intensity === '' ? null : Number(intensity), wouldBookAgain: wouldBookAgain === '' ? null : wouldBookAgain === 'yes', body: body.trim(), firsthand, tripMonth: allowTripMonth ? tripMonth || null : null, relationship:relationship || null,...(allowTripResponses&&details.value?{tripResponses:details.value}:{})};
     const problem = validateReviewDraft(draft);
     if (problem) { setError(problem); return; }
     submitting.current = true; setBusy(true); setError('');
@@ -61,14 +61,6 @@ export function ReviewSubmission({onSubmit, allowTripMonth=false, allowTripRespo
     <select id={`${prefix}-quality`} value={quality} onChange={event=>setQuality(event.target.value)} required>
       <option value="">Choose a rating</option>{[1,2,3,4,5].map(value=><option key={value} value={value}>{value} / 5</option>)}
     </select>
-    <label htmlFor={`${prefix}-intensity`}>Trip intensity (1–5)</label>
-    <select id={`${prefix}-intensity`} value={intensity} onChange={event=>setIntensity(event.target.value)} required>
-      <option value="">Choose a rating</option>{[1,2,3,4,5].map(value=><option key={value} value={value}>{value} / 5</option>)}
-    </select>
-    <label htmlFor={`${prefix}-again`}>Would you book again?</label>
-    <select id={`${prefix}-again`} value={wouldBookAgain} onChange={event=>setWouldBookAgain(event.target.value)} required>
-      <option value="">Choose an answer</option><option value="yes">Yes</option><option value="no">No</option>
-    </select>
     <label htmlFor={`${prefix}-relationship`}>Your relationship to this guide or business</label>
     <select id={`${prefix}-relationship`} value={relationship} onChange={event=>setRelationship(event.target.value as RelationshipDisclosure | '')} required>
       <option value="">Choose an answer</option><option value="none">None</option><option value="personal">Personal</option><option value="financial">Financial</option><option value="other">Other</option>
@@ -77,10 +69,15 @@ export function ReviewSubmission({onSubmit, allowTripMonth=false, allowTripRespo
       <label htmlFor={`${prefix}-month`}>Trip month, if you remember it</label>
       <input type="month" id={`${prefix}-month`} value={tripMonth} onChange={event=>setTripMonth(event.target.value)} />
     </details>}
-    {allowTripResponses && tripDraft && <TripDetails draft={tripDraft} onChange={setTripDraft}/>}
+    {allowTripResponses && tripDraft && <TripDetails draft={tripDraft} onChange={setTripDraft}>
+      <label htmlFor={`${prefix}-intensity`}>Trip intensity (optional)</label>
+      <select id={`${prefix}-intensity`} value={intensity} onChange={event=>setIntensity(event.target.value)}><option value="">Not answered</option>{[1,2,3,4,5].map(value=><option key={value} value={value}>{value} / 5</option>)}</select>
+      <label htmlFor={`${prefix}-again`}>Would you book again? (optional)</label>
+      <select id={`${prefix}-again`} value={wouldBookAgain} onChange={event=>setWouldBookAgain(event.target.value)}><option value="">Not answered</option><option value="yes">Yes</option><option value="no">No</option></select>
+    </TripDetails>}
     <label htmlFor={`${prefix}-body`}>Your experience</label>
-    <p id={`${prefix}-body-help`}>Write 80 to 3,000 characters.</p>
-    <textarea id={`${prefix}-body`} aria-describedby={`${prefix}-body-help`} value={body} onChange={event=>setBody(event.target.value)} minLength={80} maxLength={3000} required />
+    <p id={`${prefix}-body-help`}>Write up to 3,000 characters.</p>
+    <textarea id={`${prefix}-body`} aria-describedby={`${prefix}-body-help`} value={body} onChange={event=>setBody(event.target.value)} minLength={1} maxLength={3000} required />
     <label><input type="checkbox" checked={firsthand} onChange={event=>setFirsthand(event.target.checked)} required/> I personally took this trip.</label>
     {error && <p role="alert">{error}</p>}
     <button type="submit" disabled={busy}>{busy ? 'Submitting…' : 'Submit review'}</button>

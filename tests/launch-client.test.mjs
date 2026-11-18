@@ -35,6 +35,12 @@ test('submission sends explicit fields with a bearer token and retains a real pe
   assert.equal('tripMonth' in body,false);assert.equal('userId' in body,false);assert.equal('status' in body,false);
 });
 
+test('basic review transmits skipped intensity and rebooking as null, not invented values',async()=>{
+  let payload;const client=createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async(_url,init)=>{payload=JSON.parse(init.body);return response({id,status:'pending'})}});
+  await client.submitReview(source,{...draft,body:'Good trip.',intensity:null,wouldBookAgain:null});
+  assert.equal(payload.intensity,null);assert.equal(payload.wouldBookAgain,null);assert.equal(payload.body,'Good trip.');
+});
+
 test('optional trip details cannot be silently discarded by the draft backend',async()=>{
   let called=false;const client=createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async()=>{called=true;return response({})}});
   await assert.rejects(client.submitReview(source,{...draft,tripMonth:'2026-11'}),errorCode('optional_detail_unsupported'));
