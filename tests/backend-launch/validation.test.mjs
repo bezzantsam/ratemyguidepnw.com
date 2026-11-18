@@ -11,7 +11,8 @@ test('review requires firsthand, full ratings, disclosure and source identity',(
 });
 test('claim requires evidence and forbids forged status',()=>{
  assert.equal(validate(claim),true);
- for(const change of [{evidence:'short'},{claimantName:'x'},{businessName:null},{status:'approved'},{claimantId:'other'}])assert.equal(validate({...claim,...change}),false);
+ assert.equal(validate({...claim,evidence:'e'.repeat(1200)}),true);
+ for(const change of [{evidence:'short'},{evidence:'e'.repeat(1201)},{claimantName:'x'},{businessName:null},{status:'approved'},{claimantId:'other'}])assert.equal(validate({...claim,...change}),false);
 });
 test('operator and status inputs are bounded and cannot assert authority',()=>{
  const id='00000000-0000-0000-0000-000000000001';
@@ -25,7 +26,8 @@ test('operator and status inputs are bounded and cannot assert authority',()=>{
 });
 test('owner edit contract excludes registry identity and review fields',()=>{
  const x={operation:'edit_details',jurisdiction:'WA',sourceId:'wa-123',boat:'',gear:'',yearsExperience:null,expertise:'',species:''};
- assert.equal(validate(x),true);assert.equal(validate({...x,licenseNumber:'123'}),false);assert.equal(validate({...x,reviewId:'123'}),false);assert.equal(validate({...x,yearsExperience:101}),false);
+ assert.equal(validate(x),true);assert.equal(validate({...x,boat:'b'.repeat(250),gear:'g'.repeat(500),yearsExperience:80,expertise:'e'.repeat(500),species:'s'.repeat(350)}),true);
+ for(const change of [{licenseNumber:'123'},{reviewId:'123'},{boat:'b'.repeat(251)},{gear:'g'.repeat(501)},{yearsExperience:81},{expertise:'e'.repeat(501)},{species:'s'.repeat(351)}])assert.equal(validate({...x,...change}),false);
 });
 test('versioned answers distinguish missing, not applicable, false and a rating',()=>{
  const v={version:1,answers:{children_present:{state:'answered',value:false},guide_patience:{state:'not_applicable'},effort:{state:'answered',value:1}}};
@@ -36,5 +38,9 @@ test('versioned answers distinguish missing, not applicable, false and a rating'
 test('auth return accepts only allowed internal destinations and intent',()=>{
  assert.equal(safeReturnTo('/guides/og-123?intent=review#write-review'),'/guides/og-123?intent=review#write-review');
  assert.equal(safeReturnTo('/claim/OG.A%26B'),'/claim/OG.A%26B');
- for(const bad of ['https://evil.example/','//evil.example/','/\\evil.example','/%2f%2fevil.example','/guides/a?token=secret','/guides/a#private','/other','/guides/a\n'])assert.equal(safeReturnTo(bad),null,bad);
+ const id='00000000-0000-0000-0000-000000000001',other='00000000-0000-0000-0000-000000000002';
+ assert.equal(safeReturnTo(`/guides/og-123?review=${id}`),`/guides/og-123?review=${id}`);
+ assert.equal(safeReturnTo(`/washington/wa-123#review-${id}`),`/washington/wa-123#review-${id}`);
+ assert.equal(safeReturnTo(`/guides/og-123?review=${id}#review-${id}`),`/guides/og-123?review=${id}#review-${id}`);
+ for(const bad of ['https://evil.example/','//evil.example/','/\\evil.example','/%2f%2fevil.example','/guides/a?token=secret','/guides/a#private','/other','/guides/a\n',`/guides/a?review=${id}&x=1`,`/guides/a?review=${id}#review-${other}`,`/admin?review=${id}`,`/guides/a?intent=review#review-${id}`,`/guides/a?review=${id}#write-review`])assert.equal(safeReturnTo(bad),null,bad);
 });

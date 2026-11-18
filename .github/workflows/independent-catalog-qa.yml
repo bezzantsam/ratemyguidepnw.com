@@ -1,11 +1,6 @@
-name: Independent catalog constraint reproduction
+name: Independent catalog constraint reproduction (historical)
 on:
-  push:
-    branches:
-      - codex/rmg-backend-synthetic-ci-20261117
-  pull_request:
-    branches:
-      - codex/beta-completion
+  workflow_dispatch:
 permissions:
   contents: read
 jobs:
