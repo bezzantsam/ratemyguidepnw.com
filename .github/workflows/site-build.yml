@@ -61,6 +61,8 @@ jobs:
         run: npm run test:mvp
       - name: Verify review, claim and canonical sharing frontend
         run: node --test tests/submission-views.test.mjs tests/submission-interaction.test.mjs tests/trip-responses.test.mjs tests/guide-engagement.test.mjs tests/canonical-share.test.mjs tests/auth-return.test.mjs tests/profile-metadata.test.mjs tests/profile-sharing.test.mjs tests/review-share.test.mjs tests/review-qr.test.mjs tests/launch-client.test.mjs
+      - name: Verify preferred-name adapters and search overlay
+        run: node --test tests/backend-launch/preferred-name-handler.test.mjs tests/preferred-name-display.test.mjs
       - name: TypeScript check
         run: npm run typecheck
       - name: Verify browser build isolation and process cleanup

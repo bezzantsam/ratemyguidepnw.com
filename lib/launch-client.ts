@@ -12,6 +12,8 @@ export type SubmissionKind=OwnedKind|'report';
 export type ReportReason='not_firsthand'|'harassment_or_private_info'|'other';
 export type OwnSubmission=Readonly<{id:string;kind:OwnedKind;status:string;createdAt:string;jurisdiction:'OR'|'WA'|null;sourceId:string|null;reviewId:string|null;identities:readonly GuideSource[]}>;
 export type OwnerDetails=Readonly<{boat:string;gear:string;yearsExperience:number|null;expertise:string;species:string}>;
+export type PreferredName=Readonly<{jurisdiction:'OR'|'WA';sourceId:string;name:string;provenance:'captain'|'admin'}>;
+export type PreferredNameReview=Readonly<{captainName:string|null;captainNameActive:boolean;adminName:string|null;history:ReadonlyArray<{origin:'captain'|'admin';oldName:string|null;newName:string|null;reason:string|null;createdAt:string}>}>;
 export type OperatorItem=Readonly<{id:string;kind:SubmissionKind;guideName:string|null;reviewId:string|null;description:string;createdAt:string;canApprove:boolean}>;
 
 export class LaunchClientError extends Error {
@@ -59,6 +61,9 @@ export function createLaunchClient(options:Options) {
     if(!validSource(source)) throw new LaunchClientError('invalid_input');
     return {jurisdiction:source.jurisdiction,sourceId:source.sourceId};
   }
+  function validatePreferredName(name:string|null):boolean {
+    return name===null||(typeof name==='string'&&Array.from(name.trim()).length<=80&&!/[<>\u0000-\u001f\u007f]/u.test(name));
+  }
   function receipt(value:unknown):PendingReceipt {
     const data=record(value);
     if(!data || typeof data.id!=='string' || !UUID.test(data.id) || data.status!=='pending' || (data.existing!==undefined&&typeof data.existing!=='boolean')) throw new LaunchClientError('service_unavailable');
@@ -70,6 +75,26 @@ export function createLaunchClient(options:Options) {
     return {id:r.id,quality:r.quality as number,body:r.body,publishedAt:r.published_at,tripMonth:readTripMonth(r.trip_month),tripDetails:describeTripResponses(r.trip_responses)};
   }
   return {
+    async profileNames(jurisdiction:'OR'|'WA',sourceIds:readonly string[]):Promise<PreferredName[]> {
+      if(!['OR','WA'].includes(jurisdiction)||sourceIds.length>100||sourceIds.some(sourceId=>!validSource({jurisdiction,sourceId})))throw new LaunchClientError('invalid_input');
+      const data=record(await call('profile_names_v1',{jurisdiction,sourceIds},false));if(!data||!Array.isArray(data.names)||data.names.length>sourceIds.length)throw new LaunchClientError('service_unavailable');
+      const seen=new Set<string>();return data.names.map(value=>{const row=record(value);if(!row||row.jurisdiction!==jurisdiction||typeof row.source_id!=='string'||!sourceIds.includes(row.source_id)||seen.has(row.source_id)||typeof row.preferred_name!=='string'||!row.preferred_name.trim()||!validatePreferredName(row.preferred_name)||!['captain','admin'].includes(String(row.provenance)))throw new LaunchClientError('service_unavailable');seen.add(row.source_id);return {jurisdiction,sourceId:row.source_id,name:row.preferred_name,provenance:row.provenance as 'captain'|'admin'}});
+    },
+    async ownProfileName(source:GuideSource):Promise<{name:string|null;overridden:boolean}> {
+      const d=record(await call('own_profile_name_v1',sourceArgs(source),true));if(!d||(d.name!==null&&(typeof d.name!=='string'||!d.name.trim()||!validatePreferredName(d.name)))||typeof d.overridden!=='boolean')throw new LaunchClientError('service_unavailable');
+      return {name:d.name as string|null,overridden:d.overridden};
+    },
+    async setProfileName(source:GuideSource,name:string|null):Promise<void> {
+      if(!validatePreferredName(name))throw new LaunchClientError('invalid_input');const result=record(await call('set_profile_name_v1',{...sourceArgs(source),name:name?.trim()||null},true));if(result?.status!=='saved')throw new LaunchClientError('service_unavailable');
+    },
+    async adminSetProfileName(source:GuideSource,name:string|null,reason:string):Promise<void> {
+      if(!validatePreferredName(name)||typeof reason!=='string'||Array.from(reason.trim()).length<1||Array.from(reason.trim()).length>500||/[\u0000-\u001f\u007f]/.test(reason))throw new LaunchClientError('invalid_input');const result=record(await call('admin_set_profile_name_v1',{...sourceArgs(source),name:name?.trim()||null,reason:reason.trim()},true));if(result?.status!=='saved')throw new LaunchClientError('service_unavailable');
+    },
+    async profileNameReview(source:GuideSource):Promise<PreferredNameReview> {
+      const d=record(record(await call('profile_name_review_v1',sourceArgs(source),true))?.review);if(!d||![d.captain_name,d.admin_name].every(v=>v===null||typeof v==='string')||typeof d.captain_name_active!=='boolean'||!Array.isArray(d.history)||d.history.length>50)throw new LaunchClientError('service_unavailable');
+      const history=d.history.map(value=>{const h=record(value);if(!h||!['captain','admin'].includes(String(h.origin))||![h.old_name,h.new_name,h.reason].every(v=>v===null||typeof v==='string')||typeof h.created_at!=='string')throw new LaunchClientError('service_unavailable');return {origin:h.origin as 'captain'|'admin',oldName:h.old_name as string|null,newName:h.new_name as string|null,reason:h.reason as string|null,createdAt:h.created_at}});
+      return {captainName:d.captain_name as string|null,captainNameActive:d.captain_name_active,adminName:d.admin_name as string|null,history};
+    },
     async session() {
       const data=record(await call('session',{},true));
       if(!data || data.authenticated!==true || typeof data.operator!=='boolean') throw new LaunchClientError('service_unavailable');

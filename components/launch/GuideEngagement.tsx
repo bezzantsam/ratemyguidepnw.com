@@ -8,6 +8,7 @@ import {ProfileSharing} from './ProfileSharing';
 import {PublishedReviews,ReviewCard,type PublishedReview,type ReviewLoadState} from './PublishedReviews';
 import {ClaimSubmission,ReviewSubmission} from './SubmissionViews';
 import type {ReviewDraft} from './submission-model';
+import {usePreferredName} from './usePreferredName';
 
 const blankDetails:OwnerDetails={boat:'',gear:'',yearsExperience:null,expertise:'',species:''};
 type DetailsState={status:'loading'|'error'}|{status:'ready';value:OwnerDetails|null};
@@ -35,9 +36,11 @@ function OwnerEditor({initial,onSave}:{initial:OwnerDetails|null;onSave:(value:O
   </form>;
 }
 
-export function GuideEngagement({source,profilePath,guideName}:{source:GuideSource;profilePath:string;guideName:string}) {
+export function GuideEngagement({source,profilePath,guideName:listedName}:{source:GuideSource;profilePath:string;guideName:string}) {
   const guideKey=`${source.jurisdiction}:${source.sourceId}`;
   const stableSource=useMemo(()=>({jurisdiction:source.jurisdiction,sourceId:source.sourceId}),[source.jurisdiction,source.sourceId]);
+  const preferred=usePreferredName(stableSource,listedName,process.env.NEXT_PUBLIC_RMG_PREFERRED_NAMES_ENABLED==='true');
+  const guideName=preferred.displayName;
   const api=useMemo(()=>createLaunchClient({enabled:true,getAccessToken:async()=>{const result=await authClient?.auth.getSession();return result?.data.session?.access_token??null}}),[]);
   const [reviews,setReviews]=useState<ReviewLoadState>({status:'loading'}),[details,setDetails]=useState<DetailsState>({status:'loading'});
   const [session,setSession]=useState<'loading'|'signed_out'|'signed_in'|'error'>('loading');
@@ -94,6 +97,30 @@ export function GuideEngagement({source,profilePath,guideName}:{source:GuideSour
         </>}
       </>:<p role="status">Review and claim requests are temporarily unavailable for this listing.</p>}
     </section>
+    {session==='signed_in'&&owner&&process.env.NEXT_PUBLIC_RMG_PREFERRED_NAMES_ENABLED==='true'&&<PreferredNameOwner key={guideKey} source={stableSource} api={api}/>}
     <ProfileSharing profilePath={profilePath} guideName={guideName} reviewAvailable={reviews.status==='ready'&&writeReady===true}/>
   </>;
+}
+
+function PreferredNameOwner({source,api}:{source:GuideSource;api:ReturnType<typeof createLaunchClient>}){
+ const [state,setState]=useState<{status:'loading'}|{status:'error'}|{status:'ready';name:string|null;overridden:boolean}>({status:'loading'});
+ const [attempt,setAttempt]=useState(0);
+ useEffect(()=>{let active=true;setState({status:'loading'});void api.ownProfileName(source).then(value=>{if(active)setState({status:'ready',...value})}).catch(()=>{if(active)setState({status:'error'})});return()=>{active=false}},[api,source,attempt]);
+ if(state.status==='loading')return <p role="status">Checking your name settings…</p>;
+ if(state.status==='error')return <section className="section"><p role="status">Your name settings are unavailable right now.</p><button type="button" onClick={()=>setAttempt(n=>n+1)}>Retry name settings</button></section>;
+ return <PreferredNameEditor initial={state.name??''} overridden={state.overridden} onSave={async name=>{await api.setProfileName(source,name);const saved=await api.ownProfileName(source);if(saved.name!==(name?.trim()||null))throw new Error('No confirmed readback');setState({status:'ready',...saved});window.dispatchEvent(new CustomEvent('rmg-preferred-name-changed',{detail:source}))}}/>;
+}
+
+function PreferredNameEditor({initial,overridden,onSave}:{initial:string;overridden:boolean;onSave:(name:string|null)=>Promise<void>}){
+ const [name,setName]=useState(initial),[dirty,setDirty]=useState(false),[busy,setBusy]=useState(false),[message,setMessage]=useState('');
+ useEffect(()=>{if(!dirty)setName(initial)},[initial,dirty]);
+ async function save(value:string|null){if(busy)return;setBusy(true);setMessage('');try{await onSave(value);if(value===null)setName('');setDirty(false);setMessage('Your name was saved. An editorial correction may take precedence.')}catch{setMessage('We could not confirm your changes. Please try again.')}finally{setBusy(false)}}
+ return <form className="card launch-form" onSubmit={event=>{event.preventDefault();if(name.trim())void save(name)}}>
+  <h3>Name you go by</h3><p>For example, Scott. Your listing remains connected to the same guide record.</p>
+  {overridden&&<p role="status">An editorial correction currently takes precedence over your saved name.</p>}
+  <label>Name you go by<input value={name} onChange={event=>{setName(event.target.value);setDirty(true)}} aria-describedby="preferred-name-help"/></label>
+  <p id="preferred-name-help">Use up to 80 characters. An editor’s correction may take precedence.</p>
+  <button type="submit" disabled={busy||!name.trim()||Array.from(name.trim()).length>80||/[<>\u0000-\u001f\u007f]/u.test(name)}>Save name</button>
+  <button type="button" disabled={busy} onClick={()=>void save(null)}>Clear my name</button>{message&&<p role="status">{message}</p>}
+ </form>;
 }

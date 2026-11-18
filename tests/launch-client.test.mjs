@@ -16,6 +16,27 @@ const draft={quality:4,intensity:3,wouldBookAgain:false,body:'A firsthand accoun
 const response=(data,ok=true)=>({ok,json:async()=>data});
 const errorCode=code=>error=>error?.code===code;
 
+test('preferred name projection uses bounded batches and rejects malformed or unrequested identities',async()=>{
+ const make=data=>createLaunchClient({enabled:true,getAccessToken:async()=>null,fetcher:async()=>response(data)});
+ const entry={jurisdiction:'OR',source_id:'OG.0000359',preferred_name:'李明',provenance:'captain'};
+ const result=await make({names:[entry]}).profileNames('OR',['OG.0000359']);
+ assert.equal(result[0].name,'李明');assert.equal(result[0].sourceId,'OG.0000359');
+ await assert.rejects(make({names:[{...entry,source_id:'OG.0000001'}]}).profileNames('OR',['OG.0000359']),errorCode('service_unavailable'));
+ await assert.rejects(make({names:[]}).profileNames('OR',Array(101).fill('x')),errorCode('invalid_input'));
+});
+test('preferred-name edits require a token, preserve clear and bound Unicode by code points',async()=>{
+ let body;const client=createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async(_url,init)=>{body=JSON.parse(init.body);assert.equal(init.headers.Authorization,'Bearer token');return response({status:'saved'})}});
+ await client.setProfileName(source,'🐟'.repeat(80));assert.equal(body.name,'🐟'.repeat(80));
+ await assert.rejects(client.setProfileName(source,'🐟'.repeat(81)),errorCode('invalid_input'));
+ await client.setProfileName(source,null);assert.equal(body.name,null);
+ await client.setProfileName(source,'\u00a0Scott\u2003');assert.equal(body.name,'Scott');
+ await client.setProfileName(source,'\u00a0\u2003');assert.equal(body.name,null);
+ await client.adminSetProfileName(source,'\u2003Scott\u00a0','\u00a0Correction\u2003');assert.equal(body.name,'Scott');assert.equal(body.reason,'Correction');
+ await assert.rejects(client.adminSetProfileName(source,'Scott',''),errorCode('invalid_input'));
+ const signedOut=createLaunchClient({enabled:true,getAccessToken:async()=>null,fetcher:async()=>{throw Error('no network')}});
+ await assert.rejects(signedOut.setProfileName(source,'Scott'),errorCode('sign_in_required'));
+});
+
 test('disabled client fails before token access or network requests',async()=>{
   let calls=0;const client=createLaunchClient({getAccessToken:async()=>{calls++;return 'token'},fetcher:async()=>{calls++;return response({})}});
   await assert.rejects(client.session(),errorCode('service_unavailable'));

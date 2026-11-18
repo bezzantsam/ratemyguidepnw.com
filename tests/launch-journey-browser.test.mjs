@@ -15,7 +15,7 @@ test('synthetic browser connects mapped review, claim, moderation and published 
  const browser=await chromium.launch({executablePath:browserPath,headless:true});
  const state={review:null,claim:null,report:null,requests:[],blocked:[],errors:[]};
  async function contextFor(actor,viewport){
-  const context=await browser.newContext({viewport});
+  const context=await browser.newContext({viewport,userAgent:`RMG-fixture-${actor===reviewer?'reviewer':actor===operator?'operator':'reporter'}`});
   const session={access_token:tokens[actor],refresh_token:'fixture-refresh',token_type:'bearer',expires_in:3600,expires_at:Math.floor(Date.now()/1000)+3600,user:{id:actor,email:'fixture@example.invalid',aud:'authenticated',role:'authenticated',email_confirmed_at:'2026-01-01T00:00:00Z',app_metadata:{},user_metadata:{}}};
   await context.addInitScript(({session})=>{localStorage.setItem('sb-127-auth-token',JSON.stringify(session));Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async text=>{window.__fixtureCopied=text}}})},{session});
   await context.route('**/*',async route=>{
@@ -23,9 +23,10 @@ test('synthetic browser connects mapped review, claim, moderation and published 
    if(url.origin===authOrigin){if(url.pathname==='/auth/v1/user')return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(session.user)});state.blocked.push(`auth:${url.pathname}`);return route.abort()}
    if(url.origin===origin&&url.pathname==='/api/launch'){
     const input=req.postDataJSON(),headers=req.headers();state.requests.push({actor,operation:input.operation,input});
-    if(!['public_reviews','profile_details','review_detail','review_write_availability'].includes(input.operation)&&headers.authorization!==`Bearer ${tokens[actor]}`)return route.fulfill({status:401,contentType:'application/json',body:'{"error":"sign_in_required"}'});
+    if(!['public_reviews','profile_details','review_detail','review_write_availability','profile_names_v1'].includes(input.operation)&&headers.authorization!==`Bearer ${tokens[actor]}`)return route.fulfill({status:401,contentType:'application/json',body:'{"error":"sign_in_required"}'});
     let data;
     switch(input.operation){
+     case 'profile_names_v1':data={names:[]};break;
      case 'public_reviews':data={summary:{count:state.review?.status==='published'?1:0,averageQuality:state.review?.status==='published'?state.review.quality:null},reviews:state.review?.status==='published'?[{id:reviewId,quality:state.review.quality,body:state.review.body,published_at:'2026-11-17T00:00:00Z',trip_month:state.review.tripMonth?`${state.review.tripMonth}-01`:null,trip_responses:state.review.tripResponses??null}]:[],limit:100};break;
      case 'review_write_availability':data={available:true};break;
      case 'own_review_for_guide':data={review:actor===reviewer&&state.review?{id:reviewId,status:state.review.status}:null};break;
@@ -65,11 +66,11 @@ test('synthetic browser connects mapped review, claim, moderation and published 
   await queue.getByText(/Trip month: 2026-07/).waitFor();await queue.getByLabel('Decision note').fill('Independent synthetic review evidence checked.');await queue.getByRole('button',{name:'Approve'}).click();await queue.getByText('Decision confirmed: published.').waitFor();
   await page.reload({waitUntil:'domcontentloaded'});await page.getByText('A good firsthand trip.').waitFor();await page.getByText('5.0 / 5',{exact:false}).waitFor();await page.getByText('Trip month reported by the angler: 2026-07').waitFor();
   const reporting=await contextFor(reporter,{width:390,height:844}),reportPage=await reporting.newPage();reportPage.on('pageerror',e=>state.errors.push(e.message));await reportPage.goto(`${origin}/guides/og-0002254`,{waitUntil:'domcontentloaded'});await reportPage.getByRole('button',{name:'Report review'}).click();await reportPage.getByLabel('What’s wrong with this review?').selectOption('other');await reportPage.getByRole('button',{name:'Send report'}).click();await reportPage.getByText('Report sent. We’ll review it.').waitFor();
-  await queue.getByLabel('Submission type').selectOption('report');await queue.getByText('Review report · Fixture Guide').waitFor();await queue.getByRole('button',{name:'Resolve report'}).click();await queue.getByText('Report confirmed: resolved. The review was not changed.').waitFor();assert.equal(state.review.status,'published');assert.equal(state.report.status,'resolved');await reporting.close();
+  await queue.getByLabel('Submission type').selectOption('report');await queue.getByText('Review report · Fixture Guide').waitFor();await queue.getByRole('button',{name:'Resolve report'}).click();await queue.getByText('Report confirmed: resolved. The review was not changed.').waitFor();assert.equal(state.review.status,'published');assert.equal(state.report.status,'resolved');await reportPage.waitForLoadState('networkidle');await reporting.close();
   await page.getByRole('button',{name:'Copy review link'}).click();assert.equal(await page.evaluate(()=>window.__fixtureCopied),`https://ratemyguidepnw.vercel.app/guides/og-0002254#review-${reviewId}`);
   await page.setViewportSize({width:390,height:844});await page.reload({waitUntil:'domcontentloaded'});await page.getByText('A good firsthand trip.').waitFor();assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
   if(process.env.BROWSER_SCREENSHOT_DIR){mkdirSync(process.env.BROWSER_SCREENSHOT_DIR,{recursive:true});await page.screenshot({path:join(process.env.BROWSER_SCREENSHOT_DIR,'synthetic-launch-mobile.png'),fullPage:true})}
   await page.goto(`${origin}/write-review`,{waitUntil:'domcontentloaded'});await page.getByRole('searchbox',{name:'Captain, business, operating name, or registration'}).fill('OG.0002254');await page.locator('.guide-result').first().click();await page.waitForURL(`${origin}/guides/og-0002254?intent=review#write-review`);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
-  assert.deepEqual(state.blocked,[]);assert.deepEqual(state.errors,[]);await admin.close();await context.close();
+  await Promise.all([page.waitForLoadState('networkidle'),queue.waitForLoadState('networkidle')]);assert.deepEqual(state.blocked,[]);assert.deepEqual(state.errors,[]);await admin.close();await context.close();
  }finally{await browser.close()}
 });

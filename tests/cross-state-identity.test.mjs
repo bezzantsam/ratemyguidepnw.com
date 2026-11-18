@@ -44,7 +44,7 @@ async function renderPages(wa){
   '@/lib/registry':{findGuide:()=>orGuide,guideSlug:()=> 'og-9999000',oregonGuides:[orGuide]},'@/lib/washington':wa,
   '@/components/ReturnToResults':stub,'@/components/GuideEnrichmentPanel':stub,'@/components/CaptainDetails':stub,
   '@/components/CaptainReviews':stub,'@/components/CaptainMedia':stub,'@/components/GuideTrustPanel':stub,
-  '@/components/launch/ProfileSharing':{ProfileSharing:stub},'@/components/launch/GuideEngagement':{GuideEngagement:stub},'@/lib/canonical-share':{profileShareMetadata:()=>({})}
+  '@/components/launch/ProfileSharing':{ProfileSharing:stub},'@/components/launch/GuideEngagement':{GuideEngagement:stub},'@/components/launch/PreferredNameHeading':{PreferredNameHeading:({listed})=>React.createElement('h1',null,listed)},'@/lib/canonical-share':{profileShareMetadata:()=>({})}
  });
  return {wa:renderToStaticMarkup(React.createElement(waPage.default)),profile:renderToStaticMarkup(await profile.default({params:Promise.resolve({slug:'og-9999000'})}))};
 }

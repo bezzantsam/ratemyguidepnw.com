@@ -12,7 +12,7 @@ export async function withIsolatedWorkspace(work,{tempRoot=tmpdir()}={}){
 }
 export async function openMockBackend(){
  let writes=0,requests=0;const requestSummary=[];
- const server=createServer((req,res)=>{requests++;if(requestSummary.length<20)requestSummary.push({method:req.method,path:(req.url||'').split('?')[0]});if(req.method!=='GET'){writes++;res.writeHead(403);res.end('writes forbidden');return}res.writeHead(503,{'content-type':'application/json'});res.end('{"error":"backend unavailable"}')});
+ const server=createServer((req,res)=>{requests++;if(requestSummary.length<20)requestSummary.push({method:req.method,path:(req.url||'').split('?')[0],agent:(req.headers['user-agent']||'').slice(0,160),fetchMode:req.headers['sec-fetch-mode']||null});if(req.method!=='GET'){writes++;res.writeHead(403);res.end('writes forbidden');return}res.writeHead(503,{'content-type':'application/json'});res.end('{"error":"backend unavailable"}')});
  await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(0,'127.0.0.1',resolve)});
  return {url:`http://127.0.0.1:${server.address().port}`,writes:()=>writes,requests:()=>requests,requestSummary:()=>requestSummary,close:()=>new Promise((resolve,reject)=>server.close(e=>e?reject(e):resolve()))};
 }

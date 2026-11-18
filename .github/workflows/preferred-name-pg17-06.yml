@@ -1,0 +1,60 @@
+name: Preferred-name composed PostgreSQL verification
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/preferred-name-pg17-06.yml'
+      - 'supabase/review-candidates/08-preferred-name-v1*.sql'
+      - 'supabase/review-candidates/final-launch-migration-body.sql'
+      - 'tests/backend-launch/preferred-name*'
+      - 'tests/backend-launch/run-preferred-name-v1.sh'
+      - 'tests/backend-launch/reconstruct.py'
+      - 'tests/backend-launch/fixture-catalog.json'
+      - 'tests/backend-launch/fixtures.sql'
+      - 'tests/backend-launch/storage-existing-fixture.sql'
+
+permissions:
+  contents: read
+
+jobs:
+  composed-preferred-name-pg17:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Verify exact reviewed candidate and synthetic inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          sha256sum -c <<'CHECKSUMS'
+          e76030edd1cfe5d9b61ef48cf8132a96536f01f13e3030016890ab549b076f78  supabase/review-candidates/final-launch-migration-body.sql
+          64688233148d2186d5b9758e3453fdaa4146d252270d3e0b373fc6f2efd9bc7b  supabase/review-candidates/08-preferred-name-v1.sql
+          05a8beaa6d91897f693d9f8342116ad60e7084030a995ad0241b7c6885e48a32  supabase/review-candidates/08-preferred-name-v1-disable.sql
+          5ce1cb68bbbcd247b71282b94a8e11ef85fd1ffd13e5b678ba6433e1fdf9e947  tests/backend-launch/run-preferred-name-v1.sh
+          7289175a78dc90d4504185984f84d1433db319ef1d7bfeaca68221d677015008  tests/backend-launch/preferred-name-v1.sql
+          06e30ec5e7896c55d192400f0e9a2056614a03197f588ea9856c9b66b2be18b8  tests/backend-launch/preferred-name-disable-v1.sql
+          c2787fbf877beaa36487de796c9cf8ea3445c385a12961ffe06c8465ac6118dd  tests/backend-launch/preferred-name-gate-race.sh
+          6144fba197324a811a8e856733ad27819b3f2bafb6b807d09d91abf8c93676bc  tests/backend-launch/reconstruct.py
+          7bab10cbbd0b9246fbd9a19591b8fa21f5afc0de2d9f0e0ad47cfd018ddc9ec4  tests/backend-launch/fixture-catalog.json
+          7fdc9f18d42455679da639c370d11b240dfd987b762097935e0d29c8e7094cdb  tests/backend-launch/fixtures.sql
+          d62fadcefb27f95570a95d73b9d2f1453936077a8a9132d64f7838f1317488fc  tests/backend-launch/storage-existing-fixture.sql
+          CHECKSUMS
+      - name: Build disposable PostgreSQL 17 test image
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker build --tag rmg-preferred-pg17 - <<'DOCKERFILE'
+          FROM postgres:17-bookworm
+          RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+          DOCKERFILE
+      - name: Run composed synthetic authorization and gate-race suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run --rm --network none --user postgres \
+            --tmpfs /tmp:rw,exec,nosuid,mode=1777,size=512m \
+            --mount "type=bind,src=$GITHUB_WORKSPACE,dst=/workspace,readonly" \
+            --workdir /workspace --env TMPDIR=/tmp \
+            rmg-preferred-pg17 bash tests/backend-launch/run-preferred-name-v1.sh

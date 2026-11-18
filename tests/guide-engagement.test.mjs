@@ -24,7 +24,7 @@ test('mapped profile connects actual returned ratings, own status and review/cla
   function PublishedReviews(){}function ReviewCard(){}function ReviewSubmission(){}function ClaimSubmission(){}function ProfileSharing(){}function AuthPanel(){}
   const browser={location:{hash:''},setTimeout:()=>0,addEventListener(_name,fn){hashListener=fn},removeEventListener(){}};
   const canonical=compile('lib/canonical-share.ts',{});
-  const views=compile('components/launch/GuideEngagement.tsx',{react,'@/components/AuthPanel':{__esModule:true,default:AuthPanel,client:auth},'@/lib/launch-client':{createLaunchClient:()=>api},'@/lib/canonical-share':canonical,'./ProfileSharing':{ProfileSharing},'./PublishedReviews':{PublishedReviews,ReviewCard},'./SubmissionViews':{ReviewSubmission,ClaimSubmission}},{window:browser});
+  const views=compile('components/launch/GuideEngagement.tsx',{react,'@/components/AuthPanel':{__esModule:true,default:AuthPanel,client:auth},'@/lib/launch-client':{createLaunchClient:()=>api},'@/lib/canonical-share':canonical,'./ProfileSharing':{ProfileSharing},'./PublishedReviews':{PublishedReviews,ReviewCard},'./SubmissionViews':{ReviewSubmission,ClaimSubmission},'./usePreferredName':{usePreferredName:(_source,name)=>({displayName:name,available:false,value:null})}},{window:browser,process:{env:{}}});
   function render(){cursor=0;effects=[];return views.GuideEngagement({source,profilePath,guideName:'Example'})}
   render();for(const effect of effects)effect();await tick();await tick();
   let tree=render(),published=find(tree,n=>n.type===PublishedReviews),sharing=find(tree,n=>n.type===ProfileSharing);

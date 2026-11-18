@@ -5,8 +5,19 @@ import {DEFAULT_DIRECTORY_STATE,DIRECTORY_PAGE_SIZE,directoryUrl,parseDirectoryS
 import type {DirectoryEntry} from '@/lib/directory';
 import {filterDirectoryEntries,guideSearchScore} from '@/lib/directory-query';
 import DirectoryEmptyState from './DirectoryEmptyState';
+import {createLaunchClient,type PreferredName} from '@/lib/launch-client';
+import {applyPreferredNames,loadPreferredNames} from '@/lib/preferred-name';
 
 export default function UnifiedSearch({entries,reviewMode=false,reviewEnabled=false}:{entries:DirectoryEntry[];reviewMode?:boolean;reviewEnabled?:boolean}){
+ const [names,setNames]=useState<PreferredName[]>([]);
+ const namesEnabled=reviewEnabled&&process.env.NEXT_PUBLIC_RMG_PREFERRED_NAMES_ENABLED==='true';
+ const namesApi=useMemo(()=>createLaunchClient({enabled:namesEnabled,getAccessToken:async()=>null}),[namesEnabled]);
+ useEffect(()=>{
+  let active=true;if(!namesEnabled){setNames([]);return}
+  void loadPreferredNames(entries,(jurisdiction,ids)=>namesApi.profileNames(jurisdiction,ids)).then(all=>{if(active)setNames(all)}).catch(()=>{if(active)setNames([])});
+  return()=>{active=false};
+ },[entries,namesApi,namesEnabled]);
+ const indexedEntries=useMemo(()=>applyPreferredNames(entries,names),[entries,names]);
  const [selection,setSelection]=useState<DirectoryState>(DEFAULT_DIRECTORY_STATE);
  const [copyStatus,setCopyStatus]=useState('');
  const [fallback,setFallback]=useState(false);
@@ -17,16 +28,16 @@ export default function UnifiedSearch({entries,reviewMode=false,reviewEnabled=fa
  const size=DIRECTORY_PAGE_SIZE;
  useEffect(()=>{
   function restore(){
-   const next=parseDirectoryState(window.location.search,entries);
+   const next=parseDirectoryState(window.location.search,indexedEntries);
    setSelection(next);
    const query=directoryUrl(next).slice('/guides'.length);
    if(window.location.search!==query)window.history.replaceState(null,'',window.location.pathname+query);
   }
   restore();window.addEventListener('popstate',restore);
   return ()=>window.removeEventListener('popstate',restore);
- },[entries]);
+ },[indexedEntries]);
  function change(patch:Partial<DirectoryState>,replace=false){
-  const next=parseDirectoryState(directoryUrl({...selection,...patch}).slice('/guides'.length),entries);
+  const next=parseDirectoryState(directoryUrl({...selection,...patch}).slice('/guides'.length),indexedEntries);
   setSelection(next);setCopyStatus('');setFallback(false);
   const query=directoryUrl(next).slice('/guides'.length);
   const target=window.location.pathname+query;
@@ -39,9 +50,9 @@ export default function UnifiedSearch({entries,reviewMode=false,reviewEnabled=fa
   try{if(!navigator.clipboard?.writeText)throw new Error('Clipboard unavailable');await navigator.clipboard.writeText(url);setCopyStatus('Search link copied.');setFallback(false)}
   catch{setFallback(true);setCopyStatus('Copy the search link from the field below.')}
  }
- const filtered=useMemo(()=>filterDirectoryEntries(entries,{
+ const filtered=useMemo(()=>filterDirectoryEntries(indexedEntries,{
   state,sourceZone:area,advertisedWater:waterway,species,method,query:q
- }),[entries,q,state,area,waterway,species,method]);
+ }),[indexedEntries,q,state,area,waterway,species,method]);
 
  const areas=useMemo(()=>
   ['All areas',...new Set(entries.filter(g=>state==='All'||g.states.includes(state as 'Oregon'|'Washington'))
@@ -113,12 +124,14 @@ export default function UnifiedSearch({entries,reviewMode=false,reviewEnabled=fa
     <Link className="guide-result" href={reviewMode&&reviewEnabled?{pathname:g.href,query:{intent:'review'},hash:'write-review'}:{pathname:g.href,query:{returnTo:directoryUrl(selection)}}}>
      <div className="rating-tile"><strong>—</strong><span>{reviewEnabled?'View reviews':'Reviews unavailable'}</span></div>
      <div className="guide-result-body">
-      <div className="guide-result-top"><h3>{g.name}</h3>
+      <div className="guide-result-top"><h3>{g.displayName??g.name}</h3>
        <span className="listing-chip">{g.states.join(' + ')}</span>
       </div>
+      {g.displayName&&g.displayName!==g.name&&<p className="guide-meta">Listed as {g.name}</p>}
+      {g.preferredName&&<p className="guide-meta">{g.preferredName.provenance==='captain'?'Captain-declared name':'Editorially corrected name'}: {g.preferredName.name}</p>}
       {(guideSearchScore(g,q)??0)>=60&&<p className="guide-meta"><strong>Similar spelling match</strong> · Confirm the person and business.</p>}
       <p className="outfit-name">{g.business||'Fishing guide'}</p>
-      {g.searchAliases.some(name=>!g.editorialSearchAliases?.some(alias=>alias.value===name))&&<p className="guide-meta">Other names (business or person): {g.searchAliases.filter(name=>!g.editorialSearchAliases?.some(alias=>alias.value===name)).join(' · ')}</p>}
+      {g.searchAliases.some(name=>name!==g.preferredName?.name&&!g.editorialSearchAliases?.some(alias=>alias.value===name))&&<p className="guide-meta">Other names (business or person): {g.searchAliases.filter(name=>name!==g.preferredName?.name&&!g.editorialSearchAliases?.some(alias=>alias.value===name)).join(' · ')}</p>}
       {g.editorialSearchAliases?.map(alias=><p className="guide-meta" key={`${alias.value}:${alias.attributedTo}`}>Editorial search name supplied by {alias.attributedTo}: {alias.value}</p>)}
       {g.advertisedWaters.length>0&&<p className="guide-meta">Advertised waters (source-linked): {g.advertisedWaters.slice(0,3).join(' · ')}{g.advertisedWaters.length>3?' · + more':''}</p>}
       <p className="guide-meta">{g.source==='Oregon registry'?'Imported registration zones':'Imported directory areas / notes'}: {g.areas.slice(0,3).join(' · ')||'Not specified'}{g.areas.length>3?' · + more':''}</p>

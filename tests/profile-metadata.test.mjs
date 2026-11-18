@@ -14,7 +14,7 @@ const stub={__esModule:true,default:()=>null};
 const common={
   '@/components/ReturnToResults':stub,'@/components/GuideEnrichmentPanel':stub,'@/components/CaptainReviews':stub,
   '@/components/GuideTrustPanel':stub,'@/components/CaptainDetails':stub,'@/components/CaptainMedia':stub,
-  '@/components/launch/ProfileSharing':{ProfileSharing:()=>null},'@/components/launch/GuideEngagement':{GuideEngagement:()=>null},'@/lib/canonical-share':share,
+  '@/components/launch/ProfileSharing':{ProfileSharing:()=>null},'@/components/launch/GuideEngagement':{GuideEngagement:()=>null},'@/components/launch/PreferredNameHeading':{PreferredNameHeading:()=>null},'@/lib/canonical-share':share,
   'next/navigation':{notFound:()=>{throw Error('not found')}},'next/link':stub,
   '@/lib/washington':{washingtonRecordForOregon:()=>null,washingtonGuide:id=>id==='wa-000'?{id,name:'WA Guide',business:null}:null},
   '@/lib/registry':{findGuide:slug=>slug==='og-0002254'?{name:'OR Guide',business:'Fishing Co.'}:null,guideSlug:()=>'og-0002254'},
