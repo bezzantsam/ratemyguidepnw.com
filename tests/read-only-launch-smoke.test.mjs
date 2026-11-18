@@ -24,7 +24,7 @@ test('target requires explicit origin and remote opt-in',()=>{
   for(const value of ['not a URL','https://user:secret@example.com','https://example.com/?token=secret','https://example.com/#secret','https://example.com/guides','file:///tmp/site']) assert.throws(()=>validateTarget(value,true));
 });
 test('positive fixture exercises every declared route and only GET',async()=>{
-  const result=await fakeRun(); assert.equal(result.passed,true); assert.equal(result.results.length,7);
+  const result=await fakeRun(); assert.equal(result.passed,true); assert.equal(result.results.length,ROUTES.length);
   assert.ok(result.results.every(r=>r.method==='GET')); assert.ok(result.limitations.length>=4);
 });
 test('complete expected page must be present, not just HTTP 200',async()=>{

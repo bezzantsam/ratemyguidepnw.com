@@ -8,12 +8,12 @@ export default function Home() {
   return (
     <main className="home-search">
       <p className="eyebrow">RATE MY GUIDE PNW</p>
-      <h1>Find a fishing guide.</h1>
+      <h1>Rate your guide.</h1>
       <p className="lead">
-        Search Oregon and Washington fishing-guide listings by name, outfitter or service area.
-        Make decisions with better evidence and fewer promotional claims.
+        Find the guide you fished with and share your firsthand experience.
       </p>
-      <UnifiedSearch entries={directoryEntries} />
+      <p><Link className="button" href="/write-review">Rate your guide</Link></p>
+      <UnifiedSearch entries={directoryEntries} reviewEnabled={enabled} />
       <section style={{ marginTop: 32 }} aria-labelledby="captain-listing-heading">
         <h2 id="captain-listing-heading">Are you listed as a captain?</h2>
         <p>{enabled?'Find your listing to request ownership. Establishing control of a page never gives anyone the ability to change independent angler reviews.':'Claims are currently unavailable. Establishing control of a page never gives anyone the ability to change independent angler reviews.'}</p>
