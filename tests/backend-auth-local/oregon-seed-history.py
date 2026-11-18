@@ -30,13 +30,13 @@ def pinned(path, sha):
         raise SystemExit('Unexpected candidate hash: ' + path)
     return data
 
-body = pinned('supabase/review-candidates/oregon-mapping-seed-migration-body.sql', '04f88b0df9e2e87856063b8e93595a6ba98c1dd2ac8c13212bf483d87818838b')
+body = pinned('supabase/review-candidates/oregon-mapping-seed-cli-body.sql', '39da2be4ff31009b70da58fcc20e51351f76632820ff01ec407c5fe17c0df678')
 launch = pinned('supabase/review-candidates/final-launch-migration-body.sql', 'e76030edd1cfe5d9b61ef48cf8132a96536f01f13e3030016890ab549b076f78')
 source = pinned('lib/oregon-guides.json', '3f0671e58d8d9f5615ba15668b7043fbc4f11859dafb10cf91068a5eb2a62081')
 ids = sorted(row['registration'] for row in json.loads(source))
 if len(ids) != 1027 or len(set(ids)) != len(ids) or not all(re.fullmatch(r'OG\.[A-Z0-9.&]+', x) for x in ids):
     raise SystemExit('Unexpected source identities')
-if subprocess.check_output([sys.executable, str(root / 'supabase/review-candidates/assemble-runner-seed.py')]) != body:
+if subprocess.check_output([sys.executable, str(root / 'supabase/review-candidates/assemble-oregon-cli-seed.py')]) != body:
     raise SystemExit('Runner body differs from generated source')
 clean = {'PATH': os.environ['PATH'], 'HOME': os.environ['HOME'], 'TMPDIR': str(work)}
 def command(*args):
@@ -111,6 +111,11 @@ rejected('Missing or ambiguous Oregon mapping')
 if mapping_count() != 0: raise SystemExit('Missing target persisted mappings')
 sql("UPDATE public.guides SET listing_status='published' WHERE license_number='" + first + "';")
 print('PASS missing target leaves mappings and history unchanged')
+sql("INSERT INTO public.guides(id,slug,full_name,license_number,listing_status) VALUES ('f0000000-0000-0000-0000-000000000001','synthetic-ambiguous','Synthetic duplicate','" + first + "','published');")
+rejected('Missing or ambiguous Oregon mapping')
+if mapping_count() != 0: raise SystemExit('Ambiguous target persisted mappings')
+sql("DELETE FROM public.guides WHERE id='f0000000-0000-0000-0000-000000000001';")
+print('PASS ambiguous target leaves mappings and history unchanged')
 sql("INSERT INTO rmg_private.guide_identity_map VALUES ('OR','" + first + "',md5('synthetic:" + second + "')::uuid,now(),'synthetic conflict');")
 rejected('Conflicting Oregon mapping')
 if mapping_count() != 1: raise SystemExit('OR conflict altered mappings')
@@ -121,6 +126,23 @@ rejected('Cross-jurisdiction alias requires independent provenance review')
 if mapping_count() != 1: raise SystemExit('Cross-state conflict altered mappings')
 sql("DELETE FROM rmg_private.guide_identity_map WHERE review_reference='synthetic cross-state';")
 print('PASS cross-jurisdiction conflict leaves existing row and history unchanged')
+# A different session holds an incompatible writer lock longer than the seed's 3s bound.
+locker = subprocess.Popen(['docker','exec','-i','-e','PGAPPNAME=rmg_seed_history_locker','supabase_db_' + project,'psql','-X','-U','postgres','-d','postgres','-v','ON_ERROR_STOP=1','-q'], stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True)
+assert locker.stdin is not None
+locker.stdin.write('BEGIN; LOCK TABLE public.guides IN ACCESS EXCLUSIVE MODE; SELECT pg_sleep(8); COMMIT;\n')
+locker.stdin.close()
+end = time.monotonic() + 10
+while time.monotonic() < end:
+    if sql("SELECT count(*) FROM pg_stat_activity WHERE application_name='rmg_seed_history_locker' AND wait_event='PgSleep';") == '1': break
+    if locker.poll() is not None: raise SystemExit('Synthetic lock holder exited before lock')
+    time.sleep(0.05)
+else: raise SystemExit('Synthetic lock holder did not become ready')
+try:
+    rejected('lock timeout')
+    if mapping_count() != 0: raise SystemExit('Lock timeout persisted mappings')
+finally:
+    if locker.wait(timeout=15) != 0: raise SystemExit('Synthetic lock holder failed')
+print('PASS writer lock causes bounded failure without mappings or history')
 if command('migration', 'up', '--local').returncode: raise SystemExit('Exact seed CLI migration failed')
 if history(version) != '1' or mapping_count() != 1027: raise SystemExit('Seed or migration history incorrect')
 if sql("SELECT count(*) FROM rmg_private.guide_identity_map WHERE jurisdiction='OR' AND review_reference='source-sha256:3f0671e58d8d9f5615ba15668b7043fbc4f11859dafb10cf91068a5eb2a62081; exact-registration+derived-slug';") != '1027': raise SystemExit('Seed mapping provenance incorrect')
