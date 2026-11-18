@@ -55,3 +55,39 @@ export function encodeTripResponses(draft:TripDraft):{value:TripResponses|null;e
   }
   return {value:Object.keys(answers).length?{version:1,answers}:null,error:null};
 }
+
+/** Fail closed on unknown versions/fields so an edit cannot erase answers it cannot represent. */
+export function decodeTripResponses(value:unknown):TripDraft|null {
+  if(value===null||value===undefined)return {};
+  if(typeof value!=='object'||Array.isArray(value))return null;
+  const doc=value as Record<string,unknown>;
+  if(doc.version!==1||Object.keys(doc).some(k=>!['version','answers'].includes(k))||!doc.answers||typeof doc.answers!=='object'||Array.isArray(doc.answers))return null;
+  const draft:Record<string,string>={};
+  for(const [key,entry] of Object.entries(doc.answers as Record<string,unknown>)) {
+    const field=TRIP_FIELDS.find(item=>item.key===key);
+    if(!field||!entry||typeof entry!=='object'||Array.isArray(entry))return null;
+    const answer=entry as Record<string,unknown>;
+    if(answer.state==='not_applicable'&&Object.keys(answer).length===1)draft[key]='na';
+    else if(answer.state==='answered'&&Object.keys(answer).length===2&&Object.hasOwn(answer,'value')) {
+      const raw=answer.value;
+      if(field.kind==='boolean') {if(typeof raw!=='boolean')return null;draft[key]=`value:${raw?'yes':'no'}`}
+      else if(field.kind==='rating'||field.kind==='minutes') {if(typeof raw!=='number'||!Number.isInteger(raw))return null;draft[key]=`value:${raw}`}
+      else {if(typeof raw!=='string')return null;draft[key]=`value:${raw}`}
+    } else return null;
+  }
+  return encodeTripResponses(draft).error?null:draft;
+}
+
+/** Human-readable, attributed answers for a public review or authorized queue. */
+export function describeTripResponses(value:unknown):string[]|null {
+  const draft=decodeTripResponses(value);if(!draft)return null;
+  const lines:string[]=[];
+  for(const field of TRIP_FIELDS) {
+    const entry=draft[field.key];if(!entry)continue;
+    const raw=entry.slice(6);
+    const answer=entry==='na'?'Not applicable':field.kind==='boolean'?(raw==='yes'?'Yes':'No'):field.kind==='rating'?`${raw} / 5`:field.kind==='minutes'?`${raw} minutes`:field.options?.find(option=>option.value===raw)?.label;
+    if(!answer)return null;
+    lines.push(`${field.label} ${answer}`);
+  }
+  return lines;
+}

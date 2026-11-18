@@ -5,7 +5,7 @@ import DockTalkTicker from '@/components/DockTalkTicker';
 
 export const metadata: Metadata = {
   title: 'RateMyGuidePNW | Real Trips. Real Talk.',
-  description: 'Browse Oregon and Washington fishing-guide listings with transparent source information. Reviews and profile claims are currently unavailable.',
+  description: process.env.NEXT_PUBLIC_RMG_LAUNCH_ENABLED==='true'?'Browse Oregon and Washington fishing-guide listings and angler reviews.':'Browse Oregon and Washington fishing-guide listings with transparent source information. Reviews and profile claims are currently unavailable.',
   robots: { index: false, follow: false },
 };
 
@@ -14,7 +14,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <body>
         <div className="notice">
-          PRE-LAUNCH DIRECTORY · Registry listings are real; guide ratings and current licensing are not independently verified.
+          {process.env.NEXT_PUBLIC_RMG_LAUNCH_ENABLED==='true'?'DIRECTORY · Registry listings are real; guide ratings and current licensing are not independently verified.':'PRE-LAUNCH DIRECTORY · Registry listings are real; guide ratings and current licensing are not independently verified.'}
         </div>
         <header>
           <Link className="brand" href="/">RateMyGuide<span>PNW</span></Link>
@@ -27,7 +27,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </header>
         <DockTalkTicker />
         {children}
-        <footer>© {new Date().getFullYear()} RateMyGuidePNW · Independent by design · Pre-launch</footer>
+        <footer>© {new Date().getFullYear()} RateMyGuidePNW · Independent by design{process.env.NEXT_PUBLIC_RMG_LAUNCH_ENABLED==='true'?'':' · Pre-launch'}</footer>
       </body>
     </html>
   );

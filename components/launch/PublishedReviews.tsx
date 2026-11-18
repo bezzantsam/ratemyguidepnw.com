@@ -6,6 +6,7 @@ export type PublishedReview = Readonly<{
   rating: number;
   body: string;
   publishedAt: string;
+  tripDetails?: readonly string[] | null;
 }>;
 export type PublishedReviewPage = Readonly<{
   guideKey: string;
@@ -21,7 +22,7 @@ export function validReviewPage(requestedGuide: string, page: PublishedReviewPag
   const ids = new Set<string>();
   return page.reviews.every(review=>{
     if (!review || typeof review.id !== 'string' || !review.id || ids.has(review.id) || review.guideKey !== requestedGuide || review.status !== 'published' ||
-        !Number.isInteger(review.rating) || review.rating < 1 || review.rating > 5 || typeof review.body !== 'string' || !review.body.trim() || typeof review.publishedAt !== 'string' || !review.publishedAt) return false;
+        !Number.isInteger(review.rating) || review.rating < 1 || review.rating > 5 || typeof review.body !== 'string' || !review.body.trim() || typeof review.publishedAt !== 'string' || !review.publishedAt || (review.tripDetails!==undefined&&review.tripDetails!==null&&(!Array.isArray(review.tripDetails)||!review.tripDetails.every((item:unknown)=>typeof item==='string')))) return false;
     ids.add(review.id);
     return true;
   });
@@ -39,6 +40,7 @@ export function PublishedReviews({guideKey, state}: {guideKey:string; state:Revi
     <p><strong>{page.average?.toFixed(1)} / 5</strong> · {page.total} {page.total === 1 ? 'published review' : 'published reviews'}</p>
     {page.reviews.map(review=><article className="card" key={review.id}>
       <p><strong>{review.rating} / 5</strong> · Published {review.publishedAt}</p><p>{review.body}</p>
+      {review.tripDetails===null?<p>Trip details are temporarily unavailable.</p>:!!review.tripDetails?.length&&<details><summary>Trip details reported by the angler</summary><ul>{review.tripDetails.map((item,index)=><li key={index}>{item}</li>)}</ul></details>}
     </article>)}
   </section>;
 }
