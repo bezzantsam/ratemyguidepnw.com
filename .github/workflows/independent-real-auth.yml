@@ -18,7 +18,7 @@ jobs:
         run: |
           set -euo pipefail
           git rev-parse HEAD 'HEAD^{tree}'
-          printf '%s  %s\n' 74afb69db957037086c0e5ffddd2a8d312bed4ded3e446ba3f145284a351686d supabase/review-candidates/launch-combined.sql 948d8d2502a885c306d7880da8574766e6b9fa91de3fd9a3274583beb88ca82f tests/backend-auth-local/run-ci.sh 0244f7df1197187e26dd3049cb0ff09212b776b9b1a01d6987ca89e9d7843867 tests/backend-auth-local/prepare.py 736416ac96bfcc2d98aabb762888f8e6a1303dd23ef7abcff6ad74a187e2a26d tests/independent-qa/independent-auth-postgrest.py | sha256sum -c -
+          printf '%s  %s\n' 74afb69db957037086c0e5ffddd2a8d312bed4ded3e446ba3f145284a351686d supabase/review-candidates/launch-combined.sql 91c90f5efa8598855fad1b92f0aafd21dcc54a9b009e2a4c14c3ba9eb71e272f tests/backend-auth-local/run-ci.sh 35e53e43a454d57ea0d1f24431a57bef216428b150076ec3eb8cc99b604ea62d tests/backend-auth-local/prepare.py 736416ac96bfcc2d98aabb762888f8e6a1303dd23ef7abcff6ad74a187e2a26d tests/independent-qa/independent-auth-postgrest.py | sha256sum -c -
       - name: Exercise independently authored local customer and authorization paths
         shell: bash
         run: bash tests/backend-auth-local/run-ci.sh "$GITHUB_WORKSPACE/tests/independent-qa/independent-auth-postgrest.py"
