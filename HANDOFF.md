@@ -5,7 +5,7 @@
 ## Exact code and publication
 
 - Backend implementation commit: `bf6fe30475962ba6be754fca8dc78e7c44589763` (includes reporting commit `d4a3d4d2ebab9e7d61a14babbc052354ec83acba`). Local branch: `codex/rmg-backend-launch-20261117`.
-- Publication target: `origin/codex/rmg-backend-launch-20261117`. Verify the branch exists and contains the implementation commit with `git ls-remote --heads origin codex/rmg-backend-launch-20261117`; the branch also contains this handoff. 01 must integrate only the needed backend files, never merge test PR #121 wholesale.
+- Published implementation: `bf6fe30475962ba6be754fca8dc78e7c44589763` is reachable on `origin/codex/rmg-backend-launch-20261117`; remote checkpoint `d8721cb7245e03937fd0215a2c2c2cba3226a17d` was verified after a normal push. Later handoff-only commits may advance the branch; check the current tip with `git ls-remote --heads origin codex/rmg-backend-launch-20261117`. 01 must integrate only the needed backend files, never merge test PR #121 wholesale.
 - PR #121 remained at `8522b51336213310eff3ff5bb2728229ff525eca` when inspected. Its v2.4 backend does not include this complete reporting/month/recovery/readiness delta; its prior tests do not accept this successor automatically.
 - `vercel.json` adds only `codex/rmg-backend-launch-20261117:false` to prevent automatic deployment of this branch. That entry is branch protection, not a product change to cherry-pick into 01's candidate. The legacy exact-map boundary test has an expected failing assertion due to this extra protective entry; no test was modified to hide it.
 
