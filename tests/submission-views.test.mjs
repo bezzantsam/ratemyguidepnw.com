@@ -16,55 +16,68 @@ function compile(path, imports={}) {
   return exports;
 }
 const model=compile('components/launch/submission-model.ts');
-const views=compile('components/launch/SubmissionViews.tsx',{'./submission-model':model});
+const trip=compile('components/launch/trip-responses.ts');
+const details=compile('components/launch/TripDetails.tsx',{'./trip-responses':trip});
+const views=compile('components/launch/SubmissionViews.tsx',{'./submission-model':model,'./trip-responses':trip,'./TripDetails':details});
 const queue=compile('components/launch/ModerationQueue.tsx',{'./submission-model':model,'./SubmissionViews':views});
 const published=compile('components/launch/PublishedReviews.tsx');
+const receiptId='10000000-0000-4000-8000-000000000001';
 
-test('review validation requires both ratings, rebooking answer, narrative and firsthand attestation',()=>{
+test('basic review requires a rating, nonempty narrative, disclosure and firsthand attestation',()=>{
   const valid={quality:5,intensity:3,wouldBookAgain:true,body:'A thoughtful account of the fishing trip. '.repeat(3),firsthand:true,tripMonth:null,relationship:'none'};
   assert.equal(model.validateReviewDraft(valid),null);
   for(const rating of [0,6,1.5,NaN]) {
     assert.ok(model.validateReviewDraft({...valid,quality:rating}));
     assert.ok(model.validateReviewDraft({...valid,intensity:rating}));
   }
-  assert.ok(model.validateReviewDraft({...valid,wouldBookAgain:null}));
+  assert.equal(model.validateReviewDraft({...valid,intensity:null,wouldBookAgain:null}),null);
   assert.equal(model.validateReviewDraft({...valid,wouldBookAgain:false}),null);
-  assert.ok(model.validateReviewDraft({...valid,body:'   short   '}));
+  assert.equal(model.validateReviewDraft({...valid,body:'   short   '}),null);
+  assert.ok(model.validateReviewDraft({...valid,body:'   '}));
   assert.ok(model.validateReviewDraft({...valid,body:'x'.repeat(3001)}));
   assert.ok(model.validateReviewDraft({...valid,firsthand:false}));
   assert.ok(model.validateReviewDraft({...valid,relationship:null}));
   assert.ok(model.validateReviewDraft({...valid,tripMonth:'2026-13'}));
   assert.equal(model.validateReviewDraft({...valid,tripMonth:'2026-11'}),null);
-  assert.ok(model.validateReviewDraft({...valid,body:'🎣'.repeat(79)}));
+  assert.equal(model.validateReviewDraft({...valid,body:'🎣'.repeat(79)}),null);
   assert.equal(model.validateReviewDraft({...valid,body:'🎣'.repeat(80)}),null);
+  assert.ok(model.validateReviewDraft({...valid,body:'🎣'.repeat(1501)}));
 });
 
 test('claim validation rejects empty and excessively long explanations',()=>{
   assert.ok(model.validateClaimStatement('  '));
-  assert.ok(model.validateClaimStatement('x'.repeat(1201)));
+  assert.ok(model.validateClaimStatement('x'.repeat(2001)));
+  assert.ok(model.validateClaimStatement('x'.repeat(19)));
+  assert.equal(model.validateClaimStatement('x'.repeat(20)),null);
   assert.equal(model.validateClaimStatement('I operate the listed guide business.'),null);
   assert.ok(model.validateClaimDraft({claimantName:'',businessName:'',evidence:'I operate the listed guide business.'}));
   assert.equal(model.validateClaimDraft({claimantName:'A Guide',businessName:'',evidence:'I operate the listed guide business.'}),null);
 });
 
 test('a missing, malformed or unknown receipt is never treated as successful',()=>{
-  for(const receipt of [undefined,null,{}, {status:'approved'}, {status:'published',message:42}]) assert.equal(model.isSubmissionReceipt(receipt,'review'),false);
-  assert.equal(model.isSubmissionReceipt({status:'pending'},'review'),true);
-  assert.equal(model.isSubmissionReceipt({status:'published'},'review'),true);
-  assert.equal(model.isSubmissionReceipt({status:'removed'},'review'),true);
-  assert.equal(model.isSubmissionReceipt({status:'denied'},'claim'),true);
-  assert.equal(model.isSubmissionReceipt({status:'rejected'},'claim'),false);
+  for(const receipt of [undefined,null,{}, {status:'pending'}, {id:receiptId,status:'approved'}, {id:receiptId,status:'published',message:42}]) assert.equal(model.isSubmissionReceipt(receipt,'review'),false);
+  assert.equal(model.isSubmissionReceipt({id:receiptId,status:'pending'},'review'),true);
+  assert.equal(model.isSubmissionReceipt({id:receiptId,status:'published'},'review'),true);
+  assert.equal(model.isSubmissionReceipt({id:receiptId,status:'removed'},'review'),true);
+  assert.equal(model.isSubmissionReceipt({id:receiptId,status:'denied'},'claim'),true);
+  assert.equal(model.isSubmissionReceipt({id:receiptId,status:'rejected'},'claim'),false);
 });
 
 test('status renders the actual receipt and does not imply that sign-in verifies a trip',()=>{
   for(const status of ['pending','approved','denied']) {
-    const html=renderToStaticMarkup(React.createElement(views.SubmissionStatus,{kind:'claim',receipt:{status}}));
+    const html=renderToStaticMarkup(React.createElement(views.SubmissionStatus,{kind:'claim',receipt:{id:receiptId,status}}));
     assert.match(html,new RegExp(`Claim request: ${status}`));
   }
-  const review=renderToStaticMarkup(React.createElement(views.ReviewSubmission,{onSubmit:async()=>({status:'pending'})}));
+  const pending=renderToStaticMarkup(React.createElement(views.SubmissionStatus,{kind:'review',receipt:{id:receiptId,status:'pending'}}));
+  assert.match(pending,/Your review is pending\. It is not on the public page\./);
+  const denied=renderToStaticMarkup(React.createElement(views.SubmissionStatus,{kind:'claim',receipt:{id:receiptId,status:'denied'}}));
+  assert.doesNotMatch(denied,/explanation below/);
+  const review=renderToStaticMarkup(React.createElement(views.ReviewSubmission,{onSubmit:async()=>({status:'pending'}),allowTripMonth:true}));
   assert.match(review,/Signing in confirms your account, not that a trip occurred/);
   assert.match(review,/I personally took this trip/);
   assert.match(review,/<summary>Tell us more<\/summary>/);
+  const basic=renderToStaticMarkup(React.createElement(views.ReviewSubmission,{onSubmit:async()=>({status:'pending'})}));
+  assert.doesNotMatch(basic,/Trip month/);
   const claim=renderToStaticMarkup(React.createElement(views.ClaimSubmission,{onSubmit:async()=>({status:'pending'})}));
   assert.match(claim,/does not give control over angler reviews/);
 });

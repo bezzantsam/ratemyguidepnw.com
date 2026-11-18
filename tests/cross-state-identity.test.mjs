@@ -11,7 +11,7 @@ const requireNode=createRequire(import.meta.url);
 function load(path,deps={}){
  const exports={};
  const code=ts.transpileModule(readFileSync(path,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020,jsx:ts.JsxEmit.ReactJSX,esModuleInterop:true}}).outputText;
- vm.runInNewContext(code,{exports,URL,URLSearchParams,Date,Set,Map,require:name=>Object.hasOwn(deps,name)?deps[name]:requireNode(name)});
+ vm.runInNewContext(code,{exports,URL,URLSearchParams,Date,Set,Map,process:{env:{}},require:name=>Object.hasOwn(deps,name)?deps[name]:requireNode(name)});
  return exports;
 }
 const research=load('lib/washington-reconciled.ts');
@@ -43,7 +43,7 @@ async function renderPages(wa){
   '@/lib/registry':{findGuide:()=>orGuide,guideSlug:()=> 'og-9999000',oregonGuides:[orGuide]},'@/lib/washington':wa,
   '@/components/ReturnToResults':stub,'@/components/GuideEnrichmentPanel':stub,'@/components/CaptainDetails':stub,
   '@/components/CaptainReviews':stub,'@/components/CaptainMedia':stub,'@/components/GuideTrustPanel':stub,
-  '@/components/launch/ProfileSharing':{ProfileSharing:stub},'@/lib/canonical-share':{profileShareMetadata:()=>({})}
+  '@/components/launch/ProfileSharing':{ProfileSharing:stub},'@/components/launch/GuideEngagement':{GuideEngagement:stub},'@/lib/canonical-share':{profileShareMetadata:()=>({})}
  });
  return {wa:renderToStaticMarkup(React.createElement(waPage.default)),profile:renderToStaticMarkup(await profile.default({params:Promise.resolve({slug:'og-9999000'})}))};
 }

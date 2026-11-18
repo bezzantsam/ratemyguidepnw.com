@@ -60,7 +60,7 @@ jobs:
       - name: Verify MVP directory and Washington identity safety
         run: npm run test:mvp
       - name: Verify review, claim and canonical sharing frontend
-        run: node --test tests/submission-views.test.mjs tests/submission-interaction.test.mjs tests/canonical-share.test.mjs tests/profile-metadata.test.mjs tests/profile-sharing.test.mjs tests/review-qr.test.mjs
+        run: node --test tests/submission-views.test.mjs tests/submission-interaction.test.mjs tests/trip-responses.test.mjs tests/guide-engagement.test.mjs tests/canonical-share.test.mjs tests/auth-return.test.mjs tests/profile-metadata.test.mjs tests/profile-sharing.test.mjs tests/review-qr.test.mjs tests/launch-client.test.mjs
       - name: TypeScript check
         run: npm run typecheck
       - name: Verify browser build isolation and process cleanup
