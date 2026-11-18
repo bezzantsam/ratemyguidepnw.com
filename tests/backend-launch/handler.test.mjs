@@ -43,3 +43,8 @@ test('public review links bind a published review to the mapped guide',async()=>
  const r=await handleLaunch(req({operation:'review_detail',jurisdiction:'OR',sourceId:'og-1',id:row.id}),factory,env);
  assert.equal(r.status,200);assert.deepEqual(await r.json(),{review:row});assert.ok(calls.some(c=>c[0]==='eq'&&c[1]==='guide_id'&&c[2]==='mapped-uuid'));assert.ok(calls.some(c=>c[0]==='eq'&&c[1]==='id'&&c[2]===row.id));assert.ok(!calls.find(c=>c[0]==='select')[1].includes('author_id'));
 });
+test('captain profile readback uses provenance-filtered RPC',async()=>{
+ const calls=[];const factory=()=>({rpc:async(name,p)=>{calls.push([name,p]);return {data:null,error:null}}});
+ const r=await handleLaunch(req({operation:'profile_details',jurisdiction:'OR',sourceId:'og-1'}),factory,env);
+ assert.equal(r.status,200);assert.deepEqual(await r.json(),{details:null,attribution:'captain_declared'});assert.equal(calls[0][0],'rmg_profile_details');
+});

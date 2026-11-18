@@ -16,6 +16,13 @@ CREATE TABLE rmg_private.guide_identity_map (
 );
 ALTER TABLE rmg_private.guide_identity_map ENABLE ROW LEVEL SECURITY;
 REVOKE ALL ON rmg_private.guide_identity_map FROM PUBLIC, anon, authenticated;
+CREATE TABLE rmg_private.profile_declarations (
+ guide_id uuid PRIMARY KEY REFERENCES public.guides(id),
+ declared_by uuid NOT NULL REFERENCES auth.users(id),
+ updated_at timestamptz NOT NULL DEFAULT now()
+);
+ALTER TABLE rmg_private.profile_declarations ENABLE ROW LEVEL SECURITY;
+REVOKE ALL ON rmg_private.profile_declarations FROM PUBLIC,anon,authenticated;
 ALTER TABLE public.reviews ADD COLUMN firsthand_attested boolean NOT NULL DEFAULT false;
 ALTER TABLE public.reviews ADD COLUMN relationship_disclosure text;
 ALTER TABLE public.reviews ADD COLUMN trip_responses jsonb;
@@ -126,10 +133,20 @@ BEGIN
  PERFORM 1 FROM public.guides WHERE id=gid FOR UPDATE;
  IF NOT EXISTS(SELECT 1 FROM public.guide_claims WHERE guide_id=gid AND claimant_id=actor AND status='approved') THEN RAISE EXCEPTION 'Not authorized' USING ERRCODE='42501'; END IF;
  INSERT INTO public.guide_details(guide_id,boat,gear,years_experience,expertise,targeted_species,updated_at) VALUES(gid,btrim(p_boat),btrim(p_gear),p_years,btrim(p_expertise),btrim(p_species),now()) ON CONFLICT(guide_id) DO UPDATE SET boat=excluded.boat,gear=excluded.gear,years_experience=excluded.years_experience,expertise=excluded.expertise,targeted_species=excluded.targeted_species,updated_at=excluded.updated_at;
+ INSERT INTO rmg_private.profile_declarations(guide_id,declared_by,updated_at) VALUES(gid,actor,now()) ON CONFLICT(guide_id) DO UPDATE SET declared_by=excluded.declared_by,updated_at=excluded.updated_at;
  RETURN jsonb_build_object('status','saved');
+END $$;
+CREATE FUNCTION rmg_private.profile_details(p_jurisdiction text,p_source_id text) RETURNS jsonb LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path='' AS $$
+DECLARE gid uuid:=rmg_private.resolve_guide(p_jurisdiction,p_source_id); result jsonb;
+BEGIN
+ SELECT jsonb_build_object('boat',d.boat,'gear',d.gear,'years_experience',d.years_experience,'expertise',d.expertise,'targeted_species',d.targeted_species,'updated_at',d.updated_at) INTO result
+ FROM public.guide_details d JOIN rmg_private.profile_declarations p ON p.guide_id=d.guide_id
+ WHERE d.guide_id=gid AND EXISTS(SELECT 1 FROM public.guide_claims c WHERE c.guide_id=gid AND c.claimant_id=p.declared_by AND c.status='approved');
+ RETURN result;
 END $$;
 -- Public wrappers are invokers; narrow private functions independently check authorization.
 CREATE FUNCTION public.rmg_resolve_guide(p_jurisdiction text,p_source_id text) RETURNS uuid LANGUAGE sql STABLE SECURITY INVOKER SET search_path='' AS $$SELECT rmg_private.resolve_guide($1,$2)$$;
+CREATE FUNCTION public.rmg_profile_details(p_jurisdiction text,p_source_id text) RETURNS jsonb LANGUAGE sql STABLE SECURITY INVOKER SET search_path='' AS $$SELECT rmg_private.profile_details($1,$2)$$;
 CREATE FUNCTION public.rmg_review_summary(p_jurisdiction text,p_source_id text) RETURNS jsonb LANGUAGE sql STABLE SECURITY INVOKER SET search_path='' AS $$
  SELECT jsonb_build_object('count',count(*),'averageQuality',round(avg(quality)::numeric,2),'wouldBookAgainPercent',round(100.0*avg(would_book_again::int),2))
  FROM public.public_angler_reviews WHERE guide_id=rmg_private.resolve_guide($1,$2)
@@ -139,10 +156,10 @@ CREATE FUNCTION public.rmg_submit_claim(p_jurisdiction text,p_source_id text,p_n
 CREATE FUNCTION public.rmg_own_status(p_kind text,p_id uuid) RETURNS jsonb LANGUAGE sql SECURITY INVOKER SET search_path='' AS $$SELECT rmg_private.own_status($1,$2)$$;
 CREATE FUNCTION public.rmg_edit_details(p_jurisdiction text,p_source_id text,p_boat text,p_gear text,p_years smallint,p_expertise text,p_species text) RETURNS jsonb LANGUAGE sql SECURITY INVOKER SET search_path='' AS $$SELECT rmg_private.edit_details($1,$2,$3,$4,$5,$6,$7)$$;
 REVOKE ALL ON ALL FUNCTIONS IN SCHEMA rmg_private FROM PUBLIC,anon,authenticated;
-GRANT EXECUTE ON FUNCTION rmg_private.resolve_guide(text,text) TO anon,authenticated;
+GRANT EXECUTE ON FUNCTION rmg_private.resolve_guide(text,text),rmg_private.profile_details(text,text) TO anon,authenticated;
 GRANT EXECUTE ON FUNCTION rmg_private.submit_review(text,text,smallint,smallint,boolean,text,boolean,text,jsonb),rmg_private.submit_claim(text,text,text,text,text),rmg_private.own_status(text,uuid),rmg_private.edit_details(text,text,text,text,smallint,text,text) TO authenticated;
-REVOKE ALL ON FUNCTION public.rmg_resolve_guide(text,text),public.rmg_review_summary(text,text),public.rmg_submit_review(text,text,smallint,smallint,boolean,text,boolean,text,jsonb),public.rmg_submit_claim(text,text,text,text,text),public.rmg_own_status(text,uuid),public.rmg_edit_details(text,text,text,text,smallint,text,text) FROM PUBLIC,anon,authenticated;
-GRANT EXECUTE ON FUNCTION public.rmg_resolve_guide(text,text),public.rmg_review_summary(text,text) TO anon,authenticated;
+REVOKE ALL ON FUNCTION public.rmg_resolve_guide(text,text),public.rmg_profile_details(text,text),public.rmg_review_summary(text,text),public.rmg_submit_review(text,text,smallint,smallint,boolean,text,boolean,text,jsonb),public.rmg_submit_claim(text,text,text,text,text),public.rmg_own_status(text,uuid),public.rmg_edit_details(text,text,text,text,smallint,text,text) FROM PUBLIC,anon,authenticated;
+GRANT EXECUTE ON FUNCTION public.rmg_resolve_guide(text,text),public.rmg_profile_details(text,text),public.rmg_review_summary(text,text) TO anon,authenticated;
 GRANT EXECUTE ON FUNCTION public.rmg_submit_review(text,text,smallint,smallint,boolean,text,boolean,text,jsonb),public.rmg_submit_claim(text,text,text,text,text),public.rmg_own_status(text,uuid),public.rmg_edit_details(text,text,text,text,smallint,text,text) TO authenticated;
 -- Grant only the already-hardened, authenticated operator functions; each
 -- function independently checks site_admins and the target state.

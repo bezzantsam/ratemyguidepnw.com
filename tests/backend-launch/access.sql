@@ -9,6 +9,7 @@ INSERT INTO rmg_private.guide_identity_map(jurisdiction,source_id,guide_id,revie
  ('OR','fixture-5','10000000-0000-0000-0000-000000000005',now(),'synthetic reviewed identity');
 SET ROLE anon;
 SELECT public.fixture_assert(public.rmg_resolve_guide('OR','fixture-1')='10000000-0000-0000-0000-000000000001','public reviewed mapping resolves');
+SELECT public.fixture_assert(public.rmg_profile_details('OR','fixture-1') IS NULL,'legacy details are not labeled as captain declarations without provenance');
 DO $$BEGIN
  BEGIN PERFORM public.rmg_resolve_guide('WA','fixture-1'); RAISE EXCEPTION 'unknown mapping accepted'; EXCEPTION WHEN no_data_found THEN NULL; END;
  BEGIN PERFORM public.rmg_submit_claim('OR','fixture-1','test','',repeat('e',40)); RAISE EXCEPTION 'anon claim accepted'; EXCEPTION WHEN insufficient_privilege THEN NULL; END;
@@ -42,6 +43,7 @@ DO $$BEGIN
 END$$;
 SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000005',false);
 SELECT public.fixture_assert((public.rmg_edit_details('OR','fixture-1','Boat','Gear',5::smallint,'Expertise','Species')->>'status')='saved','approved owner may edit allowed fields');
+SELECT public.fixture_assert((public.rmg_profile_details('OR','fixture-1')->>'boat')='Boat','owner declaration can be read back with provenance');
 DO $$BEGIN
  BEGIN PERFORM public.rmg_submit_review('OR','fixture-1',5::smallint,4::smallint,true,repeat('s',80),true,'none'); RAISE EXCEPTION 'owner review accepted'; EXCEPTION WHEN insufficient_privilege THEN NULL; END;
 END$$;
