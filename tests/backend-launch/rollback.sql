@@ -7,4 +7,5 @@ DO $$BEGIN
 END$$;
 RESET ROLE;
 SELECT public.fixture_assert((SELECT status='approved' FROM public.guide_claims WHERE id='20000000-0000-0000-0000-000000000002'),'emergency disable preserves claim');
-SELECT public.fixture_assert((SELECT count(*)=4 FROM public.moderation_audit WHERE actor_id='00000000-0000-0000-0000-000000000004'),'emergency disable preserves audit history');
+SELECT public.fixture_assert((SELECT count(*)=5 FROM public.moderation_audit WHERE actor_id='00000000-0000-0000-0000-000000000004'),'emergency disable preserves audit history');
+SELECT public.fixture_assert((SELECT NOT enabled FROM rmg_private.launch_control WHERE singleton),'emergency disable turns off the database gate');

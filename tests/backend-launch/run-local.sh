@@ -19,6 +19,8 @@ python3 "$root/tests/backend-launch/reconstruct.py" > "$tmp/schema.sql"
 "${ps[@]}" -f "$root/supabase/review-candidates/02-launch-api.sql" >/dev/null
 "${ps[@]}" -f "$root/supabase/review-candidates/03-disable-uploads.sql" >/dev/null
 "${ps[@]}" -f "$root/supabase/review-candidates/04-review-revisions.sql" >/dev/null
+"${ps[@]}" -f "$root/tests/backend-launch/gate.sql"
+"${ps[@]}" -c 'UPDATE rmg_private.launch_control SET enabled=true WHERE singleton' >/dev/null
 "${ps[@]}" -f "$root/tests/backend-launch/access.sql"
 "${ps[@]}" -f "$root/tests/backend-launch/revisions.sql"
 "${ps[@]}" -f "$root/tests/backend-launch/storage.sql"
@@ -73,8 +75,26 @@ sed '/^CREATE ROLE /d' "$tmp/schema.sql" > "$tmp/indirect-schema.sql"
 "${indirect[@]}" -c "ALTER TABLE auth.users ADD COLUMN email_confirmed_at timestamptz, ADD COLUMN is_anonymous boolean NOT NULL DEFAULT false, ADD COLUMN deleted_at timestamptz; UPDATE auth.users SET email_confirmed_at=now();" >/dev/null
 "${indirect[@]}" -f "$root/supabase/review-candidates/01-authorization-lockdown.sql" >/dev/null
 "${indirect[@]}" -f "$root/supabase/review-candidates/02-launch-api.sql" >/dev/null
+"${indirect[@]}" -c 'UPDATE rmg_private.launch_control SET enabled=true WHERE singleton' >/dev/null
 "${indirect[@]}" -f "$root/tests/backend-launch/storage-existing-fixture.sql" >/dev/null
 "${indirect[@]}" -f "$root/tests/backend-launch/storage-indirect-map.sql" >/dev/null
 "${indirect[@]}" -f "$root/tests/backend-launch/storage-indirect-before.sql"
 "${indirect[@]}" -f "$root/supabase/review-candidates/05-storage-via-claim-visibility.sql" >/dev/null
 "${indirect[@]}" -f "$root/tests/backend-launch/storage-indirect-after.sql"
+
+# Execute the exact proposed single-transaction production candidate, not just
+# its component scripts, on another synthetic database. No Storage-owner role.
+python3 "$root/tests/backend-launch/assemble-migration.py" > "$tmp/expected-combined.sql"
+cmp "$tmp/expected-combined.sql" "$root/supabase/review-candidates/launch-combined.sql"
+"${ps[@]}" -c 'CREATE DATABASE combined_test' >/dev/null
+combined=(psql -X -v ON_ERROR_STOP=1 -h "$tmp" -p 55442 -U audit_owner -d combined_test)
+"${combined[@]}" -f "$tmp/indirect-schema.sql" >/dev/null
+"${combined[@]}" -f "$root/tests/backend-launch/fixtures.sql" >/dev/null
+"${combined[@]}" -c "ALTER TABLE auth.users ADD COLUMN email_confirmed_at timestamptz, ADD COLUMN is_anonymous boolean NOT NULL DEFAULT false, ADD COLUMN deleted_at timestamptz; UPDATE auth.users SET email_confirmed_at=now();" >/dev/null
+"${combined[@]}" -f "$root/supabase/review-candidates/launch-combined.sql" >/dev/null
+"${combined[@]}" -f "$root/tests/backend-launch/gate.sql"
+"${combined[@]}" -c 'UPDATE rmg_private.launch_control SET enabled=true WHERE singleton' >/dev/null
+"${combined[@]}" -f "$root/tests/backend-launch/access.sql"
+"${combined[@]}" -f "$root/tests/backend-launch/revisions.sql"
+"${combined[@]}" -f "$root/supabase/review-candidates/emergency-disable.sql" >/dev/null
+"${combined[@]}" -f "$root/tests/backend-launch/rollback.sql"
