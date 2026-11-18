@@ -6,7 +6,7 @@ permissions:
   contents: read
 jobs:
   browser-auth:
-    if: "!contains(github.event.head_commit.message, '[auth-only]') && !contains(github.event.head_commit.message, '[seed-only]')"
+    if: "!contains(github.event.head_commit.message, '[auth-only]') && !contains(github.event.head_commit.message, '[seed-only]') && !contains(github.event.head_commit.message, '[diagnostic-only]')"
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -32,7 +32,7 @@ jobs:
           export BROWSER_EXECUTABLE="$(node --input-type=module -e "import {chromium} from 'playwright-core'; console.log(chromium.executablePath())")"
           bash tests/backend-auth-local/run-ci.sh "$GITHUB_WORKSPACE/tests/independent-qa/independent-browser-local.py"
   readiness:
-    if: "!contains(github.event.head_commit.message, '[auth-only]') && !contains(github.event.head_commit.message, '[seed-only]')"
+    if: "!contains(github.event.head_commit.message, '[auth-only]') && !contains(github.event.head_commit.message, '[seed-only]') && !contains(github.event.head_commit.message, '[diagnostic-only]')"
     runs-on: ubuntu-latest
     timeout-minutes: 10
     services:
@@ -102,3 +102,26 @@ jobs:
           RMG_FIXTURE_SCHEMA_ONLY: '1'
           RMG_FINAL_LAUNCH_FIXTURE: '1'
         run: bash tests/backend-auth-local/run-ci.sh "$GITHUB_WORKSPACE/tests/independent-qa/independent-history-atomicity.py"
+  historical-mock-diagnostic:
+    if: "contains(github.event.head_commit.message, '[diagnostic-only]')"
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: Install browser tooling
+        run: |
+          npm ci --no-audit --no-fund
+          npx playwright-core install --with-deps chromium
+      - name: Exercise original failing source tree with phase diagnostics
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse c513c3883d67a14de9df6e3e68088bf6b0d33879^{tree})" = 'cbc6f8004ab2967b23de08dca08be9ed3bfe26cf'
+          export BROWSER_EXECUTABLE="$(node --input-type=module -e "import {chromium} from 'playwright-core'; console.log(chromium.executablePath())")"
+          node scripts/launch-journey-isolation.mjs cbc6f8004ab2967b23de08dca08be9ed3bfe26cf
