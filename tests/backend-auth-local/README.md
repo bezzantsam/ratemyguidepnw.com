@@ -2,6 +2,8 @@
 
 This is independent of hosted Supabase. Run only on a fresh, disposable GitHub-hosted Linux x86_64 runner with Docker, at least 8 GiB free on Docker's filesystem and 1 GiB in runner temp. It creates a unique unlinked local Supabase project, uses pinned CLI 3.2.0 with a verified archive, runs actual local Auth, PostgREST and Mailpit, and applies the exact candidate to reconstructed synthetic application tables. It does not contact hosted databases or send external email. No CLI log or status file may be published as an artifact: they contain local credentials. This harness has not yet passed a real CI run.
 
+Only in the generated disposable configuration, the local Auth email send limit is set to 20 per hour to allow four synthetic confirmations through Mailpit. Product/database abuse controls and hosted configuration are untouched.
+
 01 owns the guarded workflow and pins the checkout to the reviewed tree. On a fresh GitHub-hosted runner, after including 05's independent assertion file at a pinned path, the job's essential step is:
 
 ```yaml

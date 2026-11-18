@@ -40,16 +40,31 @@ def change(pattern, replacement):
 change(r'^project_id\s*=.*$', 'project_id = "'+sys.argv[1]+'"')
 change(r'^site_url\s*=.*$', 'site_url = "http://127.0.0.1:3000"')
 change(r'^additional_redirect_urls\s*=.*$', 'additional_redirect_urls = ["http://127.0.0.1:3000/**"]')
+# Only the disposable local Mailpit fixture needs four synthetic confirmations.
+change(r'^email_sent\s*=.*$', 'email_sent = 20')
 match=re.search(r'(?ms)^\[auth\.email\]\s*\n(?P<body>.*?)(?=^\[|\Z)',s)
 if not match: raise SystemExit('Missing auth.email config')
 body,n=re.subn(r'^enable_confirmations\s*=.*$', 'enable_confirmations = true', match['body'], flags=re.M)
 if n != 1: raise SystemExit('Missing confirmation setting')
 s=s[:match.start('body')]+body+s[match.end('body'):]
 c=tomllib.loads(s)
-if c['project_id'] != sys.argv[1] or not c['auth']['email']['enable_confirmations']: raise SystemExit('Config verification failed')
+if c['project_id'] != sys.argv[1] or not c['auth']['email']['enable_confirmations'] or c['auth']['rate_limit']['email_sent'] != 20: raise SystemExit('Config verification failed')
 p.write_text(s)
 PY
-"${clean[@]}" "$cli" start -x realtime,storage-api,imgproxy,edge-runtime,postgres-meta,studio,logflare,vector,supavisor > start.log 2>&1 || { echo 'Local stack start failed; inspect private runner log without publishing credentials.' >&2; exit 1; }
+if ! "${clean[@]}" "$cli" start -x realtime,storage-api,imgproxy,edge-runtime,postgres-meta,studio,logflare,vector,supavisor > start.log 2>&1; then
+  # Emit only a fixed category: the CLI log can contain local credentials.
+  python3 - <<'PY'
+from pathlib import Path
+s=Path('start.log').read_text(errors='replace').lower()
+checks=(('dns or image registry/network',('no such host','lookup ','connection refused','tls handshake','pull access denied','rate limit')),
+        ('Docker service/container',('docker daemon','container exited','unhealthy','health check')),
+        ('local port conflict',('address already in use','port is already allocated')),
+        ('CLI configuration',('invalid config','config.toml','invalidjwt')))
+found=[name for name,terms in checks if any(term in s for term in terms)]
+print('Local stack start failed; diagnostic category: '+(', '.join(found) if found else 'unclassified CLI start failure'))
+PY
+  exit 1
+fi
 "${clean[@]}" "$cli" status -o json > status.json 2> status.log || { echo 'Local stack status failed.' >&2; exit 1; }
 python3 "$root/tests/backend-auth-local/prepare.py" "$work"
 # 05 receives the local CLI status privately via a file, never as a log or artifact.
