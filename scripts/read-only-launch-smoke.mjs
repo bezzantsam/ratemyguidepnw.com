@@ -3,13 +3,16 @@ import {pathToFileURL} from 'node:url';
 
 // GET-only release smoke test. This is deliberately not an authorization scanner.
 export const ROUTES = Object.freeze([
-  {path:'/', status:200, text:'Find a fishing guide.', directory:true},
+  {path:'/', status:200, text:'Rate your guide.', directory:true},
   {path:'/guides', status:200, text:'Find your fishing guide.', directory:true},
+  {path:'/write-review', status:200, text:'Review submissions are currently unavailable.', directory:true},
   {path:'/reviews', status:200, text:'Reviews are currently unavailable', unavailable:true},
   {path:'/admin', status:200, text:'Moderation unavailable', unavailable:true},
   {path:'/claim/OG.0000047', status:200, text:'Profile claims are currently unavailable.', unavailable:true},
   {path:'/guides/og-9999999', status:404},
   {path:'/editorial-changes', status:404},
+  {path:'/intel/buoy-10-chinook', status:404},
+  {path:'/intel/methodology', status:404},
 ]);
 const forbidden = /Shared captains appear once|Pending Secret Species|Rejected Secret Method|Fixture Source Outfit|Synthetic Captain Alias|Unapproved editorial preview|__editorial_visual__|rc-secret-canary-27f7bf9015/i;
 const MAX_BYTES = 4 * 1024 * 1024;

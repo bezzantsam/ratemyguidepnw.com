@@ -18,6 +18,17 @@ test('ordinary production data contains no synthetic discovery or unapproved con
  });
  const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
  try{
+  await page.goto(origin,{waitUntil:'domcontentloaded'});
+  await page.getByRole('heading',{name:'Rate your guide.'}).waitFor();
+  await page.getByRole('link',{name:'Rate your guide',exact:true}).click();
+  await page.waitForURL(`${origin}/write-review`);
+  await page.getByText('Review submissions are currently unavailable.',{exact:false}).waitFor();
+  await page.getByRole('link',{name:'About',exact:true}).click();
+  await page.getByText('RateMyGuidePNW helps anglers find fishing guides, read reviews, and share their experiences. Our goal is to make choosing a fishing guide easier and more transparent.').waitFor();
+  await page.setViewportSize({width:375,height:812});await page.goto(origin,{waitUntil:'domcontentloaded'});
+  assert.equal(await page.getByRole('link',{name:'Write a Review',exact:true}).count(),1);
+  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+1),'home does not overflow');
+  await page.setViewportSize({width:1280,height:800});
   await page.goto(`${origin}/guides`,{waitUntil:'networkidle'});
   await page.getByRole('heading',{name:'Find a captain'}).waitFor();
   const introduction=await page.locator('main > p.lead').innerText();
@@ -43,6 +54,10 @@ test('ordinary production data contains no synthetic discovery or unapproved con
    for(const marker of pendingMarkers)assert.ok(!body.includes(marker),'pending research leaked into '+file);
   }
   const absent=await page.goto(`${origin}/editorial-changes`,{waitUntil:'domcontentloaded'});assert.equal(absent.status(),404);
+  for(const path of ['/intel/buoy-10-chinook','/intel/methodology']){
+   const response=await page.goto(`${origin}${path}`,{waitUntil:'domcontentloaded'});assert.equal(response.status(),404,path);
+   assert.doesNotMatch(await page.locator('body').innerText(),/Chrome-AI|Chinook Intel|official WDFW creel/i);
+  }
   await page.goto(`${origin}/guides/og-0001599`,{waitUntil:'domcontentloaded'});
   for(const marker of pendingMarkers)assert.ok(!(await page.content()).includes(marker),'pending research leaked into profile HTML');
   // The seven research associations have no approved identity decisions.
