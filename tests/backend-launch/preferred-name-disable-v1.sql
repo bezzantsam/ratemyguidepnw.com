@@ -6,3 +6,9 @@ SELECT public.fixture_assert(NOT has_function_privilege('authenticated','public.
 SELECT public.fixture_assert(NOT has_function_privilege('anon','public.rmg_profile_names_v1(text,text[])','EXECUTE'),'public preferred-name projection disabled');
 SELECT public.fixture_assert((SELECT count(*)=8 FROM rmg_private.profile_name_audit_v1),'disable preserves preferred-name audit');
 SELECT public.fixture_assert((SELECT preferred_name=repeat('é',80) FROM rmg_private.profile_declarations WHERE guide_id='10000000-0000-0000-0000-000000000001'),'disable preserves declared name');
+
+SELECT public.fixture_assert((SELECT enabled IS FALSE FROM rmg_private.profile_name_control_v1 WHERE singleton),'additive disable closes the name-specific database gate');
+SELECT public.fixture_assert((SELECT enabled IS TRUE FROM rmg_private.launch_control WHERE singleton),'additive disable leaves base launch gate enabled');
+SET ROLE anon;
+SELECT public.fixture_assert((public.rmg_review_write_availability('OR','fixture-4')->>'available')::boolean,'base review readiness survives name disable');
+RESET ROLE;

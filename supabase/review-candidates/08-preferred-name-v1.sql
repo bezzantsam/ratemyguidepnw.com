@@ -21,6 +21,28 @@ BEGIN
     (preferred_name IS NULL AND preferred_name_by IS NULL AND preferred_name_at IS NULL) OR
     (preferred_name IS NOT NULL AND preferred_name_by IS NOT NULL AND preferred_name_at IS NOT NULL))
  $ddl$;
+ -- A separate default-off gate prevents direct PostgREST/RPC access from
+ -- bypassing the application-only feature flags when reviews are enabled.
+ EXECUTE $ddl$
+  CREATE TABLE rmg_private.profile_name_control_v1 (
+   singleton boolean PRIMARY KEY DEFAULT true CHECK (singleton),
+   enabled boolean NOT NULL DEFAULT false
+  )
+ $ddl$;
+ EXECUTE 'ALTER TABLE rmg_private.profile_name_control_v1 ENABLE ROW LEVEL SECURITY';
+ EXECUTE 'REVOKE ALL ON rmg_private.profile_name_control_v1 FROM PUBLIC, anon, authenticated';
+ EXECUTE 'INSERT INTO rmg_private.profile_name_control_v1(singleton,enabled) VALUES(true,false)';
+ EXECUTE $ddl$
+  CREATE FUNCTION rmg_private.require_profile_name_v1() RETURNS void
+  LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path='' AS $fn$
+  BEGIN
+   IF NOT COALESCE((SELECT enabled FROM rmg_private.profile_name_control_v1 WHERE singleton),false) THEN
+    RAISE EXCEPTION 'Unavailable' USING ERRCODE='P5030';
+   END IF;
+  END $fn$
+ $ddl$;
+ EXECUTE 'REVOKE ALL ON FUNCTION rmg_private.require_profile_name_v1() FROM PUBLIC,anon,authenticated';
+
  EXECUTE $ddl$
   CREATE TABLE rmg_private.profile_name_admin_v1 (
    guide_id uuid PRIMARY KEY REFERENCES public.guides(id),
@@ -93,6 +115,9 @@ BEGIN
  LANGUAGE plpgsql SECURITY DEFINER SET search_path='' AS $fn$
  DECLARE actor uuid:=rmg_private.require_actor(); gid uuid; name_value text; prior text;
  BEGIN
+  -- SHARE conflicts with feature-gate disable, allowing in-flight writes to finish first.
+  PERFORM 1 FROM rmg_private.profile_name_control_v1 WHERE singleton AND enabled FOR SHARE;
+  IF NOT FOUND THEN RAISE EXCEPTION 'Unavailable' USING ERRCODE='P5030'; END IF;
   gid:=rmg_private.resolve_guide(p_jurisdiction,p_source_id);
   PERFORM 1 FROM public.guides WHERE id=gid FOR UPDATE;
   IF NOT EXISTS(SELECT 1 FROM public.guide_claims c WHERE c.guide_id=gid AND c.claimant_id=actor AND c.status='approved') THEN RAISE EXCEPTION 'Not authorized' USING ERRCODE='42501'; END IF;
@@ -111,6 +136,8 @@ BEGIN
  DECLARE actor uuid:=rmg_private.require_actor(); gid uuid; name_value text; prior text; why text:=pg_catalog.btrim(coalesce(p_reason,''),U&'\0009\000A\000B\000C\000D\0020\00A0\1680\2000\2001\2002\2003\2004\2005\2006\2007\2008\2009\200A\2028\2029\202F\205F\3000\FEFF');
  BEGIN
   IF NOT public.is_site_admin() THEN RAISE EXCEPTION 'Not authorized' USING ERRCODE='42501'; END IF;
+  PERFORM 1 FROM rmg_private.profile_name_control_v1 WHERE singleton AND enabled FOR SHARE;
+  IF NOT FOUND THEN RAISE EXCEPTION 'Unavailable' USING ERRCODE='P5030'; END IF;
   IF char_length(why) NOT BETWEEN 1 AND 500 OR why ~ '[[:cntrl:]]' THEN RAISE EXCEPTION 'Invalid correction reason' USING ERRCODE='22023'; END IF;
   gid:=rmg_private.resolve_guide(p_jurisdiction,p_source_id);
   PERFORM 1 FROM public.guides WHERE id=gid FOR UPDATE;
@@ -130,6 +157,7 @@ BEGIN
  DECLARE result jsonb;
  BEGIN
   IF NOT COALESCE((SELECT enabled FROM rmg_private.launch_control WHERE singleton),false) THEN RAISE EXCEPTION 'Unavailable' USING ERRCODE='P5030'; END IF;
+  PERFORM rmg_private.require_profile_name_v1();
   IF p_jurisdiction IS NULL OR p_jurisdiction NOT IN ('OR','WA') OR p_source_ids IS NULL OR cardinality(p_source_ids)>100 OR
      EXISTS(SELECT 1 FROM unnest(p_source_ids) s WHERE s IS NULL OR length(s) NOT BETWEEN 1 AND 100) THEN
    RAISE EXCEPTION 'Invalid profile names request' USING ERRCODE='22023';
@@ -150,6 +178,7 @@ BEGIN
  LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path='' AS $fn$
  DECLARE actor uuid:=rmg_private.require_actor(); gid uuid; result jsonb;
  BEGIN
+  PERFORM rmg_private.require_profile_name_v1();
   gid:=rmg_private.resolve_guide(p_jurisdiction,p_source_id);
   IF NOT EXISTS(SELECT 1 FROM public.guide_claims c WHERE c.guide_id=gid AND c.claimant_id=actor AND c.status='approved') THEN RAISE EXCEPTION 'Not authorized' USING ERRCODE='42501'; END IF;
   SELECT jsonb_build_object('name',CASE WHEN d.preferred_name_by=actor THEN d.preferred_name ELSE NULL END,'overridden',a.preferred_name IS NOT NULL) INTO result
@@ -163,6 +192,7 @@ BEGIN
  DECLARE actor uuid:=rmg_private.require_actor(); gid uuid; result jsonb;
  BEGIN
   IF NOT public.is_site_admin() THEN RAISE EXCEPTION 'Not authorized' USING ERRCODE='42501'; END IF;
+  PERFORM rmg_private.require_profile_name_v1();
   gid:=rmg_private.resolve_guide(p_jurisdiction,p_source_id);
   SELECT jsonb_build_object('captain_name',d.preferred_name,'captain_name_active',coalesce(d.preferred_name IS NOT NULL AND EXISTS(SELECT 1 FROM public.guide_claims c WHERE c.guide_id=gid AND c.claimant_id=d.preferred_name_by AND c.status='approved'),false),'admin_name',a.preferred_name,
    'history',coalesce((SELECT jsonb_agg(jsonb_build_object('origin',h.origin,'old_name',h.old_name,'new_name',h.new_name,'reason',h.reason,'created_at',h.created_at) ORDER BY h.id DESC) FROM (SELECT id,origin,old_name,new_name,reason,created_at FROM rmg_private.profile_name_audit_v1 WHERE guide_id=gid ORDER BY id DESC LIMIT 50) h),'[]'::jsonb)) INTO result

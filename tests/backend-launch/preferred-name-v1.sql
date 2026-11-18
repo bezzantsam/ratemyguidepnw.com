@@ -9,6 +9,8 @@ SELECT set_config('test.guide_hash',(SELECT md5(string_agg(row_to_json(x)::text,
 SELECT set_config('test.claim_hash',(SELECT md5(string_agg(row_to_json(x)::text,',' ORDER BY id)) FROM public.guide_claims x),false);
 SELECT set_config('test.review_hash',(SELECT md5(string_agg(row_to_json(x)::text,',' ORDER BY id)) FROM public.reviews x),false);
 SELECT set_config('test.map_hash',(SELECT md5(string_agg(row_to_json(x)::text,',' ORDER BY jurisdiction,source_id)) FROM rmg_private.guide_identity_map x),false);
+SELECT public.fixture_assert((SELECT enabled IS FALSE FROM rmg_private.profile_name_control_v1 WHERE singleton),'name-specific database gate defaults off');
+UPDATE rmg_private.profile_name_control_v1 SET enabled=true WHERE singleton;
 SET ROLE anon;
 DO $$BEGIN
  BEGIN PERFORM public.rmg_profile_names_v1('OR',ARRAY['fixture-1']); RAISE EXCEPTION 'disabled read accepted'; EXCEPTION WHEN SQLSTATE 'P5030' THEN NULL; END;
@@ -17,7 +19,42 @@ DO $$BEGIN
  BEGIN PERFORM * FROM rmg_private.profile_name_audit_v1; RAISE EXCEPTION 'audit leaked'; EXCEPTION WHEN insufficient_privilege THEN NULL; END;
 END$$;
 RESET ROLE;
+UPDATE rmg_private.profile_name_control_v1 SET enabled=false WHERE singleton;
 UPDATE rmg_private.launch_control SET enabled=true WHERE singleton;
+-- Base reviews remain available with preferred names independently off.
+SET ROLE anon;
+SELECT public.fixture_assert((public.rmg_review_write_availability('OR','fixture-4')->>'available')::boolean,'base review readiness is unaffected by closed name gate');
+DO $$BEGIN
+ BEGIN PERFORM public.rmg_profile_names_v1('OR',ARRAY['fixture-1']); RAISE EXCEPTION 'public names bypassed closed name gate'; EXCEPTION WHEN SQLSTATE 'P5030' THEN NULL; END;
+ BEGIN PERFORM rmg_private.profile_names_v1('OR',ARRAY['fixture-1']); RAISE EXCEPTION 'private names bypassed closed name gate'; EXCEPTION WHEN SQLSTATE 'P5030' THEN NULL; END;
+ BEGIN UPDATE rmg_private.profile_name_control_v1 SET enabled=true; RAISE EXCEPTION 'anon toggled name gate'; EXCEPTION WHEN insufficient_privilege THEN NULL; END;
+END$$;
+RESET ROLE;
+BEGIN;
+SET LOCAL ROLE authenticated;
+SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000003',true);
+SELECT public.fixture_assert(public.rmg_submit_review('OR','fixture-4',5::smallint,NULL,NULL,'Synthetic test',true,'none')->>'status'='pending','base review write works with name gate off');
+ROLLBACK;
+SET ROLE authenticated;
+SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000005',false);
+DO $$BEGIN
+ BEGIN PERFORM public.rmg_set_profile_name_v1('OR','fixture-1','Scott'); RAISE EXCEPTION 'public owner write bypassed closed name gate'; EXCEPTION WHEN SQLSTATE 'P5030' THEN NULL; END;
+ BEGIN PERFORM rmg_private.set_profile_name_v1('OR','fixture-1','Scott'); RAISE EXCEPTION 'private owner write bypassed closed name gate'; EXCEPTION WHEN SQLSTATE 'P5030' THEN NULL; END;
+ BEGIN PERFORM public.rmg_own_profile_name_v1('OR','fixture-1'); RAISE EXCEPTION 'public owner read bypassed closed name gate'; EXCEPTION WHEN SQLSTATE 'P5030' THEN NULL; END;
+ BEGIN PERFORM rmg_private.own_profile_name_v1('OR','fixture-1'); RAISE EXCEPTION 'private owner read bypassed closed name gate'; EXCEPTION WHEN SQLSTATE 'P5030' THEN NULL; END;
+ BEGIN UPDATE rmg_private.profile_name_control_v1 SET enabled=true; RAISE EXCEPTION 'authenticated toggled name gate'; EXCEPTION WHEN insufficient_privilege THEN NULL; END;
+ BEGIN PERFORM rmg_private.require_profile_name_v1(); RAISE EXCEPTION 'internal gate helper exposed'; EXCEPTION WHEN insufficient_privilege THEN NULL; END;
+END$$;
+SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000004',false);
+DO $$BEGIN
+ BEGIN PERFORM public.rmg_admin_set_profile_name_v1('OR','fixture-1','Scott','test'); RAISE EXCEPTION 'public admin write bypassed closed name gate'; EXCEPTION WHEN SQLSTATE 'P5030' THEN NULL; END;
+ BEGIN PERFORM rmg_private.admin_set_profile_name_v1('OR','fixture-1','Scott','test'); RAISE EXCEPTION 'private admin write bypassed closed name gate'; EXCEPTION WHEN SQLSTATE 'P5030' THEN NULL; END;
+ BEGIN PERFORM public.rmg_profile_name_review_v1('OR','fixture-1'); RAISE EXCEPTION 'public admin read bypassed closed name gate'; EXCEPTION WHEN SQLSTATE 'P5030' THEN NULL; END;
+ BEGIN PERFORM rmg_private.profile_name_review_v1('OR','fixture-1'); RAISE EXCEPTION 'private admin read bypassed closed name gate'; EXCEPTION WHEN SQLSTATE 'P5030' THEN NULL; END;
+END$$;
+RESET ROLE;
+SELECT public.fixture_assert((SELECT count(*)=0 FROM rmg_private.profile_name_audit_v1),'closed name gate created no name audit rows');
+UPDATE rmg_private.profile_name_control_v1 SET enabled=true WHERE singleton;
 SET ROLE anon;
 SELECT public.fixture_assert(public.rmg_profile_names_v1('OR',ARRAY['fixture-1','missing'])='[]'::jsonb,'unmodified record returns no preferred name');
 SELECT public.fixture_assert(public.rmg_profile_details('OR','fixture-1') IS NULL,'legacy profile details remain hidden before any declaration');

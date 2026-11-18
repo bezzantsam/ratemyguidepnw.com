@@ -31,6 +31,7 @@ if ! /usr/bin/grep -q 'preferred_v1_injected' "$tmp/injected.log"; then echo 'Un
 "${ps[@]}" -q -c "SELECT public.fixture_assert(to_regclass('rmg_private.profile_name_admin_v1') IS NULL AND to_regclass('rmg_private.profile_name_audit_v1') IS NULL AND NOT EXISTS(SELECT 1 FROM pg_attribute WHERE attrelid='rmg_private.profile_declarations'::regclass AND attname='details_declared' AND NOT attisdropped),'failure rolls back additive schema');"
 "${ps[@]}" -q -1 -f "$root/supabase/review-candidates/08-preferred-name-v1.sql"
 "${ps[@]}" -q -f "$root/tests/backend-launch/preferred-name-v1.sql"
+"$root/tests/backend-launch/preferred-name-gate-race.sh" "$tmp"
 "${ps[@]}" -q -1 -f "$root/supabase/review-candidates/08-preferred-name-v1-disable.sql"
 "${ps[@]}" -q -f "$root/tests/backend-launch/preferred-name-disable-v1.sql"
 printf 'PASS preferred-name-v1 synthetic PostgreSQL tests; evidence %s\n' "$tmp"
