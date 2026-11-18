@@ -31,6 +31,11 @@ test('ordinary production data contains no synthetic discovery or unapproved con
   assert.equal(await page.getByLabel('Source-listed fishing method').count(),0);
   assert.doesNotMatch(await page.content(),/Pending Secret Species|Rejected Secret Method|Synthetic test fixture|Fixture Source Outfit|Synthetic Captain Alias|Unapproved editorial preview|__editorial_visual__/);
   for(const marker of pendingMarkers)assert.ok(!(await page.content()).includes(marker),'pending research leaked into directory HTML');
+  await page.goto(`${origin}/write-review`,{waitUntil:'domcontentloaded'});
+  await page.getByText('Review submissions are currently unavailable.',{exact:false}).waitFor();
+  await page.getByRole('searchbox',{name:'Captain, business, operating name, or registration'}).fill('OG.0002254');
+  assert.doesNotMatch(await page.locator('.guide-result').first().getAttribute('href'),/intent=review/);
+  await page.goto(`${origin}/guides`,{waitUntil:'domcontentloaded'});
   function files(dir){return readdirSync(dir,{withFileTypes:true}).flatMap(e=>e.isDirectory()?files(join(dir,e.name)):[join(dir,e.name)])}
   for(const file of [...files('.next/static'),...files('.next/server')])if(/\.(js|json|html|rsc|body)$/.test(file)){
    const body=readFileSync(file,'utf8');assert.doesNotMatch(body,/Pending Secret Species|Rejected Secret Method|Fixture Source Outfit|Synthetic Captain Alias|Unapproved editorial preview|__editorial_visual__|rc-secret-canary-27f7bf9015|BATCH13_CONSOLIDATED_POPULATION/);

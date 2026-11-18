@@ -45,12 +45,16 @@ test('synthetic browser connects mapped review, claim, moderation and published 
  }
  try{
   const context=await contextFor(reviewer,{width:1280,height:800}),page=await context.newPage();page.setDefaultTimeout(15000);page.on('pageerror',e=>state.errors.push(e.message));
-  await page.goto(`${origin}/guides/og-0002254?intent=review#write-review`,{waitUntil:'domcontentloaded'});
+  await page.goto(`${origin}/write-review`,{waitUntil:'domcontentloaded'});
+  await page.getByRole('heading',{name:'Rate your guide'}).waitFor();
+  await page.getByRole('searchbox',{name:'Captain, business, operating name, or registration'}).fill('OG.0002254');
+  await page.locator('.guide-result').first().click();
+  await page.waitForURL(`${origin}/guides/og-0002254?intent=review#write-review`);
   await page.getByText('No published reviews yet.').waitFor();
   await page.getByLabel('Overall quality').selectOption('5');await page.getByLabel('Your relationship to this guide or business').selectOption('none');await page.getByLabel('Your experience').fill('A good firsthand trip.');await page.getByLabel('I personally took this trip.').check();
   await page.getByRole('button',{name:'Submit review'}).click();await page.getByText('Your review is pending. It is not on the public page.').waitFor();
   assert.equal(state.review.intensity,null);assert.equal(state.review.wouldBookAgain,null);assert.equal(state.review.sourceId,'OG.0002254');
-  await page.getByLabel('Your name').fill('Fixture Captain');await page.getByLabel('Your connection to this listing').fill('I operate the guide business shown on this listing.');await page.getByRole('button',{name:'Submit claim request'}).click();await page.getByText('Your claim request is pending review.').waitFor();
+  await page.getByText('Are you the captain? Request this listing').click();await page.getByLabel('Your name').fill('Fixture Captain');await page.getByLabel('Your connection to this listing').fill('I operate the guide business shown on this listing.');await page.getByRole('button',{name:'Submit claim request'}).click();await page.getByText('Your claim request is pending review.').waitFor();
   await page.getByRole('button',{name:'Copy review request link'}).click();assert.equal(await page.evaluate(()=>window.__fixtureCopied),'https://ratemyguidepnw.com/guides/og-0002254?intent=review#write-review');
   const admin=await contextFor(operator,{width:1280,height:800}),queue=await admin.newPage();queue.on('pageerror',e=>state.errors.push(e.message));await queue.goto(`${origin}/admin`,{waitUntil:'domcontentloaded'});await queue.getByText('Fixture Guide',{exact:false}).waitFor();
   await queue.getByLabel('Decision note').fill('Independent synthetic review evidence checked.');await queue.getByRole('button',{name:'Approve'}).click();await queue.getByText('Decision confirmed: published.').waitFor();
@@ -58,6 +62,7 @@ test('synthetic browser connects mapped review, claim, moderation and published 
   await page.getByRole('button',{name:'Copy review link'}).click();assert.equal(await page.evaluate(()=>window.__fixtureCopied),`https://ratemyguidepnw.com/guides/og-0002254#review-${reviewId}`);
   await page.setViewportSize({width:390,height:844});await page.reload({waitUntil:'domcontentloaded'});await page.getByText('A good firsthand trip.').waitFor();assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
   if(process.env.BROWSER_SCREENSHOT_DIR){mkdirSync(process.env.BROWSER_SCREENSHOT_DIR,{recursive:true});await page.screenshot({path:join(process.env.BROWSER_SCREENSHOT_DIR,'synthetic-launch-mobile.png'),fullPage:true})}
+  await page.goto(`${origin}/write-review`,{waitUntil:'domcontentloaded'});await page.getByRole('searchbox',{name:'Captain, business, operating name, or registration'}).fill('OG.0002254');await page.locator('.guide-result').first().click();await page.waitForURL(`${origin}/guides/og-0002254?intent=review#write-review`);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
   assert.deepEqual(state.blocked,[]);assert.deepEqual(state.errors,[]);await admin.close();await context.close();
  }finally{await browser.close()}
 });
