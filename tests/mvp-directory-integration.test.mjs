@@ -134,6 +134,17 @@ test('Sam’s corrections find the existing Rowe, Menefee and Wolfe records',()=
  assert.equal(url.parseDirectoryState('?state=Oregon&species=Halibut',entries).species,'Halibut');
  assert.equal(url.parseDirectoryState('?state=Washington&species=Halibut',entries).species,'Halibut');
  assert.ok(matches({species:'Halibut',state:'Washington'}).includes('wa-126'));
+ for(const [query,id] of [['tuna',walter.id],['bottom fishing',walter.id],['stripers',scott.id],['crabbing','OG.0000607']]){
+  assert.equal(matches({query,state:'Oregon'}).filter(value=>value===id).length,1,query);
+  assert.equal(matches({query,state:'Washington'}).includes(id),false,query);
+ }
+ assert.equal(matches({query:'albacore'}).includes(walter.id),false);
+ assert.equal(matches({query:'Newport tuna'}).includes(walter.id),false);
+ assert.equal(matches({query:'Coquille River stripers'}).includes(scott.id),false);
+ assert.equal(matches({query:'stripers',advertisedWater:'Umpqua River'}).includes(scott.id),false);
+ assert.equal(matches({species:'Striped bass',advertisedWater:'Umpqua River'}).includes(scott.id),false);
+ assert.equal(matches({query:'Astoria crabbing'}).includes('OG.0000607'),false);
+ assert.ok(matches({species:'Tuna',method:'Bottom fishing',state:'Oregon'}).includes(walter.id));
 });
 
 test('editorial corrections preserve all original profiles, IDs, fields and unrelated attributes',()=>{
@@ -144,8 +155,12 @@ test('editorial corrections preserve all original profiles, IDs, fields and unre
  for(let i=0;i<before.length;i++){
   const original=plain(before[i]),updated=plain(after[i]);
   if(original.id==='OG.0003297'){
-   assert.deepEqual(updated.advertisedSpecies,[...original.advertisedSpecies,'Halibut']);
+   assert.deepEqual(updated.advertisedSpecies,[...original.advertisedSpecies,'Halibut','Tuna']);
+   assert.deepEqual(updated.advertisedMethods,[...original.advertisedMethods,'Bottom fishing']);
+   assert.deepEqual(updated.editorialFishing,['Halibut','Tuna','Bottom fishing'].map(value=>({value,attributedTo:'Sam'})));
    updated.advertisedSpecies=original.advertisedSpecies;
+   updated.advertisedMethods=original.advertisedMethods;
+   delete updated.editorialFishing;
   }
   if(original.id==='OG.0003348'){
    assert.deepEqual(updated.searchAliases,[...original.searchAliases,'Dre Menefee']);
@@ -153,7 +168,17 @@ test('editorial corrections preserve all original profiles, IDs, fields and unre
    delete updated.editorialSearchAliases;
    updated.searchAliases=original.searchAliases;
   }
+  if(original.id==='OG.0000607'){
+   assert.deepEqual(updated.advertisedSpecies,[...original.advertisedSpecies,'Crabbing']);
+   assert.deepEqual(updated.editorialFishing,[{value:'Crabbing',attributedTo:'Sam'}]);
+   updated.advertisedSpecies=original.advertisedSpecies;
+   delete updated.editorialFishing;
+  }
   if(original.id==='OG.0000359'){
+   assert.deepEqual(updated.advertisedSpecies,[...original.advertisedSpecies,'Striped bass']);
+   assert.deepEqual(updated.editorialFishing,[{value:'Striped bass',attributedTo:'Sam'}]);
+   updated.advertisedSpecies=original.advertisedSpecies;
+   delete updated.editorialFishing;
    assert.deepEqual(updated.searchAliases,[...original.searchAliases,'Scott Wolfe']);
    assert.deepEqual(updated.editorialSearchAliases,[{value:'Scott Wolfe',attributedTo:'Sam'}]);
    delete updated.editorialSearchAliases;
@@ -166,21 +191,30 @@ test('editorial corrections preserve all original profiles, IDs, fields and unre
 test('editorial attribution and exact identity binding fail closed',()=>{
  const {editorial,directory}=actualDirectory();
  const facts=JSON.parse(read('lib/editorial-guide-corrections.json'));
- assert.equal(facts.length,3);
+ assert.equal(facts.length,7);
  for(const fact of facts){
   assert.equal(fact.provenance.type,'user_editorial');assert.equal(fact.provenance.attributed_to,'Sam');
-  assert.equal(fact.provenance.recorded_on,fact.guide_id==='OG.0000359'?'2026-11-18':'2026-11-17');
-  assert.match(fact.provenance.reference,fact.guide_id==='OG.0000359'?/\/issues\/124$/:/docs\/editorial\/guide-search-corrections-20261117\.md$/);
+  if(fact.provenance.recorded_on==='2026-11-19'){
+   const [path,anchor]=fact.provenance.reference.split('#');
+   assert.equal(path,'/sources/guide-fishery-editorial-20261119.html');
+   const note=read('public'+path);
+   assert.equal(anchor,fact.guide_id.toLowerCase().replace('.','-'));
+   assert.ok(note.includes('id="'+anchor+'"'));
+  }else{
+   assert.equal(fact.provenance.recorded_on,fact.guide_id==='OG.0000359'?'2026-11-18':'2026-11-17');
+   assert.match(fact.provenance.reference,fact.guide_id==='OG.0000359'?/\/issues\/124$/:/docs\/editorial\/guide-search-corrections-20261117\.md$/);
+  }
   assert.equal('url' in fact.provenance,false,'no operator URL is invented');
   const guide=directory.getDirectoryEntry(fact.guide_id);
   assert.equal(editorial.editorialGuideCorrections(guide,[fact]).length,1);
   for(const changed of [
    {...fact,guide_id:'OG.9999999'}, {...fact,expected_name:'Another Person'},
    {...fact,expected_business:'Another Business'}, {...fact,status:'pending'},
-   {...fact,kind:'method'}, {...fact,provenance:{...fact.provenance,type:'operator_site'}},
+   {...fact,kind:'trip_type'}, {...fact,provenance:{...fact.provenance,type:'operator_site'}},
    {...fact,provenance:{...fact.provenance,attributed_to:''}},
    {...fact,provenance:{...fact.provenance,recorded_on:'2026-02-30'}},
    {...fact,provenance:{...fact.provenance,reference:'https://operator.example/'}},
+   {...fact,provenance:{...fact.provenance,reference:'/sources/guide-fishery-editorial-20261119.html#og-9999999'}},
   ])assert.equal(editorial.editorialGuideCorrections(guide,[changed]).length,0);
  }
  assert.equal(editorial.editorialGuideCorrections({id:'OG.0001200',name:'Toby Wyatt',business:'Reel Time Fishing LLC'},facts).length,0);

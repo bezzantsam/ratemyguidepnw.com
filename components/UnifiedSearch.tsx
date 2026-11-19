@@ -125,7 +125,10 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
   </div>
   <div className="guide-results">{filtered.slice((current-1)*size,current*size).map(g=>{
    const {species:targets,methods,trips,waters}=directoryFisheryFacets(g,state);
-   const labels=[...new Set([...targets,...methods,...trips])];
+   const editorial=(g.editorialFishing??[]).filter(fact=>[...targets,...methods].includes(fact.value));
+   const labels=[...new Set([...targets,...methods,...trips])].filter(label=>
+    !editorial.some(fact=>fact.value===label)||g.fisheryOfferings?.some(offer=>
+     offer.value===label||offer.relationship?.species===label||offer.relationship?.method===label));
    return <div className="saved-guide-row" key={g.id}>
     <Link className="guide-result" href={{pathname:g.href,query:reviewMode&&reviewEnabled?{returnTo:resultsUrl,intent:'review'}:{returnTo:resultsUrl},hash:reviewMode&&reviewEnabled?'write-review':undefined}}>
      <div className="rating-tile"><strong>—</strong><span>{reviewEnabled?'View reviews':'Reviews unavailable'}</span></div>
@@ -141,6 +144,7 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
       {labels.length>0&&
         <p className="guide-meta">Fishing targets and trips: {labels.map(label=>
           g.businessAdvertisedOfferings?.includes(label) ? `${label} (operator team)` : label).join(' · ')}</p>}
+      {editorial.map(fact=><p className="guide-meta" key={fact.value}>Editorial fishing note supplied by {fact.attributedTo}: {fact.value}</p>)}
       {waters.length>0&&<p className="guide-meta">Advertised waters (source-linked): {waters.slice(0,3).join(' · ')}{waters.length>3?' · + more':''}</p>}
       <p className="guide-meta">{g.source==='Oregon registry'?'Imported registration zones':'Imported directory areas / notes'}: {g.areas.slice(0,3).join(' · ')||'Not specified'}{g.areas.length>3?' · + more':''}</p>
       <p className="guide-submeta">Imported source listing · {reviewEnabled?'See profile for reviews':'Review data unavailable'} · Current credentials not independently checked</p>

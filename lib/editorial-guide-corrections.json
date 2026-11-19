@@ -40,5 +40,61 @@
       "recorded_on": "2026-11-18",
       "reference": "https://github.com/bezzantsam/ratemyguidepnw.com/issues/124"
     }
+  },
+  {
+    "guide_id": "OG.0000359",
+    "expected_name": "Douglas Wolfe",
+    "expected_business": "Douglas Scott Wolfe LLC",
+    "kind": "species",
+    "value": "Striped bass",
+    "status": "approved",
+    "provenance": {
+      "type": "user_editorial",
+      "attributed_to": "Sam",
+      "recorded_on": "2026-11-19",
+      "reference": "/sources/guide-fishery-editorial-20261119.html#og-0000359"
+    }
+  },
+  {
+    "guide_id": "OG.0003297",
+    "expected_name": "Walter Rowe",
+    "expected_business": "Reel Time Fishing Adventures",
+    "kind": "species",
+    "value": "Tuna",
+    "status": "approved",
+    "provenance": {
+      "type": "user_editorial",
+      "attributed_to": "Sam",
+      "recorded_on": "2026-11-19",
+      "reference": "/sources/guide-fishery-editorial-20261119.html#og-0003297"
+    }
+  },
+  {
+    "guide_id": "OG.0003297",
+    "expected_name": "Walter Rowe",
+    "expected_business": "Reel Time Fishing Adventures",
+    "kind": "method",
+    "value": "Bottom fishing",
+    "status": "approved",
+    "provenance": {
+      "type": "user_editorial",
+      "attributed_to": "Sam",
+      "recorded_on": "2026-11-19",
+      "reference": "/sources/guide-fishery-editorial-20261119.html#og-0003297"
+    }
+  },
+  {
+    "guide_id": "OG.0000607",
+    "expected_name": "Mike Fisenko",
+    "expected_business": "Mikey's Fishing Adventures LLC",
+    "kind": "species",
+    "value": "Crabbing",
+    "status": "approved",
+    "provenance": {
+      "type": "user_editorial",
+      "attributed_to": "Sam",
+      "recorded_on": "2026-11-19",
+      "reference": "/sources/guide-fishery-editorial-20261119.html#og-0000607"
+    }
   }
 ]

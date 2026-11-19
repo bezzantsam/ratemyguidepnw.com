@@ -177,12 +177,17 @@ export function filterDirectoryEntries(entries:DirectoryEntry[],filters:Director
      (hasSpecies&&!directorySpeciesLabels(facets.species).includes(filters.species!))||
      (hasMethod&&!facets.methods.includes(filters.method!)))return {entry,score:null};
   if(!portSearch){
-   if(hasWater&&(hasSpecies||hasMethod)){
+   const exactFishery=isKnownFishery(filters.query);
+   if(hasWater&&(hasSpecies||hasMethod||exactFishery)){
     const atWater=sourcedOfferings(entry).filter(item=>inJurisdiction(item,filters.state)&&item.relationship?.waterway===filters.advertisedWater);
-    if(atWater.length&&!atWater.some(item=>{
-     const {species,method}=offeringFacets(item);
+    const editorialMatch=entry.editorialFishing?.some(({value})=>
+     (hasSpecies&&directorySpeciesLabels([value]).includes(filters.species!))||
+     (hasMethod&&filters.method===value)||matchesFisherySearch(filters.query,[value])===true);
+    if((atWater.length||editorialMatch)&&!atWater.some(item=>{
+     const {species,method,trip}=offeringFacets(item);
+     const labels=[species,method,trip].filter((value):value is string=>Boolean(value));
      return (!hasSpecies||Boolean(species&&directorySpeciesLabels([species]).includes(filters.species!)))&&
-      (!hasMethod||filters.method===method);
+      (!hasMethod||filters.method===method)&&(!exactFishery||matchesFisherySearch(filters.query,labels)===true);
     }))return {entry,score:null};
    }
    const match=matchesFisherySearch(filters.query,[...facets.species,...facets.methods,...facets.trips]);
