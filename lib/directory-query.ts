@@ -270,13 +270,13 @@ export function filterDirectoryEntries(entries:DirectoryEntry[],filters:Director
     textSpecies&&directorySpeciesLabels(facets.species).includes(textSpecies)?textSpecies:undefined;
    const pairedMethod=selectedMethod??(textMethod&&facets.methods.some(value=>directoryMethodLabel(value)===textMethod)?textMethod:undefined);
    if(!hasWater&&pairedSpecies&&pairedMethod){
-    // Preserve independent listing facts when the source does not pair either choice.
-    const pairs=sourcedOfferings(entry).filter(item=>inJurisdiction(item,filters.state))
-     .map(offeringFacets).filter(({species,method})=>species&&method);
-    const matchesSpecies=(value:string|undefined)=>Boolean(value&&directorySpeciesLabels([value]).includes(pairedSpecies));
-    const matchesMethod=(value:string|undefined)=>Boolean(value&&directoryMethodLabel(value)===pairedMethod);
-    if(pairs.some(({species,method})=>matchesSpecies(species)||matchesMethod(method))&&
-       !pairs.some(({species,method})=>matchesSpecies(species)&&matchesMethod(method)))return {entry,score:null};
+    // Only entries without in-scope offerings fall back to their flat listing facets.
+    const offerings=sourcedOfferings(entry).filter(item=>inJurisdiction(item,filters.state));
+    if(offerings.length&&!offerings.some(item=>{
+     const {species,method}=offeringFacets(item);
+     return species&&directorySpeciesLabels([species]).includes(pairedSpecies)&&
+      method&&directoryMethodLabel(method)===pairedMethod;
+    }))return {entry,score:null};
    }
    const exactFishery=isKnownFishery(filters.query);
    if(hasWater&&(hasSpecies||hasMethod||exactFishery)){
