@@ -585,7 +585,11 @@
       "Puget Sound"
     ],
     "editorial_status": "approved",
-    "publication_approved": true
+    "publication_approved": true,
+    "relationship": {
+      "species": "Squid",
+      "method": "Squid jigging"
+    }
   },
   {
     "operator": "Tengu Charters",

@@ -270,7 +270,7 @@ export function filterDirectoryEntries(entries:DirectoryEntry[],filters:Director
     const editorialMatch=entry.editorialFishing?.some(({value})=>
      (hasSpecies&&directorySpeciesLabels([value]).includes(filters.species!))||
      (hasMethod&&sameMethod(value))||matchesFisherySearch(filters.query,[value])===true);
-    if((atWater.length||editorialMatch)&&!atWater.some(item=>{
+    if((atWater.length||editorialMatch||hasMethod||knownDirectoryMethod(filters.query))&&!atWater.some(item=>{
      const {species,method,trip}=offeringFacets(item);
      const labels=[species,method,trip].filter((value):value is string=>Boolean(value));
      return (!hasSpecies||Boolean(species&&directorySpeciesLabels([species]).includes(filters.species!)))&&

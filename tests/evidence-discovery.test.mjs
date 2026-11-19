@@ -126,6 +126,14 @@ test('charter evidence stays outside guide attribution and matches the same sour
  assert.deepEqual(find('black cod'),find('sablefish'));
  assert.deepEqual(find('squid jigging',{state:'Washington'}),['Tengu Charters','Seattle Nautic']);
  assert.deepEqual(find('Edmonds squidding'),['Tengu Charters']);
+ assert.deepEqual(find('',{state:'Washington',species:'Squid',method:'Squid jigging'}),['Seattle Nautic']);
+ assert.deepEqual(find('Edmonds squidding',{state:'Washington',method:'Squid jigging'}),[]);
+ assert.deepEqual(find('Seattle squid',{state:'Washington',method:'Squid jigging'}),['Seattle Nautic']);
+ assert.deepEqual(find('squid',{method:'Jigging'}),[]);
+ const squid=raw.find(row=>row.operator==='Seattle Nautic'&&row.kind==='species'&&row.value==='Squid');
+ const {relationship,...speciesOnly}=squid;
+ assert.equal(filterCharterOfferings(approvedCharterOfferings([speciesOnly]),{...filters,method:'Squid jigging'}).length,0);
+ assert.equal(approvedCharterOfferings([{...squid,relationship:{species:'Flounder',method:'Squid jigging'}}]).length,0);
  assert.deepEqual(find('Seattle squid',{state:'Oregon'}),[]);
  assert.deepEqual(find('Newport black cod'),['Yaquina Bay Charters']);
  assert.deepEqual(find('black cod Newport'),['Yaquina Bay Charters']);
@@ -374,13 +382,14 @@ test('method and gear catalog choices require a sourced method even when an alia
   assert.equal(query.filterDirectoryEntries(guides,{...filters,method:parsed.method}).length,0);
   assert.equal(query.filterDirectoryEntries(guides,{...filters,query:term}).length,0);
  }
- const scopedGuide={...guides[0],advertisedWaters:['Fixture Lake','Fixture River'],fisheryOfferings:[
+ const scopedGuide={...guides[0],advertisedWaters:['Fixture Lake','Fixture River','Other Lake'],fisheryOfferings:[
   {kind:'method',value:'Downrigger',state:'OR',relationship:{waterway:'Fixture Lake'}},
   {kind:'method',value:'Trolling',state:'OR',relationship:{waterway:'Fixture River'}},
  ]};
  for(const selection of [{query:'down rigger'},{method:'Downriggers'}]){
   assert.deepEqual(ids(query.filterDirectoryEntries([scopedGuide],{...filters,...selection,advertisedWater:'Fixture Lake'})),['og-test-1']);
   assert.equal(query.filterDirectoryEntries([scopedGuide],{...filters,...selection,advertisedWater:'Fixture River'}).length,0);
+  assert.equal(query.filterDirectoryEntries([scopedGuide],{...filters,...selection,advertisedWater:'Other Lake'}).length,0);
  }
  assert.equal(url.parseDirectoryState('?method=unrecognized-gear',guides).method,'All methods');
  assert.equal(url.parseDirectoryState('?method=Spey+casting',guides).method,'Spey casting');
