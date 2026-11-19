@@ -111,9 +111,13 @@ function isKnownFishery(value:string):boolean {
 }
 export function matchesFisherySearch(query:string,offerings:string[],methods:string[]=offerings):boolean|null {
  const choice=knownDirectoryMethod(query);
- if(choice)return methods.some(value=>directoryMethodLabel(value)===choice.label);
- if(!isKnownFishery(query))return null;
  const label=canonicalFisheryLabel(query);
+ if(choice){
+  const matchesMethod=methods.some(value=>directoryMethodLabel(value)===choice.label);
+  // Typed squid jigging also serves as a longstanding species search alias.
+  if(matchesMethod||label!=='Squid')return matchesMethod;
+ }
+ if(!isKnownFishery(query))return null;
  const accepted=[label,...(broadSpecies.get(label)??[])];
  return offerings.some(value=>accepted.includes(canonicalFisheryLabel(value)));
 }
@@ -267,7 +271,7 @@ export function filterDirectoryEntries(entries:DirectoryEntry[],filters:Director
     const editorialMatch=entry.editorialFishing?.some(({value})=>
      (hasSpecies&&directorySpeciesLabels([value]).includes(filters.species!))||
      (hasMethod&&sameMethod(value))||matchesFisherySearch(filters.query,[value])===true);
-    if((atWater.length||editorialMatch||hasMethod||knownDirectoryMethod(filters.query))&&!atWater.some(item=>{
+    if((atWater.length||editorialMatch||hasMethod||(knownDirectoryMethod(filters.query)&&canonicalFisheryLabel(filters.query)!=='Squid'))&&!atWater.some(item=>{
      const {species,method,trip}=offeringFacets(item);
      const labels=[species,method,trip].filter((value):value is string=>Boolean(value));
      return (!hasSpecies||Boolean(species&&directorySpeciesLabels([species]).includes(filters.species!)))&&
