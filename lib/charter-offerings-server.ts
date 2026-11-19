@@ -30,6 +30,12 @@ export function approvedCharterOfferings(input: unknown): CharterOffering[] {
         !Array.isArray(waters)||port_aliases!==undefined)) continue;
     if (named_guide!==undefined&&(scope!=='charter_operator_only'||typeof named_guide!=='string'||!named_guide.trim())) continue;
     let details: Pick<CharterOffering, 'species' | 'method' | 'trip' | 'waterway'> = kind==='method'?{method:value}:{species:value};
+    if (kind === 'species' && relationship !== undefined) {
+      if (!relationship || typeof relationship !== 'object' ||
+          !('species' in relationship) || relationship.species !== value ||
+          !('method' in relationship) || typeof relationship.method !== 'string' || !relationship.method.trim()) continue;
+      details.method = relationship.method;
+    }
     if (kind === 'trip_type') {
       if (!relationship || typeof relationship !== 'object' ||
           !('species' in relationship) || typeof relationship.species !== 'string' || !relationship.species.trim() ||

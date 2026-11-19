@@ -1,3 +1,4 @@
+import * as fishingCatalog from '../lib/captain-fishing/catalog.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -12,7 +13,7 @@ function load(path,dependencies={}){
 }
 const evidence=load('lib/guide-attributes.ts',{'./guide-evidence-holds.json':JSON.parse(read('lib/guide-evidence-holds.json'))});
 const {approvedAttributes}=evidence;
-const query=load('lib/directory-query.ts');
+const query=load('lib/directory-query.ts',{'./captain-fishing/catalog.mjs':fishingCatalog});
 const url=load('lib/directory-url.ts',{'./directory-query':query});
 const fixture=JSON.parse(read('tests/fixtures/discovery-attributes.json'));
 const known=new Set(['OG.0000047','OG.0000050','OG.0001116','OG.0000782','OG.0001224','OG.0001881']);
@@ -51,7 +52,7 @@ test('specific species do not match broad labels, and same business does not mer
  assert.equal(state.species,'Salmon');assert.equal(state.method,'Fly fishing');assert.equal(state.page,1);
  assert.equal(url.safeDirectoryReturn(url.directoryUrl(state)),url.directoryUrl(state));
  const invalid=url.parseDirectoryState('?state=Washington&species=Salmon&method=Fly+fishing',rows);
- assert.equal(invalid.species,'All species');assert.equal(invalid.method,'All methods');
+ assert.equal(invalid.species,'All species');assert.equal(invalid.method,'Fly fishing');
  assert.equal(url.parseDirectoryState('?species=Salmon&species=Chinook+Salmon',rows).species,'All species');
 });
 test('only explicitly provided relationships survive; malformed relationships are rejected',()=>{
@@ -125,6 +126,12 @@ test('charter evidence stays outside guide attribution and matches the same sour
  assert.deepEqual(find('black cod'),find('sablefish'));
  assert.deepEqual(find('squid jigging',{state:'Washington'}),['Tengu Charters','Seattle Nautic']);
  assert.deepEqual(find('Edmonds squidding'),['Tengu Charters']);
+ assert.deepEqual(find('',{state:'Washington',species:'Squid',method:'Squid jigging'}),['Tengu Charters','Seattle Nautic']);
+ assert.deepEqual(find('squid',{method:'Jigging'}),[]);
+ const squid=raw.find(row=>row.operator==='Tengu Charters'&&row.kind==='species'&&row.value==='Squid');
+ const {relationship,...speciesOnly}=squid;
+ assert.equal(filterCharterOfferings(approvedCharterOfferings([speciesOnly]),{...filters,method:'Squid jigging'}).length,0);
+ assert.equal(approvedCharterOfferings([{...squid,relationship:{species:'Flounder',method:'Squid jigging'}}]).length,0);
  assert.deepEqual(find('Seattle squid',{state:'Oregon'}),[]);
  assert.deepEqual(find('Newport black cod'),['Yaquina Bay Charters']);
  assert.deepEqual(find('black cod Newport'),['Yaquina Bay Charters']);
@@ -221,7 +228,7 @@ test('production dataset is separate from pending research',()=>{
  for(const path of ['lib/guide-attributes-server.ts','lib/directory.ts','components/GuideEnrichmentPanel.tsx'])assert.doesNotMatch(read(path),/BATCH13_EXTENDED_PROPOSAL|BATCH13_SOURCE_REVIEW/);
 });
 
-test('empty approved coverage hides controls while approved fixtures render them',async()=>{
+test('method catalog stays selectable without coverage and approved fixtures populate species',async()=>{
  const React=(await import('react')).default;
  const {renderToStaticMarkup}=await import('react-dom/server');
  const {createRequire}=await import('node:module');
@@ -236,7 +243,8 @@ test('empty approved coverage hides controls while approved fixtures render them
  vm.runInNewContext(js,{exports,require:name=>name==='@/lib/directory-url'?url:name==='@/lib/directory-query'?query:name==='@/lib/charter-offerings'?charters:name==='@/lib/canonical-share'?canonical:name==='./DirectoryEmptyState'?emptyState:requireNode(name)});
  const base={id:'OG.0000047',name:'Example',business:null,states:['Oregon'],areas:[],advertisedWaters:[],searchAliases:[],href:'/guides/example',source:'Oregon registry'};
  const empty=renderToStaticMarkup(React.createElement(exports.default,{entries:[base]}));
- assert.doesNotMatch(empty,/>Species|Fishing methods/);
+ assert.doesNotMatch(empty,/>Species/);
+ assert.match(empty,/<optgroup label="Methods">/);assert.match(empty,/<optgroup label="Gear">/);
  assert.match(empty,/>1 captain listing</);
  const present=renderToStaticMarkup(React.createElement(exports.default,{entries:[{...base,advertisedSpecies:['Salmon'],advertisedMethods:['Fly fishing']}]}));
  assert.match(present,/>Species/);assert.match(present,/Fishing methods/);
@@ -382,4 +390,43 @@ test('the sourced EJ alias binds to the existing Big Energy profile without intr
  assert.equal(facts[0].kind,'person_name');
  assert.equal(facts[0].value,'EJ');
  assert.equal(facts[0].source.url,'https://bigenergy.fishing/meet-your-guide');
+});
+
+test('method and gear catalog choices require a sourced method even when an alias matches a name or target',()=>{
+ const base={business:null,states:['Oregon'],areas:[],advertisedWaters:[],searchAliases:[]};
+ const guides=[
+  {...base,id:'og-test-1',name:'Rigging Outfit',advertisedMethods:['Trolling','Jigging','Electric reels','Downrigger','Automatic pot puller','Spey casting']},
+  {...base,id:'og-test-2',name:'Electric Reels',advertisedSpecies:['Squid'],advertisedTrips:['Jigging']},
+  {...base,id:'og-test-3',name:'Crab Pots',advertisedMethods:['Crabbing','Squid jigging','Crab ring fishing']},
+ ];
+ const charters=load('lib/charter-offerings.ts',{'./directory-query':query});
+ const offer={operator:'Fixture',state:'Oregon',city:'Newport',sourceUrl:'https://example.com/'};
+ const charterRows=[{...offer,method:'Automatic pot puller'},{...offer,operator:'Electric pot pullers',species:'Crab'}];
+ const filters={state:'All',sourceZone:'All areas',advertisedWater:'All advertised waters',query:''};
+ const ids=rows=>Array.from(rows,row=>row.id);
+ const groups=query.directoryMethodGroups(['Electric reels','Spey casting','Crabbing','Trolling']);
+ assert.ok(groups.methods.includes('Spey casting')&&groups.methods.includes('Crabbing'));
+ assert.equal(groups.methods.filter(x=>x==='Trolling').length,1);
+ assert.ok(groups.gear.includes('Electric fishing reels')&&!groups.methods.includes('Electric reels'));
+ for(const [alias,canonical] of [
+  ['on the troll','Trolling'],['jig fishing','Jigging'],['power-assist reels','Electric fishing reels'],
+  ['down rigger','Downriggers'],['automatic pot pullers','Electric pot pullers'],
+ ]){
+  assert.deepEqual(ids(query.filterDirectoryEntries(guides,{...filters,query:alias})),['og-test-1'],alias);
+  const parsed=url.parseDirectoryState('?method='+encodeURIComponent(alias),guides);
+  assert.equal(parsed.method,canonical);
+  assert.equal(url.parseDirectoryState(url.directoryUrl(parsed).split('?')[1],guides).method,canonical);
+  assert.deepEqual(ids(query.filterDirectoryEntries(guides,{...filters,method:parsed.method})),['og-test-1']);
+ }
+ for(const term of ['electric downrigger','crab pots','Crab rings']){
+  const parsed=url.parseDirectoryState('?method='+encodeURIComponent(term),guides);
+  assert.notEqual(parsed.method,'All methods');
+  assert.equal(query.filterDirectoryEntries(guides,{...filters,method:parsed.method}).length,0);
+  assert.equal(query.filterDirectoryEntries(guides,{...filters,query:term}).length,0);
+ }
+ assert.equal(url.parseDirectoryState('?method=unrecognized-gear',guides).method,'All methods');
+ assert.equal(url.parseDirectoryState('?method=Spey+casting',guides).method,'Spey casting');
+ const selected=url.parseDirectoryState('?method=electric+pot+puller',guides,charterRows);
+ assert.equal(charters.filterCharterOfferings(charterRows,selected).length,1);
+ assert.equal(charters.filterCharterOfferings(charterRows,{...url.DEFAULT_DIRECTORY_STATE,query:'automatic pot puller'})[0]?.method,'Automatic pot puller');
 });

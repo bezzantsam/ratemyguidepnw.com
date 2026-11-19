@@ -1,3 +1,4 @@
+import * as fishingCatalog from '../lib/captain-fishing/catalog.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -5,7 +6,11 @@ import vm from 'node:vm';
 import ts from 'typescript';
 const read=p=>readFileSync(p,'utf8');
 const exports={};
-vm.runInNewContext(ts.transpileModule(read('lib/directory-query.ts'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText,{exports});
+const catalogDependency = name => {
+ if(name==='./captain-fishing/catalog.mjs')return fishingCatalog;
+ throw Error(name);
+};
+vm.runInNewContext(ts.transpileModule(read('lib/directory-query.ts'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText,{exports,require:catalogDependency});
 const filter=exports.filterDirectoryEntries;
 const all={state:'All',sourceZone:'All areas',advertisedWater:'All advertised waters',query:''};
 const rows=[
@@ -62,7 +67,7 @@ test('the public data loader does not import research queues',()=>{
 function loadUrl(){
  const exports={};
  const query={};
- vm.runInNewContext(ts.transpileModule(read('lib/directory-query.ts'),{compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText,{exports:query});
+ vm.runInNewContext(ts.transpileModule(read('lib/directory-query.ts'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText,{exports:query,require:catalogDependency});
  vm.runInNewContext(ts.transpileModule(read('lib/directory-url.ts'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText,{exports,URL,URLSearchParams,require:name=>{if(name==='./directory-query')return query;throw new Error(name)}});
  return exports;
 }
@@ -96,6 +101,7 @@ function actualDirectory(withCorrections=true){
   const module={exports:{}};modules.set(path,module);
   const js=ts.transpileModule(read(path),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020,esModuleInterop:true}}).outputText;
   vm.runInNewContext(js,{module,exports:module.exports,URL,URLSearchParams,Date,Set,Map,require:name=>{
+   if(name==='./captain-fishing/catalog.mjs')return fishingCatalog;
    if(!name.startsWith('./'))throw new Error('unexpected dependency '+name);
    let next='lib/'+name.slice(2);
    if(!next.endsWith('.json'))next+='.ts';

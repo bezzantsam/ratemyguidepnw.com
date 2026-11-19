@@ -3,7 +3,7 @@ import Link from 'next/link';
 import {useEffect,useMemo,useRef,useState} from 'react';
 import {DEFAULT_DIRECTORY_STATE,DIRECTORY_PAGE_SIZE,directoryUrl,parseDirectoryState,type DirectoryState} from '@/lib/directory-url';
 import type {DirectoryEntry} from '@/lib/directory';
-import {directoryEntryInState,directoryFisheryFacets,directorySpeciesLabels,directorySpeciesMenu,filterDirectoryEntries,guideSearchScore,locatedGuidePorts} from '@/lib/directory-query';
+import {directoryEntryInState,directoryMethodGroups,directoryFisheryFacets,directorySpeciesLabels,directorySpeciesMenu,filterDirectoryEntries,guideSearchScore,locatedGuidePorts} from '@/lib/directory-query';
 import {charterPorts,filterCharterOfferings,type CharterOffering} from '@/lib/charter-offerings';
 import {PUBLIC_ORIGIN} from '@/lib/canonical-share';
 import DirectoryEmptyState from './DirectoryEmptyState';
@@ -65,10 +65,10 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
   ...scopedCharters.flatMap(offer=>directorySpeciesLabels(offer.species?[offer.species]:[])),
  ])].sort(),[facets,scopedCharters]);
  const speciesMenu=directorySpeciesMenu(speciesOptions,species);
- const methodOptions=useMemo(()=>[...new Set([
+ const methodGroups=useMemo(()=>directoryMethodGroups([
   ...facets.flatMap(facet=>facet.methods),
   ...scopedCharters.flatMap(offer=>offer.method?[offer.method]:[]),
- ])].sort(),[facets,scopedCharters]);
+ ]),[facets,scopedCharters]);
  const guidePorts=useMemo(()=>locatedGuidePorts(entries),[entries]);
  const matchingCharters=filterCharterOfferings(charters,selection,guidePorts);
  const pages=Math.max(1,Math.ceil(filtered.length/size)),current=Math.min(page,pages);
@@ -106,9 +106,13 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
      </optgroup>)}
     </select>
    </label>}
-   {methodOptions.length>0&&<label>Fishing methods
-    <select ref={methodRef} value={method} onChange={e=>change({method:e.target.value,page:1})}><option>All methods</option>{methodOptions.map(x=><option key={x}>{x}</option>)}</select>
-   </label>}
+   <label>Fishing methods
+    <select ref={methodRef} value={method} onChange={e=>change({method:e.target.value,page:1})}>
+     <option>All methods</option>
+     <optgroup label="Methods">{methodGroups.methods.map(label=><option key={label}>{label}</option>)}</optgroup>
+     <optgroup label="Gear">{methodGroups.gear.map(label=><option key={label}>{label}</option>)}</optgroup>
+    </select>
+   </label>
   </div>
   <p className="muted">Search recognizes common nicknames and small spelling mistakes. Check the captain and business name before choosing a profile.</p>
   <div className="search-actions">

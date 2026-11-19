@@ -33,6 +33,20 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
   // Synthetic approved fixtures exercise filters without publishing candidate research.
   await page.getByText('Synthetic test fixture — not a real offering.').first().waitFor();
   const species=page.getByLabel('Species');const method=page.getByRole('combobox',{name:/^Fishing methods\b/});
+  await page.setViewportSize({width:375,height:812});
+  await page.goto(origin+'/guides?method=automatic+pot+puller',{waitUntil:'domcontentloaded'});
+  await page.getByRole('heading',{name:'No matching guides.'}).waitFor();
+  assert.equal(await method.inputValue(),'Electric pot pullers');
+  assert.equal(new URL(page.url()).searchParams.get('method'),'Electric pot pullers');
+  assert.equal(await method.locator('optgroup[label="Gear"] option').filter({hasText:/^Electric fishing reels$/}).count(),1);
+  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'method filter fits mobile');
+  await method.selectOption('Downriggers');
+  await page.reload({waitUntil:'domcontentloaded'});
+  await page.getByRole('button',{name:'Remove method: Downriggers'}).waitFor();
+  await page.goBack();await page.getByRole('button',{name:'Remove method: Electric pot pullers'}).waitFor();
+  await page.getByRole('button',{name:'Remove method: Electric pot pullers'}).click();
+  assert.equal(await method.inputValue(),'All methods');
+  await page.setViewportSize({width:1280,height:800});
   await species.selectOption({label:'Salmon'});await method.selectOption({label:'Fly fishing'});
   await page.getByRole('link',{name:/John Hanson/}).first().waitFor();
   assert.equal(await page.getByRole('link',{name:/Shea Fisher/}).count(),0,'broad Salmon does not imply Chinook');

@@ -1,3 +1,4 @@
+import * as fishingCatalog from '../../lib/captain-fishing/catalog.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -16,7 +17,7 @@ function load(path, dependencies = {}) {
   return exports;
 }
 const attributes = load('lib/guide-attributes.ts', {'./guide-evidence-holds.json': json('lib/guide-evidence-holds.json')});
-const query = load('lib/directory-query.ts');
+const query = load('lib/directory-query.ts',{'./captain-fishing/catalog.mjs':fishingCatalog});
 const url = load('lib/directory-url.ts', {'./directory-query': query});
 const fixture = json('tests/fixtures/discovery-attributes.json');
 const clone = value => JSON.parse(JSON.stringify(value));

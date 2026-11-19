@@ -566,7 +566,11 @@
     ],
     "editorial_status": "approved",
     "publication_approved": true,
-    "named_guide": "Kyle Hanada"
+    "named_guide": "Kyle Hanada",
+    "relationship": {
+      "species": "Squid",
+      "method": "Squid jigging"
+    }
   },
   {
     "operator": "Seattle Nautic",
@@ -585,7 +589,11 @@
       "Puget Sound"
     ],
     "editorial_status": "approved",
-    "publication_approved": true
+    "publication_approved": true,
+    "relationship": {
+      "species": "Squid",
+      "method": "Squid jigging"
+    }
   },
   {
     "operator": "Tengu Charters",
