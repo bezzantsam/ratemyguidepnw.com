@@ -951,5 +951,99 @@
         "source_type": "operator_site"
       }
     ]
+  },
+  {
+    "guide_id": "OG.0003225",
+    "kind": "method",
+    "value": "Bottom fishing",
+    "source": {
+      "url": "https://portorfordfishingcharters.com/fishing-trips-%26-fees",
+      "reviewed_on": "2026-11-19",
+      "locator": "What we are currently offering gives a dedicated Lingcod/Rock Fish trip.",
+      "source_type": "operator_site"
+    },
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "evidence_scope": "operator_advertises",
+    "offering_scope": "operator_business",
+    "location": {
+      "city": "Port Orford",
+      "state": "OR"
+    },
+    "supporting_sources": [
+      {
+        "url": "https://portorfordfishingcharters.com/",
+        "reviewed_on": "2026-11-19",
+        "locator": "About us identifies Captain Andrew and his role in the charter. The pinned registry names Andrew Perry for the same business and domain.",
+        "source_type": "operator_site"
+      },
+      {
+        "url": "https://portorfordfishingcharters.com/about-us",
+        "reviewed_on": "2026-11-19",
+        "locator": "Exclusive to Port Orford describes the operator's direct ocean launch in Port Orford.",
+        "source_type": "operator_site"
+      }
+    ]
+  },
+  {
+    "guide_id": "OG.0002422",
+    "kind": "method",
+    "value": "Bottom fishing",
+    "source": {
+      "url": "https://greasybeaksflyfishing.com/areas/bandon",
+      "reviewed_on": "2026-11-19",
+      "locator": "Fishing Bandon and the ocean-trip FAQ advertise bottom fish as a target on ocean charters out of Bandon.",
+      "source_type": "operator_site"
+    },
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "evidence_scope": "operator_advertises",
+    "offering_scope": "operator_business",
+    "location": {
+      "city": "Bandon",
+      "state": "OR"
+    },
+    "supporting_sources": [
+      {
+        "url": "https://greasybeaksflyfishing.com/",
+        "reviewed_on": "2026-11-19",
+        "locator": "Why Fish with Greasy Beaks names Eliot Jenkins through the captain label, identifies him as operator, and describes other guides. Registry business and domain match.",
+        "source_type": "operator_site"
+      }
+    ]
+  },
+  {
+    "guide_id": "OG.0000544",
+    "kind": "method",
+    "value": "Bottom fishing",
+    "source": {
+      "url": "https://southcoasttours.net/tours/port-orford-ocean-kayak-fishing-tour/",
+      "reviewed_on": "2026-11-19",
+      "locator": "The named ocean kayak fishing tour lists rockfish, lingcod, cabezon and greenling and gives Port Orford departure.",
+      "source_type": "operator_site"
+    },
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "evidence_scope": "operator_advertises",
+    "offering_scope": "operator_business",
+    "location": {
+      "city": "Port Orford",
+      "state": "OR"
+    },
+    "supporting_sources": [
+      {
+        "url": "https://southcoasttours.net/about-south-coast-tours/",
+        "reviewed_on": "2026-11-19",
+        "locator": "Meet Our Guides names Dave Lacey as Boat Captain, Owner, & Guide. The registry names David Lacey for the same LLC and domain.",
+        "source_type": "operator_site"
+      },
+      {
+        "url": "https://southcoasttours.net/tours/fish-forage-feast/",
+        "reviewed_on": "2026-11-19",
+        "locator": "The named boat trip describes directed rockfish and lingcod fishing before foraging and explicitly gives Port Orford departure.",
+        "source_type": "operator_site",
+        "trip_label": "Fishing and foraging boat trip"
+      }
+    ]
   }
 ]

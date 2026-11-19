@@ -10,6 +10,7 @@ export type CharterOffering = {
   trip?: string;
   waterway?: string;
   sourceUrl: string;
+  sourceLabel?: 'Port authority listing';
   boat?: string;
   businessId?: string;
   portAliases?: string[];
@@ -22,7 +23,7 @@ export function charterPorts(offer: CharterOffering): string[] {
 export function filterCharterOfferings(offerings: CharterOffering[], filters: DirectoryState, guidePorts: string[] = []) {
   if (filters.area !== 'All areas') return [];
   const query = normalizeGuideSearch(filters.query);
-  const portSearch = query ? fisheryAtPort(query, [...guidePorts, ...offerings.flatMap(charterPorts)]) : null;
+  const portSearch = query ? fisheryAtPort(query, [...guidePorts, ...offerings.flatMap(charterPorts)], filters.method, filters.species) : null;
   return offerings.filter(offer => {
     const {operator, city, state, boat, species, method, trip, waterway}=offer;
     if ((filters.state !== 'All' && filters.state !== state) ||

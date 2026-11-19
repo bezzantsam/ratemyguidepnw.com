@@ -3,24 +3,26 @@ import holdData from './guide-evidence-holds.json';
 /** Evidence contract. Approval is required per attribute, never per business. */
 export type AttributeKind='species'|'method'|'trip_type'|'business_name'|'person_name';
 export type EvidenceScope='operator_advertises'|'industry_lists';
-export type AttributeEvidence={url:string;source_type:'operator_site'|'industry_directory'|'third_party_directory';reviewed_on:string;locator:string};
+type SourceType='operator_site'|'industry_directory'|'third_party_directory'|'port_authority'|'state_tourism';
+export type AttributeEvidence={url:string;source_type:SourceType;reviewed_on:string;locator:string;trip_label?:string};
 export type EvidenceAttribute={guide_id:string;kind:AttributeKind;value:string;source:AttributeEvidence;supporting_sources?:AttributeEvidence[];evidence_scope:EvidenceScope;editorial_status:'approved'|'pending'|'rejected';publication_approved:boolean;offering_scope?:'operator_business';location?:{city:string;state:'OR'|'WA';aliases?:string[]};relationship?:{species?:string;method?:string;waterway?:string}};
 const holds=new Set(holdData.held_guides.map(x=>x.guide_id));
 const kinds=new Set(['species','method','trip_type','business_name','person_name']);
 const scopes=new Set(['operator_advertises','industry_lists']);
-const types=new Set(['operator_site','industry_directory','third_party_directory']);
+const guideSourceTypes:readonly string[]=['operator_site','industry_directory','third_party_directory'];
 const norm=(s:string)=>s.normalize('NFKC').trim().toLocaleLowerCase('en-US').replace(/\s+/g,' ');
 const text=(v:unknown):v is string=>typeof v==='string'&&v.trim().length>0&&v.length<=256&&!/[\u0000-\u001f\u007f]/.test(v);
-function validSource(source:unknown):source is AttributeEvidence{
+function validSource(source:unknown, allowedTypes:readonly string[]=guideSourceTypes):source is AttributeEvidence{
  if(!source||typeof source!=='object')return false;
  const s=source as Record<string,unknown>;
- if(!text(s.url)||!text(s.locator)||!text(s.source_type)||!types.has(s.source_type)||!text(s.reviewed_on)||!/^\d{4}-\d{2}-\d{2}$/.test(s.reviewed_on))return false;
+ if(!text(s.url)||!text(s.locator)||!text(s.source_type)||!allowedTypes.includes(s.source_type)||!text(s.reviewed_on)||!/^\d{4}-\d{2}-\d{2}$/.test(s.reviewed_on))return false;
+ if(s.trip_label!==undefined&&(s.source_type!=='operator_site'||!text(s.trip_label)))return false;
  const date=new Date(s.reviewed_on+'T00:00:00Z');
  if(Number.isNaN(date.valueOf())||date.toISOString().slice(0,10)!==s.reviewed_on||s.reviewed_on>new Date().toISOString().slice(0,10))return false;
  try{const url=new URL(s.url);return url.protocol==='https:'&&!!url.hostname&&!url.username&&!url.password}catch{return false}
 }
-export function approvedSource(record: Record<string, unknown>): record is Record<string, unknown> & {source: AttributeEvidence} {
- return record.editorial_status==='approved'&&record.publication_approved===true&&validSource(record.source);
+export function approvedSource(record: Record<string, unknown>, allowedTypes?:readonly SourceType[]): record is Record<string, unknown> & {source: AttributeEvidence} {
+ return record.editorial_status==='approved'&&record.publication_approved===true&&validSource(record.source,allowedTypes);
 }
 function validRelationship(value:unknown,kind:AttributeKind,label:string):boolean{
  if(value===undefined)return true;
@@ -53,7 +55,7 @@ export function approvedAttributes(input:unknown,known:ReadonlySet<string>):Evid
     if(!location||!text(location.city)||(location.state!=='OR'&&location.state!=='WA')||!['species','method','trip_type'].includes(x.kind))return false;
     if(location.aliases!==undefined&&(!Array.isArray(location.aliases)||!location.aliases.every(text)))return false;
    }
-   if(x.supporting_sources!==undefined&&(!Array.isArray(x.supporting_sources)||!x.supporting_sources.every(validSource)))return false;
+   if(x.supporting_sources!==undefined&&(!Array.isArray(x.supporting_sources)||!x.supporting_sources.every(source=>validSource(source))))return false;
    return validRelationship(x.relationship,x.kind as AttributeKind,x.value);
   });
   validGroups.set(groupKey,valid);

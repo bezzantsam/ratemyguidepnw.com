@@ -148,7 +148,7 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
    <h3 id="charter-offerings-title">Charter offerings</h3>
    <ul>{matchingCharters.map(offer=><li key={JSON.stringify([offer.businessId??offer.operator,offer.city,offer.state,offer.boat,offer.trip??offer.species??offer.method,offer.sourceUrl])}>
     <strong>{offer.operator}</strong>{offer.boat&&<> · {offer.boat}</>} · {offer.city}, {offer.state} · {offer.trip??offer.species??offer.method}{offer.boat&&' · By request'}{offer.businessId&&' · Operator team'}
-    {' · '}<a href={offer.sourceUrl} target="_blank" rel="noopener noreferrer" aria-label={`Trip source for ${offer.operator}`}>Trip source ↗</a>
+    {' · '}<a href={offer.sourceUrl} target="_blank" rel="noopener noreferrer" aria-label={`${offer.sourceLabel ?? 'Trip source'} for ${offer.operator}`}>{offer.sourceLabel ?? 'Trip source'} ↗</a>
    </li>)}</ul>
   </section>}
   {!filtered.length&&!matchingCharters.length&&<DirectoryEmptyState entries={entries} selection={selection} onChoose={next=>{change(next);resultsRef.current?.focus()}}/>}

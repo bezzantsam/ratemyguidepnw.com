@@ -31,10 +31,12 @@ export function matchesFisherySearch(query: string, offerings: string[]): boolea
  return fishery ? offerings.some(label=>fishery.includes(normalizeGuideSearch(label))) : null;
 }
 
-export function fisheryAtPort(query: string, cities: string[]) {
+export function fisheryAtPort(query: string, cities: string[], method?: string, species?: string) {
  const search=normalizeGuideSearch(query);
+ const selected=[method,species].map(value=>normalizeGuideSearch(value??'')).find(value=>fisherySearches.has(value));
  for(const city of new Set(cities.flatMap(city=>city.split(' or ')).map(normalizeGuideSearch))){
   const term=search.startsWith(city+' ')?search.slice(city.length+1):search.endsWith(' '+city)?search.slice(0,-city.length-1):'';
+  if(city===search&&selected)return {city,term:selected};
   if(term==='buoy 10')return {city,term:'buoy 10 salmon'};
   if(fisherySearches.has(term))return {city,term};
  }
@@ -112,7 +114,7 @@ export function guideSearchScore(entry:DirectoryEntry,query:string):number|null 
 export function filterDirectoryEntries(entries:DirectoryEntry[],filters:DirectoryFilters,charterCities:string[]=[]):DirectoryEntry[]{
  const portSearch=filters.query.trim() ? fisheryAtPort(filters.query,[
   ...charterCities,...locatedGuidePorts(entries),
- ]) : null;
+ ],filters.method,filters.species) : null;
  return entries.filter(entry=>
   (filters.state==='All'||entry.states.includes(filters.state as 'Oregon'|'Washington'))&&
   (filters.sourceZone==='All areas'||entry.areas.includes(filters.sourceZone))&&

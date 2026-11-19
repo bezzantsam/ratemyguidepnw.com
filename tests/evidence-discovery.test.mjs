@@ -115,7 +115,7 @@ test('charter evidence stays outside guide attribution and matches the same sour
   './approved-charter-offerings.json':raw,'./guide-attributes':evidence
  });
  const {filterCharterOfferings}=load('lib/charter-offerings.ts',{'./directory-query':query});
- assert.equal(charterOfferings.length,19);
+ assert.equal(charterOfferings.length,22);
  assert.equal(approvedCharterOfferings([{...raw[0],guide_id:'wa-122'}]).length,0);
  assert.equal(approvedCharterOfferings([{...raw[0],publication_approved:false}]).length,0);
  assert.equal(approvedCharterOfferings([{...raw[0],source:{...raw[0].source,url:'http://example.com'}}]).length,0);
@@ -141,6 +141,19 @@ test('charter evidence stays outside guide attribution and matches the same sour
  assert.deepEqual(find('Makah Marina bottom fishing'),['Fish Neah Bay']);
  assert.deepEqual(find('bottom fishing La Push Marina',{state:'Washington',method:'Bottom fishing'}),['KYS Outdoor Adventures','Top Notch Ocean Charters']);
  assert.deepEqual(find('La Push halibut',{state:'Oregon'}),[]);
+ for (const term of ['Bandon halibut','Bandon tuna','Bandon bottom fishing']) {
+  assert.deepEqual(find(term),['Prowler Charters'],term);
+ }
+ for (const term of ['Bandon albacore','Port Orford halibut','Port Orford bottom fishing']) {
+  assert.deepEqual(find(term),[],term);
+ }
+ assert.deepEqual(find('Bandon',{method:'Bottom fishing'}),['Prowler Charters']);
+ assert.deepEqual(find('Bandon',{species:'Albacore tuna'}),[]);
+ const prowler=raw.find(offer=>offer.business_id==='prowler-charters-bandon');
+ assert.equal(charterOfferings.find(offer=>offer.businessId===prowler.business_id).sourceLabel,'Port authority listing');
+ for (const patch of [{operator_source:undefined},{departure_source:undefined},{scope:'charter_operator_only'},{guide_id:'OG.0002422'}]) {
+  assert.equal(approvedCharterOfferings([{...prowler,...patch}]).length,0);
+ }
  for (const held of ['Sekiu bottom fishing','Neah Bay albacore','Neah Bay black cod','La Push albacore','La Push tuna']) {
   assert.deepEqual(find(held),[],held);
  }
@@ -149,6 +162,26 @@ test('charter evidence stays outside guide attribution and matches the same sour
  assert.equal(approvedCharterOfferings([{...raw.find(row=>row.scope==='operator_team'),departure_source:undefined}]).length,0);
  assert.equal(url.parseDirectoryState('?state=Washington&species=Salmon&water=Buoy+10',[],charterOfferings).waterway,'Buoy 10');
  assert.equal(url.parseDirectoryState('?state=Washington&species=Sablefish+(black+cod)',[],charterOfferings).species,'Sablefish (black cod)');
+});
+test('southern Oregon bottom fishing facts keep operator-team attribution and separate ports',()=>{
+ const raw=JSON.parse(read('lib/approved-guide-attributes.json'));
+ const ids=new Set(['OG.0003225','OG.0000544','OG.0002422']);
+ const fishing=Array.from(approvedAttributes(raw,ids),fact=>[fact.guide_id,fact.location.city,fact.kind,fact.value,fact.offering_scope]);
+ assert.deepEqual(fishing,[
+  ['OG.0003225','Port Orford','method','Bottom fishing','operator_business'],
+  ['OG.0002422','Bandon','method','Bottom fishing','operator_business'],
+  ['OG.0000544','Port Orford','method','Bottom fishing','operator_business']
+ ]);
+ const entries=fishing.map(([id,city])=>({
+  id,name:id,states:['Oregon'],areas:[],searchAliases:[],advertisedWaters:[],advertisedMethods:['Bottom fishing'],
+  locatedOfferings:[{city,state:'OR',kind:'method',value:'Bottom fishing'}],
+ }));
+ const filters={state:'Oregon',sourceZone:'All areas',advertisedWater:'All advertised waters',query:'Port Orford',method:'Bottom fishing'};
+ assert.deepEqual(Array.from(query.filterDirectoryEntries(entries,filters),entry=>entry.id),['OG.0000544','OG.0003225']);
+ const lacey=raw.find(fact=>fact.guide_id==='OG.0000544');
+ assert.equal(lacey.supporting_sources.find(source=>source.trip_label).url,'https://southcoasttours.net/tours/fish-forage-feast/');
+ const rejected={...lacey,source:{...lacey.source,source_type:'port_authority'}};
+ assert.equal(approvedAttributes([rejected],ids).length,0);
 });
 test('a port-qualified fishery search needs the location and target on the same guide fact',()=>{
  const base={states:['Oregon'],areas:['Garibaldi'],advertisedWaters:[],searchAliases:[],advertisedSpecies:['Albacore tuna']};
