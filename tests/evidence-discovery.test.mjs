@@ -115,7 +115,7 @@ test('charter evidence stays outside guide attribution and matches the same sour
   './approved-charter-offerings.json':raw,'./guide-attributes':evidence
  });
  const {filterCharterOfferings}=load('lib/charter-offerings.ts',{'./directory-query':query});
- assert.equal(charterOfferings.length,25);
+ assert.equal(charterOfferings.length,34);
  assert.equal(approvedCharterOfferings([{...raw[0],guide_id:'wa-122'}]).length,0);
  assert.equal(approvedCharterOfferings([{...raw[0],publication_approved:false}]).length,0);
  assert.equal(approvedCharterOfferings([{...raw[0],source:{...raw[0].source,url:'http://example.com'}}]).length,0);
@@ -337,4 +337,39 @@ test('American shad is directly sourced without turning bait use or other fisher
  assert.equal(query.matchesFisherySearch('shad',['American shad']),true);
  assert.equal(query.matchesFisherySearch('shad',['Sturgeon']),false);
  assert.equal(query.matchesFisherySearch('squid jigging',['Bottom fishing']),false);
+});
+
+test('regional filter menu stays small and retains exact selections from existing URLs',()=>{
+ const labels=query.directorySpeciesLabels(['Canary rockfish','Albacore tuna','Coho Salmon','White sturgeon','Burbot','Squid']);
+ const menu=query.directorySpeciesMenu(labels,'Albacore tuna');
+ const displayed=Array.from(menu.groups).flatMap(group=>Array.from(group.choices));
+ assert.deepEqual(displayed,['Sturgeon','Tuna','Rockfish','Squid']);
+ assert.equal(menu.selectedOnly,true);
+ assert.equal(query.directorySpeciesMenu(labels,'Canary rockfish').selectedOnly,true);
+ assert.equal(query.directorySpeciesMenu(labels,'American shad').selectedOnly,false);
+ assert.equal(query.directorySpeciesMenu([], 'All species').groups.length,0);
+ const entry={id:'wa-100',name:'Example',business:null,states:['Washington'],areas:[],advertisedWaters:[],searchAliases:[],
+  advertisedSpecies:['Albacore tuna','Coho Salmon']};
+ for(const [queryString,expected] of [['Albacore+tuna','Albacore tuna'],['Coho+Salmon','Coho Salmon']]){
+  const selection=url.parseDirectoryState('?state=Washington&species='+queryString,[entry]);
+  assert.equal(selection.species,expected);
+  assert.match(url.directoryUrl(selection),new RegExp('species='+queryString.replace('+','\\+')));
+ }
+});
+
+test('named regional targets never inherit broad claims, other targets or methods',()=>{
+ for(const [term,labels,expected] of [
+  ['rockfish',['Black rockfish'],true],['canary rockfish',['Rockfish'],false],
+  ['rockfish',['Lingcod','Bottom fishing','Halibut'],false],['ling cod',['Rockfish'],false],
+  ['groundfish',['Bottom fishing'],true],['bottom fishing',['Rockfish','Lingcod'],false],
+  ['wiper',['Striped bass'],false],['lake whitefish',['Mountain whitefish'],false],
+  ['razor clamming',['Clamming'],false],['spot prawns',['Shrimping'],false],
+  ['shrimping',['Spot shrimp'],true],['black cod',['Pacific cod'],false],
+  ['red-tailed surfperch',['Surfperch'],false],['Surf perch',['Redtail surfperch'],true],
+  ['white sturgeon',['Sturgeon'],false],['sturgeon',['White sturgeon'],true],
+  ['silver salmon',['Salmon'],false],['king salmon',['Chinook salmon'],true],
+  ['kokanee',['Sockeye Salmon'],false],['squid jigging',['Flounder','Crabbing'],false],
+ ]){
+  assert.equal(query.matchesFisherySearch(term,labels),expected,term);
+ }
 });

@@ -1836,5 +1836,1288 @@
       "species": "American shad",
       "waterway": "Columbia River"
     }
+  },
+  {
+    "guide_id": "OG.0000433",
+    "kind": "species",
+    "value": "Redtail surfperch",
+    "source": {
+      "url": "https://ospreyguideadventures.com/walleye-sturgeon-and-surf-perch/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Surf Perch paragraph: red-tailed surf perch"
+    },
+    "evidence_scope": "operator_advertises",
+    "offering_scope": "operator_business",
+    "fishery_jurisdiction": "OR",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "trip_note": "Targets redtail surfperch from Oregon beaches."
+  },
+  {
+    "guide_id": "OG.0002741",
+    "kind": "species",
+    "value": "Surfperch",
+    "source": {
+      "url": "https://www.izzisbigmouthguideservice.com/trips-rates",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Surf Perch Fishing: Fishing from Pier/Beach and Book Now"
+    },
+    "evidence_scope": "operator_advertises",
+    "offering_scope": "operator_business",
+    "fishery_jurisdiction": "OR",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "trip_note": "A guided pier or beach outing."
+  },
+  {
+    "guide_id": "OG.0002497",
+    "kind": "species",
+    "value": "Surfperch",
+    "source": {
+      "url": "https://www.nworegonoutfitters.com/charter-fishing-oregon-coast",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Opening trip menu, guide Ted Jones and Surf Perch section"
+    },
+    "evidence_scope": "operator_advertises",
+    "offering_scope": "operator_business",
+    "fishery_jurisdiction": "OR",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "location": {
+      "city": "Winchester Bay",
+      "state": "OR"
+    }
+  },
+  {
+    "guide_id": "OG.0000433",
+    "kind": "method",
+    "value": "Clamming",
+    "source": {
+      "url": "https://ospreyguideadventures.com/clamming/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Clamming Guide, Bay Clams & Razor Clams"
+    },
+    "evidence_scope": "operator_advertises",
+    "offering_scope": "operator_business",
+    "fishery_jurisdiction": "OR",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "trip_note": "Guided razor clamming on beaches and bay clamming for butter and gaper clams."
+  },
+  {
+    "guide_id": "OG.0002741",
+    "kind": "method",
+    "value": "Clamming",
+    "source": {
+      "url": "https://www.izzisbigmouthguideservice.com/trips-rates",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Clamming Trip and Book Now"
+    },
+    "evidence_scope": "operator_advertises",
+    "offering_scope": "operator_business",
+    "fishery_jurisdiction": "OR",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "wa-051",
+    "kind": "species",
+    "value": "Spot shrimp",
+    "source": {
+      "url": "https://www.cascadefishingguides.com/store/p/spot-prawn-shrimp-charter-4-hr-250",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Spot Shrimp Charter, four-hour product"
+    },
+    "evidence_scope": "operator_advertises",
+    "offering_scope": "operator_business",
+    "fishery_jurisdiction": "WA",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "trip_note": "Seasonal guided spot shrimp trip. Confirm the outing date with the operator.",
+    "supporting_sources": [
+      {
+        "url": "https://www.cascadefishingguides.com/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Your Charter Captain identifies Mark Maneval. The trip list describes guided spot shrimp trips in western Washington."
+      }
+    ]
+  },
+  {
+    "guide_id": "OG.0002741",
+    "kind": "species",
+    "value": "Lingcod",
+    "source": {
+      "url": "https://www.izzisbigmouthguideservice.com/trips-rates",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Ocean Fishing / Bottom Fishing Trip describes Garibaldi target"
+    },
+    "evidence_scope": "operator_advertises",
+    "offering_scope": "operator_business",
+    "fishery_jurisdiction": "OR",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "location": {
+      "city": "Garibaldi",
+      "state": "OR"
+    },
+    "relationship": {
+      "species": "Lingcod",
+      "method": "Bottom fishing"
+    }
+  },
+  {
+    "guide_id": "OG.0002497",
+    "kind": "species",
+    "value": "Salmon",
+    "source": {
+      "url": "https://www.nworegonoutfitters.com/charter-fishing-oregon-coast",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Opening menu and individual target sections; Captain Ted Jones"
+    },
+    "evidence_scope": "operator_advertises",
+    "offering_scope": "operator_business",
+    "fishery_jurisdiction": "OR",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "location": {
+      "city": "Winchester Bay",
+      "state": "OR"
+    }
+  },
+  {
+    "guide_id": "OG.0002497",
+    "kind": "species",
+    "value": "Halibut",
+    "source": {
+      "url": "https://www.nworegonoutfitters.com/charter-fishing-oregon-coast",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Opening menu and individual target sections; Captain Ted Jones"
+    },
+    "evidence_scope": "operator_advertises",
+    "offering_scope": "operator_business",
+    "fishery_jurisdiction": "OR",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "location": {
+      "city": "Winchester Bay",
+      "state": "OR"
+    }
+  },
+  {
+    "guide_id": "OG.0002497",
+    "kind": "species",
+    "value": "Tuna",
+    "source": {
+      "url": "https://www.nworegonoutfitters.com/charter-fishing-oregon-coast",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Opening menu and individual target sections; Captain Ted Jones"
+    },
+    "evidence_scope": "operator_advertises",
+    "offering_scope": "operator_business",
+    "fishery_jurisdiction": "OR",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "location": {
+      "city": "Winchester Bay",
+      "state": "OR"
+    }
+  },
+  {
+    "guide_id": "OG.0002497",
+    "kind": "method",
+    "value": "Bottom fishing",
+    "source": {
+      "url": "https://www.nworegonoutfitters.com/charter-fishing-oregon-coast",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Opening menu and individual target sections; Captain Ted Jones"
+    },
+    "evidence_scope": "operator_advertises",
+    "offering_scope": "operator_business",
+    "fishery_jurisdiction": "OR",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "location": {
+      "city": "Winchester Bay",
+      "state": "OR"
+    }
+  },
+  {
+    "guide_id": "OG.0002497",
+    "kind": "method",
+    "value": "Crabbing",
+    "source": {
+      "url": "https://www.nworegonoutfitters.com/charter-fishing-oregon-coast",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Opening menu and individual target sections; Captain Ted Jones"
+    },
+    "evidence_scope": "operator_advertises",
+    "offering_scope": "operator_business",
+    "fishery_jurisdiction": "OR",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "location": {
+      "city": "Winchester Bay",
+      "state": "OR"
+    }
+  },
+  {
+    "guide_id": "wa-051",
+    "kind": "species",
+    "value": "Salmon",
+    "source": {
+      "url": "https://www.cascadefishingguides.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Opening species list plus Your Charter Captain Mark Maneval"
+    },
+    "evidence_scope": "operator_advertises",
+    "offering_scope": "operator_business",
+    "fishery_jurisdiction": "WA",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "wa-051",
+    "kind": "species",
+    "value": "Lingcod",
+    "source": {
+      "url": "https://www.cascadefishingguides.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Opening species list plus Your Charter Captain Mark Maneval"
+    },
+    "evidence_scope": "operator_advertises",
+    "offering_scope": "operator_business",
+    "fishery_jurisdiction": "WA",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "wa-051",
+    "kind": "species",
+    "value": "Halibut",
+    "source": {
+      "url": "https://www.cascadefishingguides.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Opening species list plus Your Charter Captain Mark Maneval"
+    },
+    "evidence_scope": "operator_advertises",
+    "offering_scope": "operator_business",
+    "fishery_jurisdiction": "WA",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "wa-051",
+    "kind": "method",
+    "value": "Crabbing",
+    "source": {
+      "url": "https://www.cascadefishingguides.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Opening species list plus Your Charter Captain Mark Maneval"
+    },
+    "evidence_scope": "operator_advertises",
+    "offering_scope": "operator_business",
+    "fishery_jurisdiction": "WA",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "trip_note": "The operator lists Dungeness crab among its western Washington offerings."
+  },
+  {
+    "guide_id": "OG.0000785",
+    "kind": "species",
+    "value": "Chinook salmon",
+    "source": {
+      "url": "https://www.jodysmithguideservice.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Spring Chinook fishery."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR",
+    "relationship": {
+      "species": "Chinook salmon",
+      "waterway": "Umpqua River"
+    },
+    "trip_note": "Spring Chinook near Elkton."
+  },
+  {
+    "guide_id": "OG.0000785",
+    "kind": "species",
+    "value": "Chinook salmon",
+    "source": {
+      "url": "https://www.jodysmithguideservice.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Fall salmon section names the three bays and the fall Chinook target."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR",
+    "relationship": {
+      "species": "Chinook salmon",
+      "waterway": "Umpqua Bay"
+    },
+    "trip_note": "Fall Chinook fishery."
+  },
+  {
+    "guide_id": "OG.0000785",
+    "kind": "species",
+    "value": "Chinook salmon",
+    "source": {
+      "url": "https://www.jodysmithguideservice.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Fall salmon section names the three bays and the fall Chinook target."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR",
+    "relationship": {
+      "species": "Chinook salmon",
+      "waterway": "Coos Bay"
+    },
+    "trip_note": "Fall Chinook fishery."
+  },
+  {
+    "guide_id": "OG.0000785",
+    "kind": "species",
+    "value": "Chinook salmon",
+    "source": {
+      "url": "https://www.jodysmithguideservice.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Fall salmon section names the three bays and the fall Chinook target."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR",
+    "relationship": {
+      "species": "Chinook salmon",
+      "waterway": "Siuslaw Bay"
+    },
+    "trip_note": "Fall Chinook fishery."
+  },
+  {
+    "guide_id": "OG.0000785",
+    "kind": "species",
+    "value": "Steelhead",
+    "source": {
+      "url": "https://www.jodysmithguideservice.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The winter steelhead section and the smallmouth bass section each name the Umpqua."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR",
+    "relationship": {
+      "species": "Steelhead",
+      "waterway": "Umpqua River"
+    }
+  },
+  {
+    "guide_id": "OG.0000785",
+    "kind": "species",
+    "value": "Smallmouth bass",
+    "source": {
+      "url": "https://www.jodysmithguideservice.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The winter steelhead section and the smallmouth bass section each name the Umpqua."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR",
+    "relationship": {
+      "species": "Smallmouth bass",
+      "waterway": "Umpqua River"
+    }
+  },
+  {
+    "guide_id": "OG.0000785",
+    "kind": "species",
+    "value": "Sturgeon",
+    "source": {
+      "url": "https://www.jodysmithguideservice.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Guide advertises sturgeon trips from Astoria. The source does not specify an exact reach, species or current retention."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR",
+    "trip_note": "Trips out of Astoria."
+  },
+  {
+    "guide_id": "OG.0001660",
+    "kind": "species",
+    "value": "Smallmouth bass",
+    "source": {
+      "url": "https://keystotheoutdoors.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The rates distinguish American shad and smallmouth. Current owner Shane Tyner identifies them as guided targets. The overview lists several rivers collectively."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR"
+  },
+  {
+    "guide_id": "OG.0000315",
+    "kind": "species",
+    "value": "Walleye",
+    "source": {
+      "url": "https://www.fastactionfishing.com/walleye-fishing-in-oregon-washington/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Marvin identifies himself by full name and offers guided walleye trips along this stretch."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "relationship": {
+      "species": "Walleye",
+      "waterway": "Columbia River"
+    },
+    "trip_note": "Columbia River Gorge around The Dalles, Rufus and John Day Dam.",
+    "supporting_sources": [
+      {
+        "url": "https://www.fastactionfishing.com/journal/shad-fishing-on-the-columbia-river/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Operator and guide identification"
+      }
+    ]
+  },
+  {
+    "guide_id": "OG.0000315",
+    "kind": "species",
+    "value": "Sturgeon",
+    "source": {
+      "url": "https://www.fastactionfishing.com/journal/columbia-river-fishing-guide/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Columbia River guide article advertises guided sturgeon fishing."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "relationship": {
+      "species": "Sturgeon",
+      "waterway": "Columbia River"
+    },
+    "supporting_sources": [
+      {
+        "url": "https://www.fastactionfishing.com/journal/shad-fishing-on-the-columbia-river/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Operator and guide identification"
+      }
+    ]
+  },
+  {
+    "guide_id": "wa-007",
+    "kind": "species",
+    "value": "Kokanee",
+    "source": {
+      "url": "https://www.austinsnorthwestadventures.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The owner’s fishing calendar explicitly names all three lake targets."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "relationship": {
+      "species": "Kokanee",
+      "waterway": "Lake Roosevelt"
+    }
+  },
+  {
+    "guide_id": "wa-007",
+    "kind": "species",
+    "value": "Rainbow trout",
+    "source": {
+      "url": "https://www.austinsnorthwestadventures.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The owner’s fishing calendar explicitly names all three lake targets."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "relationship": {
+      "species": "Rainbow trout",
+      "waterway": "Lake Roosevelt"
+    }
+  },
+  {
+    "guide_id": "wa-007",
+    "kind": "species",
+    "value": "Burbot",
+    "source": {
+      "url": "https://www.austinsnorthwestadventures.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The owner’s fishing calendar explicitly names all three lake targets."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "relationship": {
+      "species": "Burbot",
+      "waterway": "Lake Roosevelt"
+    }
+  },
+  {
+    "guide_id": "wa-007",
+    "kind": "species",
+    "value": "Walleye",
+    "source": {
+      "url": "https://www.austinsnorthwestadventures.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The next entry in the same calendar names both waters for walleye."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "relationship": {
+      "species": "Walleye",
+      "waterway": "Banks Lake"
+    }
+  },
+  {
+    "guide_id": "wa-007",
+    "kind": "species",
+    "value": "Walleye",
+    "source": {
+      "url": "https://www.austinsnorthwestadventures.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The next entry in the same calendar names both waters for walleye."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "relationship": {
+      "species": "Walleye",
+      "waterway": "Potholes Reservoir"
+    }
+  },
+  {
+    "guide_id": "wa-007",
+    "kind": "species",
+    "value": "Sockeye salmon",
+    "source": {
+      "url": "https://www.austinsnorthwestadventures.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The operator pairs these two salmon with Brewster Pool."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "relationship": {
+      "species": "Sockeye salmon",
+      "waterway": "Brewster Pool"
+    },
+    "trip_note": "Upper Columbia River."
+  },
+  {
+    "guide_id": "wa-007",
+    "kind": "species",
+    "value": "Chinook salmon",
+    "source": {
+      "url": "https://www.austinsnorthwestadventures.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The operator pairs these two salmon with Brewster Pool."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "relationship": {
+      "species": "Chinook salmon",
+      "waterway": "Brewster Pool"
+    },
+    "trip_note": "Upper Columbia River."
+  },
+  {
+    "guide_id": "wa-007",
+    "kind": "species",
+    "value": "Chinook salmon",
+    "source": {
+      "url": "https://www.austinsnorthwestadventures.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The operator describes spring Chinook trips from his drift boat."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "relationship": {
+      "species": "Chinook salmon",
+      "waterway": "Icicle River"
+    },
+    "trip_note": "Spring Chinook around Leavenworth."
+  },
+  {
+    "guide_id": "OG.0002988",
+    "kind": "species",
+    "value": "Chinook salmon",
+    "source": {
+      "url": "https://fishstotts.com/about/guides/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The named guide specializes in Hanford Reach kings."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "relationship": {
+      "species": "Chinook salmon",
+      "waterway": "Hanford Reach"
+    },
+    "trip_note": "Hanford Reach of the Columbia River."
+  },
+  {
+    "guide_id": "OG.0002988",
+    "kind": "species",
+    "value": "Walleye",
+    "source": {
+      "url": "https://fishstotts.com/about/guides/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The named guide is the Columbia River walleye specialist based in Pasco."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "relationship": {
+      "species": "Walleye",
+      "waterway": "Columbia River"
+    },
+    "trip_note": "Columbia River trips from the Pasco area."
+  },
+  {
+    "guide_id": "OG.0002988",
+    "kind": "species",
+    "value": "Panfish",
+    "source": {
+      "url": "https://fishstotts.com/about/guides/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The named guide bio lists generic pan fish. His regional program includes other waters in the Northwest. A narrower water or species for this row is unestablished."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "wa-076",
+    "kind": "species",
+    "value": "Catfish",
+    "source": {
+      "url": "https://reeltimefishing.com/snake-river-fishing-guides/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The guide team explicitly targets both. This is owner Toby Wyatt’s company; the page does not specify an individual captain or catfish species."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "offering_scope": "operator_business",
+    "relationship": {
+      "species": "Catfish",
+      "waterway": "Snake River"
+    },
+    "trip_note": "Below Little Goose Dam and at Lyons Ferry.",
+    "supporting_sources": [
+      {
+        "url": "https://reeltimefishing.com/about-us/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Operator and guide identification"
+      }
+    ]
+  },
+  {
+    "guide_id": "wa-076",
+    "kind": "species",
+    "value": "Walleye",
+    "source": {
+      "url": "https://reeltimefishing.com/snake-river-fishing-guides/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The guide team explicitly targets both. This is owner Toby Wyatt’s company; the page does not specify an individual captain or catfish species."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "offering_scope": "operator_business",
+    "relationship": {
+      "species": "Walleye",
+      "waterway": "Snake River"
+    },
+    "trip_note": "Below Little Goose Dam and at Lyons Ferry.",
+    "supporting_sources": [
+      {
+        "url": "https://reeltimefishing.com/about-us/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Operator and guide identification"
+      }
+    ]
+  },
+  {
+    "guide_id": "OG.0001035",
+    "kind": "species",
+    "value": "Carp",
+    "source": {
+      "url": "https://www.flyshopnw.com/pages/flyfishing-guide-eric-leininger",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Named guide’s booking partner advertises carp on the Columbia. The bank and precise species are unspecified."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "relationship": {
+      "species": "Carp",
+      "waterway": "Columbia River"
+    },
+    "supporting_sources": [
+      {
+        "url": "https://flyfishportland.com/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Operator and guide identification"
+      }
+    ]
+  },
+  {
+    "guide_id": "OG.0000450",
+    "kind": "species",
+    "value": "Rainbow trout",
+    "source": {
+      "url": "https://flyfishersplace.com/guide-service/guide-trip-options/cascade-lakes-fly-fishing-guide-trips/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Operator offers a priced guided lake trip and describes fishing Crane Prairie rainbows. Its staff page names owner Jeff Perin and Crane Prairie among his guided waters."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR",
+    "relationship": {
+      "species": "Rainbow trout",
+      "waterway": "Crane Prairie Reservoir"
+    },
+    "supporting_sources": [
+      {
+        "url": "https://flyfishersplace.com/guide-service/meet-the-guides/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Operator and guide identification"
+      }
+    ]
+  },
+  {
+    "guide_id": "OG.0003982",
+    "kind": "species",
+    "value": "Pink salmon",
+    "source": {
+      "url": "https://phdguideservice.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The operator offers a separate four-hour pink salmon charter."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "offering_scope": "operator_business",
+    "trip_note": "The operator advertises a dedicated four-hour pink salmon trip.",
+    "supporting_sources": [
+      {
+        "url": "https://phdguideservice.com/about/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Operator and guide identification"
+      }
+    ]
+  },
+  {
+    "guide_id": "OG.0003982",
+    "kind": "species",
+    "value": "Chum salmon",
+    "source": {
+      "url": "https://phdguideservice.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The operator lists these targets in its program. No exact water, date, or dedicated chum charter is asserted. Dan Benowitz is the owner. Match via Oregon directory registration, operator name and website; geographic claim concerns WA offerings."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "offering_scope": "operator_business",
+    "supporting_sources": [
+      {
+        "url": "https://phdguideservice.com/about/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Operator and guide identification"
+      }
+    ]
+  },
+  {
+    "guide_id": "OG.0003982",
+    "kind": "species",
+    "value": "Coho salmon",
+    "source": {
+      "url": "https://phdguideservice.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The operator lists these targets in its program. No exact water, date, or dedicated chum charter is asserted. Dan Benowitz is the owner. Match via Oregon directory registration, operator name and website; geographic claim concerns WA offerings."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "offering_scope": "operator_business",
+    "supporting_sources": [
+      {
+        "url": "https://phdguideservice.com/about/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Operator and guide identification"
+      }
+    ]
+  },
+  {
+    "guide_id": "OG.0003982",
+    "kind": "species",
+    "value": "Chinook salmon",
+    "source": {
+      "url": "https://phdguideservice.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The operator lists these targets in its program. No exact water, date, or dedicated chum charter is asserted. Dan Benowitz is the owner. Match via Oregon directory registration, operator name and website; geographic claim concerns WA offerings."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "offering_scope": "operator_business",
+    "supporting_sources": [
+      {
+        "url": "https://phdguideservice.com/about/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Operator and guide identification"
+      }
+    ]
+  },
+  {
+    "guide_id": "OG.0003982",
+    "kind": "species",
+    "value": "Sockeye salmon",
+    "source": {
+      "url": "https://phdguideservice.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The operator lists these targets in its program. No exact water, date, or dedicated chum charter is asserted. Dan Benowitz is the owner. Match via Oregon directory registration, operator name and website; geographic claim concerns WA offerings."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "offering_scope": "operator_business",
+    "supporting_sources": [
+      {
+        "url": "https://phdguideservice.com/about/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Operator and guide identification"
+      }
+    ]
+  },
+  {
+    "guide_id": "OG.0003982",
+    "kind": "species",
+    "value": "Kokanee",
+    "source": {
+      "url": "https://phdguideservice.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The operator lists these targets in its program. No exact water, date, or dedicated chum charter is asserted. Dan Benowitz is the owner. Match via Oregon directory registration, operator name and website; geographic claim concerns WA offerings."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "offering_scope": "operator_business",
+    "supporting_sources": [
+      {
+        "url": "https://phdguideservice.com/about/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Operator and guide identification"
+      }
+    ]
+  },
+  {
+    "guide_id": "wa-030",
+    "kind": "species",
+    "value": "Smallmouth bass",
+    "source": {
+      "url": "https://365charters.com/fishing/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The exact directory business advertises guided fishing for both basses on a selection of lakes. Its sister-brand owner page identifies Doug Saint-Denis."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "offering_scope": "operator_business",
+    "trip_note": "Guided trips on western Washington lakes.",
+    "supporting_sources": [
+      {
+        "url": "https://ridgetoriveroutdoors.com/about/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Operator and guide identification"
+      }
+    ]
+  },
+  {
+    "guide_id": "wa-030",
+    "kind": "species",
+    "value": "Largemouth bass",
+    "source": {
+      "url": "https://365charters.com/fishing/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The exact directory business advertises guided fishing for both basses on a selection of lakes. Its sister-brand owner page identifies Doug Saint-Denis."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "offering_scope": "operator_business",
+    "trip_note": "Guided trips on western Washington lakes.",
+    "supporting_sources": [
+      {
+        "url": "https://ridgetoriveroutdoors.com/about/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Operator and guide identification"
+      }
+    ]
+  },
+  {
+    "guide_id": "wa-144",
+    "kind": "species",
+    "value": "Largemouth bass",
+    "source": {
+      "url": "https://rossoutdooradventures.com/guided-fishing-trips/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Named owner advertises guided access to private lakes for catch-and-release largemouth bass. The bass trip has no publicly named private lake."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "trip_note": "Catch-and-release trips on private eastern Washington lakes."
+  },
+  {
+    "guide_id": "wa-113",
+    "kind": "species",
+    "value": "White sturgeon",
+    "source": {
+      "url": "https://columbiariverfishing.com/columbia-river-sturgeon-fishing/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Named guide offers a dedicated trophy white sturgeon charter along this stretch and describes his trophy program as catch-and-release."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "relationship": {
+      "species": "White sturgeon",
+      "waterway": "Columbia River"
+    },
+    "trip_note": "Catch-and-release trophy white sturgeon between The Dalles and Astoria."
+  },
+  {
+    "guide_id": "OG.0002472",
+    "kind": "species",
+    "value": "Rockfish",
+    "source": {
+      "url": "https://www.hbdsportfish.com/bottom-fish",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The Bottom Fish booking page lists lingcod and rockfish as the primary targets of the 4–6 hour trip."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR",
+    "relationship": {
+      "species": "Rockfish",
+      "method": "Bottom fishing"
+    }
+  },
+  {
+    "guide_id": "OG.0002472",
+    "kind": "species",
+    "value": "Lingcod",
+    "source": {
+      "url": "https://www.hbdsportfish.com/bottom-fish",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The Bottom Fish booking page lists lingcod and rockfish as the primary targets of the 4–6 hour trip."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR",
+    "relationship": {
+      "species": "Lingcod",
+      "method": "Bottom fishing"
+    }
+  },
+  {
+    "guide_id": "OG.0003982",
+    "kind": "species",
+    "value": "Rockfish",
+    "source": {
+      "url": "https://phdguideservice.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Targets list names rockfish as a group. PHD Fishing Guide Service operator homepage and charter menu."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "offering_scope": "operator_business",
+    "supporting_sources": [
+      {
+        "url": "https://phdguideservice.com/about/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Operator and guide identification"
+      }
+    ]
+  },
+  {
+    "guide_id": "OG.0003982",
+    "kind": "species",
+    "value": "Lingcod",
+    "source": {
+      "url": "https://phdguideservice.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Targets list names lingcod separately. PHD Fishing Guide Service operator homepage and charter menu."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "offering_scope": "operator_business",
+    "supporting_sources": [
+      {
+        "url": "https://phdguideservice.com/about/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Operator and guide identification"
+      }
+    ]
+  },
+  {
+    "guide_id": "OG.0003982",
+    "kind": "species",
+    "value": "Shrimping",
+    "source": {
+      "url": "https://phdguideservice.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Charter menu explicitly offers a four-hour shrimp outing; no species is named. PHD Fishing Guide Service operator homepage and charter menu."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "offering_scope": "operator_business",
+    "supporting_sources": [
+      {
+        "url": "https://phdguideservice.com/about/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Operator and guide identification"
+      }
+    ]
+  },
+  {
+    "guide_id": "OG.0003982",
+    "kind": "species",
+    "value": "Steelhead",
+    "source": {
+      "url": "https://phdguideservice.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Charter menu and target list specify steelhead. PHD Fishing Guide Service operator homepage and charter menu."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "offering_scope": "operator_business",
+    "supporting_sources": [
+      {
+        "url": "https://phdguideservice.com/about/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Operator and guide identification"
+      }
+    ]
+  },
+  {
+    "guide_id": "OG.0003982",
+    "kind": "species",
+    "value": "Trout",
+    "source": {
+      "url": "https://phdguideservice.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The operator lists trout as a target without an exact species. PHD Fishing Guide Service operator homepage and charter menu."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "offering_scope": "operator_business",
+    "supporting_sources": [
+      {
+        "url": "https://phdguideservice.com/about/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Operator and guide identification"
+      }
+    ]
+  },
+  {
+    "guide_id": "OG.0003982",
+    "kind": "species",
+    "value": "Halibut",
+    "source": {
+      "url": "https://phdguideservice.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Targets list explicitly names halibut. PHD Fishing Guide Service operator homepage and charter menu."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "offering_scope": "operator_business",
+    "supporting_sources": [
+      {
+        "url": "https://phdguideservice.com/about/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Operator and guide identification"
+      }
+    ]
+  },
+  {
+    "guide_id": "OG.0003982",
+    "kind": "method",
+    "value": "Bottom fishing",
+    "source": {
+      "url": "https://phdguideservice.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Charter menu lists bottom fish among the targets for its five-hour outing. PHD Fishing Guide Service operator homepage and charter menu."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "offering_scope": "operator_business",
+    "supporting_sources": [
+      {
+        "url": "https://phdguideservice.com/about/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Operator and guide identification"
+      }
+    ]
+  },
+  {
+    "guide_id": "OG.0003982",
+    "kind": "method",
+    "value": "Crabbing",
+    "source": {
+      "url": "https://phdguideservice.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Charter menu explicitly offers a four-hour crab outing. PHD Fishing Guide Service operator homepage and charter menu."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "offering_scope": "operator_business",
+    "supporting_sources": [
+      {
+        "url": "https://phdguideservice.com/about/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Operator and guide identification"
+      }
+    ]
   }
 ]

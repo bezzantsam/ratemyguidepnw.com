@@ -45,7 +45,7 @@ export default function GuideEnrichmentPanel({registration}:{registration:string
    {attributes.length>0&&<div>
      {attributes.some(item=>new URL(item.source.url).hostname==='fixture.invalid')&&<p>Synthetic test fixture — not a real offering.</p>}
      <ul>{attributes.map((item,index)=><li key={`${item.guide_id}-${item.kind}-${item.value}-${index}`}>
-       <strong>{item.value}</strong> · <a href={item.source.url} target="_blank" rel="noopener noreferrer" aria-label={`Source for ${item.value}`}>{item.evidence_scope==='operator_advertises'&&item.kind!=='person_name'&&item.kind!=='business_name'?(item.source.source_type==='operator_site'?'Trip details':'Trip listing'):item.source.source_type==='operator_site'?'Operator page':'Directory source'} ↗</a>
+       <strong>{item.value}</strong>{item.kind==='method'&&<span> (method)</span>} · <a href={item.source.url} target="_blank" rel="noopener noreferrer" aria-label={`Source for ${item.value}`}>{item.evidence_scope==='operator_advertises'&&item.kind!=='person_name'&&item.kind!=='business_name'?(item.source.source_type==='operator_site'?'Trip details':'Trip listing'):item.source.source_type==='operator_site'?'Operator page':'Directory source'} ↗</a>
        {item.supporting_sources?.map(source=>source.trip_label&&<span key={source.url}> · <a href={source.url} target="_blank" rel="noopener noreferrer">{source.trip_label} ↗</a></span>)}
        {item.offering_scope==='operator_business'&&<span> · Operator team trip. Ask who will guide.</span>}
        {item.location&&<span> · {item.location.city}, {item.location.state}</span>}

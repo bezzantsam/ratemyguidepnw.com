@@ -17,26 +17,71 @@ export function normalizeGuideSearch(value:string):string {
 }
 const nicknameLookup=new Map(nicknameFamilies.flatMap(group=>group.map(name=>[name,group] as const)));
 const fisheryAliases = [
- ['Halibut','Pacific halibut'], ['Albacore tuna','albacore'],
- ['Bottom fishing','bottomfish','bottom fish'], ['Sablefish (black cod)','sablefish','black cod','black cod sablefish'],
- ['Buoy 10 salmon'], ['Steelhead','steelhead trout'], ['Crabbing','crab','crab fishing','Dungeness crabbing'],
+ ['Salmon'], ['Chinook Salmon','chinook','king salmon','spring chinook','springer'],
+ ['Coho Salmon','coho','silver salmon'], ['Sockeye Salmon','sockeye','red salmon'],
+ ['Pink Salmon','pink salmon fishing','humpy','humpback salmon'], ['Chum Salmon','dog salmon'],
+ ['Ocean salmon','marine salmon','ocean salmon fishing'], ['Buoy 10 salmon'],
+ ['Steelhead','steelhead trout','sea-run rainbow trout'],
+ ['Trout'], ['Rainbow trout','rainbow trout fishing'], ['Redband trout','redband'],
+ ['Cutthroat trout','coastal cutthroat trout'], ['Sea-run cutthroat','sea-run cutthroat trout'],
+ ['Brown trout'], ['Brook trout','brookie'], ['Lake trout','mackinaw','mackinaw trout'], ['Bull trout'],
+ ['Kokanee','kokanee salmon','landlocked sockeye'], ['Whitefish'], ['Mountain whitefish'], ['Lake whitefish'],
+ ['Burbot','freshwater ling'], ['American shad','shad','shad fishing','American shad fishing'],
+ ['Sturgeon'], ['White sturgeon'], ['Green sturgeon'], ['Walleye'], ['Panfish','pan fish'],
+ ['Perch'], ['Yellow perch'], ['Crappie'], ['Bluegill'], ['Catfish'], ['Channel catfish'],
+ ['Carp','carp fishing'], ['Northern pike','pike'],
+ ['Bass','freshwater bass'], ['Smallmouth bass','smallmouth','small mouth bass','smallmouths','smallies'],
+ ['Largemouth bass','largemouth','large mouth bass','largemouths'], ['Spotted bass'],
+ ['Striped bass','stripers','striper'], ['Hybrid striped bass','wiper','wipers'],
  ['Tiger muskie','tiger muskies','tiger musky','tiger muskellunge','muskie','musky','muskellunge'],
- ['Striped bass','stripers','striper'], ['Bass','freshwater bass'],
- ['Smallmouth bass','smallmouth','small mouth bass'], ['Largemouth bass','largemouth','large mouth bass'],
- ['American shad','shad','shad fishing'], ['Squid','squid jigging','squidding'],
- ['Spotted bass'], ['Trout'], ['Rainbow trout'], ['Cutthroat trout','coastal cutthroat trout'],
- ['Brown trout'], ['Brook trout'], ['Lake trout','mackinaw'],
+ ['Tuna'], ['Albacore tuna','albacore'], ['Halibut','Pacific halibut'],
+ ['Sablefish (black cod)','sablefish','black cod','blackcod','black cod sablefish'],
+ ['Bottom fishing','bottomfish','bottom fish','bottomfishing','groundfish fishing','ground fishing','groundfish'],
+ ['Rockfish','rock fish'], ['Black rockfish'], ['Canary rockfish'], ['Copper rockfish'],
+ ['Yellowtail rockfish'], ['Quillback rockfish'], ['Vermilion rockfish'], ['China rockfish'],
+ ['Blue rockfish'], ['Deacon rockfish'], ['Widow rockfish'], ['Bocaccio','bocaccio rockfish'],
+ ['Lingcod','ling cod'], ['Cabezon'], ['Greenling'], ['Kelp greenling'], ['Pacific cod'],
+ ['Flatfish'], ['Flounder','flounder fishing'], ['Starry flounder'], ['Sole'],
+ ['Surfperch','surf perch'], ['Redtail surfperch','red-tailed surfperch','redtail surf perch'],
+ ['Squid','squid fishing','squid jigging','squidding'],
+ ['Crabbing','crab','crab fishing','crab catching','Dungeness crabbing'], ['Dungeness crab'],
+ ['Shrimping','shrimp fishing','prawning','shrimp'], ['Spot shrimp','spot prawn','spot prawns'],
+ ['Clamming','clam digging'], ['Razor clamming','razor clam digging'], ['Bay clamming','bay clam digging'],
+ ['Geoduck'], ['Oyster gathering'], ['Mussel gathering'],
 ];
 const canonicalLabels = new Map(fisheryAliases.flatMap(group=>
  group.map(alias=>[normalizeGuideSearch(alias),group[0]] as const)));
 const broadSpecies = new Map([
  ['Tuna',['Albacore tuna']],
  ['Bass',['Smallmouth bass','Largemouth bass','Spotted bass']],
- ['Trout',['Rainbow trout','Cutthroat trout','Brown trout','Brook trout','Lake trout']],
+ ['Trout',['Rainbow trout','Redband trout','Cutthroat trout','Sea-run cutthroat','Brown trout','Brook trout','Lake trout','Bull trout']],
+ ['Sturgeon',['White sturgeon','Green sturgeon']],
+ ['Panfish',['Perch','Yellow perch','Crappie','Bluegill']], ['Perch',['Yellow perch']],
+ ['Catfish',['Channel catfish']], ['Whitefish',['Mountain whitefish','Lake whitefish']],
+ ['Rockfish',['Black rockfish','Canary rockfish','Copper rockfish','Yellowtail rockfish','Quillback rockfish',
+  'Vermilion rockfish','China rockfish','Blue rockfish','Deacon rockfish','Widow rockfish','Bocaccio']],
+ ['Greenling',['Kelp greenling']], ['Flatfish',['Flounder','Starry flounder','Sole']], ['Flounder',['Starry flounder']],
+ ['Surfperch',['Redtail surfperch']], ['Crabbing',['Dungeness crab']],
+ ['Shrimping',['Spot shrimp']], ['Clamming',['Razor clamming','Bay clamming']],
 ]);
+const commonSpeciesGroups = [
+ {label:'Salmon and trout',choices:['Salmon','Chinook Salmon','Steelhead','Trout','Kokanee']},
+ {label:'Rivers and lakes',choices:['Bass','Striped bass','Tiger muskie','American shad','Sturgeon','Walleye','Panfish']},
+ {label:'Coast and Puget Sound',choices:['Tuna','Halibut','Rockfish','Lingcod','Sablefish (black cod)','Flatfish','Surfperch','Crabbing','Shrimping','Squid']},
+];
+
+/** Show regional choices backed by current results. Keep older, more specific URL selections usable. */
+export function directorySpeciesMenu(available:string[],selected:string) {
+ const groups=commonSpeciesGroups.map(({label,choices})=>({label,choices:choices.filter(choice=>available.includes(choice))}));
+ const displayed=groups.flatMap(group=>group.choices);
+ return {
+  groups:groups.filter(group=>group.choices.length),
+  selectedOnly:available.includes(selected)&&!displayed.includes(selected),
+ };
+}
 export function canonicalFisheryLabel(value:string):string {
  const normalized=normalizeGuideSearch(value);
- return canonicalLabels.get(normalized) ?? (normalized==='tuna'?'Tuna':value);
+ return canonicalLabels.get(normalized) ?? value;
 }
 function isKnownFishery(value:string):boolean {
  return canonicalLabels.has(normalizeGuideSearch(value))||broadSpecies.has(canonicalFisheryLabel(value));
