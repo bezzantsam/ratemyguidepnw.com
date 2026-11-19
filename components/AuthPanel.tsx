@@ -58,7 +58,13 @@ export default function AuthPanel({onSignedIn,profilePath,moderator=false,authCh
     email:email.trim(),
     options:{emailRedirectTo:redirectTo(),...(moderator?{shouldCreateUser:false}:{})},
    });
-   setMessage(error?(usesEmailOnly?unavailable:error.message):`Check your email for your ${BRAND_NAME} sign-in link.`);
+   if(!error){
+    setMessage(`Check your email for your ${BRAND_NAME} sign-in link.`);
+   }else if(error.status===429||error.code==='over_email_send_rate_limit'||error.code==='over_request_rate_limit'){
+    setMessage('Too many sign-in requests. If an email arrived, open the newest link. Otherwise, wait before requesting another.');
+   }else{
+    setMessage(usesEmailOnly?unavailable:error.message);
+   }
   }catch{
    setMessage(unavailable);
   }finally{

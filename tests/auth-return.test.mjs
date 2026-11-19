@@ -131,6 +131,22 @@ test('moderator sign-in shows bounded errors and allows retries after provider o
  }
 });
 
+test('throttled email sign-in gives both roles a recovery path without exposing provider details',async()=>{
+ const cases=[
+  {moderator:true,error:{status:429}},
+  {emailOnly:true,error:{code:'over_email_send_rate_limit'}},
+  {emailOnly:true,error:{code:'over_request_rate_limit'}},
+ ];
+ for(const {error,...role} of cases){
+  const h=setup({...role,otpReply:async()=>({error:{...error,message:'Private provider detail'}})});
+  find(h.render(),n=>n.type==='input').props.onChange({target:{value:'participant@example.invalid'}});
+  find(h.render(),n=>n.type==='button'&&n.props.children==='Email me a sign-in link').props.onClick();
+  await new Promise(setImmediate);
+  assert.equal(find(h.render(),n=>n.props?.role==='status').props.children,
+   'Too many sign-in requests. If an email arrived, open the newest link. Otherwise, wait before requesting another.');
+ }
+});
+
 test('legacy and new public hosts keep guide and moderator email callbacks on the initiating host',()=>{
   for(const origin of ['https://ratemyguidepnw.vercel.app','https://rateyourguide.com']){
     for(const moderator of [false,true]){
