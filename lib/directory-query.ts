@@ -1,6 +1,6 @@
 import type {DirectoryEntry} from './directory';
 
-export type DirectoryFilters={state:string;sourceZone:string;advertisedWater:string;query:string;species?:string;method?:string};
+export type DirectoryFilters={state:string;sourceZone:string;advertisedWater:string;query:string;species?:string;method?:string;identityOnly?:boolean};
 
 /** Search expansions only. These do NOT add identity aliases or credential evidence. */
 const nicknameFamilies=[
@@ -17,40 +17,90 @@ export function normalizeGuideSearch(value:string):string {
 }
 const nicknameLookup=new Map(nicknameFamilies.flatMap(group=>group.map(name=>[name,group] as const)));
 const fisheryAliases = [
- ['halibut','pacific halibut'],
- ['albacore tuna','albacore'],
- ['bottom fishing','bottomfish','bottom fish'],
- ['sablefish','black cod','sablefish black cod','black cod sablefish'],
- ['buoy 10 salmon'],
+ ['Halibut','Pacific halibut'], ['Albacore tuna','albacore'],
+ ['Bottom fishing','bottomfish','bottom fish'], ['Sablefish (black cod)','sablefish','black cod','black cod sablefish'],
+ ['Buoy 10 salmon'], ['Steelhead','steelhead trout'], ['Crabbing','crab','crab fishing','Dungeness crabbing'],
+ ['Tiger muskie','tiger muskies','tiger musky','tiger muskellunge','muskie','musky','muskellunge'],
+ ['Striped bass','stripers','striper'], ['Bass','freshwater bass'],
+ ['Smallmouth bass','smallmouth','small mouth bass'], ['Largemouth bass','largemouth','large mouth bass'],
+ ['Spotted bass'], ['Trout'], ['Rainbow trout'], ['Cutthroat trout','coastal cutthroat trout'],
+ ['Brown trout'], ['Brook trout'], ['Lake trout','mackinaw'],
 ];
-const fisherySearches = new Map(fisheryAliases.flatMap(group=>group.map(alias=>[alias,group] as const)));
-fisherySearches.set('tuna',['tuna','albacore tuna','albacore']);
-
-export function matchesFisherySearch(query: string, offerings: string[]): boolean | null {
- const fishery=fisherySearches.get(normalizeGuideSearch(query));
- return fishery ? offerings.some(label=>fishery.includes(normalizeGuideSearch(label))) : null;
+const canonicalLabels = new Map(fisheryAliases.flatMap(group=>
+ group.map(alias=>[normalizeGuideSearch(alias),group[0]] as const)));
+const broadSpecies = new Map([
+ ['Tuna',['Albacore tuna']],
+ ['Bass',['Smallmouth bass','Largemouth bass','Spotted bass']],
+ ['Trout',['Rainbow trout','Cutthroat trout','Brown trout','Brook trout','Lake trout']],
+]);
+export function canonicalFisheryLabel(value:string):string {
+ const normalized=normalizeGuideSearch(value);
+ return canonicalLabels.get(normalized) ?? (normalized==='tuna'?'Tuna':value);
+}
+function isKnownFishery(value:string):boolean {
+ return canonicalLabels.has(normalizeGuideSearch(value))||broadSpecies.has(canonicalFisheryLabel(value));
+}
+export function matchesFisherySearch(query:string,offerings:string[]):boolean|null {
+ if(!isKnownFishery(query))return null;
+ const label=canonicalFisheryLabel(query);
+ const accepted=[label,...(broadSpecies.get(label)??[])];
+ return offerings.some(value=>accepted.includes(canonicalFisheryLabel(value)));
 }
 
-export function fisheryAtPort(query: string, cities: string[], method?: string, species?: string) {
+const fisheryPlaceAliases=new Map([['mayfield lake',['lake mayfield']]]);
+export function fisheryAtPort(query:string,cities:string[],method?:string,species?:string) {
  const search=normalizeGuideSearch(query);
- const selected=[method,species].map(value=>normalizeGuideSearch(value??'')).find(value=>fisherySearches.has(value));
+ const selected=[method,species].find(value=>value&&isKnownFishery(value));
  for(const city of new Set(cities.flatMap(city=>city.split(' or ')).map(normalizeGuideSearch))){
-  const term=search.startsWith(city+' ')?search.slice(city.length+1):search.endsWith(' '+city)?search.slice(0,-city.length-1):'';
-  if(city===search&&selected)return {city,term:selected};
-  if(term==='buoy 10')return {city,term:'buoy 10 salmon'};
-  if(fisherySearches.has(term))return {city,term};
+  for(const place of [city,...(fisheryPlaceAliases.get(city)??[])]){
+   const term=search.startsWith(place+' ')?search.slice(place.length+1):search.endsWith(' '+place)?search.slice(0,-place.length-1):'';
+   if(place===search&&selected)return {city,term:selected};
+   if(term==='buoy 10')return {city,term:'buoy 10 salmon'};
+   if(isKnownFishery(term))return {city,term};
+  }
  }
  return null;
 }
 
-export function locatedGuidePorts(entries: DirectoryEntry[]): string[] {
- return entries.flatMap(entry=>entry.locatedOfferings?.flatMap(item=>[item.city,...(item.aliases??[])])??[]);
+type ScopedOffering=NonNullable<DirectoryEntry['fisheryOfferings']>[number];
+function offeringPlaces(item:ScopedOffering):string[] {
+ return [item.city,...(item.aliases??[]),item.relationship?.waterway].filter((value):value is string=>Boolean(value));
 }
-
-export function directorySpeciesLabels(species: string[] = []): string[] {
- return species.some(label=>fisherySearches.get('tuna')?.includes(normalizeGuideSearch(label)))
-  ? [...new Set([...species,'Tuna'])]
-  : species;
+function sourcedOfferings(entry:DirectoryEntry):ScopedOffering[] {
+ return entry.fisheryOfferings??entry.locatedOfferings??[];
+}
+function inJurisdiction(item:ScopedOffering,state:string):boolean {
+ return state==='All'||!item.state||state===(item.state==='OR'?'Oregon':'Washington');
+}
+export function locatedGuidePorts(entries:DirectoryEntry[]):string[] {
+ return entries.flatMap(entry=>sourcedOfferings(entry).flatMap(offeringPlaces));
+}
+export function directorySpeciesLabels(species:string[]=[]):string[] {
+ const labels=species.map(canonicalFisheryLabel);
+ return [...new Set([...labels,...[...broadSpecies].filter(([,specific])=>specific.some(label=>labels.includes(label))).map(([broad])=>broad)])];
+}
+function offeringFacets(item:ScopedOffering) {
+ return {
+  species:item.kind==='species'?item.value:item.relationship?.species,
+  method:item.kind==='method'?item.value:item.relationship?.method,
+  trip:item.kind==='trip_type'?item.value:undefined,
+  waterway:item.relationship?.waterway,
+ };
+}
+export function directoryFisheryFacets(entry:DirectoryEntry,state:string) {
+ const all={species:entry.advertisedSpecies??[],methods:entry.advertisedMethods??[],trips:entry.advertisedTrips??[],waters:entry.advertisedWaters};
+ if(state==='All'||!entry.fisheryOfferings)return all;
+ const sourced=entry.fisheryOfferings;
+ const native=entry.states.includes(state as 'Oregon'|'Washington');
+ const local=sourced.filter(item=>item.state?inJurisdiction(item,state):native).map(offeringFacets);
+ const scoped=sourced.filter(item=>item.state).map(offeringFacets);
+ const select=(key:keyof ReturnType<typeof offeringFacets>,values:string[])=>values.filter(label=>
+  local.some(item=>item[key]===label)||(native&&!scoped.some(item=>item[key]===label)));
+ return {species:select('species',all.species),methods:select('method',all.methods),trips:select('trip',all.trips),waters:select('waterway',all.waters)};
+}
+export function directoryEntryInState(entry:DirectoryEntry,state:string,includeFishery=false):boolean {
+ return state==='All'||entry.states.includes(state as 'Oregon'|'Washington')||
+  (includeFishery&&sourcedOfferings(entry).some(item=>item.state&&inJurisdiction(item,state)));
 }
 /** Bounded optimal-string-alignment distance: insertion, deletion, substitution, adjacent swap. */
 function closeSpelling(a:string,b:string,max:number):boolean {
@@ -115,23 +165,37 @@ export function filterDirectoryEntries(entries:DirectoryEntry[],filters:Director
  const portSearch=filters.query.trim() ? fisheryAtPort(filters.query,[
   ...charterCities,...locatedGuidePorts(entries),
  ],filters.method,filters.species) : null;
- return entries.filter(entry=>
-  (filters.state==='All'||entry.states.includes(filters.state as 'Oregon'|'Washington'))&&
-  (filters.sourceZone==='All areas'||entry.areas.includes(filters.sourceZone))&&
-  (filters.advertisedWater==='All advertised waters'||entry.advertisedWaters.includes(filters.advertisedWater))&&
-  (!filters.species||filters.species==='All species'||directorySpeciesLabels(entry.advertisedSpecies).includes(filters.species))&&
-  (!filters.method||filters.method==='All methods'||(entry.advertisedMethods??[]).includes(filters.method))
- ).map(entry=>{
-  if(!portSearch)return {entry,score:guideSearchScore(entry,filters.query)};
-  const match=entry.locatedOfferings?.some(item=>{
-   if(![item.city,...(item.aliases??[])].some(city=>normalizeGuideSearch(city)===portSearch.city)||
-      (filters.state!=='All'&&filters.state!==(item.state==='OR'?'Oregon':'Washington'))||
-      !matchesFisherySearch(portSearch.term,[item.value]))return false;
-   const species=item.kind==='species'?item.value:item.relationship?.species;
-   const method=item.kind==='method'?item.value:item.relationship?.method;
-   return (!filters.species||filters.species==='All species'||Boolean(species&&directorySpeciesLabels([species]).includes(filters.species)))&&
-    (!filters.method||filters.method==='All methods'||filters.method===method)&&
-    (filters.advertisedWater==='All advertised waters'||filters.advertisedWater===item.relationship?.waterway);
+ const hasSpecies=Boolean(filters.species&&filters.species!=='All species');
+ const hasMethod=Boolean(filters.method&&filters.method!=='All methods');
+ const hasWater=filters.advertisedWater!=='All advertised waters';
+ const includeFishery=!filters.identityOnly&&(Boolean(portSearch)||isKnownFishery(filters.query)||hasSpecies||hasMethod||hasWater);
+ return entries.map(entry=>{
+  if(!directoryEntryInState(entry,filters.state,includeFishery)||
+     (filters.sourceZone!=='All areas'&&!entry.areas.includes(filters.sourceZone)))return {entry,score:null};
+  const facets=directoryFisheryFacets(entry,filters.state);
+  if((hasWater&&!facets.waters.includes(filters.advertisedWater))||
+     (hasSpecies&&!directorySpeciesLabels(facets.species).includes(filters.species!))||
+     (hasMethod&&!facets.methods.includes(filters.method!)))return {entry,score:null};
+  if(!portSearch){
+   if(hasWater&&(hasSpecies||hasMethod)){
+    const atWater=sourcedOfferings(entry).filter(item=>inJurisdiction(item,filters.state)&&item.relationship?.waterway===filters.advertisedWater);
+    if(atWater.length&&!atWater.some(item=>{
+     const {species,method}=offeringFacets(item);
+     return (!hasSpecies||Boolean(species&&directorySpeciesLabels([species]).includes(filters.species!)))&&
+      (!hasMethod||filters.method===method);
+    }))return {entry,score:null};
+   }
+   const match=matchesFisherySearch(filters.query,[...facets.species,...facets.methods,...facets.trips]);
+   return {entry,score:match===null?guideSearchScore(entry,filters.query):match?30:null};
+  }
+  const match=sourcedOfferings(entry).some(item=>{
+   if(!offeringPlaces(item).some(place=>normalizeGuideSearch(place)===portSearch.city)||
+      !inJurisdiction(item,filters.state))return false;
+   const {species,method,trip,waterway}=offeringFacets(item);
+   const labels=[species,method,trip].filter((value):value is string=>Boolean(value));
+   return matchesFisherySearch(portSearch.term,labels)===true&&
+    (!hasSpecies||Boolean(species&&directorySpeciesLabels([species]).includes(filters.species!)))&&
+    (!hasMethod||filters.method===method)&&(!hasWater||filters.advertisedWater===waterway);
   });
   return {entry,score:match?30:null};
  })

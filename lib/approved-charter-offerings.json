@@ -524,5 +524,28 @@
       "locator": "About Prowler Charters names the boat and lists the target in its three-item fishing charter menu.",
       "source_type": "operator_site"
     }
+  },
+  {
+    "operator": "Lost Creek Fly Shop",
+    "city": "Onalaska",
+    "state": "WA",
+    "value": "Tiger muskie",
+    "kind": "species",
+    "scope": "charter_operator_only",
+    "source": {
+      "url": "https://www.lostcreekflies.com/item/Tiger-Muskie-Fly-Fishing-Guide-Trip-Lake-Mayfield-Merwin-Lake-or-Lake-Tapps-737",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The trip description explicitly names Mike Sturza and offers a guided tiger muskie fly-fishing trip on any of these three lakes. Footer names the operator and its Onalaska, Washington base."
+    },
+    "waters": [
+      "Mayfield Lake",
+      "Lake Merwin",
+      "Lake Tapps"
+    ],
+    "operator_base_only": true,
+    "named_guide": "Mike Sturza",
+    "editorial_status": "approved",
+    "publication_approved": true
   }
 ]

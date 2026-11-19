@@ -24,6 +24,7 @@ export type DirectoryEntry={
   advertisedTrips?:string[];
   businessAdvertisedOfferings?:string[];
   locatedOfferings?:(NonNullable<EvidenceAttribute['location']>&Pick<EvidenceAttribute,'value'|'kind'|'relationship'>)[];
+  fisheryOfferings?:(Pick<EvidenceAttribute,'value'|'kind'|'relationship'>&Partial<NonNullable<EvidenceAttribute['location']>>)[];
   testFixture?:boolean;
   /** Separate people associated with saltwater trips; never captain identity aliases. */
   href:string;
@@ -31,8 +32,11 @@ export type DirectoryEntry={
 };
 
 function discovery(id:string){
- const attributes=attributesFor(id);
+ const attributes=attributesFor(id).filter(item=>item.evidence_scope!=='participant_reports');
  const businessAdvertisedOfferings=[...new Set(attributes.filter(x=>x.offering_scope==='operator_business').map(x=>x.value))];
+ const fisheryOfferings=attributes.filter(x=>x.kind==='species'||x.kind==='method'||x.kind==='trip_type').map(x=>({
+  ...x.location,state:x.location?.state??x.fishery_jurisdiction,value:x.value,kind:x.kind,relationship:x.relationship,
+ }));
  const locatedOfferings=attributes.flatMap(x=>x.location?[{...x.location,value:x.value,kind:x.kind,relationship:x.relationship}]:[]);
  return {
   advertisedSpecies:[...new Set(attributes.flatMap(x=>[...(x.kind==='species'?[x.value]:[]),...(x.relationship?.species?[x.relationship.species]:[])]))],
@@ -41,6 +45,7 @@ function discovery(id:string){
   advertisedTrips:attributes.filter(x=>x.kind==='trip_type').map(x=>x.value),
   ...(businessAdvertisedOfferings.length ? {businessAdvertisedOfferings} : {}),
   ...(locatedOfferings.length ? {locatedOfferings} : {}),
+  ...(fisheryOfferings.length ? {fisheryOfferings} : {}),
   sourceNames:attributes.filter(x=>x.kind==='person_name'||x.kind==='business_name').map(x=>x.value),
   testFixture:attributes.some(x=>new URL(x.source.url).hostname==='fixture.invalid'),
  };

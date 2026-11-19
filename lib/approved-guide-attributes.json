@@ -1045,5 +1045,744 @@
         "trip_label": "Fishing and foraging boat trip"
       }
     ]
+  },
+  {
+    "guide_id": "OG.0002254",
+    "kind": "species",
+    "value": "Steelhead",
+    "source": {
+      "url": "https://fishingwithbeck.com/steelhead-fishing/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Dedicated winter steelhead trip page identifies the Wilson, Trask, Kilchis and Nestucca rivers and provides a booking link."
+    },
+    "supporting_sources": [
+      {
+        "url": "https://fishingwithbeck.com/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Ryan Beck identifies himself as guide and lists winter steelhead as one of his guided trips."
+      }
+    ],
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR"
+  },
+  {
+    "guide_id": "OG.0003452",
+    "kind": "species",
+    "value": "Steelhead",
+    "source": {
+      "url": "https://fishingbooker.com/charters/view/36620",
+      "source_type": "third_party_directory",
+      "reviewed_on": "2026-11-19",
+      "locator": "The Newport booking menu offers a seasonal Oregon coast winter steelhead trip. The listing identifies Sean Proulx as the captain of Oregon Adventures Guide Service."
+    },
+    "supporting_sources": [
+      {
+        "url": "https://fishingbooker.com/profile/view/1285226",
+        "source_type": "third_party_directory",
+        "reviewed_on": "2026-11-19",
+        "locator": "Sean Proulx describes his guiding in the first person and lists Oregon Adventures Guide Service – Newport under his charter listings."
+      }
+    ],
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR",
+    "trip_note": "The Newport booking page offers a winter river trip. The launch location is confirmed with the operator."
+  },
+  {
+    "guide_id": "OG.0002472",
+    "kind": "species",
+    "value": "Albacore tuna",
+    "source": {
+      "url": "https://www.hbdsportfish.com/tuna",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Dedicated offshore albacore tuna charter."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR",
+    "supporting_sources": [
+      {
+        "url": "https://www.hbdsportfish.com/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "About Us, Captain Mark Hagedorn and offshore albacore; linked Tuna charter page"
+      }
+    ]
+  },
+  {
+    "guide_id": "OG.0002472",
+    "kind": "method",
+    "value": "Bottom fishing",
+    "source": {
+      "url": "https://www.hbdsportfish.com/bottom-fish",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Trip description, primary lingcod and rockfish targets"
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR",
+    "trip_note": "Rockfish and lingcod are the primary targets. Crabbing may be included when weather permits."
+  },
+  {
+    "guide_id": "OG.0002472",
+    "kind": "species",
+    "value": "Halibut",
+    "source": {
+      "url": "https://www.hbdsportfish.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "About Us, spring charter targets; compare linked Bottom Fish page"
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR",
+    "trip_note": "Seasonal target. A dedicated halibut-only trip was not verified."
+  },
+  {
+    "guide_id": "OG.0002193",
+    "kind": "method",
+    "value": "Crabbing",
+    "source": {
+      "url": "https://fishingbooker.com/charters/view/8049",
+      "source_type": "third_party_directory",
+      "reviewed_on": "2026-11-19",
+      "locator": "Reel Em Up Fishing Adventures–Tillamook, Captain Rod Shulley, Garibaldi and Dungeness crabbing; trip options"
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR",
+    "location": {
+      "city": "Garibaldi",
+      "state": "OR"
+    },
+    "trip_note": "Operator booking page lists dedicated and combination crabbing trips."
+  },
+  {
+    "guide_id": "OG.0000315",
+    "kind": "method",
+    "value": "Crabbing",
+    "source": {
+      "url": "https://www.fastactionfishing.com/crabbing-on-the-oregon-coast/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Astoria Crabbing Charter at a Glance; Guided Dungeness Crabbing From Hammond Marina"
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR",
+    "location": {
+      "city": "Hammond",
+      "state": "OR"
+    },
+    "trip_note": "Dedicated Hammond Marina crabbing near Astoria. Confirm exact launch at booking."
+  },
+  {
+    "guide_id": "OG.0002459",
+    "kind": "method",
+    "value": "Dory fishing",
+    "source": {
+      "url": "https://rochasdorycharter.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Owner/operator identification, Pacific City and family dory charter description"
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR",
+    "location": {
+      "city": "Pacific City",
+      "state": "OR"
+    }
+  },
+  {
+    "guide_id": "OG.0002459",
+    "kind": "method",
+    "value": "Bottom fishing",
+    "source": {
+      "url": "https://rochasdorycharter.com/fishingtrips/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Rockfish/Lingcod & Crabbing Combo Trip; Long Leader Rockfish Trip"
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR",
+    "location": {
+      "city": "Pacific City",
+      "state": "OR"
+    }
+  },
+  {
+    "guide_id": "OG.0002459",
+    "kind": "method",
+    "value": "Crabbing",
+    "source": {
+      "url": "https://rochasdorycharter.com/fishingtrips/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Rockfish/Lingcod & Crabbing Combo Trip; Bay Crabbing Trips; Crabbing Pacific City"
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR",
+    "location": {
+      "city": "Pacific City",
+      "state": "OR"
+    },
+    "trip_note": "Seasonal trips and conditions vary."
+  },
+  {
+    "guide_id": "OG.0002459",
+    "kind": "method",
+    "value": "Crabbing",
+    "source": {
+      "url": "https://rochasdorycharter.com/fishingtrips/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Rockfish/Lingcod & Crabbing Combo Trip; Bay Crabbing Trips; Crabbing Pacific City"
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR",
+    "location": {
+      "city": "Garibaldi",
+      "state": "OR"
+    },
+    "relationship": {
+      "method": "Crabbing",
+      "waterway": "Tillamook Bay"
+    },
+    "trip_note": "Dedicated bay crabbing trip."
+  },
+  {
+    "guide_id": "OG.0003297",
+    "kind": "species",
+    "value": "Albacore tuna",
+    "source": {
+      "url": "https://www.youtube.com/watch?v=816W7UZXCEw",
+      "source_type": "third_party_directory",
+      "reviewed_on": "2026-11-19",
+      "locator": "Participant identifies the operator on an offshore Newport albacore trip."
+    },
+    "evidence_scope": "participant_reports",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "trip_note": "A participant reported an offshore Newport albacore trip with Reel Time Fishing Adventures."
+  },
+  {
+    "guide_id": "OG.0000607",
+    "kind": "method",
+    "value": "Crabbing",
+    "source": {
+      "url": "https://www.youtube.com/watch?v=ui1ZythuIPE",
+      "source_type": "third_party_directory",
+      "reviewed_on": "2026-11-19",
+      "locator": "Participant reports guided crabbing with Mikey’s Fishing Adventures."
+    },
+    "evidence_scope": "participant_reports",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "trip_note": "A participant reported an Astoria crabbing trip with Mikey’s Fishing Adventures."
+  },
+  {
+    "guide_id": "OG.0001035",
+    "kind": "species",
+    "value": "Tiger muskie",
+    "source": {
+      "url": "https://flyfishportland.com/tigermusky1",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Dedicated operator trip page for tiger muskie."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "relationship": {
+      "species": "Tiger muskie",
+      "waterway": "Southwest Washington lakes"
+    },
+    "supporting_sources": [
+      {
+        "url": "https://www.flyshopnw.com/pages/flyfishing-guide-eric-leininger",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Booking partner identifies Eric and the stated target waters."
+      }
+    ]
+  },
+  {
+    "guide_id": "OG.0001035",
+    "kind": "species",
+    "value": "Smallmouth bass",
+    "source": {
+      "url": "https://flyfishportland.com/bass",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Dedicated operator trip page for smallmouth bass."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "relationship": {
+      "species": "Smallmouth bass",
+      "waterway": "Willamette River"
+    },
+    "supporting_sources": [
+      {
+        "url": "https://www.flyshopnw.com/pages/flyfishing-guide-eric-leininger",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Booking partner identifies Eric and the stated target waters."
+      }
+    ]
+  },
+  {
+    "guide_id": "OG.0001035",
+    "kind": "species",
+    "value": "Smallmouth bass",
+    "source": {
+      "url": "https://flyfishportland.com/bass",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Dedicated operator trip page for smallmouth bass."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "relationship": {
+      "species": "Smallmouth bass",
+      "waterway": "Columbia River"
+    },
+    "supporting_sources": [
+      {
+        "url": "https://www.flyshopnw.com/pages/flyfishing-guide-eric-leininger",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Booking partner identifies Eric and the stated target waters."
+      }
+    ]
+  },
+  {
+    "guide_id": "OG.0003166",
+    "kind": "species",
+    "value": "Smallmouth bass",
+    "source": {
+      "url": "https://www.willamettevalleyfishing.com/umpqua-river-smallmouth-bass-fishing",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Umpqua River Smallmouth Bass Fly Fishing Trips describes the outfitter’s guided raft trip. The About page names Will Conable as owner and lead guide, matching the registry operator and website. Individual trip assignments may vary."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR",
+    "relationship": {
+      "species": "Smallmouth bass",
+      "waterway": "Umpqua River"
+    },
+    "offering_scope": "operator_business"
+  },
+  {
+    "guide_id": "OG.0003166",
+    "kind": "species",
+    "value": "Trout",
+    "source": {
+      "url": "https://www.willamettevalleyfishing.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "McKenzie River and Willamette River Trips describes the operator’s guided drift-boat trout program, including native McKenzie redsides and wild cutthroat. The About page names Will Conable as owner and lead guide."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR",
+    "relationship": {
+      "species": "Trout",
+      "waterway": "McKenzie River"
+    },
+    "offering_scope": "operator_business"
+  },
+  {
+    "guide_id": "OG.0003166",
+    "kind": "species",
+    "value": "Trout",
+    "source": {
+      "url": "https://www.willamettevalleyfishing.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "McKenzie River and Willamette River Trips describes the operator’s guided drift-boat trout program, including native McKenzie redsides and wild cutthroat. The About page names Will Conable as owner and lead guide."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR",
+    "relationship": {
+      "species": "Trout",
+      "waterway": "Middle Fork Willamette River"
+    },
+    "offering_scope": "operator_business"
+  },
+  {
+    "guide_id": "OG.0000581",
+    "kind": "species",
+    "value": "Striped bass",
+    "source": {
+      "url": "https://fishoregon.com/striped-bass/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Striped Bass explicitly describes guided striper trips. The homepage identifies the Coquille River striper fishery; the pricing and reservation policy names Fish Oregon and Tim Schlund. The registry operator and website match."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR",
+    "relationship": {
+      "species": "Striped bass",
+      "waterway": "Coquille River"
+    },
+    "trip_note": "Operator lists the Coquille River fishery at Bandon."
+  },
+  {
+    "guide_id": "OG.0000359",
+    "kind": "species",
+    "value": "Smallmouth bass",
+    "source": {
+      "url": "https://www.wolfepackfishing.com/smallMouthBass.php",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Smallmouth Bass Fishing page describes the guided Umpqua River fishery."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR",
+    "relationship": {
+      "species": "Smallmouth bass",
+      "waterway": "Umpqua River"
+    },
+    "offering_scope": "operator_business",
+    "supporting_sources": [
+      {
+        "url": "https://www.wolfepackfishing.com/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Home page identifies Scott as part of the Wolfe family guide operation and describes its smallmouth trips."
+      }
+    ]
+  },
+  {
+    "guide_id": "wa-152",
+    "kind": "species",
+    "value": "Tiger muskie",
+    "source": {
+      "url": "https://wenatcheeflyco.com/guided-trips/stillwater/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The Stillwater Fishing guided trips page specifically recommends Evergreen Reservoir for customers targeting tiger musky."
+    },
+    "supporting_sources": [
+      {
+        "url": "https://wenatcheeflyco.com/about/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Wenatchee Fly Co identifies Mike Sherer as its owner and lead guide."
+      },
+      {
+        "url": "https://wenatcheeflyco.com/blog/what-to-expect-on-a-guided-fly-fishing-trip/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Mike Sherer’s May 6, 2026 trip guide lists tiger musky among the targets of the company’s stillwater trips."
+      }
+    ],
+    "evidence_scope": "operator_advertises",
+    "offering_scope": "operator_business",
+    "relationship": {
+      "species": "Tiger muskie",
+      "waterway": "Evergreen Reservoir"
+    },
+    "fishery_jurisdiction": "WA",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "wa-152",
+    "kind": "species",
+    "value": "Smallmouth bass",
+    "source": {
+      "url": "https://wenatcheeflyco.com/guided-trips/stillwater/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Stillwater Fishing explicitly lists this target and lake on the guided trips page."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "relationship": {
+      "species": "Smallmouth bass",
+      "waterway": "Banks Lake"
+    },
+    "offering_scope": "operator_business"
+  },
+  {
+    "guide_id": "wa-152",
+    "kind": "species",
+    "value": "Smallmouth bass",
+    "source": {
+      "url": "https://wenatcheeflyco.com/guided-trips/stillwater/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Stillwater Fishing explicitly lists this target and lake on the guided trips page."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "relationship": {
+      "species": "Smallmouth bass",
+      "waterway": "Potholes Reservoir"
+    },
+    "offering_scope": "operator_business"
+  },
+  {
+    "guide_id": "wa-152",
+    "kind": "species",
+    "value": "Largemouth bass",
+    "source": {
+      "url": "https://wenatcheeflyco.com/guided-trips/stillwater/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Stillwater Fishing explicitly lists this target and lake on the guided trips page."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "relationship": {
+      "species": "Largemouth bass",
+      "waterway": "Banks Lake"
+    },
+    "offering_scope": "operator_business"
+  },
+  {
+    "guide_id": "wa-152",
+    "kind": "species",
+    "value": "Largemouth bass",
+    "source": {
+      "url": "https://wenatcheeflyco.com/guided-trips/stillwater/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Stillwater Fishing explicitly lists this target and lake on the guided trips page."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "relationship": {
+      "species": "Largemouth bass",
+      "waterway": "Potholes Reservoir"
+    },
+    "offering_scope": "operator_business"
+  },
+  {
+    "guide_id": "wa-152",
+    "kind": "species",
+    "value": "Trout",
+    "source": {
+      "url": "https://wenatcheeflyco.com/guided-trips/stillwater/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Stillwater Fishing explicitly lists this target and lake on the guided trips page."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "relationship": {
+      "species": "Trout",
+      "waterway": "Lake Lenore"
+    },
+    "offering_scope": "operator_business"
+  },
+  {
+    "guide_id": "wa-152",
+    "kind": "species",
+    "value": "Trout",
+    "source": {
+      "url": "https://wenatcheeflyco.com/guided-trips/stillwater/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Stillwater Fishing explicitly lists this target and lake on the guided trips page."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "relationship": {
+      "species": "Trout",
+      "waterway": "Dry Falls Lake"
+    },
+    "offering_scope": "operator_business"
+  },
+  {
+    "guide_id": "wa-152",
+    "kind": "species",
+    "value": "Trout",
+    "source": {
+      "url": "https://wenatcheeflyco.com/guided-trips/stillwater/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Stillwater Fishing explicitly lists this target and lake on the guided trips page."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "relationship": {
+      "species": "Trout",
+      "waterway": "Dusty Lake"
+    },
+    "offering_scope": "operator_business"
+  },
+  {
+    "guide_id": "wa-152",
+    "kind": "species",
+    "value": "Trout",
+    "source": {
+      "url": "https://wenatcheeflyco.com/guided-trips/stillwater/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Stillwater Fishing explicitly lists this target and lake on the guided trips page."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "relationship": {
+      "species": "Trout",
+      "waterway": "Grimes Lake"
+    },
+    "offering_scope": "operator_business"
+  },
+  {
+    "guide_id": "wa-152",
+    "kind": "species",
+    "value": "Rainbow trout",
+    "source": {
+      "url": "https://wenatcheeflyco.com/guided-trips/stillwater/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Stillwater Fishing names Rainbow, Brown and Lahontan Cutthroat trout in the guided Central Washington trout program without matching each species to an individual lake."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "offering_scope": "operator_business"
+  },
+  {
+    "guide_id": "wa-152",
+    "kind": "species",
+    "value": "Brown trout",
+    "source": {
+      "url": "https://wenatcheeflyco.com/guided-trips/stillwater/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Stillwater Fishing names Rainbow, Brown and Lahontan Cutthroat trout in the guided Central Washington trout program without matching each species to an individual lake."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "offering_scope": "operator_business"
+  },
+  {
+    "guide_id": "wa-152",
+    "kind": "species",
+    "value": "Cutthroat trout",
+    "source": {
+      "url": "https://wenatcheeflyco.com/guided-trips/stillwater/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Stillwater Fishing names Rainbow, Brown and Lahontan Cutthroat trout in the guided Central Washington trout program without matching each species to an individual lake."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "WA",
+    "offering_scope": "operator_business"
+  },
+  {
+    "guide_id": "OG.0003166",
+    "kind": "species",
+    "value": "Steelhead",
+    "source": {
+      "url": "https://www.willamettevalleyfishing.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "McKenzie River and Willamette River Trips offers guided drift-boat trips targeting McKenzie redsides (rainbow trout), wild cutthroat and summer steelhead. The target is attributed to the operator’s program."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR",
+    "offering_scope": "operator_business",
+    "supporting_sources": [
+      {
+        "url": "https://www.willamettevalleyfishing.com/guided-floats",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Trip Details explicitly offers full-day summer steelhead spey trips."
+      }
+    ]
+  },
+  {
+    "guide_id": "OG.0003166",
+    "kind": "species",
+    "value": "Cutthroat trout",
+    "source": {
+      "url": "https://www.willamettevalleyfishing.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "McKenzie River and Willamette River Trips offers guided drift-boat trips targeting McKenzie redsides (rainbow trout), wild cutthroat and summer steelhead. The target is attributed to the operator’s program."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR",
+    "offering_scope": "operator_business"
+  },
+  {
+    "guide_id": "OG.0003166",
+    "kind": "species",
+    "value": "Rainbow trout",
+    "source": {
+      "url": "https://www.willamettevalleyfishing.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "McKenzie River and Willamette River Trips offers guided drift-boat trips targeting McKenzie redsides (rainbow trout), wild cutthroat and summer steelhead. The target is attributed to the operator’s program."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR",
+    "offering_scope": "operator_business"
   }
 ]
