@@ -3141,5 +3141,158 @@
     "evidence_scope": "operator_advertises",
     "editorial_status": "approved",
     "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0003862",
+    "kind": "business_name",
+    "value": "River Wanderer Outdoors",
+    "source": {
+      "url": "https://riverwandereroutdoors.com/about-your-astoria-fishing-guide/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Captain biography names Jerad Sorber, River Wanderer Outdoors and Oregon guide registration OG.0003862."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0003862",
+    "kind": "species",
+    "value": "Sturgeon",
+    "source": {
+      "url": "https://riverwandereroutdoors.com/astoria-fishing-charter/sturgeon-fishing/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Astoria sturgeon trip description and season identify the Columbia estuary catch-and-release fishery and the June and July peak."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "location": {
+      "city": "Astoria",
+      "state": "OR"
+    },
+    "relationship": {
+      "species": "Sturgeon",
+      "waterway": "Columbia River estuary"
+    },
+    "trip_note": "Catch and release. The captain lists June and July as peak months."
+  },
+  {
+    "guide_id": "OG.0003862",
+    "kind": "species",
+    "value": "Lingcod",
+    "source": {
+      "url": "https://riverwandereroutdoors.com/astoria-fishing-charter/astoria-bottom-fishing-charter/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Nearshore Astoria bottom fishing charter lists lingcod and rockfish and describes the weather-dependent ocean trip."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "location": {
+      "city": "Astoria",
+      "state": "OR"
+    },
+    "relationship": {
+      "species": "Lingcod",
+      "waterway": "Pacific Ocean",
+      "method": "Bottom fishing"
+    },
+    "trip_note": "Nearshore off Astoria, weather permitting."
+  },
+  {
+    "guide_id": "OG.0003862",
+    "kind": "species",
+    "value": "Rockfish",
+    "source": {
+      "url": "https://riverwandereroutdoors.com/astoria-fishing-charter/astoria-bottom-fishing-charter/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Nearshore Astoria bottom fishing charter lists lingcod and rockfish and describes the weather-dependent ocean trip."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "location": {
+      "city": "Astoria",
+      "state": "OR"
+    },
+    "relationship": {
+      "species": "Rockfish",
+      "waterway": "Pacific Ocean",
+      "method": "Bottom fishing"
+    }
+  },
+  {
+    "guide_id": "OG.0003862",
+    "kind": "species",
+    "value": "Chinook salmon",
+    "source": {
+      "url": "https://riverwandereroutdoors.com/astoria-fishing-charter/salmon-fishing-in-astoria-and-the-columbia-river/expert-buoy-10-fishing-char/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Buoy 10 trip description identifies trolling for Chinook and coho near Astoria."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "location": {
+      "city": "Astoria",
+      "state": "OR"
+    },
+    "relationship": {
+      "species": "Chinook salmon",
+      "waterway": "Buoy 10",
+      "method": "Trolling"
+    }
+  },
+  {
+    "guide_id": "OG.0003862",
+    "kind": "species",
+    "value": "Coho salmon",
+    "source": {
+      "url": "https://riverwandereroutdoors.com/astoria-fishing-charter/salmon-fishing-in-astoria-and-the-columbia-river/expert-buoy-10-fishing-char/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Buoy 10 trip description identifies trolling for Chinook and coho near Astoria."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "location": {
+      "city": "Astoria",
+      "state": "OR"
+    },
+    "relationship": {
+      "species": "Coho salmon",
+      "waterway": "Buoy 10",
+      "method": "Trolling"
+    }
+  },
+  {
+    "guide_id": "OG.0003862",
+    "kind": "method",
+    "value": "Crabbing",
+    "source": {
+      "url": "https://riverwandereroutdoors.com/astoria-fishing-charter/astoria-crab-charter/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Astoria crabbing trip targets Dungeness crab near the mouth of the Columbia."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "location": {
+      "city": "Astoria",
+      "state": "OR"
+    },
+    "relationship": {
+      "species": "Dungeness crab",
+      "waterway": "Columbia River estuary",
+      "method": "Crabbing"
+    }
   }
 ]
