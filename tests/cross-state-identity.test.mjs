@@ -1,3 +1,4 @@
+import * as fishingCatalog from '../lib/captain-fishing/catalog.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -16,7 +17,7 @@ function load(path,deps={}){
 }
 const research=load('lib/washington-reconciled.ts');
 const editorial=load('lib/editorial-guide-corrections.ts',{'./editorial-guide-corrections.json':JSON.parse(readFileSync('lib/editorial-guide-corrections.json','utf8'))});
-const {filterDirectoryEntries}=load('lib/directory-query.ts');
+const {filterDirectoryEntries}=load('lib/directory-query.ts',{'./captain-fishing/catalog.mjs':fishingCatalog});
 const washingtonFilter={state:'Washington',sourceZone:'All areas',advertisedWater:'All advertised waters',query:'Synthetic Captain'};
 const waSource={name:'Synthetic Captain',business:'Fixture Outfit',source:'Fixture directory',notes:null};
 const other={...waSource,business:'Different Outfit',source:'Other source'};

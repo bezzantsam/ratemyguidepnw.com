@@ -1,4 +1,4 @@
-import { directorySpeciesLabels, fisheryAtPort, matchesFisherySearch, normalizeGuideSearch } from './directory-query';
+import { directoryMethodLabel, directorySpeciesLabels, fisheryAtPort, matchesFisherySearch, normalizeGuideSearch } from './directory-query';
 import type { DirectoryState } from './directory-url';
 
 export type CharterOffering = {
@@ -32,12 +32,12 @@ export function filterCharterOfferings(offerings: CharterOffering[], filters: Di
     if ((filters.state !== 'All' && filters.state !== state) ||
         (filters.waterway !== 'All advertised waters' && filters.waterway !== waterway && !offer.waters?.includes(filters.waterway)) ||
         (filters.species !== 'All species' && !directorySpeciesLabels(species?[species]:[]).includes(filters.species)) ||
-        (filters.method !== 'All methods' && filters.method !== method)) return false;
+        (filters.method !== 'All methods' && (!method || directoryMethodLabel(filters.method)!==directoryMethodLabel(method)))) return false;
     if (!query) return true;
     const labels=[species, method, trip].filter((label):label is string=>Boolean(label));
     if (portSearch) return (offer.operatorBaseOnly ? (offer.waters??[]) : charterPorts(offer)).some(port=>normalizeGuideSearch(port)===portSearch.city)&&
-      matchesFisherySearch(portSearch.term,labels)===true;
-    const fishery = matchesFisherySearch(query, labels);
+      matchesFisherySearch(portSearch.term,labels,method?[method]:[])===true;
+    const fishery = matchesFisherySearch(query, labels,method?[method]:[]);
     if (fishery !== null) return fishery;
     const terms = normalizeGuideSearch([operator, city, state, boat, ...labels].filter(Boolean).join(' '));
     return query.split(' ').every(term => terms.includes(term));

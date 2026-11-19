@@ -1,3 +1,4 @@
+import {fishingOptions, type FishingOption} from './captain-fishing/catalog.mjs';
 import type {DirectoryEntry} from './directory';
 
 export type DirectoryFilters={state:string;sourceZone:string;advertisedWater:string;query:string;species?:string;method?:string;identityOnly?:boolean};
@@ -38,10 +39,33 @@ export function canonicalFisheryLabel(value:string):string {
  const normalized=normalizeGuideSearch(value);
  return canonicalLabels.get(normalized) ?? (normalized==='tuna'?'Tuna':value);
 }
-function isKnownFishery(value:string):boolean {
- return canonicalLabels.has(normalizeGuideSearch(value))||broadSpecies.has(canonicalFisheryLabel(value));
+// A catalog choice describes a filter; only sourced directory facts can satisfy it.
+const catalogMethods = new Map<string, FishingOption>();
+for (const option of fishingOptions) {
+ for (const alias of option.aliases) catalogMethods.set(normalizeGuideSearch(alias), option);
 }
-export function matchesFisherySearch(query:string,offerings:string[]):boolean|null {
+for (const option of fishingOptions) {
+ // An exact label takes precedence over an alias, e.g. gear “Crab rings”.
+ for (const key of [option.id, option.label]) catalogMethods.set(normalizeGuideSearch(key), option);
+}
+export function knownDirectoryMethod(value:string):FishingOption|undefined {
+ return catalogMethods.get(normalizeGuideSearch(canonicalFisheryLabel(value)));
+}
+export function directoryMethodLabel(value:string):string {
+ return knownDirectoryMethod(value)?.label ?? canonicalFisheryLabel(value);
+}
+const catalogMethodLabels = fishingOptions.filter(option=>option.kind==='method').map(option=>option.label);
+const gearLabels = fishingOptions.filter(option=>option.kind==='gear').map(option=>option.label);
+export function directoryMethodGroups(sourcedLabels:string[]) {
+ const otherMethods = sourcedLabels.filter(label=>!knownDirectoryMethod(label)).map(directoryMethodLabel);
+ return {methods:[...new Set([...catalogMethodLabels,...otherMethods])].sort(), gear:gearLabels};
+}
+function isKnownFishery(value:string):boolean {
+ return Boolean(knownDirectoryMethod(value))||canonicalLabels.has(normalizeGuideSearch(value))||broadSpecies.has(canonicalFisheryLabel(value));
+}
+export function matchesFisherySearch(query:string,offerings:string[],methods:string[]=offerings):boolean|null {
+ const choice=knownDirectoryMethod(query);
+ if(choice)return methods.some(value=>directoryMethodLabel(value)===choice.label);
  if(!isKnownFishery(query))return null;
  const label=canonicalFisheryLabel(query);
  const accepted=[label,...(broadSpecies.get(label)??[])];
@@ -134,7 +158,7 @@ export function guideSearchScore(entry:DirectoryEntry,query:string):number|null 
  // Registration/WA IDs must never be silently corrected to another identity.
  if(/^(og[.\s-]?\d|wa[.\s-]?\d)/i.test(raw))return index.id===raw?0:index.id.startsWith(raw)?1:null;
  const needle=normalizeGuideSearch(raw);if(!needle)return null;
- const fishery=matchesFisherySearch(needle,[...(entry.advertisedSpecies??[]),...(entry.advertisedMethods??[]),...(entry.advertisedTrips??[])]);
+ const fishery=matchesFisherySearch(needle,[...(entry.advertisedSpecies??[]),...(entry.advertisedMethods??[]),...(entry.advertisedTrips??[])],entry.advertisedMethods??[]);
  if (fishery!==null)return fishery ? 30 : null;
  if(index.identity.includes(needle))return 0;
  if(index.identity.some(value=>value.startsWith(needle)))return 1;
@@ -167,7 +191,9 @@ export function filterDirectoryEntries(entries:DirectoryEntry[],filters:Director
   ...charterCities,...locatedGuidePorts(entries),
  ],filters.method,filters.species) : null;
  const hasSpecies=Boolean(filters.species&&filters.species!=='All species');
- const hasMethod=Boolean(filters.method&&filters.method!=='All methods');
+ const selectedMethod=filters.method && filters.method!=='All methods' ? directoryMethodLabel(filters.method) : undefined;
+ const hasMethod=Boolean(selectedMethod);
+ const sameMethod=(value:string|undefined)=>value!==undefined && directoryMethodLabel(value)===selectedMethod;
  const hasWater=filters.advertisedWater!=='All advertised waters';
  const includeFishery=!filters.identityOnly&&(Boolean(portSearch)||isKnownFishery(filters.query)||hasSpecies||hasMethod||hasWater);
  return entries.map(entry=>{
@@ -176,22 +202,22 @@ export function filterDirectoryEntries(entries:DirectoryEntry[],filters:Director
   const facets=directoryFisheryFacets(entry,filters.state);
   if((hasWater&&!facets.waters.includes(filters.advertisedWater))||
      (hasSpecies&&!directorySpeciesLabels(facets.species).includes(filters.species!))||
-     (hasMethod&&!facets.methods.includes(filters.method!)))return {entry,score:null};
+     (hasMethod&&!facets.methods.some(sameMethod)))return {entry,score:null};
   if(!portSearch){
    const exactFishery=isKnownFishery(filters.query);
    if(hasWater&&(hasSpecies||hasMethod||exactFishery)){
     const atWater=sourcedOfferings(entry).filter(item=>inJurisdiction(item,filters.state)&&item.relationship?.waterway===filters.advertisedWater);
     const editorialMatch=entry.editorialFishing?.some(({value})=>
      (hasSpecies&&directorySpeciesLabels([value]).includes(filters.species!))||
-     (hasMethod&&filters.method===value)||matchesFisherySearch(filters.query,[value])===true);
+     (hasMethod&&sameMethod(value))||matchesFisherySearch(filters.query,[value])===true);
     if((atWater.length||editorialMatch)&&!atWater.some(item=>{
      const {species,method,trip}=offeringFacets(item);
      const labels=[species,method,trip].filter((value):value is string=>Boolean(value));
      return (!hasSpecies||Boolean(species&&directorySpeciesLabels([species]).includes(filters.species!)))&&
-      (!hasMethod||filters.method===method)&&(!exactFishery||matchesFisherySearch(filters.query,labels)===true);
+      (!hasMethod||sameMethod(method))&&(!exactFishery||matchesFisherySearch(filters.query,labels,method?[method]:[])===true);
     }))return {entry,score:null};
    }
-   const match=matchesFisherySearch(filters.query,[...facets.species,...facets.methods,...facets.trips]);
+   const match=matchesFisherySearch(filters.query,[...facets.species,...facets.methods,...facets.trips],facets.methods);
    return {entry,score:match===null?guideSearchScore(entry,filters.query):match?30:null};
   }
   const match=sourcedOfferings(entry).some(item=>{
@@ -199,9 +225,9 @@ export function filterDirectoryEntries(entries:DirectoryEntry[],filters:Director
       !inJurisdiction(item,filters.state))return false;
    const {species,method,trip,waterway}=offeringFacets(item);
    const labels=[species,method,trip].filter((value):value is string=>Boolean(value));
-   return matchesFisherySearch(portSearch.term,labels)===true&&
+   return matchesFisherySearch(portSearch.term,labels,method?[method]:[])===true&&
     (!hasSpecies||Boolean(species&&directorySpeciesLabels([species]).includes(filters.species!)))&&
-    (!hasMethod||filters.method===method)&&(!hasWater||filters.advertisedWater===waterway);
+    (!hasMethod||sameMethod(method))&&(!hasWater||filters.advertisedWater===waterway);
   });
   return {entry,score:match?30:null};
  })

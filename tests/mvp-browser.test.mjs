@@ -33,6 +33,20 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
   // Synthetic approved fixtures exercise filters without publishing candidate research.
   await page.getByText('Synthetic test fixture — not a real offering.').first().waitFor();
   const species=page.getByLabel('Species');const method=page.getByRole('combobox',{name:/^Fishing methods\b/});
+  await page.setViewportSize({width:375,height:812});
+  await page.goto(origin+'/guides?method=automatic+pot+puller',{waitUntil:'domcontentloaded'});
+  await page.getByRole('heading',{name:'No matching guides.'}).waitFor();
+  assert.equal(await method.inputValue(),'Electric pot pullers');
+  assert.equal(new URL(page.url()).searchParams.get('method'),'Electric pot pullers');
+  assert.equal(await method.locator('optgroup[label="Gear"] option').filter({hasText:/^Electric fishing reels$/}).count(),1);
+  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'method filter fits mobile');
+  await method.selectOption('Downriggers');
+  await page.reload({waitUntil:'domcontentloaded'});
+  await page.getByRole('button',{name:'Remove method: Downriggers'}).waitFor();
+  await page.goBack();await page.getByRole('button',{name:'Remove method: Electric pot pullers'}).waitFor();
+  await page.getByRole('button',{name:'Remove method: Electric pot pullers'}).click();
+  assert.equal(await method.inputValue(),'All methods');
+  await page.setViewportSize({width:1280,height:800});
   await species.selectOption({label:'Salmon'});await method.selectOption({label:'Fly fishing'});
   await page.getByRole('link',{name:/John Hanson/}).first().waitFor();
   assert.equal(await page.getByRole('link',{name:/Shea Fisher/}).count(),0,'broad Salmon does not imply Chinook');
@@ -44,9 +58,10 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
   await page.waitForFunction(()=>document.querySelector('select')!==null&&new URLSearchParams(location.search).get('method')==='Fly fishing');
   await page.getByRole('link',{name:/John Hanson/}).first().click();
   await page.getByText('Synthetic test fixture — not a real offering.').waitFor();
-  await page.getByText('Separate items do not establish a combined trip.',{exact:false}).waitFor();
-  await page.getByText('person name: Synthetic Captain Alias').waitFor();
-  await page.getByText('Industry directory',{exact:false}).first().waitFor();
+  await page.getByText('Separate listings do not establish a combined trip',{exact:false}).waitFor();
+  const aliasSource=page.getByRole('link',{name:'Source for Synthetic Captain Alias'});
+  assert.match(await aliasSource.getAttribute('href'),/^https:\/\/fixture\.invalid\//);
+  assert.match(await aliasSource.innerText(),/Directory source/);
   assert.doesNotMatch(await page.content(),/Pending Secret Species|Rejected Secret Method/,'unapproved attributes do not reach the profile HTML or serialized props');
   await page.getByRole('link',{name:'← Search guides'}).click();
   await page.waitForURL(filteredUrl);await page.getByRole('link',{name:/John Hanson/}).first().waitFor();
