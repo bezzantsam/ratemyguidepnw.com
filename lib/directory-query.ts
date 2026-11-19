@@ -31,9 +31,9 @@ export function matchesFisherySearch(query: string, offerings: string[]): boolea
  return fishery ? offerings.some(label=>fishery.includes(normalizeGuideSearch(label))) : null;
 }
 
-function fisheryAtPort(query: string, cities: string[]) {
+export function fisheryAtPort(query: string, cities: string[]) {
  const search=normalizeGuideSearch(query);
- for(const city of new Set(cities.map(normalizeGuideSearch))){
+ for(const city of new Set(cities.flatMap(city=>city.split(' or ')).map(normalizeGuideSearch))){
   const term=search.startsWith(city+' ')?search.slice(city.length+1):search.endsWith(' '+city)?search.slice(0,-city.length-1):'';
   if(fisherySearches.has(term))return {city,term};
  }
@@ -116,9 +116,16 @@ export function filterDirectoryEntries(entries:DirectoryEntry[],filters:Director
   (!filters.method||filters.method==='All methods'||(entry.advertisedMethods??[]).includes(filters.method))
  ).map(entry=>{
   if(!portSearch)return {entry,score:guideSearchScore(entry,filters.query)};
-  const match=entry.locatedOfferings?.some(item=>normalizeGuideSearch(item.city)===portSearch.city&&
-   (filters.state==='All'||filters.state===(item.state==='OR'?'Oregon':'Washington'))&&
-   matchesFisherySearch(portSearch.term,[item.value]));
+  const match=entry.locatedOfferings?.some(item=>{
+   if(normalizeGuideSearch(item.city)!==portSearch.city||
+      (filters.state!=='All'&&filters.state!==(item.state==='OR'?'Oregon':'Washington'))||
+      !matchesFisherySearch(portSearch.term,[item.value]))return false;
+   const species=item.kind==='species'?item.value:item.relationship?.species;
+   const method=item.kind==='method'?item.value:item.relationship?.method;
+   return (!filters.species||filters.species==='All species'||Boolean(species&&directorySpeciesLabels([species]).includes(filters.species)))&&
+    (!filters.method||filters.method==='All methods'||filters.method===method)&&
+    (filters.advertisedWater==='All advertised waters'||filters.advertisedWater===item.relationship?.waterway);
+  });
   return {entry,score:match?30:null};
  })
   .filter((match):match is {entry:DirectoryEntry;score:number}=>match.score!==null)

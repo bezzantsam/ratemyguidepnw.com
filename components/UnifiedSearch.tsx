@@ -63,7 +63,8 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
   ...charters.filter(offer=>state==='All'||offer.state===state).map(offer=>offer.species),
  ])].sort(),[entries,charters,state]);
  const methodOptions=useMemo(()=>[...new Set(entries.filter(g=>state==='All'||g.states.includes(state as 'Oregon'|'Washington')).flatMap(g=>g.advertisedMethods??[]))].sort(),[entries,state]);
- const matchingCharters=filterCharterOfferings(charters,selection);
+ const guidePorts=useMemo(()=>entries.flatMap(entry=>entry.locatedOfferings?.map(offer=>offer.city)??[]),[entries]);
+ const matchingCharters=filterCharterOfferings(charters,selection,guidePorts);
  const pages=Math.max(1,Math.ceil(filtered.length/size)),current=Math.min(page,pages);
  const setRegion=(s:DirectoryState['state'])=>change({state:s,area:'All areas',waterway:'All advertised waters',species:'All species',method:'All methods',page:1});
 
@@ -114,7 +115,7 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
    {method!=='All methods'&&<button type="button" onClick={()=>{change({method:'All methods',page:1});methodRef.current?.focus()}}>Remove method: {method}</button>}
    {waterway!=='All advertised waters'&&<button type="button" onClick={()=>{change({waterway:'All advertised waters',page:1});waterRef.current?.focus()}}>Remove waterway: {waterway}</button>}
   </div>}
-  <div ref={resultsRef} tabIndex={-1} className="results-heading" role="status" aria-live="polite" aria-atomic="true"><strong>{filtered.length.toLocaleString()} captain listings</strong>
+  <div ref={resultsRef} tabIndex={-1} className="results-heading" role="status" aria-live="polite" aria-atomic="true"><strong>{filtered.length.toLocaleString()} captain {filtered.length===1?'listing':'listings'}</strong>
    {matchingCharters.length>0&&<span>{matchingCharters.length} charter {matchingCharters.length===1?'offering':'offerings'}</span>}
    <span>{q.trim()?'Closest matches first':'A–Z'} · Page {current} of {pages}</span>
   </div>

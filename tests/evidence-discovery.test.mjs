@@ -124,22 +124,26 @@ test('charter evidence stays outside guide attribution and matches the same sour
  const find=(term,patch={})=>Array.from(filterCharterOfferings(charterOfferings,{...filters,...patch,query:term}),offer=>offer.operator);
  assert.deepEqual(find('black cod'),find('sablefish'));
  assert.deepEqual(find('Newport black cod'),['Yaquina Bay Charters']);
+ assert.deepEqual(find('black cod Newport'),['Yaquina Bay Charters']);
  assert.deepEqual(find('sablefish Westport'),['Mutineer Charters']);
  assert.deepEqual(find('Newport black cod',{state:'Washington'}),[]);
  assert.deepEqual(find('black cod',{method:'Bottom fishing'}),[]);
  assert.deepEqual(find('Buoy 10 salmon',{state:'Washington',species:'Salmon',waterway:'Buoy 10'}),['Roam Yacht Charters']);
  assert.deepEqual(find('Ilwaco Buoy 10 salmon',{state:'Oregon'}),[]);
+ assert.equal(filterCharterOfferings(charterOfferings,{...filters,query:'Garibaldi Buoy 10 salmon'},['Garibaldi']).length,0);
  assert.equal(url.parseDirectoryState('?state=Washington&species=Salmon&water=Buoy+10',[],charterOfferings).waterway,'Buoy 10');
  assert.equal(url.parseDirectoryState('?state=Washington&species=Sablefish+(black+cod)',[],charterOfferings).species,'Sablefish (black cod)');
 });
 test('a port-qualified fishery search needs the location and target on the same guide fact',()=>{
  const base={states:['Oregon'],areas:['Garibaldi'],advertisedWaters:[],searchAliases:[],advertisedSpecies:['Albacore tuna']};
  const entries=[
-  {...base,id:'OG.0000047',name:'One',locatedOfferings:[{city:'Garibaldi',state:'OR',value:'Albacore tuna'}]},
-  {...base,id:'OG.0000050',name:'Two',locatedOfferings:[{city:'Garibaldi',state:'OR',value:'Halibut'}]},
+  {...base,id:'OG.0000047',name:'One',advertisedSpecies:['Albacore tuna','Halibut'],locatedOfferings:[{city:'Garibaldi',state:'OR',kind:'species',value:'Albacore tuna'}]},
+  {...base,id:'OG.0000050',name:'Two',locatedOfferings:[{city:'Garibaldi',state:'OR',kind:'species',value:'Halibut'}]},
  ];
  const filters={state:'All',sourceZone:'All areas',advertisedWater:'All advertised waters',query:'Garibaldi albacore'};
  assert.deepEqual(Array.from(query.filterDirectoryEntries(entries,filters),entry=>entry.id),['OG.0000047']);
+ assert.deepEqual(Array.from(query.filterDirectoryEntries(entries,{...filters,query:'albacore Garibaldi',species:'Tuna'}),entry=>entry.id),['OG.0000047']);
+ assert.equal(query.filterDirectoryEntries(entries,{...filters,species:'Halibut'}).length,0);
  assert.equal(query.filterDirectoryEntries(entries,{...filters,query:'Newport tuna'},['Newport']).length,0);
 });
 test('production dataset is separate from pending research',()=>{
@@ -162,6 +166,7 @@ test('empty approved coverage hides controls while approved fixtures render them
  const base={id:'OG.0000047',name:'Example',business:null,states:['Oregon'],areas:[],advertisedWaters:[],searchAliases:[],href:'/guides/example',source:'Oregon registry'};
  const empty=renderToStaticMarkup(React.createElement(exports.default,{entries:[base]}));
  assert.doesNotMatch(empty,/>Species|Source-listed fishing method/);
+ assert.match(empty,/>1 captain listing</);
  const present=renderToStaticMarkup(React.createElement(exports.default,{entries:[{...base,advertisedSpecies:['Salmon'],advertisedMethods:['Fly fishing']}]}));
  assert.match(present,/>Species/);assert.match(present,/Source-listed fishing method/);
 });
