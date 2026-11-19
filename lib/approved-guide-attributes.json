@@ -18,6 +18,24 @@
     "publication_approved": true
   },
   {
+    "guide_id": "OG.0000315",
+    "kind": "trip_type",
+    "value": "Buoy 10 salmon",
+    "source": {
+      "url": "https://www.fastactionfishing.com/journal/buoy-10-salmon/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Opening offer, Where Do Buoy 10 Trips Depart, and Covered and Heated Buoy 10 Guide Boat."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "relationship": {
+      "species": "Salmon",
+      "waterway": "Buoy 10"
+    }
+  },
+  {
     "guide_id": "OG.0000329",
     "kind": "method",
     "value": "Bottom fishing",
@@ -48,6 +66,24 @@
     },
     "editorial_status": "approved",
     "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0000395",
+    "kind": "trip_type",
+    "value": "Buoy 10 salmon",
+    "source": {
+      "url": "https://stlaurentguideservice.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "World Famous Columbia Buoy 10 booking card and introduction naming Daniel."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "relationship": {
+      "species": "Salmon",
+      "waterway": "Buoy 10"
+    }
   },
   {
     "guide_id": "OG.0000585",
@@ -108,6 +144,24 @@
     },
     "editorial_status": "approved",
     "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0000740",
+    "kind": "trip_type",
+    "value": "Buoy 10 salmon",
+    "source": {
+      "url": "https://www.reelluckycharters.com/booking/p/astoria-buoy-10",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Trip title and product description."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "relationship": {
+      "species": "Salmon",
+      "waterway": "Buoy 10"
+    }
   },
   {
     "guide_id": "OG.0000895",
@@ -234,6 +288,24 @@
     }
   },
   {
+    "guide_id": "OG.0001545",
+    "kind": "trip_type",
+    "value": "Buoy 10 salmon",
+    "source": {
+      "url": "https://columbiariverfishingtrip.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Salmon, Steelhead & Sturgeon Fishing section names operator guide and Buoy 10 trips."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "relationship": {
+      "species": "Salmon",
+      "waterway": "Buoy 10"
+    }
+  },
+  {
     "guide_id": "OG.0001623",
     "kind": "species",
     "value": "Albacore tuna",
@@ -260,6 +332,42 @@
     "evidence_scope": "operator_advertises",
     "editorial_status": "approved",
     "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0002044",
+    "kind": "trip_type",
+    "value": "Buoy 10 salmon",
+    "source": {
+      "url": "https://buoy10fish.com/trips/salmon-fishing-trips/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Experience Columbia River Salmon Fishing explicitly includes Buoy 10 and both runs."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "relationship": {
+      "species": "Salmon",
+      "waterway": "Buoy 10"
+    }
+  },
+  {
+    "guide_id": "OG.0002505",
+    "kind": "trip_type",
+    "value": "Buoy 10 salmon",
+    "source": {
+      "url": "https://tonyoguidedadventure.com/trips/buoy-10-salmon/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Trip introduction, Tony Owsian caption, and What to Expect sections."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "relationship": {
+      "species": "Salmon",
+      "waterway": "Buoy 10"
+    }
   },
   {
     "guide_id": "OG.0002543",
