@@ -20,7 +20,7 @@ export default function CaptainDetails({slug,claimAvailable=false}:{slug:string;
       </p>
       <p className="muted">
         {claimAvailable
-          ? 'Are you this captain? See below whether this listing can be claimed.'
+          ? 'Are you this captain? See the rating section to check whether this listing can be claimed.'
           : 'Are you this captain? Use the “Claiming currently unavailable” link on this page to find the current onboarding instructions. New details are not published directly from this page.'}
       </p>
     </section>

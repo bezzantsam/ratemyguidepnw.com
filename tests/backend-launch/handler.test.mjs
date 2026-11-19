@@ -29,7 +29,39 @@ test('forged role/status, oversized bodies, private DB errors fail safely',async
 });
 test('moderation uses server-side membership and never invokes action for nonadmin',async()=>{
  const b=backend(),action={operation:'operator_decide',kind:'claim',id:'00000000-0000-0000-0000-000000000001',approve:true,reason:'Manual evidence was reviewed'};
- const r=await handleLaunch(req(action,'token'),b.factory,env);assert.equal(r.status,403);assert.equal(b.calls.some(c=>c[0]==='admin_decide_claim'),false);
+ const r=await handleLaunch(req(action,'token'),b.factory,{...env,RMG_CLAIMS_ENABLED:'true'});assert.equal(r.status,403);assert.equal(b.calls.some(c=>c[0]==='rmg_decide_submission'),false);
+});
+test('review launch alone does not dispatch claim or owner mutations or the claim queue',async()=>{
+ const id='00000000-0000-0000-0000-000000000001';
+ const operations=[
+  {operation:'submit_claim',jurisdiction:'OR',sourceId:'or-1',claimantName:'Test Name',businessName:'',evidence:'Independently checked ownership'},
+  {operation:'edit_details',jurisdiction:'OR',sourceId:'or-1',boat:'',gear:'',yearsExperience:null,expertise:'',species:''},
+  {operation:'operator_queue',kind:'claim',offset:0,limit:50},
+  {operation:'operator_decide',kind:'claim',id,approve:true,reason:'Independently checked ownership'},
+  {operation:'operator_decide',kind:'claim',id,approve:false,reason:'Insufficient evidence'}
+ ];
+ for(const input of operations){
+  const b=backend({admin:true}),r=await handleLaunch(req(input,'token'),b.factory,env);
+  assert.equal(r.status,503);assert.deepEqual(await r.json(),{error:'launch_unavailable'});assert.deepEqual(b.calls,[]);
+ }
+ const b=backend(),status=await handleLaunch(req({operation:'own_status',kind:'claim',id},'token'),b.factory,env);
+ assert.equal(status.status,200);assert.equal(b.calls.at(-1)[0],'rmg_own_status');
+});
+test('Washington source writes and availability remain closed even with both flags enabled',async()=>{
+ const id='00000000-0000-0000-0000-000000000001',source={jurisdiction:'WA',sourceId:'wa-1'};
+ const b=backend({admin:true}),flags={...env,RMG_CLAIMS_ENABLED:'true'};
+ const availability=await handleLaunch(req({operation:'review_write_availability',...source}),b.factory,flags);
+ assert.deepEqual(await availability.json(),{available:false});
+ for(const input of [
+  {...review,...source},
+  {operation:'report_review',...source,reviewId:id,reason:'other'},
+  {operation:'submit_claim',...source,claimantName:'Test Name',businessName:'',evidence:'Independently checked ownership'},
+  {operation:'edit_details',...source,boat:'',gear:'',yearsExperience:null,expertise:'',species:''}
+ ]){
+  const r=await handleLaunch(req(input,'token'),b.factory,flags);
+  assert.equal(r.status,403);assert.deepEqual(await r.json(),{error:'forbidden'});
+ }
+ assert.deepEqual(b.calls,[]);
 });
 test('unavailable configuration fails closed',async()=>{const b=backend();const r=await handleLaunch(req(review,'token'),b.factory,{RMG_LAUNCH_ENABLED:'true'});assert.equal(r.status,503);assert.equal(b.calls.length,0)});
 test('server flag defaults off for public, auth, write and safe-return operations',async()=>{
@@ -43,7 +75,7 @@ test('a basic review sends missing optional answers as null',async()=>{
 });
 test('authorized moderator receives the persisted database decision',async()=>{
  const id='00000000-0000-0000-0000-000000000001',b=backend({admin:true,rpcResult:{id,status:'approved'}});
- const r=await handleLaunch(req({operation:'operator_decide',kind:'claim',id,approve:true,reason:'Independently checked ownership'},'token'),b.factory,env);
+ const r=await handleLaunch(req({operation:'operator_decide',kind:'claim',id,approve:true,reason:'Independently checked ownership'},'token'),b.factory,{...env,RMG_CLAIMS_ENABLED:'true'});
  assert.equal(r.status,200);assert.deepEqual(await r.json(),{id,status:'approved'});assert.equal(b.calls.at(-1)[0],'rmg_decide_submission');
 });
 test('rate limits and ordinary database conflicts have distinct safe errors',async()=>{

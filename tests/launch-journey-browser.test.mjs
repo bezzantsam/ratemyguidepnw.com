@@ -60,6 +60,9 @@ test('synthetic browser connects mapped review, claim, moderation and published 
   await page.getByLabel('Overall quality').selectOption('5');await page.getByLabel('Your relationship to this guide or business').selectOption('none');await page.getByLabel('Your experience').fill('A good firsthand trip.');await page.getByLabel('I personally took this trip.').check();
   await page.getByText('Tell us more',{exact:true}).click();await page.getByLabel('Trip month (optional)').fill('2026-07');
   await page.getByRole('button',{name:'Submit review'}).click();await page.getByText(/Your review is (pending|awaiting review)/).first().waitFor();
+  const reviewStatus=page.getByRole('link',{name:'View your review status'});
+  await reviewStatus.waitFor();
+  assert.equal(await reviewStatus.getAttribute('href'),'#your-submissions');
   assert.equal(state.review.intensity,null);assert.equal(state.review.wouldBookAgain,null);assert.equal(state.review.sourceId,'OG.0002254');assert.equal(state.review.tripMonth,'2026-07');
   await page.getByText('Are you the captain? Request this listing').click();await page.getByLabel('Your name').fill('Fixture Captain');await page.getByLabel('Your connection to this listing').fill('I operate the guide business shown on this listing.');await page.getByRole('button',{name:'Submit claim request'}).click();await page.getByText('Your claim request is pending review.').waitFor();
   await page.getByRole('button',{name:'Copy review request link'}).click();assert.equal(await page.evaluate(()=>window.__fixtureCopied),'https://ratemyguidepnw.vercel.app/guides/og-0002254?intent=review#write-review');

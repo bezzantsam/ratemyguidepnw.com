@@ -5,6 +5,7 @@ import { directoryEntries } from '@/lib/directory';
 
 export default function Home() {
   const enabled=process.env.NEXT_PUBLIC_RMG_LAUNCH_ENABLED==='true';
+  const claimsEnabled=enabled&&process.env.NEXT_PUBLIC_RMG_CLAIMS_ENABLED==='true';
   return (
     <main className="home-search">
       <p className="eyebrow">RATE MY GUIDE PNW</p>
@@ -23,7 +24,7 @@ export default function Home() {
       </section>
       <section style={{ marginTop: 32 }} aria-labelledby="captain-listing-heading">
         <h2 id="captain-listing-heading">Captain or guide?</h2>
-        <p>{!enabled && 'Claims are currently unavailable. '}Claiming never gives anyone control over independent angler reviews.</p>
+        <p>{!claimsEnabled && 'Claims are currently unavailable. '}Claiming never gives anyone control over independent angler reviews.</p>
         <Link href="/guides"><strong>Find your profile</strong></Link>
       </section>
       <p className="muted" style={{ marginTop: 22 }}>

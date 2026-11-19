@@ -25,7 +25,7 @@ test('mapped profile connects actual returned ratings, own status and review/cla
   const browser={location:{hash:''},setTimeout:()=>0,addEventListener(_name,fn){hashListener=fn},removeEventListener(){}};
   const canonical=compile('lib/canonical-share.ts',{});
   const views=compile('components/launch/GuideEngagement.tsx',{react,'@/components/AuthPanel':{__esModule:true,default:AuthPanel,client:auth},'@/lib/launch-client':{createLaunchClient:()=>api},'@/lib/canonical-share':canonical,'./ProfileSharing':{ProfileSharing},'./PublishedReviews':{PublishedReviews,ReviewCard},'./SubmissionViews':{ReviewSubmission,ClaimSubmission}},{window:browser});
-  function render(){cursor=0;effects=[];return views.GuideEngagement({source,profilePath,guideName:'Example'})}
+  function render(claimsEnabled=true){cursor=0;effects=[];return views.GuideEngagement({source,profilePath,guideName:'Example',claimsEnabled})}
   render();for(const effect of effects)effect();await tick();await tick();
   let tree=render(),published=find(tree,n=>n.type===PublishedReviews),sharing=find(tree,n=>n.type===ProfileSharing);
   assert.equal(published.props.state.page.total,1);assert.equal(published.props.state.page.average,4);assert.equal(sharing.props.reviewAvailable,true);
@@ -33,6 +33,11 @@ test('mapped profile connects actual returned ratings, own status and review/cla
   assert.equal(find(tree,n=>n.type===ReviewSubmission&&n.props.mode!=='revision'),undefined,'existing author is not invited to submit again');assert.ok(claimForm);
   assert.equal(find(tree,n=>typeof n.props?.children==='string'&&n.props.children.startsWith('Sign in to share')),undefined,'signed-in account is not told to sign in');
   assert.ok(find(tree,n=>typeof n.type==='function'&&n.type.name==='OwnerEditor'),'approved cross-state identity exposes declared profile editor');
+  const reviewOnly=render(false);
+  assert.equal(find(reviewOnly,n=>n.type===ClaimSubmission),undefined);
+  assert.equal(find(reviewOnly,n=>typeof n.type==='function'&&n.type.name==='OwnerEditor'),undefined);
+  assert.ok(find(reviewOnly,n=>n.type==='button'&&n.props.children==='Edit your review'));
+  assert.equal(find(reviewOnly,n=>n.type===ProfileSharing).props.reviewAvailable,true);
   await claimForm.props.onSubmit({claimantName:'A Guide',businessName:'',evidence:'a sufficiently long explanation'});
   assert.equal(claimed.s.sourceId,source.sourceId);
   find(tree,n=>n.type==='button'&&n.props.children==='Edit your review').props.onClick();await tick();

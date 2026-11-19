@@ -45,13 +45,13 @@ test(`rating-first discovery and profile availability (${mode})`,{timeout:120000
     await page.waitForURL(url=>url.pathname==='/'&&url.searchParams.get('q')===query);
    }
    await q.fill('');
-   await page.getByLabel('Species',{exact:true}).selectOption({label:'Halibut'});
+   await page.getByLabel('Species').selectOption({label:'Halibut'});
    await page.locator('.guide-result').filter({hasText:'Walter Rowe'}).click();
    await page.waitForURL(url=>url.pathname==='/guides/og-0003297');
    await page.getByRole('heading',{name:'Walter Rowe',exact:true}).waitFor();
    await page.getByRole('link',{name:'← Back to rating search'}).click();
    await page.waitForURL(url=>url.pathname==='/'&&url.searchParams.get('species')==='Halibut');
-   await page.getByLabel('Species',{exact:true}).selectOption({label:'All species'});
+   await page.getByLabel('Species').selectOption({label:'All species'});
    await q.fill('Scott Wolfe');
    const match=page.locator('.guide-result').filter({hasText:'Douglas Wolfe'});
    await match.waitFor();assert.equal(await match.count(),1);

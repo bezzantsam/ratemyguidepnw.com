@@ -5,7 +5,7 @@ import AuthPanel,{client as authClient} from '@/components/AuthPanel';
 import {createLaunchClient,type OperatorItem,type SubmissionKind} from '@/lib/launch-client';
 
 /** Access and every operation are independently checked by the server. */
-export function AdminConsole() {
+export function AdminConsole({claimsEnabled=false}:{claimsEnabled?:boolean}) {
   const api=useMemo(()=>createLaunchClient({enabled:true,getAccessToken:async()=>{const result=await authClient?.auth.getSession();return result?.data.session?.access_token??null}}),[]);
   const [access,setAccess]=useState<'loading'|'signed_out'|'operator'|'denied'|'error'>('loading');
   const [kind,setKind]=useState<SubmissionKind>('review'),[offset,setOffset]=useState(0),[items,setItems]=useState<OperatorItem[]|null>(null),[error,setError]=useState(''),[message,setMessage]=useState(''),[notes,setNotes]=useState<Record<string,string>>({});
@@ -16,7 +16,7 @@ export function AdminConsole() {
   useEffect(()=>{void refreshAccess();if(!authClient)return;const {data:{subscription}}=authClient.auth.onAuthStateChange((_event,next)=>{authEpoch.current++;queueEpoch.current++;setAccess(next?'loading':'signed_out');setItems(null);setNotes({});window.setTimeout(()=>void refreshAccess(),0)});return()=>{authEpoch.current++;queueEpoch.current++;subscription.unsubscribe()}},[refreshAccess]);
   useEffect(()=>{void load()},[load]);
   async function decide(item:OperatorItem,approve:boolean){
-    if(item.kind==='report')return;
+    if(item.kind==='report'||(item.kind==='claim'&&!claimsEnabled))return;
     if(processing.current.has(item.id))return;
     const reason=(notes[item.id]??'').trim();
     if((approve&&reason.length<20)||(!approve&&!reason)){setError(approve?'Record at least 20 characters of manual review evidence.':'Add a reason before rejecting.');return}
@@ -35,7 +35,7 @@ export function AdminConsole() {
   }
   return <main className="launch-controls"><p className="eyebrow">SITE OPERATIONS</p><h1>Moderation</h1><AuthPanel onSignedIn={()=>void refreshAccess()}/>
     {access==='loading'&&<p role="status">Checking operator access…</p>}{access==='signed_out'&&<p>Sign in with an authorized operator account.</p>}{access==='denied'&&<p role="status">This account does not have operator access.</p>}{access==='error'&&<p role="status">Operator access is temporarily unavailable.</p>}
-    {access==='operator'&&<section><h2>Pending submissions</h2><label>Submission type <select value={kind} onChange={e=>{queueEpoch.current++;setItems(null);setKind(e.target.value as SubmissionKind);setOffset(0);setMessage('')}}><option value="review">Reviews</option><option value="claim">Claims</option><option value="revision">Review edits</option><option value="report">Review reports</option></select></label>
+    {access==='operator'&&<section><h2>Pending submissions</h2><label>Submission type <select value={kind} onChange={e=>{queueEpoch.current++;setItems(null);setKind(e.target.value as SubmissionKind);setOffset(0);setMessage('')}}><option value="review">Reviews</option>{claimsEnabled&&<option value="claim">Claims</option>}<option value="revision">Review edits</option><option value="report">Review reports</option></select></label>
       {error&&<p role="alert">{error}</p>}{message&&<p role="status">{message}</p>}
       {items===null?!error&&<p role="status">Loading submissions…</p>:items.length===0?<p>No pending submissions on this page.</p>:items.map(item=><article className="card" key={`${item.kind}:${item.id}`}>
         <h3>{item.kind==='review'?'Review':item.kind==='claim'?'Claim request':item.kind==='revision'?'Review edit':'Review report'} · {item.guideName??'Listing unavailable'}</h3>{item.reviewId&&<p>Review reference: {item.reviewId}</p>}<p>Submitted: {item.createdAt}</p><p style={{whiteSpace:'pre-wrap'}}>{item.description}</p>
