@@ -42,7 +42,7 @@ test('ordinary production data contains no synthetic discovery or unapproved con
   assert.equal(await page.getByRole('link',{name:/Walter Rowe/}).count(),1);
   assert.equal(await page.getByRole('link',{name:/Toby Wyatt/}).count(),0);
   await species.selectOption({label:'All species'});
-  const method=page.getByLabel('Source-listed fishing method');
+  const method=page.getByRole('combobox',{name:/^Fishing methods\b/});
   await method.selectOption({label:'Bottom fishing'});
   assert.equal(await page.getByRole('link',{name:/Russell Pearson/}).count(),1);
   assert.equal(await page.getByRole('link',{name:/Walter Rowe/}).count(),0);
