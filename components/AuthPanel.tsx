@@ -2,6 +2,7 @@
 import {useEffect,useRef,useState} from 'react';
 import {createClient} from '@supabase/supabase-js';
 import {guideAuthRedirectPath,guideAuthRestoredPath} from '@/lib/canonical-share';
+import {rememberReviewSearch,takeReviewSearch} from '@/lib/review-search-return';
 const url=process.env.NEXT_PUBLIC_SUPABASE_URL,key=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 export const client=url&&key?createClient(url,key):null;
 export default function AuthPanel({onSignedIn,profilePath,moderator=false}:{onSignedIn?:()=>void;profilePath?:string;moderator?:boolean}){
@@ -14,7 +15,28 @@ export default function AuthPanel({onSignedIn,profilePath,moderator=false}:{onSi
    setMessage('This sign-in link could not be used. Request a new link below.');
   }
  },[moderator]);
- useEffect(()=>{if(!client)return;let active=true;function signedIn(){if(profilePath){const {pathname,search,hash}=window.location;const restored=guideAuthRestoredPath(pathname,search,hash,profilePath);if(restored){window.history.replaceState(window.history.state,'',restored);window.dispatchEvent(new Event('hashchange'))}}onSignedInRef.current?.()}void client.auth.getUser().then(r=>{if(!active)return;setUser(r.data.user?.email||null);if(r.data.user)signedIn()});const {data:{subscription}}=client.auth.onAuthStateChange((_e,s)=>{setUser(s?.user?.email||null);if(s?.user)signedIn()});return()=>{active=false;subscription.unsubscribe()}},[profilePath]);
+ useEffect(()=>{
+  if(!client)return;
+  let active=true;
+  function signedIn(){
+   if(profilePath){
+    const {pathname,search,hash}=window.location;
+    const restored=guideAuthRestoredPath(pathname,search,hash,profilePath);
+    if(restored){
+     const target=search==='?intent=review'?takeReviewSearch(profilePath):null;
+     const next=target
+      ? `${pathname}?intent=review&returnTo=${encodeURIComponent(target)}#write-review`
+      : restored;
+     window.history.replaceState(window.history.state,'',next);
+     window.dispatchEvent(new Event('hashchange'));
+    }
+   }
+   onSignedInRef.current?.();
+  }
+  void client.auth.getUser().then(r=>{if(!active)return;setUser(r.data.user?.email||null);if(r.data.user)signedIn()});
+  const {data:{subscription}}=client.auth.onAuthStateChange((_e,s)=>{setUser(s?.user?.email||null);if(s?.user)signedIn()});
+  return()=>{active=false;subscription.unsubscribe()};
+ },[profilePath]);
  function redirectTo(){
   const {origin,pathname,search,hash}=window.location;
   if(moderator)return origin+'/admin';
@@ -22,6 +44,7 @@ export default function AuthPanel({onSignedIn,profilePath,moderator=false}:{onSi
   params.delete('returnTo');
   const query=params.toString();
   const path=profilePath?guideAuthRedirectPath(pathname+(query?'?'+query:'')+hash,profilePath):pathname;
+  if(profilePath&&path===profilePath+'?intent=review')rememberReviewSearch(profilePath,search);
   return origin+path;
  }
  async function google(){if(!client)return;setBusy(true);const {error}=await client.auth.signInWithOAuth({provider:'google',options:{redirectTo:redirectTo()}});if(error){setMessage(error.message);setBusy(false)}}

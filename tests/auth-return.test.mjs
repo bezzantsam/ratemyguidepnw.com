@@ -6,7 +6,7 @@ import vm from 'node:vm';
 
 const require=createRequire(import.meta.url),ts=require('typescript');
 function compile(path,imports={},globals={}) {
-  const code=ts.transpileModule(readFileSync(path,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX}}).outputText;
+  const code=ts.transpileModule(readFileSync(path,'utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2020,module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX}}).outputText;
   const exports={};
   vm.runInNewContext(code,{exports,require:name=>imports[name]??require(name),...globals});
   return exports;
@@ -16,14 +16,19 @@ function find(node,predicate) {
   if(predicate(node)) return node;
   for(const child of [node.props?.children].flat(Infinity)){const result=find(child,predicate);if(result)return result}
 }
-function setup({moderator=false,otpReply=async()=>({error:null})}={}) {
+function setup({moderator=false,otpReply=async()=>({error:null}),storage=new Map()}={}) {
   const profile='/guides/og-0002254', cells=[];let cursor=0,effects=[],listener,oauth,otp,replaced;
   const location={origin:'https://preview.example',pathname:profile,search:'?intent=review',hash:'#write-review'};
-  const browser={location,history:{state:{existing:true},replaceState(_state,_title,path){replaced=path}},dispatchEvent(){}};
+  const browser={
+    location,history:{state:{existing:true},replaceState(_state,_title,path){replaced=path}},dispatchEvent(){},
+    localStorage:{getItem:key=>storage.get(key),setItem:(key,value)=>storage.set(key,value),removeItem:key=>storage.delete(key)},
+  };
   const auth={getUser:async()=>({data:{user:null}}),onAuthStateChange(fn){listener=fn;return {data:{subscription:{unsubscribe(){}}}}},signInWithOAuth:async arg=>{oauth=arg;return {error:null}},signInWithOtp:async arg=>{otp=arg;return otpReply()},signOut:async()=>{}};
   const react={useState(initial){const i=cursor++;if(!(i in cells))cells[i]=initial;return [cells[i],value=>{cells[i]=value}]},useRef(initial){const i=cursor++;if(!(i in cells))cells[i]={current:initial};return cells[i]},useEffect(fn){effects.push(fn)}};
   const canonical=compile('lib/canonical-share.ts');
-  const panel=compile('components/AuthPanel.tsx',{react,'@supabase/supabase-js':{createClient:()=>({auth})},'@/lib/canonical-share':canonical},{window:browser,Event,URLSearchParams,process:{env:{NEXT_PUBLIC_SUPABASE_URL:'https://example.invalid',NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:'public'}}});
+  const directory=compile('lib/directory-url.ts',{'./directory-query':{}},{URL,URLSearchParams});
+  const context=compile('lib/review-search-return.ts',{'./directory-url':directory},{window:browser,URLSearchParams});
+  const panel=compile('components/AuthPanel.tsx',{react,'@supabase/supabase-js':{createClient:()=>({auth})},'@/lib/canonical-share':canonical,'@/lib/review-search-return':context},{window:browser,Event,URLSearchParams,process:{env:{NEXT_PUBLIC_SUPABASE_URL:'https://example.invalid',NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:'public'}}});
   return {profile,location,get oauth(){return oauth},get otp(){return otp},get replaced(){return replaced},render(){cursor=0;effects=[];return panel.default({profilePath:moderator?undefined:profile,moderator})},start(){for(const fn of effects)fn()},emit(session){listener('SIGNED_IN',session)}};
 }
 
@@ -38,6 +43,43 @@ test('both sign-in methods keep the selected guide and review intent without put
   const refreshed=email.render();
   find(refreshed,n=>n.type==='button'&&n.props.children==='Email me a sign-in link').props.onClick();
   assert.equal(email.otp.options.emailRedirectTo,`https://preview.example${h.profile}?intent=review`);
+});
+
+test('the email return restores a validated rating search locally across same-origin tabs',()=>{
+ const storage=new Map(),start=setup({storage});
+ const target='/write-review?q=Scott+Wolfe&state=Oregon';
+ start.location.search='?intent=review&returnTo='+encodeURIComponent(target);
+ find(start.render(),n=>n.type==='input').props.onChange({target:{value:'angler@example.invalid'}});
+ find(start.render(),n=>n.type==='button'&&n.props.children==='Email me a sign-in link').props.onClick();
+ assert.equal(start.otp.options.emailRedirectTo,`https://preview.example${start.profile}?intent=review`);
+
+ const callback=setup({storage});
+ callback.render();callback.start();
+ callback.location.pathname='/guides/og-0000359';
+ callback.emit({user:{email:'angler@example.invalid'}});
+ assert.equal(callback.replaced,undefined);
+ callback.location.pathname=callback.profile;
+ callback.location.hash='#access_token=private';
+ callback.emit({user:{email:'angler@example.invalid'}});
+ assert.equal(callback.replaced,undefined);
+ callback.location.hash='';
+ callback.emit({user:{email:'angler@example.invalid'}});
+ assert.equal(callback.replaced,`${start.profile}?intent=review&returnTo=${encodeURIComponent(target)}#write-review`);
+ assert.equal(storage.size,0);
+});
+
+test('the email return ignores expired or unsafe stored search context',()=>{
+ for(const [target,expiresAt] of [
+  ['/write-review?q=expired',Date.now()-1],
+  ['//outside.example/write-review',Date.now()+1000],
+  ['/write-review?state=Oregon&state=Washington',Date.now()+1000],
+ ]){
+  const storage=new Map(),h=setup({storage});
+  storage.set('rmg-review-search:'+h.profile,JSON.stringify({target,expiresAt}));
+  h.render();h.start();h.emit({user:{email:'angler@example.invalid'}});
+  assert.equal(h.replaced,`${h.profile}?intent=review#write-review`);
+  assert.equal(storage.size,0);
+ }
 });
 
 test('auth callback never overwrites an unconsumed token fragment',()=>{

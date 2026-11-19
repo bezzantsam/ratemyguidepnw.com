@@ -1,10 +1,15 @@
 'use client';
 import Link from 'next/link';
 import {useEffect,useState} from 'react';
-import {safeDirectoryReturn} from '@/lib/directory-url';
+import {reviewSearchReturn} from '@/lib/review-search-return';
 export default function ReturnToResults(){
  const [href,setHref]=useState('/guides');
- useEffect(()=>{const p=new URLSearchParams(window.location.search);setHref(p.getAll('returnTo').length===1?safeDirectoryReturn(p.get('returnTo')):'/guides')},[]);
+ useEffect(()=>{
+  function readReturn(){setHref(reviewSearchReturn(window.location.search)??'/guides')}
+  readReturn();
+  window.addEventListener('hashchange',readReturn);
+  return()=>window.removeEventListener('hashchange',readReturn);
+ },[]);
  const reviewSearch=href==='/'||href.startsWith('/?')||href==='/write-review'||href.startsWith('/write-review?');
  return <Link href={href}>{reviewSearch?'← Back to rating search':'← Search guides'}</Link>;
 }
