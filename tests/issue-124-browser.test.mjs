@@ -33,7 +33,7 @@ test(`rating-first discovery and profile availability (${mode})`,{timeout:120000
    assert.ok(await page.getByRole('heading',{name:'How was your trip?'}).count());
    assert.ok(await page.getByRole('heading',{name:'Captain or guide?'}).count());
    assert.ok(await page.getByRole('heading',{name:'How was your trip?'}).evaluate((e)=>!!(e.compareDocumentPosition(document.querySelector('#captain-listing-heading'))&Node.DOCUMENT_POSITION_FOLLOWING)));
-   if(mode==='disabled')assert.ok(await page.getByText('Review submissions are not open yet.').count());
+   if(mode==='disabled')assert.ok(await page.getByText('Review submissions are closed.').count());
    const q=page.getByRole('searchbox');
    for(const [query, name, slug] of [['Douglas Wolfe','Douglas Wolfe','og-0000359'],['Dre Menefee','Keondre Menefee','og-0003348']]){
     await q.fill(query);
@@ -66,9 +66,9 @@ test(`rating-first discovery and profile availability (${mode})`,{timeout:120000
     assert.ok(await action.evaluate(e=>!!(e.compareDocumentPosition(document.querySelector('#reviews'))&Node.DOCUMENT_POSITION_FOLLOWING)));
     await page.getByText('Sign in to share a firsthand experience with this guide.').waitFor();
    }else{
-    await page.getByRole('heading',{name:'Rate Douglas Wolfe'}).waitFor();
+    assert.ok(await page.getByRole('button',{name:'Rate Douglas Wolfe'}).isDisabled());
     assert.equal(await page.getByRole('link',{name:'Rate Douglas Wolfe'}).count(),0);
-    assert.ok(await page.getByText('Review submissions are not open yet.').count());
+    assert.ok(await page.getByText('Review submissions are closed.').count());
    }
    await page.getByRole('link',{name:'← Back to rating search'}).click();
    await page.waitForURL(url=>url.pathname==='/'&&url.searchParams.get('q')==='Scott Wolfe');
@@ -140,11 +140,11 @@ test(`rating-first discovery and profile availability (${mode})`,{timeout:120000
     return route.continue();
    });
    const page=await context.newPage();await page.goto(`${origin}/guides/og-0000359`,{waitUntil:'networkidle'});
-   await page.getByText('We couldn’t check review availability.',{exact:true}).waitFor();
+   await page.getByText('Couldn’t load review information.',{exact:false}).waitFor();
    assert.equal(await page.locator('a[href="#write-review"]').count(),0);
    failAvailability=false;
-   await page.getByRole('button',{name:'Retry review availability'}).click();
-   await page.getByText('Reviews aren’t available for this guide right now.').waitFor();
+   await page.getByRole('button',{name:'Retry',exact:true}).click();
+   await page.getByText('Review submissions are closed.').waitFor();
    assert.equal(await page.getByText('Are you the captain? Request this listing').count(),0);
    assert.equal(await page.locator('a[href="#write-review"]').count(),0);
    await context.close();

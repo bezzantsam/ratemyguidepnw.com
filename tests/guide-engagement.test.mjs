@@ -24,11 +24,18 @@ test('mapped profile connects actual returned ratings, own status and review/cla
   function PublishedReviews(){}function ReviewCard(){}function ReviewSubmission(){}function ClaimSubmission(){}function ProfileSharing(){}function AuthPanel(){}
   const browser={location:{hash:''},setTimeout:()=>0,addEventListener(_name,fn){hashListener=fn},removeEventListener(){}};
   const canonical=compile('lib/canonical-share.ts',{});
-  const views=compile('components/launch/GuideEngagement.tsx',{react,'@/components/AuthPanel':{__esModule:true,default:AuthPanel,client:auth},'@/lib/launch-client':{createLaunchClient:()=>api},'@/lib/canonical-share':canonical,'./ProfileSharing':{ProfileSharing},'./PublishedReviews':{PublishedReviews,ReviewCard},'./SubmissionViews':{ReviewSubmission,ClaimSubmission}},{window:browser});
-  function render(claimsEnabled=true){cursor=0;effects=[];return views.GuideEngagement({source,profilePath,guideName:'Example',claimsEnabled})}
+  const {validReviewPage}=compile('components/launch/PublishedReviews.tsx',{'./ReviewShare':{},'./ReportReview':{}});
+  const views=compile('components/launch/GuideEngagement.tsx',{react,'@/components/AuthPanel':{__esModule:true,default:AuthPanel,client:auth},'@/lib/launch-client':{createLaunchClient:()=>api},'@/lib/canonical-share':canonical,'./ProfileSharing':{ProfileSharing},'./PublishedReviews':{PublishedReviews,ReviewCard,validReviewPage},'./SubmissionViews':{ReviewSubmission,ClaimSubmission}},{window:browser});
+  function render(claimsEnabled=true, compactProfile=false){cursor=0;effects=[];return views.GuideEngagement({source,profilePath,guideName:'Example',claimsEnabled,compactProfile})}
   render();for(const effect of effects)effect();await tick();await tick();
   let tree=render(),published=find(tree,n=>n.type===PublishedReviews),sharing=find(tree,n=>n.type===ProfileSharing);
   assert.equal(published.props.state.page.total,1);assert.equal(published.props.state.page.average,4);assert.equal(sharing.props.reviewAvailable,true);
+  const compact=render(false,true);
+  const rating=find(compact,n=>n.type==='a'&&n.props.href==='#reviews');
+  assert.equal(rating.props.children[0].props.children.join(''),'4.0 / 5');
+  assert.equal(rating.props.children[2],1);
+  assert.equal(find(compact,n=>n.type===ProfileSharing).props.primaryAction.props.href,'#your-submissions');
+  assert.equal(find(compact,n=>n.type===PublishedReviews).props.inviteFirst,false);
   const claimForm=find(tree,n=>n.type===ClaimSubmission);
   assert.equal(find(tree,n=>n.type===ReviewSubmission&&n.props.mode!=='revision'),undefined,'existing author is not invited to submit again');assert.ok(claimForm);
   assert.equal(find(tree,n=>typeof n.props?.children==='string'&&n.props.children.startsWith('Sign in to share')),undefined,'signed-in account is not told to sign in');
@@ -52,5 +59,9 @@ test('mapped profile connects actual returned ratings, own status and review/cla
   browser.location.hash=`#review-${claim}`;hashListener();await tick();tree=render();assert.equal(find(tree,n=>n.type===ReviewCard),undefined);assert.ok(find(tree,n=>n.props?.children==='The linked review is unavailable.'));
   currentSession=null;listener('SIGNED_OUT',null);tree=render();assert.equal(find(tree,n=>n.type===ReviewSubmission),undefined);assert.equal(find(tree,n=>n.type===ClaimSubmission),undefined);
   api.publicReviews=async()=>{throw Error('unmapped')};render();for(const effect of effects)effect();await tick();await tick();
+  const failed=render(false,true);
+  assert.equal(find(failed,n=>n.type==='a'&&n.props.href==='#reviews'),undefined);
+  assert.equal(find(failed,n=>n.type===ProfileSharing).props.primaryAction.props.disabled,true);
+  assert.ok(find(failed,n=>n.type==='button'&&n.props.children==='Retry'));
   tree=render();assert.equal(find(tree,n=>n.type===ProfileSharing).props.reviewAvailable,false);assert.equal(find(tree,n=>n.type===AuthPanel),undefined);
 });

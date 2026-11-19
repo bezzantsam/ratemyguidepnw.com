@@ -1,10 +1,10 @@
 'use client';
 
-import {useState} from 'react';
+import {useState, type ReactNode} from 'react';
 import {canonicalProfileUrl, canonicalReviewRequestUrl} from '@/lib/canonical-share';
 
 /** Enable review-request actions only when the real review destination is available. */
-export function ProfileSharing({profilePath, guideName, reviewAvailable}: {profilePath:string; guideName:string; reviewAvailable:boolean}) {
+export function ProfileSharing({profilePath, guideName, reviewAvailable, primaryAction}: {profilePath:string; guideName:string; reviewAvailable:boolean; primaryAction?:ReactNode}) {
   const profileUrl=canonicalProfileUrl(profilePath);
   const reviewUrl=reviewAvailable ? canonicalReviewRequestUrl(profilePath) : null;
   const [status,setStatus]=useState('');
@@ -41,14 +41,26 @@ export function ProfileSharing({profilePath, guideName, reviewAvailable}: {profi
       setStatus('Your QR code is ready.');setFallback('');
     } catch {setStatus('The QR code could not be prepared. Copy the review link instead.');}
   }
+  const shareButton = <button type="button" className="guide-share" onClick={()=>void share()}>Share profile</button>;
+  const copyButton = <button type="button" onClick={()=>void copy(profileUrl)}>Copy profile link</button>;
+  const reviewTools = reviewUrl && <>
+    <button type="button" onClick={()=>void copy(reviewUrl)}>Copy review request link</button>
+    <button type="button" onClick={()=>void downloadQr()}>Download review request QR code</button>
+  </>;
+  const feedback = <>
+    <p className="share-feedback" role="status">{status}</p>
+    {fallback && <label>Copy this link<input readOnly value={fallback} onFocus={event=>event.currentTarget.select()}/></label>}
+  </>;
+  if (primaryAction) return <div className="profile-sharing compact-sharing">
+    <div className="profile-sharing-actions">{primaryAction}{shareButton}</div>
+    {feedback}
+    <details className="guide-share-tools"><summary>Sharing options</summary>
+      <div className="profile-sharing-actions">{copyButton}{reviewTools}</div>
+    </details>
+  </div>;
   return <section className="section card profile-sharing" aria-labelledby="share-profile-heading">
     <h2 id="share-profile-heading">Share this profile</h2>
-    <div className="profile-sharing-actions"><button type="button" onClick={()=>void share()}>Share profile</button>{' '}
-    <button type="button" onClick={()=>void copy(profileUrl)}>Copy profile link</button>
-    {reviewUrl && <>{' '}<button type="button" onClick={()=>void copy(reviewUrl)}>Copy review request link</button>{' '}
-      <button type="button" onClick={()=>void downloadQr()}>Download review request QR code</button></>}
-    </div>
-    <p role="status">{status}</p>
-    {fallback && <label>Copy this link<input readOnly value={fallback} onFocus={event=>event.currentTarget.select()}/></label>}
+    <div className="profile-sharing-actions">{shareButton}{copyButton}{reviewTools}</div>
+    {feedback}
   </section>;
 }
