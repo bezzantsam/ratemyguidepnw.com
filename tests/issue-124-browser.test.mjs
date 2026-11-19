@@ -102,6 +102,7 @@ test(`rating-first discovery and profile availability (${mode})`,{timeout:120000
     blocked.push(url.origin);return route.abort();
    });
    await moderatorPage.goto(`${origin}/admin`,{waitUntil:'domcontentloaded'});
+   await moderatorPage.getByText('Sign in with an authorized operator account.').waitFor();
    await moderatorPage.getByText('Use your moderator email to request a sign-in link.').waitFor();
    assert.equal(await moderatorPage.getByRole('button',{name:'Continue with Google'}).count(),0);
    await moderatorPage.getByRole('textbox',{name:'Email',exact:true}).fill('moderator@example.invalid');
