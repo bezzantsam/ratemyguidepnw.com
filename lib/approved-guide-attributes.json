@@ -3119,5 +3119,27 @@
         "locator": "Operator and guide identification"
       }
     ]
+  },
+  {
+    "guide_id": "OG.0004049",
+    "kind": "person_name",
+    "value": "EJ",
+    "source": {
+      "url": "https://bigenergy.fishing/meet-your-guide",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The Big Energy Meet Your Guide page calls the guide Capt. Ej."
+    },
+    "supporting_sources": [
+      {
+        "url": "https://captainexperiences.com/guides/big-energy-guide-service",
+        "source_type": "third_party_directory",
+        "reviewed_on": "2026-11-19",
+        "locator": "The Big Energy guide bio names Edwin Snyder and calls him Captain Ej."
+      }
+    ],
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
   }
 ]
