@@ -16,7 +16,7 @@ function find(node,predicate) {
   if(predicate(node)) return node;
   for(const child of [node.props?.children].flat(Infinity)){const result=find(child,predicate);if(result)return result}
 }
-function setup({moderator=false,otpReply=async()=>({error:null}),storage=new Map()}={}) {
+function setup({moderator=false,emailOnly=false,otpReply=async()=>({error:null}),storage=new Map()}={}) {
   const profile='/guides/og-0002254', cells=[];let cursor=0,effects=[],listener,oauth,otp,replaced;
   const location={origin:'https://preview.example',pathname:profile,search:'?intent=review',hash:'#write-review'};
   const browser={
@@ -29,7 +29,7 @@ function setup({moderator=false,otpReply=async()=>({error:null}),storage=new Map
   const directory=compile('lib/directory-url.ts',{'./directory-query':{}},{URL,URLSearchParams});
   const context=compile('lib/review-search-return.ts',{'./directory-url':directory},{window:browser,URLSearchParams});
   const panel=compile('components/AuthPanel.tsx',{react,'@supabase/supabase-js':{createClient:()=>({auth})},'@/lib/canonical-share':canonical,'@/lib/review-search-return':context},{window:browser,Event,URLSearchParams,process:{env:{NEXT_PUBLIC_SUPABASE_URL:'https://example.invalid',NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:'public'}}});
-  return {profile,location,get oauth(){return oauth},get otp(){return otp},get replaced(){return replaced},render(){cursor=0;effects=[];return panel.default({profilePath:moderator?undefined:profile,moderator})},start(){for(const fn of effects)fn()},emit(session){listener('SIGNED_IN',session)}};
+  return {profile,location,get oauth(){return oauth},get otp(){return otp},get replaced(){return replaced},render(){cursor=0;effects=[];return panel.default({profilePath:moderator?undefined:profile,moderator,emailOnly})},start(){for(const fn of effects)fn()},emit(session){listener('SIGNED_IN',session)}};
 }
 
 test('both sign-in methods keep the selected guide and review intent without putting it in the auth fragment',()=>{
@@ -46,9 +46,10 @@ test('both sign-in methods keep the selected guide and review intent without put
 });
 
 test('the email return restores a validated rating search locally across same-origin tabs',()=>{
- const storage=new Map(),start=setup({storage});
+ const storage=new Map(),start=setup({storage,emailOnly:true});
  const target='/write-review?q=Scott+Wolfe&state=Oregon';
  start.location.search='?intent=review&returnTo='+encodeURIComponent(target);
+ assert.equal(find(start.render(),n=>n.type==='button'&&n.props.children==='Continue with Google'),undefined);
  find(start.render(),n=>n.type==='input').props.onChange({target:{value:'angler@example.invalid'}});
  find(start.render(),n=>n.type==='button'&&n.props.children==='Email me a sign-in link').props.onClick();
  assert.equal(start.otp.options.emailRedirectTo,`https://preview.example${start.profile}?intent=review`);

@@ -5,16 +5,17 @@ import {BRAND_NAME,guideAuthRedirectPath,guideAuthRestoredPath} from '@/lib/cano
 import {rememberReviewSearch,takeReviewSearch} from '@/lib/review-search-return';
 const url=process.env.NEXT_PUBLIC_SUPABASE_URL,key=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 export const client=url&&key?createClient(url,key):null;
-export default function AuthPanel({onSignedIn,profilePath,moderator=false,authCheck=false}:{onSignedIn?:()=>void;profilePath?:string;moderator?:boolean;authCheck?:boolean}){
+export default function AuthPanel({onSignedIn,profilePath,moderator=false,authCheck=false,emailOnly=false}:{onSignedIn?:()=>void;profilePath?:string;moderator?:boolean;authCheck?:boolean;emailOnly?:boolean}){
+ const usesEmailOnly=moderator||authCheck||emailOnly;
  const[email,setEmail]=useState(''),[message,setMessage]=useState(''),[user,setUser]=useState<string|null>(null),[busy,setBusy]=useState(false);
  const onSignedInRef=useRef(onSignedIn);onSignedInRef.current=onSignedIn;
  useEffect(()=>{
-  if(!moderator&&!authCheck)return;
+  if(!usesEmailOnly)return;
   const hasAuthError=(value:string)=>new URLSearchParams(value.slice(1)).has('error_code');
   if(hasAuthError(window.location.search)||hasAuthError(window.location.hash)){
    setMessage('This sign-in link could not be used. Request a new link below.');
   }
- },[moderator,authCheck]);
+ },[usesEmailOnly]);
  useEffect(()=>{
   if(!client)return;
   let active=true;
@@ -57,7 +58,7 @@ export default function AuthPanel({onSignedIn,profilePath,moderator=false,authCh
     email:email.trim(),
     options:{emailRedirectTo:redirectTo(),...(moderator?{shouldCreateUser:false}:{})},
    });
-   setMessage(error?(moderator||authCheck?unavailable:error.message):`Check your email for your ${BRAND_NAME} sign-in link.`);
+   setMessage(error?(usesEmailOnly?unavailable:error.message):`Check your email for your ${BRAND_NAME} sign-in link.`);
   }catch{
    setMessage(unavailable);
   }finally{
@@ -67,8 +68,8 @@ export default function AuthPanel({onSignedIn,profilePath,moderator=false,authCh
  if(!client)return <p>Sign-in configuration is unavailable.</p>;
  return <div className="auth-panel">
   {user?<><p>{authCheck?'Signed in.':<>Signed in as <strong>{user}</strong></>}</p><button type="button" onClick={()=>void client.auth.signOut()}>Sign out</button></>:<>
-   {!moderator&&!authCheck&&<button type="button" disabled={busy} onClick={()=>void google()}>Continue with Google</button>}
-   <p>{moderator?'Use your moderator email to request a sign-in link.':authCheck?'Use your email to request a sign-in link.':'Or sign in using a verified email link:'}</p>
+   {!usesEmailOnly&&<button type="button" disabled={busy} onClick={()=>void google()}>Continue with Google</button>}
+   <p>{moderator?'Use your moderator email to request a sign-in link.':usesEmailOnly?'Use your email to request a sign-in link.':'Or sign in using a verified email link:'}</p>
    <label>Email<input type="email" autoComplete="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com"/></label>
    <button type="button" disabled={busy||!email.includes('@')} onClick={()=>void magic()}>Email me a sign-in link</button>
    {message&&<p role="status">{message}</p>}
