@@ -153,6 +153,18 @@ test('Sam’s corrections find the existing Rowe, Menefee and Wolfe records',()=
  assert.ok(matches({species:'Tuna',method:'Bottom fishing',state:'Oregon'}).includes(walter.id));
 });
 
+test('species and method filters respect Jerad Sorber’s sourced trip pairings without a water filter',()=>{
+ const entries=actualDirectory(true).directory.directoryEntries;
+ const filters={...all,state:'Oregon'};
+ const matches=(species,method='All methods')=>filter(entries,{...filters,species,method}).some(entry=>entry.id==='OG.0003862');
+ for(const [species,method] of [['Lingcod','Bottom fishing'],['Rockfish','Bottom fishing'],['Chinook Salmon','Trolling'],['Coho Salmon','Trolling'],['Sturgeon']]){
+  assert.ok(matches(species,method),[species,method].join(' + '));
+ }
+ for(const [species,method] of [['Sturgeon','Bottom fishing'],['Lingcod','Trolling'],['Coho Salmon','Bottom fishing']]){
+  assert.equal(matches(species,method),false,[species,method].join(' + '));
+ }
+});
+
 test('editorial corrections preserve all original profiles, IDs, fields and unrelated attributes',()=>{
  const before=actualDirectory(false).directory.directoryEntries;
  const after=actualDirectory(true).directory.directoryEntries;
