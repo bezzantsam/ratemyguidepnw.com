@@ -16,15 +16,15 @@ function find(node,predicate) {
   if(predicate(node)) return node;
   for(const child of [node.props?.children].flat(Infinity)){const result=find(child,predicate);if(result)return result}
 }
-function setup() {
-  const profile='/guides/og-0002254', cells=[];let cursor=0,effect,listener,oauth,otp,replaced;
+function setup({moderator=false,otpReply=async()=>({error:null})}={}) {
+  const profile='/guides/og-0002254', cells=[];let cursor=0,effects=[],listener,oauth,otp,replaced;
   const location={origin:'https://preview.example',pathname:profile,search:'?intent=review',hash:'#write-review'};
   const browser={location,history:{state:{existing:true},replaceState(_state,_title,path){replaced=path}},dispatchEvent(){}};
-  const auth={getUser:async()=>({data:{user:null}}),onAuthStateChange(fn){listener=fn;return {data:{subscription:{unsubscribe(){}}}}},signInWithOAuth:async arg=>{oauth=arg;return {error:null}},signInWithOtp:async arg=>{otp=arg;return {error:null}},signOut:async()=>{}};
-  const react={useState(initial){const i=cursor++;if(!(i in cells))cells[i]=initial;return [cells[i],value=>{cells[i]=value}]},useRef(initial){const i=cursor++;if(!(i in cells))cells[i]={current:initial};return cells[i]},useEffect(fn){effect=fn}};
+  const auth={getUser:async()=>({data:{user:null}}),onAuthStateChange(fn){listener=fn;return {data:{subscription:{unsubscribe(){}}}}},signInWithOAuth:async arg=>{oauth=arg;return {error:null}},signInWithOtp:async arg=>{otp=arg;return otpReply()},signOut:async()=>{}};
+  const react={useState(initial){const i=cursor++;if(!(i in cells))cells[i]=initial;return [cells[i],value=>{cells[i]=value}]},useRef(initial){const i=cursor++;if(!(i in cells))cells[i]={current:initial};return cells[i]},useEffect(fn){effects.push(fn)}};
   const canonical=compile('lib/canonical-share.ts');
   const panel=compile('components/AuthPanel.tsx',{react,'@supabase/supabase-js':{createClient:()=>({auth})},'@/lib/canonical-share':canonical},{window:browser,Event,URLSearchParams,process:{env:{NEXT_PUBLIC_SUPABASE_URL:'https://example.invalid',NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:'public'}}});
-  return {profile,location,get oauth(){return oauth},get otp(){return otp},get replaced(){return replaced},render(){cursor=0;return panel.default({profilePath:profile})},start(){effect()},emit(session){listener('SIGNED_IN',session)}};
+  return {profile,location,get oauth(){return oauth},get otp(){return otp},get replaced(){return replaced},render(){cursor=0;effects=[];return panel.default({profilePath:moderator?undefined:profile,moderator})},start(){for(const fn of effects)fn()},emit(session){listener('SIGNED_IN',session)}};
 }
 
 test('both sign-in methods keep the selected guide and review intent without putting it in the auth fragment',()=>{
@@ -32,10 +32,12 @@ test('both sign-in methods keep the selected guide and review intent without put
   h.location.search='?returnTo=%2F%3Fq%3DScott&intent=review';
   find(tree,n=>n.type==='button'&&n.props.children==='Continue with Google').props.onClick();
   assert.equal(h.oauth.options.redirectTo,`https://preview.example${h.profile}?intent=review`);
-  find(tree,n=>n.type==='input').props.onChange({target:{value:'angler@example.invalid'}});
-  const refreshed=h.render();
+  const email=setup();
+  email.location.search=h.location.search;
+  find(email.render(),n=>n.type==='input').props.onChange({target:{value:'angler@example.invalid'}});
+  const refreshed=email.render();
   find(refreshed,n=>n.type==='button'&&n.props.children==='Email me a sign-in link').props.onClick();
-  assert.equal(h.otp.options.emailRedirectTo,`https://preview.example${h.profile}?intent=review`);
+  assert.equal(email.otp.options.emailRedirectTo,`https://preview.example${h.profile}?intent=review`);
 });
 
 test('auth callback never overwrites an unconsumed token fragment',()=>{
@@ -52,4 +54,36 @@ test('a published review returns to the same review after sign-in',()=>{
   assert.equal(h.oauth.options.redirectTo,`https://preview.example${h.profile}?review=${id}`);
   h.start();h.location.search=`?review=${id}`;h.location.hash='';h.emit({user:{email:'angler@example.invalid'}});
   assert.equal(h.replaced,`${h.profile}#review-${id}`);
+});
+
+test('moderator sign-in offers only email and returns to the same origin /admin without creating a user',async()=>{
+ const h=setup({moderator:true}),tree=h.render();
+ assert.equal(find(tree,n=>n.type==='button'&&n.props.children==='Continue with Google'),undefined);
+ h.location.search='?next=/guides';h.location.hash='#write-review';
+ find(tree,n=>n.type==='input').props.onChange({target:{value:' moderator@example.invalid '}});
+ find(h.render(),n=>n.type==='button'&&n.props.children==='Email me a sign-in link').props.onClick();
+ assert.equal(h.otp.email,'moderator@example.invalid');
+ assert.equal(h.otp.options.emailRedirectTo,'https://preview.example/admin');
+ assert.equal(h.otp.options.shouldCreateUser,false);
+ await new Promise(setImmediate);
+ assert.ok(find(h.render(),n=>n.props?.children==='Check your email for the sign-in link.'));
+ h.start();await new Promise(setImmediate);
+ h.emit({user:{email:'moderator@example.invalid'}});
+ assert.ok(find(h.render(),n=>n.type==='button'&&n.props.children==='Sign out'));
+ assert.equal(h.replaced,undefined);
+});
+
+test('moderator sign-in shows bounded errors and allows retries after provider or network failures',async()=>{
+ for(const otpReply of [async()=>({error:{message:'provider detail'}}),async()=>{throw Error('network detail')}]){
+  const h=setup({moderator:true,otpReply});
+  h.location.hash='#error_code=otp_expired';
+  h.render();h.start();
+  assert.ok(find(h.render(),n=>n.props?.children==='This sign-in link could not be used. Request a new link below.'));
+  find(h.render(),n=>n.type==='input').props.onChange({target:{value:'moderator@example.invalid'}});
+  const send=tree=>find(tree,n=>n.type==='button'&&n.props.children==='Email me a sign-in link');
+  send(h.render()).props.onClick();
+  await new Promise(setImmediate);
+  assert.ok(find(h.render(),n=>n.props?.children==='Couldn’t send a sign-in link. Check your email address and try again.'));
+  assert.equal(send(h.render()).props.disabled,false);
+ }
 });

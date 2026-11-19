@@ -80,6 +80,39 @@ test(`rating-first discovery and profile availability (${mode})`,{timeout:120000
    await context.close();
   }
   if(mode==='enabled'){
+   const moderatorContext=await browser.newContext({viewport:{width:390,height:844}});
+   const moderatorPage=await moderatorContext.newPage();
+   let attempts=0;
+   await moderatorContext.route('**/*',async route=>{
+    const request=route.request(),url=new URL(request.url());
+    const otpRequest=url.origin===authOrigin&&url.pathname==='/auth/v1/otp';
+    if(otpRequest&&request.method()==='OPTIONS')return route.fulfill({status:204,headers:{
+     'access-control-allow-origin':origin,'access-control-allow-methods':'POST','access-control-allow-headers':'*'
+    }});
+    if(otpRequest&&request.method()==='POST'){
+     attempts++;
+     assert.equal(url.searchParams.get('redirect_to'),origin+'/admin');
+     assert.equal(request.postDataJSON().create_user,false);
+     return route.fulfill({
+      status:attempts===1?400:200,contentType:'application/json',headers:{'access-control-allow-origin':origin},
+      body:attempts===1?'{"code":"validation_failed","message":"Fixture provider detail"}':'{}'
+     });
+    }
+    if(url.origin===origin)return route.continue();
+    blocked.push(url.origin);return route.abort();
+   });
+   await moderatorPage.goto(`${origin}/admin`,{waitUntil:'domcontentloaded'});
+   await moderatorPage.getByText('Use your moderator email to request a sign-in link.').waitFor();
+   assert.equal(await moderatorPage.getByRole('button',{name:'Continue with Google'}).count(),0);
+   await moderatorPage.getByRole('textbox',{name:'Email',exact:true}).fill('moderator@example.invalid');
+   const send=moderatorPage.getByRole('button',{name:'Email me a sign-in link'});
+   await send.click();
+   await moderatorPage.getByText('Couldn’t send a sign-in link. Check your email address and try again.').waitFor();
+   await send.click();
+   await moderatorPage.getByText('Check your email for the sign-in link.').waitFor();
+   assert.equal(attempts,2);
+   await moderatorContext.close();
+
    const context=await browser.newContext({viewport:{width:390,height:844}});
    const user={id:'10000000-0000-4000-8000-000000000001',email:'fixture@example.invalid',aud:'authenticated',role:'authenticated',email_confirmed_at:'2026-01-01T00:00:00Z',app_metadata:{},user_metadata:{}};
    const token=`${Buffer.from('{"alg":"none"}').toString('base64url')}.${Buffer.from(JSON.stringify({sub:user.id,exp:Math.floor(Date.now()/1000)+3600,role:'authenticated'})).toString('base64url')}.fixture`;

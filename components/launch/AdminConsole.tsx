@@ -33,7 +33,7 @@ export function AdminConsole({claimsEnabled=false}:{claimsEnabled?:boolean}) {
     catch{setError('The report resolution could not be confirmed. Refresh the queue before trying again.')}
     finally{processing.current.delete(item.id)}
   }
-  return <main className="launch-controls"><p className="eyebrow">SITE OPERATIONS</p><h1>Moderation</h1><AuthPanel onSignedIn={()=>void refreshAccess()}/>
+  return <main className="launch-controls"><p className="eyebrow">SITE OPERATIONS</p><h1>Moderation</h1><AuthPanel moderator onSignedIn={()=>void refreshAccess()}/>
     {access==='loading'&&<p role="status">Checking operator access…</p>}{access==='signed_out'&&<p>Sign in with an authorized operator account.</p>}{access==='denied'&&<p role="status">This account does not have operator access.</p>}{access==='error'&&<p role="status">Operator access is temporarily unavailable.</p>}
     {access==='operator'&&<section><h2>Pending submissions</h2><label>Submission type <select value={kind} onChange={e=>{queueEpoch.current++;setItems(null);setKind(e.target.value as SubmissionKind);setOffset(0);setMessage('')}}><option value="review">Reviews</option>{claimsEnabled&&<option value="claim">Claims</option>}<option value="revision">Review edits</option><option value="report">Review reports</option></select></label>
       {error&&<p role="alert">{error}</p>}{message&&<p role="status">{message}</p>}
