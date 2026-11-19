@@ -253,6 +253,8 @@ export function filterDirectoryEntries(entries:DirectoryEntry[],filters:Director
  const hasSpecies=Boolean(filters.species&&filters.species!=='All species');
  const selectedMethod=filters.method && filters.method!=='All methods' ? directoryMethodLabel(filters.method) : undefined;
  const hasMethod=Boolean(selectedMethod);
+ const textSpecies=hasMethod?canonicalFisheryLabel(filters.query):undefined;
+ const textMethod=hasSpecies?directoryMethodLabel(filters.query):undefined;
  const sameMethod=(value:string|undefined)=>value!==undefined && directoryMethodLabel(value)===selectedMethod;
  const hasWater=filters.advertisedWater!=='All advertised waters';
  const includeFishery=!filters.identityOnly&&(Boolean(portSearch)||isKnownFishery(filters.query)||hasSpecies||hasMethod||hasWater);
@@ -264,13 +266,17 @@ export function filterDirectoryEntries(entries:DirectoryEntry[],filters:Director
      (hasSpecies&&!directorySpeciesLabels(facets.species).includes(filters.species!))||
      (hasMethod&&!facets.methods.some(sameMethod)))return {entry,score:null};
   if(!portSearch){
-   if(!hasWater&&hasSpecies&&hasMethod){
-    // Keep independent listing facts searchable, but respect explicit trip pairings.
+   const pairedSpecies=hasSpecies?filters.species:
+    textSpecies&&directorySpeciesLabels(facets.species).includes(textSpecies)?textSpecies:undefined;
+   const pairedMethod=selectedMethod??(textMethod&&facets.methods.some(value=>directoryMethodLabel(value)===textMethod)?textMethod:undefined);
+   if(!hasWater&&pairedSpecies&&pairedMethod){
+    // Preserve independent listing facts when the source does not pair either choice.
     const pairs=sourcedOfferings(entry).filter(item=>inJurisdiction(item,filters.state))
      .map(offeringFacets).filter(({species,method})=>species&&method);
-    const sameSpecies=(value:string|undefined)=>Boolean(value&&directorySpeciesLabels([value]).includes(filters.species!));
-    if(pairs.some(({species,method})=>sameSpecies(species)||sameMethod(method))&&
-       !pairs.some(({species,method})=>sameSpecies(species)&&sameMethod(method)))return {entry,score:null};
+    const matchesSpecies=(value:string|undefined)=>Boolean(value&&directorySpeciesLabels([value]).includes(pairedSpecies));
+    const matchesMethod=(value:string|undefined)=>Boolean(value&&directoryMethodLabel(value)===pairedMethod);
+    if(pairs.some(({species,method})=>matchesSpecies(species)||matchesMethod(method))&&
+       !pairs.some(({species,method})=>matchesSpecies(species)&&matchesMethod(method)))return {entry,score:null};
    }
    const exactFishery=isKnownFishery(filters.query);
    if(hasWater&&(hasSpecies||hasMethod||exactFishery)){

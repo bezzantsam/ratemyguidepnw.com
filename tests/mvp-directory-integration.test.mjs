@@ -156,12 +156,18 @@ test('Sam’s corrections find the existing Rowe, Menefee and Wolfe records',()=
 test('species and method filters respect Jerad Sorber’s sourced trip pairings without a water filter',()=>{
  const entries=actualDirectory(true).directory.directoryEntries;
  const filters={...all,state:'Oregon'};
- const matches=(species,method='All methods')=>filter(entries,{...filters,species,method}).some(entry=>entry.id==='OG.0003862');
+ const matches=(species,method='All methods',query='')=>filter(entries,{...filters,species,method,query}).some(entry=>entry.id==='OG.0003862');
  for(const [species,method] of [['Lingcod','Bottom fishing'],['Rockfish','Bottom fishing'],['Chinook Salmon','Trolling'],['Coho Salmon','Trolling'],['Sturgeon']]){
   assert.ok(matches(species,method),[species,method].join(' + '));
+  if(method){
+   assert.ok(matches('All species',method,species),'typed '+species);
+   assert.ok(matches(species,'All methods',method),'typed '+method);
+  }
  }
  for(const [species,method] of [['Sturgeon','Bottom fishing'],['Lingcod','Trolling'],['Coho Salmon','Bottom fishing']]){
   assert.equal(matches(species,method),false,[species,method].join(' + '));
+  assert.equal(matches('All species',method,species),false,'typed '+species);
+  assert.equal(matches(species,'All methods',method),false,'typed '+method);
  }
 });
 
