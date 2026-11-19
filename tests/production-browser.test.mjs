@@ -42,7 +42,11 @@ test('ordinary production data contains no synthetic discovery or unapproved con
   assert.equal(await page.getByRole('link',{name:/Walter Rowe/}).count(),1);
   assert.equal(await page.getByRole('link',{name:/Toby Wyatt/}).count(),0);
   await species.selectOption({label:'All species'});
-  assert.equal(await page.getByLabel('Source-listed fishing method').count(),0);
+  const method=page.getByLabel('Source-listed fishing method');
+  await method.selectOption({label:'Bottom fishing'});
+  assert.equal(await page.getByRole('link',{name:/Russell Pearson/}).count(),1);
+  assert.equal(await page.getByRole('link',{name:/Walter Rowe/}).count(),0);
+  await method.selectOption({label:'All methods'});
   assert.doesNotMatch(await page.content(),/Pending Secret Species|Rejected Secret Method|Synthetic test fixture|Fixture Source Outfit|Synthetic Captain Alias|Unapproved editorial preview|__editorial_visual__/);
   for(const marker of pendingMarkers)assert.ok(!(await page.content()).includes(marker),'pending research leaked into directory HTML');
   await page.goto(`${origin}/write-review`,{waitUntil:'domcontentloaded'});
