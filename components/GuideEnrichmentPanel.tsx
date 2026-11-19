@@ -39,6 +39,7 @@ export default function GuideEnrichmentPanel({registration}:{registration:string
      {attributes.some(item=>new URL(item.source.url).hostname==='fixture.invalid')&&<p>Synthetic test fixture — not a real offering.</p>}
      <ul>{attributes.map((item,index)=><li key={`${item.guide_id}-${item.kind}-${item.value}-${index}`}>
        <strong>{item.value}</strong> · <a href={item.source.url} target="_blank" rel="noopener noreferrer" aria-label={`Source for ${item.value}`}>{item.source.source_type==='operator_site'?(item.kind==='person_name'||item.kind==='business_name'?'Operator page':'Trip details'):'Directory source'} ↗</a>
+       {item.offering_scope==='operator_business'&&<span> · Operator team trip. Ask who will guide.</span>}
        {item.relationship&&<span> · Source explicitly connects: {[item.relationship.species,item.relationship.method,item.relationship.waterway].filter(Boolean).join(' · ')}</span>}
      </li>)}</ul>
    </div>}

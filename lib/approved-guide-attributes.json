@@ -267,7 +267,8 @@
     "relationship": {
       "species": "Salmon",
       "waterway": "Buoy 10"
-    }
+    },
+    "offering_scope": "operator_business"
   },
   {
     "guide_id": "OG.0001207",
@@ -285,7 +286,8 @@
     "relationship": {
       "species": "Salmon",
       "waterway": "Buoy 10"
-    }
+    },
+    "offering_scope": "operator_business"
   },
   {
     "guide_id": "OG.0001545",

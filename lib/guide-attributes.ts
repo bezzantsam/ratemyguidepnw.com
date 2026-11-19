@@ -4,7 +4,7 @@ import holdData from './guide-evidence-holds.json';
 export type AttributeKind='species'|'method'|'trip_type'|'business_name'|'person_name';
 export type EvidenceScope='operator_advertises'|'industry_lists';
 export type AttributeEvidence={url:string;source_type:'operator_site'|'industry_directory'|'third_party_directory';reviewed_on:string;locator:string};
-export type EvidenceAttribute={guide_id:string;kind:AttributeKind;value:string;source:AttributeEvidence;evidence_scope:EvidenceScope;editorial_status:'approved'|'pending'|'rejected';publication_approved:boolean;relationship?:{species?:string;method?:string;waterway?:string}};
+export type EvidenceAttribute={guide_id:string;kind:AttributeKind;value:string;source:AttributeEvidence;evidence_scope:EvidenceScope;editorial_status:'approved'|'pending'|'rejected';publication_approved:boolean;offering_scope?:'operator_business';relationship?:{species?:string;method?:string;waterway?:string}};
 const holds=new Set(holdData.held_guides.map(x=>x.guide_id));
 const kinds=new Set(['species','method','trip_type','business_name','person_name']);
 const scopes=new Set(['operator_advertises','industry_lists']);
@@ -43,6 +43,7 @@ export function approvedAttributes(input:unknown,known:ReadonlySet<string>):Evid
   const valid=group.every(x=>{
    if(!text(x.guide_id)||!known.has(x.guide_id)||holds.has(x.guide_id)||!text(x.kind)||!kinds.has(x.kind)||!text(x.value)||x.editorial_status!=='approved'||x.publication_approved!==true||!text(x.evidence_scope)||!scopes.has(x.evidence_scope)||!validSource(x.source))return false;
    if(holdData.excluded_waterways.some(exclusion=>exclusion.guide_id===x.guide_id&&(norm(x.value as string)===norm(exclusion.value)||(x.relationship&&typeof x.relationship==='object'&&norm(String((x.relationship as Record<string,unknown>).waterway??''))===norm(exclusion.value)))))return false;
+   if(x.offering_scope!==undefined&&(x.offering_scope!=='operator_business'||x.kind!=='trip_type'||x.evidence_scope!=='operator_advertises'))return false;
    return validRelationship(x.relationship,x.kind as AttributeKind,x.value);
   });
   validGroups.set(groupKey,valid);
@@ -56,7 +57,7 @@ export function approvedAttributes(input:unknown,known:ReadonlySet<string>):Evid
    const relationship=x.relationship as EvidenceAttribute['relationship'];
    const conflicts=(['species','method'] as const).some(kind=>{const value=relationship?.[kind];if(!value)return false;const relatedKey=JSON.stringify([x.guide_id,kind,norm(value)]);return groups.has(relatedKey)&&!validGroups.get(relatedKey)});
    if(conflicts)continue;
-   const fingerprint=JSON.stringify([source.url,source.source_type,source.reviewed_on,source.locator,x.evidence_scope,relationship?.species??'',relationship?.method??'',relationship?.waterway??'']);
+   const fingerprint=JSON.stringify([source.url,source.source_type,source.reviewed_on,source.locator,x.evidence_scope,x.offering_scope??'',relationship?.species??'',relationship?.method??'',relationship?.waterway??'']);
    if(!seen.has(fingerprint)){seen.add(fingerprint);result.push(x as EvidenceAttribute)}
   }
  }

@@ -122,7 +122,8 @@ export default function UnifiedSearch({entries,reviewMode=false,reviewEnabled=fa
       {g.searchAliases.some(name=>!g.editorialSearchAliases?.some(alias=>alias.value===name))&&<p className="guide-meta">Other names (business or person): {g.searchAliases.filter(name=>!g.editorialSearchAliases?.some(alias=>alias.value===name)).join(' · ')}</p>}
       {g.editorialSearchAliases?.map(alias=><p className="guide-meta" key={`${alias.value}:${alias.attributedTo}`}>Editorial search name supplied by {alias.attributedTo}: {alias.value}</p>)}
       {Boolean(g.advertisedSpecies?.length || g.advertisedMethods?.length || g.advertisedTrips?.length)&&
-        <p className="guide-meta">Fishing targets and trips: {[...new Set([...(g.advertisedSpecies??[]),...(g.advertisedMethods??[]),...(g.advertisedTrips??[])])].join(' · ')}</p>}
+        <p className="guide-meta">Fishing targets and trips: {[...new Set([...(g.advertisedSpecies??[]),...(g.advertisedMethods??[]),...(g.advertisedTrips??[])])].map(label=>
+          g.businessAdvertisedTrips?.includes(label) ? `${label} (operator team)` : label).join(' · ')}</p>}
       {g.advertisedWaters.length>0&&<p className="guide-meta">Advertised waters (source-linked): {g.advertisedWaters.slice(0,3).join(' · ')}{g.advertisedWaters.length>3?' · + more':''}</p>}
       <p className="guide-meta">{g.source==='Oregon registry'?'Imported registration zones':'Imported directory areas / notes'}: {g.areas.slice(0,3).join(' · ')||'Not specified'}{g.areas.length>3?' · + more':''}</p>
       <p className="guide-submeta">Imported source listing · {reviewEnabled?'See profile for reviews':'Review data unavailable'} · Current credentials not independently checked</p>

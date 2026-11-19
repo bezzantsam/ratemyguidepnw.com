@@ -87,6 +87,12 @@ test('saltwater aliases match sourced offerings and keep regional identities dis
  assert.deepEqual(result('bottomfish',{state:'Washington',method:'Bottom fishing'}),['wa-001']);
  assert.deepEqual(result('Buoy 10 salmon'),['OG.0000050']);
 });
+test('operator team scope stays attached to its approved trip only',()=>{
+ const item={...fixture[0],kind:'trip_type',value:'Buoy 10 salmon',relationship:undefined,offering_scope:'operator_business'};
+ assert.equal(approvedAttributes([item],known)[0]?.offering_scope,'operator_business');
+ assert.equal(approvedAttributes([{...item,kind:'species'}],known).length,0);
+ assert.equal(approvedAttributes([{...item,offering_scope:'unknown'}],known).length,0);
+});
 test('production dataset is separate from pending research',()=>{
  assert.ok(Array.isArray(JSON.parse(read('lib/approved-guide-attributes.json'))));
  for(const path of ['lib/guide-attributes-server.ts','lib/directory.ts','components/GuideEnrichmentPanel.tsx'])assert.doesNotMatch(read(path),/BATCH13_EXTENDED_PROPOSAL|BATCH13_SOURCE_REVIEW/);

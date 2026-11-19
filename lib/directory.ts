@@ -21,6 +21,7 @@ export type DirectoryEntry={
   advertisedSpecies?:string[];
   advertisedMethods?:string[];
   advertisedTrips?:string[];
+  businessAdvertisedTrips?:string[];
   testFixture?:boolean;
   /** Separate people associated with saltwater trips; never captain identity aliases. */
   href:string;
@@ -29,11 +30,13 @@ export type DirectoryEntry={
 
 function discovery(id:string){
  const attributes=attributesFor(id);
+ const businessAdvertisedTrips=[...new Set(attributes.filter(x=>x.offering_scope==='operator_business').map(x=>x.value))];
  return {
   advertisedSpecies:[...new Set(attributes.flatMap(x=>[...(x.kind==='species'?[x.value]:[]),...(x.relationship?.species?[x.relationship.species]:[])]))],
   advertisedMethods:[...new Set(attributes.flatMap(x=>[...(x.kind==='method'?[x.value]:[]),...(x.relationship?.method?[x.relationship.method]:[])]))],
   linkedWaters:attributes.flatMap(x=>x.relationship?.waterway?[x.relationship.waterway]:[]),
   advertisedTrips:attributes.filter(x=>x.kind==='trip_type').map(x=>x.value),
+  ...(businessAdvertisedTrips.length ? {businessAdvertisedTrips} : {}),
   sourceNames:attributes.filter(x=>x.kind==='person_name'||x.kind==='business_name').map(x=>x.value),
   testFixture:attributes.some(x=>new URL(x.source.url).hostname==='fixture.invalid'),
  };
