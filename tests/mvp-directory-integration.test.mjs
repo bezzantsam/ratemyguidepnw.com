@@ -154,6 +154,14 @@ test('editorial corrections preserve all original profiles, IDs, fields and unre
  assert.equal(new Set(Array.from(after,x=>x.id)).size,after.length);
  for(let i=0;i<before.length;i++){
   const original=plain(before[i]),updated=plain(after[i]);
+  if(original.id==='OG.0004049'||original.id==='OG.0002193'){
+   const bigEnergy=original.id==='OG.0004049';
+   assert.deepEqual(updated.searchAliases,[...original.searchAliases,...(bigEnergy?['TJ','T.J.']:['Rod Shulley'])]);
+   assert.deepEqual(updated.editorialSearchAliases,[bigEnergy?
+    {value:'TJ',attributedTo:'Sam',variants:['T.J.']}:{value:'Rod Shulley',attributedTo:'Sam'}]);
+   delete updated.editorialSearchAliases;
+   updated.searchAliases=original.searchAliases;
+  }
   if(original.id==='OG.0003297'){
    assert.deepEqual(updated.advertisedSpecies,[...original.advertisedSpecies,'Halibut','Tuna']);
    assert.deepEqual(updated.advertisedMethods,[...original.advertisedMethods,'Bottom fishing']);
@@ -191,7 +199,7 @@ test('editorial corrections preserve all original profiles, IDs, fields and unre
 test('editorial attribution and exact identity binding fail closed',()=>{
  const {editorial,directory}=actualDirectory();
  const facts=JSON.parse(read('lib/editorial-guide-corrections.json'));
- assert.equal(facts.length,7);
+ assert.equal(facts.length,9);
  for(const fact of facts){
   assert.equal(fact.provenance.type,'user_editorial');assert.equal(fact.provenance.attributed_to,'Sam');
   if(fact.provenance.recorded_on==='2026-11-19'){
@@ -218,4 +226,22 @@ test('editorial attribution and exact identity binding fail closed',()=>{
   ])assert.equal(editorial.editorialGuideCorrections(guide,[changed]).length,0);
  }
  assert.equal(editorial.editorialGuideCorrections({id:'OG.0001200',name:'Toby Wyatt',business:'Reel Time Fishing LLC'},facts).length,0);
+});
+
+test('Sam’s TJ and Rod search aliases bind only to the intended legal-name profiles',()=>{
+ const {directory}=actualDirectory();
+ const original=actualDirectory(false).directory.directoryEntries;
+ for(const [id,name,queries] of [
+  ['OG.0004049','Edwin Snyder',['TJ','T.J. Big Energy','TJ Big Energy Guide Service']],
+  ['OG.0002193','Roderick Shulley',['Rod','Rod Shulley','Rod Reel Em Up']],
+ ]){
+  const entry=directory.getDirectoryEntry(id);
+  assert.equal(entry.name,name);
+  for(const query of queries){
+   const found=Array.from(filter(directory.directoryEntries,{...all,query}),row=>row.id);
+   const before=Array.from(filter(original,{...all,query}),row=>row.id);
+   assert.equal(found[0],id,query);
+   assert.deepEqual(found.filter(value=>value!==id),before.filter(value=>value!==id),query);
+  }
+ }
 });

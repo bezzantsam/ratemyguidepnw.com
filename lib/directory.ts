@@ -18,7 +18,7 @@ export type DirectoryEntry={
   /** Search terms from attributed sources, including editorial input; NOT legal identity verification. */
   searchAliases:string[];
   /** User-provided editorial search names, displayed separately from imported source names. */
-  editorialSearchAliases?:{value:string;attributedTo:string}[];
+  editorialSearchAliases?:{value:string;attributedTo:string;variants?:string[]}[];
   editorialFishing?:{value:string;attributedTo:string}[];
   advertisedSpecies?:string[];
   advertisedMethods?:string[];
@@ -54,7 +54,9 @@ function discovery(id:string){
 export const directoryEntries:DirectoryEntry[]=[
  ...oregonGuides.map(g=>{
   const editorial=editorialGuideCorrections({id:g.registration,name:g.name,business:g.business});
-  const editorialAliases=editorial.filter(x=>x.kind==='search_alias').map(x=>({value:x.value,attributedTo:x.provenance.attributed_to}));
+  const editorialAliases=editorial.filter(x=>x.kind==='search_alias').map(x=>({
+   value:x.value,attributedTo:x.provenance.attributed_to,...(x.search_variants?{variants:x.search_variants}:{}),
+  }));
   const editorialFishing=editorial.filter(x=>x.kind!=='search_alias');
   const sourced=discovery(g.registration);
   return ({
@@ -66,7 +68,7 @@ export const directoryEntries:DirectoryEntry[]=[
    advertisedSpecies:[...new Set([...sourced.advertisedSpecies,...editorial.filter(x=>x.kind==='species').map(x=>x.value)])],
    advertisedMethods:[...new Set([...sourced.advertisedMethods,...editorial.filter(x=>x.kind==='method').map(x=>x.value)])],
    ...(editorialFishing.length?{editorialFishing:editorialFishing.map(x=>({value:x.value,attributedTo:x.provenance.attributed_to}))}:{}),
-   searchAliases:[...guideSearchTerms(g.registration),...sourced.sourceNames,...editorialAliases.map(x=>x.value)],
+   searchAliases:[...guideSearchTerms(g.registration),...sourced.sourceNames,...editorialAliases.flatMap(x=>[x.value,...(x.variants??[])])],
    ...(editorialAliases.length?{editorialSearchAliases:editorialAliases}:{}),
    href:'/guides/'+guideSlug(g),source:'Oregon registry',
  })}),

@@ -547,5 +547,44 @@
     "named_guide": "Mike Sturza",
     "editorial_status": "approved",
     "publication_approved": true
+  },
+  {
+    "operator": "Tengu Charters",
+    "city": "Edmonds",
+    "state": "WA",
+    "value": "Squid",
+    "kind": "species",
+    "scope": "charter_operator_only",
+    "source": {
+      "url": "https://www.tengucharters.com/seattle-edmonds-fishing-charters",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Squid Fishing Charter (shared or private) and What to Expect describe Captain Kyle’s dedicated squid-jigging charter in the Edmonds area of Puget Sound."
+    },
+    "waters": [
+      "Puget Sound"
+    ],
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "named_guide": "Kyle Hanada"
+  },
+  {
+    "operator": "Seattle Nautic",
+    "city": "Seattle",
+    "state": "WA",
+    "value": "Squid",
+    "kind": "species",
+    "scope": "charter_operator_only",
+    "source": {
+      "url": "https://www.seattlenautic.com/booking.html",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The Seattle booking menu lists the dedicated Squid Jigging Private Group Trip from Shilshole Bay Marina."
+    },
+    "waters": [
+      "Puget Sound"
+    ],
+    "editorial_status": "approved",
+    "publication_approved": true
   }
 ]

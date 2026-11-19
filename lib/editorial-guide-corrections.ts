@@ -7,6 +7,7 @@ type EditorialCorrection = {
   expected_business: string;
   kind: 'species' | 'method' | 'search_alias';
   value: string;
+  search_variants?: string[];
   status: 'approved';
   provenance: {type: 'user_editorial'; attributed_to: string; recorded_on: string; reference: string};
 };
@@ -20,6 +21,8 @@ export function editorialGuideCorrections(guide: {id:string; name:string; busine
     const x = record as Record<string, unknown>;
     if (x.guide_id !== guide.id || x.expected_name !== guide.name || x.expected_business !== guide.business ||
         (x.kind !== 'species' && x.kind !== 'method' && x.kind !== 'search_alias') || !text(x.value) || x.status !== 'approved') return false;
+    if (x.search_variants !== undefined && (x.kind !== 'search_alias' ||
+        !Array.isArray(x.search_variants) || !x.search_variants.every(text))) return false;
     if (!x.provenance || typeof x.provenance !== 'object' || Array.isArray(x.provenance)) return false;
     const p = x.provenance as Record<string, unknown>;
     if (p.type !== 'user_editorial' || !text(p.attributed_to) || !text(p.reference) || !text(p.recorded_on) || !/^\d{4}-\d{2}-\d{2}$/.test(p.recorded_on)) return false;
