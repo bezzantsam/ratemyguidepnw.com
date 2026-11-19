@@ -131,8 +131,16 @@ test('charter evidence stays outside guide attribution and matches the same sour
  assert.deepEqual(find('Seattle squid',{state:'Washington',method:'Squid jigging'}),['Seattle Nautic']);
  assert.deepEqual(find('squid',{method:'Jigging'}),[]);
  const squid=raw.find(row=>row.operator==='Seattle Nautic'&&row.kind==='species'&&row.value==='Squid');
- const {relationship,...speciesOnly}=squid;
- assert.equal(filterCharterOfferings(approvedCharterOfferings([speciesOnly]),{...filters,method:'Squid jigging'}).length,0);
+ const tenguSquid=raw.find(row=>row.operator==='Tengu Charters'&&row.kind==='species'&&row.value==='Squid');
+ const legacySquid=approvedCharterOfferings([tenguSquid]);
+ for(const term of ['squid jigging','Edmonds squid jigging','Edmonds squidding']){
+  assert.equal(filterCharterOfferings(legacySquid,{...filters,query:term}).length,1,term);
+  assert.equal(filterCharterOfferings(legacySquid,{...filters,query:term,method:'Squid jigging'}).length,0,term);
+ }
+ assert.equal(filterCharterOfferings(legacySquid,{...filters,method:'Squid jigging'}).length,0);
+ const selectedSquid=url.parseDirectoryState('?state=Washington&method=Squid+jigging',[],legacySquid);
+ assert.equal(selectedSquid.method,'Squid jigging');
+ assert.equal(url.directoryUrl(selectedSquid),'/guides?state=Washington&method=Squid+jigging');
  assert.equal(approvedCharterOfferings([{...squid,relationship:{species:'Flounder',method:'Squid jigging'}}]).length,0);
  assert.deepEqual(find('Seattle squid',{state:'Oregon'}),[]);
  assert.deepEqual(find('Newport black cod'),['Yaquina Bay Charters']);
