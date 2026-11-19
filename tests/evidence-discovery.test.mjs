@@ -131,6 +131,9 @@ test('charter evidence stays outside guide attribution and matches the same sour
  assert.deepEqual(find('Buoy 10 salmon',{state:'Washington',species:'Salmon',waterway:'Buoy 10'}),['Roam Yacht Charters']);
  assert.deepEqual(find('Ilwaco Buoy 10 salmon',{state:'Oregon'}),[]);
  assert.equal(filterCharterOfferings(charterOfferings,{...filters,query:'Garibaldi Buoy 10 salmon'},['Garibaldi']).length,0);
+ assert.equal(filterCharterOfferings(charterOfferings,{...filters,query:'Garibaldi Buoy 10'},['Garibaldi']).length,0);
+ assert.equal(filterCharterOfferings(charterOfferings,{...filters,query:'Buoy 10 Garibaldi'},['Garibaldi']).length,0);
+ assert.deepEqual(find('Ilwaco Buoy 10'),['Roam Yacht Charters']);
  assert.equal(url.parseDirectoryState('?state=Washington&species=Salmon&water=Buoy+10',[],charterOfferings).waterway,'Buoy 10');
  assert.equal(url.parseDirectoryState('?state=Washington&species=Sablefish+(black+cod)',[],charterOfferings).species,'Sablefish (black cod)');
 });

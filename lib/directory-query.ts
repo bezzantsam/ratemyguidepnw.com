@@ -35,6 +35,7 @@ export function fisheryAtPort(query: string, cities: string[]) {
  const search=normalizeGuideSearch(query);
  for(const city of new Set(cities.flatMap(city=>city.split(' or ')).map(normalizeGuideSearch))){
   const term=search.startsWith(city+' ')?search.slice(city.length+1):search.endsWith(' '+city)?search.slice(0,-city.length-1):'';
+  if(term==='buoy 10')return {city,term:'buoy 10 salmon'};
   if(fisherySearches.has(term))return {city,term};
  }
  return null;
