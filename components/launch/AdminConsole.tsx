@@ -4,16 +4,51 @@ import {useCallback,useEffect,useMemo,useRef,useState} from 'react';
 import AuthPanel,{client as authClient} from '@/components/AuthPanel';
 import {createLaunchClient,type OperatorItem,type SubmissionKind} from '@/lib/launch-client';
 
+type Access = {status:'loading'|'signed_out'|'denied'|'error'} | {status:'operator';epoch:number};
+
 /** Access and every operation are independently checked by the server. */
 export function AdminConsole({claimsEnabled=false}:{claimsEnabled?:boolean}) {
   const api=useMemo(()=>createLaunchClient({enabled:true,getAccessToken:async()=>{const result=await authClient?.auth.getSession();return result?.data.session?.access_token??null}}),[]);
-  const [access,setAccess]=useState<'loading'|'signed_out'|'operator'|'denied'|'error'>('loading');
+  const [access,setAccess]=useState<Access>({status:'loading'});
   const [kind,setKind]=useState<SubmissionKind>('review'),[offset,setOffset]=useState(0),[items,setItems]=useState<OperatorItem[]|null>(null),[error,setError]=useState(''),[message,setMessage]=useState(''),[notes,setNotes]=useState<Record<string,string>>({});
   const processing=useRef(new Set<string>());
   const authEpoch=useRef(0),queueEpoch=useRef(0);
-  const refreshAccess=useCallback(async()=>{const epoch=++authEpoch.current;try{const s=await authClient?.auth.getSession();if(epoch!==authEpoch.current)return;if(!s?.data.session){setAccess('signed_out');setItems(null);return}const result=await api.session();if(epoch===authEpoch.current)setAccess(result.operator?'operator':'denied')}catch{if(epoch===authEpoch.current){setAccess('error');setItems(null)}}},[api]);
-  const load=useCallback(async()=>{if(access!=='operator')return;const epoch=authEpoch.current,queue=++queueEpoch.current;setItems(null);setError('');try{const rows=await api.operatorQueue(kind,offset,50);if(epoch===authEpoch.current&&queue===queueEpoch.current)setItems(rows)}catch{if(epoch===authEpoch.current&&queue===queueEpoch.current)setError('The moderation queue is temporarily unavailable.')}},[access,api,kind,offset]);
-  useEffect(()=>{void refreshAccess();if(!authClient)return;const {data:{subscription}}=authClient.auth.onAuthStateChange((_event,next)=>{authEpoch.current++;queueEpoch.current++;setAccess(next?'loading':'signed_out');setItems(null);setNotes({});window.setTimeout(()=>void refreshAccess(),0)});return()=>{authEpoch.current++;queueEpoch.current++;subscription.unsubscribe()}},[refreshAccess]);
+  const refreshAccess=useCallback(async()=>{
+    const epoch=++authEpoch.current;
+    try{
+      const session=await authClient?.auth.getSession();
+      if(epoch!==authEpoch.current)return;
+      if(!session?.data.session){setAccess({status:'signed_out'});setItems(null);return}
+      const result=await api.session();
+      if(epoch!==authEpoch.current)return;
+      setAccess(result.operator?{status:'operator',epoch}:{status:'denied'});
+    }catch{
+      if(epoch===authEpoch.current){setAccess({status:'error'});setItems(null)}
+    }
+  },[api]);
+  const load=useCallback(async()=>{
+    if(access.status!=='operator'||access.epoch!==authEpoch.current)return;
+    const {epoch}=access,queue=++queueEpoch.current;
+    setItems(null);setError('');
+    try{
+      const rows=await api.operatorQueue(kind,offset,50);
+      if(epoch===authEpoch.current&&queue===queueEpoch.current)setItems(rows);
+    }catch{
+      if(epoch===authEpoch.current&&queue===queueEpoch.current)setError('The moderation queue is temporarily unavailable.');
+    }
+  },[access,api,kind,offset]);
+  useEffect(()=>{
+    void refreshAccess();
+    if(!authClient)return;
+    const {data:{subscription}}=authClient.auth.onAuthStateChange((_event,next)=>{
+      const epoch=++authEpoch.current;
+      queueEpoch.current++;
+      setAccess({status:next?'loading':'signed_out'});
+      setItems(null);setNotes({});
+      if(next)window.setTimeout(()=>{if(epoch===authEpoch.current)void refreshAccess()},0);
+    });
+    return()=>{authEpoch.current++;queueEpoch.current++;subscription.unsubscribe()};
+  },[refreshAccess]);
   useEffect(()=>{void load()},[load]);
   async function decide(item:OperatorItem,approve:boolean){
     if(item.kind==='report'||(item.kind==='claim'&&!claimsEnabled))return;
@@ -33,9 +68,9 @@ export function AdminConsole({claimsEnabled=false}:{claimsEnabled?:boolean}) {
     catch{setError('The report resolution could not be confirmed. Refresh the queue before trying again.')}
     finally{processing.current.delete(item.id)}
   }
-  return <main className="launch-controls"><p className="eyebrow">SITE OPERATIONS</p><h1>Moderation</h1><AuthPanel moderator onSignedIn={()=>void refreshAccess()}/>
-    {access==='loading'&&<p role="status">Checking operator access…</p>}{access==='signed_out'&&<p>Sign in with an authorized operator account.</p>}{access==='denied'&&<p role="status">This account does not have operator access.</p>}{access==='error'&&<p role="status">Operator access is temporarily unavailable.</p>}
-    {access==='operator'&&<section><h2>Pending submissions</h2><label>Submission type <select value={kind} onChange={e=>{queueEpoch.current++;setItems(null);setKind(e.target.value as SubmissionKind);setOffset(0);setMessage('')}}><option value="review">Reviews</option>{claimsEnabled&&<option value="claim">Claims</option>}<option value="revision">Review edits</option><option value="report">Review reports</option></select></label>
+  return <main className="launch-controls"><p className="eyebrow">SITE OPERATIONS</p><h1>Moderation</h1><AuthPanel moderator/>
+    {access.status==='loading'&&<p role="status">Checking operator access…</p>}{access.status==='signed_out'&&<p>Sign in with an authorized operator account.</p>}{access.status==='denied'&&<p role="status">This account does not have operator access.</p>}{access.status==='error'&&<p role="status">Operator access is temporarily unavailable.</p>}
+    {access.status==='operator'&&<section><h2>Pending submissions</h2><label>Submission type <select value={kind} onChange={e=>{queueEpoch.current++;setItems(null);setKind(e.target.value as SubmissionKind);setOffset(0);setMessage('')}}><option value="review">Reviews</option>{claimsEnabled&&<option value="claim">Claims</option>}<option value="revision">Review edits</option><option value="report">Review reports</option></select></label>
       {error&&<p role="alert">{error}</p>}{message&&<p role="status">{message}</p>}
       {items===null?!error&&<p role="status">Loading submissions…</p>:items.length===0?<p>No pending submissions on this page.</p>:items.map(item=><article className="card" key={`${item.kind}:${item.id}`}>
         <h3>{item.kind==='review'?'Review':item.kind==='claim'?'Claim request':item.kind==='revision'?'Review edit':'Review report'} · {item.guideName??'Listing unavailable'}</h3>{item.reviewId&&<p>Review reference: {item.reviewId}</p>}<p>Submitted: {item.createdAt}</p><p style={{whiteSpace:'pre-wrap'}}>{item.description}</p>
