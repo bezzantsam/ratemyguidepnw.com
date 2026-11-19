@@ -16,6 +16,7 @@ function load(path,deps={}){
 }
 const research=load('lib/washington-reconciled.ts');
 const editorial=load('lib/editorial-guide-corrections.ts',{'./editorial-guide-corrections.json':JSON.parse(readFileSync('lib/editorial-guide-corrections.json','utf8'))});
+const canonical=load('lib/canonical-share.ts');
 const {filterDirectoryEntries}=load('lib/directory-query.ts');
 const washingtonFilter={state:'Washington',sourceZone:'All areas',advertisedWater:'All advertised waters',query:'Synthetic Captain'};
 const waSource={name:'Synthetic Captain',business:'Fixture Outfit',source:'Fixture directory',notes:null};
@@ -37,14 +38,15 @@ function fixture(decisions){
 }
 const stub=()=>null;
 const Link=({href,children})=>React.createElement('a',{href:typeof href==='string'?href:href.pathname},children);
-async function renderPages(wa){
- const waPage=load('app/washington/page.tsx',{'next/link':Link,'@/components/WashingtonSearch':stub,'@/lib/washington':wa});
+async function renderPages(wa,discoverability){
+ const waPage=load('app/washington/page.tsx',{'next/link':Link,'@/components/WashingtonSearch':stub,'@/lib/washington':wa,'@/lib/discoverability':discoverability});
  const profile=load('app/guides/[slug]/page.tsx',{
   'next/link':Link,'next/navigation':{notFound:()=>{throw Error('unexpected notFound')}},
   '@/lib/registry':{findGuide:()=>orGuide,guideSlug:()=> 'og-9999000',oregonGuides:[orGuide]},'@/lib/washington':wa,
   '@/components/ReturnToResults':stub,'@/components/GuideEnrichmentPanel':stub,'@/components/CaptainDetails':stub,
   '@/components/CaptainReviews':stub,'@/components/CaptainMedia':stub,'@/components/GuideTrustPanel':stub,
-  '@/components/launch/ProfileSharing':{ProfileSharing:stub},'@/components/launch/GuideEngagement':{GuideEngagement:stub},'@/lib/canonical-share':{profileShareMetadata:()=>({})}
+  '@/components/launch/ProfileSharing':{ProfileSharing:stub},'@/components/launch/GuideEngagement':{GuideEngagement:stub},
+  '@/lib/canonical-share':canonical,'@/lib/discoverability':discoverability
  });
  return {wa:renderToStaticMarkup(React.createElement(waPage.default)),profile:renderToStaticMarkup(await profile.default({params:Promise.resolve({slug:'og-9999000'})}))};
 }
@@ -71,7 +73,15 @@ test('synthetic reviewed link governs search, badge, profile and exact source su
  assert.deepEqual(Array.from(filterDirectoryEntries(directory.directoryEntries,washingtonFilter),x=>x.id),[registration,'wa-901']);
  assert.equal(wa.washingtonGuide('wa-900').business,'Fixture Outfit');
  assert.equal(wa.washingtonGuide('wa-901').business,'Different Outfit');
- const html=await renderPages(wa);
+ const [oregon,washington]=directory.directoryEntries;
+ const discoverability=load('lib/discoverability.ts',{
+  './canonical-share':canonical,
+  './directory':{directoryEntries:[oregon,washington,oregon,{href:'/washington/wa-902',testFixture:true}]}
+ });
+ const sitemap=load('app/sitemap.ts',{'@/lib/canonical-share':canonical,'@/lib/discoverability':discoverability});
+ const profileUrls=Array.from(sitemap.default(),item=>item.url).filter(url=>/\/(?:guides\/og-|washington\/wa-)/.test(url));
+ assert.deepEqual(profileUrls,[canonical.canonicalProfileUrl(oregon.href),canonical.canonicalProfileUrl(washington.href)]);
+ const html=await renderPages(wa,discoverability);
  assert.match(html.profile,/Also listed in Washington/);
  assert.match(html.profile,/Fixture directory/);
  assert.match(html.wa,/Reviewed cross-state links/);
@@ -80,7 +90,8 @@ test('synthetic reviewed link governs search, badge, profile and exact source su
 
 test('unresolved real research has no state badge or cross-state claim in rendered pages',async()=>{
  const {wa,directory}=fixture([]);
- const html=await renderPages(wa);
+ const discoverability=load('lib/discoverability.ts',{'./canonical-share':canonical,'./directory':directory});
+ const html=await renderPages(wa,discoverability);
  assert.doesNotMatch(html.profile,/Also listed in Washington|matching listing|single captain profile/);
  assert.doesNotMatch(html.wa,/Reviewed cross-state links|Oregon \+ Washington source listings/);
  assert.deepEqual(Array.from(directory.directoryEntries[0].states),['Oregon']);
