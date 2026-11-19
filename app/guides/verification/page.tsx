@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowLeft, ClipboardList, KeyRound, ShieldAlert, UserRoundCheck } from 'lucide-react';
+import { directoryPageMetadata } from '@/lib/discoverability';
 
 export const metadata: Metadata = {
+  ...directoryPageMetadata('/guides/verification'),
   title: 'What Guide Verification Means | RateMyGuidePNW',
   description: 'Learn what a source listing establishes, what licenses and claimed pages do not prove, and how guide trip reviews are moderated.',
 };

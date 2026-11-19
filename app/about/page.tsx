@@ -1,3 +1,7 @@
+import { directoryPageMetadata } from '@/lib/discoverability';
+
+export const metadata = directoryPageMetadata('/about');
+
 export default function About() {
   return <main>
     <h1>About</h1>

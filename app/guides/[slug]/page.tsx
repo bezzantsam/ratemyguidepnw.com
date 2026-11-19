@@ -5,6 +5,7 @@ import ReturnToResults from '@/components/ReturnToResults';
 import {GuideEngagement} from '@/components/launch/GuideEngagement';
 import {ProfileSharing} from '@/components/launch/ProfileSharing';
 import {profileShareMetadata} from '@/lib/canonical-share';
+import { browseableProfilePaths, publicRobots } from '@/lib/discoverability';
 import {findGuide, guideSlug} from '@/lib/registry';
 import {washingtonRecordForOregon} from '@/lib/washington';
 
@@ -18,7 +19,11 @@ export async function generateMetadata({params}: ProfileParams) {
   const {slug} = await params;
   const guide = findGuide(slug);
   if (!guide) notFound();
-  return profileShareMetadata(`/guides/${guideSlug(guide)}`, guide.name, guide.business);
+  const path = `/guides/${guideSlug(guide)}`;
+  return {
+    ...profileShareMetadata(path, guide.name, guide.business),
+    ...(browseableProfilePaths.has(path) ? { robots: publicRobots } : {}),
+  };
 }
 
 export default async function Page({params}: ProfileParams) {

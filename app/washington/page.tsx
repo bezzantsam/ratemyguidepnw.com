@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import WashingtonSearch from '@/components/WashingtonSearch';
 import {washingtonGuides,oregonWashingtonMatches} from '@/lib/washington';
+import { directoryPageMetadata } from '@/lib/discoverability';
+
+export const metadata = directoryPageMetadata('/washington');
 
 export default function Page(){return <main>
  <p className="eyebrow">WASHINGTON FISHING GUIDE DIRECTORY</p>

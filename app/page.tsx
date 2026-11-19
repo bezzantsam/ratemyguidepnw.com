@@ -2,6 +2,9 @@ import Link from 'next/link';
 import { ShieldCheck } from 'lucide-react';
 import UnifiedSearch from '@/components/UnifiedSearch';
 import { directoryEntries } from '@/lib/directory';
+import { directoryPageMetadata } from '@/lib/discoverability';
+
+export const metadata = directoryPageMetadata('/');
 
 export default function Home() {
   const enabled=process.env.NEXT_PUBLIC_RMG_LAUNCH_ENABLED==='true';
