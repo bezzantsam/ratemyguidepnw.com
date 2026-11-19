@@ -264,6 +264,14 @@ export function filterDirectoryEntries(entries:DirectoryEntry[],filters:Director
      (hasSpecies&&!directorySpeciesLabels(facets.species).includes(filters.species!))||
      (hasMethod&&!facets.methods.some(sameMethod)))return {entry,score:null};
   if(!portSearch){
+   if(!hasWater&&hasSpecies&&hasMethod){
+    // Keep independent listing facts searchable, but respect explicit trip pairings.
+    const pairs=sourcedOfferings(entry).filter(item=>inJurisdiction(item,filters.state))
+     .map(offeringFacets).filter(({species,method})=>species&&method);
+    const sameSpecies=(value:string|undefined)=>Boolean(value&&directorySpeciesLabels([value]).includes(filters.species!));
+    if(pairs.some(({species,method})=>sameSpecies(species)||sameMethod(method))&&
+       !pairs.some(({species,method})=>sameSpecies(species)&&sameMethod(method)))return {entry,score:null};
+   }
    const exactFishery=isKnownFishery(filters.query);
    if(hasWater&&(hasSpecies||hasMethod||exactFishery)){
     const atWater=sourcedOfferings(entry).filter(item=>inJurisdiction(item,filters.state)&&item.relationship?.waterway===filters.advertisedWater);
