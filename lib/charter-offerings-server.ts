@@ -6,9 +6,12 @@ export function approvedCharterOfferings(input: unknown): CharterOffering[] {
   if (!Array.isArray(input)) return [];
   const offerings = new Map<string, CharterOffering>();
   for (const item of input) {
-    if (!item || typeof item !== 'object' || 'guide_id' in item || !approvedSource(item)) continue;
-    const { operator, city, state, value, kind, scope, boat, source, relationship, business_id, port_aliases, departure_source } = item;
-    if ((kind !== 'species' && kind !== 'trip_type' && kind !== 'method') || source.source_type !== 'operator_site' ||
+    if (!item || typeof item !== 'object' || 'guide_id' in item || !approvedSource(item, ['operator_site', 'port_authority'])) continue;
+    const { operator, city, state, value, kind, scope, boat, source, relationship, business_id, port_aliases, departure_source, operator_source, waters, operator_base_only, named_guide } = item;
+    const portAuthority = source.source_type === 'port_authority';
+    if ((kind !== 'species' && kind !== 'trip_type' && kind !== 'method') ||
+        (portAuthority && (scope !== 'operator_team' || kind === 'trip_type' ||
+          !approvedSource({...item, source:operator_source}, ['operator_site']))) ||
         (state !== 'OR' && state !== 'WA') ||
         typeof operator !== 'string' || !operator.trim() ||
         typeof city !== 'string' || !city.trim() ||
@@ -17,9 +20,15 @@ export function approvedCharterOfferings(input: unknown): CharterOffering[] {
       if (typeof boat !== 'string' || !boat.trim()) continue;
     } else if (scope === 'operator_team') {
       if (boat!==undefined||typeof business_id!=='string'||!/^[-a-z0-9]+$/.test(business_id)||
-          !approvedSource({...item,source:departure_source})) continue;
+          !approvedSource({...item,source:departure_source},
+            portAuthority ? ['port_authority', 'state_tourism'] : undefined)) continue;
     } else if (scope !== 'charter_operator_only' || boat !== undefined) continue;
     if (port_aliases!==undefined&&(!Array.isArray(port_aliases)||!port_aliases.every(alias=>typeof alias==='string'&&alias.trim()))) continue;
+    if (waters!==undefined&&(!Array.isArray(waters)||!waters.length||
+        !waters.every(water=>typeof water==='string'&&water.trim()))) continue;
+    if (operator_base_only!==undefined&&(operator_base_only!==true||scope!=='charter_operator_only'||
+        !Array.isArray(waters)||port_aliases!==undefined)) continue;
+    if (named_guide!==undefined&&(scope!=='charter_operator_only'||typeof named_guide!=='string'||!named_guide.trim())) continue;
     let details: Pick<CharterOffering, 'species' | 'method' | 'trip' | 'waterway'> = kind==='method'?{method:value}:{species:value};
     if (kind === 'trip_type') {
       if (!relationship || typeof relationship !== 'object' ||
@@ -30,9 +39,13 @@ export function approvedCharterOfferings(input: unknown): CharterOffering[] {
     const offering: CharterOffering = {
       operator, city, state: state === 'OR' ? 'Oregon' : 'Washington',
       ...details, sourceUrl: source.url,
+      ...(portAuthority ? { sourceLabel: 'Port authority listing' as const } : {}),
       ...(typeof boat === 'string' ? { boat } : {}),
       ...(scope==='operator_team'&&typeof business_id==='string'?{businessId:business_id}:{}),
       ...(Array.isArray(port_aliases)?{portAliases:port_aliases}:{}),
+      ...(Array.isArray(waters)?{waters}:{}),
+      ...(operator_base_only?{operatorBaseOnly:true}:{}),
+      ...(typeof named_guide==='string'?{namedGuide:named_guide}:{}),
     };
     offerings.set(JSON.stringify([offering.businessId??operator, city, state, kind, value, boat, source.url]), offering);
   }

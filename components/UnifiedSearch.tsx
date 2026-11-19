@@ -3,7 +3,7 @@ import Link from 'next/link';
 import {useEffect,useMemo,useRef,useState} from 'react';
 import {DEFAULT_DIRECTORY_STATE,DIRECTORY_PAGE_SIZE,directoryUrl,parseDirectoryState,type DirectoryState} from '@/lib/directory-url';
 import type {DirectoryEntry} from '@/lib/directory';
-import {directorySpeciesLabels,filterDirectoryEntries,guideSearchScore,locatedGuidePorts} from '@/lib/directory-query';
+import {directoryEntryInState,directoryFisheryFacets,directorySpeciesLabels,filterDirectoryEntries,guideSearchScore,locatedGuidePorts} from '@/lib/directory-query';
 import {charterPorts,filterCharterOfferings,type CharterOffering} from '@/lib/charter-offerings';
 import {PUBLIC_ORIGIN} from '@/lib/canonical-share';
 import DirectoryEmptyState from './DirectoryEmptyState';
@@ -23,16 +23,16 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
  const size=DIRECTORY_PAGE_SIZE;
  useEffect(()=>{
   function restore(){
-   const next=parseDirectoryState(window.location.search,entries,charters);
+   const next=parseDirectoryState(window.location.search,entries,charters,reviewMode);
    setSelection(next);
    const query=directoryUrl(next).slice('/guides'.length);
    if(window.location.search!==query)window.history.replaceState(null,'',window.location.pathname+query);
   }
   restore();window.addEventListener('popstate',restore);
   return ()=>window.removeEventListener('popstate',restore);
- },[entries,charters]);
+ },[entries,charters,reviewMode]);
  function change(patch:Partial<DirectoryState>,replace=false){
-  const next=parseDirectoryState(directoryUrl({...selection,...patch}).slice('/guides'.length),entries,charters);
+  const next=parseDirectoryState(directoryUrl({...selection,...patch}).slice('/guides'.length),entries,charters,reviewMode);
   setSelection(next);setCopyStatus('');setFallback(false);
   const query=directoryUrl(next).slice('/guides'.length);
   const target=window.location.pathname+query;
@@ -45,28 +45,29 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
   catch{setFallback(true);setCopyStatus('Copy the search link from the field below.')}
  }
  const filtered=useMemo(()=>filterDirectoryEntries(entries,{
-  state,sourceZone:area,advertisedWater:waterway,species,method,query:q
- },charters.flatMap(charterPorts)),[entries,charters,q,state,area,waterway,species,method]);
+  state,sourceZone:area,advertisedWater:waterway,species,method,query:q,identityOnly:reviewMode
+ },charters.flatMap(charterPorts)),[entries,charters,q,state,area,waterway,species,method,reviewMode]);
 
  const areas=useMemo(()=>
   ['All areas',...new Set(entries.filter(g=>state==='All'||g.states.includes(state as 'Oregon'|'Washington'))
     .flatMap(g=>g.areas))].sort((a,b)=>a==='All areas'?-1:b==='All areas'?1:a.localeCompare(b)),
  [entries,state]);
 
- const waters=useMemo(()=>
-  ['All advertised waters',...new Set(entries.filter(g=>state==='All'||g.states.includes(state as 'Oregon'|'Washington'))
-    .flatMap(g=>g.advertisedWaters).concat(charters.flatMap(offer=>
-      (state==='All'||offer.state===state)&&offer.waterway?[offer.waterway]:[])))].sort((a,b)=>a==='All advertised waters'?-1:b==='All advertised waters'?1:a.localeCompare(b)),
- [entries,charters,state]);
-
+ const facets=useMemo(()=>entries.filter(entry=>directoryEntryInState(entry,state,!reviewMode))
+  .map(entry=>directoryFisheryFacets(entry,state)),[entries,state,reviewMode]);
+ const scopedCharters=useMemo(()=>charters.filter(offer=>state==='All'||offer.state===state),[charters,state]);
+ const waters=useMemo(()=>['All advertised waters',...new Set([
+  ...facets.flatMap(facet=>facet.waters),
+  ...scopedCharters.flatMap(offer=>[...(offer.waterway?[offer.waterway]:[]),...(offer.waters??[])]),
+ ])].sort((a,b)=>a==='All advertised waters'?-1:b==='All advertised waters'?1:a.localeCompare(b)),[facets,scopedCharters]);
  const speciesOptions=useMemo(()=>[...new Set([
-  ...entries.filter(g=>state==='All'||g.states.includes(state)).flatMap(g=>directorySpeciesLabels(g.advertisedSpecies)),
-  ...charters.filter(offer=>state==='All'||offer.state===state).flatMap(offer=>offer.species?directorySpeciesLabels([offer.species]):[]),
- ])].sort(),[entries,charters,state]);
+  ...facets.flatMap(facet=>directorySpeciesLabels(facet.species)),
+  ...scopedCharters.flatMap(offer=>directorySpeciesLabels(offer.species?[offer.species]:[])),
+ ])].sort(),[facets,scopedCharters]);
  const methodOptions=useMemo(()=>[...new Set([
-  ...entries.filter(g=>state==='All'||g.states.includes(state)).flatMap(g=>g.advertisedMethods??[]),
-  ...charters.filter(offer=>state==='All'||offer.state===state).flatMap(offer=>offer.method?[offer.method]:[]),
- ])].sort(),[entries,charters,state]);
+  ...facets.flatMap(facet=>facet.methods),
+  ...scopedCharters.flatMap(offer=>offer.method?[offer.method]:[]),
+ ])].sort(),[facets,scopedCharters]);
  const guidePorts=useMemo(()=>locatedGuidePorts(entries),[entries]);
  const matchingCharters=filterCharterOfferings(charters,selection,guidePorts);
  const pages=Math.max(1,Math.ceil(filtered.length/size)),current=Math.min(page,pages);
@@ -122,8 +123,10 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
    {matchingCharters.length>0&&<span>{matchingCharters.length} charter {matchingCharters.length===1?'offering':'offerings'}</span>}
    <span>{q.trim()?'Closest matches first':'A–Z'} · Page {current} of {pages}</span>
   </div>
-  <div className="guide-results">{filtered.slice((current-1)*size,current*size).map(g=>
-   <div className="saved-guide-row" key={g.id}>
+  <div className="guide-results">{filtered.slice((current-1)*size,current*size).map(g=>{
+   const {species:targets,methods,trips,waters}=directoryFisheryFacets(g,state);
+   const labels=[...new Set([...targets,...methods,...trips])];
+   return <div className="saved-guide-row" key={g.id}>
     <Link className="guide-result" href={{pathname:g.href,query:reviewMode&&reviewEnabled?{returnTo:resultsUrl,intent:'review'}:{returnTo:resultsUrl},hash:reviewMode&&reviewEnabled?'write-review':undefined}}>
      <div className="rating-tile"><strong>—</strong><span>{reviewEnabled?'View reviews':'Reviews unavailable'}</span></div>
      <div className="guide-result-body">
@@ -134,21 +137,22 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
       <p className="outfit-name">{g.business||'Fishing guide'}</p>
       {g.searchAliases.some(name=>!g.editorialSearchAliases?.some(alias=>alias.value===name))&&<p className="guide-meta">Other names (business or person): {g.searchAliases.filter(name=>!g.editorialSearchAliases?.some(alias=>alias.value===name)).join(' · ')}</p>}
       {g.editorialSearchAliases?.map(alias=><p className="guide-meta" key={`${alias.value}:${alias.attributedTo}`}>Editorial search name supplied by {alias.attributedTo}: {alias.value}</p>)}
-      {Boolean(g.advertisedSpecies?.length || g.advertisedMethods?.length || g.advertisedTrips?.length)&&
-        <p className="guide-meta">Fishing targets and trips: {[...new Set([...(g.advertisedSpecies??[]),...(g.advertisedMethods??[]),...(g.advertisedTrips??[])])].map(label=>
+      {!directoryEntryInState(g,state)&&<p className="guide-meta">{state} fishing offering</p>}
+      {labels.length>0&&
+        <p className="guide-meta">Fishing targets and trips: {labels.map(label=>
           g.businessAdvertisedOfferings?.includes(label) ? `${label} (operator team)` : label).join(' · ')}</p>}
-      {g.advertisedWaters.length>0&&<p className="guide-meta">Advertised waters (source-linked): {g.advertisedWaters.slice(0,3).join(' · ')}{g.advertisedWaters.length>3?' · + more':''}</p>}
+      {waters.length>0&&<p className="guide-meta">Advertised waters (source-linked): {waters.slice(0,3).join(' · ')}{waters.length>3?' · + more':''}</p>}
       <p className="guide-meta">{g.source==='Oregon registry'?'Imported registration zones':'Imported directory areas / notes'}: {g.areas.slice(0,3).join(' · ')||'Not specified'}{g.areas.length>3?' · + more':''}</p>
       <p className="guide-submeta">Imported source listing · {reviewEnabled?'See profile for reviews':'Review data unavailable'} · Current credentials not independently checked</p>
      </div><span className="result-chevron">›</span>
     </Link>
-   </div>)}
+   </div>})}
   </div>
   {matchingCharters.length>0&&<section className="section" aria-labelledby="charter-offerings-title">
    <h3 id="charter-offerings-title">Charter offerings</h3>
    <ul>{matchingCharters.map(offer=><li key={JSON.stringify([offer.businessId??offer.operator,offer.city,offer.state,offer.boat,offer.trip??offer.species??offer.method,offer.sourceUrl])}>
-    <strong>{offer.operator}</strong>{offer.boat&&<> · {offer.boat}</>} · {offer.city}, {offer.state} · {offer.trip??offer.species??offer.method}{offer.boat&&' · By request'}{offer.businessId&&' · Operator team'}
-    {' · '}<a href={offer.sourceUrl} target="_blank" rel="noopener noreferrer" aria-label={`Trip source for ${offer.operator}`}>Trip source ↗</a>
+    <strong>{offer.operator}</strong>{offer.boat&&<> · {offer.boat}</>} · {offer.operatorBaseOnly?'Operator base: ':''}{offer.city}, {offer.state} · {offer.trip??offer.species??offer.method}{offer.boat&&' · By request'}{offer.businessId&&' · Operator team'}{offer.namedGuide&&<> · Named guide: {offer.namedGuide}</>}{!!offer.waters?.length&&<> · {offer.waters.join(' · ')}</>}
+    {' · '}<a href={offer.sourceUrl} target="_blank" rel="noopener noreferrer" aria-label={`${offer.sourceLabel ?? 'Trip source'} for ${offer.operator}`}>{offer.sourceLabel ?? 'Trip source'} ↗</a>
    </li>)}</ul>
   </section>}
   {!filtered.length&&!matchingCharters.length&&<DirectoryEmptyState entries={entries} selection={selection} onChoose={next=>{change(next);resultsRef.current?.focus()}}/>}

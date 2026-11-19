@@ -437,5 +437,115 @@
     "port_aliases": [
       "La Push Marina"
     ]
+  },
+  {
+    "operator": "Prowler Charters",
+    "business_id": "prowler-charters-bandon",
+    "city": "Bandon",
+    "state": "OR",
+    "kind": "species",
+    "value": "Halibut",
+    "source": {
+      "url": "https://www.portofbandon.com/prowler-charters",
+      "reviewed_on": "2026-11-19",
+      "locator": "Port authority lists the marina-adjacent charter operator at the east end of the Bandon Boardwalk, names its vessels, and confirms halibut, tuna and bottom fishing.",
+      "source_type": "port_authority"
+    },
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "scope": "operator_team",
+    "departure_source": {
+      "url": "https://traveloregon.com/plan-your-trip/guides-tours/guides-charters/prowler-charters/",
+      "reviewed_on": "2026-11-19",
+      "locator": "Charter listing describes the departure from Bandon, the Bandon bar crossing, and trips returning to the dock.",
+      "source_type": "state_tourism"
+    },
+    "operator_source": {
+      "url": "https://prowlercharters.com/",
+      "reviewed_on": "2026-11-19",
+      "locator": "About Prowler Charters names the boat and lists the target in its three-item fishing charter menu.",
+      "source_type": "operator_site"
+    }
+  },
+  {
+    "operator": "Prowler Charters",
+    "business_id": "prowler-charters-bandon",
+    "city": "Bandon",
+    "state": "OR",
+    "kind": "species",
+    "value": "Tuna",
+    "source": {
+      "url": "https://www.portofbandon.com/prowler-charters",
+      "reviewed_on": "2026-11-19",
+      "locator": "Port authority lists the marina-adjacent charter operator at the east end of the Bandon Boardwalk, names its vessels, and confirms halibut, tuna and bottom fishing.",
+      "source_type": "port_authority"
+    },
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "scope": "operator_team",
+    "departure_source": {
+      "url": "https://traveloregon.com/plan-your-trip/guides-tours/guides-charters/prowler-charters/",
+      "reviewed_on": "2026-11-19",
+      "locator": "Charter listing describes the departure from Bandon, the Bandon bar crossing, and trips returning to the dock.",
+      "source_type": "state_tourism"
+    },
+    "operator_source": {
+      "url": "https://prowlercharters.com/",
+      "reviewed_on": "2026-11-19",
+      "locator": "About Prowler Charters names the boat and lists the target in its three-item fishing charter menu.",
+      "source_type": "operator_site"
+    }
+  },
+  {
+    "operator": "Prowler Charters",
+    "business_id": "prowler-charters-bandon",
+    "city": "Bandon",
+    "state": "OR",
+    "kind": "method",
+    "value": "Bottom fishing",
+    "source": {
+      "url": "https://www.portofbandon.com/prowler-charters",
+      "reviewed_on": "2026-11-19",
+      "locator": "Port authority lists the marina-adjacent charter operator at the east end of the Bandon Boardwalk, names its vessels, and confirms halibut, tuna and bottom fishing.",
+      "source_type": "port_authority"
+    },
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "scope": "operator_team",
+    "departure_source": {
+      "url": "https://traveloregon.com/plan-your-trip/guides-tours/guides-charters/prowler-charters/",
+      "reviewed_on": "2026-11-19",
+      "locator": "Charter listing describes the departure from Bandon, the Bandon bar crossing, and trips returning to the dock.",
+      "source_type": "state_tourism"
+    },
+    "operator_source": {
+      "url": "https://prowlercharters.com/",
+      "reviewed_on": "2026-11-19",
+      "locator": "About Prowler Charters names the boat and lists the target in its three-item fishing charter menu.",
+      "source_type": "operator_site"
+    }
+  },
+  {
+    "operator": "Lost Creek Fly Shop",
+    "city": "Onalaska",
+    "state": "WA",
+    "value": "Tiger muskie",
+    "kind": "species",
+    "scope": "charter_operator_only",
+    "source": {
+      "url": "https://www.lostcreekflies.com/item/Tiger-Muskie-Fly-Fishing-Guide-Trip-Lake-Mayfield-Merwin-Lake-or-Lake-Tapps-737",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The trip description explicitly names Mike Sturza and offers a guided tiger muskie fly-fishing trip on any of these three lakes. Footer names the operator and its Onalaska, Washington base."
+    },
+    "waters": [
+      "Mayfield Lake",
+      "Lake Merwin",
+      "Lake Tapps"
+    ],
+    "operator_base_only": true,
+    "named_guide": "Mike Sturza",
+    "editorial_status": "approved",
+    "publication_approved": true
   }
 ]

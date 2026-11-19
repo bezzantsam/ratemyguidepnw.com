@@ -115,7 +115,7 @@ test('charter evidence stays outside guide attribution and matches the same sour
   './approved-charter-offerings.json':raw,'./guide-attributes':evidence
  });
  const {filterCharterOfferings}=load('lib/charter-offerings.ts',{'./directory-query':query});
- assert.equal(charterOfferings.length,19);
+ assert.equal(charterOfferings.length,23);
  assert.equal(approvedCharterOfferings([{...raw[0],guide_id:'wa-122'}]).length,0);
  assert.equal(approvedCharterOfferings([{...raw[0],publication_approved:false}]).length,0);
  assert.equal(approvedCharterOfferings([{...raw[0],source:{...raw[0].source,url:'http://example.com'}}]).length,0);
@@ -141,6 +141,19 @@ test('charter evidence stays outside guide attribution and matches the same sour
  assert.deepEqual(find('Makah Marina bottom fishing'),['Fish Neah Bay']);
  assert.deepEqual(find('bottom fishing La Push Marina',{state:'Washington',method:'Bottom fishing'}),['KYS Outdoor Adventures','Top Notch Ocean Charters']);
  assert.deepEqual(find('La Push halibut',{state:'Oregon'}),[]);
+ for (const term of ['Bandon halibut','Bandon tuna','Bandon bottom fishing']) {
+  assert.deepEqual(find(term),['Prowler Charters'],term);
+ }
+ for (const term of ['Bandon albacore','Port Orford halibut','Port Orford bottom fishing']) {
+  assert.deepEqual(find(term),[],term);
+ }
+ assert.deepEqual(find('Bandon',{method:'Bottom fishing'}),['Prowler Charters']);
+ assert.deepEqual(find('Bandon',{species:'Albacore tuna'}),[]);
+ const prowler=raw.find(offer=>offer.business_id==='prowler-charters-bandon');
+ assert.equal(charterOfferings.find(offer=>offer.businessId===prowler.business_id).sourceLabel,'Port authority listing');
+ for (const patch of [{operator_source:undefined},{departure_source:undefined},{scope:'charter_operator_only'},{guide_id:'OG.0002422'}]) {
+  assert.equal(approvedCharterOfferings([{...prowler,...patch}]).length,0);
+ }
  for (const held of ['Sekiu bottom fishing','Neah Bay albacore','Neah Bay black cod','La Push albacore','La Push tuna']) {
   assert.deepEqual(find(held),[],held);
  }
@@ -149,6 +162,26 @@ test('charter evidence stays outside guide attribution and matches the same sour
  assert.equal(approvedCharterOfferings([{...raw.find(row=>row.scope==='operator_team'),departure_source:undefined}]).length,0);
  assert.equal(url.parseDirectoryState('?state=Washington&species=Salmon&water=Buoy+10',[],charterOfferings).waterway,'Buoy 10');
  assert.equal(url.parseDirectoryState('?state=Washington&species=Sablefish+(black+cod)',[],charterOfferings).species,'Sablefish (black cod)');
+});
+test('southern Oregon bottom fishing facts keep operator-team attribution and separate ports',()=>{
+ const raw=JSON.parse(read('lib/approved-guide-attributes.json'));
+ const ids=new Set(['OG.0003225','OG.0000544','OG.0002422']);
+ const fishing=Array.from(approvedAttributes(raw,ids),fact=>[fact.guide_id,fact.location.city,fact.kind,fact.value,fact.offering_scope]);
+ assert.deepEqual(fishing,[
+  ['OG.0003225','Port Orford','method','Bottom fishing','operator_business'],
+  ['OG.0002422','Bandon','method','Bottom fishing','operator_business'],
+  ['OG.0000544','Port Orford','method','Bottom fishing','operator_business']
+ ]);
+ const entries=fishing.map(([id,city])=>({
+  id,name:id,states:['Oregon'],areas:[],searchAliases:[],advertisedWaters:[],advertisedMethods:['Bottom fishing'],
+  locatedOfferings:[{city,state:'OR',kind:'method',value:'Bottom fishing'}],
+ }));
+ const filters={state:'Oregon',sourceZone:'All areas',advertisedWater:'All advertised waters',query:'Port Orford',method:'Bottom fishing'};
+ assert.deepEqual(Array.from(query.filterDirectoryEntries(entries,filters),entry=>entry.id),['OG.0000544','OG.0003225']);
+ const lacey=raw.find(fact=>fact.guide_id==='OG.0000544');
+ assert.equal(lacey.supporting_sources.find(source=>source.trip_label).url,'https://southcoasttours.net/tours/fish-forage-feast/');
+ const rejected={...lacey,source:{...lacey.source,source_type:'port_authority'}};
+ assert.equal(approvedAttributes([rejected],ids).length,0);
 });
 test('a port-qualified fishery search needs the location and target on the same guide fact',()=>{
  const base={states:['Oregon'],areas:['Garibaldi'],advertisedWaters:[],searchAliases:[],advertisedSpecies:['Albacore tuna']};
@@ -215,4 +248,80 @@ test('next-ten pending candidates never reach the public loader',()=>{
  const waters=JSON.parse(read('docs/research/BATCH13_NEXT10_PENDING_WATERS.json')).waters;
  assert.equal(waters.length,13);assert.ok(waters.every(x=>!('kind' in x)&&x.editorial_status==='pending'&&x.publication_approved===false));
  assert.equal(approvedAttributes(waters,ids).length,0);
+});
+
+test('freshwater aliases expand broad categories in one direction only',()=>{
+ for(const [term,labels,expected] of [
+  ['tiger muskellunge',['Tiger muskie'],true],['musky',['Tiger muskie'],true],
+  ['stripers',['Striped bass'],true],['freshwater bass',['Smallmouth bass'],true],
+  ['bass',['Striped bass'],false],['smallmouth',['Bass'],false],
+  ['trout',['Cutthroat trout'],true],['trout',['Steelhead'],false],['brown trout',['Trout'],false],
+  ['steelhead trout',['Steelhead'],true],
+  ['crab fishing',['Crabbing'],true],['crabbing',['Bottom fishing'],false],
+ ]){
+  assert.equal(query.matchesFisherySearch(term,labels),expected,term);
+ }
+});
+
+test('freshwater evidence keeps scoped waters, original identities and participant-only observations',()=>{
+ const raw=JSON.parse(read('lib/approved-guide-attributes.json'));
+ const ids=new Set(['OG.0002254','OG.0003452','OG.0002472','OG.0002193','OG.0000315','OG.0002459','OG.0003297','OG.0000607',
+  'OG.0001035','OG.0003166','OG.0000581','OG.0000359','wa-152']);
+ const rows=approvedAttributes(raw,ids);
+ const participant=rows.find(r=>r.guide_id==='OG.0000607'&&r.evidence_scope==='participant_reports');
+ assert.equal(approvedAttributes([{...participant,trip_note:undefined}],ids).length,0);
+ assert.equal(approvedAttributes([{...participant,fishery_jurisdiction:'WA'}],ids).length,0);
+ const muskie=rows.find(r=>r.guide_id==='OG.0001035'&&r.value==='Tiger muskie');
+ assert.equal(approvedAttributes([{...muskie,fishery_jurisdiction:'BC'}],ids).length,0);
+ assert.equal(approvedAttributes(raw.slice(-36),ids).length,36);
+ for(const id of ids)assert.ok(rows.some(row=>row.guide_id===id),id);
+ const has=(id,label,where)=>rows.some(r=>r.guide_id===id&&r.value===label&&(where===undefined||r.relationship?.waterway===where||r.location?.city===where));
+ assert.ok(has('OG.0002254','Steelhead'));
+ assert.ok(has('OG.0003452','Steelhead'));
+ assert.ok(has('OG.0000315','Crabbing','Hammond'));
+ assert.ok(has('OG.0002193','Crabbing','Garibaldi'));
+ assert.ok(has('OG.0002459','Crabbing','Pacific City'));
+ assert.ok(has('OG.0000581','Striped bass','Coquille River'));
+ assert.ok(has('wa-152','Smallmouth bass','Banks Lake'));
+ assert.ok(has('wa-152','Largemouth bass','Potholes Reservoir'));
+ assert.ok(has('wa-152','Trout','Lake Lenore'));
+ assert.equal(has('OG.0000359','Striped bass'),false);
+ assert.equal(has('OG.0002472','Crabbing'),false);
+ assert.ok(rows.some(r=>r.guide_id==='OG.0002472'&&r.kind==='method'&&/crab/i.test(r.trip_note??'')));
+ assert.ok(rows.some(r=>r.guide_id==='OG.0000607'&&r.evidence_scope==='participant_reports'));
+ assert.ok(rows.some(r=>r.guide_id==='OG.0003297'&&r.evidence_scope==='participant_reports'));
+
+ const base={areas:[],searchAliases:[],advertisedMethods:[],advertisedTrips:[]};
+ const entries=[['OG.0001035','Oregon'],['wa-152','Washington']].map(([id,state])=>{
+  const facts=rows.filter(r=>r.guide_id===id&&r.kind==='species');
+  return {...base,id,name:id,states:[state],advertisedSpecies:facts.map(r=>r.value),
+   advertisedWaters:facts.flatMap(r=>r.relationship?.waterway?[r.relationship.waterway]:[]),
+   fisheryOfferings:facts.map(r=>({state:r.fishery_jurisdiction,kind:r.kind,value:r.value,relationship:r.relationship}))};
+ });
+ const filters={state:'Washington',sourceZone:'All areas',advertisedWater:'All advertised waters',query:'musky'};
+ const found=(patch={})=>Array.from(query.filterDirectoryEntries(entries,{...filters,...patch}),entry=>entry.id);
+ assert.deepEqual(found(),['OG.0001035','wa-152']);
+ assert.deepEqual(found({identityOnly:true}),['wa-152']);
+ assert.deepEqual(found({state:'Oregon'}),[]);
+ assert.deepEqual(found({query:'Evergreen Reservoir musky'}),['wa-152']);
+ assert.deepEqual(found({query:'Evergreen Reservoir trout'}),[]);
+ assert.deepEqual(found({query:'',advertisedWater:'Evergreen Reservoir',species:'Trout'}),[]);
+ assert.deepEqual(found({query:'',advertisedWater:'Lake Lenore',species:'Trout'}),['wa-152']);
+ assert.equal(url.parseDirectoryState('?state=Washington&species=Tiger+muskellunge',entries).species,'Tiger muskie');
+});
+
+test('Lost Creek has one charter-only muskie listing with named waters and a separate business base',()=>{
+ const {charterOfferings}=load('lib/charter-offerings-server.ts',{
+  './approved-charter-offerings.json':JSON.parse(read('lib/approved-charter-offerings.json')),'./guide-attributes':evidence
+ });
+ const {filterCharterOfferings}=load('lib/charter-offerings.ts',{'./directory-query':query});
+ const find=term=>filterCharterOfferings(charterOfferings,{...url.DEFAULT_DIRECTORY_STATE,state:'Washington',query:term});
+ for(const term of ['musky','Lake Mayfield tiger muskie','Lake Merwin muskellunge','Lake Tapps muskie']){
+  const matches=find(term);
+  assert.equal(matches.length,1,term);
+  assert.equal(matches[0].namedGuide,'Mike Sturza');
+  assert.equal(matches[0].operatorBaseOnly,true);
+  assert.equal(matches[0].guideId,undefined);
+ }
+ assert.equal(find('Onalaska tiger muskie').length,0);
 });

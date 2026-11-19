@@ -1,6 +1,6 @@
 import type {DirectoryEntry} from './directory';
 import type {CharterOffering} from './charter-offerings';
-import {directorySpeciesLabels,filterDirectoryEntries} from './directory-query';
+import {canonicalFisheryLabel,directoryEntryInState,directoryFisheryFacets,directorySpeciesLabels,filterDirectoryEntries} from './directory-query';
 
 export type DirectoryState={query:string;state:'All'|'Oregon'|'Washington';area:string;waterway:string;species:string;method:string;page:number};
 export const DEFAULT_DIRECTORY_STATE:DirectoryState={query:'',state:'All',area:'All areas',waterway:'All advertised waters',species:'All species',method:'All methods',page:1};
@@ -8,21 +8,22 @@ export const DIRECTORY_PAGE_SIZE=30;
 const keys=new Set(['q','state','area','water','species','method','page']);
 
 /** Resolve URL values against the directory, discarding ambiguous or obsolete filters. */
-export function parseDirectoryState(search:string,entries:DirectoryEntry[],charters:CharterOffering[]=[]):DirectoryState {
+export function parseDirectoryState(search:string,entries:DirectoryEntry[],charters:CharterOffering[]=[],identityOnly=false):DirectoryState {
  if(search.length>2048)return {...DEFAULT_DIRECTORY_STATE};
  const params=new URLSearchParams(search);
  const single=(key:string)=>{const values=params.getAll(key);return values.length===1?values[0]:''};
- const q=single('q');const rawState=single('state');const rawArea=single('area');const rawWater=single('water');const rawSpecies=single('species');const rawMethod=single('method');const rawPage=single('page');
+ const q=single('q');const rawState=single('state');const rawArea=single('area');const rawWater=single('water');const rawSpecies=canonicalFisheryLabel(single('species'));const rawMethod=canonicalFisheryLabel(single('method'));const rawPage=single('page');
  const state:DirectoryState['state']=rawState==='Oregon'||rawState==='Washington'?rawState:'All';
- const scoped=entries.filter(entry=>state==='All'||entry.states.includes(state));
+ const scoped=entries.filter(entry=>directoryEntryInState(entry,state,!identityOnly));
+ const facets=scoped.map(entry=>directoryFisheryFacets(entry,state));
  const area=rawArea.length<=256&&scoped.some(entry=>entry.areas.includes(rawArea))?rawArea:'All areas';
  const scopedCharters=charters.filter(offer=>state==='All'||offer.state===state);
- const waterway=rawWater.length<=256&&(scoped.some(entry=>entry.advertisedWaters.includes(rawWater))||scopedCharters.some(offer=>offer.waterway===rawWater))?rawWater:'All advertised waters';
+ const waterway=rawWater.length<=256&&(facets.some(entry=>entry.waters.includes(rawWater))||scopedCharters.some(offer=>offer.waterway===rawWater||offer.waters?.includes(rawWater)))?rawWater:'All advertised waters';
  const charterSpecies=scopedCharters.some(offer=>offer.species&&directorySpeciesLabels([offer.species]).includes(rawSpecies));
- const species=rawSpecies.length>0&&rawSpecies.length<=256&&(charterSpecies||scoped.some(entry=>directorySpeciesLabels(entry.advertisedSpecies).includes(rawSpecies)))?rawSpecies:'All species';
- const method=rawMethod.length<=256&&(scoped.some(entry=>(entry.advertisedMethods??[]).includes(rawMethod))||scopedCharters.some(offer=>offer.method===rawMethod))?rawMethod:'All methods';
+ const species=rawSpecies.length>0&&rawSpecies.length<=256&&(charterSpecies||facets.some(entry=>directorySpeciesLabels(entry.species).includes(rawSpecies)))?rawSpecies:'All species';
+ const method=rawMethod.length<=256&&(facets.some(entry=>entry.methods.includes(rawMethod))||scopedCharters.some(offer=>offer.method===rawMethod))?rawMethod:'All methods';
  const query=q.length<=120&&!/[\u0000-\u001f\u007f]/.test(q)?q:'';
- const count=filterDirectoryEntries(entries,{query,state,sourceZone:area,advertisedWater:waterway,species,method},charters.flatMap(offer=>[offer.city,...(offer.portAliases??[])])).length;
+ const count=filterDirectoryEntries(entries,{query,state,sourceZone:area,advertisedWater:waterway,species,method,identityOnly},charters.flatMap(offer=>[offer.city,...(offer.portAliases??[]),...(offer.waters??[])])).length;
  const max=Math.max(1,Math.ceil(count/DIRECTORY_PAGE_SIZE));
  const requested=/^[1-9]\d{0,5}$/.test(rawPage)?Number(rawPage):1;
  return {query,state,area,waterway,species,method,page:Math.min(requested,max)};
