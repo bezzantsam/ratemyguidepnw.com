@@ -5,7 +5,7 @@ type EditorialCorrection = {
   guide_id: string;
   expected_name: string;
   expected_business: string;
-  kind: 'species' | 'search_alias';
+  kind: 'species' | 'method' | 'search_alias';
   value: string;
   status: 'approved';
   provenance: {type: 'user_editorial'; attributed_to: string; recorded_on: string; reference: string};
@@ -19,12 +19,13 @@ export function editorialGuideCorrections(guide: {id:string; name:string; busine
     if (!record || typeof record !== 'object' || Array.isArray(record)) return false;
     const x = record as Record<string, unknown>;
     if (x.guide_id !== guide.id || x.expected_name !== guide.name || x.expected_business !== guide.business ||
-        (x.kind !== 'species' && x.kind !== 'search_alias') || !text(x.value) || x.status !== 'approved') return false;
+        (x.kind !== 'species' && x.kind !== 'method' && x.kind !== 'search_alias') || !text(x.value) || x.status !== 'approved') return false;
     if (!x.provenance || typeof x.provenance !== 'object' || Array.isArray(x.provenance)) return false;
     const p = x.provenance as Record<string, unknown>;
     if (p.type !== 'user_editorial' || !text(p.attributed_to) || !text(p.reference) || !text(p.recorded_on) || !/^\d{4}-\d{2}-\d{2}$/.test(p.recorded_on)) return false;
     const date = new Date(p.recorded_on + 'T00:00:00Z');
     if (Number.isNaN(date.valueOf()) || date.toISOString().slice(0, 10) !== p.recorded_on || p.recorded_on > new Date().toISOString().slice(0, 10)) return false;
+    if (p.reference === '/sources/guide-fishery-editorial-20261119.html#' + guide.id.toLowerCase().replace('.', '-')) return true;
     try {
       const reference = new URL(p.reference);
       return reference.protocol === 'https:' && reference.hostname === 'github.com' && !reference.username && !reference.password;
