@@ -1,0 +1,34 @@
+name: Synthetic launch browser journey
+on:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  synthetic-journey:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: Install locked browser tooling
+        run: npm ci --no-audit --no-fund
+      - name: Install Chromium
+        run: npx playwright-core install --with-deps chromium
+      - name: Exercise synthetic isolated launch journey
+        shell: bash
+        run: |
+          set -euo pipefail
+          export BROWSER_EXECUTABLE="$(node --input-type=module -e "import {chromium} from 'playwright-core'; console.log(chromium.executablePath())")"
+          export BROWSER_SCREENSHOT_DIR="$RUNNER_TEMP/rmg-synthetic-launch"
+          node scripts/launch-journey-isolation.mjs "$(git rev-parse 'HEAD^{tree}')"
+      - name: Preserve synthetic browser screenshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: synthetic-launch-browser
+          path: ${{ runner.temp }}/rmg-synthetic-launch/*.png
+          if-no-files-found: error
+          retention-days: 7

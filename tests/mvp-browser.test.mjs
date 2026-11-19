@@ -27,12 +27,12 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
  const page=await context.newPage();page.setDefaultTimeout(15000);page.on('pageerror',e=>errors.push(`${page.url()}: ${e.message}`));
  try{
   await page.goto(origin,{waitUntil:'domcontentloaded'});
-  await page.getByRole('heading',{name:'Find a captain'}).waitFor();
+  await page.getByRole('heading',{name:'Find the guide you fished with'}).waitFor();
   await page.goto(`${origin}/guides`,{waitUntil:'domcontentloaded'});
   const q=page.getByRole('searchbox',{name:'Captain, business, operating name, or registration'});
   // Synthetic approved fixtures exercise filters without publishing candidate research.
   await page.getByText('Synthetic test fixture — not a real offering.').first().waitFor();
-  const species=page.getByLabel('Source-listed species');const method=page.getByLabel('Source-listed fishing method');
+  const species=page.getByLabel('Species');const method=page.getByLabel('Source-listed fishing method');
   await species.selectOption({label:'Salmon'});await method.selectOption({label:'Fly fishing'});
   await page.getByRole('link',{name:/John Hanson/}).first().waitFor();
   assert.equal(await page.getByRole('link',{name:/Shea Fisher/}).count(),0,'broad Salmon does not imply Chinook');
@@ -152,10 +152,10 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
   await page.getByRole('button',{name:'Oregon',exact:true}).click();await q.fill('John Hanson');
   await page.getByRole('link',{name:/John Hanson/}).first().click();
   await page.getByRole('heading',{name:'John Hanson',exact:true}).waitFor();
-  await page.getByText('Review data is unavailable.').waitFor();
+  await page.getByText('Review submissions are closed.').waitFor();
   await page.goto(`${origin}/guides/og-0000050`,{waitUntil:'domcontentloaded'});
   await page.getByRole('heading',{name:'Shea Fisher',exact:true}).waitFor();
-  await page.getByText('Review data is unavailable.').waitFor();
+  await page.getByText('Review submissions are closed.').waitFor();
   await page.getByRole('link',{name:'← Search guides'}).click();
   await page.getByRole('button',{name:'Washington',exact:true}).click();await q.fill('Aaron O’Leary');
   const before=requests.length;await page.getByRole('link',{name:/Aaron O’Leary/}).first().click();

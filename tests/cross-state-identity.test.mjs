@@ -11,10 +11,11 @@ const requireNode=createRequire(import.meta.url);
 function load(path,deps={}){
  const exports={};
  const code=ts.transpileModule(readFileSync(path,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020,jsx:ts.JsxEmit.ReactJSX,esModuleInterop:true}}).outputText;
- vm.runInNewContext(code,{exports,URL,URLSearchParams,Date,Set,Map,require:name=>Object.hasOwn(deps,name)?deps[name]:requireNode(name)});
+ vm.runInNewContext(code,{exports,URL,URLSearchParams,Date,Set,Map,process:{env:{}},require:name=>Object.hasOwn(deps,name)?deps[name]:requireNode(name)});
  return exports;
 }
 const research=load('lib/washington-reconciled.ts');
+const editorial=load('lib/editorial-guide-corrections.ts',{'./editorial-guide-corrections.json':JSON.parse(readFileSync('lib/editorial-guide-corrections.json','utf8'))});
 const {filterDirectoryEntries}=load('lib/directory-query.ts');
 const washingtonFilter={state:'Washington',sourceZone:'All areas',advertisedWater:'All advertised waters',query:'Synthetic Captain'};
 const waSource={name:'Synthetic Captain',business:'Fixture Outfit',source:'Fixture directory',notes:null};
@@ -30,7 +31,7 @@ function fixture(decisions){
  const wa=load('lib/washington.ts',{'./washington-raw.json':[waSource,other],'./washington-stable-ids.json':{[key(waSource)]:'wa-900',[key(other)]:'wa-901'},'./washington-reconciled':rec});
  const directory=load('lib/directory.ts',{
   './registry':{oregonGuides:[orGuide],guideSlug:g=>g.registration.toLowerCase().replace(/[^a-z0-9]+/g,'-')},
-  './washington':wa,'./guide-enrichment':{advertisedWaterwayNames:()=>[],guideSearchTerms:()=>[]},'./guide-attributes-server':{attributesFor:()=>[]}
+  './washington':wa,'./guide-enrichment':{advertisedWaterwayNames:()=>[],guideSearchTerms:()=>[]},'./guide-attributes-server':{attributesFor:()=>[]},'./editorial-guide-corrections':editorial
  });
  return {wa,directory};
 }
@@ -42,7 +43,8 @@ async function renderPages(wa){
   'next/link':Link,'next/navigation':{notFound:()=>{throw Error('unexpected notFound')}},
   '@/lib/registry':{findGuide:()=>orGuide,guideSlug:()=> 'og-9999000',oregonGuides:[orGuide]},'@/lib/washington':wa,
   '@/components/ReturnToResults':stub,'@/components/GuideEnrichmentPanel':stub,'@/components/CaptainDetails':stub,
-  '@/components/CaptainReviews':stub,'@/components/CaptainMedia':stub,'@/components/GuideTrustPanel':stub
+  '@/components/CaptainReviews':stub,'@/components/CaptainMedia':stub,'@/components/GuideTrustPanel':stub,
+  '@/components/launch/ProfileSharing':{ProfileSharing:stub},'@/components/launch/GuideEngagement':{GuideEngagement:stub},'@/lib/canonical-share':{profileShareMetadata:()=>({})}
  });
  return {wa:renderToStaticMarkup(React.createElement(waPage.default)),profile:renderToStaticMarkup(await profile.default({params:Promise.resolve({slug:'og-9999000'})}))};
 }

@@ -8,9 +8,9 @@ test('both state profile pages display source-aware trust labels', () => {
   const or = read('app/guides/[slug]/page.tsx');
   const wa = read('app/washington/[id]/page.tsx');
   const component = read('components/GuideTrustPanel.tsx');
-  assert.match(or, /GuideTrustPanel jurisdiction="Oregon"/);
+  assert.match(or, /Source: Oregon guide registry export. Current license status unconfirmed/);
   assert.match(wa, /GuideTrustPanel jurisdiction="Washington"/);
-  assert.match(or, /importedStatus=\{g\.sourceStatus\}/);
+  assert.match(or, /Status in the historical export: <strong>\{guide\.sourceStatus\}/);
   assert.match(wa, /sourceLabel=\{g\.source\}/);
   assert.match(component, /Listed in imported source/);
   assert.match(component, /Not live-verified/);
@@ -50,8 +50,14 @@ test('search list labels do not imply account claiming or review counts', () => 
 test('guide profiles preserve trust panels and guard review access', () => {
   for (const path of ['app/guides/[slug]/page.tsx','app/washington/[id]/page.tsx']) {
     const code=read(path);
-    assert.match(code, /<CaptainReviews/);
-    assert.match(code, /<GuideTrustPanel/);
+    if (path.startsWith('app/guides/')) {
+      assert.match(code, /disabled aria-describedby="guide-write-status"/);
+      assert.match(code, /href="\/guides\/verification"/);
+      assert.doesNotMatch(code, /<(CaptainMedia|CaptainDetails|CaptainReviews)\b/);
+    } else {
+      assert.match(code, /<CaptainReviews/);
+      assert.match(code, /<GuideTrustPanel/);
+    }
     assert.doesNotMatch(code, /<strong>No reviews yet<\/strong>/);
   }
   const review=read('components/CaptainReviews.tsx');

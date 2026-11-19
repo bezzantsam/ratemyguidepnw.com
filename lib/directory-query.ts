@@ -13,7 +13,7 @@ const nicknameFamilies=[
 ];
 export function normalizeGuideSearch(value:string):string {
  return value.normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase()
-  .replace(/['’]/g,'').replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ');
+  .replace(/['’]/g,'').replace(/[^\p{L}\p{M}\p{N}]+/gu,' ').trim().replace(/\s+/g,' ');
 }
 const nicknameLookup=new Map(nicknameFamilies.flatMap(group=>group.map(name=>[name,group] as const)));
 /** Bounded optimal-string-alignment distance: insertion, deletion, substitution, adjacent swap. */

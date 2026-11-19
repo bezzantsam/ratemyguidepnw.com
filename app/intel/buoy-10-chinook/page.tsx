@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './chinook-intel.css';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import {
   ArrowRight, ArrowUpRight, ChartNoAxesCombined, CheckCircle2,
   ClipboardList, Compass, Fish, LockKeyhole, ShieldCheck, Waves,
@@ -12,9 +13,8 @@ import { directoryEntries } from '@/lib/directory';
 import { chinookRelease } from '@/lib/chinook-intel';
 
 export const metadata: Metadata = {
-  title: 'Buoy 10 Chinook Intel | RateMyGuidePNW × Chrome-AI',
-  description:
-    'Independent Buoy 10 Chinook research and fishing-guide experiences. Official WDFW creel data and NOAA tides, without paid rankings or invented ratings.',
+  title: 'Page not found | RateMyGuidePNW',
+  description: 'This page is not available.',
 };
 
 const lowerColumbiaGuides = directoryEntries.filter(
@@ -23,6 +23,7 @@ const lowerColumbiaGuides = directoryEntries.filter(
 );
 
 export default function Buoy10ChinookIntel() {
+  notFound(); // RMG no longer publishes this research page; source and evidence remain in the repository.
   const release = chinookRelease;
 
   return (

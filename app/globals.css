@@ -50,6 +50,7 @@
 .review-form{margin-top:28px}.review-form h3{margin-top:0}.review-form fieldset{border:1px solid #476763;border-radius:9px;padding:12px}.review-form legend{padding:0 7px;font-weight:700}.stars{display:flex;flex-wrap:wrap;gap:7px}.stars button{background:#244a46;color:#e2ebe7;border:1px solid #648279}.stars button.selected{background:#e6be72;color:#1e322d}.review-list{display:grid;gap:16px;margin:20px 0}.review-fields{margin-top:18px}
 
 .auth-panel{display:grid;gap:12px;max-width:470px;padding:18px;border:1px solid #5c7e74;border-radius:12px;margin:14px 0;background:#183d3b}
+.profile-sharing-actions{display:flex;flex-wrap:wrap;gap:10px}.profile-sharing-actions button{background:#d8b26b;color:#102f2b;border:0;border-radius:8px;padding:12px 15px;font-weight:700;cursor:pointer}.profile-sharing label{display:block}.profile-sharing input{display:block;width:100%;max-width:100%;padding:10px;border-radius:8px}
 .auth-panel input{color:#143530;background:#fff;border:1px solid #a2b9b1;border-radius:7px;padding:11px;display:block;width:100%}
 .auth-panel button,.claim-form button{background:#d8b26b;color:#102f2b;border:0;border-radius:8px;padding:12px 15px;font-weight:700;cursor:pointer;width:fit-content}
 .auth-panel button:disabled,.claim-form button:disabled{opacity:.45;cursor:not-allowed}
@@ -151,3 +152,71 @@ a.dock-ticker-item:hover{color:white;text-decoration:underline}
 .search-actions button:focus-visible,.search-actions a:focus-visible,.active-filters button:focus-visible{outline:3px solid #1574d4;outline-offset:2px}
 .search-actions input{padding:10px;color:#193538;background:#fff;border:1px solid #88aaa0;border-radius:8px}
 @media(max-width:680px){.directory-panel .directory-source-disclosure,.directory-panel > .muted,.directory-panel .search-actions,.directory-panel .active-filters{padding-left:15px;padding-right:15px}}
+
+/* Review and moderation controls: readable labels and touch targets on phones. */
+.launch-form{display:grid;gap:12px;min-height:0}
+.launch-form label,.launch-controls label{display:block;font-weight:600;line-height:1.4}
+.launch-form input:not([type=checkbox]),.launch-form textarea,.launch-form select,
+.launch-controls input:not([type=checkbox]),.launch-controls textarea,.launch-controls select,
+.auth-panel input,.profile-sharing input{display:block;width:100%;max-width:100%;min-height:44px;padding:10px 12px;border:1px solid #8daaa0;border-radius:8px;background:#f8faf8;color:#123c37;font:inherit;font-size:16px}
+.launch-form textarea,.launch-controls textarea{min-height:110px;resize:vertical}
+.launch-form input[type=checkbox]{width:20px;height:20px;vertical-align:middle;margin:0 10px 0 0}
+.launch-form label:has(input[type=checkbox]){display:flex;align-items:center;min-height:44px}
+.launch-form details,.launch-controls details{padding:10px 0}
+.launch-form summary,.launch-controls summary{min-height:44px;padding:11px 0;cursor:pointer;font-weight:700}
+.launch-form details>div{display:grid;gap:8px;margin:12px 0}
+.launch-actions,.profile-sharing-actions{display:flex;gap:10px;flex-wrap:wrap}
+.launch-form button,.launch-controls button,.profile-sharing-actions button,.auth-panel button{min-width:44px;min-height:44px;padding:10px 14px;border:0;border-radius:8px;background:#d8b26b;color:#102f2b;font:inherit;font-weight:700;cursor:pointer}
+.launch-form button:disabled,.launch-controls button:disabled{opacity:.5;cursor:not-allowed}
+.launch-controls :is(button,input,select,textarea,summary,a):focus-visible,.launch-form :is(button,input,select,textarea,summary):focus-visible,.profile-sharing :is(button,input):focus-visible,nav a:focus-visible{outline:3px solid #f1d487;outline-offset:3px}
+nav a{display:inline-flex;align-items:center;min-height:44px}
+@media(max-width:680px){.launch-form,.launch-controls,.profile-sharing{overflow-wrap:anywhere}.launch-actions button,.profile-sharing-actions button{max-width:100%}}
+
+.state-switch button{min-width:44px;min-height:44px}
+
+/* Keep review actions and long content usable without changing other pages. */
+#reviews article{min-width:0;overflow-wrap:anywhere}
+#reviews a[href="#write-review"]{display:inline-flex;align-items:center;min-height:44px;max-width:100%;overflow-wrap:anywhere;text-decoration:underline;text-underline-offset:3px}
+#reviews a[href="#write-review"]:focus-visible{outline:3px solid #f1d487;outline-offset:3px}
+@media(max-width:680px){
+  .launch-form>*,.launch-form details>*{min-width:0}
+  .launch-form :is(input:not([type=checkbox]),select,textarea){min-width:0}
+  .launch-actions button,.profile-sharing-actions button{white-space:normal;overflow-wrap:anywhere}
+}
+
+.oregon-profile { max-width: 900px; padding-top: 24px; }
+.oregon-profile .guide-identity { margin: 24px 0 12px; }
+.oregon-profile .guide-identity h1 { font-size: clamp(2.35rem, 6vw, 4.25rem); line-height: 1.04; margin: 6px 0; overflow-wrap: anywhere; }
+.oregon-profile .guide-identity .lead, .oregon-profile .guide-identity .eyebrow { margin: 0; }
+.guide-rating { font-size: 1rem; margin: 0 0 12px; }
+.guide-rating strong { color: #f1cd87; font-size: 1.35rem; }
+.guide-actions { margin: 0 0 20px; }
+.compact-sharing .profile-sharing-actions > .guide-rate, .compact-sharing .guide-share {
+  display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box;
+  min-height: 46px; padding: 10px 15px; margin: 0; border-radius: 8px; line-height: 1.25; text-align: center;
+}
+.compact-sharing .guide-rate { color: #102f2b; background: #e3ba71; font-weight: 700; }
+.compact-sharing .guide-rate:disabled { color: #d5dbd5; background: #364c4c; cursor: default; }
+.compact-sharing .guide-share { color: #f3f5ee; background: transparent; border: 1px solid #99b4a9; }
+.guide-status, .guide-source, .guide-share-tools { color: #c1d0c9; }
+.guide-status { margin: 8px 0 0; font-size: .9rem; }
+.guide-retry { margin-left: .5rem; min-height: 44px; text-decoration: underline; color: inherit; background: none; border: 0; cursor: pointer; }
+.compact-sharing .share-feedback:empty { margin: 0; }
+.oregon-profile #reviews { margin-top: 18px; }
+.oregon-profile #reviews:empty { display: none; }
+.oregon-profile #write-review:empty { margin: 0; }
+.guide-registration { border-top: 1px solid #56706a; margin-top: 26px; padding-top: 18px; }
+.guide-registration h2 { font-size: 1.35rem; margin: 0 0 10px; }
+.guide-registration p { margin: .45rem 0; }
+.oregon-profile summary { cursor: pointer; }
+.guide-registration summary, .guide-share-tools summary { padding: 13px 0; line-height: 1.25; min-height: 44px; }
+.guide-registration a { text-decoration: underline; }
+.guide-areas { display: flex; flex-wrap: wrap; gap: .45rem 1.2rem; padding-left: 1.25rem; }
+.guide-areas li { margin-right: .5rem; }
+.oregon-profile :is(a, button, summary):focus-visible { outline: 3px solid #f1d487; outline-offset: 3px; }
+@media (max-width: 600px) {
+  .oregon-profile { padding-top: 18px; }
+  .oregon-profile .guide-identity { margin-top: 16px; }
+  .compact-sharing .profile-sharing-actions { gap: 8px; }
+  .compact-sharing .guide-rate { flex: 1 1 9rem; overflow-wrap: anywhere; }
+}

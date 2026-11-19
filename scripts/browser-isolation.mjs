@@ -11,10 +11,10 @@ export async function withIsolatedWorkspace(work,{tempRoot=tmpdir()}={}){
  try{return await work(dir)}finally{await rm(dir,{recursive:true,force:true})}
 }
 export async function openMockBackend(){
- let writes=0,requests=0;
- const server=createServer((req,res)=>{requests++;if(req.method!=='GET'){writes++;res.writeHead(403);res.end('writes forbidden');return}res.writeHead(503,{'content-type':'application/json'});res.end('{"error":"backend unavailable"}')});
+ let writes=0,requests=0;const requestSummary=[];
+ const server=createServer((req,res)=>{requests++;if(requestSummary.length<20)requestSummary.push({method:req.method,path:(req.url||'').split('?')[0]});if(req.method!=='GET'){writes++;res.writeHead(403);res.end('writes forbidden');return}res.writeHead(503,{'content-type':'application/json'});res.end('{"error":"backend unavailable"}')});
  await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(0,'127.0.0.1',resolve)});
- return {url:`http://127.0.0.1:${server.address().port}`,writes:()=>writes,requests:()=>requests,close:()=>new Promise((resolve,reject)=>server.close(e=>e?reject(e):resolve()))};
+ return {url:`http://127.0.0.1:${server.address().port}`,writes:()=>writes,requests:()=>requests,requestSummary:()=>requestSummary,close:()=>new Promise((resolve,reject)=>server.close(e=>e?reject(e):resolve()))};
 }
 function terminate(child){
  if(!child||child.exitCode!==null||child.signalCode!==null)return;
@@ -81,7 +81,8 @@ export async function runIsolated({repo,tree,mode,browser,signal,hooks={}}){
    app=await (hooks.launchApp??launchApp)(dir,env,signal);
    env.TEST_BASE_URL=app.url;
    if(mode==='ordinary')await (hooks.command??command)('node',['scripts/read-only-launch-smoke.mjs','--base-url',app.url],dir,env,signal);
-   await (hooks.command??command)('node',['--test',mode==='synthetic'?'tests/mvp-browser.test.mjs':'tests/production-browser.test.mjs'],dir,env,signal);
+   env.TEST_REVIEW_MODE='disabled';
+   await (hooks.command??command)('node',mode==='synthetic'?['--test','tests/mvp-browser.test.mjs']:['--test','tests/production-browser.test.mjs','tests/issue-124-browser.test.mjs'],dir,env,signal);
    if(backend.writes())throw new Error('Mock backend received a write');
    if(backend.requests())throw new Error('Read-only directory unexpectedly contacted the unavailable backend');
   }finally{

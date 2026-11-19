@@ -15,7 +15,8 @@ test('read-only review, moderation, and shared layout surfaces make no backend c
 });
 
 test('claim and media surfaces clearly disable submissions and edits',()=>{
- for(const path of ['app/guides/[slug]/page.tsx','app/washington/[id]/page.tsx'])assert.match(read(path),/Claiming currently unavailable/);
+ assert.match(read('app/guides/[slug]/page.tsx'), /!claimsEnabled && <p><Link[^>]+>About claiming this profile/);
+ assert.match(read('app/washington/[id]/page.tsx'), /Claiming currently unavailable/);
  for(const path of ['app/claim/[id]/page.tsx','components/ClaimForm.tsx','components/CaptainDetails.tsx','components/CaptainMedia.tsx']){
   assert.doesNotMatch(read(path),/\.insert\(|\.upsert\(|\.update\(|\.upload\(|\.rpc\(|onSubmit/);
  }

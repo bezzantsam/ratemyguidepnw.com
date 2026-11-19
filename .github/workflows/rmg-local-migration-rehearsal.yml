@@ -1,0 +1,27 @@
+name: Disposable launch migration rehearsal
+
+on:
+  push:
+    branches: [codex/beta-completion]
+    paths:
+      - '.github/workflows/rmg-local-migration-rehearsal.yml'
+      - 'supabase/review-candidates/**'
+      - 'tests/backend-auth-local/**'
+      - 'tests/backend-launch/reconstruct.py'
+
+permissions:
+  contents: read
+
+jobs:
+  local-migration-history:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Exercise final migration and fail-closed rollback in disposable Supabase
+        env:
+          RMG_FIXTURE_SCHEMA_ONLY: '1'
+          RMG_FINAL_LAUNCH_FIXTURE: '1'
+        run: bash tests/backend-auth-local/run-ci.sh "$GITHUB_WORKSPACE/tests/backend-auth-local/migration-history.py"

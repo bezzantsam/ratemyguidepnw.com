@@ -24,7 +24,7 @@ test('target requires explicit origin and remote opt-in',()=>{
   for(const value of ['not a URL','https://user:secret@example.com','https://example.com/?token=secret','https://example.com/#secret','https://example.com/guides','file:///tmp/site']) assert.throws(()=>validateTarget(value,true));
 });
 test('positive fixture exercises every declared route and only GET',async()=>{
-  const result=await fakeRun(); assert.equal(result.passed,true); assert.equal(result.results.length,7);
+  const result=await fakeRun(); assert.equal(result.passed,true); assert.equal(result.results.length,ROUTES.length);
   assert.ok(result.results.every(r=>r.method==='GET')); assert.ok(result.limitations.length>=4);
 });
 test('complete expected page must be present, not just HTTP 200',async()=>{
@@ -90,7 +90,7 @@ test('real loopback HTTP positive and error cases use no write methods',async t=
     const r=ROUTES.find(r=>r.path===req.url);res.writeHead(broken?503:r.status,{'content-type':'text/html'});res.end(bodyFor(r));
   });
   assert.equal((await runSmoke(origin)).passed,true);broken=true;assert.equal((await runSmoke(origin)).passed,false);
-  assert.equal(methods.length,14);assert.ok(methods.every(m=>m==='GET'));
+  assert.equal(methods.length,ROUTES.length*2);assert.ok(methods.every(m=>m==='GET'));
 });
 test('real request timeout fails closed',async t=>{
   const {origin}=await withServer(t,()=>{});

@@ -1,11 +1,69 @@
-import ReturnToResults from '@/components/ReturnToResults';
+import Link from 'next/link';
+import {notFound} from 'next/navigation';
 import GuideEnrichmentPanel from '@/components/GuideEnrichmentPanel';
-import CaptainDetails from '@/components/CaptainDetails';
-import CaptainReviews from '@/components/CaptainReviews';
-import CaptainMedia from '@/components/CaptainMedia';
-import GuideTrustPanel from '@/components/GuideTrustPanel';
-import {notFound} from 'next/navigation';import Link from 'next/link';import {findGuide,guideSlug,oregonGuides} from '@/lib/registry';import {washingtonRecordForOregon} from '@/lib/washington';
+import ReturnToResults from '@/components/ReturnToResults';
+import {GuideEngagement} from '@/components/launch/GuideEngagement';
+import {ProfileSharing} from '@/components/launch/ProfileSharing';
+import {profileShareMetadata} from '@/lib/canonical-share';
+import {findGuide, guideSlug} from '@/lib/registry';
+import {washingtonRecordForOregon} from '@/lib/washington';
+
 // Generate profile pages on first request; avoid thousands of build-time routes.
 export const revalidate = 600;
 export function generateStaticParams(){return [] as {slug:string}[];}
-export default async function Page({params}:{params:Promise<{slug:string}>}){const {slug}=await params;const g=findGuide(slug);if(!g)notFound();const wa=washingtonRecordForOregon(g.registration);return <main><ReturnToResults/><p className="eyebrow">OREGON DIRECTORY LISTING · NOT CAPTAIN-VERIFIED</p><h1>{g.name}</h1><p className="lead">{g.business||'Oregon fishing guide'}</p><div className="profile-summary"><div className="rating-tile"><strong>—</strong><span>Reviews unavailable</span></div><div><strong>Angler reviews</strong><p className="muted">Registration fields come from an imported source. Review details appear below.</p></div></div><div className="grid"><section className="card"><h3>Registration details</h3><p><strong>Oregon registration:</strong> {g.registration}</p><p><strong>Imported CSV status text:</strong> {g.sourceStatus} (historical snapshot, not live-verified)</p><p><strong>Registered activities:</strong> {g.activity}</p><p className="muted">The source file does not establish today's license standing.</p></section><section className="card"><h3>Listed service areas</h3>{g.areas.map(a=><span className="tag" key={a}>{a}</span>)}</section></div>{wa&&<section className="section card"><h2>Also listed in Washington</h2><p>This captain has a matching listing in the supplied Washington directories. We maintain a single captain profile while retaining each source's separate information.</p>{([wa.source]).map((source,i)=><p key={i}><strong>{source.source}:</strong> {source.business}{source.notes?' · '+source.notes:''}</p>)}</section>}<GuideEnrichmentPanel registration={g.registration}/><GuideTrustPanel jurisdiction="Oregon" sourceLabel="Oregon guide registry export" registration={g.registration} importedStatus={g.sourceStatus}/><CaptainDetails slug={guideSlug(g)}/><CaptainMedia slug={guideSlug(g)}/><CaptainReviews key={JSON.stringify([guideSlug(g),g.name,g.business])} slug={guideSlug(g)} expectedName={g.name} expectedBusiness={g.business}/><section className="section card"><h2>Are you {g.name}?</h2><Link className="button" href={`/claim/${g.registration}`}>Claiming currently unavailable →</Link><p>Profile claims and ownership edits are not currently available.</p><p className="muted">Claiming does not provide control over customer ratings.</p></section></main>}
+
+type ProfileParams = {params: Promise<{slug:string}>};
+
+export async function generateMetadata({params}: ProfileParams) {
+  const {slug} = await params;
+  const guide = findGuide(slug);
+  if (!guide) notFound();
+  return profileShareMetadata(`/guides/${guideSlug(guide)}`, guide.name, guide.business);
+}
+
+export default async function Page({params}: ProfileParams) {
+  const {slug} = await params;
+  const guide = findGuide(slug);
+  if (!guide) notFound();
+  const path = `/guides/${guideSlug(guide)}`;
+  const washington = washingtonRecordForOregon(guide.registration);
+  const enabled = process.env.NEXT_PUBLIC_RMG_LAUNCH_ENABLED === 'true';
+  const claimsEnabled = enabled && process.env.NEXT_PUBLIC_RMG_CLAIMS_ENABLED === 'true';
+
+  const registration = (
+    <section className="guide-registration" aria-labelledby="registration-heading">
+      <h2 id="registration-heading">Registration details</h2>
+      <p><strong>Oregon registration {guide.registration}</strong>{guide.activity && <> · {guide.activity}</>}</p>
+      <p className="guide-source">Source: Oregon guide registry export. Current license status unconfirmed.</p>
+      <details><summary>Registration source and verification</summary>
+        {guide.sourceStatus && <p>Status in the historical export: <strong>{guide.sourceStatus}</strong>.</p>}
+        <Link href="/guides/verification">How verification works</Link>
+        {!claimsEnabled && <p><Link href={`/claim/${guide.registration}`}>About claiming this profile</Link></p>}
+      </details>
+      {guide.areas.length > 0 && <details><summary>Listed service areas ({guide.areas.length})</summary>
+        <ul className="guide-areas">{guide.areas.map(area=><li key={area}>{area}</li>)}</ul>
+      </details>}
+    </section>
+  );
+
+  return <main className="oregon-profile">
+    <ReturnToResults/>
+    <div className="guide-identity">
+      <p className="eyebrow">Oregon guide listing</p>
+      <h1>{guide.name}</h1>
+      {guide.business && <p className="lead">{guide.business}</p>}
+    </div>
+    {enabled
+      ? <GuideEngagement key={guide.registration} compactProfile source={{jurisdiction:'OR',sourceId:guide.registration}} profilePath={path} guideName={guide.name} claimsEnabled={claimsEnabled}>{registration}</GuideEngagement>
+      : <><section className="guide-actions" aria-label="Profile actions">
+          <ProfileSharing profilePath={path} guideName={guide.name} reviewAvailable={false}
+            primaryAction={<button type="button" className="button guide-rate" disabled aria-describedby="guide-write-status">Rate {guide.name}</button>}/>
+          <p className="guide-status" id="guide-write-status">Review submissions are closed.</p>
+        </section>{registration}</>}
+    {washington && <section className="section card"><h2>Also listed in Washington</h2>
+      <p>This captain has a matching listing in the supplied Washington directories.</p>
+      <p><strong>{washington.source.source}:</strong> {washington.source.business}{washington.source.notes && <> · {washington.source.notes}</>}</p>
+    </section>}
+    <GuideEnrichmentPanel registration={guide.registration}/>
+  </main>;
+}

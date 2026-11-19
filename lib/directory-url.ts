@@ -24,7 +24,7 @@ export function parseDirectoryState(search:string,entries:DirectoryEntry[]):Dire
  const requested=/^[1-9]\d{0,5}$/.test(rawPage)?Number(rawPage):1;
  return {query,state,area,waterway,species,method,page:Math.min(requested,max)};
 }
-export function directoryUrl(value:DirectoryState):string {
+export function directoryUrl(value:DirectoryState, path:'/'|'/guides'|'/write-review'='/guides'):string {
  const p=new URLSearchParams();
  if(value.query)p.set('q',value.query);
  if(value.state!=='All')p.set('state',value.state);
@@ -33,14 +33,16 @@ export function directoryUrl(value:DirectoryState):string {
  if(value.species!=='All species')p.set('species',value.species);
  if(value.method!=='All methods')p.set('method',value.method);
  if(value.page>1)p.set('page',String(value.page));
- const query=p.toString();return '/guides'+(query?'?'+query:'');
+ const query=p.toString();return path+(query?'?'+query:'');
 }
-/** Only accept a relative directory URL with known, single-valued parameters. */
+/** Only accept a known search page with single-valued search parameters. */
 export function safeDirectoryReturn(value:string|null):string {
- if(!value||value.length>2048||!value.startsWith('/guides')||/[\u0000-\u001f\u007f\\]/.test(value))return '/guides';
+ if(!value||value.length>2048||/[\u0000-\u001f\u007f\\#]/.test(value))return '/guides';
+ const path=value.split('?',1)[0];
+ if(path!=='/guides'&&path!=='/write-review'&&path!=='/')return '/guides';
  try {
   const url=new URL(value,'https://directory.invalid');
-  if(url.origin!=='https://directory.invalid'||url.pathname!=='/guides'||url.hash)return '/guides';
+  if(url.origin!=='https://directory.invalid'||url.pathname!==path)return '/guides';
   for(const key of url.searchParams.keys())if(!keys.has(key)||url.searchParams.getAll(key).length!==1)return '/guides';
   return url.pathname+url.search;
  }catch{return '/guides'}

@@ -13,7 +13,7 @@ const LEGACY=[
   'components/CaptainDetails.tsx',
   'components/CaptainMedia.tsx',
 ];
-function renderComponent(path,slug='og-0000315'){
+function renderComponent(path,slug='og-0000315',extra={}){
   const source=read(path);
   const cjs=ts.transpileModule(source,{compilerOptions:{
     target:ts.ScriptTarget.ES2020,
@@ -22,7 +22,7 @@ function renderComponent(path,slug='og-0000315'){
   }}).outputText;
   const module={exports:{}};
   vm.runInNewContext(cjs,{module,exports:module.exports,require,console});
-  return renderToStaticMarkup(React.createElement(module.exports.default,{slug}));
+  return renderToStaticMarkup(React.createElement(module.exports.default,{slug,...extra}));
 }
 
 test('both legacy public components are display-only with no direct backend or storage access',()=>{
@@ -38,6 +38,13 @@ test('both legacy public components are display-only with no direct backend or s
     assert.doesNotMatch(src,/\bNEXT_PUBLIC_SUPABASE_/);
     assert.doesNotMatch(src,/<(?:iframe|img|video|form|input|button)\b/i);
   }
+});
+
+test('enabled claim copy points to the current profile flow without promising verification',()=>{
+ const html=renderComponent('components/CaptainDetails.tsx','og-0000315',{claimAvailable:true});
+ assert.match(html,/whether this listing can be claimed/);
+ assert.match(html,/declarations are attributed to the captain/);
+ assert.doesNotMatch(html,/Claiming currently unavailable|independently verified trip/);
 });
 
 test('a published OR/WA profile still renders visible, neutral, accessible content',()=>{
