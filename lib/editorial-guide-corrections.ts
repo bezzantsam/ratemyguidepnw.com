@@ -5,7 +5,7 @@ type EditorialCorrection = {
   guide_id: string;
   expected_name: string;
   expected_business: string;
-  kind: 'species' | 'method' | 'search_alias';
+  kind: 'species' | 'method' | 'search_alias' | 'business_search_keyword';
   value: string;
   search_variants?: string[];
   status: 'approved';
@@ -20,8 +20,9 @@ export function editorialGuideCorrections(guide: {id:string; name:string; busine
     if (!record || typeof record !== 'object' || Array.isArray(record)) return false;
     const x = record as Record<string, unknown>;
     if (x.guide_id !== guide.id || x.expected_name !== guide.name || x.expected_business !== guide.business ||
-        (x.kind !== 'species' && x.kind !== 'method' && x.kind !== 'search_alias') || !text(x.value) || x.status !== 'approved') return false;
-    if (x.search_variants !== undefined && (x.kind !== 'search_alias' ||
+        (x.kind !== 'species' && x.kind !== 'method' && x.kind !== 'search_alias' && x.kind !== 'business_search_keyword') || !text(x.value) || x.status !== 'approved') return false;
+    if (x.kind === 'business_search_keyword' && !text(x.expected_business)) return false;
+    if (x.search_variants !== undefined && (x.kind !== 'business_search_keyword' ||
         !Array.isArray(x.search_variants) || !x.search_variants.every(text))) return false;
     if (!x.provenance || typeof x.provenance !== 'object' || Array.isArray(x.provenance)) return false;
     const p = x.provenance as Record<string, unknown>;

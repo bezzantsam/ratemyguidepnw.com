@@ -18,7 +18,8 @@ export type DirectoryEntry={
   /** Search terms from attributed sources, including editorial input; NOT legal identity verification. */
   searchAliases:string[];
   /** User-provided editorial search names, displayed separately from imported source names. */
-  editorialSearchAliases?:{value:string;attributedTo:string;variants?:string[]}[];
+  editorialSearchAliases?:{value:string;attributedTo:string}[];
+  businessSearchKeywords?:{value:string;attributedTo:string;variants?:string[]}[];
   editorialFishing?:{value:string;attributedTo:string}[];
   advertisedSpecies?:string[];
   advertisedMethods?:string[];
@@ -55,9 +56,12 @@ export const directoryEntries:DirectoryEntry[]=[
  ...oregonGuides.map(g=>{
   const editorial=editorialGuideCorrections({id:g.registration,name:g.name,business:g.business});
   const editorialAliases=editorial.filter(x=>x.kind==='search_alias').map(x=>({
+   value:x.value,attributedTo:x.provenance.attributed_to,
+  }));
+  const businessKeywords=editorial.filter(x=>x.kind==='business_search_keyword').map(x=>({
    value:x.value,attributedTo:x.provenance.attributed_to,...(x.search_variants?{variants:x.search_variants}:{}),
   }));
-  const editorialFishing=editorial.filter(x=>x.kind!=='search_alias');
+  const editorialFishing=editorial.filter(x=>x.kind==='species'||x.kind==='method');
   const sourced=discovery(g.registration);
   return ({
    id:g.registration,name:g.name,business:g.business,
@@ -68,7 +72,8 @@ export const directoryEntries:DirectoryEntry[]=[
    advertisedSpecies:[...new Set([...sourced.advertisedSpecies,...editorial.filter(x=>x.kind==='species').map(x=>x.value)])],
    advertisedMethods:[...new Set([...sourced.advertisedMethods,...editorial.filter(x=>x.kind==='method').map(x=>x.value)])],
    ...(editorialFishing.length?{editorialFishing:editorialFishing.map(x=>({value:x.value,attributedTo:x.provenance.attributed_to}))}:{}),
-   searchAliases:[...guideSearchTerms(g.registration),...sourced.sourceNames,...editorialAliases.flatMap(x=>[x.value,...(x.variants??[])])],
+   searchAliases:[...guideSearchTerms(g.registration),...sourced.sourceNames,...editorialAliases.map(x=>x.value)],
+   ...(businessKeywords.length?{businessSearchKeywords:businessKeywords}:{}),
    ...(editorialAliases.length?{editorialSearchAliases:editorialAliases}:{}),
    href:'/guides/'+guideSlug(g),source:'Oregon registry',
  })}),
