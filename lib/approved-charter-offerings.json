@@ -586,5 +586,193 @@
     ],
     "editorial_status": "approved",
     "publication_approved": true
+  },
+  {
+    "operator": "Tengu Charters",
+    "city": "Edmonds",
+    "state": "WA",
+    "value": "Flounder, squid and crab combo",
+    "kind": "trip_type",
+    "scope": "charter_operator_only",
+    "source": {
+      "url": "https://tengucharters.rezdy.com/733918/morning-trio-crab-n-squid-flounder-shared?lang=en",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Morning Trio combines flounder fishing, squid jigging and crabbing on Puget Sound."
+    },
+    "waters": [
+      "Puget Sound"
+    ],
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "named_guide": "Kyle Hanada",
+    "relationship": {
+      "species": "Flounder",
+      "waterway": "Puget Sound"
+    }
+  },
+  {
+    "operator": "Seattle Nautic",
+    "city": "Seattle",
+    "state": "WA",
+    "value": "Flounder",
+    "kind": "species",
+    "scope": "charter_operator_only",
+    "source": {
+      "url": "https://www.seattlenautic.com/booking.html",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The Seattle booking menu offers a dedicated afternoon flounder charter from Shilshole Bay Marina."
+    },
+    "waters": [
+      "Puget Sound"
+    ],
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "operator": "Veteran Fishing Ventures",
+    "city": "East Wenatchee",
+    "state": "WA",
+    "kind": "species",
+    "value": "Kokanee",
+    "scope": "charter_operator_only",
+    "operator_base_only": true,
+    "waters": [
+      "Lake Chelan"
+    ],
+    "source": {
+      "url": "https://www.veteranfishingventures.com/lake-chelan-kokanee-fishing-charter-family-friendly-guides-lake-chelan-fishing-charter-kokanee",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The Lake Chelan booking page advertises a kokanee charter and offers an optional combination with lake trout."
+    },
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "operator": "Veteran Fishing Ventures",
+    "city": "East Wenatchee",
+    "state": "WA",
+    "kind": "trip_type",
+    "value": "Lake trout and kokanee combo",
+    "scope": "charter_operator_only",
+    "operator_base_only": true,
+    "waters": [
+      "Lake Chelan"
+    ],
+    "source": {
+      "url": "https://www.veteranfishingventures.com/lake-chelan-kokanee-fishing-charter-family-friendly-guides-lake-chelan-fishing-charter-kokanee",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The Lake Chelan booking page offers a lake trout and kokanee combination."
+    },
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "relationship": {
+      "species": "Lake trout",
+      "waterway": "Lake Chelan"
+    }
+  },
+  {
+    "operator": "Northwest Fly Fishing Outfitters",
+    "city": "Portland",
+    "state": "OR",
+    "kind": "species",
+    "value": "Bull trout",
+    "scope": "charter_operator_only",
+    "operator_base_only": true,
+    "waters": [
+      "Lake Billy Chinook"
+    ],
+    "source": {
+      "url": "https://www.flyshopnw.com/pages/guided-trips",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Guided Trips booking menu lists bull trout on Lake Billy Chinook."
+    },
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "operator": "Northwest Fly Fishing Outfitters",
+    "city": "Portland",
+    "state": "OR",
+    "kind": "species",
+    "value": "Kokanee",
+    "scope": "charter_operator_only",
+    "operator_base_only": true,
+    "waters": [
+      "Lake Billy Chinook"
+    ],
+    "source": {
+      "url": "https://www.flyshopnw.com/pages/guided-trips",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Guided Trips booking menu lists kokanee on Lake Billy Chinook."
+    },
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "operator": "Northwest Fly Fishing Outfitters",
+    "city": "Portland",
+    "state": "OR",
+    "kind": "species",
+    "value": "Rainbow trout",
+    "scope": "charter_operator_only",
+    "operator_base_only": true,
+    "waters": [
+      "Lake Billy Chinook",
+      "McKenzie River"
+    ],
+    "source": {
+      "url": "https://www.flyshopnw.com/pages/guided-trips",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Guided Trips booking menu lists rainbow trout on Lake Billy Chinook and McKenzie River."
+    },
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "operator": "Northwest Fly Fishing Outfitters",
+    "city": "Portland",
+    "state": "OR",
+    "kind": "species",
+    "value": "Redband trout",
+    "scope": "charter_operator_only",
+    "operator_base_only": true,
+    "waters": [
+      "Deschutes River"
+    ],
+    "source": {
+      "url": "https://www.flyshopnw.com/pages/guided-trips",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Guided Trips booking menu lists redband trout on Deschutes River."
+    },
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "operator": "Northwest Fly Fishing Outfitters",
+    "city": "Portland",
+    "state": "OR",
+    "kind": "species",
+    "value": "Cutthroat trout",
+    "scope": "charter_operator_only",
+    "operator_base_only": true,
+    "waters": [
+      "McKenzie River"
+    ],
+    "source": {
+      "url": "https://www.flyshopnw.com/pages/guided-trips",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Guided Trips booking menu lists cutthroat trout on McKenzie River."
+    },
+    "editorial_status": "approved",
+    "publication_approved": true
   }
 ]
