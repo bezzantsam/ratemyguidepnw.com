@@ -16,8 +16,9 @@ export function parseDirectoryState(search:string,entries:DirectoryEntry[],chart
  const state:DirectoryState['state']=rawState==='Oregon'||rawState==='Washington'?rawState:'All';
  const scoped=entries.filter(entry=>state==='All'||entry.states.includes(state));
  const area=rawArea.length<=256&&scoped.some(entry=>entry.areas.includes(rawArea))?rawArea:'All areas';
- const waterway=rawWater.length<=256&&scoped.some(entry=>entry.advertisedWaters.includes(rawWater))?rawWater:'All advertised waters';
- const charterSpecies=charters.some(offer=>(state==='All'||offer.state===state)&&offer.species===rawSpecies);
+ const scopedCharters=charters.filter(offer=>state==='All'||offer.state===state);
+ const waterway=rawWater.length<=256&&(scoped.some(entry=>entry.advertisedWaters.includes(rawWater))||scopedCharters.some(offer=>offer.waterway===rawWater))?rawWater:'All advertised waters';
+ const charterSpecies=scopedCharters.some(offer=>offer.species===rawSpecies);
  const species=rawSpecies.length>0&&rawSpecies.length<=256&&(charterSpecies||scoped.some(entry=>directorySpeciesLabels(entry.advertisedSpecies).includes(rawSpecies)))?rawSpecies:'All species';
  const method=rawMethod.length<=256&&scoped.some(entry=>(entry.advertisedMethods??[]).includes(rawMethod))?rawMethod:'All methods';
  const query=q.length<=120&&!/[\u0000-\u001f\u007f]/.test(q)?q:'';

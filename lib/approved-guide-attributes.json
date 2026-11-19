@@ -143,7 +143,11 @@
       "waterway": "Buoy 10"
     },
     "editorial_status": "approved",
-    "publication_approved": true
+    "publication_approved": true,
+    "location": {
+      "city": "Astoria",
+      "state": "OR"
+    }
   },
   {
     "guide_id": "OG.0000740",
@@ -161,6 +165,10 @@
     "relationship": {
       "species": "Salmon",
       "waterway": "Buoy 10"
+    },
+    "location": {
+      "city": "Astoria",
+      "state": "OR"
     }
   },
   {
@@ -211,6 +219,10 @@
     "relationship": {
       "species": "Salmon",
       "waterway": "Buoy 10"
+    },
+    "location": {
+      "city": "Astoria",
+      "state": "OR"
     }
   },
   {
@@ -309,6 +321,10 @@
     "relationship": {
       "species": "Salmon",
       "waterway": "Buoy 10"
+    },
+    "location": {
+      "city": "Astoria",
+      "state": "OR"
     }
   },
   {
@@ -355,6 +371,10 @@
     "relationship": {
       "species": "Salmon",
       "waterway": "Buoy 10"
+    },
+    "location": {
+      "city": "Astoria",
+      "state": "OR"
     }
   },
   {
@@ -469,6 +489,10 @@
     "relationship": {
       "species": "Salmon",
       "waterway": "Buoy 10"
+    },
+    "location": {
+      "city": "Astoria",
+      "state": "OR"
     }
   },
   {
@@ -604,6 +628,67 @@
     },
     "editorial_status": "approved",
     "publication_approved": true
+  },
+  {
+    "kind": "trip_type",
+    "value": "Buoy 10 salmon",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "relationship": {
+      "species": "Salmon",
+      "waterway": "Buoy 10"
+    },
+    "guide_id": "wa-052",
+    "source": {
+      "url": "https://gethookednw.com/fishing-rates/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Buoy 10 heading lists Fall Salmon and the 26-foot boat."
+    },
+    "evidence_scope": "operator_advertises",
+    "offering_scope": "operator_business"
+  },
+  {
+    "kind": "trip_type",
+    "value": "Buoy 10 salmon",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "relationship": {
+      "species": "Salmon",
+      "waterway": "Buoy 10"
+    },
+    "guide_id": "wa-067",
+    "source": {
+      "url": "https://anglersguideservice.com/the-fishing/salmon/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Fall Salmon paragraph describes starting near Buoy 10 and the Chinook/Silvers targets."
+    },
+    "evidence_scope": "operator_advertises",
+    "offering_scope": "operator_business"
+  },
+  {
+    "kind": "trip_type",
+    "value": "Buoy 10 salmon",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "relationship": {
+      "species": "Salmon",
+      "waterway": "Buoy 10"
+    },
+    "guide_id": "wa-113",
+    "source": {
+      "url": "https://columbiariverfishing.com/columbia-river-buoy-10-salmon-fishing-charter/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Opening charter section, targets and Captain Dan booking line."
+    },
+    "evidence_scope": "operator_advertises",
+    "offering_scope": "operator_business",
+    "location": {
+      "city": "Astoria",
+      "state": "OR"
+    }
   },
   {
     "guide_id": "wa-126",

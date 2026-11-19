@@ -31,5 +31,85 @@
     "value": "Sablefish (black cod)",
     "editorial_status": "approved",
     "publication_approved": true
+  },
+  {
+    "kind": "trip_type",
+    "value": "Buoy 10 salmon",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "relationship": {
+      "species": "Salmon",
+      "waterway": "Buoy 10"
+    },
+    "operator": "Garibaldi Charters",
+    "city": "Astoria",
+    "state": "OR",
+    "scope": "charter_operator_only",
+    "source": {
+      "url": "https://garibaldicharters.com/astoria/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Astoria ‘Buoy 10’ Salmon card; 6–8 hour trip with up to six passengers."
+    }
+  },
+  {
+    "kind": "trip_type",
+    "value": "Buoy 10 salmon",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "relationship": {
+      "species": "Salmon",
+      "waterway": "Buoy 10"
+    },
+    "operator": "Roam Yacht Charters",
+    "city": "Ilwaco",
+    "state": "WA",
+    "scope": "charter_operator_only",
+    "source": {
+      "url": "https://roamcharters.com/bouy-10-salmon-fishing-charter/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Ilwaco charter page; distinguish adjacent Pacific ocean trip content."
+    }
+  },
+  {
+    "kind": "trip_type",
+    "value": "Buoy 10 salmon",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "relationship": {
+      "species": "Salmon",
+      "waterway": "Buoy 10"
+    },
+    "operator": "Columbia River Fishing Guides",
+    "city": "Astoria",
+    "state": "OR",
+    "scope": "charter_operator_only",
+    "source": {
+      "url": "https://columbiariverfishingguide.com/location/buoy-10/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Opening offer explicitly names Buoy 10 salmon trips in Astoria and both targets."
+    }
+  },
+  {
+    "kind": "trip_type",
+    "value": "Buoy 10 salmon",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "relationship": {
+      "species": "Salmon",
+      "waterway": "Buoy 10"
+    },
+    "operator": "Jesse's Guide Service",
+    "city": "Astoria or Hammond",
+    "state": "OR",
+    "scope": "charter_operator_only",
+    "source": {
+      "url": "https://www.jessesguideservice.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Shared Buoy 10 Salmon Fishing Trip card and Meet the Captain section."
+    }
   }
 ]

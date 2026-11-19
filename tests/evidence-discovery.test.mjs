@@ -100,7 +100,7 @@ test('charter evidence stays outside guide attribution and matches the same sour
   './approved-charter-offerings.json':raw,'./guide-attributes':evidence
  });
  const {filterCharterOfferings}=load('lib/charter-offerings.ts',{'./directory-query':query});
- assert.equal(charterOfferings.length,2);
+ assert.equal(charterOfferings.length,6);
  assert.equal(approvedCharterOfferings([{...raw[0],guide_id:'wa-122'}]).length,0);
  assert.equal(approvedCharterOfferings([{...raw[0],publication_approved:false}]).length,0);
  assert.equal(approvedCharterOfferings([{...raw[0],source:{...raw[0].source,url:'http://example.com'}}]).length,0);
@@ -112,6 +112,9 @@ test('charter evidence stays outside guide attribution and matches the same sour
  assert.deepEqual(find('sablefish Westport'),['Mutineer Charters']);
  assert.deepEqual(find('Newport black cod',{state:'Washington'}),[]);
  assert.deepEqual(find('black cod',{method:'Bottom fishing'}),[]);
+ assert.deepEqual(find('Buoy 10 salmon',{state:'Washington',species:'Salmon',waterway:'Buoy 10'}),['Roam Yacht Charters']);
+ assert.deepEqual(find('Ilwaco Buoy 10 salmon',{state:'Oregon'}),[]);
+ assert.equal(url.parseDirectoryState('?state=Washington&species=Salmon&water=Buoy+10',[],charterOfferings).waterway,'Buoy 10');
  assert.equal(url.parseDirectoryState('?state=Washington&species=Sablefish+(black+cod)',[],charterOfferings).species,'Sablefish (black cod)');
 });
 test('a port-qualified fishery search needs the location and target on the same guide fact',()=>{

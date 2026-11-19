@@ -54,8 +54,9 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
 
  const waters=useMemo(()=>
   ['All advertised waters',...new Set(entries.filter(g=>state==='All'||g.states.includes(state as 'Oregon'|'Washington'))
-    .flatMap(g=>g.advertisedWaters))].sort((a,b)=>a==='All advertised waters'?-1:b==='All advertised waters'?1:a.localeCompare(b)),
- [entries,state]);
+    .flatMap(g=>g.advertisedWaters).concat(charters.flatMap(offer=>
+      (state==='All'||offer.state===state)&&offer.waterway?[offer.waterway]:[])))].sort((a,b)=>a==='All advertised waters'?-1:b==='All advertised waters'?1:a.localeCompare(b)),
+ [entries,charters,state]);
 
  const speciesOptions=useMemo(()=>[...new Set([
   ...entries.filter(g=>state==='All'||g.states.includes(state)).flatMap(g=>directorySpeciesLabels(g.advertisedSpecies)),
@@ -141,8 +142,8 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
   </div>
   {matchingCharters.length>0&&<section className="section" aria-labelledby="charter-offerings-title">
    <h3 id="charter-offerings-title">Charter offerings</h3>
-   <ul>{matchingCharters.map(offer=><li key={JSON.stringify([offer.operator,offer.city,offer.state,offer.boat,offer.species,offer.sourceUrl])}>
-    <strong>{offer.operator}</strong>{offer.boat&&<> · {offer.boat}</>} · {offer.city}, {offer.state} · {offer.species}{offer.boat&&' · By request'}
+   <ul>{matchingCharters.map(offer=><li key={JSON.stringify([offer.operator,offer.city,offer.state,offer.boat,offer.trip??offer.species,offer.sourceUrl])}>
+    <strong>{offer.operator}</strong>{offer.boat&&<> · {offer.boat}</>} · {offer.city}, {offer.state} · {offer.trip??offer.species}{offer.boat&&' · By request'}
     {' · '}<a href={offer.sourceUrl} target="_blank" rel="noopener noreferrer" aria-label={`Trip source for ${offer.operator}`}>Trip source ↗</a>
    </li>)}</ul>
   </section>}
