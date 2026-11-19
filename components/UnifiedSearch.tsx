@@ -6,7 +6,7 @@ import type {DirectoryEntry} from '@/lib/directory';
 import {filterDirectoryEntries,guideSearchScore} from '@/lib/directory-query';
 import DirectoryEmptyState from './DirectoryEmptyState';
 
-export default function UnifiedSearch({entries,reviewMode=false,reviewEnabled=false}:{entries:DirectoryEntry[];reviewMode?:boolean;reviewEnabled?:boolean}){
+export default function UnifiedSearch({entries,reviewMode=false,reviewEnabled=false,home=false}:{entries:DirectoryEntry[];reviewMode?:boolean;reviewEnabled?:boolean;home?:boolean}){
  const [selection,setSelection]=useState<DirectoryState>(DEFAULT_DIRECTORY_STATE);
  const [copyStatus,setCopyStatus]=useState('');
  const [fallback,setFallback]=useState(false);
@@ -14,6 +14,7 @@ export default function UnifiedSearch({entries,reviewMode=false,reviewEnabled=fa
  const searchRef=useRef<HTMLInputElement>(null),areaRef=useRef<HTMLSelectElement>(null),waterRef=useRef<HTMLSelectElement>(null),speciesRef=useRef<HTMLSelectElement>(null),methodRef=useRef<HTMLSelectElement>(null),allRef=useRef<HTMLButtonElement>(null);
  const {query:q,state,area,waterway,species,method,page}=selection;
  const routeBase=reviewMode?'/write-review':'/guides';
+ const resultsUrl=directoryUrl(selection,home?'/':routeBase);
  const size=DIRECTORY_PAGE_SIZE;
  useEffect(()=>{
   function restore(){
@@ -110,7 +111,7 @@ export default function UnifiedSearch({entries,reviewMode=false,reviewEnabled=fa
   </div>
   <div className="guide-results">{filtered.slice((current-1)*size,current*size).map(g=>
    <div className="saved-guide-row" key={g.id}>
-    <Link className="guide-result" href={reviewMode&&reviewEnabled?{pathname:g.href,query:{intent:'review'},hash:'write-review'}:{pathname:g.href,query:{returnTo:directoryUrl(selection)}}}>
+    <Link className="guide-result" href={{pathname:g.href,query:reviewMode&&reviewEnabled?{returnTo:resultsUrl,intent:'review'}:{returnTo:resultsUrl},hash:reviewMode&&reviewEnabled?'write-review':undefined}}>
      <div className="rating-tile"><strong>—</strong><span>{reviewEnabled?'View reviews':'Reviews unavailable'}</span></div>
      <div className="guide-result-body">
       <div className="guide-result-top"><h3>{g.name}</h3>

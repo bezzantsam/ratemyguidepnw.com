@@ -14,7 +14,7 @@ export default function Home() {
       </p>
       <p><Link className="button" href="/write-review">Rate your guide</Link></p>
       {!enabled && <p role="status">Review submissions are not open yet.</p>}
-      <UnifiedSearch entries={directoryEntries} reviewMode reviewEnabled={enabled} />
+      <UnifiedSearch entries={directoryEntries} reviewMode reviewEnabled={enabled} home />
       <section style={{ marginTop: 32 }} aria-labelledby="angler-trip-heading">
         <h2 id="angler-trip-heading">How was your trip?</h2>
         <p>Help the next angler choose. Rate your guide and share your experience.</p>

@@ -23,12 +23,13 @@ function setup() {
   const auth={getUser:async()=>({data:{user:null}}),onAuthStateChange(fn){listener=fn;return {data:{subscription:{unsubscribe(){}}}}},signInWithOAuth:async arg=>{oauth=arg;return {error:null}},signInWithOtp:async arg=>{otp=arg;return {error:null}},signOut:async()=>{}};
   const react={useState(initial){const i=cursor++;if(!(i in cells))cells[i]=initial;return [cells[i],value=>{cells[i]=value}]},useRef(initial){const i=cursor++;if(!(i in cells))cells[i]={current:initial};return cells[i]},useEffect(fn){effect=fn}};
   const canonical=compile('lib/canonical-share.ts');
-  const panel=compile('components/AuthPanel.tsx',{react,'@supabase/supabase-js':{createClient:()=>({auth})},'@/lib/canonical-share':canonical},{window:browser,Event,process:{env:{NEXT_PUBLIC_SUPABASE_URL:'https://example.invalid',NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:'public'}}});
+  const panel=compile('components/AuthPanel.tsx',{react,'@supabase/supabase-js':{createClient:()=>({auth})},'@/lib/canonical-share':canonical},{window:browser,Event,URLSearchParams,process:{env:{NEXT_PUBLIC_SUPABASE_URL:'https://example.invalid',NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:'public'}}});
   return {profile,location,get oauth(){return oauth},get otp(){return otp},get replaced(){return replaced},render(){cursor=0;return panel.default({profilePath:profile})},start(){effect()},emit(session){listener('SIGNED_IN',session)}};
 }
 
 test('both sign-in methods keep the selected guide and review intent without putting it in the auth fragment',()=>{
   const h=setup(),tree=h.render();
+  h.location.search='?returnTo=%2F%3Fq%3DScott&intent=review';
   find(tree,n=>n.type==='button'&&n.props.children==='Continue with Google').props.onClick();
   assert.equal(h.oauth.options.redirectTo,`https://preview.example${h.profile}?intent=review`);
   find(tree,n=>n.type==='input').props.onChange({target:{value:'angler@example.invalid'}});

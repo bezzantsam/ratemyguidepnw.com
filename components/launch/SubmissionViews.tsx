@@ -78,7 +78,7 @@ export function ReviewSubmission({onSubmit, onDuplicate, allowTripResponses=fals
     <label><input type="checkbox" checked={firsthand} onChange={event=>setFirsthand(event.target.checked)} required/> I personally took this trip.</label>
     {error && <p role="alert">{error}</p>}
     {!writeAvailable&&<p role="status">Review submissions are temporarily unavailable. Your draft remains here while you check again.</p>}
-    <button type="submit" disabled={busy||!writeAvailable}>{busy ? 'Submitting…' : 'Submit review'}</button>
+    <button type="submit" disabled={busy||!writeAvailable}>{busy ? 'Submitting…' : mode==='revision' ? 'Submit changes for review' : 'Submit review'}</button>
   </form>;
 }
 

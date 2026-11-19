@@ -80,7 +80,9 @@ test('directory URL state handles duplicates, obsolete filters and out of range 
 test('return paths reject external, ambiguous and malformed URLs',()=>{
  const {safeDirectoryReturn}=loadUrl();
  assert.equal(safeDirectoryReturn('/guides?state=Oregon&page=2'),'/guides?state=Oregon&page=2');
- for(const value of ['//evil.test/guides','https://evil.test/guides','/guides/../admin','/guides?state=Oregon&state=Washington','/guides?next=https://evil.test','/guides#x','/guides\\evil'])assert.equal(safeDirectoryReturn(value),'/guides');
+ assert.equal(safeDirectoryReturn('/?q=Scott'), '/?q=Scott');
+ assert.equal(safeDirectoryReturn('/write-review?species=Halibut'), '/write-review?species=Halibut');
+ for(const value of ['//evil.test/guides','https://evil.test/guides','/guides/../admin','/guides?state=Oregon&state=Washington','/guides?next=https://evil.test','/guides#x','/guides\\evil','/write-review/../','/?returnTo=/admin','/?q=Scott#write-review'])assert.equal(safeDirectoryReturn(value),'/guides');
 });
 
 // Load the actual directory graph, including the production registry and corrections.

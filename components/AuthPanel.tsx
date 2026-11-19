@@ -8,7 +8,14 @@ export default function AuthPanel({onSignedIn,profilePath}:{onSignedIn?:()=>void
  const[email,setEmail]=useState(''),[message,setMessage]=useState(''),[user,setUser]=useState<string|null>(null),[busy,setBusy]=useState(false);
  const onSignedInRef=useRef(onSignedIn);onSignedInRef.current=onSignedIn;
  useEffect(()=>{if(!client)return;let active=true;function signedIn(){if(profilePath){const {pathname,search,hash}=window.location;const restored=guideAuthRestoredPath(pathname,search,hash,profilePath);if(restored){window.history.replaceState(window.history.state,'',restored);window.dispatchEvent(new Event('hashchange'))}}onSignedInRef.current?.()}void client.auth.getUser().then(r=>{if(!active)return;setUser(r.data.user?.email||null);if(r.data.user)signedIn()});const {data:{subscription}}=client.auth.onAuthStateChange((_e,s)=>{setUser(s?.user?.email||null);if(s?.user)signedIn()});return()=>{active=false;subscription.unsubscribe()}},[profilePath]);
- function redirectTo(){const {origin,pathname,search,hash}=window.location;const path=profilePath?guideAuthRedirectPath(pathname+search+hash,profilePath):pathname;return origin+path}
+ function redirectTo(){
+  const {origin,pathname,search,hash}=window.location;
+  const params=new URLSearchParams(search);
+  params.delete('returnTo');
+  const query=params.toString();
+  const path=profilePath?guideAuthRedirectPath(pathname+(query?'?'+query:'')+hash,profilePath):pathname;
+  return origin+path;
+ }
  async function google(){if(!client)return;setBusy(true);const {error}=await client.auth.signInWithOAuth({provider:'google',options:{redirectTo:redirectTo()}});if(error){setMessage(error.message);setBusy(false)}}
  async function magic(){if(!client)return;setBusy(true);const {error}=await client.auth.signInWithOtp({email,options:{emailRedirectTo:redirectTo()}});setMessage(error?.message||'Check your email for the sign-in link.');setBusy(false)}
  if(!client)return <p>Sign-in configuration is unavailable.</p>;
