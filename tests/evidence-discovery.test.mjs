@@ -373,3 +373,12 @@ test('named regional targets never inherit broad claims, other targets or method
   assert.equal(query.matchesFisherySearch(term,labels),expected,term);
  }
 });
+
+test('the sourced EJ alias binds to the existing Big Energy profile without introducing a fishing fact',()=>{
+ const raw=JSON.parse(read('lib/approved-guide-attributes.json'));
+ const facts=approvedAttributes(raw,new Set(['OG.0004049']));
+ assert.equal(facts.length,1);
+ assert.equal(facts[0].kind,'person_name');
+ assert.equal(facts[0].value,'EJ');
+ assert.equal(facts[0].source.url,'https://bigenergy.fishing/meet-your-guide');
+});

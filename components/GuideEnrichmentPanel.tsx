@@ -13,15 +13,16 @@ export default function GuideEnrichmentPanel({registration}:{registration:string
  const enrichment=guideEnrichmentFor(registration);
  const facts=attributesFor(registration);
  const attributes=facts.filter(item=>item.evidence_scope!=='participant_reports');
+ const hasAdvertisedTrip=attributes.some(item=>item.kind==='species'||item.kind==='method'||item.kind==='trip_type');
  const reports=facts.filter(item=>item.evidence_scope==='participant_reports');
  const registered=oregonGuides.find(guide=>guide.registration===registration);
  const editorial=registered?editorialGuideCorrections({id:registration,name:registered.name,business:registered.business})
-   .filter(item=>item.kind!=='search_alias'):[];
+   .filter(item=>item.kind==='species'||item.kind==='method'):[];
  const operatorLink=operatorSourceUrl(enrichment);
  if((!enrichment || (enrichment.advertisedWaters.length === 0 && !enrichment.sourceLinks?.length)) && !facts.length && !editorial.length)return null;
 
  return <section className="section card guide-enrichment" aria-labelledby="guide-enrichment-title">
-   <h2 id="guide-enrichment-title">{attributes.length ? 'Advertised trips and sources' : (reports.length || editorial.length) ? 'Trip evidence and sources' : enrichment?.advertisedWaters.length ? 'Publicly advertised fishing waters' : 'Public business sources'}</h2>
+   <h2 id="guide-enrichment-title">{hasAdvertisedTrip ? 'Advertised trips and sources' : (reports.length || editorial.length) ? 'Trip evidence and sources' : enrichment?.advertisedWaters.length ? 'Publicly advertised fishing waters' : 'Public business sources'}</h2>
    {operatorLink&&<p><a className="button" href={operatorLink} target="_blank" rel="noopener noreferrer">Visit listed operator page ↗</a><span className="muted">Check current trips, availability and booking directly with the operator.</span></p>}
    {!!enrichment?.searchAliases.length&&<p><strong>Other public search names:</strong> {enrichment?.searchAliases.join(' · ')}</p>}
    <ul className="guide-enrichment-waters">
@@ -63,6 +64,6 @@ export default function GuideEnrichmentPanel({registration}:{registration:string
      <ul>{reports.map(item=><li key={item.source.url}><strong>{item.value}</strong> · {item.trip_note} · <a href={item.source.url} target="_blank" rel="noopener noreferrer">Participant source ↗</a></li>)}</ul>
      <p className="muted">Participant reports describe past trips. Ask the operator about current offerings.</p>
    </div>}
-   <p className="muted">Confirm trip availability with the operator. Sources describe individual offerings and business names. Separate listings do not establish a combined trip or verify licensing.</p>
+   {(hasAdvertisedTrip||reports.length>0||editorial.length>0)&&<p className="muted">Confirm trip availability with the operator. Sources describe individual offerings and business names. Separate listings do not establish a combined trip or verify licensing.</p>}
  </section>;
 }

@@ -144,8 +144,9 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
       </div>
       {(guideSearchScore(g,q)??0)>=60&&<p className="guide-meta"><strong>Similar spelling match</strong> · Confirm the person and business.</p>}
       <p className="outfit-name">{g.business||'Fishing guide'}</p>
-      {g.searchAliases.some(name=>!g.editorialSearchAliases?.some(alias=>alias.value===name||alias.variants?.includes(name)))&&<p className="guide-meta">Other names (business or person): {g.searchAliases.filter(name=>!g.editorialSearchAliases?.some(alias=>alias.value===name||alias.variants?.includes(name))).join(' · ')}</p>}
+      {g.searchAliases.some(name=>!g.editorialSearchAliases?.some(alias=>alias.value===name))&&<p className="guide-meta">Other names (business or person): {g.searchAliases.filter(name=>!g.editorialSearchAliases?.some(alias=>alias.value===name)).join(' · ')}</p>}
       {g.editorialSearchAliases?.map(alias=><p className="guide-meta" key={`${alias.value}:${alias.attributedTo}`}>Editorial search name supplied by {alias.attributedTo}: {alias.value}</p>)}
+      {g.businessSearchKeywords?.map(keyword=><p className="guide-meta" key={keyword.value}>Business search keyword supplied by {keyword.attributedTo}: {[keyword.value,...(keyword.variants??[])].join(' / ')}</p>)}
       {!directoryEntryInState(g,state)&&<p className="guide-meta">{state} fishing offering</p>}
       {labels.length>0&&
         <p className="guide-meta">Fishing targets and trips: {labels.map(label=>{

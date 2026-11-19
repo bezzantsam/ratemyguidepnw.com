@@ -172,6 +172,17 @@ function indexFor(entry:DirectoryEntry):SearchIndex {
  index={identity,context,tokens:[...new Set(identity.flatMap(value=>value.split(' ')))],contextTokens:[...new Set(context.flatMap(value=>value.split(' ')))],firstName:normalizeGuideSearch(entry.name).split(' ')[0],id:entry.id.toLowerCase()};
  cache.set(entry,index);return index;
 }
+function matchesBusinessKeyword(entry:DirectoryEntry,query:string):boolean {
+ if(!entry.business||!entry.businessSearchKeywords?.length)return false;
+ const business=normalizeGuideSearch(entry.business);
+ return entry.businessSearchKeywords.some(({value,variants})=>[value,...(variants??[])].some(alias=>{
+  const keyword=normalizeGuideSearch(alias);
+  if(query===keyword)return true;
+  const businessTerm=query.startsWith(keyword+' ')?query.slice(keyword.length+1):
+   query.endsWith(' '+keyword)?query.slice(0,-keyword.length-1):'';
+  return Boolean(businessTerm&&business.startsWith(businessTerm));
+ }));
+}
 /** Lower scores mean closer matches. Null means at least one query term is unsupported. */
 export function guideSearchScore(entry:DirectoryEntry,query:string):number|null {
  const raw=query.trim().toLowerCase();if(!raw)return 0;
@@ -181,7 +192,7 @@ export function guideSearchScore(entry:DirectoryEntry,query:string):number|null 
  const needle=normalizeGuideSearch(raw);if(!needle)return null;
  const fishery=matchesFisherySearch(needle,[...(entry.advertisedSpecies??[]),...(entry.advertisedMethods??[]),...(entry.advertisedTrips??[])]);
  if (fishery!==null)return fishery ? 30 : null;
- if(index.identity.includes(needle))return 0;
+ if(index.identity.includes(needle)||matchesBusinessKeyword(entry,needle))return 0;
  if(index.identity.some(value=>value.startsWith(needle)))return 1;
  if(index.identity.some(value=>value.includes(needle)))return 2;
  const terms=[...new Set(needle.split(' '))];

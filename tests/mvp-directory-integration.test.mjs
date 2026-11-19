@@ -154,11 +154,14 @@ test('editorial corrections preserve all original profiles, IDs, fields and unre
  assert.equal(new Set(Array.from(after,x=>x.id)).size,after.length);
  for(let i=0;i<before.length;i++){
   const original=plain(before[i]),updated=plain(after[i]);
-  if(original.id==='OG.0004049'||original.id==='OG.0002193'){
-   const bigEnergy=original.id==='OG.0004049';
-   assert.deepEqual(updated.searchAliases,[...original.searchAliases,...(bigEnergy?['TJ','T.J.']:['Rod Shulley'])]);
-   assert.deepEqual(updated.editorialSearchAliases,[bigEnergy?
-    {value:'TJ',attributedTo:'Sam',variants:['T.J.']}:{value:'Rod Shulley',attributedTo:'Sam'}]);
+  if(original.id==='OG.0004049'){
+   assert.deepEqual(updated.businessSearchKeywords,[{value:'TJ',attributedTo:'Sam',variants:['T.J.']}]);
+   assert.equal(updated.editorialSearchAliases,undefined);
+   delete updated.businessSearchKeywords;
+  }
+  if(original.id==='OG.0002193'){
+   assert.deepEqual(updated.searchAliases,[...original.searchAliases,'Rod Shulley']);
+   assert.deepEqual(updated.editorialSearchAliases,[{value:'Rod Shulley',attributedTo:'Sam'}]);
    delete updated.editorialSearchAliases;
    updated.searchAliases=original.searchAliases;
   }
@@ -228,11 +231,23 @@ test('editorial attribution and exact identity binding fail closed',()=>{
  assert.equal(editorial.editorialGuideCorrections({id:'OG.0001200',name:'Toby Wyatt',business:'Reel Time Fishing LLC'},facts).length,0);
 });
 
-test('Sam’s TJ and Rod search aliases bind only to the intended legal-name profiles',()=>{
+test('Big Energy business keywords and the Rod alias bind only to their intended legal-name profiles',()=>{
  const {directory}=actualDirectory();
  const original=actualDirectory(false).directory.directoryEntries;
+ const bigEnergy=directory.getDirectoryEntry('OG.0004049');
+ assert.ok(bigEnergy.searchAliases.includes('EJ'));
+ assert.equal(bigEnergy.searchAliases.includes('TJ'),false);
+ assert.equal(bigEnergy.searchAliases.includes('T.J.'),false);
+ for(const query of ['EJ','EJ Big Energy','EJ Snyder']){
+  const matches=Array.from(filter(directory.directoryEntries,{...all,query}),row=>row.id);
+  assert.equal(matches[0],bigEnergy.id,query);
+ }
+ for(const query of ['TJ Snyder','T.J. Snyder','TJ Reel Em Up']){
+  const matches=Array.from(filter(directory.directoryEntries,{...all,query}),row=>row.id);
+  assert.equal(matches.includes(bigEnergy.id),false,query);
+ }
  for(const [id,name,queries] of [
-  ['OG.0004049','Edwin Snyder',['TJ','T.J. Big Energy','TJ Big Energy Guide Service']],
+  ['OG.0004049','Edwin Snyder',['TJ','T.J. Big Energy','TJ Big Energy Guide Service','Big Energy T.J.']],
   ['OG.0002193','Roderick Shulley',['Rod','Rod Shulley','Rod Reel Em Up']],
  ]){
   const entry=directory.getDirectoryEntry(id);

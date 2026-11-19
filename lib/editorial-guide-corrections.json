@@ -101,7 +101,7 @@
     "guide_id": "OG.0004049",
     "expected_name": "Edwin Snyder",
     "expected_business": "Big Energy Guide Service LLC",
-    "kind": "search_alias",
+    "kind": "business_search_keyword",
     "value": "TJ",
     "status": "approved",
     "provenance": {
