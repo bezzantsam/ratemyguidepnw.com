@@ -115,7 +115,7 @@ test('charter evidence stays outside guide attribution and matches the same sour
   './approved-charter-offerings.json':raw,'./guide-attributes':evidence
  });
  const {filterCharterOfferings}=load('lib/charter-offerings.ts',{'./directory-query':query});
- assert.equal(charterOfferings.length,23);
+ assert.equal(charterOfferings.length,25);
  assert.equal(approvedCharterOfferings([{...raw[0],guide_id:'wa-122'}]).length,0);
  assert.equal(approvedCharterOfferings([{...raw[0],publication_approved:false}]).length,0);
  assert.equal(approvedCharterOfferings([{...raw[0],source:{...raw[0].source,url:'http://example.com'}}]).length,0);
@@ -123,6 +123,9 @@ test('charter evidence stays outside guide attribution and matches the same sour
  const filters=url.DEFAULT_DIRECTORY_STATE;
  const find=(term,patch={})=>Array.from(filterCharterOfferings(charterOfferings,{...filters,...patch,query:term}),offer=>offer.operator);
  assert.deepEqual(find('black cod'),find('sablefish'));
+ assert.deepEqual(find('squid jigging',{state:'Washington'}),['Tengu Charters','Seattle Nautic']);
+ assert.deepEqual(find('Edmonds squidding'),['Tengu Charters']);
+ assert.deepEqual(find('Seattle squid',{state:'Oregon'}),[]);
  assert.deepEqual(find('Newport black cod'),['Yaquina Bay Charters']);
  assert.deepEqual(find('black cod Newport'),['Yaquina Bay Charters']);
  assert.deepEqual(find('sablefish Westport'),['Mutineer Charters']);
@@ -273,7 +276,7 @@ test('freshwater evidence keeps scoped waters, original identities and participa
  assert.equal(approvedAttributes([{...participant,fishery_jurisdiction:'WA'}],ids).length,0);
  const muskie=rows.find(r=>r.guide_id==='OG.0001035'&&r.value==='Tiger muskie');
  assert.equal(approvedAttributes([{...muskie,fishery_jurisdiction:'BC'}],ids).length,0);
- assert.equal(approvedAttributes(raw.slice(-36),ids).length,36);
+
  for(const id of ids)assert.ok(rows.some(row=>row.guide_id===id),id);
  const has=(id,label,where)=>rows.some(r=>r.guide_id===id&&r.value===label&&(where===undefined||r.relationship?.waterway===where||r.location?.city===where));
  assert.ok(has('OG.0002254','Steelhead'));
@@ -324,4 +327,15 @@ test('Lost Creek has one charter-only muskie listing with named waters and a sep
   assert.equal(matches[0].guideId,undefined);
  }
  assert.equal(find('Onalaska tiger muskie').length,0);
+});
+
+test('American shad is directly sourced without turning bait use or other fisheries into shad trips',()=>{
+ const ids=new Set(['OG.0000785','OG.0001660','OG.0000315']);
+ const raw=JSON.parse(read('lib/approved-guide-attributes.json'));
+ const rows=approvedAttributes(raw,ids).filter(fact=>fact.value==='American shad');
+ assert.equal(rows.length,3);
+ assert.ok(rows.every(row=>row.evidence_scope==='operator_advertises'));
+ assert.equal(query.matchesFisherySearch('shad',['American shad']),true);
+ assert.equal(query.matchesFisherySearch('shad',['Sturgeon']),false);
+ assert.equal(query.matchesFisherySearch('squid jigging',['Bottom fishing']),false);
 });

@@ -96,5 +96,36 @@
       "recorded_on": "2026-11-19",
       "reference": "/sources/guide-fishery-editorial-20261119.html#og-0000607"
     }
+  },
+  {
+    "guide_id": "OG.0004049",
+    "expected_name": "Edwin Snyder",
+    "expected_business": "Big Energy Guide Service LLC",
+    "kind": "search_alias",
+    "value": "TJ",
+    "status": "approved",
+    "provenance": {
+      "type": "user_editorial",
+      "attributed_to": "Sam",
+      "recorded_on": "2026-11-19",
+      "reference": "/sources/guide-fishery-editorial-20261119.html#og-0004049"
+    },
+    "search_variants": [
+      "T.J."
+    ]
+  },
+  {
+    "guide_id": "OG.0002193",
+    "expected_name": "Roderick Shulley",
+    "expected_business": "Reel  Em Up Fishing Adventures",
+    "kind": "search_alias",
+    "value": "Rod Shulley",
+    "status": "approved",
+    "provenance": {
+      "type": "user_editorial",
+      "attributed_to": "Sam",
+      "recorded_on": "2026-11-19",
+      "reference": "/sources/guide-fishery-editorial-20261119.html#og-0002193"
+    }
   }
 ]

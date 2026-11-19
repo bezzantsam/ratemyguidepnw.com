@@ -23,6 +23,7 @@ const fisheryAliases = [
  ['Tiger muskie','tiger muskies','tiger musky','tiger muskellunge','muskie','musky','muskellunge'],
  ['Striped bass','stripers','striper'], ['Bass','freshwater bass'],
  ['Smallmouth bass','smallmouth','small mouth bass'], ['Largemouth bass','largemouth','large mouth bass'],
+ ['American shad','shad','shad fishing'], ['Squid','squid jigging','squidding'],
  ['Spotted bass'], ['Trout'], ['Rainbow trout'], ['Cutthroat trout','coastal cutthroat trout'],
  ['Brown trout'], ['Brook trout'], ['Lake trout','mackinaw'],
 ];

@@ -1784,5 +1784,57 @@
     "publication_approved": true,
     "fishery_jurisdiction": "OR",
     "offering_scope": "operator_business"
+  },
+  {
+    "guide_id": "OG.0000785",
+    "kind": "species",
+    "value": "American shad",
+    "source": {
+      "url": "https://www.jodysmithguideservice.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Guide advertises fishing for American shad in the Umpqua."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR",
+    "relationship": {
+      "species": "American shad",
+      "waterway": "Umpqua River"
+    }
+  },
+  {
+    "guide_id": "OG.0001660",
+    "kind": "species",
+    "value": "American shad",
+    "source": {
+      "url": "https://keystotheoutdoors.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The rates distinguish American shad and smallmouth. Current owner Shane Tyner identifies them as guided targets. The overview lists several rivers collectively."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "fishery_jurisdiction": "OR"
+  },
+  {
+    "guide_id": "OG.0000315",
+    "kind": "species",
+    "value": "American shad",
+    "source": {
+      "url": "https://www.fastactionfishing.com/journal/shad-fishing-on-the-columbia-river/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "The operator invites bookings for shad itself and distinguishes fishing it as a target from its use as sturgeon bait. The Columbia River guide article names American shad."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "relationship": {
+      "species": "American shad",
+      "waterway": "Columbia River"
+    }
   }
 ]
