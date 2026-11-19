@@ -41,6 +41,10 @@ export function fisheryAtPort(query: string, cities: string[]) {
  return null;
 }
 
+export function locatedGuidePorts(entries: DirectoryEntry[]): string[] {
+ return entries.flatMap(entry=>entry.locatedOfferings?.flatMap(item=>[item.city,...(item.aliases??[])])??[]);
+}
+
 export function directorySpeciesLabels(species: string[] = []): string[] {
  return species.some(label=>fisherySearches.get('tuna')?.includes(normalizeGuideSearch(label)))
   ? [...new Set([...species,'Tuna'])]
@@ -107,7 +111,7 @@ export function guideSearchScore(entry:DirectoryEntry,query:string):number|null 
 /** Exact filters stay exact; fuzzy text matches never expand fisheries or merge identities. */
 export function filterDirectoryEntries(entries:DirectoryEntry[],filters:DirectoryFilters,charterCities:string[]=[]):DirectoryEntry[]{
  const portSearch=filters.query.trim() ? fisheryAtPort(filters.query,[
-  ...charterCities,...entries.flatMap(entry=>entry.locatedOfferings?.map(item=>item.city)??[]),
+  ...charterCities,...locatedGuidePorts(entries),
  ]) : null;
  return entries.filter(entry=>
   (filters.state==='All'||entry.states.includes(filters.state as 'Oregon'|'Washington'))&&
@@ -118,7 +122,7 @@ export function filterDirectoryEntries(entries:DirectoryEntry[],filters:Director
  ).map(entry=>{
   if(!portSearch)return {entry,score:guideSearchScore(entry,filters.query)};
   const match=entry.locatedOfferings?.some(item=>{
-   if(normalizeGuideSearch(item.city)!==portSearch.city||
+   if(![item.city,...(item.aliases??[])].some(city=>normalizeGuideSearch(city)===portSearch.city)||
       (filters.state!=='All'&&filters.state!==(item.state==='OR'?'Oregon':'Washington'))||
       !matchesFisherySearch(portSearch.term,[item.value]))return false;
    const species=item.kind==='species'?item.value:item.relationship?.species;

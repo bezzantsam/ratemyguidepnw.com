@@ -4,7 +4,7 @@ import holdData from './guide-evidence-holds.json';
 export type AttributeKind='species'|'method'|'trip_type'|'business_name'|'person_name';
 export type EvidenceScope='operator_advertises'|'industry_lists';
 export type AttributeEvidence={url:string;source_type:'operator_site'|'industry_directory'|'third_party_directory';reviewed_on:string;locator:string};
-export type EvidenceAttribute={guide_id:string;kind:AttributeKind;value:string;source:AttributeEvidence;supporting_sources?:AttributeEvidence[];evidence_scope:EvidenceScope;editorial_status:'approved'|'pending'|'rejected';publication_approved:boolean;offering_scope?:'operator_business';location?:{city:string;state:'OR'|'WA'};relationship?:{species?:string;method?:string;waterway?:string}};
+export type EvidenceAttribute={guide_id:string;kind:AttributeKind;value:string;source:AttributeEvidence;supporting_sources?:AttributeEvidence[];evidence_scope:EvidenceScope;editorial_status:'approved'|'pending'|'rejected';publication_approved:boolean;offering_scope?:'operator_business';location?:{city:string;state:'OR'|'WA';aliases?:string[]};relationship?:{species?:string;method?:string;waterway?:string}};
 const holds=new Set(holdData.held_guides.map(x=>x.guide_id));
 const kinds=new Set(['species','method','trip_type','business_name','person_name']);
 const scopes=new Set(['operator_advertises','industry_lists']);
@@ -51,6 +51,7 @@ export function approvedAttributes(input:unknown,known:ReadonlySet<string>):Evid
    if(x.location!==undefined){
     const location=x.location as EvidenceAttribute['location'];
     if(!location||!text(location.city)||(location.state!=='OR'&&location.state!=='WA')||!['species','method','trip_type'].includes(x.kind))return false;
+    if(location.aliases!==undefined&&(!Array.isArray(location.aliases)||!location.aliases.every(text)))return false;
    }
    if(x.supporting_sources!==undefined&&(!Array.isArray(x.supporting_sources)||!x.supporting_sources.every(validSource)))return false;
    return validRelationship(x.relationship,x.kind as AttributeKind,x.value);
@@ -67,7 +68,7 @@ export function approvedAttributes(input:unknown,known:ReadonlySet<string>):Evid
    const conflicts=(['species','method'] as const).some(kind=>{const value=relationship?.[kind];if(!value)return false;const relatedKey=JSON.stringify([x.guide_id,kind,norm(value)]);return groups.has(relatedKey)&&!validGroups.get(relatedKey)});
    if(conflicts)continue;
    const location=x.location as EvidenceAttribute['location'];
-   const fingerprint=JSON.stringify([source.url,source.source_type,source.reviewed_on,source.locator,x.supporting_sources??[],x.evidence_scope,x.offering_scope??'',location?.city??'',location?.state??'',relationship?.species??'',relationship?.method??'',relationship?.waterway??'']);
+   const fingerprint=JSON.stringify([source.url,source.source_type,source.reviewed_on,source.locator,x.supporting_sources??[],x.evidence_scope,x.offering_scope??'',location,relationship?.species??'',relationship?.method??'',relationship?.waterway??'']);
    if(!seen.has(fingerprint)){seen.add(fingerprint);result.push(x as EvidenceAttribute)}
   }
  }

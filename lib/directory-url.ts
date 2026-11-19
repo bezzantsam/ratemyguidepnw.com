@@ -18,11 +18,11 @@ export function parseDirectoryState(search:string,entries:DirectoryEntry[],chart
  const area=rawArea.length<=256&&scoped.some(entry=>entry.areas.includes(rawArea))?rawArea:'All areas';
  const scopedCharters=charters.filter(offer=>state==='All'||offer.state===state);
  const waterway=rawWater.length<=256&&(scoped.some(entry=>entry.advertisedWaters.includes(rawWater))||scopedCharters.some(offer=>offer.waterway===rawWater))?rawWater:'All advertised waters';
- const charterSpecies=scopedCharters.some(offer=>offer.species===rawSpecies);
+ const charterSpecies=scopedCharters.some(offer=>offer.species&&directorySpeciesLabels([offer.species]).includes(rawSpecies));
  const species=rawSpecies.length>0&&rawSpecies.length<=256&&(charterSpecies||scoped.some(entry=>directorySpeciesLabels(entry.advertisedSpecies).includes(rawSpecies)))?rawSpecies:'All species';
- const method=rawMethod.length<=256&&scoped.some(entry=>(entry.advertisedMethods??[]).includes(rawMethod))?rawMethod:'All methods';
+ const method=rawMethod.length<=256&&(scoped.some(entry=>(entry.advertisedMethods??[]).includes(rawMethod))||scopedCharters.some(offer=>offer.method===rawMethod))?rawMethod:'All methods';
  const query=q.length<=120&&!/[\u0000-\u001f\u007f]/.test(q)?q:'';
- const count=filterDirectoryEntries(entries,{query,state,sourceZone:area,advertisedWater:waterway,species,method},charters.map(offer=>offer.city)).length;
+ const count=filterDirectoryEntries(entries,{query,state,sourceZone:area,advertisedWater:waterway,species,method},charters.flatMap(offer=>[offer.city,...(offer.portAliases??[])])).length;
  const max=Math.max(1,Math.ceil(count/DIRECTORY_PAGE_SIZE));
  const requested=/^[1-9]\d{0,5}$/.test(rawPage)?Number(rawPage):1;
  return {query,state,area,waterway,species,method,page:Math.min(requested,max)};

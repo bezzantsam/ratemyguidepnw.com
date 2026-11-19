@@ -115,7 +115,7 @@ test('charter evidence stays outside guide attribution and matches the same sour
   './approved-charter-offerings.json':raw,'./guide-attributes':evidence
  });
  const {filterCharterOfferings}=load('lib/charter-offerings.ts',{'./directory-query':query});
- assert.equal(charterOfferings.length,6);
+ assert.equal(charterOfferings.length,11);
  assert.equal(approvedCharterOfferings([{...raw[0],guide_id:'wa-122'}]).length,0);
  assert.equal(approvedCharterOfferings([{...raw[0],publication_approved:false}]).length,0);
  assert.equal(approvedCharterOfferings([{...raw[0],source:{...raw[0].source,url:'http://example.com'}}]).length,0);
@@ -134,6 +134,12 @@ test('charter evidence stays outside guide attribution and matches the same sour
  assert.equal(filterCharterOfferings(charterOfferings,{...filters,query:'Garibaldi Buoy 10'},['Garibaldi']).length,0);
  assert.equal(filterCharterOfferings(charterOfferings,{...filters,query:'Buoy 10 Garibaldi'},['Garibaldi']).length,0);
  assert.deepEqual(find('Ilwaco Buoy 10'),['Roam Yacht Charters']);
+ assert.deepEqual(find('Depoe Bay albacore'),['Tradewinds Charters']);
+ assert.deepEqual(find('Ilwaco bottom fishing',{state:'Washington',method:'Bottom fishing'}),['Sea Breeze Charters']);
+ assert.deepEqual(find('Astoria bottom fishing'),[]);
+ assert.equal(url.parseDirectoryState('?state=Washington&method=Bottom+fishing',[],charterOfferings).method,'Bottom fishing');
+ assert.equal(url.parseDirectoryState('?state=Oregon&species=Tuna',[],charterOfferings).species,'Tuna');
+ assert.equal(approvedCharterOfferings([{...raw.find(row=>row.scope==='operator_team'),departure_source:undefined}]).length,0);
  assert.equal(url.parseDirectoryState('?state=Washington&species=Salmon&water=Buoy+10',[],charterOfferings).waterway,'Buoy 10');
  assert.equal(url.parseDirectoryState('?state=Washington&species=Sablefish+(black+cod)',[],charterOfferings).species,'Sablefish (black cod)');
 });
@@ -148,6 +154,24 @@ test('a port-qualified fishery search needs the location and target on the same 
  assert.deepEqual(Array.from(query.filterDirectoryEntries(entries,{...filters,query:'albacore Garibaldi',species:'Tuna'}),entry=>entry.id),['OG.0000047']);
  assert.equal(query.filterDirectoryEntries(entries,{...filters,species:'Halibut'}).length,0);
  assert.equal(query.filterDirectoryEntries(entries,{...filters,query:'Newport tuna'},['Newport']).length,0);
+});
+test('Charleston search aliases preserve Betty Kay’s generic tuna evidence and Mariner’s separate scope',()=>{
+ const ids=new Set(['OG.0002615','OG.0002656']);
+ const rows=approvedAttributes(JSON.parse(read('lib/approved-guide-attributes.json')),ids);
+ const betty=rows.filter(row=>row.guide_id==='OG.0002615');
+ const mariner=rows.filter(row=>row.guide_id==='OG.0002656');
+ assert.equal(betty.length,3);
+ assert.ok(betty.every(row=>row.offering_scope==='operator_business'&&row.location.city==='Charleston'&&row.location.aliases.includes('Coos Bay')));
+ assert.equal(mariner.length,1);
+ assert.equal(mariner[0].offering_scope,undefined);
+ assert.equal(mariner[0].value,'Bottom fishing');
+ const entry={id:'OG.0002615',name:'Kurt Smith',states:['Oregon'],areas:[],advertisedWaters:[],searchAliases:[],
+  advertisedSpecies:['Tuna','Halibut'],advertisedMethods:['Bottom fishing'],
+  locatedOfferings:betty.map(row=>({...row.location,kind:row.kind,value:row.value}))};
+ const filters={state:'All',sourceZone:'All areas',advertisedWater:'All advertised waters'};
+ assert.equal(query.filterDirectoryEntries([entry],{...filters,query:'Coos Bay tuna'}).length,1);
+ assert.equal(query.filterDirectoryEntries([entry],{...filters,query:'tuna Charleston Harbor'}).length,1);
+ assert.equal(query.filterDirectoryEntries([entry],{...filters,query:'Charleston albacore'}).length,0);
 });
 test('production dataset is separate from pending research',()=>{
  assert.ok(Array.isArray(JSON.parse(read('lib/approved-guide-attributes.json'))));

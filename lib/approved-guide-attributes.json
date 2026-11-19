@@ -855,5 +855,101 @@
     "evidence_scope": "operator_advertises",
     "editorial_status": "approved",
     "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0002615",
+    "kind": "species",
+    "value": "Halibut",
+    "source": {
+      "url": "https://bettykaycharters.com/deepsea-fishing-charters/12-hour-halibut-fishing/",
+      "reviewed_on": "2026-11-19",
+      "locator": "Dedicated Pacific halibut trip description at Coos Bay/Charleston, with selected dates.",
+      "source_type": "operator_site"
+    },
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "evidence_scope": "operator_advertises",
+    "offering_scope": "operator_business",
+    "location": {
+      "city": "Charleston",
+      "state": "OR",
+      "aliases": [
+        "Coos Bay",
+        "Charleston Harbor",
+        "Charleston Marina"
+      ]
+    },
+    "supporting_sources": [
+      {
+        "url": "https://bettykaycharters.com/deepsea-fishing-charters/half-day-rock-fishing-trip/",
+        "reviewed_on": "2026-11-19",
+        "locator": "Trip description locates the operator at Charleston Harbor, nine miles west of Coos Bay, and describes the trips leaving from there. The halibut and tuna pages also place their trips at Coos Bay/Charleston.",
+        "source_type": "operator_site"
+      }
+    ]
+  },
+  {
+    "guide_id": "OG.0002615",
+    "kind": "species",
+    "value": "Tuna",
+    "source": {
+      "url": "https://bettykaycharters.com/deepsea-fishing-charters/12-hour-tuna-fishing/",
+      "reviewed_on": "2026-11-19",
+      "locator": "Dedicated summer tuna trolling trip describes fishing 20 to 60 miles from Charleston Harbor.",
+      "source_type": "operator_site"
+    },
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "evidence_scope": "operator_advertises",
+    "offering_scope": "operator_business",
+    "location": {
+      "city": "Charleston",
+      "state": "OR",
+      "aliases": [
+        "Coos Bay",
+        "Charleston Harbor",
+        "Charleston Marina"
+      ]
+    },
+    "supporting_sources": [
+      {
+        "url": "https://bettykaycharters.com/deepsea-fishing-charters/half-day-rock-fishing-trip/",
+        "reviewed_on": "2026-11-19",
+        "locator": "Trip description locates the operator at Charleston Harbor, nine miles west of Coos Bay, and describes the trips leaving from there. The halibut and tuna pages also place their trips at Coos Bay/Charleston.",
+        "source_type": "operator_site"
+      }
+    ]
+  },
+  {
+    "guide_id": "OG.0002615",
+    "kind": "method",
+    "value": "Bottom fishing",
+    "source": {
+      "url": "https://bettykaycharters.com/deepsea-fishing-charters/half-day-rock-fishing-trip/",
+      "reviewed_on": "2026-11-19",
+      "locator": "The five-hour ocean rockfish trip targets reef and pinnacle habitat at 60 to 130 feet. Rockfish are the advertised target; the additional catch list is not used to create species records.",
+      "source_type": "operator_site"
+    },
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "evidence_scope": "operator_advertises",
+    "offering_scope": "operator_business",
+    "location": {
+      "city": "Charleston",
+      "state": "OR",
+      "aliases": [
+        "Coos Bay",
+        "Charleston Harbor",
+        "Charleston Marina"
+      ]
+    },
+    "supporting_sources": [
+      {
+        "url": "https://bettykaycharters.com/deepsea-fishing-charters/half-day-rock-fishing-trip/",
+        "reviewed_on": "2026-11-19",
+        "locator": "Trip description locates the operator at Charleston Harbor, nine miles west of Coos Bay, and describes the trips leaving from there. The halibut and tuna pages also place their trips at Coos Bay/Charleston.",
+        "source_type": "operator_site"
+      }
+    ]
   }
 ]

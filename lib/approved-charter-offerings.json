@@ -111,5 +111,129 @@
       "reviewed_on": "2026-11-19",
       "locator": "Shared Buoy 10 Salmon Fishing Trip card and Meet the Captain section."
     }
+  },
+  {
+    "operator": "Tradewinds Charters",
+    "business_id": "tradewinds-charters-depoe-bay",
+    "city": "Depoe Bay",
+    "state": "OR",
+    "kind": "species",
+    "value": "Halibut",
+    "source": {
+      "url": "https://www.tradewindscharters.com/fishing.php",
+      "reviewed_on": "2026-11-19",
+      "locator": "Pacific Halibut section describes an offshore trip targeting halibut in deep water.",
+      "source_type": "operator_site"
+    },
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "scope": "operator_team",
+    "departure_source": {
+      "url": "https://www.tradewindscharters.com/",
+      "reviewed_on": "2026-11-19",
+      "locator": "Boarding notice identifies the private dock or portside pickup. The directions place the office at the north end of the bridge in downtown Depoe Bay with its private dock below.",
+      "source_type": "operator_site"
+    }
+  },
+  {
+    "operator": "Tradewinds Charters",
+    "business_id": "tradewinds-charters-depoe-bay",
+    "city": "Depoe Bay",
+    "state": "OR",
+    "kind": "species",
+    "value": "Albacore tuna",
+    "source": {
+      "url": "https://www.tradewindscharters.com/fishing.php",
+      "reviewed_on": "2026-11-19",
+      "locator": "Albacore Tuna section describes locating and targeting albacore by trolling and fishing on the drift.",
+      "source_type": "operator_site"
+    },
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "scope": "operator_team",
+    "departure_source": {
+      "url": "https://www.tradewindscharters.com/",
+      "reviewed_on": "2026-11-19",
+      "locator": "Boarding notice identifies the private dock or portside pickup. The directions place the office at the north end of the bridge in downtown Depoe Bay with its private dock below.",
+      "source_type": "operator_site"
+    }
+  },
+  {
+    "operator": "Sea Breeze Charters",
+    "business_id": "sea-breeze-charters-ilwaco",
+    "city": "Ilwaco",
+    "state": "WA",
+    "kind": "species",
+    "value": "Halibut",
+    "source": {
+      "url": "https://washingtoncoastfishing.com/",
+      "reviewed_on": "2026-11-19",
+      "locator": "Ocean Halibut Trips section offers a dedicated eight-hour or early-limit trip.",
+      "source_type": "operator_site"
+    },
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "scope": "operator_team",
+    "departure_source": {
+      "url": "https://washingtoncoastfishing.com/",
+      "reviewed_on": "2026-11-19",
+      "locator": "Charter offerings lists its Ilwaco check-in location and departure schedule for bottom fishing, halibut and tuna. About Us says the fleet fishes out of Ilwaco.",
+      "source_type": "operator_site"
+    },
+    "port_aliases": [
+      "Port of Ilwaco"
+    ]
+  },
+  {
+    "operator": "Sea Breeze Charters",
+    "business_id": "sea-breeze-charters-ilwaco",
+    "city": "Ilwaco",
+    "state": "WA",
+    "kind": "species",
+    "value": "Albacore tuna",
+    "source": {
+      "url": "https://washingtoncoastfishing.com/",
+      "reviewed_on": "2026-11-19",
+      "locator": "Albacore Tuna Trips section advertises dedicated 12-hour trips.",
+      "source_type": "operator_site"
+    },
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "scope": "operator_team",
+    "departure_source": {
+      "url": "https://washingtoncoastfishing.com/",
+      "reviewed_on": "2026-11-19",
+      "locator": "Charter offerings lists its Ilwaco check-in location and departure schedule for bottom fishing, halibut and tuna. About Us says the fleet fishes out of Ilwaco.",
+      "source_type": "operator_site"
+    },
+    "port_aliases": [
+      "Port of Ilwaco"
+    ]
+  },
+  {
+    "operator": "Sea Breeze Charters",
+    "business_id": "sea-breeze-charters-ilwaco",
+    "city": "Ilwaco",
+    "state": "WA",
+    "kind": "method",
+    "value": "Bottom fishing",
+    "source": {
+      "url": "https://washingtoncoastfishing.com/",
+      "reviewed_on": "2026-11-19",
+      "locator": "Three Bottom Fish Options section advertises nearshore, long-distance and deep-water bottom fishing.",
+      "source_type": "operator_site"
+    },
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "scope": "operator_team",
+    "departure_source": {
+      "url": "https://washingtoncoastfishing.com/",
+      "reviewed_on": "2026-11-19",
+      "locator": "Charter offerings lists its Ilwaco check-in location and departure schedule for bottom fishing, halibut and tuna. About Us says the fleet fishes out of Ilwaco.",
+      "source_type": "operator_site"
+    },
+    "port_aliases": [
+      "Port of Ilwaco"
+    ]
   }
 ]

@@ -3,8 +3,8 @@ import Link from 'next/link';
 import {useEffect,useMemo,useRef,useState} from 'react';
 import {DEFAULT_DIRECTORY_STATE,DIRECTORY_PAGE_SIZE,directoryUrl,parseDirectoryState,type DirectoryState} from '@/lib/directory-url';
 import type {DirectoryEntry} from '@/lib/directory';
-import {directorySpeciesLabels,filterDirectoryEntries,guideSearchScore} from '@/lib/directory-query';
-import {filterCharterOfferings,type CharterOffering} from '@/lib/charter-offerings';
+import {directorySpeciesLabels,filterDirectoryEntries,guideSearchScore,locatedGuidePorts} from '@/lib/directory-query';
+import {charterPorts,filterCharterOfferings,type CharterOffering} from '@/lib/charter-offerings';
 import DirectoryEmptyState from './DirectoryEmptyState';
 
 const noCharters: CharterOffering[] = [];
@@ -45,7 +45,7 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
  }
  const filtered=useMemo(()=>filterDirectoryEntries(entries,{
   state,sourceZone:area,advertisedWater:waterway,species,method,query:q
- },charters.map(offer=>offer.city)),[entries,charters,q,state,area,waterway,species,method]);
+ },charters.flatMap(charterPorts)),[entries,charters,q,state,area,waterway,species,method]);
 
  const areas=useMemo(()=>
   ['All areas',...new Set(entries.filter(g=>state==='All'||g.states.includes(state as 'Oregon'|'Washington'))
@@ -60,10 +60,13 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
 
  const speciesOptions=useMemo(()=>[...new Set([
   ...entries.filter(g=>state==='All'||g.states.includes(state)).flatMap(g=>directorySpeciesLabels(g.advertisedSpecies)),
-  ...charters.filter(offer=>state==='All'||offer.state===state).map(offer=>offer.species),
+  ...charters.filter(offer=>state==='All'||offer.state===state).flatMap(offer=>offer.species?directorySpeciesLabels([offer.species]):[]),
  ])].sort(),[entries,charters,state]);
- const methodOptions=useMemo(()=>[...new Set(entries.filter(g=>state==='All'||g.states.includes(state as 'Oregon'|'Washington')).flatMap(g=>g.advertisedMethods??[]))].sort(),[entries,state]);
- const guidePorts=useMemo(()=>entries.flatMap(entry=>entry.locatedOfferings?.map(offer=>offer.city)??[]),[entries]);
+ const methodOptions=useMemo(()=>[...new Set([
+  ...entries.filter(g=>state==='All'||g.states.includes(state)).flatMap(g=>g.advertisedMethods??[]),
+  ...charters.filter(offer=>state==='All'||offer.state===state).flatMap(offer=>offer.method?[offer.method]:[]),
+ ])].sort(),[entries,charters,state]);
+ const guidePorts=useMemo(()=>locatedGuidePorts(entries),[entries]);
  const matchingCharters=filterCharterOfferings(charters,selection,guidePorts);
  const pages=Math.max(1,Math.ceil(filtered.length/size)),current=Math.min(page,pages);
  const setRegion=(s:DirectoryState['state'])=>change({state:s,area:'All areas',waterway:'All advertised waters',species:'All species',method:'All methods',page:1});
@@ -143,8 +146,8 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
   </div>
   {matchingCharters.length>0&&<section className="section" aria-labelledby="charter-offerings-title">
    <h3 id="charter-offerings-title">Charter offerings</h3>
-   <ul>{matchingCharters.map(offer=><li key={JSON.stringify([offer.operator,offer.city,offer.state,offer.boat,offer.trip??offer.species,offer.sourceUrl])}>
-    <strong>{offer.operator}</strong>{offer.boat&&<> · {offer.boat}</>} · {offer.city}, {offer.state} · {offer.trip??offer.species}{offer.boat&&' · By request'}
+   <ul>{matchingCharters.map(offer=><li key={JSON.stringify([offer.businessId??offer.operator,offer.city,offer.state,offer.boat,offer.trip??offer.species??offer.method,offer.sourceUrl])}>
+    <strong>{offer.operator}</strong>{offer.boat&&<> · {offer.boat}</>} · {offer.city}, {offer.state} · {offer.trip??offer.species??offer.method}{offer.boat&&' · By request'}{offer.businessId&&' · Operator team'}
     {' · '}<a href={offer.sourceUrl} target="_blank" rel="noopener noreferrer" aria-label={`Trip source for ${offer.operator}`}>Trip source ↗</a>
    </li>)}</ul>
   </section>}

@@ -7,16 +7,20 @@ export function approvedCharterOfferings(input: unknown): CharterOffering[] {
   const offerings = new Map<string, CharterOffering>();
   for (const item of input) {
     if (!item || typeof item !== 'object' || 'guide_id' in item || !approvedSource(item)) continue;
-    const { operator, city, state, value, kind, scope, boat, source, relationship } = item;
-    if ((kind !== 'species' && kind !== 'trip_type') || source.source_type !== 'operator_site' ||
+    const { operator, city, state, value, kind, scope, boat, source, relationship, business_id, port_aliases, departure_source } = item;
+    if ((kind !== 'species' && kind !== 'trip_type' && kind !== 'method') || source.source_type !== 'operator_site' ||
         (state !== 'OR' && state !== 'WA') ||
         typeof operator !== 'string' || !operator.trim() ||
         typeof city !== 'string' || !city.trim() ||
         typeof value !== 'string' || !value.trim()) continue;
     if (scope === 'named_boat_offering_on_request') {
       if (typeof boat !== 'string' || !boat.trim()) continue;
+    } else if (scope === 'operator_team') {
+      if (boat!==undefined||typeof business_id!=='string'||!/^[-a-z0-9]+$/.test(business_id)||
+          !approvedSource({...item,source:departure_source})) continue;
     } else if (scope !== 'charter_operator_only' || boat !== undefined) continue;
-    let details: Pick<CharterOffering, 'species' | 'trip' | 'waterway'> = {species: value};
+    if (port_aliases!==undefined&&(!Array.isArray(port_aliases)||!port_aliases.every(alias=>typeof alias==='string'&&alias.trim()))) continue;
+    let details: Pick<CharterOffering, 'species' | 'method' | 'trip' | 'waterway'> = kind==='method'?{method:value}:{species:value};
     if (kind === 'trip_type') {
       if (!relationship || typeof relationship !== 'object' ||
           !('species' in relationship) || typeof relationship.species !== 'string' || !relationship.species.trim() ||
@@ -27,8 +31,10 @@ export function approvedCharterOfferings(input: unknown): CharterOffering[] {
       operator, city, state: state === 'OR' ? 'Oregon' : 'Washington',
       ...details, sourceUrl: source.url,
       ...(typeof boat === 'string' ? { boat } : {}),
+      ...(scope==='operator_team'&&typeof business_id==='string'?{businessId:business_id}:{}),
+      ...(Array.isArray(port_aliases)?{portAliases:port_aliases}:{}),
     };
-    offerings.set(JSON.stringify([operator, city, state, value, boat, source.url]), offering);
+    offerings.set(JSON.stringify([offering.businessId??operator, city, state, kind, value, boat, source.url]), offering);
   }
   return [...offerings.values()];
 }
