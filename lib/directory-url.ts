@@ -1,6 +1,6 @@
 import type {DirectoryEntry} from './directory';
 import type {CharterOffering} from './charter-offerings';
-import {canonicalFisheryLabel,directoryEntryInState,directoryFisheryFacets,directorySpeciesLabels,filterDirectoryEntries} from './directory-query';
+import {canonicalFisheryLabel,directoryMethodLabel,knownDirectoryMethod,directoryEntryInState,directoryFisheryFacets,directorySpeciesLabels,filterDirectoryEntries} from './directory-query';
 
 export type DirectoryState={query:string;state:'All'|'Oregon'|'Washington';area:string;waterway:string;species:string;method:string;page:number};
 export const DEFAULT_DIRECTORY_STATE:DirectoryState={query:'',state:'All',area:'All areas',waterway:'All advertised waters',species:'All species',method:'All methods',page:1};
@@ -12,7 +12,7 @@ export function parseDirectoryState(search:string,entries:DirectoryEntry[],chart
  if(search.length>2048)return {...DEFAULT_DIRECTORY_STATE};
  const params=new URLSearchParams(search);
  const single=(key:string)=>{const values=params.getAll(key);return values.length===1?values[0]:''};
- const q=single('q');const rawState=single('state');const rawArea=single('area');const rawWater=single('water');const rawSpecies=canonicalFisheryLabel(single('species'));const rawMethod=canonicalFisheryLabel(single('method'));const rawPage=single('page');
+ const q=single('q');const rawState=single('state');const rawArea=single('area');const rawWater=single('water');const rawSpecies=canonicalFisheryLabel(single('species'));const rawMethod=directoryMethodLabel(single('method'));const rawPage=single('page');
  const state:DirectoryState['state']=rawState==='Oregon'||rawState==='Washington'?rawState:'All';
  const scoped=entries.filter(entry=>directoryEntryInState(entry,state,!identityOnly));
  const facets=scoped.map(entry=>directoryFisheryFacets(entry,state));
@@ -21,7 +21,7 @@ export function parseDirectoryState(search:string,entries:DirectoryEntry[],chart
  const waterway=rawWater.length<=256&&(facets.some(entry=>entry.waters.includes(rawWater))||scopedCharters.some(offer=>offer.waterway===rawWater||offer.waters?.includes(rawWater)))?rawWater:'All advertised waters';
  const charterSpecies=scopedCharters.some(offer=>offer.species&&directorySpeciesLabels([offer.species]).includes(rawSpecies));
  const species=rawSpecies.length>0&&rawSpecies.length<=256&&(charterSpecies||facets.some(entry=>directorySpeciesLabels(entry.species).includes(rawSpecies)))?rawSpecies:'All species';
- const method=rawMethod.length<=256&&(facets.some(entry=>entry.methods.includes(rawMethod))||scopedCharters.some(offer=>offer.method===rawMethod))?rawMethod:'All methods';
+ const method=rawMethod.length>0&&rawMethod.length<=256&&(knownDirectoryMethod(rawMethod)||facets.some(entry=>entry.methods.some(label=>directoryMethodLabel(label)===rawMethod))||scopedCharters.some(offer=>offer.method&&directoryMethodLabel(offer.method)===rawMethod))?rawMethod:'All methods';
  const query=q.length<=120&&!/[\u0000-\u001f\u007f]/.test(q)?q:'';
  const count=filterDirectoryEntries(entries,{query,state,sourceZone:area,advertisedWater:waterway,species,method,identityOnly},charters.flatMap(offer=>[offer.city,...(offer.portAliases??[]),...(offer.waters??[])])).length;
  const max=Math.max(1,Math.ceil(count/DIRECTORY_PAGE_SIZE));
