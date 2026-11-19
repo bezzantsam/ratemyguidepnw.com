@@ -233,10 +233,10 @@ test('empty approved coverage hides controls while approved fixtures render them
  vm.runInNewContext(js,{exports,require:name=>name==='@/lib/directory-url'?url:name==='@/lib/directory-query'?query:name==='@/lib/charter-offerings'?charters:name==='@/lib/canonical-share'?canonical:name==='./DirectoryEmptyState'?emptyState:requireNode(name)});
  const base={id:'OG.0000047',name:'Example',business:null,states:['Oregon'],areas:[],advertisedWaters:[],searchAliases:[],href:'/guides/example',source:'Oregon registry'};
  const empty=renderToStaticMarkup(React.createElement(exports.default,{entries:[base]}));
- assert.doesNotMatch(empty,/>Species|Source-listed fishing method/);
+ assert.doesNotMatch(empty,/>Species|Fishing methods/);
  assert.match(empty,/>1 captain listing</);
  const present=renderToStaticMarkup(React.createElement(exports.default,{entries:[{...base,advertisedSpecies:['Salmon'],advertisedMethods:['Fly fishing']}]}));
- assert.match(present,/>Species/);assert.match(present,/Source-listed fishing method/);
+ assert.match(present,/>Species/);assert.match(present,/Fishing methods/);
 });
 
 test('next-ten pending candidates never reach the public loader',()=>{

@@ -32,12 +32,12 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
   const q=page.getByRole('searchbox',{name:'Captain, business, operating name, or registration'});
   // Synthetic approved fixtures exercise filters without publishing candidate research.
   await page.getByText('Synthetic test fixture — not a real offering.').first().waitFor();
-  const species=page.getByLabel('Species');const method=page.getByLabel('Source-listed fishing method');
+  const species=page.getByLabel('Species');const method=page.getByRole('combobox',{name:/^Fishing methods\b/});
   await species.selectOption({label:'Salmon'});await method.selectOption({label:'Fly fishing'});
   await page.getByRole('link',{name:/John Hanson/}).first().waitFor();
   assert.equal(await page.getByRole('link',{name:/Shea Fisher/}).count(),0,'broad Salmon does not imply Chinook');
   assert.equal(new URL(page.url()).searchParams.get('species'),'Salmon');
-  await page.getByLabel('Advertised fishing water (pilot)').selectOption({label:'Fixture River'});
+  await page.getByRole('combobox',{name:/^Fishing waters\b/}).selectOption({label:'Fixture River'});
   await page.getByRole('button',{name:'Remove waterway: Fixture River'}).click();
   assert.equal(await species.inputValue(),'Salmon');assert.equal(await method.inputValue(),'Fly fishing');
   const filteredUrl=page.url();await page.reload({waitUntil:'domcontentloaded'});
@@ -86,8 +86,8 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
   assert.ok(Number(new URL(page.url()).searchParams.get('page'))>1);
   await page.goto(`${origin}/guides?state=Oregon&area=Coos-Coquille&water=Wilson+River`,{waitUntil:'domcontentloaded'});
   await page.getByRole('button',{name:'Washington',exact:true}).click();
-  assert.equal(await page.getByLabel('Imported source area / notes (unverified)').inputValue(),'All areas');
-  assert.equal(await page.getByLabel('Advertised fishing water (pilot)').inputValue(),'All advertised waters');
+  assert.equal(await page.getByRole('combobox',{name:/^Area\b/}).inputValue(),'All areas');
+  assert.equal(await page.getByRole('combobox',{name:/^Fishing waters\b/}).inputValue(),'All advertised waters');
   await page.goto(`${origin}/guides?state=Oregon&q=John`,{waitUntil:'domcontentloaded'});
   await page.waitForFunction(()=>document.querySelector('input[type=search]')?.value==='John');
   await page.getByRole('button',{name:'Remove search: John'}).click();assert.equal(await q.inputValue(),'');
@@ -120,7 +120,7 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
   await page.getByRole('button',{name:'Oregon',exact:true}).click();
   await q.fill('John Hanson');
   await species.selectOption({label:'Salmon'});await method.selectOption({label:'Fly fishing'});
-  await page.getByLabel('Advertised fishing water (pilot)').selectOption({label:'Fixture River'});
+  await page.getByRole('combobox',{name:/^Fishing waters\b/}).selectOption({label:'Fixture River'});
   await page.getByText('No matching guides.',{exact:false}).waitFor();
   const emptyUrl=page.url();
   await recovery.getByRole('button',{name:'Remove water filter 1 listing'}).click();
@@ -140,10 +140,10 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
   assert.equal(await species.inputValue(),'Salmon');assert.equal(await method.inputValue(),'Fly fishing');
   await page.getByRole('button',{name:'Clear all filters'}).click();
   await q.fill('');await page.getByRole('button',{name:'Oregon',exact:true}).click();
-  await page.getByLabel('Imported source area / notes (unverified)').selectOption({label:'Coos-Coquille'});
+  await page.getByRole('combobox',{name:/^Area\b/}).selectOption({label:'Coos-Coquille'});
   await q.fill('John Hanson');await page.getByRole('link',{name:/John Hanson/}).first().waitFor();
-  await page.getByLabel('Imported source area / notes (unverified)').selectOption({label:'All areas'});
-  await q.fill('');await page.getByLabel('Advertised fishing water (pilot)').selectOption({label:'Wilson River'});
+  await page.getByRole('combobox',{name:/^Area\b/}).selectOption({label:'All areas'});
+  await q.fill('');await page.getByRole('combobox',{name:/^Fishing waters\b/}).selectOption({label:'Wilson River'});
   assert.ok(await page.locator('.guide-result').count()>0);
   await page.getByRole('button',{name:'Washington',exact:true}).click();
   await q.fill('Aaron O’Leary');

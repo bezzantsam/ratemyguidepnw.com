@@ -86,20 +86,20 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
     <input ref={searchRef} type="search" value={q} maxLength={120} onChange={e=>change({query:e.target.value,page:1},true)}
      placeholder="Try a guide name, halibut, or bottom fishing"/>
    </label>
-   <label>Imported source area / notes (unverified)
+   <label>Area
     <select ref={areaRef} value={area} onChange={e=>change({area:e.target.value,page:1})}>
      {areas.map(a=><option key={a}>{a}</option>)}
     </select>
    </label>
-   <label>Advertised fishing water (pilot)
+   <label>Fishing waters
     <select ref={waterRef} value={waterway} onChange={e=>change({waterway:e.target.value,page:1})}>
-     {waters.map(a=><option key={a}>{a}</option>)}
+     {waters.map(a=><option key={a} value={a}>{a==='All advertised waters'?'All waters':a}</option>)}
     </select>
    </label>
    {speciesOptions.length>0&&<label>Species
     <select ref={speciesRef} value={species} onChange={e=>change({species:e.target.value,page:1})}><option>All species</option>{speciesOptions.map(x=><option key={x}>{x}</option>)}</select>
    </label>}
-   {methodOptions.length>0&&<label>Source-listed fishing method
+   {methodOptions.length>0&&<label>Fishing methods
     <select ref={methodRef} value={method} onChange={e=>change({method:e.target.value,page:1})}><option>All methods</option>{methodOptions.map(x=><option key={x}>{x}</option>)}</select>
    </label>}
   </div>

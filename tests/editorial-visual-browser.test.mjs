@@ -20,8 +20,8 @@ test('unapproved source-backed preview follows the actual directory journey',{ti
   assert.equal(await page.getByText('Unapproved editorial preview',{exact:false}).count(),0);
   await page.screenshot({path:join(shots,'ordinary-desktop.png'),fullPage:true});
   await page.goto(`${preview}/guides?q=Kelsey+Helfrich`,{waitUntil:'domcontentloaded'});await page.getByText('Unapproved editorial preview',{exact:false}).first().waitFor();
-  await page.getByLabel('Species').selectOption({label:'Rainbow Trout'});await page.getByLabel('Source-listed fishing method').selectOption({label:'Fly fishing'});
-  await page.getByLabel('Advertised fishing water (pilot)').selectOption({label:'McKenzie River'});
+  await page.getByLabel('Species').selectOption({label:'Rainbow Trout'});await page.getByRole('combobox',{name:/^Fishing methods\b/}).selectOption({label:'Fly fishing'});
+  await page.getByRole('combobox',{name:/^Fishing waters\b/}).selectOption({label:'McKenzie River'});
   const saved=page.url();await page.getByRole('link',{name:/Kelsey Helfrich/}).first().waitFor();await page.screenshot({path:join(shots,'preview-directory-desktop.png'),fullPage:true});
   await page.getByRole('link',{name:/Kelsey Helfrich/}).first().click();await page.getByRole('heading',{name:'Kelsey Helfrich',exact:true}).waitFor();
   await page.getByText('Separate items do not establish a combined trip.',{exact:false}).waitFor();
