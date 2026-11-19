@@ -1,5 +1,5 @@
 import type {DirectoryEntry} from './directory';
-import {filterDirectoryEntries} from './directory-query';
+import {directorySpeciesLabels,filterDirectoryEntries} from './directory-query';
 
 export type DirectoryState={query:string;state:'All'|'Oregon'|'Washington';area:string;waterway:string;species:string;method:string;page:number};
 export const DEFAULT_DIRECTORY_STATE:DirectoryState={query:'',state:'All',area:'All areas',waterway:'All advertised waters',species:'All species',method:'All methods',page:1};
@@ -16,7 +16,7 @@ export function parseDirectoryState(search:string,entries:DirectoryEntry[]):Dire
  const scoped=entries.filter(entry=>state==='All'||entry.states.includes(state));
  const area=rawArea.length<=256&&scoped.some(entry=>entry.areas.includes(rawArea))?rawArea:'All areas';
  const waterway=rawWater.length<=256&&scoped.some(entry=>entry.advertisedWaters.includes(rawWater))?rawWater:'All advertised waters';
- const species=rawSpecies.length<=256&&scoped.some(entry=>(entry.advertisedSpecies??[]).includes(rawSpecies))?rawSpecies:'All species';
+ const species=rawSpecies.length>0&&rawSpecies.length<=256&&scoped.some(entry=>directorySpeciesLabels(entry.advertisedSpecies).includes(rawSpecies))?rawSpecies:'All species';
  const method=rawMethod.length<=256&&scoped.some(entry=>(entry.advertisedMethods??[]).includes(rawMethod))?rawMethod:'All methods';
  const query=q.length<=120&&!/[\u0000-\u001f\u007f]/.test(q)?q:'';
  const count=filterDirectoryEntries(entries,{query,state,sourceZone:area,advertisedWater:waterway,species,method}).length;

@@ -16,6 +16,21 @@ export function normalizeGuideSearch(value:string):string {
   .replace(/['’]/g,'').replace(/[^\p{L}\p{M}\p{N}]+/gu,' ').trim().replace(/\s+/g,' ');
 }
 const nicknameLookup=new Map(nicknameFamilies.flatMap(group=>group.map(name=>[name,group] as const)));
+const fisheryAliases = [
+ ['halibut','pacific halibut'],
+ ['albacore tuna','albacore'],
+ ['bottom fishing','bottomfish','bottom fish'],
+ ['sablefish','black cod','sablefish black cod','black cod sablefish'],
+ ['buoy 10 salmon'],
+];
+const fisherySearches = new Map(fisheryAliases.flatMap(group=>group.map(alias=>[alias,group] as const)));
+fisherySearches.set('tuna',['tuna','albacore tuna','albacore']);
+
+export function directorySpeciesLabels(species: string[] = []): string[] {
+ return species.some(label=>fisherySearches.get('tuna')?.includes(normalizeGuideSearch(label)))
+  ? [...new Set([...species,'Tuna'])]
+  : species;
+}
 /** Bounded optimal-string-alignment distance: insertion, deletion, substitution, adjacent swap. */
 function closeSpelling(a:string,b:string,max:number):boolean {
  if(Math.abs(a.length-b.length)>max)return false;
@@ -47,6 +62,11 @@ export function guideSearchScore(entry:DirectoryEntry,query:string):number|null 
  // Registration/WA IDs must never be silently corrected to another identity.
  if(/^(og[.\s-]?\d|wa[.\s-]?\d)/i.test(raw))return index.id===raw?0:index.id.startsWith(raw)?1:null;
  const needle=normalizeGuideSearch(raw);if(!needle)return null;
+ const fishery = fisherySearches.get(needle);
+ if (fishery) {
+  const offerings = [...(entry.advertisedSpecies??[]),...(entry.advertisedMethods??[]),...(entry.advertisedTrips??[])];
+  return offerings.some(label=>fishery.includes(normalizeGuideSearch(label))) ? 30 : null;
+ }
  if(index.identity.includes(needle))return 0;
  if(index.identity.some(value=>value.startsWith(needle)))return 1;
  if(index.identity.some(value=>value.includes(needle)))return 2;
@@ -78,7 +98,7 @@ export function filterDirectoryEntries(entries:DirectoryEntry[],filters:Director
   (filters.state==='All'||entry.states.includes(filters.state as 'Oregon'|'Washington'))&&
   (filters.sourceZone==='All areas'||entry.areas.includes(filters.sourceZone))&&
   (filters.advertisedWater==='All advertised waters'||entry.advertisedWaters.includes(filters.advertisedWater))&&
-  (!filters.species||filters.species==='All species'||(entry.advertisedSpecies??[]).includes(filters.species))&&
+  (!filters.species||filters.species==='All species'||directorySpeciesLabels(entry.advertisedSpecies).includes(filters.species))&&
   (!filters.method||filters.method==='All methods'||(entry.advertisedMethods??[]).includes(filters.method))
  ).map(entry=>({entry,score:guideSearchScore(entry,filters.query)}))
   .filter((match):match is {entry:DirectoryEntry;score:number}=>match.score!==null)

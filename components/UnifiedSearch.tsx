@@ -3,7 +3,7 @@ import Link from 'next/link';
 import {useEffect,useMemo,useRef,useState} from 'react';
 import {DEFAULT_DIRECTORY_STATE,DIRECTORY_PAGE_SIZE,directoryUrl,parseDirectoryState,type DirectoryState} from '@/lib/directory-url';
 import type {DirectoryEntry} from '@/lib/directory';
-import {filterDirectoryEntries,guideSearchScore} from '@/lib/directory-query';
+import {directorySpeciesLabels,filterDirectoryEntries,guideSearchScore} from '@/lib/directory-query';
 import DirectoryEmptyState from './DirectoryEmptyState';
 
 export default function UnifiedSearch({entries,reviewMode=false,reviewEnabled=false,home=false}:{entries:DirectoryEntry[];reviewMode?:boolean;reviewEnabled?:boolean;home?:boolean}){
@@ -54,7 +54,7 @@ export default function UnifiedSearch({entries,reviewMode=false,reviewEnabled=fa
     .flatMap(g=>g.advertisedWaters))].sort((a,b)=>a==='All advertised waters'?-1:b==='All advertised waters'?1:a.localeCompare(b)),
  [entries,state]);
 
- const speciesOptions=useMemo(()=>[...new Set(entries.filter(g=>state==='All'||g.states.includes(state as 'Oregon'|'Washington')).flatMap(g=>g.advertisedSpecies??[]))].sort(),[entries,state]);
+ const speciesOptions=useMemo(()=>[...new Set(entries.filter(g=>state==='All'||g.states.includes(state as 'Oregon'|'Washington')).flatMap(g=>directorySpeciesLabels(g.advertisedSpecies)))].sort(),[entries,state]);
  const methodOptions=useMemo(()=>[...new Set(entries.filter(g=>state==='All'||g.states.includes(state as 'Oregon'|'Washington')).flatMap(g=>g.advertisedMethods??[]))].sort(),[entries,state]);
  const pages=Math.max(1,Math.ceil(filtered.length/size)),current=Math.min(page,pages);
  const setRegion=(s:DirectoryState['state'])=>change({state:s,area:'All areas',waterway:'All advertised waters',species:'All species',method:'All methods',page:1});
@@ -70,7 +70,7 @@ export default function UnifiedSearch({entries,reviewMode=false,reviewEnabled=fa
   <div className="searchbar">
    <label>Captain, business, operating name, or registration
     <input ref={searchRef} type="search" value={q} maxLength={120} onChange={e=>change({query:e.target.value,page:1},true)}
-     placeholder="Try Oregon Adventure Guide Service or Reel Em Up Fishing Adventures"/>
+     placeholder="Try a guide name, halibut, or bottom fishing"/>
    </label>
    <label>Imported source area / notes (unverified)
     <select ref={areaRef} value={area} onChange={e=>change({area:e.target.value,page:1})}>
@@ -121,6 +121,8 @@ export default function UnifiedSearch({entries,reviewMode=false,reviewEnabled=fa
       <p className="outfit-name">{g.business||'Fishing guide'}</p>
       {g.searchAliases.some(name=>!g.editorialSearchAliases?.some(alias=>alias.value===name))&&<p className="guide-meta">Other names (business or person): {g.searchAliases.filter(name=>!g.editorialSearchAliases?.some(alias=>alias.value===name)).join(' · ')}</p>}
       {g.editorialSearchAliases?.map(alias=><p className="guide-meta" key={`${alias.value}:${alias.attributedTo}`}>Editorial search name supplied by {alias.attributedTo}: {alias.value}</p>)}
+      {Boolean(g.advertisedSpecies?.length || g.advertisedMethods?.length || g.advertisedTrips?.length)&&
+        <p className="guide-meta">Fishing targets and trips: {[...new Set([...(g.advertisedSpecies??[]),...(g.advertisedMethods??[]),...(g.advertisedTrips??[])])].join(' · ')}</p>}
       {g.advertisedWaters.length>0&&<p className="guide-meta">Advertised waters (source-linked): {g.advertisedWaters.slice(0,3).join(' · ')}{g.advertisedWaters.length>3?' · + more':''}</p>}
       <p className="guide-meta">{g.source==='Oregon registry'?'Imported registration zones':'Imported directory areas / notes'}: {g.areas.slice(0,3).join(' · ')||'Not specified'}{g.areas.length>3?' · + more':''}</p>
       <p className="guide-submeta">Imported source listing · {reviewEnabled?'See profile for reviews':'Review data unavailable'} · Current credentials not independently checked</p>

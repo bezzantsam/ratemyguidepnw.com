@@ -1,1 +1,522 @@
-[]
+[
+  {
+    "guide_id": "OG.0000053",
+    "kind": "trip_type",
+    "value": "Buoy 10 salmon",
+    "source": {
+      "url": "https://www.fishwaterswest.com/buoy-10-astoria",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Buoy 10 Fishing Guides & Salmon Charters names Casey Weigel and offers guided trips for king and coho salmon."
+    },
+    "evidence_scope": "operator_advertises",
+    "relationship": {
+      "species": "Salmon",
+      "waterway": "Buoy 10"
+    },
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0000329",
+    "kind": "method",
+    "value": "Bottom fishing",
+    "source": {
+      "url": "https://pacificcityfishing.com/pricing",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Trip prices list Bottom Fish / Ling Cod. The halibut section expressly excludes dedicated halibut trips."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0000334",
+    "kind": "trip_type",
+    "value": "Buoy 10 salmon",
+    "source": {
+      "url": "https://www.galeforceguides.com/chinook-salmon-fishing/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Billy Davis’s Chinook Salmon Fishing page lists Columbia / Buoy 10 among the waters he guides."
+    },
+    "evidence_scope": "operator_advertises",
+    "relationship": {
+      "species": "Salmon",
+      "waterway": "Buoy 10"
+    },
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0000585",
+    "kind": "method",
+    "value": "Bottom fishing",
+    "source": {
+      "url": "https://brookingsfishing.com/lingcod.html",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Half-day ocean bottom fishing trip; operator about page identifies Andy Martin’s light-tackle lingcod guiding."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0000585",
+    "kind": "species",
+    "value": "Halibut",
+    "source": {
+      "url": "https://brookingsfishing.com/contact.html",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Halibut booking option; operator story identifies Andy Martin’s personal role developing the fishery."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0000609",
+    "kind": "method",
+    "value": "Bottom fishing",
+    "source": {
+      "url": "https://astoriafishing.com/bottom/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Astoria bottom fishing charter description."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0000609",
+    "kind": "trip_type",
+    "value": "Buoy 10 salmon",
+    "source": {
+      "url": "https://astoriafishing.com/buoy-10-salmon-fishing/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Buoy 10 Salmon Fishing guided trip out of Astoria."
+    },
+    "evidence_scope": "operator_advertises",
+    "relationship": {
+      "species": "Salmon",
+      "waterway": "Buoy 10"
+    },
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0000895",
+    "kind": "species",
+    "value": "Albacore tuna",
+    "source": {
+      "url": "https://www.oregoncoastangling.com/guided-fishing-trips/garibaldi-oregon-tuna-fishing",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Garibaldi guided tuna trip; the operator also labels the offering Albacore Tuna on its home page."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0000895",
+    "kind": "species",
+    "value": "Halibut",
+    "source": {
+      "url": "https://www.oregoncoastangling.com/guided-fishing-trips/oregon-halibut-fishing",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Oregon halibut fishing trip description; also listed under All Depth Halibut."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0000989",
+    "kind": "trip_type",
+    "value": "Buoy 10 salmon",
+    "source": {
+      "url": "https://lancefisherfishing.com/buoy-10-salmon-fishing/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Opening offer, When is the Best Time to Fish, and October 15 2026 update."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "relationship": {
+      "species": "Salmon",
+      "waterway": "Buoy 10"
+    }
+  },
+  {
+    "guide_id": "OG.0001064",
+    "kind": "method",
+    "value": "Bottom fishing",
+    "source": {
+      "url": "https://pastimefishingadventures.com/newport-oregon-fishing-charter/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Newport trips; Bottom Fishing, Halibut and the owner FAQ describe the seasonal targets."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0001064",
+    "kind": "species",
+    "value": "Halibut",
+    "source": {
+      "url": "https://pastimefishingadventures.com/newport-oregon-fishing-charter/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Newport trips; Bottom Fishing, Halibut and the owner FAQ describe the seasonal targets."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0001064",
+    "kind": "species",
+    "value": "Tuna",
+    "source": {
+      "url": "https://pastimefishingadventures.com/newport-oregon-fishing-charter/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Newport trips; Bottom Fishing, Halibut and the owner FAQ describe the seasonal targets."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0001200",
+    "kind": "trip_type",
+    "value": "Buoy 10 salmon",
+    "source": {
+      "url": "https://reeltimefishing.com/buoy-10-fishing-guides/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Buoy 10 Fishing Guides that Exceed Your Expectations names Toby Wyatt and his guides; title identifies Chinook and Coho."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "relationship": {
+      "species": "Salmon",
+      "waterway": "Buoy 10"
+    }
+  },
+  {
+    "guide_id": "OG.0001207",
+    "kind": "trip_type",
+    "value": "Buoy 10 salmon",
+    "source": {
+      "url": "https://columbiariverfishingadventures.com/fishing/buoy-10-fishing-your-ultimate-columbia-river-salmon-adventure/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Buoy 10 trip sections and booking call-to-action."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "relationship": {
+      "species": "Salmon",
+      "waterway": "Buoy 10"
+    }
+  },
+  {
+    "guide_id": "OG.0001623",
+    "kind": "species",
+    "value": "Albacore tuna",
+    "source": {
+      "url": "https://sharkyscharterfishing.com/guided-fishing-trips/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Guided Fishing Trips lists Albacore Tuna and a Halibut Fishing Combo."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0001623",
+    "kind": "species",
+    "value": "Halibut",
+    "source": {
+      "url": "https://sharkyscharterfishing.com/guided-fishing-trips/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Guided Fishing Trips lists Albacore Tuna and a Halibut Fishing Combo."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0002543",
+    "kind": "method",
+    "value": "Bottom fishing",
+    "source": {
+      "url": "https://www.rtguideservice.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Introducing Tom and Rocio Wick: the operator explicitly identifies both captains and their shared bottom fishing specialty."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0002543",
+    "kind": "trip_type",
+    "value": "Buoy 10 salmon",
+    "source": {
+      "url": "https://www.rtguideservice.com/buoy-10-fishing-guides-trips",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Buoy 10 Fishing Guides describes both named captains working together on the same boat and their guided salmon trips."
+    },
+    "evidence_scope": "operator_advertises",
+    "relationship": {
+      "species": "Salmon",
+      "waterway": "Buoy 10"
+    },
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0002544",
+    "kind": "method",
+    "value": "Bottom fishing",
+    "source": {
+      "url": "https://www.rtguideservice.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Introducing Tom and Rocio Wick: the operator explicitly identifies both captains and their shared bottom fishing specialty."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0002544",
+    "kind": "trip_type",
+    "value": "Buoy 10 salmon",
+    "source": {
+      "url": "https://www.rtguideservice.com/buoy-10-fishing-guides-trips",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Buoy 10 Fishing Guides describes both named captains working together on the same boat and their guided salmon trips."
+    },
+    "evidence_scope": "operator_advertises",
+    "relationship": {
+      "species": "Salmon",
+      "waterway": "Buoy 10"
+    },
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0002656",
+    "kind": "method",
+    "value": "Bottom fishing",
+    "source": {
+      "url": "https://www.tradewindscharters.com/fleet.php",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Mariner vessel section names Captain Dan Zimmerman and lists light-tackle bottom fishing as a specialty."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0002805",
+    "kind": "trip_type",
+    "value": "Buoy 10 salmon",
+    "source": {
+      "url": "https://www.lowercolumbiaguide.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Salmon section explicitly promises fishing Buoy 10 out of Astoria; About section identifies RJ Bennett."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "relationship": {
+      "species": "Salmon",
+      "waterway": "Buoy 10"
+    }
+  },
+  {
+    "guide_id": "OG.0003047",
+    "kind": "species",
+    "value": "Albacore tuna",
+    "source": {
+      "url": "https://pfacharters.com/fishing-charters/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Guided albacore tuna trip and booking details; charter page identifies Lyle Klenski."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0003047",
+    "kind": "species",
+    "value": "Halibut",
+    "source": {
+      "url": "https://pfacharters.com/fishing-charters/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Guided halibut trip explicitly attributed to Captain Lyle; no black cod target inferred from the limit note."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0003071",
+    "kind": "method",
+    "value": "Bottom fishing",
+    "source": {
+      "url": "https://www.rockbottomfish.com/about",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Captain Neil Bohne and Oregon Destinations sections describe the outfit’s bottom fishing trips."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0003631",
+    "kind": "method",
+    "value": "Bottom fishing",
+    "source": {
+      "url": "https://www.roamaboutoutdoors.com/#BottomFishing",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Bottom Fishing / Lingcod trip section names Captain Pearson; About identifies Russell Pearson."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0003631",
+    "kind": "species",
+    "value": "Sablefish (black cod)",
+    "source": {
+      "url": "https://www.roamaboutoutdoors.com/#BottomFishing",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Operator lists sablefish among the targets on Captain Russell Pearson’s bottom-fishing trip."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "relationship": {
+      "species": "Sablefish (black cod)",
+      "method": "Bottom fishing"
+    }
+  },
+  {
+    "guide_id": "OG.0003800",
+    "kind": "method",
+    "value": "Bottom fishing",
+    "source": {
+      "url": "https://albeecoresportfishing.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Bottom Fishing trip in the operator price list; Captain Jon Albee introduction above it."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0003800",
+    "kind": "species",
+    "value": "Halibut",
+    "source": {
+      "url": "https://albeecoresportfishing.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Halibut trip in the operator price list; Captain Jon Albee introduction above it."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0003800",
+    "kind": "species",
+    "value": "Tuna",
+    "source": {
+      "url": "https://albeecoresportfishing.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Tuna trips in the operator price list and Captain Jon Albee’s first-person introduction."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "OG.0003904",
+    "kind": "trip_type",
+    "value": "Buoy 10 salmon",
+    "source": {
+      "url": "https://dgcolumbiaadventures.com/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Captain Don Gresham section describes guided trips for the Buoy 10 salmon run."
+    },
+    "evidence_scope": "operator_advertises",
+    "relationship": {
+      "species": "Salmon",
+      "waterway": "Buoy 10"
+    },
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "wa-126",
+    "kind": "species",
+    "value": "Albacore tuna",
+    "source": {
+      "url": "https://www.outlandercharters.com/listpage.asp?Category=Charter~Rates&Category2=Tuna~Trips",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Westport tuna trip names Jason as charter contact; operator-hosted albacore testimonial identifies Captain Jason Noorlander on the Uitlander."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "guide_id": "wa-126",
+    "kind": "species",
+    "value": "Halibut",
+    "source": {
+      "url": "https://www.outlandercharters.com/listpage.asp?Category=Charter~Rates&Category2=Halibut~Trips",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Sekiu halibut trip names Jason as charter contact; about page identifies owner-guide, and operator-hosted testimonial identifies him leading halibut trips."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true
+  }
+]

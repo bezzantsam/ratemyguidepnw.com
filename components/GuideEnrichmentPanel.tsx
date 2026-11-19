@@ -14,9 +14,7 @@ export default function GuideEnrichmentPanel({registration}:{registration:string
  if((!enrichment || (enrichment.advertisedWaters.length === 0 && !enrichment.sourceLinks?.length)) && !attributes.length)return null;
 
  return <section className="section card guide-enrichment" aria-labelledby="guide-enrichment-title">
-   <p className="eyebrow">PUBLIC SOURCE RESEARCH · LIMITED PILOT</p>
-   <h2 id="guide-enrichment-title">{enrichment?.advertisedWaters.length ? 'Publicly advertised fishing waters' : 'Public business sources'}</h2>
-   <p className="muted">These are named on linked operator or third-party pages, not verified departure ports, current bookings, active licenses, or endorsements by RateMyGuidePNW. Confirm availability directly before booking.</p>
+   <h2 id="guide-enrichment-title">{attributes.length ? 'Advertised trips and sources' : enrichment?.advertisedWaters.length ? 'Publicly advertised fishing waters' : 'Public business sources'}</h2>
    {operatorLink&&<p><a className="button" href={operatorLink} target="_blank" rel="noopener noreferrer">Visit listed operator page ↗</a><span className="muted">Check current trips, availability and booking directly with the operator.</span></p>}
    {!!enrichment?.searchAliases.length&&<p><strong>Other public search names:</strong> {enrichment?.searchAliases.join(' · ')}</p>}
    <ul className="guide-enrichment-waters">
@@ -38,14 +36,12 @@ export default function GuideEnrichmentPanel({registration}:{registration:string
      <p className="muted">A commercial roster listing reports an affiliation; it does not verify credentials or guarantee the listing is current.</p>
    </div> : null}
    {attributes.length>0&&<div>
-     <h3>Source-listed offerings and names</h3>
      {attributes.some(item=>new URL(item.source.url).hostname==='fixture.invalid')&&<p>Synthetic test fixture — not a real offering.</p>}
-     <p className="muted">These are source descriptions of a business or listing, not proof of individual expertise. Separate items do not establish a combined trip.</p>
      <ul>{attributes.map((item,index)=><li key={`${item.guide_id}-${item.kind}-${item.value}-${index}`}>
-       <strong>{item.kind.replace('_',' ')}: {item.value}</strong> · {item.source.source_type==='operator_site'?'Operator website':item.source.source_type==='industry_directory'?'Industry directory':'Third-party directory'} · <a href={item.source.url} target="_blank" rel="noopener noreferrer">Source ↗</a> · Reviewed {item.source.reviewed_on}
+       <strong>{item.value}</strong> · <a href={item.source.url} target="_blank" rel="noopener noreferrer" aria-label={`Source for ${item.value}`}>{item.source.source_type==='operator_site'?(item.kind==='person_name'||item.kind==='business_name'?'Operator page':'Trip details'):'Directory source'} ↗</a>
        {item.relationship&&<span> · Source explicitly connects: {[item.relationship.species,item.relationship.method,item.relationship.waterway].filter(Boolean).join(' · ')}</span>}
      </li>)}</ul>
    </div>}
-   <p className="muted">Public-facing names and advertised fisheries do not independently prove that two identities are the same person. Original registration details remain visible separately.</p>
+   <p className="muted">Confirm trip availability with the operator. Sources describe individual offerings and business names. Separate listings do not establish a combined trip or verify licensing.</p>
  </section>;
 }

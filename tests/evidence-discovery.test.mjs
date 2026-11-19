@@ -68,6 +68,25 @@ test('only explicitly provided relationships survive; malformed relationships ar
  const denied=clone(fixture[1]);denied.guide_id=connected.guide_id;denied.value=connected.relationship.method;denied.editorial_status='rejected';denied.publication_approved=false;
  assert.equal(approvedAttributes([connected,denied],known).length,0,'a rejected component blocks the relationship');
 });
+test('saltwater aliases match sourced offerings and keep regional identities distinct',()=>{
+ const base={business:'Shared Outfit',areas:[],advertisedWaters:[],searchAliases:[]};
+ const rows=[
+  {...base,id:'OG.0000047',name:'One',states:['Oregon'],advertisedSpecies:['Albacore tuna']},
+  {...base,id:'wa-001',name:'Two',states:['Washington'],advertisedSpecies:['Tuna','Sablefish (black cod)'],advertisedMethods:['Bottom fishing']},
+  {...base,id:'wa-002',name:'Black Cod',states:['Washington'],advertisedWaters:['Buoy 10'],advertisedSpecies:['Salmon']},
+  {...base,id:'OG.0000050',name:'Four',states:['Oregon'],advertisedTrips:['Buoy 10 salmon']},
+ ];
+ const filters={state:'All',sourceZone:'All areas',advertisedWater:'All advertised waters'};
+ const result=(text,scope={})=>Array.from(query.filterDirectoryEntries(rows,{...filters,...scope,query:text}),x=>x.id);
+ assert.deepEqual(result('tuna'),['OG.0000047','wa-001']);
+ assert.deepEqual(result('albacore'),['OG.0000047']);
+ assert.deepEqual(result('',{species:'Tuna'}),['OG.0000047','wa-001']);
+ assert.equal(url.parseDirectoryState('?state=Oregon&species=Tuna',rows).species,'Tuna');
+ assert.deepEqual(result('black cod'),['wa-001']);
+ assert.deepEqual(result('sablefish',{state:'Oregon'}),[]);
+ assert.deepEqual(result('bottomfish',{state:'Washington',method:'Bottom fishing'}),['wa-001']);
+ assert.deepEqual(result('Buoy 10 salmon'),['OG.0000050']);
+});
 test('production dataset is separate from pending research',()=>{
  assert.ok(Array.isArray(JSON.parse(read('lib/approved-guide-attributes.json'))));
  for(const path of ['lib/guide-attributes-server.ts','lib/directory.ts','components/GuideEnrichmentPanel.tsx'])assert.doesNotMatch(read(path),/BATCH13_EXTENDED_PROPOSAL|BATCH13_SOURCE_REVIEW/);
