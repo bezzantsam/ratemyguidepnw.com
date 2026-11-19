@@ -3,7 +3,7 @@ import Link from 'next/link';
 import {useEffect,useMemo,useRef,useState} from 'react';
 import {DEFAULT_DIRECTORY_STATE,DIRECTORY_PAGE_SIZE,directoryUrl,parseDirectoryState,type DirectoryState} from '@/lib/directory-url';
 import type {DirectoryEntry} from '@/lib/directory';
-import {directoryEntryInState,directoryMethodGroups,directoryFisheryFacets,directorySpeciesLabels,filterDirectoryEntries,guideSearchScore,locatedGuidePorts} from '@/lib/directory-query';
+import {directoryEntryInState,directoryFisheryFacets,directoryMethodGroups,directorySpeciesLabels,directorySpeciesMenu,filterDirectoryEntries,guideSearchScore,locatedGuidePorts} from '@/lib/directory-query';
 import {charterPorts,filterCharterOfferings,type CharterOffering} from '@/lib/charter-offerings';
 import {PUBLIC_ORIGIN} from '@/lib/canonical-share';
 import DirectoryEmptyState from './DirectoryEmptyState';
@@ -64,6 +64,7 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
   ...facets.flatMap(facet=>directorySpeciesLabels(facet.species)),
   ...scopedCharters.flatMap(offer=>directorySpeciesLabels(offer.species?[offer.species]:[])),
  ])].sort(),[facets,scopedCharters]);
+ const speciesMenu=directorySpeciesMenu(speciesOptions,species);
  const methodGroups=useMemo(()=>directoryMethodGroups([
   ...facets.flatMap(facet=>facet.methods),
   ...scopedCharters.flatMap(offer=>offer.method?[offer.method]:[]),
@@ -84,7 +85,7 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
   <div className="searchbar">
    <label>Captain, business, operating name, or registration
     <input ref={searchRef} type="search" value={q} maxLength={120} onChange={e=>change({query:e.target.value,page:1},true)}
-     placeholder="Try a guide name, halibut, or bottom fishing"/>
+     placeholder="Try a guide name, shad, squid, or bottom fishing"/>
    </label>
    <label>Area
     <select ref={areaRef} value={area} onChange={e=>change({area:e.target.value,page:1})}>
@@ -96,8 +97,14 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
      {waters.map(a=><option key={a} value={a}>{a==='All advertised waters'?'All waters':a}</option>)}
     </select>
    </label>
-   {speciesOptions.length>0&&<label>Species
-    <select ref={speciesRef} value={species} onChange={e=>change({species:e.target.value,page:1})}><option>All species</option>{speciesOptions.map(x=><option key={x}>{x}</option>)}</select>
+   {(speciesMenu.groups.length>0||speciesMenu.selectedOnly)&&<label>Species
+    <select ref={speciesRef} value={species} onChange={e=>change({species:e.target.value,page:1})}>
+     <option>All species</option>
+     {speciesMenu.selectedOnly&&<option value={species} hidden>{species}</option>}
+     {speciesMenu.groups.map(group=><optgroup key={group.label} label={group.label}>
+      {group.choices.map(choice=><option key={choice}>{choice}</option>)}
+     </optgroup>)}
+    </select>
    </label>}
    <label>Fishing methods
     <select ref={methodRef} value={method} onChange={e=>change({method:e.target.value,page:1})}>
@@ -146,8 +153,11 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
       {g.editorialSearchAliases?.map(alias=><p className="guide-meta" key={`${alias.value}:${alias.attributedTo}`}>Editorial search name supplied by {alias.attributedTo}: {alias.value}</p>)}
       {!directoryEntryInState(g,state)&&<p className="guide-meta">{state} fishing offering</p>}
       {labels.length>0&&
-        <p className="guide-meta">Fishing targets and trips: {labels.map(label=>
-          g.businessAdvertisedOfferings?.includes(label) ? `${label} (operator team)` : label).join(' · ')}</p>}
+        <p className="guide-meta">Fishing targets and trips: {labels.map(label=>{
+          const scope=g.businessAdvertisedOfferings?.includes(label) ? ' (operator team)' : '';
+          const category=methods.includes(label)&&!targets.includes(label) ? ' (method)' : '';
+          return label+category+scope;
+        }).join(' · ')}</p>}
       {editorial.map(fact=><p className="guide-meta" key={fact.value}>Editorial fishing note supplied by {fact.attributedTo}: {fact.value}</p>)}
       {waters.length>0&&<p className="guide-meta">Advertised waters (source-linked): {waters.slice(0,3).join(' · ')}{waters.length>3?' · + more':''}</p>}
       <p className="guide-meta">{g.source==='Oregon registry'?'Imported registration zones':'Imported directory areas / notes'}: {g.areas.slice(0,3).join(' · ')||'Not specified'}{g.areas.length>3?' · + more':''}</p>
