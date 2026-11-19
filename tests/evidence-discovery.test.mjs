@@ -387,4 +387,11 @@ test('method and gear catalog choices require a sourced method even when an alia
  const selected=url.parseDirectoryState('?method=electric+pot+puller',guides,charterRows);
  assert.equal(charters.filterCharterOfferings(charterRows,selected).length,1);
  assert.equal(charters.filterCharterOfferings(charterRows,{...url.DEFAULT_DIRECTORY_STATE,query:'automatic pot puller'})[0]?.method,'Automatic pot puller');
+ const squid=[{...offer,operator:'Tengu Charters',city:'Edmonds',state:'Washington',species:'Squid'}];
+ for(const query of ['squid jigging','Edmonds squid jigging','Edmonds squidding']){
+  assert.equal(charters.filterCharterOfferings(squid,{...url.DEFAULT_DIRECTORY_STATE,query}).length,1,query);
+  const selected=url.parseDirectoryState('?q='+encodeURIComponent(query)+'&method=Squid+jigging',[],squid);
+  assert.equal(selected.method,'Squid jigging');
+  assert.equal(charters.filterCharterOfferings(squid,selected).length,0,query);
+ }
 });

@@ -49,7 +49,7 @@ for (const option of fishingOptions) {
  for (const key of [option.id, option.label]) catalogMethods.set(normalizeGuideSearch(key), option);
 }
 export function knownDirectoryMethod(value:string):FishingOption|undefined {
- return catalogMethods.get(normalizeGuideSearch(canonicalFisheryLabel(value)));
+ return catalogMethods.get(normalizeGuideSearch(value))??catalogMethods.get(normalizeGuideSearch(canonicalFisheryLabel(value)));
 }
 export function directoryMethodLabel(value:string):string {
  return knownDirectoryMethod(value)?.label ?? canonicalFisheryLabel(value);
@@ -65,9 +65,13 @@ function isKnownFishery(value:string):boolean {
 }
 export function matchesFisherySearch(query:string,offerings:string[],methods:string[]=offerings):boolean|null {
  const choice=knownDirectoryMethod(query);
- if(choice)return methods.some(value=>directoryMethodLabel(value)===choice.label);
- if(!isKnownFishery(query))return null;
  const label=canonicalFisheryLabel(query);
+ if(choice){
+  if(methods.some(value=>directoryMethodLabel(value)===choice.label))return true;
+  // Free text can name a fishery as well as a method, such as squidding.
+  if(choice.kind==='gear'||label===choice.label||!canonicalLabels.has(normalizeGuideSearch(query)))return false;
+ }
+ if(!isKnownFishery(query))return null;
  const accepted=[label,...(broadSpecies.get(label)??[])];
  return offerings.some(value=>accepted.includes(canonicalFisheryLabel(value)));
 }
