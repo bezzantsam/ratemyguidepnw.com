@@ -132,7 +132,8 @@ test('Sam’s corrections find the existing Rowe, Menefee and Wolfe records',()=
  assert.equal(matches({species:'Halibut',state:'Oregon'}).includes(toby.id),false);
  assert.equal(matches({species:'Halibut',state:'Washington'}).includes(walter.id),false);
  assert.equal(url.parseDirectoryState('?state=Oregon&species=Halibut',entries).species,'Halibut');
- assert.equal(url.parseDirectoryState('?state=Washington&species=Halibut',entries).species,'All species');
+ assert.equal(url.parseDirectoryState('?state=Washington&species=Halibut',entries).species,'Halibut');
+ assert.ok(matches({species:'Halibut',state:'Washington'}).includes('wa-126'));
 });
 
 test('editorial corrections preserve all original profiles, IDs, fields and unrelated attributes',()=>{
