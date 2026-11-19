@@ -6,7 +6,12 @@ import ts from 'typescript';
 
 const source=readFileSync('lib/canonical-share.ts','utf8');
 const code=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText;
-const exports={};vm.runInNewContext(code,{exports});
+function load(env={}) {
+  const exports={};
+  vm.runInNewContext(code,{exports,process:{env}});
+  return exports;
+}
+const exports=load();
 
 test('profile and review links use the public origin and preserve a stable guide identity',()=>{
   for(const path of ['/guides/og-0002254','/guides/og-0001225-f-f','/washington/wa-000']) {
@@ -75,4 +80,27 @@ test('social metadata points to the canonical guide and makes no verification or
   assert.match(metadata.title,/Example Guide/);
   assert.match(metadata.description,/Example Fishing/);
   assert.doesNotMatch(metadata.description,/verified|licensed|five.star/i);
+});
+
+test('only a production deployment with explicit cutover uses the new public origin',()=>{
+  const profile='/guides/og-0002254';
+  const cutover={NEXT_PUBLIC_RMG_CANONICAL_CUTOVER_ENABLED:'true'};
+  for (const env of [
+    {},
+    cutover,
+    {...cutover,NEXT_PUBLIC_VERCEL_ENV:'preview'},
+    {...cutover,NEXT_PUBLIC_VERCEL_ENV:'development'},
+    {NEXT_PUBLIC_VERCEL_ENV:'production'},
+    {NEXT_PUBLIC_VERCEL_ENV:'production',NEXT_PUBLIC_RMG_CANONICAL_CUTOVER_ENABLED:'false'},
+  ]) {
+    const share=load(env);
+    assert.equal(share.canonicalProfileUrl(profile),'https://ratemyguidepnw.vercel.app'+profile);
+    assert.equal(share.profileShareMetadata(profile,'Guide',null).openGraph.siteName,'Rate Your Guide');
+  }
+  const share=load({...cutover,NEXT_PUBLIC_VERCEL_ENV:'production'});
+  assert.equal(share.canonicalReviewRequestUrl(profile),'https://rateyourguide.com'+profile+'?intent=review#write-review');
+  const metadata=share.profileShareMetadata(profile,'Guide',null);
+  assert.equal(metadata.alternates.canonical,'https://rateyourguide.com'+profile);
+  assert.equal(metadata.openGraph.images[0].url,'https://rateyourguide.com/share-card.png');
+  assert.equal(share.guideAuthRedirectPath(profile+'?intent=review#write-review',profile),profile+'?intent=review');
 });

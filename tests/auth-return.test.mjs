@@ -8,7 +8,7 @@ const require=createRequire(import.meta.url),ts=require('typescript');
 function compile(path,imports={},globals={}) {
   const code=ts.transpileModule(readFileSync(path,'utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2020,module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX}}).outputText;
   const exports={};
-  vm.runInNewContext(code,{exports,require:name=>imports[name]??require(name),...globals});
+  vm.runInNewContext(code,{exports,process:{env:{}},require:name=>imports[name]??require(name),...globals});
   return exports;
 }
 function find(node,predicate) {
@@ -108,7 +108,7 @@ test('moderator sign-in offers only email and returns to the same origin /admin 
  assert.equal(h.otp.options.emailRedirectTo,'https://preview.example/admin');
  assert.equal(h.otp.options.shouldCreateUser,false);
  await new Promise(setImmediate);
- assert.ok(find(h.render(),n=>n.props?.children==='Check your email for the sign-in link.'));
+ assert.ok(find(h.render(),n=>n.props?.children==='Check your email for your Rate Your Guide sign-in link.'));
  h.start();await new Promise(setImmediate);
  h.emit({user:{email:'moderator@example.invalid'}});
  assert.ok(find(h.render(),n=>n.type==='button'&&n.props.children==='Sign out'));
@@ -128,4 +128,16 @@ test('moderator sign-in shows bounded errors and allows retries after provider o
   assert.ok(find(h.render(),n=>n.props?.children==='Couldn’t send a sign-in link. Check your email address and try again.'));
   assert.equal(send(h.render()).props.disabled,false);
  }
+});
+
+test('legacy and new public hosts keep guide and moderator email callbacks on the initiating host',()=>{
+  for(const origin of ['https://ratemyguidepnw.vercel.app','https://rateyourguide.com']){
+    for(const moderator of [false,true]){
+      const h=setup({moderator});
+      h.location.origin=origin;
+      find(h.render(),n=>n.type==='input').props.onChange({target:{value:'fixture@example.invalid'}});
+      find(h.render(),n=>n.type==='button'&&n.props.children==='Email me a sign-in link').props.onClick();
+      assert.equal(h.otp.options.emailRedirectTo,origin+(moderator?'/admin':h.profile+'?intent=review'));
+    }
+  }
 });

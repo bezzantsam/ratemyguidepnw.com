@@ -7,7 +7,7 @@ const read=p=>readFileSync(p,'utf8');
 function load(path,dependencies={}){
  const exports={};
  const js=ts.transpileModule(read(path),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020,esModuleInterop:true}}).outputText;
- vm.runInNewContext(js,{exports,URL,URLSearchParams,Date,Set,Map,require:name=>{if(dependencies[name])return dependencies[name];throw Error(name)}});
+ vm.runInNewContext(js,{exports,URL,URLSearchParams,Date,Set,Map,process:{env:{}},require:name=>{if(dependencies[name])return dependencies[name];throw Error(name)}});
  return exports;
 }
 const evidence=load('lib/guide-attributes.ts',{'./guide-evidence-holds.json':JSON.parse(read('lib/guide-evidence-holds.json'))});
@@ -192,11 +192,12 @@ test('empty approved coverage hides controls while approved fixtures render them
  const requireNode=createRequire(import.meta.url);
  const recovery=load('lib/directory-recovery.ts',{'./directory-query':query,'./directory-url':url});
  const charters=load('lib/charter-offerings.ts',{'./directory-query':query});
+ const canonical=load('lib/canonical-share.ts');
  const emptyState={};
  vm.runInNewContext(ts.transpileModule(read('components/DirectoryEmptyState.tsx'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020,jsx:ts.JsxEmit.ReactJSX,esModuleInterop:true}}).outputText,{exports:emptyState,require:name=>name==='@/lib/directory-recovery'?recovery:name.endsWith('.module.css')?{}:requireNode(name)});
  const exports={};
  const js=ts.transpileModule(read('components/UnifiedSearch.tsx'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020,jsx:ts.JsxEmit.ReactJSX,esModuleInterop:true}}).outputText;
- vm.runInNewContext(js,{exports,require:name=>name==='@/lib/directory-url'?url:name==='@/lib/directory-query'?query:name==='@/lib/charter-offerings'?charters:name==='./DirectoryEmptyState'?emptyState:requireNode(name)});
+ vm.runInNewContext(js,{exports,require:name=>name==='@/lib/directory-url'?url:name==='@/lib/directory-query'?query:name==='@/lib/charter-offerings'?charters:name==='@/lib/canonical-share'?canonical:name==='./DirectoryEmptyState'?emptyState:requireNode(name)});
  const base={id:'OG.0000047',name:'Example',business:null,states:['Oregon'],areas:[],advertisedWaters:[],searchAliases:[],href:'/guides/example',source:'Oregon registry'};
  const empty=renderToStaticMarkup(React.createElement(exports.default,{entries:[base]}));
  assert.doesNotMatch(empty,/>Species|Source-listed fishing method/);

@@ -7,7 +7,7 @@ import ts from 'typescript';
 const require=createRequire(import.meta.url);
 function compile(path,imports={}) {
   const code=ts.transpileModule(readFileSync(path,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX}}).outputText;
-  const exports={};vm.runInNewContext(code,{exports,require:name=>imports[name]??require(name)});return exports;
+  const exports={};vm.runInNewContext(code,{exports,process:{env:{}},require:name=>imports[name]??require(name)});return exports;
 }
 const share=compile('lib/canonical-share.ts');
 const stub={__esModule:true,default:()=>null};

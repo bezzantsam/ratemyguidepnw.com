@@ -5,6 +5,7 @@ import {DEFAULT_DIRECTORY_STATE,DIRECTORY_PAGE_SIZE,directoryUrl,parseDirectoryS
 import type {DirectoryEntry} from '@/lib/directory';
 import {directorySpeciesLabels,filterDirectoryEntries,guideSearchScore,locatedGuidePorts} from '@/lib/directory-query';
 import {charterPorts,filterCharterOfferings,type CharterOffering} from '@/lib/charter-offerings';
+import {PUBLIC_ORIGIN} from '@/lib/canonical-share';
 import DirectoryEmptyState from './DirectoryEmptyState';
 
 const noCharters: CharterOffering[] = [];
@@ -18,6 +19,7 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
  const {query:q,state,area,waterway,species,method,page}=selection;
  const routeBase=reviewMode?'/write-review':'/guides';
  const resultsUrl=directoryUrl(selection,home?'/':routeBase);
+ const shareUrl=PUBLIC_ORIGIN+directoryUrl(selection,routeBase);
  const size=DIRECTORY_PAGE_SIZE;
  useEffect(()=>{
   function restore(){
@@ -39,8 +41,7 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
   }
  }
  async function copyLink(){
-  const url=window.location.origin+routeBase+directoryUrl(selection).slice('/guides'.length);
-  try{if(!navigator.clipboard?.writeText)throw new Error('Clipboard unavailable');await navigator.clipboard.writeText(url);setCopyStatus('Search link copied.');setFallback(false)}
+  try{if(!navigator.clipboard?.writeText)throw new Error('Clipboard unavailable');await navigator.clipboard.writeText(shareUrl);setCopyStatus('Search link copied.');setFallback(false)}
   catch{setFallback(true);setCopyStatus('Copy the search link from the field below.')}
  }
  const filtered=useMemo(()=>filterDirectoryEntries(entries,{
@@ -108,7 +109,7 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
    <Link href={directoryUrl(selection)}>Open search in directory</Link>
    <button type="button" onClick={()=>change(DEFAULT_DIRECTORY_STATE)}>Clear all filters</button>
    <span role="status">{copyStatus}</span>
-   {fallback&&<label>Search link<input readOnly value={typeof window==='undefined'?'':window.location.origin+routeBase+directoryUrl(selection).slice('/guides'.length)} onFocus={e=>e.currentTarget.select()}/></label>}
+   {fallback&&<label>Search link<input readOnly value={shareUrl} onFocus={e=>e.currentTarget.select()}/></label>}
   </div>
   {(q||state!=='All'||area!=='All areas'||waterway!=='All advertised waters'||species!=='All species'||method!=='All methods')&&<div className="active-filters" aria-label="Active filters"><strong>Active filters:</strong>
    {q&&<button type="button" onClick={()=>{change({query:'',page:1});searchRef.current?.focus()}}>Remove search: {q}</button>}

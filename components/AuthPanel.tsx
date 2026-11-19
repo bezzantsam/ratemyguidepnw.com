@@ -1,7 +1,7 @@
 'use client';
 import {useEffect,useRef,useState} from 'react';
 import {createClient} from '@supabase/supabase-js';
-import {guideAuthRedirectPath,guideAuthRestoredPath} from '@/lib/canonical-share';
+import {BRAND_NAME,guideAuthRedirectPath,guideAuthRestoredPath} from '@/lib/canonical-share';
 import {rememberReviewSearch,takeReviewSearch} from '@/lib/review-search-return';
 const url=process.env.NEXT_PUBLIC_SUPABASE_URL,key=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 export const client=url&&key?createClient(url,key):null;
@@ -57,7 +57,7 @@ export default function AuthPanel({onSignedIn,profilePath,moderator=false}:{onSi
     email:email.trim(),
     options:{emailRedirectTo:redirectTo(),...(moderator?{shouldCreateUser:false}:{})},
    });
-   setMessage(error?(moderator?unavailable:error.message):'Check your email for the sign-in link.');
+   setMessage(error?(moderator?unavailable:error.message):`Check your email for your ${BRAND_NAME} sign-in link.`);
   }catch{
    setMessage(unavailable);
   }finally{

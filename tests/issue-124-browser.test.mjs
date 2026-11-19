@@ -110,7 +110,7 @@ test(`rating-first discovery and profile availability (${mode})`,{timeout:120000
    await send.click();
    await moderatorPage.getByText('Couldn’t send a sign-in link. Check your email address and try again.').waitFor();
    await send.click();
-   await moderatorPage.getByText('Check your email for the sign-in link.').waitFor();
+   await moderatorPage.getByText('Check your email for your Rate Your Guide sign-in link.').waitFor();
    assert.equal(attempts,2);
    await moderatorPage.waitForLoadState('networkidle');await moderatorContext.close();
 

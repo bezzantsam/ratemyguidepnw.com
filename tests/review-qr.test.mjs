@@ -6,7 +6,7 @@ import ts from 'typescript';
 
 function compile(path,imports={}) {
   const code=ts.transpileModule(readFileSync(path,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText;
-  const exports={};vm.runInNewContext(code,{exports,require:name=>imports[name]});return exports;
+  const exports={};vm.runInNewContext(code,{exports,process:{env:{}},require:name=>imports[name]});return exports;
 }
 const canonical=compile('lib/canonical-share.ts');
 const vendor=compile('lib/vendor/qrcodegen.ts');

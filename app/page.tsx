@@ -8,7 +8,7 @@ export default function Home() {
   const claimsEnabled=enabled&&process.env.NEXT_PUBLIC_RMG_CLAIMS_ENABLED==='true';
   return (
     <main className="home-search">
-      <p className="eyebrow">RATE MY GUIDE PNW</p>
+      <p className="eyebrow">OREGON AND WASHINGTON</p>
       <h1>Rate your guide.</h1>
       <p className="lead">
         Find the guide you fished with and share your firsthand experience.

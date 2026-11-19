@@ -1,7 +1,7 @@
 'use client';
 
 import {useState, type ReactNode} from 'react';
-import {canonicalProfileUrl, canonicalReviewRequestUrl} from '@/lib/canonical-share';
+import {BRAND_NAME, canonicalProfileUrl, canonicalReviewRequestUrl} from '@/lib/canonical-share';
 
 /** Enable review-request actions only when the real review destination is available. */
 export function ProfileSharing({profilePath, guideName, reviewAvailable, primaryAction}: {profilePath:string; guideName:string; reviewAvailable:boolean; primaryAction?:ReactNode}) {
@@ -22,7 +22,7 @@ export function ProfileSharing({profilePath, guideName, reviewAvailable, primary
     setStatus('');setFallback('');
     if (!navigator.share) {await copy(profileUrl);return;}
     try {
-      await navigator.share({title:`${guideName} on RateMyGuidePNW`,text:`View ${guideName}'s guide profile on RateMyGuidePNW.`,url:profileUrl});
+      await navigator.share({title:`${guideName} on ${BRAND_NAME}`,text:`View ${guideName}'s guide profile on ${BRAND_NAME}.`,url:profileUrl});
       setStatus('Sharing dialog closed.');
     } catch (error) {
       if (error instanceof Error && error.name==='AbortError') return;

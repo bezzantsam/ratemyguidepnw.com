@@ -81,7 +81,7 @@ export default function GuideTrustPanel({
           </div>
           <span className="trust-state trust-state-unknown">Trip proof not certified</span>
           <p>
-            RateMyGuidePNW requires an account and moderation for review publication.
+            Rate Your Guide requires an account and moderation for review publication.
             Those safeguards alone do not independently prove that a fishing trip occurred.
           </p>
           <p className="trust-note">

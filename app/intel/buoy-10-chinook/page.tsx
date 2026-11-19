@@ -13,7 +13,7 @@ import { directoryEntries } from '@/lib/directory';
 import { chinookRelease } from '@/lib/chinook-intel';
 
 export const metadata: Metadata = {
-  title: 'Page not found | RateMyGuidePNW',
+  title: 'Page not found | Rate Your Guide',
   description: 'This page is not available.',
 };
 
@@ -29,7 +29,7 @@ export default function Buoy10ChinookIntel() {
   return (
     <main className="intel-page">
       <div className="intel-breadcrumb">
-        <Link href="/">RateMyGuidePNW</Link><span aria-hidden="true">/</span>
+        <Link href="/">Rate Your Guide</Link><span aria-hidden="true">/</span>
         <span>Chinook Intel</span>
       </div>
 

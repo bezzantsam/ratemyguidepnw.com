@@ -94,7 +94,7 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
   assert.equal(await page.evaluate(()=>document.activeElement?.getAttribute('type')),'search','removing a search returns focus to the search box');
   await page.evaluate(()=>Object.defineProperty(navigator,'clipboard',{value:undefined,configurable:true}));
   await page.getByRole('button',{name:'Copy search link'}).click();
-  assert.ok((await page.getByLabel('Search link',{exact:true}).inputValue()).startsWith(origin+'/guides'));
+  assert.ok((await page.getByLabel('Search link',{exact:true}).inputValue()).startsWith('https://ratemyguidepnw.vercel.app/guides'));
   await page.goto(`${origin}/guides/og-0000047?returnTo=${encodeURIComponent('https://evil.test')}`,{waitUntil:'domcontentloaded'});
   assert.equal(await page.getByRole('link',{name:'← Search guides'}).getAttribute('href'),'/guides');
   await page.goto(origin,{waitUntil:'domcontentloaded'});

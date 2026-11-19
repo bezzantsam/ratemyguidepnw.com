@@ -7,7 +7,7 @@ const require=createRequire(import.meta.url);
 const ts=require('typescript');
 function compile(path,imports={},globals={}) {
   const code=ts.transpileModule(readFileSync(path,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX}}).outputText;
-  const exports={};vm.runInNewContext(code,{exports,require:name=>imports[name]??require(name),...globals});return exports;
+  const exports={};vm.runInNewContext(code,{exports,process:{env:{}},require:name=>imports[name]??require(name),...globals});return exports;
 }
 const canonical=compile('lib/canonical-share.ts');
 function harness(navigator,reviewAvailable=false,extra={}) {
@@ -29,6 +29,7 @@ test('native sharing uses the canonical profile, and makes no post-publication c
   const render=harness({share:async data=>{shared=data}});
   button(render(),'Share profile').props.onClick();await flush();
   assert.equal(shared.url,'https://ratemyguidepnw.vercel.app/guides/og-0002254');
+  assert.equal(shared.title,'Example Guide on Rate Your Guide');
   assert.match(find(render(),node=>node.props?.role==='status').props.children,/dialog closed/i);
   assert.doesNotMatch(find(render(),node=>node.props?.role==='status').props.children,/published|posted/i);
   assert.equal(button(render(),'Copy review request link'),undefined);

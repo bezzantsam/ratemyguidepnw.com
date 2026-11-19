@@ -1,5 +1,14 @@
-/** Public share links are independent of the current request or preview host. */
-export const PUBLIC_ORIGIN = 'https://ratemyguidepnw.vercel.app';
+export const BRAND_NAME = 'Rate Your Guide';
+const VERCEL_FALLBACK_ORIGIN = 'https://ratemyguidepnw.vercel.app';
+const CUSTOM_PUBLIC_ORIGIN = 'https://rateyourguide.com';
+
+// Client and server bundles must agree. Preview, development and builds
+// without the production marker always keep the existing public origin.
+export const PUBLIC_ORIGIN =
+  process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' &&
+  process.env.NEXT_PUBLIC_RMG_CANONICAL_CUTOVER_ENABLED === 'true'
+    ? CUSTOM_PUBLIC_ORIGIN
+    : VERCEL_FALLBACK_ORIGIN;
 const PROFILE_PATH = /^\/(?:guides\/og-\d{7}(?:-[a-z0-9]+)*|washington\/wa-\d{3,})$/;
 const REVIEW_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -61,13 +70,13 @@ export function profileShareMetadata(profilePath: string, name: string, business
   const url = canonicalProfileUrl(profilePath);
   const person = name.trim();
   if (!person) throw new Error('A profile name is required');
-  const title = `${person} | RateMyGuidePNW`;
-  const description = `${person}${business?.trim() ? ` · ${business.trim()}` : ''}. Browse this fishing guide listing on RateMyGuidePNW.`;
+  const title = `${person} | ${BRAND_NAME}`;
+  const description = `${person}${business?.trim() ? ` · ${business.trim()}` : ''}. Browse this fishing guide listing on ${BRAND_NAME}.`;
   return {
     title,
     description,
     alternates:{canonical:url},
-    openGraph:{type:'website' as const,url,title,description,siteName:'RateMyGuidePNW',images:[{url:`${PUBLIC_ORIGIN}/share-card.png`,width:1200,height:630,alt:'RateMyGuidePNW fishing guide directory'}]},
+    openGraph:{type:'website' as const,url,title,description,siteName:BRAND_NAME,images:[{url:`${PUBLIC_ORIGIN}/share-card.png`,width:1200,height:630,alt:`${BRAND_NAME} fishing guide directory`}]},
     twitter:{card:'summary_large_image' as const,title,description,images:[`${PUBLIC_ORIGIN}/share-card.png`]},
   };
 }

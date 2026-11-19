@@ -27,7 +27,7 @@ test('ordinary production data contains no synthetic discovery or unapproved con
   await page.waitForURL(`${origin}/write-review`);
   await page.getByText('Review submissions are currently unavailable.',{exact:false}).waitFor();
   await page.getByRole('link',{name:'About',exact:true}).click();
-  await page.getByText('RateMyGuidePNW helps anglers find fishing guides, read reviews, and share their experiences. Our goal is to make choosing a fishing guide easier and more transparent.').waitFor();
+  await page.getByText('Rate Your Guide helps anglers find fishing guides, read reviews, and share their experiences. Our goal is to make choosing a fishing guide easier and more transparent.').waitFor();
   await page.setViewportSize({width:375,height:812});await page.goto(origin,{waitUntil:'domcontentloaded'});
   assert.equal(await page.getByRole('link',{name:'Write a Review',exact:true}).count(),1);
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+1),'home does not overflow');

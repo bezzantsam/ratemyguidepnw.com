@@ -16,7 +16,7 @@ test('RMG homepage keeps directory search and does not promote the separate rese
 });
 test('About uses the approved review-first copy without research promotion',()=>{
   const source=read('app/about/page.tsx');
-  assert.match(source,/RateMyGuidePNW helps anglers find fishing guides, read reviews, and share their experiences\. Our goal is to make choosing a fishing guide easier and more transparent\./);
+  assert.match(source,/Rate Your Guide helps anglers find fishing guides, read reviews, and share their experiences\. Our goal is to make choosing a fishing guide easier and more transparent\./);
   assert.doesNotMatch(source,/Chinook|Chrome|Real trips\. Real talk\./i);
 });
 test('main navigation prioritizes reviews and keeps research out of the directory',()=>{

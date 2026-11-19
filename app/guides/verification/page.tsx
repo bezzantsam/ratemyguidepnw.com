@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { ArrowLeft, ClipboardList, KeyRound, ShieldAlert, UserRoundCheck } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'What Guide Verification Means | RateMyGuidePNW',
+  title: 'What Guide Verification Means | Rate Your Guide',
   description: 'Learn what a source listing establishes, what licenses and claimed pages do not prove, and how guide trip reviews are moderated.',
 };
 

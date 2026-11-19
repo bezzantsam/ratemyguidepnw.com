@@ -1,4 +1,4 @@
-# RateMyGuidePNW — read-only directory launch candidate
+# Rate Your Guide — Oregon and Washington fishing guide directory
 
 Independent Oregon and Washington fishing-guide discovery, built with Next.js App Router and TypeScript. Registry listings and attributed business information are not current license verification, personal endorsements, ownership verification or booking availability.
 
@@ -55,3 +55,21 @@ For deliberately staged changes, `git write-tree` supplies the test tree; unstag
 See `docs/qa/read-only-launch-handoff.md` and `docs/qa/dependency-reproducibility.md`. Vercel's repository engine override selects Node 22.x for a future authorized deployment, with a frozen install command. Its minor/patch versions remain platform-managed; no existing hosted deployment or setting is changed by these files.
 
 Before release, review the exact candidate and CI evidence, confirm the intended hosting project/domain and rollback target, and obtain explicit merge/deployment/indexing approval. The candidate remains pre-launch/noindex. Backend migrations and local authorization/storage proposals are separate work: do not apply them or enable writes as part of the directory release.
+
+## Public domain cutover
+
+Profile metadata, shared profile and review links, QR destinations, and copied search
+links use the same public origin. A Vercel Production build with
+`NEXT_PUBLIC_RMG_CANONICAL_CUTOVER_ENABLED=true` emits `https://rateyourguide.com`.
+Other builds emit the existing `https://ratemyguidepnw.vercel.app` origin. The
+cutover variable is public build configuration and takes effect in a fresh build.
+Use Vercel's automatically exposed `NEXT_PUBLIC_VERCEL_ENV` for the environment
+check. An absent environment marker keeps the fallback.
+
+Keep the cutover variable unset until the public domain and sign-in have been
+verified. Keep the Vercel fallback available for previously shared URLs. Existing
+guide paths, rate intent, published-review fragments and search queries resolve
+on either app host. Application sign-in returns to the requesting app host,
+including protected QA when authorized. `auth.rateyourguide.com` is the chosen
+sender domain. SMTP, Auth delivery templates, and provider return URL approval
+are configured outside this repository.

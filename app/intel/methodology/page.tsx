@@ -7,7 +7,7 @@ import reviewedHistory from '@/data/chinook-2026-reviewed.json';
 import './methodology.css';
 
 export const metadata: Metadata = {
-  title: 'Page not found | RateMyGuidePNW',
+  title: 'Page not found | Rate Your Guide',
   description: 'This page is not available.',
 };
 
@@ -43,7 +43,7 @@ export default function ChinookMethodology() {
       <section className="methodology-heading">
         <p className="methodology-eyebrow"><BookOpen size={16} aria-hidden="true" /> DATA TRANSPARENCY</p>
         <h1>Show the evidence.<br/><em>Explain the limits.</em></h1>
-        <p>When you see a Chinook number on RateMyGuidePNW, you should be able to tell who measured it, what it means, and what we still do not know.</p>
+        <p>When you see a Chinook number on Rate Your Guide, you should be able to tell who measured it, what it means, and what we still do not know.</p>
       </section>
 
       <section className="methodology-number" aria-labelledby="method-example">
