@@ -226,6 +226,63 @@
     }
   },
   {
+    "guide_id": "OG.0000989",
+    "kind": "species",
+    "value": "Halibut",
+    "source": {
+      "url": "https://lancefisherfishing.com/locations/astoria/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "2026 Astoria Halibut and Lingcod Season; Astoria FAQ on fishing targets"
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "offering_scope": "operator_business",
+    "location": {
+      "city": "Astoria",
+      "state": "OR"
+    }
+  },
+  {
+    "guide_id": "OG.0000989",
+    "kind": "species",
+    "value": "Albacore tuna",
+    "source": {
+      "url": "https://lancefisherfishing.com/locations/astoria/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Astoria Tuna Fishing"
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "offering_scope": "operator_business",
+    "location": {
+      "city": "Astoria",
+      "state": "OR"
+    }
+  },
+  {
+    "guide_id": "OG.0000989",
+    "kind": "method",
+    "value": "Bottom fishing",
+    "source": {
+      "url": "https://lancefisherfishing.com/locations/astoria/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Astoria Bottom Fishing; 2026 Astoria Bottom Fishing Season"
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "offering_scope": "operator_business",
+    "location": {
+      "city": "Astoria",
+      "state": "OR"
+    }
+  },
+  {
     "guide_id": "OG.0001064",
     "kind": "method",
     "value": "Bottom fishing",
@@ -628,6 +685,87 @@
     },
     "editorial_status": "approved",
     "publication_approved": true
+  },
+  {
+    "guide_id": "wa-050",
+    "kind": "species",
+    "value": "Halibut",
+    "source": {
+      "url": "https://allriversguideservice.com/westport-halibut-charters/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "How Our Guided Trips Work"
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "offering_scope": "operator_business",
+    "location": {
+      "city": "Westport",
+      "state": "WA"
+    },
+    "supporting_sources": [
+      {
+        "url": "https://allriversguideservice.com/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Ocean Charters has a dedicated Westport trip. The home page names Mark Coleman as team lead. The published offering is made by his company."
+      }
+    ]
+  },
+  {
+    "guide_id": "wa-050",
+    "kind": "species",
+    "value": "Albacore tuna",
+    "source": {
+      "url": "https://allriversguideservice.com/westport-albacore-fishing/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Westport Albacore Tuna Fishing Trips"
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "offering_scope": "operator_business",
+    "location": {
+      "city": "Westport",
+      "state": "WA"
+    },
+    "supporting_sources": [
+      {
+        "url": "https://allriversguideservice.com/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Ocean Charters has a dedicated Westport trip. The home page names Mark Coleman as team lead. The published offering is made by his company."
+      }
+    ]
+  },
+  {
+    "guide_id": "wa-050",
+    "kind": "method",
+    "value": "Bottom fishing",
+    "source": {
+      "url": "https://allriversguideservice.com/westport-bottom-fishing-charters/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Westport Bottom Fishing Charters for Lingcod and Rockfish"
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "offering_scope": "operator_business",
+    "location": {
+      "city": "Westport",
+      "state": "WA"
+    },
+    "supporting_sources": [
+      {
+        "url": "https://allriversguideservice.com/",
+        "source_type": "operator_site",
+        "reviewed_on": "2026-11-19",
+        "locator": "Ocean Charters has a dedicated Westport trip. The home page names Mark Coleman as team lead. The published offering is made by his company."
+      }
+    ]
   },
   {
     "kind": "trip_type",

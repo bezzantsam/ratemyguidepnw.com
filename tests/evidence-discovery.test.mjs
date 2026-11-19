@@ -94,6 +94,21 @@ test('operator team scope stays attached to its approved trip only',()=>{
  assert.equal(approvedAttributes([{...item,kind:'species'}],known).length,0);
  assert.equal(approvedAttributes([{...item,offering_scope:'unknown'}],known).length,0);
 });
+test('coastal operators have one approved fact per exact departure and retain trip sources',()=>{
+ const ids=new Set(['OG.0000989','wa-050']);
+ const rows=approvedAttributes(JSON.parse(read('lib/approved-guide-attributes.json')),ids);
+ const coastal=rows.filter(row=>row.offering_scope==='operator_business');
+ const facts=Array.from(coastal,row=>[row.guide_id,row.location.state,row.location.city,row.kind,row.value].join('|').toLowerCase());
+ assert.equal(facts.length,6);
+ assert.equal(new Set(facts).size,6);
+ assert.equal(rows.filter(row=>row.guide_id==='OG.0000989'&&row.value==='Buoy 10 salmon').length,1);
+ const westport=coastal.filter(row=>row.guide_id==='wa-050');
+ assert.ok(westport.every(row=>row.location.city==='Westport'&&row.location.state==='WA'&&row.source.url.includes('/westport-')));
+ assert.ok(westport.every(row=>row.supporting_sources.length===1&&row.supporting_sources[0].url==='https://allriversguideservice.com/'));
+ const fact=westport[0];
+ assert.equal(approvedAttributes([{...fact,location:undefined}],ids).length,0);
+ assert.equal(approvedAttributes([{...fact,supporting_sources:[{...fact.source,url:'http://example.com'}]}],ids).length,0);
+});
 test('charter evidence stays outside guide attribution and matches the same sourced offering by port and alias',()=>{
  const raw=JSON.parse(read('lib/approved-charter-offerings.json'));
  const {approvedCharterOfferings,charterOfferings}=load('lib/charter-offerings-server.ts',{
