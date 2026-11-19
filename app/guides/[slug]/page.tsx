@@ -2,6 +2,7 @@ import Link from 'next/link';
 import {notFound} from 'next/navigation';
 import GuideEnrichmentPanel from '@/components/GuideEnrichmentPanel';
 import ReturnToResults from '@/components/ReturnToResults';
+import {AuthCheck} from '@/components/launch/AuthCheck';
 import {GuideEngagement} from '@/components/launch/GuideEngagement';
 import {ProfileSharing} from '@/components/launch/ProfileSharing';
 import {profileShareMetadata} from '@/lib/canonical-share';
@@ -59,7 +60,12 @@ export default async function Page({params}: ProfileParams) {
           <ProfileSharing profilePath={path} guideName={guide.name} reviewAvailable={false}
             primaryAction={<button type="button" className="button guide-rate" disabled aria-describedby="guide-write-status">Rate {guide.name}</button>}/>
           <p className="guide-status" id="guide-write-status">Review submissions are closed.</p>
-        </section>{registration}</>}
+        </section>
+        {process.env.NEXT_PUBLIC_RMG_AUTH_CHECK_ENABLED === 'true' && guide.registration === 'OG.0002193' && <section className="section launch-controls" id="write-review">
+          <h2>Sign in for {guide.name}’s reviews</h2>
+          <AuthCheck profilePath={path}/>
+        </section>}
+        {registration}</>}
     {washington && <section className="section card"><h2>Also listed in Washington</h2>
       <p>This captain has a matching listing in the supplied Washington directories.</p>
       <p><strong>{washington.source.source}:</strong> {washington.source.business}{washington.source.notes && <> · {washington.source.notes}</>}</p>

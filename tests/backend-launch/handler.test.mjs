@@ -100,3 +100,38 @@ test('captain profile readback uses provenance-filtered RPC',async()=>{
  const r=await handleLaunch(req({operation:'profile_details',jurisdiction:'OR',sourceId:'og-1'}),factory,env);
  assert.equal(r.status,200);assert.deepEqual(await r.json(),{details:null,attribution:'captain_declared'});assert.equal(calls[0][0],'rmg_profile_details');
 });
+
+test('sign-in check only verifies confirmed roles and reads queue availability without returning rows',async()=>{
+ const flags={...env,RMG_LAUNCH_ENABLED:'false',NEXT_PUBLIC_RMG_AUTH_CHECK_ENABLED:'true',RMG_CLAIMS_ENABLED:'true'};
+ const factory=({admin=false,confirmed=true,queueError=null}={})=>{
+  const calls=[];
+  return {calls,create:()=>({
+   auth:{getUser:async()=>({data:{user:{email_confirmed_at:confirmed?'2026-11-19':null}},error:null})},
+   rpc:async name=>{calls.push(name);assert.equal(name,'is_site_admin');return {data:admin,error:null}},
+   from:table=>{calls.push(table);assert.equal(table,'admin_pending_reviews');return {select:(column,options)=>{
+    assert.equal(column,'id');assert.deepEqual(options,{head:true});
+    return {limit:async limit=>{assert.equal(limit,1);return {data:[{id:'private'}],error:queueError}}};
+   }}}
+  })};
+ };
+ const session={operation:'session'};
+ const ordinary=factory();
+ let response=await handleLaunch(req(session,'token'),ordinary.create,flags);
+ assert.deepEqual(await response.json(),{authenticated:true,operator:false});
+ assert.deepEqual(ordinary.calls,['is_site_admin']);
+ const moderator=factory({admin:true});
+ response=await handleLaunch(req(session,'token'),moderator.create,flags);
+ assert.deepEqual(await response.json(),{authenticated:true,operator:true,reviewQueueReady:true});
+ assert.deepEqual(moderator.calls,['is_site_admin','admin_pending_reviews']);
+ const denied=factory({admin:true,queueError:{code:'42501'}});
+ assert.equal((await handleLaunch(req(session,'token'),denied.create,flags)).status,403);
+ assert.equal((await handleLaunch(req(session,'token'),factory({confirmed:false}).create,flags)).status,401);
+ assert.equal((await handleLaunch(req(session),()=>assert.fail('anonymous client'),flags)).status,401);
+ for(const candidate of [
+  review,
+  {...review,jurisdiction:'WA'},
+  {operation:'review_write_availability',jurisdiction:'OR',sourceId:'or-1'},
+  {operation:'operator_queue',kind:'review',offset:0,limit:1},
+  {operation:'operator_queue',kind:'claim',offset:0,limit:1},
+ ])assert.equal((await handleLaunch(req(candidate,'token'),()=>assert.fail('operation reached the database'),flags)).status,503);
+});

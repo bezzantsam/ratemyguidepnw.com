@@ -73,7 +73,7 @@ export function createLaunchClient(options:Options) {
     async session() {
       const data=record(await call('session',{},true));
       if(!data || data.authenticated!==true || typeof data.operator!=='boolean') throw new LaunchClientError('service_unavailable');
-      return {authenticated:true as const,operator:data.operator};
+      return {authenticated:true as const,operator:data.operator,...(data.operator&&data.reviewQueueReady===true?{reviewQueueReady:true as const}:{})};
     },
     async reviewWriteAvailability(source:GuideSource):Promise<boolean> {
       const data=record(await call('review_write_availability',sourceArgs(source),false));
