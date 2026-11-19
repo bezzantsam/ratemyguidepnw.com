@@ -97,7 +97,7 @@ test('ordinary production data contains no synthetic discovery or unapproved con
    await page.getByRole('link',{name:/John Hanson/}).first().waitFor();const saved=page.url();await page.reload({waitUntil:'domcontentloaded'});
    await page.getByRole('link',{name:/John Hanson/}).first().waitFor();assert.equal(page.url(),saved);
    if(process.env.BROWSER_SCREENSHOT_DIR){mkdirSync(process.env.BROWSER_SCREENSHOT_DIR,{recursive:true});await page.screenshot({path:join(process.env.BROWSER_SCREENSHOT_DIR,`ordinary-${label}.png`),fullPage:true})}
-   await page.getByRole('link',{name:/John Hanson/}).first().click();await page.getByRole('heading',{name:'John Hanson',exact:true}).waitFor();await page.getByText('Review data is unavailable.').waitFor();
+   await page.getByRole('link',{name:/John Hanson/}).first().click();await page.getByRole('heading',{name:'John Hanson',exact:true}).waitFor();await page.getByText('Review submissions are closed.').waitFor();
    const canonical=await page.locator('link[rel="canonical"]').getAttribute('href');
    assert.match(canonical,/^https:\/\/ratemyguidepnw\.vercel\.app\/guides\/og-[a-z0-9-]+$/);
    assert.equal(await page.locator('meta[property="og:url"]').getAttribute('content'),canonical);
@@ -105,6 +105,13 @@ test('ordinary production data contains no synthetic discovery or unapproved con
     Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async value=>{window.__sharedProfileCopy=value}}});
     Object.defineProperty(navigator,'share',{configurable:true,value:async data=>{window.__sharedProfileUrl=data.url}});
    });
+   const rate=page.getByRole('button',{name:'Rate John Hanson'}),share=page.getByRole('button',{name:'Share profile'});
+   assert.equal(await rate.isDisabled(),true);
+   for(const control of [rate,share]){
+    const box=await control.boundingBox();
+    assert.ok(box && box.height>=44 && box.y>=0 && box.y+box.height<=height, 'profile action fits first screen');
+   }
+   await page.getByText('Sharing options',{exact:true}).click();
    await page.getByRole('button',{name:'Copy profile link'}).click();
    assert.equal(await page.evaluate(()=>window.__sharedProfileCopy),canonical);
    await page.getByRole('button',{name:'Share profile'}).click();

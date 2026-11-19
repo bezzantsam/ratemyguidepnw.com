@@ -1,11 +1,11 @@
 'use client';
 
-import {useCallback,useEffect,useMemo,useRef,useState} from 'react';
+import {useCallback,useEffect,useMemo,useRef,useState,type ReactNode} from 'react';
 import AuthPanel,{client as authClient} from '@/components/AuthPanel';
 import {createLaunchClient,LaunchClientError,type GuideSource,type OwnStatus,type OwnSubmission,type OwnerDetails,type ReportReason} from '@/lib/launch-client';
 import {publishedReviewIdFromHash} from '@/lib/canonical-share';
 import {ProfileSharing} from './ProfileSharing';
-import {PublishedReviews,ReviewCard,type PublishedReview,type ReviewLoadState} from './PublishedReviews';
+import {PublishedReviews,ReviewCard,validReviewPage,type PublishedReview,type ReviewLoadState} from './PublishedReviews';
 import {ClaimSubmission,ReviewSubmission} from './SubmissionViews';
 import type {ReviewDraft} from './submission-model';
 
@@ -35,7 +35,7 @@ function OwnerEditor({initial,onSave}:{initial:OwnerDetails|null;onSave:(value:O
   </form>;
 }
 
-export function GuideEngagement({source,profilePath,guideName,claimsEnabled=false}:{source:GuideSource;profilePath:string;guideName:string;claimsEnabled?:boolean}) {
+export function GuideEngagement({source,profilePath,guideName,claimsEnabled=false,compactProfile=false,children}:{source:GuideSource;profilePath:string;guideName:string;claimsEnabled?:boolean;compactProfile?:boolean;children?:ReactNode}) {
   const guideKey=`${source.jurisdiction}:${source.sourceId}`;
   const stableSource=useMemo(()=>({jurisdiction:source.jurisdiction,sourceId:source.sourceId}),[source.jurisdiction,source.sourceId]);
   const api=useMemo(()=>createLaunchClient({enabled:true,getAccessToken:async()=>{const result=await authClient?.auth.getSession();return result?.data.session?.access_token??null}}),[]);
@@ -79,26 +79,52 @@ export function GuideEngagement({source,profilePath,guideName,claimsEnabled=fals
       : 'Review submissions are unavailable for this guide right now.';
   async function editReview(id:string){setRevisionError('');try{setRevision({id,initial:await api.reviewDetail(source,id)})}catch{setRevisionError('This review cannot be edited right now. Its published version has not changed.')}}
   async function saveDetails(value:OwnerDetails){await api.editDetails(source,value);const saved=await api.profileDetails(source);if(!saved||saved.boat!==value.boat.trim()||saved.gear!==value.gear.trim()||saved.expertise!==value.expertise.trim()||saved.species!==value.species.trim()||saved.yearsExperience!==value.yearsExperience)throw new Error('No confirmed readback');setDetails({status:'ready',value:saved})}
+  const page = compactProfile && reviews.status==='ready' && validReviewPage(guideKey,reviews.page) ? reviews.page : null;
+  const offerReview = canReview && !!page;
+  const inviteFirst = offerReview && (session==='signed_out' || (session==='signed_in' && ownReview.status==='ready' && !existingReview));
+  const retryAvailability = () => {void loadWriteReady();void loadReviews()};
+  const compactError = reviews.status==='error' || (reviews.status==='ready' && !page) || writeReady==='error';
+  const compactStatus = compactError ? 'Couldn’t load review information.' :
+    writeReady===false ? 'Review submissions are closed.' :
+    writeReady===null || reviews.status==='loading' ? 'Loading review information…' : '';
+  const historyOnly = compactProfile && page && !canReview && !formActivated && session==='signed_out';
   return <>
-    <section className="section" aria-label={`Rate ${guideName}`}>
+    {compactProfile ? <section className="guide-actions" aria-label="Profile actions">
+      {page && <p className="guide-rating">{page.total>0
+        ? <a href="#reviews"><strong>{page.average?.toFixed(1)} / 5</strong> · {page.total} {page.total===1?'review':'reviews'}</a>
+        : 'No published reviews yet.'}</p>}
+      <ProfileSharing profilePath={profilePath} guideName={guideName} reviewAvailable={offerReview}
+        primaryAction={page && existingReview
+          ? <a className="button guide-rate" href="#your-submissions">View your review status</a>
+          : offerReview
+          ? <a className="button guide-rate" href="#write-review">Rate {guideName}</a>
+          : <button type="button" className="button guide-rate" disabled aria-describedby="guide-write-status">Rate {guideName}</button>}/>
+      {compactStatus && <p id="guide-write-status" className="guide-status" role="status">{compactStatus}
+        {compactError && <button type="button" className="guide-retry" onClick={retryAvailability}>Retry</button>}</p>}
+    </section> : <section className="section" aria-label={`Rate ${guideName}`}>
       {canReview&&reviews.status==='ready'
         ? existingReview
           ? <a className="button" href="#your-submissions">View your review status</a>
           : <a className="button" href="#write-review">Rate {guideName}</a>
         : <><h2>Rate {guideName}</h2><p role="status">{availabilityMessage}</p>{availabilityError&&<button type="button" onClick={()=>{void loadWriteReady();if(reviews.status==='error')void loadReviews()}}>Retry review availability</button>}</>}
-    </section>
+    </section>}
     <section className="section" id="reviews">
       {selected?.status==='loading'&&<p role="status">Loading the linked review…</p>}{selected?.status==='error'&&<p role="status">The linked review is unavailable.</p>}{selected?.status==='ready'&&<><h2>Linked angler review</h2><ReviewCard review={selected.review} profilePath={profilePath} guideName={guideName} allowSignIn={canReview&&session==='signed_out'} onReport={canReview&&session==='signed_in'?reportReview:undefined}/></>}
-      <PublishedReviews guideKey={guideKey} state={selected?.status==='ready'&&reviews.status==='ready'?{status:'ready',page:{...reviews.page,reviews:reviews.page.reviews.filter(r=>r.id!==selected.review.id)}}:reviews} profilePath={profilePath} guideName={guideName} allowSignIn={canReview&&session==='signed_out'} onReport={canReview&&session==='signed_in'?reportReview:undefined}/>
+      <PublishedReviews compactProfile={compactProfile} inviteFirst={inviteFirst} guideKey={guideKey} state={selected?.status==='ready'&&reviews.status==='ready'?{status:'ready',page:{...reviews.page,reviews:reviews.page.reviews.filter(r=>r.id!==selected.review.id)}}:reviews} profilePath={profilePath} guideName={guideName} allowSignIn={canReview&&session==='signed_out'} onReport={canReview&&session==='signed_in'?reportReview:undefined}/>
     </section>
+    {children}
     {details.status==='ready'&&details.value&&<section className="card"><h2>Captain-declared details</h2><p>These details were supplied by the approved captain and are not independently verified.</p>{details.value.boat&&<p><strong>Boat:</strong> {details.value.boat}</p>}{details.value.gear&&<p><strong>Gear:</strong> {details.value.gear}</p>}{details.value.yearsExperience!==null&&<p><strong>Years of experience:</strong> {details.value.yearsExperience}</p>}{details.value.expertise&&<p><strong>Expertise:</strong> {details.value.expertise}</p>}{details.value.species&&<p><strong>Species:</strong> {details.value.species}</p>}</section>}
-    <section className="section launch-controls" id="write-review"><h2>Rate {guideName}</h2>
+    <section className="section launch-controls" id="write-review">
+      {historyOnly ? <details><summary>Check a previous submission</summary>
+        <AuthPanel profilePath={profilePath} onSignedIn={()=>void refreshSession()}/>
+      </details> : (!compactProfile || (page && (canReview || formActivated || session==='signed_in'))) && <>
+      <h2>Rate {guideName}</h2>
       {reviews.status==='ready'?<>{session==='signed_out'&&<p>{writeReady===true?'Sign in to share a firsthand experience with this guide.':'Sign in to check your existing submissions.'}</p>}<AuthPanel profilePath={profilePath} onSignedIn={()=>void refreshSession()}/>
         {session==='loading'&&<p role="status">Checking your account…</p>}{session==='error'&&<p role="status">Your account status is temporarily unavailable.</p>}
         {session==='signed_in'&&<>{ownReview.status==='loading'&&<p role="status">Checking your review for this guide…</p>}{ownReview.status==='error'&&<><p role="status">Your review status is temporarily unavailable.</p><button type="button" onClick={()=>void loadOwnReview()}>Retry review status</button></>}
           {source.jurisdiction==='OR'&&ownReview.status==='ready'&&!existingReview&&(canReview||formActivated)&&<ReviewSubmission allowTripResponses writeAvailable={canReview} onDuplicate={()=>void loadOwnReview(undefined,true)} onSubmit={async draft=>{try{const receipt=await api.submitReview(stableSource,draft);void loadOwnReview(undefined,true);void loadSubmissions();return receipt}catch(error){recordWriteFailure(error);if(error instanceof LaunchClientError&&error.code==='service_unavailable')void loadOwnReview(undefined,true);throw error}}}/>}
-          {writeReady===false&&<><p role="status">Reviews aren’t available for this guide right now.</p>{source.jurisdiction==='OR'&&<button type="button" onClick={()=>void loadWriteReady()}>Check review availability</button>}</>}
-          {writeReady==='error'&&<p role="status">We couldn’t check review availability. Try again before submitting.</p>}
+          {!compactProfile&&writeReady===false&&<><p role="status">Reviews aren’t available for this guide right now.</p>{source.jurisdiction==='OR'&&<button type="button" onClick={()=>void loadWriteReady()}>Check review availability</button>}</>}
+          {!compactProfile&&writeReady==='error'&&<p role="status">We couldn’t check review availability. Try again before submitting.</p>}
           {canClaim&&<details><summary>Are you the captain? Request this listing</summary><ClaimSubmission onSubmit={async draft=>{const receipt=await api.submitClaim(source,draft);void loadSubmissions();return receipt}}/></details>}
           <section id="your-submissions"><h3>Your submissions</h3>{existingReview&&<div><p>Review: <strong>{existingReview.status}</strong></p><p>{existingReview.status==='pending'?'Your review is awaiting review and is not public.':existingReview.status==='published'?'Your review is published.':existingReview.status==='removed'?'Your review is no longer published.':'Your review was not published.'}</p>{canReview&&existingReview.status==='published'&&!pendingRevision&&!more&&submissions!==null&&!statusError&&<button type="button" onClick={()=>void editReview(existingReview.id)}>Edit your review</button>}{existingReview.status==='published'&&pendingRevision&&<p>Your changes are awaiting review.</p>}</div>}{statusError?<><p role="status">Your submission status is temporarily unavailable.</p><button type="button" onClick={()=>void loadSubmissions()}>Retry status</button></>:submissions===null?<p role="status">Loading your submissions…</p>:<>{own.filter(item=>item.kind!=='review').map(item=><div key={`${item.kind}:${item.id}`}><p>{item.kind==='revision'?'Review edit':'Claim request'}: <strong>{item.status}</strong></p><p>{nextSteps(item)}</p></div>)}{more&&<><p>Load the remaining submissions to check your full review history.</p><button type="button" onClick={()=>void loadSubmissions(nextOffset)}>Load more submissions</button></>}</>}
             {revisionError&&<p role="alert">{revisionError}</p>}{revision&&<ReviewSubmission key={revision.id} initial={revision.initial} mode="revision" allowTripResponses writeAvailable={canReview} onSubmit={async draft=>{try{const receipt=await api.submitRevision(revision.id,draft);void loadSubmissions();return receipt}catch(error){recordWriteFailure(error);throw error}}}/>}
@@ -106,7 +132,8 @@ export function GuideEngagement({source,profilePath,guideName,claimsEnabled=fals
           {canClaim&&owner&&details.status==='ready'&&<OwnerEditor initial={details.value} onSave={saveDetails}/>}
         </>}
       </>:<p role="status">Review tools are temporarily unavailable for this listing.</p>}
+    </>}
     </section>
-    <ProfileSharing profilePath={profilePath} guideName={guideName} reviewAvailable={reviews.status==='ready'&&canReview}/>
+    {!compactProfile&&<ProfileSharing profilePath={profilePath} guideName={guideName} reviewAvailable={reviews.status==='ready'&&canReview}/>}
   </>;
 }

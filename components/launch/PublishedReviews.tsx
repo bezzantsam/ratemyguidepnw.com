@@ -45,14 +45,17 @@ export function ReviewCard({review,profilePath,guideName,onReport,allowSignIn=tr
   </article>;
 }
 
-export function PublishedReviews({guideKey, state,profilePath,guideName,onReport,allowSignIn=true}: {guideKey:string; state:ReviewLoadState;profilePath?:string;guideName?:string;onReport?:ReportAction;allowSignIn?:boolean}) {
-  if (state.status === 'loading') return <p role="status">Loading reviews…</p>;
-  if (state.status === 'error' || !validReviewPage(guideKey, state.page)) return <p role="status">Reviews are temporarily unavailable.</p>;
+export function PublishedReviews({guideKey, state,profilePath,guideName,onReport,allowSignIn=true,compactProfile=false,inviteFirst=false}: {guideKey:string; state:ReviewLoadState;profilePath?:string;guideName?:string;onReport?:ReportAction;allowSignIn?:boolean;compactProfile?:boolean;inviteFirst?:boolean}) {
+  if (state.status === 'loading') return compactProfile ? null : <p role="status">Loading reviews…</p>;
+  if (state.status === 'error' || !validReviewPage(guideKey, state.page)) return compactProfile ? null : <p role="status">Reviews are temporarily unavailable.</p>;
   const {page} = state;
-  if (!page.total) return <p>No published reviews yet.</p>;
+  if (!page.total) {
+    if (compactProfile) return inviteFirst ? <p>Fished with this guide? Be the first to share your experience.</p> : null;
+    return <p>No published reviews yet.</p>;
+  }
   return <section aria-labelledby="published-reviews-heading">
     <h2 id="published-reviews-heading">Angler reviews</h2>
-    <p><strong>{page.average?.toFixed(1)} / 5</strong> · {page.total} {page.total === 1 ? 'published review' : 'published reviews'}</p>
+    {!compactProfile && <p><strong>{page.average?.toFixed(1)} / 5</strong> · {page.total} {page.total === 1 ? 'published review' : 'published reviews'}</p>}
     {page.reviews.map(review=><ReviewCard key={review.id} review={review} profilePath={profilePath} guideName={guideName} onReport={onReport} allowSignIn={allowSignIn}/>)}
   </section>;
 }

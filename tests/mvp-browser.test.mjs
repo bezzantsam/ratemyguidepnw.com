@@ -152,10 +152,10 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
   await page.getByRole('button',{name:'Oregon',exact:true}).click();await q.fill('John Hanson');
   await page.getByRole('link',{name:/John Hanson/}).first().click();
   await page.getByRole('heading',{name:'John Hanson',exact:true}).waitFor();
-  await page.getByText('Review data is unavailable.').waitFor();
+  await page.getByText('Review submissions are closed.').waitFor();
   await page.goto(`${origin}/guides/og-0000050`,{waitUntil:'domcontentloaded'});
   await page.getByRole('heading',{name:'Shea Fisher',exact:true}).waitFor();
-  await page.getByText('Review data is unavailable.').waitFor();
+  await page.getByText('Review submissions are closed.').waitFor();
   await page.getByRole('link',{name:'← Search guides'}).click();
   await page.getByRole('button',{name:'Washington',exact:true}).click();await q.fill('Aaron O’Leary');
   const before=requests.length;await page.getByRole('link',{name:/Aaron O’Leary/}).first().click();

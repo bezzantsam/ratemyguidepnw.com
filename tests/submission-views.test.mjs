@@ -113,3 +113,19 @@ test('review display uses the full backend aggregate and fails closed on another
   }
   assert.equal(published.validReviewPage('OR:1',{guideKey:'OR:1',total:0,average:null,reviews:[]}),true);
 });
+
+test('compact reviews follow the profile summary and invite a first reviewer only on a known empty page', () => {
+  const guideKey = 'OR:1';
+  const render = (state, inviteFirst = true) => renderToStaticMarkup(React.createElement(published.PublishedReviews, {guideKey, state, compactProfile: true, inviteFirst}));
+  const empty = {guideKey, total: 0, average: null, reviews: []};
+  const withReviews = {guideKey, total: 9, average: 4.2, reviews: [{id: 'r1', guideKey, status: 'published', rating: 5, body: 'A firsthand trip account.', publishedAt: '2026-11-17'}]};
+  const cards = render({status: 'ready', page: withReviews});
+  assert.match(cards, /Angler reviews/);
+  assert.match(cards, /A firsthand trip account/);
+  assert.doesNotMatch(cards, /4\.2|9 published reviews|Be the first/);
+  assert.match(render({status: 'ready', page: empty}), /Be the first to share your experience/);
+  assert.equal(render({status: 'ready', page: empty}, false), '');
+  for (const state of [{status: 'loading'}, {status: 'error'}, {status: 'ready', page: {...empty, guideKey: 'OR:2'}}]) {
+    assert.equal(render(state), '');
+  }
+});

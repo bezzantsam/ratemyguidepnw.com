@@ -66,9 +66,9 @@ test(`rating-first discovery and profile availability (${mode})`,{timeout:120000
     assert.ok(await action.evaluate(e=>!!(e.compareDocumentPosition(document.querySelector('#reviews'))&Node.DOCUMENT_POSITION_FOLLOWING)));
     await page.getByText('Sign in to share a firsthand experience with this guide.').waitFor();
    }else{
-    await page.getByRole('heading',{name:'Rate Douglas Wolfe'}).waitFor();
+    assert.ok(await page.getByRole('button',{name:'Rate Douglas Wolfe'}).isDisabled());
     assert.equal(await page.getByRole('link',{name:'Rate Douglas Wolfe'}).count(),0);
-    assert.ok(await page.getByText('Review submissions are not open yet.').count());
+    assert.ok(await page.getByText('Review submissions are closed.').count());
    }
    await page.getByRole('link',{name:'← Back to rating search'}).click();
    await page.waitForURL(url=>url.pathname==='/'&&url.searchParams.get('q')==='Scott Wolfe');
@@ -77,7 +77,7 @@ test(`rating-first discovery and profile availability (${mode})`,{timeout:120000
    await page.locator('.guide-result').first().click();await page.waitForURL(/\/washington\//);
    await page.getByText(mode==='enabled'?'Review submissions are unavailable for this guide right now.':'Review submissions are not open yet.').first().waitFor();
    assert.equal(await page.locator('a[href="#write-review"]').count(),0);
-   await context.close();
+   await page.waitForLoadState('networkidle');await context.close();
   }
   if(mode==='enabled'){
    const moderatorContext=await browser.newContext({viewport:{width:390,height:844}});
@@ -112,7 +112,7 @@ test(`rating-first discovery and profile availability (${mode})`,{timeout:120000
    await send.click();
    await moderatorPage.getByText('Check your email for the sign-in link.').waitFor();
    assert.equal(attempts,2);
-   await moderatorContext.close();
+   await moderatorPage.waitForLoadState('networkidle');await moderatorContext.close();
 
    const context=await browser.newContext({viewport:{width:390,height:844}});
    const user={id:'10000000-0000-4000-8000-000000000001',email:'fixture@example.invalid',aud:'authenticated',role:'authenticated',email_confirmed_at:'2026-01-01T00:00:00Z',app_metadata:{},user_metadata:{}};
@@ -121,7 +121,12 @@ test(`rating-first discovery and profile availability (${mode})`,{timeout:120000
    let failAvailability=true;
    await context.route('**/*',async route=>{
     const request=route.request(),url=new URL(request.url());
-    if(url.origin===authOrigin&&url.pathname==='/auth/v1/user')return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(user)});
+    if(url.origin===authOrigin&&url.pathname==='/auth/v1/user'){
+     if(request.method()==='OPTIONS')return route.fulfill({status:204,headers:{
+      'access-control-allow-origin':origin,'access-control-allow-methods':'GET','access-control-allow-headers':'*'
+     }});
+     if(request.method()==='GET')return route.fulfill({status:200,contentType:'application/json',headers:{'access-control-allow-origin':origin},body:JSON.stringify(user)});
+    }
     if(url.origin!==origin){blocked.push(url.origin);return route.abort()}
     if(url.pathname==='/api/launch'){
      const input=request.postDataJSON();let data;
@@ -140,14 +145,14 @@ test(`rating-first discovery and profile availability (${mode})`,{timeout:120000
     return route.continue();
    });
    const page=await context.newPage();await page.goto(`${origin}/guides/og-0000359`,{waitUntil:'networkidle'});
-   await page.getByText('We couldn’t check review availability.',{exact:true}).waitFor();
+   await page.getByText('Couldn’t load review information.',{exact:false}).waitFor();
    assert.equal(await page.locator('a[href="#write-review"]').count(),0);
    failAvailability=false;
-   await page.getByRole('button',{name:'Retry review availability'}).click();
-   await page.getByText('Reviews aren’t available for this guide right now.').waitFor();
+   await page.getByRole('button',{name:'Retry',exact:true}).click();
+   await page.getByText('Review submissions are closed.').waitFor();
    assert.equal(await page.getByText('Are you the captain? Request this listing').count(),0);
    assert.equal(await page.locator('a[href="#write-review"]').count(),0);
-   await context.close();
+   await page.waitForLoadState('networkidle');await context.close();
   }
   assert.deepEqual(blocked,[]);
  }finally{await browser.close()}

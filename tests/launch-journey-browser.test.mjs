@@ -20,7 +20,13 @@ test('synthetic browser connects mapped review, claim, moderation and published 
   await context.addInitScript(({session})=>{localStorage.setItem('sb-127-auth-token',JSON.stringify(session));Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async text=>{window.__fixtureCopied=text}}})},{session});
   await context.route('**/*',async route=>{
    const req=route.request(),url=new URL(req.url());
-   if(url.origin===authOrigin){if(url.pathname==='/auth/v1/user')return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(session.user)});state.blocked.push(`auth:${url.pathname}`);return route.abort()}
+   if(url.origin===authOrigin){
+    if(url.pathname==='/auth/v1/user'&&req.method()==='OPTIONS')return route.fulfill({status:204,headers:{
+     'access-control-allow-origin':origin,'access-control-allow-methods':'GET','access-control-allow-headers':'*'
+    }});
+    if(url.pathname==='/auth/v1/user'&&req.method()==='GET')return route.fulfill({status:200,contentType:'application/json',headers:{'access-control-allow-origin':origin},body:JSON.stringify(session.user)});
+    state.blocked.push(`auth:${url.pathname}`);return route.abort();
+   }
    if(url.origin===origin&&url.pathname==='/api/launch'){
     const input=req.postDataJSON(),headers=req.headers();state.requests.push({actor,operation:input.operation,input});
     if(!['public_reviews','profile_details','review_detail','review_write_availability'].includes(input.operation)&&headers.authorization!==`Bearer ${tokens[actor]}`)return route.fulfill({status:401,contentType:'application/json',body:'{"error":"sign_in_required"}'});
@@ -57,6 +63,7 @@ test('synthetic browser connects mapped review, claim, moderation and published 
   const ratingProfile=url=>url.pathname==='/guides/og-0002254'&&url.searchParams.get('intent')==='review'&&url.searchParams.get('returnTo')==='/write-review?q=OG.0002254'&&url.hash==='#write-review';
   await page.waitForURL(ratingProfile);
   await page.getByText('No published reviews yet.').waitFor();
+  await page.getByText('Fished with this guide? Be the first to share your experience.').waitFor();
   await page.getByLabel('Overall quality').selectOption('5');await page.getByLabel('Your relationship to this guide or business').selectOption('none');await page.getByLabel('Your experience').fill('A good firsthand trip.');await page.getByLabel('I personally took this trip.').check();
   await page.getByText('Tell us more',{exact:true}).click();await page.getByLabel('Trip month (optional)').fill('2026-07');
   await page.getByRole('button',{name:'Submit review'}).click();await page.getByText(/Your review is (pending|awaiting review)/).first().waitFor();
@@ -65,7 +72,7 @@ test('synthetic browser connects mapped review, claim, moderation and published 
   assert.equal(await reviewStatus.getAttribute('href'),'#your-submissions');
   assert.equal(state.review.intensity,null);assert.equal(state.review.wouldBookAgain,null);assert.equal(state.review.sourceId,'OG.0002254');assert.equal(state.review.tripMonth,'2026-07');
   await page.getByText('Are you the captain? Request this listing').click();await page.getByLabel('Your name').fill('Fixture Captain');await page.getByLabel('Your connection to this listing').fill('I operate the guide business shown on this listing.');await page.getByRole('button',{name:'Submit claim request'}).click();await page.getByText('Your claim request is pending review.').waitFor();
-  await page.getByRole('button',{name:'Copy review request link'}).click();assert.equal(await page.evaluate(()=>window.__fixtureCopied),'https://ratemyguidepnw.vercel.app/guides/og-0002254?intent=review#write-review');
+  await page.getByText('Sharing options',{exact:true}).click();await page.getByRole('button',{name:'Copy review request link'}).click();assert.equal(await page.evaluate(()=>window.__fixtureCopied),'https://ratemyguidepnw.vercel.app/guides/og-0002254?intent=review#write-review');
   const admin=await contextFor(operator,{width:1280,height:800}),queue=await admin.newPage();queue.on('pageerror',e=>state.errors.push(e.message));await queue.goto(`${origin}/admin`,{waitUntil:'domcontentloaded'});await queue.getByText('Fixture Guide',{exact:false}).waitFor();
   await queue.getByText(/Trip month: 2026-07/).waitFor();await queue.getByLabel('Decision note').fill('Independent synthetic review evidence checked.');await queue.getByRole('button',{name:'Approve'}).click();await queue.getByText('Decision confirmed: published.').waitFor();
   await page.reload({waitUntil:'domcontentloaded'});await page.getByText('A good firsthand trip.').waitFor();await page.getByText('5.0 / 5',{exact:false}).waitFor();await page.getByText('Trip month reported by the angler: 2026-07').waitFor();
@@ -73,8 +80,19 @@ test('synthetic browser connects mapped review, claim, moderation and published 
   await page.getByRole('heading',{name:'Edit your review'}).waitFor();
   assert.equal(await page.getByLabel('Your experience').inputValue(),'A good firsthand trip.');
   await page.getByText('Your changes will be reviewed. Your current published review stays visible while the changes are pending.').waitFor();
-  const reporting=await contextFor(reporter,{width:390,height:844}),reportPage=await reporting.newPage();reportPage.on('pageerror',e=>state.errors.push(e.message));await reportPage.goto(`${origin}/guides/og-0002254`,{waitUntil:'domcontentloaded'});await reportPage.getByRole('button',{name:'Report review'}).click();await reportPage.getByLabel('What’s wrong with this review?').selectOption('other');await reportPage.getByRole('button',{name:'Send report'}).click();await reportPage.getByText('Report sent. We’ll review it.').waitFor();
-  await queue.getByLabel('Submission type').selectOption('report');await queue.getByText('Review report · Fixture Guide').waitFor();await queue.getByRole('button',{name:'Resolve report'}).click();await queue.getByText('Report confirmed: resolved. The review was not changed.').waitFor();assert.equal(state.review.status,'published');assert.equal(state.report.status,'resolved');await reporting.close();
+  const reporting=await contextFor(reporter,{width:390,height:844}),reportPage=await reporting.newPage();reportPage.on('pageerror',e=>state.errors.push(e.message));await reportPage.goto(`${origin}/guides/og-0002254`,{waitUntil:'domcontentloaded'});
+  const ratingSummary=reportPage.getByRole('link',{name:'5.0 / 5 · 1 review'});
+  await ratingSummary.waitFor();
+  const rate=reportPage.locator('.guide-rate'), share=reportPage.getByRole('button',{name:'Share profile'});
+  for(const item of [ratingSummary,rate,share]) {
+    const box=await item.boundingBox();
+    assert.ok(box && box.y>=0 && box.y+box.height<=844,'rating and actions fit on the first mobile screen');
+  }
+  await ratingSummary.click();
+  await reportPage.waitForURL(url=>url.hash==='#reviews');
+  await reportPage.getByRole('button',{name:'Report review'}).click();await reportPage.getByLabel('What’s wrong with this review?').selectOption('other');await reportPage.getByRole('button',{name:'Send report'}).click();await reportPage.getByText('Report sent. We’ll review it.').waitFor();
+  await queue.getByLabel('Submission type').selectOption('report');await queue.getByText('Review report · Fixture Guide').waitFor();await queue.getByRole('button',{name:'Resolve report'}).click();await queue.getByText('Report confirmed: resolved. The review was not changed.').waitFor();assert.equal(state.review.status,'published');assert.equal(state.report.status,'resolved');
+  await reportPage.waitForLoadState('networkidle');await reporting.close();
   await page.getByRole('button',{name:'Copy review link'}).click();assert.equal(await page.evaluate(()=>window.__fixtureCopied),`https://ratemyguidepnw.vercel.app/guides/og-0002254#review-${reviewId}`);
   await page.setViewportSize({width:390,height:844});await page.reload({waitUntil:'domcontentloaded'});await page.getByText('A good firsthand trip.').waitFor();assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
   await page.getByRole('button',{name:'Edit your review'}).click();
@@ -86,6 +104,7 @@ test('synthetic browser connects mapped review, claim, moderation and published 
   assert.equal(state.review.body,'A good firsthand trip.');
   if(process.env.BROWSER_SCREENSHOT_DIR){mkdirSync(process.env.BROWSER_SCREENSHOT_DIR,{recursive:true});await page.screenshot({path:join(process.env.BROWSER_SCREENSHOT_DIR,'synthetic-launch-mobile.png'),fullPage:true})}
   await page.goto(`${origin}/write-review`,{waitUntil:'domcontentloaded'});await page.getByRole('searchbox',{name:'Captain, business, operating name, or registration'}).fill('OG.0002254');await page.locator('.guide-result').first().click();await page.waitForURL(ratingProfile);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+  await Promise.all([page.waitForLoadState('networkidle'),queue.waitForLoadState('networkidle')]);
   assert.deepEqual(state.blocked,[]);assert.deepEqual(state.errors,[]);await admin.close();await context.close();
  }finally{await browser.close()}
 });
