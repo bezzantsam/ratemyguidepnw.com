@@ -175,7 +175,11 @@
     },
     "evidence_scope": "operator_advertises",
     "editorial_status": "approved",
-    "publication_approved": true
+    "publication_approved": true,
+    "location": {
+      "city": "Garibaldi",
+      "state": "OR"
+    }
   },
   {
     "guide_id": "OG.0000895",

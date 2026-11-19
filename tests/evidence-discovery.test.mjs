@@ -10,7 +10,8 @@ function load(path,dependencies={}){
  vm.runInNewContext(js,{exports,URL,URLSearchParams,Date,Set,Map,require:name=>{if(dependencies[name])return dependencies[name];throw Error(name)}});
  return exports;
 }
-const {approvedAttributes}=load('lib/guide-attributes.ts',{'./guide-evidence-holds.json':JSON.parse(read('lib/guide-evidence-holds.json'))});
+const evidence=load('lib/guide-attributes.ts',{'./guide-evidence-holds.json':JSON.parse(read('lib/guide-evidence-holds.json'))});
+const {approvedAttributes}=evidence;
 const query=load('lib/directory-query.ts');
 const url=load('lib/directory-url.ts',{'./directory-query':query});
 const fixture=JSON.parse(read('tests/fixtures/discovery-attributes.json'));
@@ -93,6 +94,36 @@ test('operator team scope stays attached to its approved trip only',()=>{
  assert.equal(approvedAttributes([{...item,kind:'species'}],known).length,0);
  assert.equal(approvedAttributes([{...item,offering_scope:'unknown'}],known).length,0);
 });
+test('charter evidence stays outside guide attribution and matches the same sourced offering by port and alias',()=>{
+ const raw=JSON.parse(read('lib/approved-charter-offerings.json'));
+ const {approvedCharterOfferings,charterOfferings}=load('lib/charter-offerings-server.ts',{
+  './approved-charter-offerings.json':raw,'./guide-attributes':evidence
+ });
+ const {filterCharterOfferings}=load('lib/charter-offerings.ts',{'./directory-query':query});
+ assert.equal(charterOfferings.length,2);
+ assert.equal(approvedCharterOfferings([{...raw[0],guide_id:'wa-122'}]).length,0);
+ assert.equal(approvedCharterOfferings([{...raw[0],publication_approved:false}]).length,0);
+ assert.equal(approvedCharterOfferings([{...raw[0],source:{...raw[0].source,url:'http://example.com'}}]).length,0);
+ assert.ok(charterOfferings.every(offer=>!('guide_id' in offer)&&!('named_skipper' in offer)));
+ const filters=url.DEFAULT_DIRECTORY_STATE;
+ const find=(term,patch={})=>Array.from(filterCharterOfferings(charterOfferings,{...filters,...patch,query:term}),offer=>offer.operator);
+ assert.deepEqual(find('black cod'),find('sablefish'));
+ assert.deepEqual(find('Newport black cod'),['Yaquina Bay Charters']);
+ assert.deepEqual(find('sablefish Westport'),['Mutineer Charters']);
+ assert.deepEqual(find('Newport black cod',{state:'Washington'}),[]);
+ assert.deepEqual(find('black cod',{method:'Bottom fishing'}),[]);
+ assert.equal(url.parseDirectoryState('?state=Washington&species=Sablefish+(black+cod)',[],charterOfferings).species,'Sablefish (black cod)');
+});
+test('a port-qualified fishery search needs the location and target on the same guide fact',()=>{
+ const base={states:['Oregon'],areas:['Garibaldi'],advertisedWaters:[],searchAliases:[],advertisedSpecies:['Albacore tuna']};
+ const entries=[
+  {...base,id:'OG.0000047',name:'One',locatedOfferings:[{city:'Garibaldi',state:'OR',value:'Albacore tuna'}]},
+  {...base,id:'OG.0000050',name:'Two',locatedOfferings:[{city:'Garibaldi',state:'OR',value:'Halibut'}]},
+ ];
+ const filters={state:'All',sourceZone:'All areas',advertisedWater:'All advertised waters',query:'Garibaldi albacore'};
+ assert.deepEqual(Array.from(query.filterDirectoryEntries(entries,filters),entry=>entry.id),['OG.0000047']);
+ assert.equal(query.filterDirectoryEntries(entries,{...filters,query:'Newport tuna'},['Newport']).length,0);
+});
 test('production dataset is separate from pending research',()=>{
  assert.ok(Array.isArray(JSON.parse(read('lib/approved-guide-attributes.json'))));
  for(const path of ['lib/guide-attributes-server.ts','lib/directory.ts','components/GuideEnrichmentPanel.tsx'])assert.doesNotMatch(read(path),/BATCH13_EXTENDED_PROPOSAL|BATCH13_SOURCE_REVIEW/);
@@ -104,11 +135,12 @@ test('empty approved coverage hides controls while approved fixtures render them
  const {createRequire}=await import('node:module');
  const requireNode=createRequire(import.meta.url);
  const recovery=load('lib/directory-recovery.ts',{'./directory-query':query,'./directory-url':url});
+ const charters=load('lib/charter-offerings.ts',{'./directory-query':query});
  const emptyState={};
  vm.runInNewContext(ts.transpileModule(read('components/DirectoryEmptyState.tsx'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020,jsx:ts.JsxEmit.ReactJSX,esModuleInterop:true}}).outputText,{exports:emptyState,require:name=>name==='@/lib/directory-recovery'?recovery:name.endsWith('.module.css')?{}:requireNode(name)});
  const exports={};
  const js=ts.transpileModule(read('components/UnifiedSearch.tsx'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020,jsx:ts.JsxEmit.ReactJSX,esModuleInterop:true}}).outputText;
- vm.runInNewContext(js,{exports,require:name=>name==='@/lib/directory-url'?url:name==='@/lib/directory-query'?query:name==='./DirectoryEmptyState'?emptyState:requireNode(name)});
+ vm.runInNewContext(js,{exports,require:name=>name==='@/lib/directory-url'?url:name==='@/lib/directory-query'?query:name==='@/lib/charter-offerings'?charters:name==='./DirectoryEmptyState'?emptyState:requireNode(name)});
  const base={id:'OG.0000047',name:'Example',business:null,states:['Oregon'],areas:[],advertisedWaters:[],searchAliases:[],href:'/guides/example',source:'Oregon registry'};
  const empty=renderToStaticMarkup(React.createElement(exports.default,{entries:[base]}));
  assert.doesNotMatch(empty,/>Species|Source-listed fishing method/);

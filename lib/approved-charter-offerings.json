@@ -1,0 +1,35 @@
+[
+  {
+    "operator": "Yaquina Bay Charters",
+    "city": "Newport",
+    "state": "OR",
+    "kind": "species",
+    "scope": "charter_operator_only",
+    "source": {
+      "url": "https://yaquinabaycharters.com/black-cod/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Offshore Black Cod Fishing Adventure; the trip description explicitly names sablefish as the target."
+    },
+    "value": "Sablefish (black cod)",
+    "editorial_status": "approved",
+    "publication_approved": true
+  },
+  {
+    "operator": "Mutineer Charters",
+    "city": "Westport",
+    "state": "WA",
+    "boat": "Reel Electric",
+    "kind": "species",
+    "scope": "named_boat_offering_on_request",
+    "source": {
+      "url": "https://www.mutineercharters.com/our-fleet/reel-electric-charter/",
+      "source_type": "operator_site",
+      "reviewed_on": "2026-11-19",
+      "locator": "Reel Electric offers targeted black cod by request. Meet Your Skipper names Nick Clayton."
+    },
+    "value": "Sablefish (black cod)",
+    "editorial_status": "approved",
+    "publication_approved": true
+  }
+]

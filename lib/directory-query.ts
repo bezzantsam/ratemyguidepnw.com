@@ -26,6 +26,20 @@ const fisheryAliases = [
 const fisherySearches = new Map(fisheryAliases.flatMap(group=>group.map(alias=>[alias,group] as const)));
 fisherySearches.set('tuna',['tuna','albacore tuna','albacore']);
 
+export function matchesFisherySearch(query: string, offerings: string[]): boolean | null {
+ const fishery=fisherySearches.get(normalizeGuideSearch(query));
+ return fishery ? offerings.some(label=>fishery.includes(normalizeGuideSearch(label))) : null;
+}
+
+function fisheryAtPort(query: string, cities: string[]) {
+ const search=normalizeGuideSearch(query);
+ for(const city of new Set(cities.map(normalizeGuideSearch))){
+  const term=search.startsWith(city+' ')?search.slice(city.length+1):search.endsWith(' '+city)?search.slice(0,-city.length-1):'';
+  if(fisherySearches.has(term))return {city,term};
+ }
+ return null;
+}
+
 export function directorySpeciesLabels(species: string[] = []): string[] {
  return species.some(label=>fisherySearches.get('tuna')?.includes(normalizeGuideSearch(label)))
   ? [...new Set([...species,'Tuna'])]
@@ -62,11 +76,8 @@ export function guideSearchScore(entry:DirectoryEntry,query:string):number|null 
  // Registration/WA IDs must never be silently corrected to another identity.
  if(/^(og[.\s-]?\d|wa[.\s-]?\d)/i.test(raw))return index.id===raw?0:index.id.startsWith(raw)?1:null;
  const needle=normalizeGuideSearch(raw);if(!needle)return null;
- const fishery = fisherySearches.get(needle);
- if (fishery) {
-  const offerings = [...(entry.advertisedSpecies??[]),...(entry.advertisedMethods??[]),...(entry.advertisedTrips??[])];
-  return offerings.some(label=>fishery.includes(normalizeGuideSearch(label))) ? 30 : null;
- }
+ const fishery=matchesFisherySearch(needle,[...(entry.advertisedSpecies??[]),...(entry.advertisedMethods??[]),...(entry.advertisedTrips??[])]);
+ if (fishery!==null)return fishery ? 30 : null;
  if(index.identity.includes(needle))return 0;
  if(index.identity.some(value=>value.startsWith(needle)))return 1;
  if(index.identity.some(value=>value.includes(needle)))return 2;
@@ -93,14 +104,23 @@ export function guideSearchScore(entry:DirectoryEntry,query:string):number|null 
 }
 
 /** Exact filters stay exact; fuzzy text matches never expand fisheries or merge identities. */
-export function filterDirectoryEntries(entries:DirectoryEntry[],filters:DirectoryFilters):DirectoryEntry[]{
+export function filterDirectoryEntries(entries:DirectoryEntry[],filters:DirectoryFilters,charterCities:string[]=[]):DirectoryEntry[]{
+ const portSearch=filters.query.trim() ? fisheryAtPort(filters.query,[
+  ...charterCities,...entries.flatMap(entry=>entry.locatedOfferings?.map(item=>item.city)??[]),
+ ]) : null;
  return entries.filter(entry=>
   (filters.state==='All'||entry.states.includes(filters.state as 'Oregon'|'Washington'))&&
   (filters.sourceZone==='All areas'||entry.areas.includes(filters.sourceZone))&&
   (filters.advertisedWater==='All advertised waters'||entry.advertisedWaters.includes(filters.advertisedWater))&&
   (!filters.species||filters.species==='All species'||directorySpeciesLabels(entry.advertisedSpecies).includes(filters.species))&&
   (!filters.method||filters.method==='All methods'||(entry.advertisedMethods??[]).includes(filters.method))
- ).map(entry=>({entry,score:guideSearchScore(entry,filters.query)}))
+ ).map(entry=>{
+  if(!portSearch)return {entry,score:guideSearchScore(entry,filters.query)};
+  const match=entry.locatedOfferings?.some(item=>normalizeGuideSearch(item.city)===portSearch.city&&
+   (filters.state==='All'||filters.state===(item.state==='OR'?'Oregon':'Washington'))&&
+   matchesFisherySearch(portSearch.term,[item.value]));
+  return {entry,score:match?30:null};
+ })
   .filter((match):match is {entry:DirectoryEntry;score:number}=>match.score!==null)
   .sort((a,b)=>a.score-b.score||a.entry.name.localeCompare(b.entry.name,'en',{sensitivity:'base'})||a.entry.id.localeCompare(b.entry.id))
   .map(match=>match.entry);

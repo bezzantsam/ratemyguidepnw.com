@@ -1,4 +1,5 @@
 import type {DirectoryEntry} from './directory';
+import type {CharterOffering} from './charter-offerings';
 import {directorySpeciesLabels,filterDirectoryEntries} from './directory-query';
 
 export type DirectoryState={query:string;state:'All'|'Oregon'|'Washington';area:string;waterway:string;species:string;method:string;page:number};
@@ -7,7 +8,7 @@ export const DIRECTORY_PAGE_SIZE=30;
 const keys=new Set(['q','state','area','water','species','method','page']);
 
 /** Resolve URL values against the directory, discarding ambiguous or obsolete filters. */
-export function parseDirectoryState(search:string,entries:DirectoryEntry[]):DirectoryState {
+export function parseDirectoryState(search:string,entries:DirectoryEntry[],charters:CharterOffering[]=[]):DirectoryState {
  if(search.length>2048)return {...DEFAULT_DIRECTORY_STATE};
  const params=new URLSearchParams(search);
  const single=(key:string)=>{const values=params.getAll(key);return values.length===1?values[0]:''};
@@ -16,10 +17,11 @@ export function parseDirectoryState(search:string,entries:DirectoryEntry[]):Dire
  const scoped=entries.filter(entry=>state==='All'||entry.states.includes(state));
  const area=rawArea.length<=256&&scoped.some(entry=>entry.areas.includes(rawArea))?rawArea:'All areas';
  const waterway=rawWater.length<=256&&scoped.some(entry=>entry.advertisedWaters.includes(rawWater))?rawWater:'All advertised waters';
- const species=rawSpecies.length>0&&rawSpecies.length<=256&&scoped.some(entry=>directorySpeciesLabels(entry.advertisedSpecies).includes(rawSpecies))?rawSpecies:'All species';
+ const charterSpecies=charters.some(offer=>(state==='All'||offer.state===state)&&offer.species===rawSpecies);
+ const species=rawSpecies.length>0&&rawSpecies.length<=256&&(charterSpecies||scoped.some(entry=>directorySpeciesLabels(entry.advertisedSpecies).includes(rawSpecies)))?rawSpecies:'All species';
  const method=rawMethod.length<=256&&scoped.some(entry=>(entry.advertisedMethods??[]).includes(rawMethod))?rawMethod:'All methods';
  const query=q.length<=120&&!/[\u0000-\u001f\u007f]/.test(q)?q:'';
- const count=filterDirectoryEntries(entries,{query,state,sourceZone:area,advertisedWater:waterway,species,method}).length;
+ const count=filterDirectoryEntries(entries,{query,state,sourceZone:area,advertisedWater:waterway,species,method},charters.map(offer=>offer.city)).length;
  const max=Math.max(1,Math.ceil(count/DIRECTORY_PAGE_SIZE));
  const requested=/^[1-9]\d{0,5}$/.test(rawPage)?Number(rawPage):1;
  return {query,state,area,waterway,species,method,page:Math.min(requested,max)};
