@@ -55,6 +55,31 @@ test('specific species do not match broad labels, and same business does not mer
  assert.equal(invalid.species,'All species');assert.equal(invalid.method,'Fly fishing');
  assert.equal(url.parseDirectoryState('?species=Salmon&species=Chinook+Salmon',rows).species,'All species');
 });
+test('combined filters preserve flat callers and require one offering for structured entries',()=>{
+ const listing={id:'OG.0000047',name:'Example Guide',business:null,states:['Oregon'],areas:[],searchAliases:[],
+  advertisedSpecies:['Sturgeon','Lingcod'],advertisedMethods:['Bottom fishing','Trolling'],advertisedWaters:['Fixture Bay']};
+ const sameTrip={kind:'species',value:'Lingcod',state:'OR',relationship:{species:'Lingcod',method:'Bottom fishing',waterway:'Fixture Bay'}};
+ const separateFacts=[
+  {kind:'species',value:'Sturgeon',state:'OR',relationship:{species:'Sturgeon',waterway:'Fixture Bay'}},
+  {kind:'method',value:'Trolling',state:'OR',relationship:{method:'Trolling',waterway:'Fixture Bay'}},
+ ];
+ const structured={...listing,fisheryOfferings:[sameTrip,...separateFacts]};
+ const filter={state:'Oregon',sourceZone:'All areas',advertisedWater:'All advertised waters',query:'',species:'Sturgeon',method:'Trolling'};
+ const matches=(entry,overrides={})=>query.filterDirectoryEntries([entry],{...filter,...overrides}).length;
+ assert.equal(matches(listing),1,'legacy flat facets');
+ assert.equal(matches({...listing,fisheryOfferings:[]}),1,'empty structured projection');
+ assert.equal(matches(structured),0,'separate standalone offerings do not establish a pair');
+ const separateOnly={...listing,fisheryOfferings:separateFacts};
+ assert.equal(matches(separateOnly),0,'structured entries with no complete pairing do not fall back to flat facets');
+ assert.equal(matches({...listing,locatedOfferings:separateFacts}),0,'legacy source-scoped input still requires a pair');
+ for(const water of ['All advertised waters','Fixture Bay']){
+  assert.equal(matches(structured,{advertisedWater:water,species:'Lingcod',method:'Bottom fishing'}),1);
+  assert.equal(matches(structured,{advertisedWater:water,species:'Lingcod',method:'Trolling'}),0);
+ }
+ assert.equal(matches(structured,{species:'All species',query:'Sturgeon'}),0,'typed species with method');
+ assert.equal(matches(structured,{method:'All methods',query:'Trolling'}),0,'typed method with species');
+});
+
 test('only explicitly provided relationships survive; malformed relationships are rejected',()=>{
  const independent=approvedAttributes(fixture,known).find(x=>x.value==='Salmon');
  assert.equal(independent.relationship,undefined);
