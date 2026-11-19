@@ -115,7 +115,7 @@ test('charter evidence stays outside guide attribution and matches the same sour
   './approved-charter-offerings.json':raw,'./guide-attributes':evidence
  });
  const {filterCharterOfferings}=load('lib/charter-offerings.ts',{'./directory-query':query});
- assert.equal(charterOfferings.length,11);
+ assert.equal(charterOfferings.length,19);
  assert.equal(approvedCharterOfferings([{...raw[0],guide_id:'wa-122'}]).length,0);
  assert.equal(approvedCharterOfferings([{...raw[0],publication_approved:false}]).length,0);
  assert.equal(approvedCharterOfferings([{...raw[0],source:{...raw[0].source,url:'http://example.com'}}]).length,0);
@@ -137,6 +137,13 @@ test('charter evidence stays outside guide attribution and matches the same sour
  assert.deepEqual(find('Depoe Bay albacore'),['Tradewinds Charters']);
  assert.deepEqual(find('Ilwaco bottom fishing',{state:'Washington',method:'Bottom fishing'}),['Sea Breeze Charters']);
  assert.deepEqual(find('Astoria bottom fishing'),[]);
+ assert.deepEqual(find('Neah Bay halibut'),['Fish Neah Bay','Excel Fishing Charters']);
+ assert.deepEqual(find('Makah Marina bottom fishing'),['Fish Neah Bay']);
+ assert.deepEqual(find('bottom fishing La Push Marina',{state:'Washington',method:'Bottom fishing'}),['KYS Outdoor Adventures','Top Notch Ocean Charters']);
+ assert.deepEqual(find('La Push halibut',{state:'Oregon'}),[]);
+ for (const held of ['Sekiu bottom fishing','Neah Bay albacore','Neah Bay black cod','La Push albacore','La Push tuna']) {
+  assert.deepEqual(find(held),[],held);
+ }
  assert.equal(url.parseDirectoryState('?state=Washington&method=Bottom+fishing',[],charterOfferings).method,'Bottom fishing');
  assert.equal(url.parseDirectoryState('?state=Oregon&species=Tuna',[],charterOfferings).species,'Tuna');
  assert.equal(approvedCharterOfferings([{...raw.find(row=>row.scope==='operator_team'),departure_source:undefined}]).length,0);

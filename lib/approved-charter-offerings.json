@@ -235,5 +235,207 @@
     "port_aliases": [
       "Port of Ilwaco"
     ]
+  },
+  {
+    "operator": "Fish Neah Bay",
+    "business_id": "fish-neah-bay",
+    "city": "Neah Bay",
+    "state": "WA",
+    "kind": "species",
+    "value": "Halibut",
+    "source": {
+      "url": "https://fishneahbay.com/trips/elsie-louise-halibut-fishing/",
+      "reviewed_on": "2026-11-19",
+      "locator": "Trip page title and halibut booking section.",
+      "source_type": "operator_site"
+    },
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "scope": "operator_team",
+    "departure_source": {
+      "url": "https://fishneahbay.com/faq/",
+      "reviewed_on": "2026-11-19",
+      "locator": "Departure and arrival answers name Makah Marina and direct passengers to meet at the vessel on the dock.",
+      "source_type": "operator_site"
+    },
+    "port_aliases": [
+      "Makah Marina"
+    ]
+  },
+  {
+    "operator": "Fish Neah Bay",
+    "business_id": "fish-neah-bay",
+    "city": "Neah Bay",
+    "state": "WA",
+    "kind": "method",
+    "value": "Bottom fishing",
+    "source": {
+      "url": "https://fishneahbay.com/trips/elsie-louise-off-shore-bottom-fishing/",
+      "reviewed_on": "2026-11-19",
+      "locator": "Title and offshore bottom-fishing trip description.",
+      "source_type": "operator_site"
+    },
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "scope": "operator_team",
+    "departure_source": {
+      "url": "https://fishneahbay.com/faq/",
+      "reviewed_on": "2026-11-19",
+      "locator": "Departure and arrival answers name Makah Marina and direct passengers to meet at the vessel on the dock.",
+      "source_type": "operator_site"
+    },
+    "port_aliases": [
+      "Makah Marina"
+    ]
+  },
+  {
+    "operator": "Excel Fishing Charters",
+    "business_id": "excel-fishing-charters-neah-bay",
+    "city": "Neah Bay",
+    "state": "WA",
+    "kind": "species",
+    "value": "Halibut",
+    "source": {
+      "url": "https://excelfishingcharters.com/services/services-neah-bay/",
+      "reviewed_on": "2026-11-19",
+      "locator": "Opening paragraph under Services – Neah Bay, also described under Neah Bay Trips Include.",
+      "source_type": "operator_site"
+    },
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "scope": "operator_team",
+    "departure_source": {
+      "url": "https://excelfishingcharters.com/home/welcome/",
+      "reviewed_on": "2026-11-19",
+      "locator": "Year Around Charter Fishing explicitly separates departures and target menus for Neah Bay and Sekiu.",
+      "source_type": "operator_site"
+    }
+  },
+  {
+    "operator": "Excel Fishing Charters",
+    "business_id": "excel-fishing-charters-neah-bay",
+    "city": "Neah Bay",
+    "state": "WA",
+    "kind": "method",
+    "value": "Bottom fishing",
+    "source": {
+      "url": "https://excelfishingcharters.com/services/services-neah-bay/",
+      "reviewed_on": "2026-11-19",
+      "locator": "Opening trip menu and named Bottom Fish trip targets under Neah Bay Trips Include.",
+      "source_type": "operator_site"
+    },
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "scope": "operator_team",
+    "departure_source": {
+      "url": "https://excelfishingcharters.com/home/welcome/",
+      "reviewed_on": "2026-11-19",
+      "locator": "Year Around Charter Fishing explicitly separates departures and target menus for Neah Bay and Sekiu.",
+      "source_type": "operator_site"
+    }
+  },
+  {
+    "operator": "KYS Outdoor Adventures",
+    "business_id": "kys-outdoor-adventures-la-push",
+    "city": "La Push",
+    "state": "WA",
+    "kind": "species",
+    "value": "Halibut",
+    "source": {
+      "url": "https://kysoutdooradventures.com/fishing-trips",
+      "reviewed_on": "2026-11-19",
+      "locator": "Two booking formats under the respective named headings, corroborated by Pacific halibut trips from La Push on the homepage.",
+      "source_type": "operator_site"
+    },
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "scope": "operator_team",
+    "departure_source": {
+      "url": "https://kysoutdooradventures.com/",
+      "reviewed_on": "2026-11-19",
+      "locator": "Homepage FAQ says trips depart from La Push Marina and the captain confirms meeting details.",
+      "source_type": "operator_site"
+    },
+    "port_aliases": [
+      "La Push Marina"
+    ]
+  },
+  {
+    "operator": "KYS Outdoor Adventures",
+    "business_id": "kys-outdoor-adventures-la-push",
+    "city": "La Push",
+    "state": "WA",
+    "kind": "method",
+    "value": "Bottom fishing",
+    "source": {
+      "url": "https://kysoutdooradventures.com/fishing-trips",
+      "reviewed_on": "2026-11-19",
+      "locator": "Named trip headings and bottomfish FAQ describe directed rockfish and lingcod trips.",
+      "source_type": "operator_site"
+    },
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "scope": "operator_team",
+    "departure_source": {
+      "url": "https://kysoutdooradventures.com/",
+      "reviewed_on": "2026-11-19",
+      "locator": "Homepage FAQ says trips depart from La Push Marina and the captain confirms meeting details.",
+      "source_type": "operator_site"
+    },
+    "port_aliases": [
+      "La Push Marina"
+    ]
+  },
+  {
+    "operator": "Top Notch Ocean Charters",
+    "business_id": "top-notch-ocean-charters-la-push",
+    "city": "La Push",
+    "state": "WA",
+    "kind": "species",
+    "value": "Halibut",
+    "source": {
+      "url": "https://www.topnotchoceancharters.com/",
+      "reviewed_on": "2026-11-19",
+      "locator": "Trip rate entry and Washington Coast Halibut section explicitly tie the dedicated charter to La Push Marina.",
+      "source_type": "operator_site"
+    },
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "scope": "operator_team",
+    "departure_source": {
+      "url": "https://www.topnotchoceancharters.com/",
+      "reviewed_on": "2026-11-19",
+      "locator": "Opening text names La Push Marina as the departure, and the halibut section independently describes the run from that marina. The separately listed tuna trip names Westport.",
+      "source_type": "operator_site"
+    },
+    "port_aliases": [
+      "La Push Marina"
+    ]
+  },
+  {
+    "operator": "Top Notch Ocean Charters",
+    "business_id": "top-notch-ocean-charters-la-push",
+    "city": "La Push",
+    "state": "WA",
+    "kind": "method",
+    "value": "Bottom fishing",
+    "source": {
+      "url": "https://www.topnotchoceancharters.com/",
+      "reviewed_on": "2026-11-19",
+      "locator": "Combo trip line and the dedicated Rockfish and Offshore Lingcod sections above the price list.",
+      "source_type": "operator_site"
+    },
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "scope": "operator_team",
+    "departure_source": {
+      "url": "https://www.topnotchoceancharters.com/",
+      "reviewed_on": "2026-11-19",
+      "locator": "Opening text names La Push Marina as the departure, and the halibut section independently describes the run from that marina. The separately listed tuna trip names Westport.",
+      "source_type": "operator_site"
+    },
+    "port_aliases": [
+      "La Push Marina"
+    ]
   }
 ]
