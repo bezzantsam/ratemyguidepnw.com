@@ -16,7 +16,7 @@ function find(node,predicate) {
   if(predicate(node)) return node;
   for(const child of [node.props?.children].flat(Infinity)){const result=find(child,predicate);if(result)return result}
 }
-function setup({moderator=false,emailOnly=false,otpReply=async()=>({error:null}),storage=new Map()}={}) {
+function setup({moderator=false,authCheck=false,emailOnly=false,otpReply=async()=>({error:null}),storage=new Map()}={}) {
   const profile='/guides/og-0002254', cells=[];let cursor=0,effects=[],listener,oauth,otp,replaced;
   const location={origin:'https://preview.example',pathname:profile,search:'?intent=review',hash:'#write-review'};
   const browser={
@@ -29,7 +29,7 @@ function setup({moderator=false,emailOnly=false,otpReply=async()=>({error:null})
   const directory=compile('lib/directory-url.ts',{'./directory-query':{}},{URL,URLSearchParams});
   const context=compile('lib/review-search-return.ts',{'./directory-url':directory},{window:browser,URLSearchParams});
   const panel=compile('components/AuthPanel.tsx',{react,'@supabase/supabase-js':{createClient:()=>({auth})},'@/lib/canonical-share':canonical,'@/lib/review-search-return':context},{window:browser,Event,URLSearchParams,process:{env:{NEXT_PUBLIC_SUPABASE_URL:'https://example.invalid',NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:'public'}}});
-  return {profile,location,get oauth(){return oauth},get otp(){return otp},get replaced(){return replaced},render(){cursor=0;effects=[];return panel.default({profilePath:moderator?undefined:profile,moderator,emailOnly})},start(){for(const fn of effects)fn()},emit(session){listener('SIGNED_IN',session)}};
+  return {profile,location,get oauth(){return oauth},get otp(){return otp},get replaced(){return replaced},render(){cursor=0;effects=[];return panel.default({profilePath:moderator?undefined:profile,moderator,authCheck,emailOnly})},start(){for(const fn of effects)fn()},emit(session){listener('SIGNED_IN',session)}};
 }
 
 test('both sign-in methods keep the selected guide and review intent without putting it in the auth fragment',()=>{
@@ -134,6 +134,7 @@ test('moderator sign-in shows bounded errors and allows retries after provider o
 test('throttled email sign-in gives both roles a recovery path without exposing provider details',async()=>{
  const cases=[
   {moderator:true,error:{status:429}},
+  {authCheck:true,error:{status:429}},
   {emailOnly:true,error:{code:'over_email_send_rate_limit'}},
   {emailOnly:true,error:{code:'over_request_rate_limit'}},
  ];
