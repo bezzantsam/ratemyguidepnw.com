@@ -102,7 +102,6 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
     <select ref={methodRef} value={method} onChange={e=>change({method:e.target.value,page:1})}><option>All methods</option>{methodOptions.map(x=><option key={x}>{x}</option>)}</select>
    </label>}
   </div>
-  {(speciesOptions.length>0||methodOptions.length>0)&&<p className="muted">Filters use available source and editorial information; they do not establish a specific trip or a guide’s personal expertise.</p>}
   <p className="muted">Search recognizes common nicknames and small spelling mistakes. Check the captain and business name before choosing a profile.</p>
   <div className="search-actions">
    <button type="button" onClick={()=>void copyLink()}>Copy search link</button>
