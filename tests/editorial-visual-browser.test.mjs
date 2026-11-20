@@ -20,12 +20,23 @@ test('unapproved source-backed preview follows the actual directory journey',{ti
   assert.equal(await page.getByText('Unapproved editorial preview',{exact:false}).count(),0);
   await page.screenshot({path:join(shots,'ordinary-desktop.png'),fullPage:true});
   await page.goto(`${preview}/guides?q=Kelsey+Helfrich`,{waitUntil:'domcontentloaded'});await page.getByText('Unapproved editorial preview',{exact:false}).first().waitFor();
-  await page.getByLabel('Species').selectOption({label:'Rainbow Trout'});await page.getByRole('combobox',{name:/^Fishing methods\b/}).selectOption({label:'Fly fishing'});
+  const species=page.getByLabel('Species');
+  await species.selectOption({label:'Trout'});await page.getByRole('combobox',{name:/^Fishing methods\b/}).selectOption({label:'Fly fishing'});
   await page.getByRole('combobox',{name:/^Fishing waters\b/}).selectOption({label:'McKenzie River'});
-  const saved=page.url();await page.getByRole('link',{name:/Kelsey Helfrich/}).first().waitFor();await page.screenshot({path:join(shots,'preview-directory-desktop.png'),fullPage:true});
+  const kelsey=page.getByRole('link',{name:/Kelsey Helfrich/}).first();
+  await kelsey.waitFor();
+  // The menu offers regional groups. Existing species-specific URLs remain usable.
+  const exact=new URL(page.url());
+  exact.searchParams.set('species','Rainbow trout');
+  await page.goto(exact.href,{waitUntil:'domcontentloaded'});
+  await page.waitForFunction(()=>[...document.querySelectorAll('select')].some(control=>control.value==='Rainbow trout'));
+  assert.equal(new URL(page.url()).searchParams.get('species'),'Rainbow trout');
+  const saved=page.url();await kelsey.waitFor();await page.screenshot({path:join(shots,'preview-directory-desktop.png'),fullPage:true});
   await page.getByRole('link',{name:/Kelsey Helfrich/}).first().click();await page.getByRole('heading',{name:'Kelsey Helfrich',exact:true}).waitFor();
   await page.getByText('Separate listings do not establish a combined trip or verify licensing.',{exact:false}).waitFor();
-  assert.equal(await page.locator('.guide-enrichment li').filter({hasText:'method: Fly fishing'}).count(),2,'two independently attributed sources remain visible');
+  const methodSources=page.locator('.guide-enrichment').getByRole('link',{name:'Source for Fly fishing',exact:true});
+  assert.equal(await methodSources.count(),2,'two independently attributed method sources remain visible');
+  assert.equal(new Set(await methodSources.evaluateAll(links=>links.map(link=>link.href))).size,2);
   await page.getByText('Source explicitly connects: Rainbow Trout · Fly fishing · McKenzie River',{exact:false}).waitFor();
   await page.getByText('Source explicitly connects: Steelhead · Fly fishing · Rogue River',{exact:false}).waitFor();
   await page.screenshot({path:join(shots,'preview-profile-desktop.png'),fullPage:true});
@@ -34,7 +45,7 @@ test('unapproved source-backed preview follows the actual directory journey',{ti
   await page.screenshot({path:join(shots,'preview-directory-mobile.png'),fullPage:true});
   await page.goto(`${preview}/guides?q=Kevin+Hawkins+Fishing`,{waitUntil:'domcontentloaded'});await page.getByRole('link',{name:/Kevin Hawkins/}).first().waitFor();await page.getByText('Other names (business or person): Kevin Hawkins Fishing',{exact:false}).first().waitFor();
   await page.goto(`${preview}/guides?q=Marc+Bush`,{waitUntil:'domcontentloaded'});const marc=page.getByRole('link',{name:/Marc Bush/}).first();await marc.waitFor();assert.equal(await marc.locator('.listing-chip').innerText(),'Oregon');
-  await marc.click();await page.getByRole('heading',{name:'Marc Bush',exact:true}).waitFor();assert.equal(await page.getByRole('heading',{name:'Also listed in Washington'}).count(),0);assert.equal(await page.getByText('species: Salmon',{exact:false}).count(),0);
+  await marc.click();await page.getByRole('heading',{name:'Marc Bush',exact:true}).waitFor();assert.equal(await page.getByRole('heading',{name:'Also listed in Washington'}).count(),0);assert.equal(await page.locator('.guide-enrichment li strong').filter({hasText:/^Salmon$/}).count(),0);
   await page.goto(`${preview}/editorial-changes`,{waitUntil:'domcontentloaded'});await page.getByRole('heading',{name:'Proposed changes'}).waitFor();await page.getByText('Unapproved editorial preview',{exact:false}).first().waitFor();
   assert.deepEqual(writes,[]);assert.deepEqual(blocked,[]);assert.deepEqual(errors,[]);
  }finally{await context.close();await browser.close()}
