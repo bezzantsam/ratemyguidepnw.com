@@ -68,6 +68,12 @@ SELECT (public.rmg_submit_revision_v2(:'listed_review',5::smallint,NULL,false,
  'Synthetic author correction for listed guide',true,'none',NULL,false,NULL)->>'id') AS listed_revision \gset
 SELECT public.fixture_assert((public.rmg_review_summary('WA',:'listed_source')->>'averageQuality')::numeric=3,
  'pending author revision leaves original public score unchanged');
+SELECT public.fixture_assert(public.rmg_my_submissions(0,50) @> jsonb_build_array(jsonb_build_object(
+ 'id',:'listed_revision','kind','revision','status','pending','review_id',:'listed_review',
+ 'jurisdiction','WA','source_id','wa-001',
+ 'identities',jsonb_build_array(jsonb_build_object('jurisdiction','WA','source_id','wa-001')))),
+ 'pending revision receipt has exact existing listing identity for reload');
+SELECT 'LISTED_PENDING_RECEIPTS='||public.rmg_my_submissions(0,50)::text;
 RESET ROLE;
 SET ROLE authenticated;
 SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000004',false);
@@ -143,6 +149,11 @@ SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000006'
 SELECT public.fixture_wa_denial(format($q$SELECT public.rmg_submit_revision_v2(%L,4::smallint,NULL,NULL,'Synthetic after pause',true,'none',NULL,false,NULL)$q$, :'listed_review'),'P5030');
 SELECT public.fixture_assert(public.rmg_my_submissions(0,10) @> jsonb_build_array(jsonb_build_object('id',:'listed_review','source_id','wa-001')),
  'author receipt survives pause without reopening public reviews');
+SELECT public.fixture_assert(public.rmg_my_submissions(0,50) @> jsonb_build_array(jsonb_build_object(
+ 'id',:'listed_revision','kind','revision','status','approved','review_id',:'listed_review',
+ 'jurisdiction','WA','source_id','wa-001',
+ 'identities',jsonb_build_array(jsonb_build_object('jurisdiction','WA','source_id','wa-001')))),
+ 'approved revision keeps its existing listing identity after pause');
 RESET ROLE;
 
 SET ROLE authenticated;
@@ -152,3 +163,16 @@ SELECT public.fixture_assert(NOT EXISTS (SELECT 1 FROM public.admin_pending_revi
 SELECT public.fixture_wa_denial(format($q$SELECT public.rmg_decide_submission('review',%L,true,'Synthetic disabled decision')$q$,
  :'listed_pending'),'P5030');
 RESET ROLE;
+
+-- Deliberately inconsistent owner-only fixture. The receipt adapter must not
+-- make a listed review identity into a claim identity even if a row exists.
+BEGIN;
+INSERT INTO public.guide_claims(guide_id,claimant_id,status)
+ VALUES (:'anchor','00000000-0000-0000-0000-000000000006','pending')
+ RETURNING id AS synthetic_claim \gset
+SET LOCAL ROLE authenticated;
+SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000006',true);
+SELECT public.fixture_assert(public.rmg_my_submissions(0,50) @> jsonb_build_array(jsonb_build_object(
+ 'id',:'synthetic_claim','kind','claim','jurisdiction',NULL,'source_id',NULL,'identities','[]'::jsonb)),
+ 'listed receipt identity stays excluded from the synthetic claim');
+ROLLBACK;
