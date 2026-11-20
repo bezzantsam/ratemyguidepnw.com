@@ -37,7 +37,7 @@ export default function CaptainTripCards({jurisdiction,sourceId}:CaptainTripSour
         return <li className="card captain-trip-card" key={trip.id}>
           <h3>{trip.title}</h3>
           <p>{location.join(' · ')} · {trip.jurisdiction==='OR'?'Oregon':'Washington'}</p>
-          <p><strong>Targets:</strong> {trip.species.join(', ')}</p>
+          {trip.species.length>0&&<p><strong>Targets:</strong> {trip.species.join(', ')}</p>}
           {season.length>0&&<p><strong>Months:</strong> {season.join(', ')}</p>}
           {methods.length>0&&<p><strong>Methods:</strong> {methods.join(', ')}</p>}
           {gear.length>0&&<p><strong>Gear:</strong> {gear.join(', ')}</p>}

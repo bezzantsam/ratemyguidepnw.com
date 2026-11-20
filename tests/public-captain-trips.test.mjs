@@ -144,3 +144,19 @@ test('moderator parser keeps empty proposals and rejects malformed, duplicate or
     assert.throws(()=>client.parseSubmittedTrips({vessels:[],offerings:bad}),/Invalid trip contents/);
   }
 });
+
+test('mixed fisheries match only supported broad targets and methods',async()=>{
+  const mixed={...nearshore,title:'Mixed bottomfish',species:[]};
+  const crabbing={...nearshore,title:'Mixed crabbing',species:['Crabbing'],methodIds:[],gearIds:[]};
+  const dungeness={...crabbing,species:['Dungeness crab']};
+  const {client,signal}=projection(()=>({profile:{...profile,offerings:[mixed]}}));
+  assert.equal((await client.fetchCaptainTripsForProfile(source,signal)).offerings.length,1);
+  for(const [trip,filters,wanted] of [
+    [mixed,{method:'Bottom fishing'},1],[mixed,{query:'mixed groundfish'},1],
+    [mixed,{species:'Rockfish'},0],[mixed,{query:'Lingcod'},0],
+    [{...mixed,species:['Bottom fishing'],methodIds:[]},{method:'Bottom fishing'},1],
+    [crabbing,{species:'Crabbing'},1],[crabbing,{query:'crab'},1],
+    [crabbing,{species:'Dungeness crab'},0],[crabbing,{method:'Crab ring fishing'},0],
+    [crabbing,{gear:'crab-pots'},0],[dungeness,{species:'Crabbing'},1],
+  ])assert.equal(query.matchingCaptainTrips({...listing,captainTrips:[trip]},{...baseline,...filters}).length,wanted,JSON.stringify(filters));
+});

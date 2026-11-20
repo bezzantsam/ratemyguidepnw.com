@@ -38,7 +38,7 @@ const fisheryAliases = [
  ['Tiger muskie','tiger muskies','tiger musky','tiger muskellunge','muskie','musky','muskellunge'],
  ['Tuna'], ['Albacore tuna','albacore'], ['Halibut','Pacific halibut'],
  ['Sablefish (black cod)','sablefish','black cod','blackcod','black cod sablefish'],
- ['Bottom fishing','bottomfish','bottom fish','bottomfishing','groundfish fishing','ground fishing','groundfish'],
+ ['Bottom fishing','bottomfish','bottom fish','bottomfishing','groundfish fishing','ground fishing','groundfish','mixed bottomfish','mixed groundfish'],
  ['Rockfish','rock fish'], ['Black rockfish'], ['Canary rockfish'], ['Copper rockfish'],
  ['Yellowtail rockfish'], ['Quillback rockfish'], ['Vermilion rockfish'], ['China rockfish'],
  ['Blue rockfish'], ['Deacon rockfish'], ['Widow rockfish'], ['Bocaccio','bocaccio rockfish'],
@@ -268,6 +268,7 @@ export function matchingCaptainTrips(entry:DirectoryEntry,filters:DirectoryFilte
   if(filters.advertisedWater!=='All advertised waters'&&!places.includes(filters.advertisedWater))return false;
   if(filters.species&&filters.species!=='All species'&&!directorySpeciesLabels(trip.species).includes(filters.species))return false;
   const methods=[...trip.methodIds,...trip.gearIds].map(directoryMethodLabel);
+  if(trip.species.some(label=>canonicalFisheryLabel(label)==='Bottom fishing'))methods.push('Bottom fishing');
   if(filters.method&&filters.method!=='All methods'&&!methods.includes(directoryMethodLabel(filters.method)))return false;
   if(filters.gear&&!trip.gearIds.includes(filters.gear))return false;
   if(filters.month&&!trip.months.includes(filters.month))return false;
