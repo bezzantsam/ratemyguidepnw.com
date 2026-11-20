@@ -69,7 +69,7 @@ test('two separate unclaimed WA guides can be reviewed, with pending privacy and
             case 'public_reviews':
               assert.notEqual(sourceId,held.sourceId);
               return route.fulfill({json:{summary:score(sourceId),reviews:sourceId===andy.sourceId?[{
-                id:publishedId,quality:4,body:'An independently moderated fixture review.',
+                id:publishedId,quality:4,would_book_again:false,communication:2,value_rating:5,body:'An independently moderated fixture review.',
                 published_at:'2026-11-19T00:00:00Z',
               }]:[]}});
             case 'claim_availability':
@@ -89,6 +89,9 @@ test('two separate unclaimed WA guides can be reviewed, with pending privacy and
             case 'submit_review':
               assert.equal(sourceId,charles.sourceId);
               assert.equal(input.body,'Private firsthand fixture trip.');
+              assert.equal(input.ratingVersion,1);
+              assert.equal(input.wouldBookAgain,false);
+              assert.deepEqual(input.ratings,{professionalism:4,safety:2});
               assert.equal(pending,false);
               if(++submitAttempts===1)return route.fulfill({status:503,json:{error:'service_unavailable'}});
               pending=true;
@@ -112,7 +115,18 @@ test('two separate unclaimed WA guides can be reviewed, with pending privacy and
 
     await openFinder(phone,charles,'No reviews yet');
     await phone.getByRole('button',{name:'Submit review'}).waitFor();
+    const booking=phone.getByRole('group',{name:'Would you book again?'});
+    const optional=phone.getByRole('group',{name:'Rate individual aspects (optional)'});
+    assert.equal(await booking.getByRole('radio',{checked:true}).count(),0);
+    assert.ok((await booking.boundingBox()).y<(await optional.boundingBox()).y);
+    assert.equal(await phone.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+    assert.deepEqual(await optional.getByRole('combobox').evaluateAll(items=>items.map(item=>item.value)),Array(7).fill(''));
     await phone.getByLabel('Overall quality').selectOption('5');
+    await booking.getByRole('radio',{name:'Yes',exact:true}).focus();
+    await phone.keyboard.press('ArrowRight');
+    assert.equal(await booking.getByRole('radio',{name:'No',exact:true}).isChecked(),true);
+    await optional.getByLabel('Professionalism').selectOption('4');
+    await optional.getByLabel('Safety').selectOption('2');
     await phone.getByLabel('Your relationship to this guide or business').selectOption('none');
     await phone.getByLabel('Your experience').fill('Private firsthand fixture trip.');
     await phone.getByLabel('I personally took this trip.').check();
@@ -136,6 +150,10 @@ test('two separate unclaimed WA guides can be reviewed, with pending privacy and
 
     await openFinder(phone,andy,'4.0');
     await phone.getByText('An independently moderated fixture review.').waitFor();
+    const details=phone.locator(`#review-${publishedId}`);
+    await details.getByText('Would book again: No').waitFor();
+    assert.match(await details.locator('.published-review-dimensions').innerText(),/Communication\s+2 \/ 5[\s\S]+Value\s+5 \/ 5/);
+    assert.equal(await details.getByText('Safety',{exact:true}).count(),0);
     await phone.getByRole('link',{name:'4.0 / 5 · 1 review'}).waitFor();
     await phone.getByRole('button',{name:'Submit review'}).waitFor();
     assert.equal(await privateReceipt.count(),0);

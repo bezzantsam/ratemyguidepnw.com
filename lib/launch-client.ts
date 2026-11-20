@@ -1,11 +1,11 @@
-import {type ClaimDraft, type ReviewDraft, validateReviewDraft} from '@/components/launch/submission-model';
+import {type ClaimDraft, type ReviewDraft, type ReviewDimensions, readReviewDimensions, validateReviewDraft} from '@/components/launch/submission-model';
 import {decodeTripResponses,describeTripResponses,encodeTripResponses} from '@/components/launch/trip-responses';
 
-/** Provisional adapter for 06's draft contract. It stays disabled until integration is verified. */
+/** Same-origin adapter for profile and review operations. */
 export type GuideSource = Readonly<{jurisdiction:'OR'|'WA';sourceId:string}>;
 export type PendingReceipt = Readonly<{id:string;status:'pending';existing?:boolean}>;
 export type OwnStatus = Readonly<{id:string;status:'pending'|'published'|'rejected'|'removed'|'approved'|'denied'}>;
-export type PublicReview = Readonly<{id:string;quality:number;body:string;publishedAt:string;tripMonth:string|null;tripDetails:readonly string[]|null}>;
+export type PublicReview = Readonly<{id:string;quality:number;wouldBookAgain?:boolean;ratings?:ReviewDimensions;body:string;publishedAt:string;tripMonth:string|null;tripDetails:readonly string[]|null}>;
 export type PublicReviews = Readonly<{count:number;averageQuality:number|null;reviews:readonly PublicReview[]}>;
 export type ClaimStatus='none'|'pending'|'approved'|'denied'|'unavailable';
 export type OwnedKind='review'|'claim'|'revision';
@@ -68,7 +68,11 @@ export function createLaunchClient(options:Options) {
   function publicRecord(value:unknown,expectedId?:string):PublicReview {
     const r=record(value);
     if(!r||typeof r.id!=='string'||!UUID.test(r.id)||(expectedId!==undefined&&r.id!==expectedId)||(r.status!==undefined&&r.status!=='published')||!Number.isInteger(r.quality)||(r.quality as number)<1||(r.quality as number)>5||typeof r.body!=='string'||!r.body.trim()||typeof r.published_at!=='string'||!r.published_at||!Number.isFinite(Date.parse(r.published_at)))throw new LaunchClientError('service_unavailable');
-    return {id:r.id,quality:r.quality as number,body:r.body,publishedAt:r.published_at,tripMonth:readTripMonth(r.trip_month),tripDetails:describeTripResponses(r.trip_responses)};
+    const ratings=readReviewDimensions(r);
+    return {id:r.id,quality:r.quality as number,body:r.body,publishedAt:r.published_at,
+      tripMonth:readTripMonth(r.trip_month),tripDetails:describeTripResponses(r.trip_responses),
+      ...(typeof r.would_book_again==='boolean'?{wouldBookAgain:r.would_book_again}:{}),
+      ...(ratings&&Object.keys(ratings).length?{ratings}:{})};
   }
   return {
     async session() {
@@ -93,7 +97,12 @@ export function createLaunchClient(options:Options) {
       if(validateReviewDraft(draft) || draft.relationship===null) throw new LaunchClientError('invalid_input');
       const body=draft.body.trim();
       if(body.length<1||body.length>3000) throw new LaunchClientError('invalid_input');
-      return receipt(await call('submit_review',{...sourceArgs(source),quality:draft.quality,intensity:draft.intensity,wouldBookAgain:draft.wouldBookAgain,body,firsthandAttested:draft.firsthand,relationship:draft.relationship,tripMonth:draft.tripMonth,...(draft.tripResponses?{tripResponses:draft.tripResponses}:{})},true));
+      return receipt(await call('submit_review',{
+        ...sourceArgs(source), quality:draft.quality, intensity:draft.intensity, wouldBookAgain:draft.wouldBookAgain,
+        body, firsthandAttested:draft.firsthand, relationship:draft.relationship, tripMonth:draft.tripMonth,
+        ...(draft.tripResponses?{tripResponses:draft.tripResponses}:{}),
+        ...(draft.ratingVersion===1?{ratingVersion:1,ratings:draft.ratings}:{}),
+      },true));
     },
     async claimAvailability(source:GuideSource):Promise<boolean> {
       const data=record(await call('claim_availability',sourceArgs(source),false));
@@ -152,8 +161,14 @@ export function createLaunchClient(options:Options) {
       });
     },
     async submitRevision(reviewId:string,draft:ReviewDraft):Promise<PendingReceipt> {
-      if(!UUID.test(reviewId)||validateReviewDraft(draft)||draft.relationship===null)throw new LaunchClientError('invalid_input');
-      return receipt(await call('submit_revision',{reviewId,quality:draft.quality,intensity:draft.intensity,wouldBookAgain:draft.wouldBookAgain,body:draft.body.trim(),firsthandAttested:draft.firsthand,relationship:draft.relationship,tripMonth:draft.tripMonth,...(draft.tripResponses?{tripResponses:draft.tripResponses}:{})},true));
+      if(!UUID.test(reviewId)||validateReviewDraft(draft,'revision')||draft.relationship===null)throw new LaunchClientError('invalid_input');
+      return receipt(await call('submit_revision',{
+        reviewId, quality:draft.quality, intensity:draft.intensity, body:draft.body.trim(),
+        firsthandAttested:draft.firsthand, relationship:draft.relationship, tripMonth:draft.tripMonth,
+        ...(draft.ratingVersion!==1||draft.wouldBookAgain!==null?{wouldBookAgain:draft.wouldBookAgain}:{}),
+        ...(draft.tripResponses?{tripResponses:draft.tripResponses}:{}),
+        ...(draft.ratingVersion===1?{ratingVersion:1,ratings:draft.ratings}:{}),
+      },true));
     },
     async reviewDetail(source:GuideSource,id:string):Promise<ReviewDraft> {
       if(!UUID.test(id))throw new LaunchClientError('invalid_input');
@@ -163,7 +178,9 @@ export function createLaunchClient(options:Options) {
       const tripDraft=decodeTripResponses(r.trip_responses);if(!tripDraft)throw new LaunchClientError('service_unavailable');
       const encoded=encodeTripResponses(tripDraft);if(encoded.error)throw new LaunchClientError('service_unavailable');
       if(!Object.hasOwn(r,'trip_month'))throw new LaunchClientError('service_unavailable');
-      return {quality:r.quality as number,intensity:r.intensity as number|null,wouldBookAgain:r.would_book_again as boolean|null,body:r.body,firsthand:false,relationship:r.relationship_disclosure as ReviewDraft['relationship'],tripMonth:readTripMonth(r.trip_month),tripResponses:encoded.value};
+      const ratings=readReviewDimensions(r);
+      if(!ratings)throw new LaunchClientError('service_unavailable');
+      return {ratings,quality:r.quality as number,intensity:r.intensity as number|null,wouldBookAgain:r.would_book_again as boolean|null,body:r.body,firsthand:false,relationship:r.relationship_disclosure as ReviewDraft['relationship'],tripMonth:readTripMonth(r.trip_month),tripResponses:encoded.value};
     },
     async publicReview(source:GuideSource,id:string):Promise<PublicReview> {
       if(!UUID.test(id))throw new LaunchClientError('invalid_input');
