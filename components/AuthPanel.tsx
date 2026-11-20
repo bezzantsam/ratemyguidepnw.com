@@ -73,7 +73,7 @@ export default function AuthPanel({onSignedIn,profilePath,moderator=false,authCh
  }
  if(!client)return <p>Sign-in configuration is unavailable.</p>;
  return <div className="auth-panel">
-  {user?<><p>{authCheck?'Signed in.':<>Signed in as <strong>{user}</strong></>}</p><button type="button" onClick={()=>void client.auth.signOut()}>Sign out</button></>:<>
+  {user?<>{!authCheck&&<p>Signed in as <strong>{user}</strong></p>}<button type="button" onClick={()=>void client.auth.signOut()}>Sign out</button></>:<>
    {!usesEmailOnly&&<button type="button" disabled={busy} onClick={()=>void google()}>Continue with Google</button>}
    <p>{moderator?'Use your moderator email to request a sign-in link.':usesEmailOnly?'Use your email to request a sign-in link.':'Or sign in using a verified email link:'}</p>
    <label>Email<input type="email" autoComplete="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com"/></label>

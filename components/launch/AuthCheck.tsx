@@ -32,12 +32,15 @@ export function AuthCheck({profilePath,moderator=false}:{profilePath?:string;mod
 
   return <>
     <AuthPanel authCheck moderator={moderator} profilePath={profilePath} onSignedIn={()=>void verify()}/>
-    <p>Review submissions and moderation actions are closed.</p>
     {status==='checking'&&<p role="status">Checking sign-in…</p>}
     {status==='ordinary'&&<p role="status">{moderator?'This account does not have moderator access.':'Angler sign-in confirmed.'}</p>}
     {status==='moderator'&&(moderator
       ? <section aria-label="Pending submissions"><h2>Pending submissions</h2><p role="status">Moderator review queue access confirmed.</p></section>
       : <p role="status">This account has moderator access.</p>)}
-    {status==='error'&&<p role="status">Account verification is temporarily unavailable.</p>}
+    {status==='error'&&<>
+      <p role="status">Account verification is temporarily unavailable.</p>
+      <button type="button" onClick={()=>void verify()}>Check sign-in status</button>
+    </>}
+    <p>Review submissions and moderation actions are closed.</p>
   </>;
 }
