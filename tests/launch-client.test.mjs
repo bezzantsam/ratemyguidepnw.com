@@ -319,3 +319,55 @@ test('published list and canonical detail split in survey answers without changi
   assert.deepEqual(list.reviews[0].tripHighlights,detail.tripHighlights);
   assert.deepEqual(Array.from(detail.tripDetails),['How would you rate the guide’s effort? 3 / 5']);
 });
+
+test('review and revision queues distinguish trip assessments, zero catch and unanswered detail',async()=>{
+  const base={id,review_id:id,guide_name:'Synthetic guide',guide_profile_path:'/washington/wa-144',
+    is_own_submission:false,body:'Synthetic firsthand trip.',quality:4,intensity:null,would_book_again:false,
+    trip_month:null,trip_month_specified:false,relationship_disclosure:'none',firsthand_attested:true,
+    created_at:'2026-11-19T00:00:00Z'};
+  const answered=value=>({state:'answered',value});
+  const details={version:1,answers:{
+    kindness:answered(4),organization:answered(3),fishiness:answered(5),fish_landed:answered(0),
+  }};
+  async function item(kind,values){
+    const client=createLaunchClient({enabled:true,getAccessToken:async()=> 'fixture-token',
+      fetcher:async()=>response({items:[{...base,...values}],offset:0,limit:50})});
+    return (await client.operatorQueue(kind))[0];
+  }
+
+  for(const kind of ['review','revision']){
+    const answeredRow=await item(kind,{trip_responses:details});
+    assert.equal(answeredRow.guideProfilePath,'/washington/wa-144');
+    const lines=answeredRow.description.split('\n');
+    assert.deepEqual(lines.filter(line=>/^(Kindness|Organization|Finding fish|Fish landed by the group):/.test(line)),[
+      'Kindness: 4 / 5',
+      'Organization: 3 / 5',
+      'Finding fish: 5 / 5',
+      'Fish landed by the group: 0',
+    ]);
+    assert.equal(answeredRow.canApprove,true);
+    const positive=await item(kind,{trip_responses:{version:1,answers:{fish_landed:answered(7)}}});
+    assert.ok(positive.description.split('\n').includes('Fish landed by the group: 7'));
+
+    const legacy=await item(kind,{trip_responses:null});
+    assert.doesNotMatch(legacy.description,/Kindness|Organi[sz]|Finding fish|Fish landed/i);
+    assert.equal(legacy.canApprove,true);
+    const unanswered=await item(kind,{trip_responses:{version:1,answers:{
+      fish_landed:{state:'not_applicable'},teaching_requested:{state:'not_applicable'},
+    }}});
+    assert.deepEqual(unanswered.description.split('\n').filter(line=>line.startsWith('Fish landed')),[
+      'Fish landed by the group: Unanswered',
+    ]);
+    assert.ok(unanswered.description.split('\n').includes('Did you ask for instruction? Not applicable'));
+    assert.equal(unanswered.canApprove,true);
+
+    const invalid=await item(kind,{trip_responses:{version:1,answers:{fish_landed:answered(-1)}}});
+    assert.match(invalid.description,/Trip details unavailable/);
+    assert.doesNotMatch(invalid.description,/land[^\n]*-1/i);
+    assert.equal(invalid.canApprove,false);
+    const own=await item(kind,{trip_responses:details,is_own_submission:true});
+    assert.equal(own.canApprove,false);
+    const unknownOwnership=await item(kind,{trip_responses:details,is_own_submission:undefined});
+    assert.equal(unknownOwnership.canApprove,false);
+  }
+});
