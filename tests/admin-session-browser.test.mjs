@@ -27,7 +27,7 @@ const queue=[
  trip_month:null,relationship_disclosure:'none',trip_responses:null,firsthand_attested:true,created_at:'2026-11-19T00:00:00Z',
 }));
 
-test('moderator session, private decisions and recovery work in the phone queue',{timeout:90000},async()=>{
+test('legacy pending reviews retain moderator session, private decisions and recovery after flags become the default',{timeout:90000},async()=>{
  const browser=await chromium.launch({headless:true,executablePath});
  const context=await browser.newContext({viewport:{width:390,height:667},isMobile:true,hasTouch:true,serviceWorkers:'block'});
  const calls=[],unexpected=[],writes=[];
@@ -67,6 +67,7 @@ test('moderator session, private decisions and recovery work in the phone queue'
       return route.fulfill({json:{authenticated:true,operator:actor===operator}});
      case 'operator_queue':
       if(actor!==operator)return route.fulfill({status:403,json:{error:'forbidden'}});
+      if(payload.kind!=='review')return route.fulfill({json:{items:[],offset,limit}});
       if(holdQueue){queueStarted();await holdQueue}
       if(queueUnavailable)return route.fulfill({status:503,json:{error:'service_unavailable'}});
       return route.fulfill({json:{items:queueRows,offset,limit}});
@@ -115,6 +116,7 @@ test('moderator session, private decisions and recovery work in the phone queue'
   }
 
   await page.goto(origin+'/admin');
+  await page.getByLabel('Submission type').selectOption('review');
   await page.getByText(operator.user.email,{exact:true}).waitFor();
   await own.getByText('Your submission. Another moderator must make the decision.').waitFor();
   assert.equal(await own.getByRole('button',{name:'Approve'}).count(),0);
@@ -131,10 +133,12 @@ test('moderator session, private decisions and recovery work in the phone queue'
   assert.equal(calls.filter(([op])=>op==='operator_queue').length,reads);
 
   await page.reload();
+  await page.getByLabel('Submission type').selectOption('review');
   await other.getByRole('button',{name:'Approve'}).waitFor();
   await page.goto(origin+'/guides/og-0002193?intent=review#write-review');
   await page.getByText(operator.user.email,{exact:true}).waitFor();
   await page.goto(origin+'/admin');
+  await page.getByLabel('Submission type').selectOption('review');
   await other.getByRole('button',{name:'Approve'}).waitFor();
 
   await other.getByText(/Approval requires at least 20 characters.*Rejection requires a reason/).waitFor();
@@ -205,6 +209,7 @@ test('moderator session, private decisions and recovery work in the phone queue'
   // Simulate a lost success receipt on another isolated run, where the row is already absent.
   queueRows=queue;
   await page.reload();
+  await page.getByLabel('Submission type').selectOption('review');
   await approve.waitFor();
   await note.fill(evidence);
   decisionReply=route=>{queueRows=[queue[0]];return route.abort('connectionreset')};
@@ -231,12 +236,14 @@ test('moderator session, private decisions and recovery work in the phone queue'
   assert.ok(!calls.some(([op,actor])=>op==='operator_queue'&&actor===ordinary.user.email));
 
   await event('SIGNED_IN',operator);
+  await page.getByLabel('Submission type').selectOption('review');
   await other.getByRole('button',{name:'Approve'}).waitFor();
   sessionUnavailable=true;
   await page.reload();
   await page.getByText('Operator access is temporarily unavailable.',{exact:true}).waitFor();
   sessionUnavailable=false;
   await page.getByRole('button',{name:'Check access again'}).click();
+  await page.getByLabel('Submission type').selectOption('review');
   await other.getByRole('button',{name:'Approve'}).waitFor();
   await page.getByRole('button',{name:'Sign out'}).click();
   await page.getByRole('textbox',{name:'Email'}).waitFor();
@@ -244,6 +251,7 @@ test('moderator session, private decisions and recovery work in the phone queue'
   assert.deepEqual(calls.filter(([op])=>op==='logout'),[['logout','local']]);
   assert.deepEqual(unexpected,[]);
  }finally{
+  for(const page of context.pages())if(!page.isClosed())await page.goto('about:blank');
   await context.close();
   await browser.close();
  }

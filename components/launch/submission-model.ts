@@ -48,10 +48,11 @@ export type ReviewDraft = Readonly<{
 export type ClaimDraft = Readonly<{claimantName:string; businessName:string; evidence:string}>;
 
 /** Never invent a success status when a backend response is missing or malformed. */
-export function isSubmissionReceipt(value: unknown, kind: 'review' | 'claim'): value is SubmissionReceipt {
+export function isSubmissionReceipt(value: unknown, kind: 'review' | 'claim' | 'revision'): value is SubmissionReceipt {
   if (!value || typeof value !== 'object') return false;
   const receipt = value as Record<string, unknown>;
-  const allowed = kind === 'review' ? ['pending','published','rejected','removed'] : ['pending','approved','denied'];
+  const allowed = kind === 'review' ? ['pending','published','rejected','removed'] :
+    kind === 'revision' ? ['pending','approved','rejected'] : ['pending','approved','denied'];
   return typeof receipt.id === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(receipt.id) && typeof receipt.status === 'string' && allowed.includes(receipt.status) &&
     (receipt.message === undefined || typeof receipt.message === 'string');
 }

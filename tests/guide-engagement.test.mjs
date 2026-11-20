@@ -9,19 +9,94 @@ function find(node,predicate){if(!node||typeof node!=='object')return;if(predica
 const tick=()=>new Promise(resolve=>setImmediate(resolve));
 const id='10000000-0000-4000-8000-000000000001',claim='20000000-0000-4000-8000-000000000002';
 
+test('revision saves block editor reopening and stale account receipts cannot clear or unlock a newer draft',async()=>{
+  let cursor=0,effects=[],listener,detailReads=0,currentSession={access_token:'token',user:{id}};
+  const cells=[],requests=[],cleared=[];
+  const sameDeps=(a,b)=>a&&b&&a.length===b.length&&a.every((value,index)=>Object.is(value,b[index]));
+  const react={
+    useState(initial){const i=cursor++;if(!(i in cells))cells[i]=typeof initial==='function'?initial():initial;return[cells[i],value=>{cells[i]=typeof value==='function'?value(cells[i]):value}]},
+    useRef(initial){const i=cursor++;if(!(i in cells))cells[i]={current:initial};return cells[i]},
+    useMemo(fn,deps){const i=cursor++;if(!(i in cells)||!sameDeps(cells[i].deps,deps))cells[i]={deps,value:fn()};return cells[i].value},
+    useCallback(fn,deps){return react.useMemo(()=>fn,deps)},
+    useEffect(fn,deps){const i=cursor++;if(!(i in cells)||!sameDeps(cells[i].deps,deps)){const previous=cells[i];cells[i]={deps};effects.push(()=>{previous?.cleanup?.();cells[i].cleanup=fn()})}},
+  };
+  const source={jurisdiction:'OR',sourceId:'OG.0002254'};
+  const initial={quality:4,intensity:3,wouldBookAgain:true,body:'An account of my guided fishing trip.',firsthand:true,tripMonth:null,relationship:'none',tripResponses:null};
+  const api={
+    reviewWriteAvailability:async()=>true,ownReviewForGuide:async()=>({id,status:'published'}),
+    publicReviews:async()=>({count:1,averageQuality:4,reviews:[]}),profileDetails:async()=>null,
+    session:async()=>({authenticated:true,operator:false}),mySubmissions:async()=>[],
+    reviewDetail:async()=>{detailReads++;return initial},
+    submitRevision:()=>new Promise((resolve,reject)=>requests.push({resolve,reject})),
+  };
+  const auth={auth:{getSession:async()=>({data:{session:currentSession}}),onAuthStateChange(fn){listener=fn;return{data:{subscription:{unsubscribe(){}}}}}}};
+  function AuthPanel(){}function ReviewSubmission(){}function PublishedReviews(){}function ProfileSharing(){}
+  class LaunchClientError extends Error{}
+  const views=compile('components/launch/GuideEngagement.tsx',{
+    react,'@/components/AuthPanel':{__esModule:true,default:AuthPanel,client:auth},
+    '@/components/ReturnToResults':{__esModule:true,default:()=>null},
+    '@/lib/launch-client':{createLaunchClient:()=>api,LaunchClientError},
+    '@/lib/canonical-share':{publishedReviewIdFromHash:()=>null},
+    './ProfileSharing':{ProfileSharing},'./WashingtonReviewStatus':{WashingtonReviewStatus:()=>null},
+    './PublishedReviews':{PublishedReviews,ReviewCard:()=>null,validReviewPage:()=>true},
+    './SubmissionViews':{ReviewSubmission},
+    './review-draft-storage':{clearReviewDraft:(scope,mode)=>cleared.push({scope,mode}),clearReviewDraftsForAccount(){}},
+  },{window:{location:{hash:''},setTimeout:()=>0,clearTimeout(){},addEventListener(){},removeEventListener(){}}});
+  function render(){cursor=0;effects=[];return views.GuideEngagement({source,profilePath:'/guides/example',guideName:'Example'})}
+  async function settle(){for(let pass=0;pass<8;pass++){const tree=render(),pending=[...effects];for(const effect of pending)effect();await tick();if(!pending.length)return render()}throw Error('Hook effects did not settle')}
+  const editButton=tree=>find(tree,node=>node.type==='button'&&node.props.children==='Edit your review');
+  const editor=tree=>find(tree,node=>node.type===ReviewSubmission&&node.props.mode==='revision');
+  let tree=await settle();
+  const originalButton=editButton(tree);
+  originalButton.props.onClick();await tick();tree=render();
+  const firstEditor=editor(tree),failedSave=firstEditor.props.onSubmit(initial);
+  assert.equal(editButton(render()).props.disabled,true,'the active write disables reopening');
+  originalButton.props.onClick();await tick();tree=render();
+  assert.equal(detailReads,1,'a previously captured button callback cannot reopen during a save');
+  assert.equal(editor(tree).key,firstEditor.key,'the pending editor remains mounted');
+  await assert.rejects(firstEditor.props.onSubmit(initial),/already being saved/);
+  assert.equal(requests.length,1,'only one revision write starts');
+  const failedCheck=assert.rejects(failedSave,/offline/);requests[0].reject(new Error('offline'));await failedCheck;
+  tree=render();assert.equal(editButton(tree).props.disabled,false,'failure releases the editor guard');
+  editButton(tree).props.onClick();await tick();tree=render();
+  const oldEditor=editor(tree),oldSave=oldEditor.props.onSubmit(initial);
+  assert.notEqual(oldEditor.key,firstEditor.key,'editing can reopen after the failed request finishes');
+  currentSession=null;listener('SIGNED_OUT',null);
+  currentSession={access_token:'new-token',user:{id}};listener('SIGNED_IN',currentSession);
+  find(render(),node=>node.type===AuthPanel).props.onSignedIn();
+  tree=await settle();assert.equal(editButton(tree).props.disabled,false,'a new account epoch does not inherit the old write guard');
+  editButton(tree).props.onClick();await tick();tree=render();
+  const currentEditor=editor(tree),currentSave=currentEditor.props.onSubmit(initial);
+  const revisionClears=()=>cleared.filter(item=>item.mode==='revision').length;
+  const clearsBefore=revisionClears(),staleCheck=assert.rejects(oldSave,/Review account changed/);
+  requests[1].resolve({id:claim,status:'approved'});await staleCheck;
+  tree=render();
+  assert.equal(revisionClears(),clearsBefore,'an earlier session receipt does not clear the newer scoped draft');
+  assert.equal(editButton(tree).props.disabled,true,'the earlier request finally cannot unlock the newer in-flight save');
+  await assert.rejects(oldEditor.props.onSubmit(initial),/Review editor is unavailable/);
+  requests[2].resolve({id:claim,status:'approved'});await currentSave;
+  tree=render();assert.equal(editButton(tree).props.disabled,false,'success releases the editor guard');
+  assert.equal(revisionClears(),clearsBefore+1,'only the current confirmed write clears the revision draft');
+  editButton(tree).props.onClick();await tick();
+  assert.notEqual(editor(render()).key,currentEditor.key,'editing can reopen after a confirmed save');
+});
+
 test('Oregon profile connects ratings and review callbacks while held Washington fails closed',async()=>{
   let cursor=0,effects=[],listener,hashListener,currentSession={access_token:'token',user:{id}},submitted,edited;
-  let sessionChecks=0,ownLookups=0;const clearedDrafts=[],clearedAccounts=[];
+  let sessionChecks=0,ownLookups=0,publicReads=0;const clearedDrafts=[],clearedAccounts=[];
+  const sameDeps=(before,next)=>before&&next&&before.length===next.length&&before.every((value,index)=>Object.is(value,next[index]));
   const cells=[],react={
     useState(initial){const i=cursor++;if(!(i in cells))cells[i]=typeof initial==='function'?initial():initial;return [cells[i],v=>{cells[i]=typeof v==='function'?v(cells[i]):v}]},
     useRef(initial){const i=cursor++;if(!(i in cells))cells[i]={current:initial};return cells[i]},
-    useMemo(fn){const i=cursor++;if(!(i in cells))cells[i]=fn();return cells[i]},
-    useCallback(fn){cursor++;return fn},useEffect(fn){cursor++;effects.push(fn)},
+    useMemo(fn,deps){const i=cursor++;if(!(i in cells)||!sameDeps(cells[i].deps,deps))cells[i]={deps,value:fn()};return cells[i].value},
+    useCallback(fn,deps){const i=cursor++;if(!(i in cells)||!sameDeps(cells[i].deps,deps))cells[i]={deps,value:fn};return cells[i].value},
+    useEffect(fn,deps){const i=cursor++;if(!(i in cells)||!sameDeps(cells[i].deps,deps)){const previous=cells[i];cells[i]={deps};effects.push(()=>{previous?.cleanup?.();cells[i].cleanup=fn()})}},
   };
   const source={jurisdiction:'OR',sourceId:'OG.0002254'},profilePath='/guides/og-0002254';
   const auth={auth:{getSession:async()=>({data:{session:currentSession}}),onAuthStateChange(fn){listener=fn;return {data:{subscription:{unsubscribe(){}}}}}}};
   const initial={quality:4,intensity:3,wouldBookAgain:false,body:'A firsthand account of this trip. '.repeat(3),firsthand:false,tripMonth:null,relationship:'none',tripResponses:null};
-  const api={reviewWriteAvailability:async()=>true,ownReviewForGuide:async()=>{ownLookups++;return {id,status:'published'}},publicReviews:async()=>({count:1,averageQuality:4,reviews:[{id,quality:4,body:initial.body,publishedAt:'2026-11-17T00:00:00Z',tripDetails:[]}]}),publicReview:async(_s,requested)=>{if(requested!==id)throw Error('unavailable');return {id,quality:4,body:initial.body,publishedAt:'2026-11-17T00:00:00Z',tripDetails:[]}},profileDetails:async()=>null,session:async()=>{sessionChecks++;return {authenticated:true,operator:false}},mySubmissions:async()=>[{id,kind:'review',status:'published',jurisdiction:'OR',sourceId:source.sourceId,identities:[source]},{id:claim,kind:'claim',status:'approved',jurisdiction:'WA',sourceId:'wa-123',identities:[{jurisdiction:'WA',sourceId:'wa-123'},source]}],submitReview:async(s,d)=>{submitted={s,d};return {id,status:'pending'}},reviewDetail:async()=>initial,submitRevision:async(i,d)=>{edited={i,d};return {id,status:'pending'}}};
+  let visible={quality:initial.quality,body:initial.body};
+  const api={reviewWriteAvailability:async()=>true,ownReviewForGuide:async()=>{ownLookups++;return {id,status:'published'}},publicReviews:async()=>{publicReads++;return {count:1,averageQuality:visible.quality,reviews:[{id,quality:visible.quality,body:visible.body,publishedAt:'2026-11-17T00:00:00Z',tripDetails:[]}]}},publicReview:async(_s,requested)=>{if(requested!==id)throw Error('unavailable');return {id,quality:4,body:initial.body,publishedAt:'2026-11-17T00:00:00Z',tripDetails:[]}},profileDetails:async()=>null,session:async()=>{sessionChecks++;return {authenticated:true,operator:false}},mySubmissions:async()=>[{id,kind:'review',status:'published',jurisdiction:'OR',sourceId:source.sourceId,identities:[source]},{id:claim,kind:'claim',status:'approved',jurisdiction:'WA',sourceId:'wa-123',identities:[{jurisdiction:'WA',sourceId:'wa-123'},source]}],submitReview:async(s,d)=>{submitted={s,d};visible={quality:d.quality,body:d.body};return {id,status:'published'}},reviewDetail:async()=>initial,submitRevision:async(i,d)=>{edited={i,d};visible={quality:d.quality,body:d.body};return {id,status:'approved'}}};
   function PublishedReviews(){}function ReviewCard(){}function ReviewSubmission(){}function ClaimSubmission(){}function ProfileSharing(){}function AuthPanel(){}
   const browser={location:{hash:''},setTimeout:()=>0,clearTimeout(){},addEventListener(_name,fn){hashListener=fn},removeEventListener(){}};
   const canonical=compile('lib/canonical-share.ts',{});
@@ -31,6 +106,15 @@ test('Oregon profile connects ratings and review callbacks while held Washington
   const washingtonStatus=compile('components/launch/WashingtonReviewStatus.tsx',returnToResults);
   const views=compile('components/launch/GuideEngagement.tsx',{...returnToResults,react,'@/components/AuthPanel':{__esModule:true,default:AuthPanel,client:auth},'@/lib/launch-client':{createLaunchClient:()=>api},'@/lib/canonical-share':canonical,'./ProfileSharing':{ProfileSharing},'./WashingtonReviewStatus':washingtonStatus,'./PublishedReviews':{PublishedReviews,ReviewCard,validReviewPage},'./SubmissionViews':{ReviewSubmission,ClaimSubmission},'./review-draft-storage':{clearReviewDraft:(scope,mode)=>clearedDrafts.push({scope,mode}),clearReviewDraftsForAccount:account=>clearedAccounts.push(account)}},{window:browser});
   function render(compactProfile=false){cursor=0;effects=[];return views.GuideEngagement({source,profilePath,guideName:'Example',compactProfile})}
+  async function settle(compactProfile=false){
+    for(let pass=0;pass<8;pass++){
+      const tree=render(compactProfile),pending=[...effects];
+      for(const effect of pending)effect();
+      await tick();await tick();
+      if(!pending.length)return render(compactProfile);
+    }
+    throw Error('Hook effects did not settle');
+  }
   async function reauthenticate(){
     const next=currentSession??{access_token:'token',user:{id}};
     currentSession=null;listener('SIGNED_OUT',null);
@@ -39,8 +123,7 @@ test('Oregon profile connects ratings and review callbacks while held Washington
     find(render(),node=>node.type===AuthPanel).props.onSignedIn();
     await tick();await tick();
   }
-  render();for(const effect of effects)effect();await tick();await tick();
-  let tree=render(),published=find(tree,n=>n.type===PublishedReviews),sharing=find(tree,n=>n.type===ProfileSharing);
+  let tree=await settle(),published=find(tree,n=>n.type===PublishedReviews),sharing=find(tree,n=>n.type===ProfileSharing);
   assert.equal(published.props.state.page.total,1);assert.equal(published.props.state.page.average,4);assert.equal(sharing.props.reviewAvailable,true);
   const compact=render(true);
   const rating=find(compact,n=>n.type==='a'&&n.props.href==='#reviews');
@@ -65,10 +148,20 @@ test('Oregon profile connects ratings and review callbacks while held Washington
   assert.equal(find(tree,n=>n.type===ReviewSubmission&&n.props.mode==='revision').props.initial,initial,'same-account refocus keeps the active revision mounted');
   assert.equal(sessionChecks,checksBefore,'same-account callbacks do not recheck accepted sessions');
   assert.equal(ownLookups,lookupsBefore,'same-account callbacks do not temporarily hide the form');
-  await revision.props.onSubmit(initial);assert.equal(edited.i,id);
+  const readsBeforeEdit=publicReads;
+  const changed={...initial,quality:2,body:'A corrected public trip account.'};
+  await revision.props.onSubmit(changed);await tick();await tick();assert.equal(edited.i,id);
+  tree=await settle();
+  const changedPage=find(tree,n=>n.type===PublishedReviews).props.state.page;
+  assert.equal(changedPage.average,2);assert.equal(changedPage.reviews[0].body,changed.body);
+  assert.ok(publicReads>readsBeforeEdit,'approved edits refresh the public review and aggregate without reloading');
   assert.ok(clearedDrafts.some(item=>item.mode==='revision'&&item.scope.reviewId===id),'confirmed revision clears only its scoped draft');
   api.mySubmissions=async()=>[];api.ownReviewForGuide=async()=>null;await reauthenticate();tree=render();
-  const review=find(tree,n=>n.type===ReviewSubmission&&n.props.mode!=='revision');assert.ok(review);assert.equal(review.props.allowTripResponses,true);assert.equal(review.props.draftScope.accountId,id);assert.equal(review.props.draftScope.sourceId,source.sourceId);await review.props.onSubmit(initial);assert.equal(submitted.s.sourceId,source.sourceId);
+  const review=find(tree,n=>n.type===ReviewSubmission&&n.props.mode!=='revision');assert.ok(review);assert.equal(review.props.allowTripResponses,true);assert.equal(review.props.draftScope.accountId,id);assert.equal(review.props.draftScope.sourceId,source.sourceId);const readsBeforeSubmit=publicReads;await review.props.onSubmit(initial);await tick();await tick();assert.equal(submitted.s.sourceId,source.sourceId);
+  tree=await settle();
+  assert.ok(publicReads>readsBeforeSubmit,'published submissions refresh public reviews without manual approval');
+  assert.equal(find(tree,n=>n.type===PublishedReviews).props.state.page.average,initial.quality);
+  assert.equal(find(tree,n=>n.type===PublishedReviews).props.state.page.reviews[0].body,initial.body);
   api.ownReviewForGuide=async()=>{throw Error('offline')};await reauthenticate();tree=render();
   assert.equal(find(tree,n=>n.type===ReviewSubmission&&n.props.mode!=='revision'),undefined,'unknown status cannot imply no prior review');
   api.ownReviewForGuide=async()=>null;api.mySubmissions=async()=>Array.from({length:50},(_,i)=>({id:String(i),kind:'claim',status:'pending',identities:[{jurisdiction:'WA',sourceId:'wa-other'}]}));await reauthenticate();tree=render();
@@ -76,8 +169,8 @@ test('Oregon profile connects ratings and review callbacks while held Washington
   browser.location.hash=`#review-${id}`;hashListener();await tick();tree=render();assert.equal(find(tree,n=>n.type===ReviewCard).props.review.id,id);
   browser.location.hash=`#review-${claim}`;hashListener();await tick();tree=render();assert.equal(find(tree,n=>n.type===ReviewCard),undefined);assert.ok(find(tree,n=>n.props?.children==='The linked review is unavailable.'));
   currentSession=null;listener('SIGNED_OUT',null);tree=render();assert.ok(clearedAccounts.includes(id),'explicit sign-out clears account drafts');assert.equal(find(tree,n=>n.type===ReviewSubmission),undefined);assert.equal(find(tree,n=>n.type===ClaimSubmission),undefined);
-  api.publicReviews=async()=>{throw Error('unmapped')};render();for(const effect of effects)effect();await tick();await tick();
-  const failed=render(true);
+  api.publicReviews=async()=>{throw Error('unmapped')};cells.length=0;listener=undefined;hashListener=undefined;
+  const failed=await settle(true);
   assert.equal(find(failed,n=>n.type==='a'&&n.props.href==='#reviews'),undefined);
   assert.equal(find(failed,n=>n.type===ProfileSharing).props.primaryAction.props.disabled,true);
   assert.ok(find(failed,n=>n.type==='button'&&n.props.children==='Retry'));

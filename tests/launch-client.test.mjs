@@ -35,6 +35,12 @@ test('submission sends explicit fields with a bearer token and retains a real pe
   assert.equal(body.tripMonth,null);assert.equal('userId' in body,false);assert.equal('status' in body,false);
 });
 
+test('automatic review publication uses only a confirmed published receipt and retains pending compatibility',async()=>{
+  const create=value=>createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async()=>response(value)});
+  for(const status of ['published','pending'])assert.equal((await create({id,status}).submitReview(source,draft)).status,status);
+  for(const status of ['approved','rejected','removed','resolved'])await assert.rejects(create({id,status}).submitReview(source,draft),errorCode('service_unavailable'));
+});
+
 test('basic review transmits skipped intensity and rebooking as null, not invented values',async()=>{
   let payload;const client=createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async(_url,init)=>{payload=JSON.parse(init.body);return response({id,status:'pending'})}});
   await client.submitReview(source,{...draft,body:'Good trip.',intensity:null,wouldBookAgain:null});
@@ -103,6 +109,12 @@ test('review revisions send explicit user answers and require a persisted pendin
   assert.equal((await client.submitRevision(id,draft)).status,'pending');
   assert.equal(payload.operation,'submit_revision');assert.equal(payload.reviewId,id);assert.equal(payload.wouldBookAgain,false);
   assert.equal('sourceId' in payload,false);
+});
+
+test('automatic review edits accept an approved revision and preserve a legacy pending receipt',async()=>{
+  const create=value=>createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async()=>response(value)});
+  for(const status of ['approved','pending'])assert.equal((await create({id,status}).submitRevision(id,draft)).status,status);
+  for(const status of ['published','rejected','removed','resolved'])await assert.rejects(create({id,status}).submitRevision(id,draft),errorCode('service_unavailable'));
 });
 
 test('review edit loads only the requested public review and retains supported optional answers',async()=>{
@@ -192,8 +204,39 @@ test('reports require a persisted receipt, retain prior-report status and never 
   assert.equal((await client.reportReview(source,id,'other')).existing,true);assert.equal(payload.operation,'report_review');assert.equal(payload.reviewId,id);
   await assert.rejects(client.reportReview(source,id,'invented'),errorCode('invalid_input'));assert.equal(calls,1);
   for(const value of [{id,status:'submitted'},{id,status:'pending',existing:false},{id:'bad',status:'submitted',existing:false}])await assert.rejects(create(value).reportReview(source,id,'other'),errorCode('service_unavailable'));
-  assert.equal((await create({id,status:'resolved'}).resolveReport(id)).status,'resolved');
-  await assert.rejects(create({id,status:'submitted'}).resolveReport(id),errorCode('service_unavailable'));
+  assert.equal((await create({id,status:'resolved',review_id:id,review_status:'published'}).resolveReport(id,'Checked the flagged review.')).status,'resolved');
+  await assert.rejects(create({id,status:'submitted'}).resolveReport(id,'Checked the flagged review.'),errorCode('service_unavailable'));
+});
+
+test('flag decisions send a private note and explicit keep/remove action and verify the actual review state',async()=>{
+  const reviewId='20000000-0000-4000-8000-000000000002';
+  const note='Checked the flag against the published firsthand review.';
+  let payload,calls=0;
+  const create=value=>createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async(_url,init)=>{
+    calls++;payload=JSON.parse(init.body);return response(value);
+  }});
+  const kept=await create({id,status:'resolved',review_id:reviewId,review_status:'published'}).resolveReport(id,note);
+  assert.equal(kept.reviewId,reviewId);assert.equal(kept.reviewStatus,'published');
+  assert.equal(payload.operation,'resolve_report');assert.equal(payload.action,'keep');assert.equal(payload.reason,note);
+  const removed=await create({id,status:'resolved',review_id:reviewId,review_status:'removed'}).resolveReport(id,note,'remove');
+  assert.equal(removed.reviewStatus,'removed');assert.equal(payload.action,'remove');
+  assert.equal((await create({id,status:'resolved',review_id:reviewId,review_status:'removed'}).resolveReport(id,note,'keep')).reviewStatus,'removed','keep must not imply republication of a removed review');
+  for(const value of [
+    {id,status:'resolved'},
+    {id,status:'resolved',review_id:'bad',review_status:'published'},
+    {id:reviewId,status:'resolved',review_id:reviewId,review_status:'published'},
+    {id,status:'submitted',review_id:reviewId,review_status:'published'},
+    {id,status:'resolved',review_id:reviewId,review_status:'approved'},
+  ])await assert.rejects(create(value).resolveReport(id,note),errorCode('service_unavailable'));
+  await assert.rejects(create({id,status:'resolved',review_id:reviewId,review_status:'published'}).resolveReport(id,note,'remove'),errorCode('service_unavailable'));
+  assert.equal((await create({id,status:'resolved',review_id:reviewId,review_status:'published'}).resolveReport(id,'','keep')).reviewStatus,'published','dismissal may omit a note; removal may not');
+  const before=calls;
+  for(const [reason,action] of [['','remove'],['x'.repeat(501),'remove'],[note,'approve']])await assert.rejects(create({}).resolveReport(id,reason,action),errorCode('invalid_input'));
+  assert.equal(calls,before,'invalid decisions must not reach the endpoint');
+  const unauthenticated=createLaunchClient({enabled:true,getAccessToken:async()=>null,fetcher:async()=>{throw Error('unauthenticated network call')}});
+  await assert.rejects(unauthenticated.resolveReport(id,note,'remove'),errorCode('sign_in_required'));
+  const ordinary=createLaunchClient({enabled:true,getAccessToken:async()=> 'ordinary-token',fetcher:async()=>({ok:false,status:403,json:async()=>({error:'forbidden'})})});
+  await assert.rejects(ordinary.resolveReport(id,note,'remove'),errorCode('forbidden'));
 });
 
 test('report queue never exposes hidden review text and duplicate requires a confirmed 409',async()=>{

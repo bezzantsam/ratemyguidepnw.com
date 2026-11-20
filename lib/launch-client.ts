@@ -4,6 +4,10 @@ import {decodeTripResponses,describeTripResponseEntries,describeTripResponses,en
 /** Same-origin adapter for profile and review operations. */
 export type GuideSource = Readonly<{jurisdiction:'OR'|'WA';sourceId:string}>;
 export type PendingReceipt = Readonly<{id:string;status:'pending';existing?:boolean}>;
+export type ReviewReceipt = Readonly<{id:string;status:'pending'|'published';existing?:boolean}>;
+export type RevisionReceipt = Readonly<{id:string;status:'pending'|'approved';existing?:boolean}>;
+export type ReportAction = 'keep'|'remove';
+export type ReportResolution = Readonly<{id:string;status:'resolved';reviewId:string;reviewStatus:'pending'|'published'|'rejected'|'removed'}>;
 export type OwnStatus = Readonly<{id:string;status:'pending'|'published'|'rejected'|'removed'|'approved'|'denied'}>;
 export type PublicReview = Readonly<{id:string;quality:number;wouldBookAgain?:boolean;ratings?:ReviewDimensions;tripHighlights?:readonly TripResponseDescription[];body:string;publishedAt:string;tripMonth:string|null;tripDetails:readonly string[]|null}>;
 export type PublicReviews = Readonly<{count:number;averageQuality:number|null;reviews:readonly PublicReview[]}>;
@@ -60,10 +64,10 @@ export function createLaunchClient(options:Options) {
     if(!validSource(source)) throw new LaunchClientError('invalid_input');
     return {jurisdiction:source.jurisdiction,sourceId:source.sourceId};
   }
-  function receipt(value:unknown):PendingReceipt {
+  function receipt<S extends string>(value:unknown,allowed:readonly S[]):Readonly<{id:string;status:S;existing?:boolean}> {
     const data=record(value);
-    if(!data || typeof data.id!=='string' || !UUID.test(data.id) || data.status!=='pending' || (data.existing!==undefined&&typeof data.existing!=='boolean')) throw new LaunchClientError('service_unavailable');
-    return {id:data.id,status:'pending',...(typeof data.existing==='boolean'?{existing:data.existing}:{})};
+    if(!data || typeof data.id!=='string' || !UUID.test(data.id) || typeof data.status!=='string' || !allowed.includes(data.status as S) || (data.existing!==undefined&&typeof data.existing!=='boolean')) throw new LaunchClientError('service_unavailable');
+    return {id:data.id,status:data.status as S,...(typeof data.existing==='boolean'?{existing:data.existing}:{})};
   }
   function publicRecord(value:unknown,expectedId?:string):PublicReview {
     const r=record(value);
@@ -97,7 +101,7 @@ export function createLaunchClient(options:Options) {
       if(!row||typeof row.id!=='string'||!UUID.test(row.id)||typeof row.status!=='string'||!REVIEW_STATES.includes(row.status))throw new LaunchClientError('service_unavailable');
       return {id:row.id,status:row.status as OwnStatus['status']};
     },
-    async submitReview(source:GuideSource,draft:ReviewDraft):Promise<PendingReceipt> {
+    async submitReview(source:GuideSource,draft:ReviewDraft):Promise<ReviewReceipt> {
       if(validateReviewDraft(draft) || draft.relationship===null) throw new LaunchClientError('invalid_input');
       const body=draft.body.trim();
       if(body.length<1||body.length>3000) throw new LaunchClientError('invalid_input');
@@ -106,7 +110,7 @@ export function createLaunchClient(options:Options) {
         body, firsthandAttested:draft.firsthand, relationship:draft.relationship, tripMonth:draft.tripMonth,
         ...(draft.tripResponses?{tripResponses:draft.tripResponses}:{}),
         ...(draft.ratingVersion===1?{ratingVersion:1,ratings:draft.ratings}:{}),
-      },true));
+      },true),['pending','published'] as const);
     },
     async claimAvailability(source:GuideSource):Promise<boolean> {
       const data=record(await call('claim_availability',sourceArgs(source),false));
@@ -122,7 +126,7 @@ export function createLaunchClient(options:Options) {
     async submitClaim(source:GuideSource,draft:ClaimDraft):Promise<PendingReceipt> {
       const claimantName=draft.claimantName.trim(),businessName=draft.businessName.trim(),evidence=draft.evidence.trim();
       if(Array.from(claimantName).length<2 || claimantName.length>120 || businessName.length>160 || Array.from(evidence).length<20 || evidence.length>1200) throw new LaunchClientError('invalid_input');
-      return receipt(await call('submit_claim',{...sourceArgs(source),claimantName,businessName,evidence},true));
+      return receipt(await call('submit_claim',{...sourceArgs(source),claimantName,businessName,evidence},true),['pending'] as const);
     },
     async reportReview(source:GuideSource,reviewId:string,reason:ReportReason):Promise<{id:string;status:'submitted';existing:boolean}> {
       if(!UUID.test(reviewId)||!['not_firsthand','harassment_or_private_info','other'].includes(reason))throw new LaunchClientError('invalid_input');
@@ -130,11 +134,11 @@ export function createLaunchClient(options:Options) {
       if(!data||typeof data.id!=='string'||!UUID.test(data.id)||data.status!=='submitted'||typeof data.existing!=='boolean')throw new LaunchClientError('service_unavailable');
       return {id:data.id,status:'submitted',existing:data.existing};
     },
-    async resolveReport(id:string):Promise<{id:string;status:'resolved'}> {
-      if(!UUID.test(id))throw new LaunchClientError('invalid_input');
-      const data=record(await call('resolve_report',{id},true));
-      if(!data||data.id!==id||data.status!=='resolved')throw new LaunchClientError('service_unavailable');
-      return {id,status:'resolved'};
+    async resolveReport(id:string,reason='',action:ReportAction='keep'):Promise<ReportResolution> {
+      if(!UUID.test(id)||!['keep','remove'].includes(action)||typeof reason!=='string'||reason.length>500||(action==='remove'&&!reason.trim()))throw new LaunchClientError('invalid_input');
+      const data=record(await call('resolve_report',{id,action,reason:reason.trim()},true));
+      if(!data||data.id!==id||data.status!=='resolved'||typeof data.review_id!=='string'||!UUID.test(data.review_id)||typeof data.review_status!=='string'||!REVIEW_STATES.includes(data.review_status)||(action==='remove'&&data.review_status!=='removed'))throw new LaunchClientError('service_unavailable');
+      return {id,status:'resolved',reviewId:data.review_id,reviewStatus:data.review_status as ReportResolution['reviewStatus']};
     },
     async ownStatus(kind:OwnedKind,id:string):Promise<OwnStatus> {
       if(!['review','claim','revision'].includes(kind)||!UUID.test(id)) throw new LaunchClientError('invalid_input');
@@ -164,7 +168,7 @@ export function createLaunchClient(options:Options) {
         seen.add(item.id);return {id:item.id,kind,status:item.status,createdAt:item.created_at,jurisdiction:item.jurisdiction as 'OR'|'WA'|null,sourceId:item.source_id as string|null,reviewId:item.review_id as string|null,identities};
       });
     },
-    async submitRevision(reviewId:string,draft:ReviewDraft):Promise<PendingReceipt> {
+    async submitRevision(reviewId:string,draft:ReviewDraft):Promise<RevisionReceipt> {
       if(!UUID.test(reviewId)||validateReviewDraft(draft,'revision')||draft.relationship===null)throw new LaunchClientError('invalid_input');
       return receipt(await call('submit_revision',{
         reviewId, quality:draft.quality, intensity:draft.intensity, body:draft.body.trim(),
@@ -172,7 +176,7 @@ export function createLaunchClient(options:Options) {
         ...(draft.ratingVersion!==1||draft.wouldBookAgain!==null?{wouldBookAgain:draft.wouldBookAgain}:{}),
         ...(draft.tripResponses?{tripResponses:draft.tripResponses}:{}),
         ...(draft.ratingVersion===1?{ratingVersion:1,ratings:draft.ratings}:{}),
-      },true));
+      },true),['pending','approved'] as const);
     },
     async reviewDetail(source:GuideSource,id:string):Promise<ReviewDraft> {
       if(!UUID.test(id))throw new LaunchClientError('invalid_input');

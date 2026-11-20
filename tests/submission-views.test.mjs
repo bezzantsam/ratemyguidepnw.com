@@ -63,6 +63,8 @@ test('a missing, malformed or unknown receipt is never treated as successful',()
   assert.equal(model.isSubmissionReceipt({id:receiptId,status:'removed'},'review'),true);
   assert.equal(model.isSubmissionReceipt({id:receiptId,status:'denied'},'claim'),true);
   assert.equal(model.isSubmissionReceipt({id:receiptId,status:'rejected'},'claim'),false);
+  for(const status of ['pending','approved','rejected'])assert.equal(model.isSubmissionReceipt({id:receiptId,status},'revision'),true);
+  for(const status of ['published','removed','denied'])assert.equal(model.isSubmissionReceipt({id:receiptId,status},'revision'),false);
 });
 
 test('status renders the actual receipt and does not imply that sign-in verifies a trip',()=>{
@@ -72,11 +74,17 @@ test('status renders the actual receipt and does not imply that sign-in verifies
   }
   const pending=renderToStaticMarkup(React.createElement(views.SubmissionStatus,{kind:'review',receipt:{id:receiptId,status:'pending'}}));
   assert.match(pending,/Your review is pending\. It is not on the public page\./);
+  const live=renderToStaticMarkup(React.createElement(views.SubmissionStatus,{kind:'review',receipt:{id:receiptId,status:'published'}}));
+  assert.match(live,/Your review has been published\./);
   const denied=renderToStaticMarkup(React.createElement(views.SubmissionStatus,{kind:'claim',receipt:{id:receiptId,status:'denied'}}));
   assert.doesNotMatch(denied,/explanation below/);
   const review=renderToStaticMarkup(React.createElement(views.ReviewSubmission,{onSubmit:async()=>({status:'pending'}),allowTripResponses:true}));
   assert.match(review,/Signing in confirms your account, not that a trip occurred/);
   assert.match(review,/I personally took this trip/);
+  assert.doesNotMatch(review,/checked before publication|pending approval/);
+  const revision=renderToStaticMarkup(React.createElement(views.ReviewSubmission,{mode:'revision',onSubmit:async()=>({id:receiptId,status:'approved'})}));
+  assert.match(revision,/>Save changes</);
+  assert.doesNotMatch(revision,/changes will be reviewed|Submit changes for review/);
   assert.match(review,/<summary>Tell us more<\/summary>/);
   assert.match(review,/Trip month \(optional\)/);
   const basic=renderToStaticMarkup(React.createElement(views.ReviewSubmission,{onSubmit:async()=>({status:'pending'})}));

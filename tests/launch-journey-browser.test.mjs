@@ -22,9 +22,14 @@ async function closeFixtureBrowser(browser){
  await browser.close();
 }
 
-test('synthetic browser connects mapped review, claim, moderation and published rating', {timeout:120000},async()=>{
+test('reviews and edits publish automatically, while flags wait for an authorized keep or remove decision', {timeout:120000},async()=>{
  const browser=await chromium.launch({executablePath:browserPath,headless:true});
  const state={review:null,revision:null,claim:null,report:null,requests:[],blocked:[],errors:[]};
+ const publicReview=()=>({id:reviewId,quality:state.review.quality,intensity:state.review.intensity,
+  would_book_again:state.review.wouldBookAgain,communication:state.review.ratings?.communication??null,
+  value_rating:state.review.ratings?.value??null,body:state.review.body,relationship_disclosure:state.review.relationship,
+  published_at:'2026-11-20T00:00:00Z',trip_month:state.review.tripMonth?`${state.review.tripMonth}-01`:null,
+  trip_responses:state.review.tripResponses??null});
  async function contextFor(actor,viewport){
   const context=await browser.newContext({viewport,serviceWorkers:'block'});
   const session={access_token:tokens[actor],refresh_token:'fixture-refresh',token_type:'bearer',expires_in:3600,expires_at:Math.floor(Date.now()/1000)+3600,user:{id:actor,email:'fixture@example.invalid',aud:'authenticated',role:'authenticated',email_confirmed_at:'2026-01-01T00:00:00Z',app_metadata:{},user_metadata:{}}};
@@ -45,28 +50,40 @@ test('synthetic browser connects mapped review, claim, moderation and published 
    }
    if(url.origin===origin&&url.pathname==='/api/launch'){
     const input=req.postDataJSON(),headers=req.headers();state.requests.push({actor,operation:input.operation,input});
-    if(!['public_reviews','profile_details','review_detail','review_write_availability','claim_availability'].includes(input.operation)&&headers.authorization!==`Bearer ${tokens[actor]}`)return route.fulfill({status:401,contentType:'application/json',body:'{"error":"sign_in_required"}'});
+    if(!['public_reviews','profile_details','review_detail','review_write_availability','claim_availability'].includes(input.operation)&&headers.authorization!==`Bearer ${tokens[actor]}`)return route.fulfill({status:401,json:{error:'sign_in_required'}});
     let data;
     switch(input.operation){
-     case 'public_reviews':data={summary:{count:state.review?.status==='published'?1:0,averageQuality:state.review?.status==='published'?state.review.quality:null},reviews:state.review?.status==='published'?[{id:reviewId,quality:state.review.quality,would_book_again:state.review.wouldBookAgain,communication:state.review.ratings?.communication,value_rating:state.review.ratings?.value,body:state.review.body,published_at:'2026-11-17T00:00:00Z',trip_month:state.review.tripMonth?`${state.review.tripMonth}-01`:null,trip_responses:state.review.tripResponses??null}]:[],limit:100};break;
+     case 'public_reviews':data={summary:{count:state.review?.status==='published'?1:0,averageQuality:state.review?.status==='published'?state.review.quality:null},reviews:state.review?.status==='published'?[publicReview()]:[],limit:100};break;
      case 'review_write_availability':data={available:true};break;
      case 'own_review_for_guide':data={review:actor===reviewer&&state.review?{id:reviewId,status:state.review.status}:null};break;
      case 'profile_details':data={details:null,attribution:'captain_declared'};break;
-     case 'review_detail':if(state.review?.status!=='published'||input.id!==reviewId)return route.fulfill({status:404,contentType:'application/json',body:'{"error":"not_found"}'});data={review:{id:reviewId,quality:state.review.quality,intensity:null,would_book_again:state.review.wouldBookAgain,communication:4,value_rating:3,body:state.review.body,relationship_disclosure:'none',published_at:'2026-11-17T00:00:00Z',trip_month:state.review.tripMonth?`${state.review.tripMonth}-01`:null,trip_responses:{version:1,answers:{effort:{state:'answered',value:2},organization:{state:'answered',value:3},fish_landed:{state:'answered',value:0}}}}};break;
+     case 'review_detail':if(state.review?.status!=='published'||input.id!==reviewId)return route.fulfill({status:404,json:{error:'not_found'}});data={review:publicReview()};break;
      case 'session':data={authenticated:true,operator:actor===operator};break;
-     case 'my_submissions':data={items:actor===reviewer?[...(state.review?[{id:reviewId,kind:'review',status:state.review.status,created_at:'2026-11-17T00:00:00Z',jurisdiction:'OR',source_id:'OG.0002254',review_id:null}]:[]),...(state.revision?[{id:state.revision.id,kind:'revision',status:'pending',created_at:'2026-11-17T00:00:00Z',jurisdiction:'OR',source_id:'OG.0002254',review_id:reviewId}]:[]),...(state.claim?[{id:claimId,kind:'claim',status:'pending',created_at:'2026-11-17T00:00:00Z',jurisdiction:'OR',source_id:'OG.0002254',review_id:null}]:[])]:[],offset:input.offset,limit:input.limit};break;
-     case 'submit_review':state.review={...input,status:'pending'};data={id:reviewId,status:'pending'};break;
-     case 'submit_revision':if(actor!==reviewer||input.reviewId!==reviewId||state.review?.status!=='published')throw Error('Unexpected synthetic revision');state.revision={...input,id:'70000000-0000-4000-8000-000000000007'};data={id:state.revision.id,status:'pending'};break;
+     case 'my_submissions':data={items:actor===reviewer?[...(state.review?[{id:reviewId,kind:'review',status:state.review.status,created_at:'2026-11-20T00:00:00Z',jurisdiction:'OR',source_id:'OG.0002254',review_id:null}]:[]),...(state.revision?[{id:state.revision.id,kind:'revision',status:state.revision.status,created_at:'2026-11-20T00:00:00Z',jurisdiction:'OR',source_id:'OG.0002254',review_id:reviewId}]:[]),...(state.claim?[{id:claimId,kind:'claim',status:'pending',created_at:'2026-11-20T00:00:00Z',jurisdiction:'OR',source_id:'OG.0002254',review_id:null}]:[])]:[],offset:input.offset,limit:input.limit};break;
+     case 'submit_review':assert.equal(actor,reviewer);state.review={...input,status:'published'};data={id:reviewId,status:'published'};break;
+     case 'submit_revision':
+      assert.equal(actor,reviewer);assert.equal(input.reviewId,reviewId);assert.equal(state.review?.status,'published');
+      state.revision={...input,id:'70000000-0000-4000-8000-000000000007',status:'approved'};
+      state.review={...state.review,...input,ratings:{...state.review.ratings,...input.ratings}};
+      data={id:state.revision.id,status:'approved'};break;
      case 'claim_availability':data={available:true};break;
      case 'claim_status':data={status:state.claim?'pending':'none'};break;
      case 'submit_claim':state.claim=input;data={id:claimId,status:'pending',existing:false};break;
-     case 'report_review':if(actor!==reporter||state.review?.status!=='published'||input.reviewId!==reviewId)throw Error('Unexpected synthetic report');data={id:reportId,status:'submitted',existing:!!state.report};state.report={reason:input.reason,status:'submitted'};break;
-     case 'operator_queue':data={items:input.kind==='review'&&state.review?.status==='pending'?[{id:reviewId,guide_name:'Fixture Guide',is_own_submission:false,body:state.review.body,quality:state.review.quality,intensity:state.review.intensity,would_book_again:state.review.wouldBookAgain,trip_month:state.review.tripMonth?`${state.review.tripMonth}-01`:null,firsthand_attested:true,relationship_disclosure:'none',trip_responses:null,created_at:'2026-11-17T00:00:00Z'}]:input.kind==='report'&&state.report?.status==='submitted'?[{id:reportId,review_id:reviewId,guide_name:'Fixture Guide',reason:state.report.reason,review_status:state.review.status,public_review_body:state.review.body,created_at:'2026-11-17T00:00:00Z'}]:[],offset:input.offset,limit:input.limit};break;
-     case 'operator_decide':if(actor!==operator||input.id!==reviewId)throw Error('Unexpected synthetic moderation action');state.review.status=input.approve?'published':'rejected';data={id:reviewId,status:state.review.status};break;
-     case 'resolve_report':if(actor!==operator||input.id!==reportId||!state.report)throw Error('Unexpected synthetic report resolution');state.report.status='resolved';data={id:reportId,status:'resolved'};break;
+     case 'report_review':
+      assert.equal(actor,reporter);assert.equal(state.review?.status,'published');assert.equal(input.reviewId,reviewId);
+      data={id:reportId,status:'submitted',existing:!!state.report};state.report={id:reportId,reason:input.reason,status:'submitted'};break;
+     case 'operator_queue':
+      if(actor!==operator)return route.fulfill({status:403,json:{error:'forbidden'}});
+      data={items:input.kind==='report'&&state.report?.status==='submitted'?[{id:state.report.id,review_id:reviewId,guide_name:'Fixture Guide',reason:state.report.reason,review_status:state.review.status,public_review_body:state.review.status==='published'?state.review.body:null,created_at:'2026-11-20T00:00:00Z'}]:[],offset:input.offset,limit:input.limit};break;
+     case 'operator_decide':throw Error('Automatic publication must not require a manual approval');
+     case 'resolve_report':
+      if(actor!==operator)return route.fulfill({status:403,json:{error:'forbidden'}});
+      assert.equal(input.id,state.report.id);assert.ok(['keep','remove'].includes(input.action));assert.ok(input.reason.trim());
+      state.report.status='resolved';if(input.action==='remove')state.review.status='removed';
+      data={id:state.report.id,status:'resolved',review_id:reviewId,review_status:state.review.status};break;
      default:throw Error(`Unexpected synthetic operation: ${input.operation}`);
     }
-    return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(data)});
+    return route.fulfill({status:200,json:data});
    }
    if(url.origin===origin||['data:','blob:'].includes(url.protocol))return route.continue();state.blocked.push(url.origin);return route.abort();
   });
@@ -84,75 +101,75 @@ test('synthetic browser connects mapped review, claim, moderation and published 
   await page.getByText('Fished with this guide? Be the first to share your experience.').waitFor();
   await page.getByLabel('Overall quality').selectOption('5');
   await page.getByRole('radio',{name:'Yes',exact:true}).check();
+  await page.getByLabel('Organization',{exact:true}).selectOption('value:3');
+  await page.getByLabel('How many fish did your group land?',{exact:false}).fill('0');
   await page.getByText('More ratings (optional)',{exact:true}).click();
-  await page.getByLabel('Communication',{exact:true}).selectOption('4');
-  await page.getByLabel('Value',{exact:true}).selectOption('3');
+  await page.getByLabel('Communication',{exact:true}).selectOption('4');await page.getByLabel('Value',{exact:true}).selectOption('3');
   await page.getByLabel('Your relationship to this guide or business').selectOption('none');await page.getByLabel('Your experience').fill('A good firsthand trip.');await page.getByLabel('I personally took this trip.').check();
   await page.getByText('Tell us more',{exact:true}).click();await page.getByLabel('Trip month (optional)').fill('2026-07');
-  await page.getByRole('button',{name:'Submit review'}).click();await page.getByText(/Your review is (pending|awaiting review)/).first().waitFor();
-  const reviewStatus=page.getByRole('link',{name:'View your review status'});
-  await reviewStatus.waitFor();
-  assert.equal(await reviewStatus.getAttribute('href'),'#your-submissions');
-  assert.equal(state.review.intensity,null);assert.equal(state.review.wouldBookAgain,true);
-  assert.equal(state.review.ratingVersion,1);
-  assert.deepEqual(state.review.ratings,{communication:4,value:3});
+  await page.getByRole('button',{name:'Submit review'}).click();
+  // No reload, moderator, or queue action is needed to see the submitted review and aggregate.
+  await page.locator('#reviews').getByText('A good firsthand trip.',{exact:true}).waitFor();
+  await page.getByRole('link',{name:'5.0 / 5 · 1 review'}).waitFor();
+  assert.equal(state.review.status,'published');assert.equal(state.requests.some(r=>r.operation==='operator_decide'),false);
+  const reviewStatus=page.getByRole('link',{name:'View your review status'});await reviewStatus.waitFor();assert.equal(await reviewStatus.getAttribute('href'),'#your-submissions');
+  assert.equal(state.review.intensity,null);assert.equal(state.review.wouldBookAgain,true);assert.equal(state.review.ratingVersion,1);assert.deepEqual(state.review.ratings,{communication:4,value:3});
   assert.equal(state.review.sourceId,'OG.0002254');assert.equal(state.review.tripMonth,'2026-07');
-  await page.getByRole('link',{name:'Claim this profile'}).click();const claimSection=page.locator('#claim-profile');await claimSection.getByLabel('Your name').fill('Fixture Captain');await claimSection.getByLabel('Your connection to this listing').fill('I operate the guide business shown on this listing.');await claimSection.getByRole('button',{name:'Submit claim request'}).click();await claimSection.getByText('Your claim request is pending review. Your evidence is private.').waitFor();await page.reload();await claimSection.getByText('Your claim request is pending review. Your evidence is private.').waitFor();
+  await page.getByRole('link',{name:'Claim this profile'}).click();const claimSection=page.locator('#claim-profile');await claimSection.getByLabel('Your name').fill('Fixture Captain');await claimSection.getByLabel('Your connection to this listing').fill('I operate the guide business shown on this listing.');await claimSection.getByRole('button',{name:'Submit claim request'}).click();await claimSection.getByText('Your claim request is pending review. Your evidence is private.').waitFor();
+  assert.equal(state.claim!==null,true,'claim requests retain their existing separate approval flow');
   await page.getByText('Sharing options',{exact:true}).click();await page.getByRole('button',{name:'Copy review request link'}).click();assert.equal(await page.evaluate(()=>window.__fixtureCopied),'https://ratemyguidepnw.vercel.app/guides/og-0002254?intent=review#write-review');
-  const admin=await contextFor(operator,{width:1280,height:800}),queue=await admin.newPage();queue.on('pageerror',e=>state.errors.push(e.message));await queue.goto(`${origin}/admin`,{waitUntil:'domcontentloaded'});await queue.getByText('Fixture Guide',{exact:false}).waitFor();
-  await queue.getByText(/Trip month: 2026-07/).waitFor();await queue.getByLabel('Decision note').fill('Independent synthetic review evidence checked.');await queue.getByRole('button',{name:'Approve'}).click();await queue.getByText('Decision confirmed: published.').waitFor();
-  await page.reload({waitUntil:'domcontentloaded'});await page.getByText('A good firsthand trip.').waitFor();await page.getByText('5.0 / 5',{exact:false}).waitFor();await page.getByText('Trip month reported by the angler: 2026-07').waitFor();
-  await page.getByRole('button',{name:'Edit your review'}).click();
-  await page.getByRole('heading',{name:'Edit your review'}).waitFor();
-  assert.equal(await page.getByLabel('Your experience').inputValue(),'A good firsthand trip.');
-  await page.getByText('Your changes will be reviewed. Your current published review stays visible while the changes are pending.').waitFor();
-  const reporting=await contextFor(reporter,{width:390,height:844}),reportPage=await reporting.newPage();reportPage.on('pageerror',e=>state.errors.push(e.message));await reportPage.goto(`${origin}/guides/og-0002254`,{waitUntil:'domcontentloaded'});
-  const ratingSummary=reportPage.getByRole('link',{name:'5.0 / 5 · 1 review'});
-  await ratingSummary.waitFor();
-  const rate=reportPage.locator('.guide-rate'), share=reportPage.getByRole('button',{name:'Share profile'});
-  for(const item of [ratingSummary,rate,share]) {
-    const box=await item.boundingBox();
-    assert.ok(box && box.y>=0 && box.y+box.height<=844,'rating and actions fit on the first mobile screen');
+
+  const reporting=await contextFor(reporter,{width:390,height:844}),reportPage=await reporting.newPage();reportPage.on('pageerror',e=>state.errors.push(e.message));
+  await reportPage.goto(`${origin}/admin`,{waitUntil:'domcontentloaded'});
+  await reportPage.getByText('This account does not have operator access. Sign out, then use your authorized moderator email.').waitFor();
+  assert.equal(await reportPage.getByRole('button',{name:'Remove review',exact:true}).count(),0);
+  assert.equal(state.requests.some(r=>r.actor===reporter&&r.operation==='operator_queue'),false);
+  await reportPage.goto(`${origin}/guides/og-0002254`,{waitUntil:'domcontentloaded'});
+  const ratingSummary=reportPage.getByRole('link',{name:'5.0 / 5 · 1 review'});await ratingSummary.waitFor();
+  for(const item of [ratingSummary,reportPage.locator('.guide-rate'),reportPage.getByRole('button',{name:'Share profile'})]){
+    const box=await item.boundingBox();assert.ok(box&&box.y>=0&&box.y+box.height<=844,'rating and actions fit on the first mobile screen');
   }
-  await ratingSummary.click();
-  await reportPage.waitForURL(url=>url.hash==='#reviews');
+  await ratingSummary.click();await reportPage.waitForURL(url=>url.hash==='#reviews');
   await reportPage.getByRole('button',{name:'Report review'}).click();await reportPage.getByLabel('What’s wrong with this review?').selectOption('other');await reportPage.getByRole('button',{name:'Send report'}).click();await reportPage.getByText('Report sent. We’ll review it.').waitFor();
-  await queue.getByLabel('Submission type').selectOption('report');await queue.getByText('Review report · Fixture Guide').waitFor();await queue.getByRole('button',{name:'Resolve report'}).click();await queue.getByText('Report confirmed: resolved. The review was not changed.').waitFor();assert.equal(state.review.status,'published');assert.equal(state.report.status,'resolved');
+  assert.equal(state.review.status,'published','a flag alone must not hide a review or change its score');
+  await reportPage.locator('#reviews').getByText('A good firsthand trip.',{exact:true}).waitFor();
+  const admin=await contextFor(operator,{width:1280,height:800}),queue=await admin.newPage();queue.on('pageerror',e=>state.errors.push(e.message));await queue.goto(`${origin}/admin`,{waitUntil:'domcontentloaded'});
+  assert.equal(await queue.getByLabel('Submission type').inputValue(),'report','admin opens directly on flags');
+  await queue.getByText('Review report · Fixture Guide').waitFor();
+  await queue.getByLabel('Private decision note').fill('The flag does not identify a reason to remove this review.');
+  await queue.getByRole('button',{name:'Keep review and dismiss flag',exact:true}).click();
+  await queue.getByText('Flag dismissed. The review remains published.').waitFor();
+  assert.equal(state.review.status,'published');assert.equal(state.report.status,'resolved');
   await reportPage.waitForLoadState('networkidle');await closeFixtureContext(reporting);
+
   await page.getByRole('button',{name:'Copy review link'}).click();assert.equal(await page.evaluate(()=>window.__fixtureCopied),`https://ratemyguidepnw.vercel.app/guides/og-0002254#review-${reviewId}`);
-  await page.setViewportSize({width:390,height:844});await page.reload({waitUntil:'domcontentloaded'});await page.getByText('A good firsthand trip.').waitFor();assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+  await page.setViewportSize({width:390,height:844});await page.reload({waitUntil:'domcontentloaded'});await page.locator('#reviews').getByText('A good firsthand trip.',{exact:true}).waitFor();assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
   await page.getByRole('button',{name:'Edit your review'}).click();
   const editor=page.locator('form').filter({has:page.getByRole('heading',{name:'Edit your review'})});
-  await editor.getByText('More ratings (optional)',{exact:true}).click();
-  assert.equal(await editor.getByLabel('Communication',{exact:true}).inputValue(),'4');
-  assert.equal(await editor.getByRole('radio',{name:'Yes',exact:true}).isChecked(),true);
-  const organization=editor.getByLabel('Organization',{exact:true});
-  assert.equal(await organization.inputValue(),'value:3');
-  await organization.selectOption('');
-  assert.equal(await editor.getByLabel('How many fish did your group land?',{exact:false}).inputValue(),'0');
-  await editor.getByLabel('Value',{exact:true}).selectOption('');
-  await page.getByLabel('Your experience').fill('A good firsthand trip with a corrected detail.');
-  await page.getByLabel('I personally took this trip.').check();
-  await page.reload({waitUntil:'domcontentloaded'});
-  await page.getByRole('button',{name:'Edit your review'}).click();
-  await editor.getByLabel('Your experience').waitFor();
-  assert.equal(await editor.getByLabel('Your experience').inputValue(),'A good firsthand trip with a corrected detail.');
-  await editor.getByText('More ratings (optional)',{exact:true}).click();
-  assert.equal(await editor.getByLabel('Value',{exact:true}).inputValue(),'');
-  assert.equal(await editor.getByLabel('Organization',{exact:true}).inputValue(),'');
-  assert.equal(await editor.getByLabel('I personally took this trip.').isChecked(),true);
-  await page.getByRole('button',{name:'Submit changes for review'}).click();
-  await page.getByText('Your changes are pending review. Your current published review is still visible.').waitFor();
-  assert.equal(state.revision.body,'A good firsthand trip with a corrected detail.');
-  assert.deepEqual(state.revision.ratings,{value:null});
-  assert.equal(Object.hasOwn(state.revision,'wouldBookAgain'),false);
-  assert.equal(state.revision.tripResponses.answers.effort.value,2);
-  assert.deepEqual(state.revision.tripResponses.answers.organization,{state:'not_applicable'});
-  assert.equal(state.revision.tripResponses.answers.fish_landed.value,0);
-  assert.equal(state.review.body,'A good firsthand trip.');
+  await editor.getByText('More ratings (optional)',{exact:true}).click();assert.equal(await editor.getByLabel('Communication',{exact:true}).inputValue(),'4');assert.equal(await editor.getByRole('radio',{name:'Yes',exact:true}).isChecked(),true);
+  const organization=editor.getByLabel('Organization',{exact:true});assert.equal(await organization.inputValue(),'value:3');await organization.selectOption('');
+  assert.equal(await editor.getByLabel('How many fish did your group land?',{exact:false}).inputValue(),'0');await editor.getByLabel('Value',{exact:true}).selectOption('');
+  await editor.getByLabel('Overall quality').selectOption('4');await editor.getByLabel('Your experience').fill('A good firsthand trip with a corrected detail.');await editor.getByLabel('I personally took this trip.').check();
+  await page.reload({waitUntil:'domcontentloaded'});await page.getByRole('button',{name:'Edit your review'}).click();await editor.getByLabel('Your experience').waitFor();
+  assert.equal(await editor.getByLabel('Your experience').inputValue(),'A good firsthand trip with a corrected detail.');assert.equal(await editor.getByLabel('Overall quality').inputValue(),'4');
+  await editor.getByText('More ratings (optional)',{exact:true}).click();assert.equal(await editor.getByLabel('Value',{exact:true}).inputValue(),'');assert.equal(await editor.getByLabel('Organization',{exact:true}).inputValue(),'');assert.equal(await editor.getByLabel('I personally took this trip.').isChecked(),true);
+  await editor.getByRole('button',{name:'Save changes',exact:true}).click();
+  await page.getByText('Your changes have been published.').waitFor();
+  await page.locator('#reviews').getByText('A good firsthand trip with a corrected detail.',{exact:true}).waitFor();await page.getByRole('link',{name:'4.0 / 5 · 1 review'}).waitFor();
+  assert.equal(state.revision.status,'approved');assert.deepEqual(state.revision.ratings,{value:null});assert.equal(Object.hasOwn(state.revision,'wouldBookAgain'),false);assert.deepEqual(state.revision.tripResponses.answers.organization,{state:'not_applicable'});assert.equal(state.revision.tripResponses.answers.fish_landed.value,0);
+  assert.equal(state.review.body,'A good firsthand trip with a corrected detail.');assert.equal(state.requests.some(r=>r.operation==='operator_decide'),false);
   assert.equal(await page.evaluate(()=>Object.entries(localStorage).some(([key,value])=>key.startsWith('rmg:review-draft:v1:')&&value.includes('A good firsthand trip with a corrected detail.'))),false);
   if(process.env.BROWSER_SCREENSHOT_DIR){mkdirSync(process.env.BROWSER_SCREENSHOT_DIR,{recursive:true});await page.screenshot({path:join(process.env.BROWSER_SCREENSHOT_DIR,'synthetic-launch-mobile.png'),fullPage:true})}
-  await page.goto(`${origin}/write-review`,{waitUntil:'networkidle'});await page.getByRole('searchbox',{name:'Captain, business, operating name, or registration'}).fill('OG.0002254');await page.locator('.guide-result[href^="/guides/og-0002254?"][href*="q%3DOG.0002254"]').click();await page.waitForURL(ratingProfile);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+
+  // A later independent flag arrives in the synthetic queue. Only an explicit removal changes visibility.
+  state.report={id:'80000000-0000-4000-8000-000000000008',reason:'harassment_or_private_info',status:'submitted'};
+  await queue.getByRole('button',{name:'Refresh queue',exact:true}).click();await queue.getByText('Review report · Fixture Guide').waitFor();
+  await queue.getByLabel('Private decision note').fill('The flagged review includes identifying details requiring removal.');
+  await queue.getByRole('button',{name:'Remove review',exact:true}).click();await queue.getByText('Review removed from public view. Flag resolved.').waitFor();
+  assert.equal(state.review.status,'removed');assert.equal(state.report.status,'resolved');
+  await page.reload({waitUntil:'domcontentloaded'});await page.getByText('No published reviews yet.',{exact:true}).waitFor();
+  assert.equal(await page.locator('#reviews').getByText('A good firsthand trip with a corrected detail.',{exact:true}).count(),0);
+  assert.deepEqual(state.requests.filter(r=>r.operation==='resolve_report').map(r=>r.input.action),['keep','remove']);
   await Promise.all([page.waitForLoadState('networkidle'),queue.waitForLoadState('networkidle')]);
   assert.deepEqual(state.blocked,[]);assert.deepEqual(state.errors,[]);await closeFixtureContext(admin);await closeFixtureContext(context);
  }finally{await closeFixtureBrowser(browser)}
@@ -214,7 +231,7 @@ test('phone review drafts survive interruption, reload and auth refresh without 
      attempts.push({actor,source:input.sourceId,body:input.body});
      if(input.sourceId===first&&attempts.length===1)return json(route,error,503);
      if(stored.has(key))return json(route,{error:'duplicate_review'},409);
-     const receipt={id:reviewId,status:'pending'};
+     const receipt={id:reviewId,status:'published'};
      stored.set(key,receipt);
      return input.sourceId===second?json(route,error,503):json(route,receipt);
     }
@@ -328,14 +345,14 @@ test('phone review drafts survive interruption, reload and auth refresh without 
   await page.getByText('No review was found. You can submit your draft again.').waitFor();
   assert.equal(attempts.length,1);
   await submit.click();
-  await page.locator('#your-submissions').getByText('Your review is awaiting review and is not public.').waitFor();
+  await page.locator('#your-submissions').getByText('Your review is published.').waitFor();
   assert.deepEqual(attempts.slice(0,2),[0,1].map(()=>({actor:reviewer,source:first,body:expectedText})));
   assert.deepEqual(await draftEntries(),[],'a confirmed receipt clears the saved draft');
 
   await fill(second,'A review saved before its response arrived.');
   await submit.click();
   await check.click();
-  await page.locator('#your-submissions').getByText('Your review is awaiting review and is not public.').waitFor();
+  await page.locator('#your-submissions').getByText('Your review is published.').waitFor();
   assert.equal(attempts.length,3);
   assert.equal(await submit.count(),0);
   assert.deepEqual(await draftEntries(),[],'receipt recovery also clears the saved draft');
