@@ -36,7 +36,7 @@ test('synthetic browser connects mapped review, claim, moderation and published 
      case 'review_write_availability':data={available:true};break;
      case 'own_review_for_guide':data={review:actor===reviewer&&state.review?{id:reviewId,status:state.review.status}:null};break;
      case 'profile_details':data={details:null,attribution:'captain_declared'};break;
-     case 'review_detail':if(state.review?.status!=='published'||input.id!==reviewId)return route.fulfill({status:404,contentType:'application/json',body:'{"error":"not_found"}'});data={review:{id:reviewId,quality:state.review.quality,intensity:null,would_book_again:null,communication:4,value_rating:3,body:state.review.body,relationship_disclosure:'none',published_at:'2026-11-17T00:00:00Z',trip_month:state.review.tripMonth?`${state.review.tripMonth}-01`:null,trip_responses:{version:1,answers:{effort:{state:'answered',value:2}}}}};break;
+     case 'review_detail':if(state.review?.status!=='published'||input.id!==reviewId)return route.fulfill({status:404,contentType:'application/json',body:'{"error":"not_found"}'});data={review:{id:reviewId,quality:state.review.quality,intensity:null,would_book_again:state.review.wouldBookAgain,communication:4,value_rating:3,body:state.review.body,relationship_disclosure:'none',published_at:'2026-11-17T00:00:00Z',trip_month:state.review.tripMonth?`${state.review.tripMonth}-01`:null,trip_responses:{version:1,answers:{effort:{state:'answered',value:2}}}}};break;
      case 'session':data={authenticated:true,operator:actor===operator};break;
      case 'my_submissions':data={items:actor===reviewer?[...(state.review?[{id:reviewId,kind:'review',status:state.review.status,created_at:'2026-11-17T00:00:00Z',jurisdiction:'OR',source_id:'OG.0002254',review_id:null}]:[]),...(state.revision?[{id:state.revision.id,kind:'revision',status:'pending',created_at:'2026-11-17T00:00:00Z',jurisdiction:'OR',source_id:'OG.0002254',review_id:reviewId}]:[]),...(state.claim?[{id:claimId,kind:'claim',status:'pending',created_at:'2026-11-17T00:00:00Z',jurisdiction:'OR',source_id:'OG.0002254',review_id:null}]:[])]:[],offset:input.offset,limit:input.limit};break;
      case 'submit_review':state.review={...input,status:'pending'};data={id:reviewId,status:'pending'};break;
@@ -107,7 +107,7 @@ test('synthetic browser connects mapped review, claim, moderation and published 
   await page.getByRole('button',{name:'Edit your review'}).click();
   const editor=page.locator('form').filter({has:page.getByRole('heading',{name:'Edit your review'})});
   assert.equal(await editor.getByLabel('Communication',{exact:true}).inputValue(),'4');
-  assert.equal(await editor.getByRole('radio',{checked:true}).count(),0);
+  assert.equal(await editor.getByRole('radio',{name:'Yes',exact:true}).isChecked(),true);
   await editor.getByLabel('Value',{exact:true}).selectOption('');
   await page.getByLabel('Your experience').fill('A good firsthand trip with a corrected detail.');
   await page.getByLabel('I personally took this trip.').check();
