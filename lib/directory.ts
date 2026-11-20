@@ -5,7 +5,7 @@ import {advertisedWaterwayNames,guideSearchTerms} from './guide-enrichment';
 import {attributesFor} from './guide-attributes-server';
 import type {EvidenceAttribute} from './guide-attributes';
 import type {CaptainTrip} from './public-captain-trips';
-import {editorialGuideCorrections} from './editorial-guide-corrections';
+import {guideTagsFor} from './directory-guide-tags';
 
 export type DirectoryEntry={
   id:string;
@@ -18,10 +18,8 @@ export type DirectoryEntry={
   advertisedWaters:string[];
   /** Search terms from attributed sources, including editorial input; NOT legal identity verification. */
   searchAliases:string[];
-  /** User-provided editorial search names, displayed separately from imported source names. */
-  editorialSearchAliases?:{value:string;attributedTo:string}[];
-  businessSearchKeywords?:{value:string;attributedTo:string;variants?:string[]}[];
-  editorialFishing?:{value:string;attributedTo:string}[];
+  businessSearchKeywords?:{value:string;variants?:string[]}[];
+  fishingTags?:string[];
   advertisedSpecies?:string[];
   advertisedMethods?:string[];
   advertisedTrips?:string[];
@@ -56,14 +54,12 @@ function discovery(id:string){
 }
 export const directoryEntries:DirectoryEntry[]=[
  ...oregonGuides.map(g=>{
-  const editorial=editorialGuideCorrections({id:g.registration,name:g.name,business:g.business});
-  const editorialAliases=editorial.filter(x=>x.kind==='search_alias').map(x=>({
-   value:x.value,attributedTo:x.provenance.attributed_to,
+  const tags=guideTagsFor({id:g.registration,name:g.name,business:g.business});
+  const aliases=tags.filter(tag=>tag.kind==='search_alias').map(tag=>tag.value);
+  const businessKeywords=tags.filter(tag=>tag.kind==='business_search_keyword').map(tag=>({
+   value:tag.value,...(tag.search_variants?{variants:tag.search_variants}:{}),
   }));
-  const businessKeywords=editorial.filter(x=>x.kind==='business_search_keyword').map(x=>({
-   value:x.value,attributedTo:x.provenance.attributed_to,...(x.search_variants?{variants:x.search_variants}:{}),
-  }));
-  const editorialFishing=editorial.filter(x=>x.kind==='species'||x.kind==='method');
+  const fishingTags=tags.filter(tag=>tag.kind==='species'||tag.kind==='method').map(tag=>tag.value);
   const sourced=discovery(g.registration);
   return ({
    id:g.registration,name:g.name,business:g.business,
@@ -71,12 +67,11 @@ export const directoryEntries:DirectoryEntry[]=[
    areas:g.areas,
    advertisedWaters:[...new Set([...advertisedWaterwayNames(g.registration),...sourced.linkedWaters])],
    ...sourced,
-   advertisedSpecies:[...new Set([...sourced.advertisedSpecies,...editorial.filter(x=>x.kind==='species').map(x=>x.value)])],
-   advertisedMethods:[...new Set([...sourced.advertisedMethods,...editorial.filter(x=>x.kind==='method').map(x=>x.value)])],
-   ...(editorialFishing.length?{editorialFishing:editorialFishing.map(x=>({value:x.value,attributedTo:x.provenance.attributed_to}))}:{}),
-   searchAliases:[...guideSearchTerms(g.registration),...sourced.sourceNames,...editorialAliases.map(x=>x.value)],
+   advertisedSpecies:[...new Set([...sourced.advertisedSpecies,...tags.filter(x=>x.kind==='species').map(x=>x.value)])],
+   advertisedMethods:[...new Set([...sourced.advertisedMethods,...tags.filter(x=>x.kind==='method').map(x=>x.value)])],
+   ...(fishingTags.length?{fishingTags}:{}),
+   searchAliases:[...guideSearchTerms(g.registration),...sourced.sourceNames,...aliases],
    ...(businessKeywords.length?{businessSearchKeywords:businessKeywords}:{}),
-   ...(editorialAliases.length?{editorialSearchAliases:editorialAliases}:{}),
    href:'/guides/'+guideSlug(g),source:'Oregon registry',
  })}),
  ...washingtonGuides.map(g=>({

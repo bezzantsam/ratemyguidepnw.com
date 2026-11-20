@@ -1,0 +1,77 @@
+[
+  {
+    "guide_id": "OG.0003297",
+    "expected_name": "Walter Rowe",
+    "expected_business": "Reel Time Fishing Adventures",
+    "kind": "species",
+    "value": "Halibut",
+    "status": "approved"
+  },
+  {
+    "guide_id": "OG.0003348",
+    "expected_name": "Keondre Menefee",
+    "expected_business": "Valley Coast Outdoors",
+    "kind": "search_alias",
+    "value": "Dre Menefee",
+    "status": "approved"
+  },
+  {
+    "guide_id": "OG.0000359",
+    "expected_name": "Douglas Wolfe",
+    "expected_business": "Douglas Scott Wolfe LLC",
+    "kind": "search_alias",
+    "value": "Scott Wolfe",
+    "status": "approved"
+  },
+  {
+    "guide_id": "OG.0000359",
+    "expected_name": "Douglas Wolfe",
+    "expected_business": "Douglas Scott Wolfe LLC",
+    "kind": "species",
+    "value": "Striped bass",
+    "status": "approved"
+  },
+  {
+    "guide_id": "OG.0003297",
+    "expected_name": "Walter Rowe",
+    "expected_business": "Reel Time Fishing Adventures",
+    "kind": "species",
+    "value": "Tuna",
+    "status": "approved"
+  },
+  {
+    "guide_id": "OG.0003297",
+    "expected_name": "Walter Rowe",
+    "expected_business": "Reel Time Fishing Adventures",
+    "kind": "method",
+    "value": "Bottom fishing",
+    "status": "approved"
+  },
+  {
+    "guide_id": "OG.0000607",
+    "expected_name": "Mike Fisenko",
+    "expected_business": "Mikey's Fishing Adventures LLC",
+    "kind": "species",
+    "value": "Crabbing",
+    "status": "approved"
+  },
+  {
+    "guide_id": "OG.0004049",
+    "expected_name": "Edwin Snyder",
+    "expected_business": "Big Energy Guide Service LLC",
+    "kind": "business_search_keyword",
+    "value": "TJ",
+    "search_variants": [
+      "T.J."
+    ],
+    "status": "approved"
+  },
+  {
+    "guide_id": "OG.0002193",
+    "expected_name": "Roderick Shulley",
+    "expected_business": "Reel  Em Up Fishing Adventures",
+    "kind": "search_alias",
+    "value": "Rod Shulley",
+    "status": "approved"
+  }
+]
