@@ -16,7 +16,7 @@ function load(path,deps={}){
  return exports;
 }
 const research=load('lib/washington-reconciled.ts');
-const editorial=load('lib/editorial-guide-corrections.ts',{'./editorial-guide-corrections.json':JSON.parse(readFileSync('lib/editorial-guide-corrections.json','utf8'))});
+const editorial=load('lib/directory-guide-tags.ts',{'./directory-guide-tags.json':JSON.parse(readFileSync('lib/directory-guide-tags.json','utf8'))});
 const {filterDirectoryEntries}=load('lib/directory-query.ts',{'./captain-fishing/catalog.mjs':fishingCatalog});
 const washingtonFilter={state:'Washington',sourceZone:'All areas',advertisedWater:'All advertised waters',query:'Synthetic Captain'};
 const waSource={name:'Synthetic Captain',business:'Fixture Outfit',source:'Fixture directory',notes:null};
@@ -32,7 +32,7 @@ function fixture(decisions){
  const wa=load('lib/washington.ts',{'./washington-raw.json':[waSource,other],'./washington-stable-ids.json':{[key(waSource)]:'wa-900',[key(other)]:'wa-901'},'./washington-reconciled':rec});
  const directory=load('lib/directory.ts',{
   './registry':{oregonGuides:[orGuide],guideSlug:g=>g.registration.toLowerCase().replace(/[^a-z0-9]+/g,'-')},
-  './washington':wa,'./guide-enrichment':{advertisedWaterwayNames:()=>[],guideSearchTerms:()=>[]},'./guide-attributes-server':{attributesFor:()=>[]},'./editorial-guide-corrections':editorial
+  './washington':wa,'./guide-enrichment':{advertisedWaterwayNames:()=>[],guideSearchTerms:()=>[]},'./guide-attributes-server':{attributesFor:()=>[]},'./directory-guide-tags':editorial
  });
  return {wa,directory};
 }

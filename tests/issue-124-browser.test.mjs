@@ -55,7 +55,7 @@ test(`rating-first discovery and profile availability (${mode})`,{timeout:120000
    await q.fill('Scott Wolfe');
    const match=page.locator('.guide-result').filter({hasText:'Douglas Wolfe'});
    await match.waitFor();assert.equal(await match.count(),1);
-   assert.match(await match.innerText(),/Editorial search name supplied by Sam: Scott Wolfe/);
+   assert.match(await match.innerText(),/Other names: [^\n]*Scott Wolfe/);
    for(const area of ['Coos','Coquille','Umpqua']){await q.fill(`Scott ${area}`);await match.waitFor()}
    await q.fill('Scott Wolfe');await match.waitFor();
    const href=await match.getAttribute('href');assert.ok(href.startsWith('/guides/og-0000359'));

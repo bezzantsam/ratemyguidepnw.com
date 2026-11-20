@@ -52,7 +52,7 @@ test('two approved trips never combine location, state, species, method, gear or
 });
 
 test('editorial facets stay independent and pending/removed trips are never inferred from them',()=>{
-  const editorial={...listing,advertisedSpecies:['Coho Salmon'],advertisedMethods:['Fly fishing'],editorialFishing:[{value:'Coho Salmon',attributedTo:'Source'}]};
+  const editorial={...listing,advertisedSpecies:['Coho Salmon'],advertisedMethods:['Fly fishing'],fishingTags:['Coho Salmon']};
   const matches=filters=>query.filterDirectoryEntries([editorial],{...baseline,...filters}).length;
   assert.equal(matches({species:'Coho Salmon',method:'Fly fishing'}),1);
   assert.equal(matches({species:'Coho Salmon',method:'Plunking'}),0);

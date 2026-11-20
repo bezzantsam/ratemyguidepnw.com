@@ -340,10 +340,10 @@ export function filterDirectoryEntries(entries:DirectoryEntry[],requested:Direct
    const exactFishery=isKnownFishery(filters.query);
    if(hasWater&&(hasSpecies||hasMethod||exactFishery)){
     const atWater=sourcedOfferings(entry).filter(item=>inJurisdiction(item,filters.state)&&item.relationship?.waterway===filters.advertisedWater);
-    const editorialMatch=entry.editorialFishing?.some(({value})=>
+    const tagMatch=entry.fishingTags?.some(value=>
      (hasSpecies&&directorySpeciesLabels([value]).includes(filters.species!))||
      (hasMethod&&sameMethod(value))||matchesFisherySearch(filters.query,[value])===true);
-    if((atWater.length||editorialMatch||hasMethod||knownDirectoryMethod(filters.query))&&!atWater.some(item=>{
+    if((atWater.length||tagMatch||hasMethod||knownDirectoryMethod(filters.query))&&!atWater.some(item=>{
      const {species,method,trip}=offeringFacets(item);
      const labels=[species,method,trip].filter((value):value is string=>Boolean(value));
      return (!hasSpecies||Boolean(species&&directorySpeciesLabels([species]).includes(filters.species!)))&&

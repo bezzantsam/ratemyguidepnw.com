@@ -215,10 +215,7 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
    const captainTrips=captainFilters?matchingCaptainTrips(g,captainFilters):[];
    const {species:targets,methods,trips,waters}=directoryFisheryFacets(g,state);
    const displayWaters=matchedWater&&waters.includes(matchedWater)?[matchedWater,...waters.filter(water=>water!==matchedWater)]:waters;
-   const editorial=(g.editorialFishing??[]).filter(fact=>[...targets,...methods].includes(fact.value));
-   const labels=[...new Set([...targets,...methods,...trips])].filter(label=>
-    !editorial.some(fact=>fact.value===label)||g.fisheryOfferings?.some(offer=>
-     offer.value===label||offer.relationship?.species===label||offer.relationship?.method===label));
+   const labels=[...new Set([...targets,...methods,...trips])];
    return <div className="saved-guide-row" key={g.id}>
     <Link className="guide-result" href={{pathname:g.href,query:reviewMode&&reviewEnabled?{returnTo:resultsUrl,intent:'review'}:{returnTo:resultsUrl},hash:reviewMode&&reviewEnabled?'write-review':undefined}}>
      {reviewEnabled?<GuideSearchRating summary={visibleRatings?.get(guideRatingKey(guideSource(g)))} loading={!visibleRatings}/>
@@ -229,9 +226,7 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
       </div>
       {(guideSearchScore(g,q)??0)>=60&&<p className="guide-meta"><strong>Similar spelling match</strong> · Confirm the person and business.</p>}
       <p className="outfit-name">{g.business||'Fishing guide'}</p>
-      {g.searchAliases.some(name=>!g.editorialSearchAliases?.some(alias=>alias.value===name))&&<p className="guide-meta">Other names (business or person): {g.searchAliases.filter(name=>!g.editorialSearchAliases?.some(alias=>alias.value===name)).join(' · ')}</p>}
-      {g.editorialSearchAliases?.map(alias=><p className="guide-meta" key={`${alias.value}:${alias.attributedTo}`}>Editorial search name supplied by {alias.attributedTo}: {alias.value}</p>)}
-      {g.businessSearchKeywords?.map(keyword=><p className="guide-meta" key={keyword.value}>Business search keyword supplied by {keyword.attributedTo}: {[keyword.value,...(keyword.variants??[])].join(' / ')}</p>)}
+      {g.searchAliases.length>0&&<p className="guide-meta">Other names: {[...new Set(g.searchAliases)].join(' · ')}</p>}
       {!directoryEntryInState(g,state)&&<p className="guide-meta">{state} fishing offering</p>}
       {labels.length>0&&
         <p className="guide-meta">Fishing targets and trips: {labels.map(label=>{
@@ -239,7 +234,6 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
           const category=methods.includes(label)&&!targets.includes(label) ? ' (method)' : '';
           return label+category+scope;
         }).join(' · ')}</p>}
-      {editorial.map(fact=><p className="guide-meta" key={fact.value}>Editorial fishing note supplied by {fact.attributedTo}: {fact.value}</p>)}
       {captainTrips.slice(0,2).map(trip=><p className="guide-meta" key={trip.id}>
         <strong>Captain-provided trip:</strong> {trip.title} · {[trip.waterway,trip.launchArea,trip.jurisdiction].filter(Boolean).join(' · ')}
       </p>)}

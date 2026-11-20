@@ -47,7 +47,8 @@ test('ordinary production data contains no synthetic discovery or unapproved con
   assert.equal(await page.getByRole('link',{name:/Russell Pearson/}).count(),1);
   const walter=page.getByRole('link',{name:/Walter Rowe/});
   assert.equal(await walter.count(),1);
-  assert.match(await walter.innerText(),/Editorial fishing note supplied by Sam: Bottom fishing/);
+  assert.match(await walter.innerText(),/Fishing targets and trips: .*Bottom fishing/);
+  assert.doesNotMatch(await page.content(),/editorial fishing note|attributed_to|attributedTo|supplied by|guide-fishery-editorial/i);
   assert.equal(await page.getByRole('link',{name:/Toby Wyatt/}).count(),0);
   await method.selectOption({label:'All methods'});
   assert.doesNotMatch(await page.content(),/Pending Secret Species|Rejected Secret Method|Synthetic test fixture|Fixture Source Outfit|Synthetic Captain Alias|Unapproved editorial preview|__editorial_visual__/);
@@ -63,6 +64,12 @@ test('ordinary production data contains no synthetic discovery or unapproved con
    if(file.startsWith('.next/static/'))assert.doesNotMatch(body,/admin_decide_review|admin_decide_claim/);
    for(const marker of pendingMarkers)assert.ok(!body.includes(marker),'pending research leaked into '+file);
   }
+  const profile=await page.goto(origin+'/guides/og-0003297');
+  assert.equal(profile.status(),200);
+  assert.match(await page.getByRole('region',{name:'Fishing',exact:true}).innerText(),/Halibut · Tuna · Bottom fishing/);
+  assert.doesNotMatch(await profile.text(),/editorial fishing note|attributed_to|attributedTo|supplied by|guide-fishery-editorial/i);
+  const privateNote=await page.goto(origin+'/sources/guide-fishery-editorial-20261119.html');
+  assert.equal(privateNote.status(),404);
   const absent=await page.goto(`${origin}/editorial-changes`,{waitUntil:'domcontentloaded'});assert.equal(absent.status(),404);
   for(const path of ['/intel/buoy-10-chinook','/intel/methodology']){
    const response=await page.goto(`${origin}${path}`,{waitUntil:'domcontentloaded'});assert.equal(response.status(),404,path);
