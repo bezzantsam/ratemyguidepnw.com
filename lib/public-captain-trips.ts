@@ -84,7 +84,7 @@ function parsePublished(value:unknown):PublishedCaptainTrips {
 async function readPublicTrips(body:object,signal:AbortSignal):Promise<unknown> {
   const response=await fetch('/api/guide-offerings',{
     method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),
-    credentials:'omit',cache:'no-store',signal,
+    mode:'same-origin',credentials:'same-origin',redirect:'error',cache:'no-store',signal,
   });
   if(!response.ok)throw new Error('Public trips unavailable');
   return response.json();
