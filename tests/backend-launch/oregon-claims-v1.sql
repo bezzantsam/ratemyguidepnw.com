@@ -50,6 +50,12 @@ SELECT public.fixture_assert(public.rmg_claim_status_v1('OR','OG.0001225.F&F')->
 SELECT (public.rmg_submit_claim_v1('OR','OG.0001225.F&F','Second Captain','','Second private verifiable ownership evidence')->>'id') AS other_claim \gset
 SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000004',true);
 SELECT public.fixture_assert(EXISTS (SELECT FROM jsonb_array_elements(public.rmg_claim_queue_v1(0,50)) item WHERE item->>'id'=:'owner_claim' AND item->>'source_id'='OG.0001225.F&F' AND item->>'public_evidence'='Private verifiable ownership evidence'), 'moderator sees exact source and proof');
+RESET ROLE;
+UPDATE rmg_private.launch_control SET enabled=true WHERE singleton;
+INSERT INTO public.reviews(id,guide_id,author_id,quality,body,status) VALUES ('39900000-0000-0000-0000-000000000001','10000000-0000-0000-0000-000000000102','00000000-0000-0000-0000-000000000006',4,'Independent synthetic review','pending');
+SET ROLE authenticated;
+SELECT public.fixture_claim_denial(format('SELECT public.rmg_decide_submission(%L,%L,true,%L)','claim',:'owner_claim','Independently checked registration and business'),'42501');
+SELECT public.fixture_assert(public.rmg_decide_submission('review','39900000-0000-0000-0000-000000000001',true,'Verified firsthand experience')->>'status'='published', 'legacy wrapper preserves Oregon review moderation only');
 SELECT public.fixture_claim_denial(format('SELECT public.rmg_decide_claim_v1(%L,true,%L)',:'owner_claim','short'),'22023');
 SELECT public.fixture_assert(public.rmg_decide_claim_v1(:'owner_claim',true,'Independently checked registration and business')->>'status'='approved','approved claim receipt');
 SELECT public.fixture_claim_denial(format('SELECT public.rmg_decide_claim_v1(%L,true,%L)',:'other_claim','Independently checked registration and business'),'P0001');
