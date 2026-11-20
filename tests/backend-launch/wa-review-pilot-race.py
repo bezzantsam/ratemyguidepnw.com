@@ -7,13 +7,15 @@ import sys
 import time
 
 socket = Path(sys.argv[1]).resolve(strict=True)
-assert socket.name.startswith('rmg-wa-pilot.') and (socket / 'data/PG_VERSION').read_text().strip() == '17'
+catalog = sys.argv[2:] == ['--catalog']
+assert socket.name.startswith('rmg-guide-offerings.' if catalog else 'rmg-wa-pilot.') and (socket / 'data/PG_VERSION').read_text().strip() == '17'
 psql = ['psql', '-XAtq', '-v', 'ON_ERROR_STOP=1', '-v', 'VERBOSITY=verbose',
         '-h', str(socket), '-U', 'audit_owner', '-d', 'postgres']
 listed = len(sys.argv) == 3 and sys.argv[2] == '--listed-adapter'
 table, where, source, actor = (
     ('wa_listed_review_identity_v1', "source_id='wa-001'", 'wa-001@'+'b'*64, '1')
-    if listed else ('wa_review_pilot_v1', 'singleton', 'wa-900001', '6')
+    if listed else ('wa_catalog_review_control_v1', 'singleton', 'wa-021@catalog:'+'b'*64, '7')
+    if catalog else ('wa_review_pilot_v1', 'singleton', 'wa-900001', '6')
 )
 enable = f"UPDATE rmg_private.{table} SET enabled=true WHERE {where};"
 disable = f"UPDATE rmg_private.{table} SET enabled=false WHERE {where};"
