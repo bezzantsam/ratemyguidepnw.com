@@ -21,7 +21,7 @@ const places = {
   WA:{ports:['Ilwaco','Westport','La Push','Neah Bay','Port Angeles','Sekiu','Long Beach','Anacortes'],
     waters:['Buoy 10 / Columbia Estuary','Lower Columbia River','Cowlitz River','Kalama River','Lewis River','Drano Lake','Hanford Reach','Grays Harbor','Puget Sound','Strait of Juan de Fuca']},
 };
-const commonSpecies = new Set(['Chinook Salmon','Coho Salmon','Steelhead','Trout','Sturgeon','Lingcod','Rockfish','Albacore tuna','Halibut','Sablefish (black cod)','Walleye','Bass','Bottom fishing','Crabbing']);
+const commonSpecies = new Set(['Chinook Salmon','Coho Salmon','Steelhead','Trout','Sturgeon','Lingcod','Rockfish','Albacore tuna','Halibut','Sablefish (black cod)','Walleye','Bass','Crabbing']);
 
 export type Boat = {
   id:string; label:string; type:string; covered:boolean; heated:boolean; maxAnglers:number|null; fishCare:string[];
@@ -56,6 +56,7 @@ function Species({selected,onChange}:{selected:string[];onChange:(values:string[
       (crabSearch&&['Crabbing','Dungeness crab'].includes(value)):expanded||commonSpecies.has(value)));
   return <fieldset>
     <legend>Target species</legend>
+    <p>For a mixed trip without a named target, choose Bottom fishing under methods.</p>
     <label>Find a species<input type="search" value={search} onChange={event=>setSearch(event.target.value)}/></label>
     <div className={styles.choices}>{choices.map(value=><label key={value}>
       <input type="checkbox" checked={selected.includes(value)} disabled={selected.length>=8&&!selected.includes(value)}
@@ -75,9 +76,9 @@ export function TripFields({trip,boats,onChange,onDone}:{trip:Trip;boats:Boat[];
     <legend>{trip.title.trim()?'Edit trip':'Add trip'}</legend>
     <label>Trip name<input ref={name} maxLength={80} value={trip.title} onChange={event=>onChange({title:event.target.value})}/></label>
     <div className={styles.fields}>
-      <label>State<select value={trip.jurisdiction} onChange={event=>onChange({jurisdiction:event.target.value as Trip['jurisdiction']})}>
+      <div><label htmlFor={id+'-state'}>State</label><select id={id+'-state'} value={trip.jurisdiction} onChange={event=>onChange({jurisdiction:event.target.value as Trip['jurisdiction']})}>
         <option value="OR">Oregon</option><option value="WA">Washington</option>
-      </select></label>
+      </select></div>
       <label>Waterway<input maxLength={80} list={id+'-waters'} value={trip.waterway} onChange={event=>onChange({waterway:event.target.value})}/></label>
       <label>Launch town or port<input maxLength={80} list={id+'-ports'} value={trip.launchArea} onChange={event=>onChange({launchArea:event.target.value})}/></label>
       <datalist id={id+'-waters'}>{suggestions.waters.map(value=><option key={value} value={value}/>)}</datalist>
@@ -103,15 +104,15 @@ export function TripFields({trip,boats,onChange,onDone}:{trip:Trip;boats:Boat[];
     <details>
       <summary>Boat, duration and booking</summary>
       <div className={styles.fields}>
-        <label>Boat (optional)<select value={trip.vesselId??''} onChange={event=>onChange({vesselId:event.target.value||null})}>
+        <div><label htmlFor={id+'-boat'}>Boat (optional)</label><select id={id+'-boat'} value={trip.vesselId??''} onChange={event=>onChange({vesselId:event.target.value||null})}>
           <option value="">No boat selected</option>{boats.map(boat=><option key={boat.id} value={boat.id}>{boat.label.trim()||'Unnamed boat'}</option>)}
-        </select></label>
-        <label>Duration<select value={trip.duration} onChange={event=>onChange({duration:event.target.value as Trip['duration']})}>
+        </select></div>
+        <div><label htmlFor={id+'-duration'}>Duration</label><select id={id+'-duration'} value={trip.duration} onChange={event=>onChange({duration:event.target.value as Trip['duration']})}>
           {Object.entries(duration).map(([key,label])=><option key={key} value={key}>{label}</option>)}
-        </select></label>
-        <label>Booking style<select value={trip.bookingStyle} onChange={event=>onChange({bookingStyle:event.target.value as Trip['bookingStyle']})}>
+        </select></div>
+        <div><label htmlFor={id+'-booking'}>Booking style</label><select id={id+'-booking'} value={trip.bookingStyle} onChange={event=>onChange({bookingStyle:event.target.value as Trip['bookingStyle']})}>
           {Object.entries(booking).map(([key,label])=><option key={key} value={key}>{label}</option>)}
-        </select></label>
+        </select></div>
       </div>
     </details>
     <div className={styles.actions}><button type="button" onClick={onDone}>Done editing trip</button></div>
@@ -119,13 +120,14 @@ export function TripFields({trip,boats,onChange,onDone}:{trip:Trip;boats:Boat[];
 }
 
 export function BoatFields({boat,used,onChange,onRemove}:{boat:Boat;used:boolean;onChange:(patch:Partial<Boat>)=>void;onRemove:()=>void}){
+  const id=useId();
   return <fieldset className={styles.panel}>
     <legend>{boat.label.trim()||'Unnamed boat'}</legend>
     <div className={styles.fields}>
       <label>Boat name<input maxLength={80} value={boat.label} onChange={event=>onChange({label:event.target.value})}/></label>
-      <label>Boat style<select value={boat.type} onChange={event=>onChange({type:event.target.value})}>
+      <div><label htmlFor={id+'-style'}>Boat style</label><select id={id+'-style'} value={boat.type} onChange={event=>onChange({type:event.target.value})}>
         {vesselTypes.map(type=><option key={type}>{type}</option>)}
-      </select></label>
+      </select></div>
       <label>Maximum anglers (optional)<input type="number" min="1" max="30" value={boat.maxAnglers??''}
         onChange={event=>onChange({maxAnglers:event.target.value===''?null:Number(event.target.value)})}/></label>
     </div>
@@ -155,7 +157,7 @@ export function TripPreview({trip,boat}:{trip:Trip;boat?:Boat}){
     <div>
       <strong>{trip.title}</strong>
       <p>{tripLocation(trip)}</p>
-      <p>{trip.species.join(', ')}</p>
+      {trip.species.length>0&&<p>{trip.species.join(', ')}</p>}
       {trip.months.length>0&&<p>{trip.months.map(month=>months[month-1]).join(', ')}</p>}
       {choices.length>0&&<p>{choices.map(option=>option.label).join(' · ')}</p>}
       {boat&&<p>{[boat.label,boat.type,boat.maxAnglers&&`${boat.maxAnglers} anglers`,boat.covered&&'Covered',
