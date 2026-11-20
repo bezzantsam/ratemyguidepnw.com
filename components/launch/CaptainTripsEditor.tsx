@@ -7,6 +7,7 @@ import {createCaptainTripsClient,TripsError,type OwnerTrips} from './captain-tri
 import styles from './captain-trips.module.css';
 
 const empty:TripPayload={vessels:[],offerings:[]};
+const maxTrips = 8;
 const contact=/[<>\u0000-\u001f\u007f]|[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}|https?:\/\/|www\.|(?:[0-9]{3}[-. ]?){2}[0-9]{4}/i;
 const draftData=({vessels,offerings}:OwnerTrips['draft']):TripPayload=>({vessels,offerings});
 const code=(error:unknown)=>error instanceof TripsError?error.code:'service_unavailable';
@@ -121,10 +122,19 @@ export function CaptainTripsEditor({sourceId}:{sourceId:string}){
   function edit(next:TripPayload){
     setDraft(next);setMessage('');setErrors([]);setPreview(false);
   }
-  function addTrip(){
-    if(ids.current.p>=9999)return;
-    const trip=newTrip('p'+ ++ids.current.p);
-    edit({...draft,offerings:[...draft.offerings,trip]});setEditing(trip.id);
+  function addTrip(template?:Trip){
+    if (draft.offerings.length >= maxTrips) return;
+    let id: string;
+    do {
+      ids.current.p = (ids.current.p % 9999) + 1;
+      id = 'p' + ids.current.p;
+    } while (draft.offerings.some(trip => trip.id === id));
+
+    const trip = template ? {...structuredClone(template), id, title: ''} : newTrip(id);
+    edit({...draft, offerings: [...draft.offerings, trip]});
+    setRemoving(null);
+    setEditing(id);
+    if (template) setMessage('Trip copied. Give the new trip a name.');
   }
   function changeTrip(id:string,patch:Partial<Trip>){
     edit({...draft,offerings:draft.offerings.map(trip=>trip.id===id?{...trip,...patch}:trip)});
@@ -168,12 +178,15 @@ export function CaptainTripsEditor({sourceId}:{sourceId:string}){
                 <button type="button" onClick={()=>setRemoving(null)}>Keep trip</button>
               </div>:<div className={styles.actions}>
                 <button type="button" aria-label={`Edit ${title}`} onClick={()=>{setEditing(trip.id);setPreview(false);}}>Edit</button>
+                <button type="button" aria-label={`Copy trip ${title}`} disabled={draft.offerings.length >= maxTrips}
+                  onClick={() => addTrip(trip)}>Copy trip</button>
                 <button type="button" aria-label={`Remove ${title}`} onClick={()=>setRemoving(trip.id)}>Remove</button>
               </div>}
             </li>;
           })}
         </ul>}
-        <div className={styles.actions}><button type="button" onClick={addTrip} disabled={draft.offerings.length>=8||ids.current.p>=9999}>Add trip</button></div>
+        <div className={styles.actions}><button type="button" onClick={() => addTrip()} disabled={draft.offerings.length >= maxTrips}>Add trip</button></div>
+        {draft.offerings.length >= maxTrips && <p>Your draft has all eight trips. Remove one to add another.</p>}
         {activeTrip&&<TripFields key={activeTrip.id} trip={activeTrip} boats={draft.vessels}
           onChange={patch=>changeTrip(activeTrip.id,patch)} onDone={()=>setEditing(null)}/>}
         <details>
