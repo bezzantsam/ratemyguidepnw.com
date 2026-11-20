@@ -180,3 +180,71 @@ test('claim workflow uses narrow RPCs and runs without the review launch flag',a
  assert.equal((await handleLaunch(req({operation:'operator_queue',kind:'claim',offset:0,limit:10},'token'),queue.factory,flags)).status,200);
  assert.equal(queue.calls.at(-1)[0],'rmg_claim_queue_v1');
 });
+
+test('Washington pilot requires an exact server source ID and defers review authority to the database',async()=>{
+ const source={jurisdiction:'WA',sourceId:'wa-900001'};
+ const flags={...env,RMG_WA_REVIEW_PILOT_SOURCE_ID:source.sourceId,RMG_CLAIMS_ENABLED:'true'};
+ const availability={operation:'review_write_availability',...source};
+ for(const [input,config] of [[availability,env],[{...availability,sourceId:'wa-900002'},flags]]){
+  const b=backend(),r=await handleLaunch(req(input),b.factory,config);
+  assert.deepEqual(await r.json(),{available:false});
+  assert.deepEqual(b.calls,[]);
+ }
+ const b=backend({rpcResult:{available:true}});
+ const r=await handleLaunch(req(availability),b.factory,flags);
+ assert.deepEqual(await r.json(),{available:true});
+ assert.deepEqual(b.calls.at(-1),['rmg_review_write_availability',{p_jurisdiction:'WA',p_source_id:source.sourceId}]);
+ const closed=backend({rpcError:{code:'P5030'}});
+ const pausedWrite=await handleLaunch(req({...review,...source},'token'),closed.factory,flags);
+ assert.equal(pausedWrite.status,503);
+ assert.equal(closed.calls.at(-1)[0],'rmg_submit_review_v2');
+ const held=backend({rpcResult:{available:false}});
+ const pausedRead=await handleLaunch(req({operation:'public_reviews',...source}),held.factory,flags);
+ assert.equal(pausedRead.status,403);
+ assert.equal(held.calls.at(-1)[0],'rmg_review_write_availability');
+ const claims=backend();
+ const forbidden=await handleLaunch(req({operation:'submit_claim',...source,claimantName:'Test Name',businessName:'',
+  evidence:'Independently checked ownership'},'token'),claims.factory,flags);
+ assert.equal(forbidden.status,403);
+ assert.deepEqual(claims.calls,[]);
+ const submit=backend(),accepted=await handleLaunch(req({...review,...source},'token'),submit.factory,flags);
+ assert.equal(accepted.status,200);
+ assert.equal(submit.calls.at(-1)[1].p_jurisdiction,'WA');
+ assert.equal(submit.calls.at(-1)[1].p_source_id,source.sourceId);
+});
+
+test('existing WA review requests use the current server listing version and keep neighbors closed',async()=>{
+ const source={jurisdiction:'WA',sourceId:'wa-001'};
+ const config={...env,RMG_WA_LISTED_REVIEW_PILOT_SOURCE_ID:source.sourceId,RMG_CLAIMS_ENABLED:'true'};
+ const digest='b'.repeat(64);
+ const version=id=>id===source.sourceId?digest:undefined;
+ const readiness={operation:'review_write_availability',...source};
+ for(const [input,flags,sourceVersion] of [
+  [{...readiness,sourceId:'wa-002'},config,version],
+  [{...readiness,sourceId:source.sourceId+'@'+digest},config,version],
+  [readiness,config,()=>undefined],
+  [readiness,{...config,RMG_WA_REVIEW_PILOT_SOURCE_ID:'wa-900001'},version],
+ ]){
+  const b=backend(),r=await handleLaunch(req(input),b.factory,flags,sourceVersion);
+  assert.deepEqual(await r.json(),{available:false});
+  assert.deepEqual(b.calls,[]);
+ }
+ const live=backend({rpcResult:{available:true}});
+ const ready=await handleLaunch(req(readiness),live.factory,config,version);
+ assert.deepEqual(await ready.json(),{available:true});
+ assert.deepEqual(live.calls.at(-1),['rmg_review_write_availability',{p_jurisdiction:'WA',p_source_id:'wa-001@'+digest}]);
+ const ordinary=backend();
+ const posted=await handleLaunch(req({...review,...source},'token'),ordinary.factory,config,version);
+ assert.equal(posted.status,200);
+ assert.equal(ordinary.calls.at(-1)[1].p_source_id,'wa-001@'+digest);
+ const paused=backend({rpcResult:{available:false}});
+ assert.equal((await handleLaunch(req({operation:'public_reviews',...source}),paused.factory,config,version)).status,403);
+ assert.equal(paused.calls.at(-1)[0],'rmg_review_write_availability');
+ const neighbor=backend();
+ assert.equal((await handleLaunch(req({operation:'own_review_for_guide',jurisdiction:'WA',sourceId:'wa-002'},'token'),neighbor.factory,config,version)).status,403);
+ assert.deepEqual(neighbor.calls,[]);
+ const claims=backend();
+ assert.equal((await handleLaunch(req({operation:'submit_claim',...source,claimantName:'Fixture',
+  businessName:'',evidence:'Synthetic ownership evidence'},'token'),claims.factory,config,version)).status,403);
+ assert.deepEqual(claims.calls,[]);
+});

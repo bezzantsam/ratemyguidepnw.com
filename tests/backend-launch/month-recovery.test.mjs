@@ -23,7 +23,7 @@ test('submission forwards month and revision distinguishes omit from clear',asyn
  }
 });
 test('guide-specific recovery requires auth and never returns extra fields',async()=>{
- const input={operation:'own_review_for_guide',jurisdiction:'WA',sourceId:'wa-1'};
+ const input={operation:'own_review_for_guide',jurisdiction:'OR',sourceId:'fixture-1'};
  let b=backend({id,status:'published',body:'private'}),r=await handleLaunch(req(input,null),b.factory,env);assert.equal(r.status,401);assert.equal(b.calls.length,0);
  r=await handleLaunch(req(input),b.factory,env);assert.deepEqual(await r.json(),{review:{id,status:'published'}});assert.equal(b.calls[0][0],'rmg_own_review_for_guide');
  b=backend(null);r=await handleLaunch(req(input),b.factory,env);assert.deepEqual(await r.json(),{review:null});
