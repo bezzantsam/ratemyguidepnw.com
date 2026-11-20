@@ -10,7 +10,7 @@ const tick=()=>new Promise(resolve=>setImmediate(resolve));
 const id='10000000-0000-4000-8000-000000000001',claim='20000000-0000-4000-8000-000000000002';
 
 test('mapped profile connects actual returned ratings, own status and review callbacks; sign-out hides them',async()=>{
-  let cursor=0,effects=[],listener,hashListener,currentSession={access_token:'token'},submitted,edited;
+  let cursor=0,effects=[],listener,hashListener,currentSession={access_token:'token',user:{id}},submitted,edited;
   const cells=[],react={
     useState(initial){const i=cursor++;if(!(i in cells))cells[i]=typeof initial==='function'?initial():initial;return [cells[i],v=>{cells[i]=typeof v==='function'?v(cells[i]):v}]},
     useRef(initial){const i=cursor++;if(!(i in cells))cells[i]={current:initial};return cells[i]},
