@@ -273,7 +273,7 @@ test('operator queue shows exact optional rating labels for reviews and effectiv
   const row={id,review_id:id,guide_name:'Synthetic guide',guide_profile_path:'/washington/wa-144',
     body:'Synthetic firsthand trip.',quality:4,intensity:null,would_book_again:false,
     trip_month:null,trip_month_specified:false,relationship_disclosure:'none',trip_responses:null,
-    firsthand_attested:true,created_at:'2026-11-19T00:00:00Z'};
+    firsthand_attested:true,is_own_submission:false,created_at:'2026-11-19T00:00:00Z'};
   const queue=async(kind,fields)=>{
     const client=createLaunchClient({enabled:true,getAccessToken:async()=> 'fixture-token',
       fetcher:async()=>response({items:[{...row,...fields}],offset:0,limit:50})});
