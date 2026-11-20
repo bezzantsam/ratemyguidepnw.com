@@ -3,7 +3,7 @@
 import {useId, useRef, useState} from 'react';
 import {type ClaimDraft, REVIEW_DIMENSIONS, type ReviewDimension, type ReviewDimensions, type ReviewRatingPatch, type RelationshipDisclosure, type ReviewDraft, type SubmissionReceipt, isSubmissionReceipt, validateClaimDraft, validateReviewDraft} from './submission-model';
 import {TripDetails,TripFields} from './TripDetails';
-import {FISH_LANDED_FIELD,REVIEW_TRIP_RATINGS,decodeTripResponses,encodeTripResponses,type TripDraft} from './trip-responses';
+import {FISH_LANDED_FIELD,REVIEW_TRIP_RATINGS,decodeTripResponses,encodeTripResponses,isTripHighlight,type TripDraft} from './trip-responses';
 
 type SubmitReview = (draft: ReviewDraft) => Promise<SubmissionReceipt>;
 type SubmitClaim = (draft: ClaimDraft) => Promise<SubmissionReceipt>;
@@ -59,8 +59,15 @@ export function ReviewSubmission({onSubmit, onCheckBeforeRetry, allowTripRespons
     event.preventDefault();
     if (submitting.current || !writeAvailable || needsCheck) return;
     if (!tripDraft) {setError('Your saved trip details cannot be edited here. No changes were submitted.');return;}
-    if (!allowTripResponses && Object.keys(tripDraft).length) {setError('Trip details are no longer available. Refresh before submitting.');return;}
-    const details=encodeTripResponses(tripDraft);
+    const tripAnswers={...tripDraft};
+    if(mode==='revision') {
+      // An omitted highlight keeps its published value. Clearing a saved answer writes an explicit state.
+      for(const key of Object.keys(initial?.tripResponses?.answers??{})) {
+        if(isTripHighlight(key)&&!Object.hasOwn(tripAnswers,key))tripAnswers[key]='na';
+      }
+    }
+    if (!allowTripResponses && Object.keys(tripAnswers).length) {setError('Trip details are no longer available. Refresh before submitting.');return;}
+    const details=encodeTripResponses(tripAnswers);
     if(details.error) {setError(details.error);return;}
     const patch:ReviewRatingPatch={};
     for(const {key} of REVIEW_DIMENSIONS) {
