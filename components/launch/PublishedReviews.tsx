@@ -1,6 +1,7 @@
 import {ReviewShare} from './ReviewShare';
 import {ReportReview} from './ReportReview';
 import {REVIEW_DIMENSIONS,type ReviewDimensions} from './submission-model';
+import type {TripResponseDescription} from './trip-responses';
 import type {ReportReason} from '@/lib/launch-client';
 type ReportAction=(id:string,reason:ReportReason)=>Promise<{id:string;status:'submitted';existing:boolean}>;
 
@@ -12,6 +13,7 @@ export type PublishedReview = Readonly<{
   rating: number;
   wouldBookAgain?: boolean;
   ratings?: ReviewDimensions;
+  tripHighlights?: readonly TripResponseDescription[];
   body: string;
   publishedAt: string;
   tripMonth?: string | null;
@@ -40,14 +42,20 @@ export function validReviewPage(requestedGuide: string, page: PublishedReviewPag
 export type ReviewLoadState = Readonly<{status:'loading'}> | Readonly<{status:'error'}> | Readonly<{status:'ready'; page:PublishedReviewPage}>;
 
 export function ReviewCard({review,profilePath,guideName,onReport,allowSignIn=true}:{review:PublishedReview;profilePath?:string;guideName?:string;onReport?:ReportAction;allowSignIn?:boolean}) {
+  const surveyRatings=review.tripHighlights?.filter(item=>item.key!=='fish_landed')??[];
+  const catchCount=review.tripHighlights?.find(item=>item.key==='fish_landed');
+  const scores=REVIEW_DIMENSIONS.flatMap(({key,label})=>{
+    const rating=review.ratings?.[key];
+    return rating===undefined?[]:[{key,label,answer:`${rating} / 5`}];
+  });
+  const ratings=[...scores.filter(item=>item.key==='safety'),...surveyRatings,...scores.filter(item=>item.key!=='safety')];
   return <article className="card" id={`review-${review.id}`}>
     <p><strong>Overall quality: {review.rating} / 5</strong> · Published {review.publishedAt}</p>
     {typeof review.wouldBookAgain==='boolean'&&<p>Would book again: <strong>{review.wouldBookAgain?'Yes':'No'}</strong></p>}
-    {!!review.ratings&&Object.keys(review.ratings).length>0&&<dl className="published-review-dimensions" aria-label="Individual ratings">
-      {REVIEW_DIMENSIONS.map(({key,label})=>review.ratings?.[key]===undefined?null:<div key={key}>
-        <dt>{label}</dt><dd>{review.ratings[key]} / 5</dd>
-      </div>)}
+    {ratings.length>0&&<dl className="published-review-dimensions" aria-label="Individual ratings">
+      {ratings.map(({key,label,answer})=><div key={key}><dt>{label}</dt><dd>{answer}</dd></div>)}
     </dl>}
+    {catchCount&&<p>{catchCount.label}, including releases: <strong>{catchCount.answer}</strong></p>}
     <p>{review.body}</p>
     {review.tripMonth&&<p>Trip month reported by the angler: {review.tripMonth}</p>}
     {review.tripDetails===null?<p>Trip details are temporarily unavailable.</p>:!!review.tripDetails?.length&&<details><summary>Trip details reported by the angler</summary><ul>{review.tripDetails.map((item,index)=><li key={index}>{item}</li>)}</ul></details>}

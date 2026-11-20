@@ -152,3 +152,26 @@ test('published detail presents explicit No and only the dimension answers actua
   const legacy=renderToStaticMarkup(React.createElement(published.ReviewCard,{review:{...review,wouldBookAgain:undefined,ratings:undefined}}));
   assert.doesNotMatch(legacy,/Would book again|Individual ratings/);
 });
+
+
+test('form leads with safety, survey ratings and catch and asks for organization only once',()=>{
+  const html=renderToStaticMarkup(React.createElement(views.ReviewSubmission,{onSubmit:async()=>({status:'pending'}),allowTripResponses:true}));
+  const ordered=['Overall quality','Would you book again?','>Safety</label>','>Kindness</label>','>Organization</label>','>Finding fish</label>','How many fish did your group land?','Your experience'];
+  const offsets=ordered.map(label=>html.indexOf(label));
+  assert.ok(offsets.every(offset=>offset>=0));
+  assert.deepEqual(offsets,[...offsets].sort((a,b)=>a-b));
+  assert.equal((html.match(/>Organization<\/label>/g)??[]).length,1);
+  assert.equal((html.match(/>Effort<\/label>/g)??[]).length,1);
+  assert.match(html,/Include fish your group released\. Enter 0 if none landed\./);
+});
+
+test('published survey shows finding fish and reported zero separately from overall',()=>{
+  const review={id:'r1',guideKey:'WA:1',status:'published',rating:5,body:'Earlier fishing trip.',publishedAt:'2026-11-17',
+    tripHighlights:[{key:'fishiness',label:'Finding fish',answer:'2 / 5'},{key:'fish_landed',label:'Fish landed by the group',answer:'0'}]};
+  const publicCard=renderToStaticMarkup(React.createElement(published.ReviewCard,{review}));
+  assert.match(publicCard,/Overall quality: 5 \/ 5/);
+  assert.match(publicCard,/<dt>Finding fish<\/dt><dd>2 \/ 5<\/dd>/);
+  assert.match(publicCard,/Fish landed by the group, including releases: <strong>0<\/strong>/);
+  const noCatch=renderToStaticMarkup(React.createElement(published.ReviewCard,{review:{...review,tripHighlights:[]}}));
+  assert.doesNotMatch(noCatch,/Fish landed/);
+});

@@ -172,6 +172,7 @@ a.dock-ticker-item:hover{color:white;text-decoration:underline}
 .review-dimensions p{margin:6px 0 10px}
 .review-dimension-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,8.5rem),1fr));gap:10px}
 .review-dimension-fields>div{display:grid;gap:4px}
+.review-dimensions details>div.review-dimension-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,8.5rem),1fr));gap:10px;margin:0}
 .published-review-dimensions{display:flex;flex-wrap:wrap;gap:8px 18px;margin:0}
 .published-review-dimensions>div{display:flex;gap:6px;align-items:baseline}
 .published-review-dimensions dd{font-weight:700;margin:0}

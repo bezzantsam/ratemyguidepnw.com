@@ -36,7 +36,7 @@ test('synthetic browser connects mapped review, claim, moderation and published 
      case 'review_write_availability':data={available:true};break;
      case 'own_review_for_guide':data={review:actor===reviewer&&state.review?{id:reviewId,status:state.review.status}:null};break;
      case 'profile_details':data={details:null,attribution:'captain_declared'};break;
-     case 'review_detail':if(state.review?.status!=='published'||input.id!==reviewId)return route.fulfill({status:404,contentType:'application/json',body:'{"error":"not_found"}'});data={review:{id:reviewId,quality:state.review.quality,intensity:null,would_book_again:state.review.wouldBookAgain,communication:4,value_rating:3,body:state.review.body,relationship_disclosure:'none',published_at:'2026-11-17T00:00:00Z',trip_month:state.review.tripMonth?`${state.review.tripMonth}-01`:null,trip_responses:{version:1,answers:{effort:{state:'answered',value:2}}}}};break;
+     case 'review_detail':if(state.review?.status!=='published'||input.id!==reviewId)return route.fulfill({status:404,contentType:'application/json',body:'{"error":"not_found"}'});data={review:{id:reviewId,quality:state.review.quality,intensity:null,would_book_again:state.review.wouldBookAgain,communication:4,value_rating:3,body:state.review.body,relationship_disclosure:'none',published_at:'2026-11-17T00:00:00Z',trip_month:state.review.tripMonth?`${state.review.tripMonth}-01`:null,trip_responses:{version:1,answers:{effort:{state:'answered',value:2},organization:{state:'answered',value:3},fish_landed:{state:'answered',value:0}}}}};break;
      case 'session':data={authenticated:true,operator:actor===operator};break;
      case 'my_submissions':data={items:actor===reviewer?[...(state.review?[{id:reviewId,kind:'review',status:state.review.status,created_at:'2026-11-17T00:00:00Z',jurisdiction:'OR',source_id:'OG.0002254',review_id:null}]:[]),...(state.revision?[{id:state.revision.id,kind:'revision',status:'pending',created_at:'2026-11-17T00:00:00Z',jurisdiction:'OR',source_id:'OG.0002254',review_id:reviewId}]:[]),...(state.claim?[{id:claimId,kind:'claim',status:'pending',created_at:'2026-11-17T00:00:00Z',jurisdiction:'OR',source_id:'OG.0002254',review_id:null}]:[])]:[],offset:input.offset,limit:input.limit};break;
      case 'submit_review':state.review={...input,status:'pending'};data={id:reviewId,status:'pending'};break;
@@ -68,6 +68,7 @@ test('synthetic browser connects mapped review, claim, moderation and published 
   await page.getByText('Fished with this guide? Be the first to share your experience.').waitFor();
   await page.getByLabel('Overall quality').selectOption('5');
   await page.getByRole('radio',{name:'Yes',exact:true}).check();
+  await page.getByText('More ratings (optional)',{exact:true}).click();
   await page.getByLabel('Communication',{exact:true}).selectOption('4');
   await page.getByLabel('Value',{exact:true}).selectOption('3');
   await page.getByLabel('Your relationship to this guide or business').selectOption('none');await page.getByLabel('Your experience').fill('A good firsthand trip.');await page.getByLabel('I personally took this trip.').check();
@@ -106,8 +107,11 @@ test('synthetic browser connects mapped review, claim, moderation and published 
   await page.setViewportSize({width:390,height:844});await page.reload({waitUntil:'domcontentloaded'});await page.getByText('A good firsthand trip.').waitFor();assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
   await page.getByRole('button',{name:'Edit your review'}).click();
   const editor=page.locator('form').filter({has:page.getByRole('heading',{name:'Edit your review'})});
+  await editor.getByText('More ratings (optional)',{exact:true}).click();
   assert.equal(await editor.getByLabel('Communication',{exact:true}).inputValue(),'4');
   assert.equal(await editor.getByRole('radio',{name:'Yes',exact:true}).isChecked(),true);
+  assert.equal(await editor.getByLabel('Organization',{exact:true}).inputValue(),'value:3');
+  assert.equal(await editor.getByLabel('How many fish did your group land?',{exact:false}).inputValue(),'0');
   await editor.getByLabel('Value',{exact:true}).selectOption('');
   await page.getByLabel('Your experience').fill('A good firsthand trip with a corrected detail.');
   await page.getByLabel('I personally took this trip.').check();
@@ -117,6 +121,8 @@ test('synthetic browser connects mapped review, claim, moderation and published 
   assert.deepEqual(state.revision.ratings,{value:null});
   assert.equal(Object.hasOwn(state.revision,'wouldBookAgain'),false);
   assert.equal(state.revision.tripResponses.answers.effort.value,2);
+  assert.equal(state.revision.tripResponses.answers.organization.value,3);
+  assert.equal(state.revision.tripResponses.answers.fish_landed.value,0);
   assert.equal(state.review.body,'A good firsthand trip.');
   if(process.env.BROWSER_SCREENSHOT_DIR){mkdirSync(process.env.BROWSER_SCREENSHOT_DIR,{recursive:true});await page.screenshot({path:join(process.env.BROWSER_SCREENSHOT_DIR,'synthetic-launch-mobile.png'),fullPage:true})}
   await page.goto(`${origin}/write-review`,{waitUntil:'networkidle'});await page.getByRole('searchbox',{name:'Captain, business, operating name, or registration'}).fill('OG.0002254');await page.locator('.guide-result[href^="/guides/og-0002254?"][href*="q%3DOG.0002254"]').click();await page.waitForURL(ratingProfile);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);

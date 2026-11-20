@@ -262,3 +262,23 @@ test('readback binds typed legacy dimensions and explicit No to the published re
   review.communication=0;
   await assert.rejects(client.reviewDetail(source,id),errorCode('service_unavailable'));
 });
+
+
+test('published list and canonical detail split in survey answers without changing summary or legacy details',async()=>{
+  const review={id,quality:4,body:draft.body,published_at:'2026-11-17T00:00:00Z',trip_responses:{version:1,
+    answers:{fishiness:{state:'answered',value:2},fish_landed:{state:'answered',value:0},effort:{state:'answered',value:3}}}};
+  const client=createLaunchClient({enabled:true,getAccessToken:async()=>null,fetcher:async(_url,init)=>{
+    return response(JSON.parse(init.body).operation==='public_reviews'?
+      {summary:{count:1,averageQuality:4},reviews:[review]}:{review});
+  }});
+  const list=await client.publicReviews(source);
+  const detail=await client.publicReview(source,id);
+  assert.equal(list.averageQuality,4);
+  assert.equal(detail.quality,4);
+  assert.deepEqual(JSON.parse(JSON.stringify(list.reviews[0].tripHighlights)),[
+    {key:'fishiness',label:'Finding fish',answer:'2 / 5'},
+    {key:'fish_landed',label:'Fish landed by the group',answer:'0'},
+  ]);
+  assert.deepEqual(list.reviews[0].tripHighlights,detail.tripHighlights);
+  assert.deepEqual(Array.from(detail.tripDetails),['How would you rate the guide’s effort? 3 / 5']);
+});

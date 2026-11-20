@@ -2,8 +2,8 @@
 
 import {useId, useRef, useState} from 'react';
 import {type ClaimDraft, REVIEW_DIMENSIONS, type ReviewDimension, type ReviewDimensions, type ReviewRatingPatch, type RelationshipDisclosure, type ReviewDraft, type SubmissionReceipt, isSubmissionReceipt, validateClaimDraft, validateReviewDraft} from './submission-model';
-import {TripDetails} from './TripDetails';
-import {decodeTripResponses,encodeTripResponses,type TripDraft} from './trip-responses';
+import {TripDetails,TripFields} from './TripDetails';
+import {FISH_LANDED_FIELD,REVIEW_TRIP_RATINGS,decodeTripResponses,encodeTripResponses,type TripDraft} from './trip-responses';
 
 type SubmitReview = (draft: ReviewDraft) => Promise<SubmissionReceipt>;
 type SubmitClaim = (draft: ClaimDraft) => Promise<SubmissionReceipt>;
@@ -136,12 +136,15 @@ export function ReviewSubmission({onSubmit, onCheckBeforeRetry, allowTripRespons
       const next={...current};
       if(value==='')delete next[key];else next[key]=Number(value);
       return next;
-    })}/>
+    })}>
+      {allowTripResponses&&tripDraft&&<TripFields fields={REVIEW_TRIP_RATINGS} draft={tripDraft} onChange={setTripDraft}/>}
+    </ReviewDimensionFields>
+    {allowTripResponses&&tripDraft&&<TripFields fields={catchFields} draft={tripDraft} onChange={setTripDraft}/>}
     <label htmlFor={`${prefix}-relationship`}>Your relationship to this guide or business</label>
     <select id={`${prefix}-relationship`} value={relationship} onChange={event=>setRelationship(event.target.value as RelationshipDisclosure | '')} required>
       <option value="">Choose an answer</option><option value="none">None</option><option value="personal">Personal</option><option value="financial">Financial</option><option value="other">Other</option>
     </select>
-    {allowTripResponses && tripDraft && <TripDetails draft={tripDraft} onChange={setTripDraft} omitLegacyEffort>
+    {allowTripResponses && tripDraft && <TripDetails draft={tripDraft} onChange={setTripDraft}>
       <label htmlFor={`${prefix}-month`}>Trip month (optional)</label>
       <input type="month" id={`${prefix}-month`} value={tripMonth} onChange={event=>setTripMonth(event.target.value)} />
       <label htmlFor={`${prefix}-intensity`}>Trip intensity (optional)</label>
@@ -160,20 +163,38 @@ export function ReviewSubmission({onSubmit, onCheckBeforeRetry, allowTripRespons
   </form>;
 }
 
-function ReviewDimensionFields({ratings,onChange}:{ratings:ReviewDimensions;onChange:(key:ReviewDimension,value:string)=>void}) {
+const catchFields=[FISH_LANDED_FIELD];
+
+function ReviewDimensionFields({ratings,onChange,children}:{
+  ratings:ReviewDimensions;
+  onChange:(key:ReviewDimension,value:string)=>void;
+  children?:React.ReactNode;
+}) {
   const prefix=useId();
+  function renderScore({key,label}:typeof REVIEW_DIMENSIONS[number]) {
+    const id=`${prefix}-${key}`;
+    return <div key={key}>
+      <label htmlFor={id}>{label}</label>
+      <select id={id} value={ratings[key]??''} onChange={event=>onChange(key,event.target.value)}>
+        <option value="">Not rated</option>
+        {[1,2,3,4,5].map(value=><option key={value} value={value}>{value} / 5</option>)}
+      </select>
+    </div>;
+  }
+
   return <fieldset className="review-dimensions">
     <legend>Rate individual aspects (optional)</legend>
-    <p>1 is poor and 5 is excellent. Rate only what you experienced.</p>
+    <p>1 is poor and 5 is excellent. Finding fish is your assessment of how well the guide put you on fish.</p>
     <div className="review-dimension-fields">
-      {REVIEW_DIMENSIONS.map(({key,label})=><div key={key}>
-        <label htmlFor={`${prefix}-${key}`}>{label}</label>
-        <select id={`${prefix}-${key}`} value={ratings[key]??''} onChange={event=>onChange(key,event.target.value)}>
-          <option value="">Not rated</option>
-          {[1,2,3,4,5].map(value=><option key={value} value={value}>{value} / 5</option>)}
-        </select>
-      </div>)}
+      {REVIEW_DIMENSIONS.filter(field=>field.key==='safety').map(renderScore)}
+      {children}
     </div>
+    <details>
+      <summary>More ratings (optional)</summary>
+      <div className="review-dimension-fields">
+        {REVIEW_DIMENSIONS.filter(field=>field.key!=='safety').map(renderScore)}
+      </div>
+    </details>
   </fieldset>;
 }
 
