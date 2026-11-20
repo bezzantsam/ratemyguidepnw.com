@@ -246,13 +246,8 @@ export function guideSearchScore(entry:DirectoryEntry,query:string,identityOnly=
  return 10+worst*10+total/terms.length;
 }
 
-function captainTripSpeciesLabels(species:string[]):string[] {
- return directorySpeciesLabels(species).filter(label=>label!=='Crabbing'||species.includes('Crabbing'));
-}
-
 function matchesCaptainTripFishery(query:string,species:string[],methods:string[]):boolean|null {
  if(query==='dungeness crabbing')return species.includes('Dungeness crab');
- if(canonicalFisheryLabel(query)==='Crabbing')return species.includes('Crabbing');
  return matchesFisherySearch(query,species,methods);
 }
 
@@ -260,7 +255,7 @@ export function captainTripFacets(entry:DirectoryEntry,state:string) {
  const local=(entry.captainTrips??[]).filter(trip=>state==='All'||state===(trip.jurisdiction==='OR'?'Oregon':'Washington'));
  return {
   waters:local.flatMap(trip=>[trip.waterway,trip.launchArea]).filter(Boolean),
-  species:local.flatMap(trip=>captainTripSpeciesLabels(trip.species)),
+  species:local.flatMap(trip=>trip.species),
   methods:local.flatMap(trip=>trip.methodIds.map(directoryMethodLabel)),
  };
 }
@@ -277,7 +272,7 @@ export function matchingCaptainTrips(entry:DirectoryEntry,filters:DirectoryFilte
   if(filters.state!=='All'&&filters.state!==state)return false;
   const places=[trip.waterway,trip.launchArea].filter(Boolean);
   if(filters.advertisedWater!=='All advertised waters'&&!places.includes(filters.advertisedWater))return false;
-  if(filters.species&&filters.species!=='All species'&&!captainTripSpeciesLabels(trip.species).includes(filters.species))return false;
+  if(filters.species&&filters.species!=='All species'&&!directorySpeciesLabels(trip.species).includes(filters.species))return false;
   const methods=[...trip.methodIds,...trip.gearIds].map(directoryMethodLabel);
   if(filters.method&&filters.method!=='All methods'&&!methods.includes(directoryMethodLabel(filters.method)))return false;
   if(filters.gear&&!trip.gearIds.includes(filters.gear))return false;

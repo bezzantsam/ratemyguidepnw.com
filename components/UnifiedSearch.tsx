@@ -86,13 +86,12 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
   ...scopedCharters.flatMap(offer=>[...(offer.waterway?[offer.waterway]:[]),...(offer.waters??[])]),
  ])].sort((a,b)=>a==='All advertised waters'?-1:b==='All advertised waters'?1:a.localeCompare(b)),[facets,captainFacets,scopedCharters]);
  const speciesOptions=useMemo(()=>[...new Set([
-  ...facets.flatMap(facet=>directorySpeciesLabels(facet.species)),
-  ...captainFacets.flatMap(facet=>facet.species),
+  ...[...facets,...captainFacets].flatMap(facet=>directorySpeciesLabels(facet.species)),
   ...scopedCharters.flatMap(offer=>directorySpeciesLabels(offer.species?[offer.species]:[])),
  ])].sort(),[facets,captainFacets,scopedCharters]);
  const speciesMenu=directorySpeciesMenu(speciesOptions,species);
  const commonSpecies=new Set(speciesMenu.groups.flatMap(group=>group.choices));
- const captainSpecies=[...new Set(captainFacets.flatMap(facet=>facet.species))]
+ const captainSpecies=[...new Set(captainFacets.flatMap(facet=>directorySpeciesLabels(facet.species)))]
   .filter(label=>!commonSpecies.has(label)).sort();
  const methodGroups=useMemo(()=>directoryMethodGroups([
   ...facets.flatMap(facet=>facet.methods),

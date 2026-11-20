@@ -164,11 +164,12 @@ test('mixed fisheries match only supported broad targets and methods',async()=>{
     [crabbing,{species:'Dungeness crab'},0],[crabbing,{method:'Crab ring fishing'},0],
     [crabbing,{method:'Pot fishing'},0],[crabbing,{gear:'crab-pots'},0],
     [crabbing,{query:'Ilwaco Dungeness crabbing'},0],[dungeness,{query:'Ilwaco Dungeness crabbing'},1],
-    [dungeness,{species:'Crabbing'},0],[dungeness,{species:'Dungeness crab'},1],
+    [dungeness,{query:'crab'},1],[dungeness,{species:'Crabbing'},1],[dungeness,{species:'Dungeness crab'},1],
+    [dungeness,{method:'Crab ring fishing'},0],[dungeness,{method:'Pot fishing'},0],[dungeness,{gear:'crab-pots'},0],
   ])assert.equal(query.matchingCaptainTrips({...listing,captainTrips:[trip]},{...baseline,...filters}).length,wanted,JSON.stringify(filters));
   const dungenessOnly={...listing,captainTrips:[dungeness]};
   assert.deepEqual(Array.from(query.captainTripFacets(dungenessOnly,'All').species),['Dungeness crab']);
-  assert.equal(url.parseDirectoryState('?species=Crabbing',[dungenessOnly]).species,'All species');
+  assert.equal(url.parseDirectoryState('?species=Crabbing',[dungenessOnly]).species,'Crabbing');
   assert.equal(url.parseDirectoryState('?species=Dungeness+crab',[dungenessOnly]).species,'Dungeness crab');
 });
 
