@@ -3294,5 +3294,58 @@
       "waterway": "Columbia River estuary",
       "method": "Crabbing"
     }
+  },
+  {
+    "guide_id": "OG.0003452",
+    "kind": "species",
+    "value": "Chinook Salmon",
+    "source": {
+      "url": "https://fishingbooker.com/charters/view/43778",
+      "source_type": "third_party_directory",
+      "reviewed_on": "2026-11-19",
+      "locator": "Sean Proulx is the named captain for Oregon Adventures Guide Service – Astoria. The Warrenton listing offers an eight-hour seasonal Buoy 10 trip and lists Chinook among its targets."
+    },
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "location": {
+      "city": "Warrenton",
+      "state": "OR"
+    },
+    "relationship": {
+      "species": "Chinook Salmon",
+      "waterway": "Buoy 10"
+    }
+  },
+  {
+    "guide_id": "OG.0002193",
+    "kind": "species",
+    "value": "Coho Salmon",
+    "source": {
+      "url": "https://captainexperiences.com/trip/3974/salmon-fishing-trip",
+      "source_type": "third_party_directory",
+      "reviewed_on": "2026-11-19",
+      "locator": "Captain Rod's bookable Warrenton salmon trip lists ocean Chinook and coho from July 1 through August 31, separately from its Columbia River season."
+    },
+    "supporting_sources": [
+      {
+        "url": "https://captainexperiences.com/guides/reel-em-up-fishing-adventures",
+        "source_type": "third_party_directory",
+        "reviewed_on": "2026-11-19",
+        "locator": "Reel 'Em Up Fishing Adventures identifies Rod Shulley and links the Warrenton salmon trip under his offerings."
+      }
+    ],
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "location": {
+      "city": "Warrenton",
+      "state": "OR"
+    },
+    "relationship": {
+      "species": "Coho Salmon",
+      "waterway": "Pacific Ocean"
+    },
+    "trip_note": "The booking page lists ocean and Columbia River options separately. Confirm the ocean option and dates when booking."
   }
 ]
