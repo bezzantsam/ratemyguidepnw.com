@@ -13,7 +13,7 @@ export type SubmissionKind=OwnedKind|'report';
 export type ReportReason='not_firsthand'|'harassment_or_private_info'|'other';
 export type OwnSubmission=Readonly<{id:string;kind:OwnedKind;status:string;createdAt:string;jurisdiction:'OR'|'WA'|null;sourceId:string|null;reviewId:string|null;identities:readonly GuideSource[]}>;
 export type OwnerDetails=Readonly<{boat:string;gear:string;yearsExperience:number|null;expertise:string;species:string}>;
-export type OperatorItem=Readonly<{id:string;kind:SubmissionKind;guideName:string|null;guideProfilePath?:string;reviewId:string|null;description:string;createdAt:string;canApprove:boolean}>;
+export type OperatorItem=Readonly<{id:string;kind:SubmissionKind;guideName:string|null;guideProfilePath?:string;ownSubmission?:boolean|null;reviewId:string|null;description:string;createdAt:string;canApprove:boolean}>;
 
 export class LaunchClientError extends Error {
   constructor(public readonly code:string) {super(code);this.name='LaunchClientError';}
@@ -207,6 +207,7 @@ export function createLaunchClient(options:Options) {
           return {id:row.id,kind,guideName,reviewId,createdAt:row.created_at,description:`Oregon listing: ${source||'Unavailable'}\nClaimant: ${name||'Unavailable'}\nBusiness: ${business||'Not supplied'}\nEvidence: ${evidence||'Unavailable'}`,canApprove:!!guideName&&!!source&&!!name.trim()&&evidence.trim().length>=20};
         }
         if(typeof row.body!=='string'||!row.body.trim()||!Number.isInteger(row.quality)||(row.quality as number)<1||(row.quality as number)>5)throw new LaunchClientError('service_unavailable');
+        const ownSubmission=typeof row.is_own_submission==='boolean'?row.is_own_submission:null;
         const trip=Object.hasOwn(row,'trip_responses')?describeTripResponses(row.trip_responses):null, relationship=typeof row.relationship_disclosure==='string'?row.relationship_disclosure:'Unavailable';
         const hasIntensity=Object.hasOwn(row,'intensity')&&(row.intensity===null||(Number.isInteger(row.intensity)&&(row.intensity as number)>=1&&(row.intensity as number)<=5));
         const hasRebook=Object.hasOwn(row,'would_book_again')&&(row.would_book_again===null||typeof row.would_book_again==='boolean');
@@ -214,7 +215,7 @@ export function createLaunchClient(options:Options) {
         const month=hasMonth?(kind==='revision'&&row.trip_month_specified===false?'Unchanged':readTripMonth(row.trip_month)??(kind==='revision'?'Cleared':'Not supplied')):'Unavailable';
         const intensity=hasIntensity?(row.intensity===null?'Not answered':`${row.intensity} / 5`):'Unavailable';
         const rebook=hasRebook?(row.would_book_again===null?'Not answered':row.would_book_again?'Yes':'No'):'Unavailable';
-        return {id:row.id,kind,...listing,reviewId,createdAt:row.created_at,description:`Rating: ${row.quality} / 5\nRelationship: ${relationship}\nTrip month: ${month}\nTrip intensity: ${intensity}\nWould book again: ${rebook}\n${row.body}\n${trip===null?'Trip details unavailable':trip.join('\n')}`,canApprove:!!guideName&&hasMonth&&hasIntensity&&hasRebook&&trip!==null&&['none','personal','financial','other'].includes(relationship)&&(kind==='revision'||row.firsthand_attested===true)};
+        return {id:row.id,kind,...listing,ownSubmission,reviewId,createdAt:row.created_at,description:`Rating: ${row.quality} / 5\nRelationship: ${relationship}\nTrip month: ${month}\nTrip intensity: ${intensity}\nWould book again: ${rebook}\n${row.body}\n${trip===null?'Trip details unavailable':trip.join('\n')}`,canApprove:ownSubmission===false&&!!guideName&&hasMonth&&hasIntensity&&hasRebook&&trip!==null&&['none','personal','financial','other'].includes(relationship)&&(kind==='revision'||row.firsthand_attested===true)};
       });
     },
     async operatorDecide(kind:OwnedKind,id:string,approve:boolean,reason:string):Promise<{id:string;status:string}> {

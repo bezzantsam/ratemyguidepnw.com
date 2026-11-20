@@ -7,7 +7,7 @@ const url=process.env.NEXT_PUBLIC_SUPABASE_URL,key=process.env.NEXT_PUBLIC_SUPAB
 export const client=url&&key?createClient(url,key):null;
 export default function AuthPanel({onSignedIn,profilePath,claimIntent=false,moderator=false,authCheck=false,emailOnly=false}:{onSignedIn?:()=>void;profilePath?:string;claimIntent?:boolean;moderator?:boolean;authCheck?:boolean;emailOnly?:boolean}){
  const usesEmailOnly=moderator||authCheck||emailOnly;
- const[email,setEmail]=useState(''),[message,setMessage]=useState(''),[user,setUser]=useState<string|null>(null),[busy,setBusy]=useState(false);
+ const[email,setEmail]=useState(''),[message,setMessage]=useState(''),[user,setUser]=useState<string|null>(null),[ready,setReady]=useState(false),[busy,setBusy]=useState(false);
  const onSignedInRef=useRef(onSignedIn);onSignedInRef.current=onSignedIn;
  useEffect(()=>{
   if(!usesEmailOnly)return;
@@ -18,7 +18,8 @@ export default function AuthPanel({onSignedIn,profilePath,claimIntent=false,mode
  },[usesEmailOnly]);
  useEffect(()=>{
   if(!client)return;
-  let active=true;
+  let active=true,observedSession=false;
+  let callbackTimer:number|undefined;
   function signedIn(){
    if(profilePath){
     const {pathname,search,hash}=window.location;
@@ -36,9 +37,21 @@ export default function AuthPanel({onSignedIn,profilePath,claimIntent=false,mode
    }
    onSignedInRef.current?.();
   }
-  void client.auth.getUser().then(r=>{if(!active)return;setUser(r.data.user?.email||null);if(r.data.user)signedIn()});
-  const {data:{subscription}}=client.auth.onAuthStateChange((_e,s)=>{setUser(s?.user?.email||null);if(s?.user)signedIn()});
-  return()=>{active=false;subscription.unsubscribe()};
+  function sync(email:string|null,signedInUser:boolean){
+   window.clearTimeout(callbackTimer);
+   setUser(email);setReady(true);
+   // Route restoration can lead to an auth read in a parent. Run it after the provider releases its event lock.
+   if(signedInUser)callbackTimer=window.setTimeout(()=>{if(active)signedIn()},0);
+  }
+  const {data:{subscription}}=client.auth.onAuthStateChange((_event,session)=>{
+   if(!active)return;
+   observedSession=true;
+   sync(session?.user.email||null,!!session?.user);
+  });
+  void client.auth.getUser().then(result=>{
+   if(active&&!observedSession)sync(result.data.user?.email||null,!!result.data.user);
+  }).catch(()=>{if(active&&!observedSession)setReady(true)});
+  return()=>{active=false;window.clearTimeout(callbackTimer);subscription.unsubscribe()};
  },[profilePath]);
  function redirectTo(){
   const {origin,pathname,search,hash}=window.location;
@@ -74,14 +87,26 @@ export default function AuthPanel({onSignedIn,profilePath,claimIntent=false,mode
    setBusy(false);
   }
  }
+ async function signOut(){
+  if(!client||busy)return;
+  setBusy(true);setMessage('');
+  try{
+   const {error}=moderator?await client.auth.signOut({scope:'local'}):await client.auth.signOut();
+   if(error)throw error;
+   setEmail('');
+  }catch{
+   setMessage('Couldn’t sign out. Try again before switching accounts.');
+  }finally{setBusy(false)}
+ }
  if(!client)return <p>Sign-in configuration is unavailable.</p>;
+ if(moderator&&!ready)return <p role="status">Checking sign-in…</p>;
  return <div className="auth-panel">
-  {user?<>{!authCheck&&<p>Signed in as <strong>{user}</strong></p>}<button type="button" onClick={()=>void client.auth.signOut()}>Sign out</button></>:<>
+  {user?<>{!authCheck&&<p>Signed in as <strong>{user}</strong></p>}<button type="button" disabled={busy} onClick={()=>void signOut()}>Sign out</button></>:<>
    {!usesEmailOnly&&<button type="button" disabled={busy} onClick={()=>void google()}>Continue with Google</button>}
    <p>{moderator?'Use your moderator email to request a sign-in link.':usesEmailOnly?'Use your email to request a sign-in link.':'Or sign in using a verified email link:'}</p>
    <label>Email<input type="email" autoComplete="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com"/></label>
    <button type="button" disabled={busy||!email.includes('@')} onClick={()=>void magic()}>Email me a sign-in link</button>
-   {message&&<p role="status">{message}</p>}
   </>}
+  {message&&<p role="status">{message}</p>}
  </div>
 }

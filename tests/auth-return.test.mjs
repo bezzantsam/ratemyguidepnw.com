@@ -16,21 +16,25 @@ function find(node,predicate) {
   if(predicate(node)) return node;
   for(const child of [node.props?.children].flat(Infinity)){const result=find(child,predicate);if(result)return result}
 }
-function setup({moderator=false,authCheck=false,emailOnly=false,otpReply=async()=>({error:null}),storage=new Map()}={}) {
+function setup({moderator=false,authCheck=false,emailOnly=false,otpReply=async()=>({error:null}),storage=new Map(),getUser=async()=>({data:{user:null}}),onSignedIn}={}) {
   const profile='/guides/og-0002254', cells=[], scrolled=[];let cursor=0,effects=[],listener,oauth,otp,replaced;
   const location={origin:'https://preview.example',pathname:profile,search:'?intent=review',hash:'#write-review'};
+  const jobs=new Map();let timer=0,signOutOptions;
   const browser={
+    setTimeout(fn){jobs.set(++timer,fn);return timer},
+    clearTimeout(id){jobs.delete(id)},
     location,history:{state:{existing:true},replaceState(_state,_title,path){replaced=path}},dispatchEvent(){},
     localStorage:{getItem:key=>storage.get(key),setItem:(key,value)=>storage.set(key,value),removeItem:key=>storage.delete(key)},
   };
-  const auth={getUser:async()=>({data:{user:null}}),onAuthStateChange(fn){listener=fn;return {data:{subscription:{unsubscribe(){}}}}},signInWithOAuth:async arg=>{oauth=arg;return {error:null}},signInWithOtp:async arg=>{otp=arg;return otpReply()},signOut:async()=>{}};
+  const auth={getUser,onAuthStateChange(fn){listener=fn;return {data:{subscription:{unsubscribe(){}}}}},signInWithOAuth:async arg=>{oauth=arg;return {error:null}},signInWithOtp:async arg=>{otp=arg;return otpReply()},signOut:async options=>{signOutOptions=options;return {error:null}}};
   const react={useState(initial){const i=cursor++;if(!(i in cells))cells[i]=initial;return [cells[i],value=>{cells[i]=value}]},useRef(initial){const i=cursor++;if(!(i in cells))cells[i]={current:initial};return cells[i]},useEffect(fn){effects.push(fn)}};
   const canonical=compile('lib/canonical-share.ts');
   const directory=compile('lib/directory-url.ts',{'./directory-query':{}},{URL,URLSearchParams});
   const context=compile('lib/review-search-return.ts',{'./directory-url':directory},{window:browser,URLSearchParams});
   const document={getElementById:id=>({scrollIntoView:()=>scrolled.push(id)})};
   const panel=compile('components/AuthPanel.tsx',{react,'@supabase/supabase-js':{createClient:()=>({auth})},'@/lib/canonical-share':canonical,'@/lib/review-search-return':context},{window:browser,document,Event,URLSearchParams,process:{env:{NEXT_PUBLIC_SUPABASE_URL:'https://example.invalid',NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:'public'}}});
-  return {profile,location,scrolled,get oauth(){return oauth},get otp(){return otp},get replaced(){return replaced},render(){cursor=0;effects=[];return panel.default({profilePath:moderator?undefined:profile,moderator,authCheck,emailOnly})},start(){for(const fn of effects)fn()},emit(session){listener('SIGNED_IN',session)}};
+  return {profile,location,scrolled,get oauth(){return oauth},get otp(){return otp},get replaced(){return replaced},get signOutOptions(){return signOutOptions},render(){cursor=0;effects=[];return panel.default({profilePath:moderator?undefined:profile,moderator,authCheck,emailOnly,onSignedIn})},start(){for(const fn of effects)fn()},emit(session){listener('SIGNED_IN',session)},
+    flush(){for(const [id,fn] of jobs){jobs.delete(id);fn()}}};
 }
 
 test('both sign-in methods keep the selected guide and review intent without putting it in the auth fragment',()=>{
@@ -58,14 +62,14 @@ test('the email return restores a validated rating search locally across same-or
  const callback=setup({storage});
  callback.render();callback.start();
  callback.location.pathname='/guides/og-0000359';
- callback.emit({user:{email:'angler@example.invalid'}});
+ callback.emit({user:{email:'angler@example.invalid'}});callback.flush();
  assert.equal(callback.replaced,undefined);
  callback.location.pathname=callback.profile;
  callback.location.hash='#access_token=private';
- callback.emit({user:{email:'angler@example.invalid'}});
+ callback.emit({user:{email:'angler@example.invalid'}});callback.flush();
  assert.equal(callback.replaced,undefined);
  callback.location.hash='';
- callback.emit({user:{email:'angler@example.invalid'}});
+ callback.emit({user:{email:'angler@example.invalid'}});callback.flush();
  assert.equal(callback.replaced,`${start.profile}?intent=review&returnTo=${encodeURIComponent(target)}#write-review`);
  assert.equal(storage.size,0);
  assert.deepEqual(callback.scrolled,['write-review']);
@@ -79,7 +83,7 @@ test('the email return ignores expired or unsafe stored search context',()=>{
  ]){
   const storage=new Map(),h=setup({storage});
   storage.set('rmg-review-search:'+h.profile,JSON.stringify({target,expiresAt}));
-  h.render();h.start();h.emit({user:{email:'angler@example.invalid'}});
+  h.render();h.start();h.emit({user:{email:'angler@example.invalid'}});h.flush();
   assert.equal(h.replaced,`${h.profile}?intent=review#write-review`);
   assert.equal(storage.size,0);
  }
@@ -87,10 +91,10 @@ test('the email return ignores expired or unsafe stored search context',()=>{
 
 test('auth callback never overwrites an unconsumed token fragment',()=>{
   const h=setup();h.render();h.start();
-  h.location.hash='#access_token=private';h.emit({user:{email:'angler@example.invalid'}});
+  h.location.hash='#access_token=private';h.emit({user:{email:'angler@example.invalid'}});h.flush();
   assert.equal(h.replaced,undefined);
   assert.deepEqual(h.scrolled,[]);
-  h.location.hash='';h.emit({user:{email:'angler@example.invalid'}});
+  h.location.hash='';h.emit({user:{email:'angler@example.invalid'}});h.flush();
   assert.equal(h.replaced,`${h.profile}?intent=review#write-review`);
 });
 
@@ -98,12 +102,12 @@ test('a published review returns to the same review after sign-in',()=>{
   const h=setup(),id='10000000-0000-4000-8000-000000000001';h.location.search='';h.location.hash=`#review-${id}`;
   const tree=h.render();find(tree,n=>n.type==='button'&&n.props.children==='Continue with Google').props.onClick();
   assert.equal(h.oauth.options.redirectTo,`https://preview.example${h.profile}?review=${id}`);
-  h.start();h.location.search=`?review=${id}`;h.location.hash='';h.emit({user:{email:'angler@example.invalid'}});
+  h.start();h.location.search=`?review=${id}`;h.location.hash='';h.emit({user:{email:'angler@example.invalid'}});h.flush();
   assert.equal(h.replaced,`${h.profile}#review-${id}`);
 });
 
 test('moderator sign-in offers only email and returns to the same origin /admin without creating a user',async()=>{
- const h=setup({moderator:true}),tree=h.render();
+ const h=setup({moderator:true});h.render();h.start();await new Promise(setImmediate);const tree=h.render();
  assert.equal(find(tree,n=>n.type==='button'&&n.props.children==='Continue with Google'),undefined);
  h.location.search='?next=/guides';h.location.hash='#write-review';
  find(tree,n=>n.type==='input').props.onChange({target:{value:' moderator@example.invalid '}});
@@ -113,7 +117,6 @@ test('moderator sign-in offers only email and returns to the same origin /admin 
  assert.equal(h.otp.options.shouldCreateUser,false);
  await new Promise(setImmediate);
  assert.ok(find(h.render(),n=>n.props?.children==='Check your email for your Rate Your Guide sign-in link.'));
- h.start();await new Promise(setImmediate);
  h.emit({user:{email:'moderator@example.invalid'}});
  assert.ok(find(h.render(),n=>n.type==='button'&&n.props.children==='Sign out'));
  assert.equal(h.replaced,undefined);
@@ -123,7 +126,7 @@ test('moderator sign-in shows bounded errors and allows retries after provider o
  for(const otpReply of [async()=>({error:{message:'provider detail'}}),async()=>{throw Error('network detail')}]){
   const h=setup({moderator:true,otpReply});
   h.location.hash='#error_code=otp_expired';
-  h.render();h.start();
+  h.render();h.start();await new Promise(setImmediate);
   assert.ok(find(h.render(),n=>n.props?.children==='This sign-in link could not be used. Request a new link below.'));
   find(h.render(),n=>n.type==='input').props.onChange({target:{value:'moderator@example.invalid'}});
   const send=tree=>find(tree,n=>n.type==='button'&&n.props.children==='Email me a sign-in link');
@@ -143,6 +146,7 @@ test('throttled email sign-in gives both roles a recovery path without exposing 
  ];
  for(const {error,...role} of cases){
   const h=setup({...role,otpReply:async()=>({error:{...error,message:'Private provider detail'}})});
+  h.render();h.start();await new Promise(setImmediate);
   find(h.render(),n=>n.type==='input').props.onChange({target:{value:'participant@example.invalid'}});
   find(h.render(),n=>n.type==='button'&&n.props.children==='Email me a sign-in link').props.onClick();
   await new Promise(setImmediate);
@@ -160,14 +164,35 @@ test('the sign-in check lets server verification own the status after browser au
  assert.ok(find(tree,n=>n.type==='button'&&n.props.children==='Sign out'));
 });
 
-test('legacy and new public hosts keep guide and moderator email callbacks on the initiating host',()=>{
+test('legacy and new public hosts keep guide and moderator email callbacks on the initiating host',async()=>{
   for(const origin of ['https://ratemyguidepnw.vercel.app','https://rateyourguide.com']){
     for(const moderator of [false,true]){
       const h=setup({moderator});
       h.location.origin=origin;
+      h.render();h.start();await new Promise(setImmediate);
       find(h.render(),n=>n.type==='input').props.onChange({target:{value:'fixture@example.invalid'}});
       find(h.render(),n=>n.type==='button'&&n.props.children==='Email me a sign-in link').props.onClick();
       assert.equal(h.otp.options.emailRedirectTo,origin+(moderator?'/admin':h.profile+'?intent=review'));
     }
   }
+});
+
+
+test('provider events defer follow-up reads and win over a stale initial user result',async()=>{
+  let complete,notice=0;
+  const h=setup({moderator:true,getUser:()=>new Promise(resolve=>{complete=resolve}),onSignedIn:()=>{notice++}});
+  assert.ok(find(h.render(),n=>n.props?.children==='Checking sign-in…'));
+  h.start();
+  h.emit({user:{email:'current@example.invalid'}});
+  assert.equal(notice,0);
+  complete({data:{user:{email:'stale@example.invalid'}}});
+  await new Promise(setImmediate);
+  const tree=h.render();
+  assert.ok(find(tree,n=>n.type==='strong'&&n.props.children==='current@example.invalid'));
+  assert.equal(find(tree,n=>n.type==='strong'&&n.props.children==='stale@example.invalid'),undefined);
+  h.flush();
+  assert.equal(notice,1);
+  find(tree,n=>n.type==='button'&&n.props.children==='Sign out').props.onClick();
+  await new Promise(setImmediate);
+  assert.equal(h.signOutOptions.scope,'local');
 });
