@@ -4,8 +4,8 @@ import {handleLaunch} from '../../lib/backend-launch/handler.mjs';
 const env={NEXT_PUBLIC_SUPABASE_URL:'https://example.invalid',NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:'public-test',RMG_LAUNCH_ENABLED:'true'};
 const review={operation:'submit_review',jurisdiction:'OR',sourceId:'or-1',quality:5,intensity:3,wouldBookAgain:true,body:'x'.repeat(80),firsthandAttested:true,relationship:'none'};
 function req(body,token){return new Request('https://example.invalid/api/launch',{method:'POST',headers:{'content-type':'application/json',...(token?{authorization:`Bearer ${token}`}:{})},body:JSON.stringify(body)})}
-function backend({user={id:'u',email_confirmed_at:'2026-01-01',is_anonymous:false},admin=false,rpcError=null,rpcResult={id:'actual-id',status:'pending'}}={}){
- const calls=[];const client={auth:{getUser:async token=>{calls.push(['getUser',token]);return {data:{user},error:null}}},rpc:async(name,params)=>{calls.push([name,params]);if(name==='is_site_admin')return {data:admin,error:null};return rpcError?{data:null,error:rpcError}:{data:rpcResult,error:null}},from:()=>{throw new Error('unexpected table query')}};
+function backend({user={id:'u',email_confirmed_at:'2026-01-01',is_anonymous:false},admin=false,adminResult={data:admin,error:null},rpcError=null,rpcResult={id:'actual-id',status:'pending'}}={}){
+ const calls=[];const client={auth:{getUser:async token=>{calls.push(['getUser',token]);return {data:{user},error:null}}},rpc:async(name,params)=>{calls.push([name,params]);if(name==='is_site_admin')return adminResult;return rpcError?{data:null,error:rpcError}:{data:rpcResult,error:null}},from:()=>{throw new Error('unexpected table query')}};
  return {calls,factory:(_url,_key,opts)=>{calls.push(['headers',opts.global.headers]);return client}};
 }
 test('no session or unconfirmed session cannot submit',async()=>{
@@ -99,6 +99,35 @@ test('captain profile readback uses provenance-filtered RPC',async()=>{
  const calls=[];const factory=()=>({rpc:async(name,p)=>{calls.push([name,p]);return {data:null,error:null}}});
  const r=await handleLaunch(req({operation:'profile_details',jurisdiction:'OR',sourceId:'og-1'}),factory,env);
  assert.equal(r.status,200);assert.deepEqual(await r.json(),{details:null,attribution:'captain_declared'});assert.equal(calls[0][0],'rmg_profile_details');
+});
+
+test('launch-on session returns the verified ordinary or moderator role without a queue probe',async()=>{
+ for(const admin of [false,true]){
+  const b=backend({admin});
+  const response=await handleLaunch(req({operation:'session'},'token'),b.factory,env);
+  assert.equal(response.status,200);
+  assert.deepEqual(await response.json(),{authenticated:true,operator:admin});
+  assert.deepEqual(b.calls.map(([operation])=>operation),['headers','getUser','is_site_admin']);
+ }
+});
+
+test('launch-on session returns a retryable error when the role RPC fails',async()=>{
+ const b=backend({adminResult:{data:false,error:{code:'42501',message:'private database detail'}}});
+ const response=await handleLaunch(req({operation:'session'},'token'),b.factory,env);
+ assert.equal(response.status,503);
+ assert.deepEqual(await response.json(),{error:'service_unavailable'});
+ assert.equal(response.headers.get('cache-control'),'no-store');
+ assert.deepEqual(b.calls.map(([operation])=>operation),['headers','getUser','is_site_admin']);
+});
+
+test('launch-on session returns a retryable error for malformed role responses',async()=>{
+ for(const adminResult of [{data:null,error:null},{data:'false',error:null},{data:[true],error:null},null]){
+  const b=backend({adminResult});
+  const response=await handleLaunch(req({operation:'session'},'token'),b.factory,env);
+  assert.equal(response.status,503);
+  assert.deepEqual(await response.json(),{error:'service_unavailable'});
+  assert.deepEqual(b.calls.map(([operation])=>operation),['headers','getUser','is_site_admin']);
+ }
 });
 
 test('sign-in check only verifies confirmed roles and reads queue availability without returning rows',async()=>{
