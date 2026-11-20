@@ -4,6 +4,7 @@ import GuideEnrichmentPanel from '@/components/GuideEnrichmentPanel';
 import ReturnToResults from '@/components/ReturnToResults';
 import {AuthCheck} from '@/components/launch/AuthCheck';
 import {ClaimProfile} from '@/components/launch/ClaimProfile';
+import {CaptainTripsEditor} from '@/components/launch/CaptainTripsEditor';
 import {GuideEngagement} from '@/components/launch/GuideEngagement';
 import {ProfileSharing} from '@/components/launch/ProfileSharing';
 import {profileShareMetadata} from '@/lib/canonical-share';
@@ -31,7 +32,10 @@ export default async function Page({params}: ProfileParams) {
   const washington = washingtonRecordForOregon(guide.registration);
   const enabled = process.env.NEXT_PUBLIC_RMG_LAUNCH_ENABLED === 'true';
   const claimsEnabled = process.env.NEXT_PUBLIC_RMG_CLAIMS_ENABLED === 'true';
-  const claim = claimsEnabled && <ClaimProfile key={guide.registration} sourceId={guide.registration} profilePath={path}/>;
+  const tripEditor = process.env.RMG_GUIDE_OFFERINGS_ENABLED === 'true'
+    ? <CaptainTripsEditor key={guide.registration} sourceId={guide.registration}/> : undefined;
+  const claim = claimsEnabled && <ClaimProfile key={guide.registration} sourceId={guide.registration} profilePath={path}
+    approvedEditor={tripEditor}/>;
 
   const registration = (
     <section className="guide-registration" aria-labelledby="registration-heading">
