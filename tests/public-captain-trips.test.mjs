@@ -160,3 +160,16 @@ test('mixed fisheries match only supported broad targets and methods',async()=>{
     [crabbing,{gear:'crab-pots'},0],[dungeness,{species:'Crabbing'},1],
   ])assert.equal(query.matchingCaptainTrips({...listing,captainTrips:[trip]},{...baseline,...filters}).length,wanted,JSON.stringify(filters));
 });
+
+test('only Oregon source listings publish, while individual trips may be in Washington',async()=>{
+  const unexpected={...profile,jurisdiction:'WA',sourceId:'wa-144'};
+  const {client,signal}=projection(request=>request.operation==='public_batch'
+    ?{items:[unexpected,profile],nextCursor:null}
+    :{profile:request.jurisdiction==='WA'?null:profile});
+  const rows=await client.fetchCaptainTripsForDirectory(signal);
+  assert.equal(rows.has(client.captainTripKey(unexpected)),false);
+  assert.ok(rows.get(client.captainTripKey(source)).some(trip=>trip.jurisdiction==='WA'));
+  assert.equal(await client.fetchCaptainTripsForProfile(unexpected,signal),null);
+  const wrong=projection(()=>({profile:unexpected}));
+  await assert.rejects(wrong.client.fetchCaptainTripsForProfile(unexpected,wrong.signal),/Invalid public trip projection/);
+});

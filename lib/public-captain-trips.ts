@@ -19,7 +19,9 @@ export type CaptainTrip = {
 };
 
 type Vessel = {id: string; label: string; type: string; covered: boolean; heated: boolean; maxAnglers: number | null; fishCare: string[]};
-type PublishedCaptainTrips = CaptainTripSource & {
+type PublishedCaptainTrips = {
+  jurisdiction: 'OR';
+  sourceId: string;
   publishedVersion: number;
   vessels: Vessel[];
   offerings: CaptainTrip[];
@@ -37,8 +39,7 @@ const text=(value:unknown):value is string=>typeof value==='string'&&value.trim(
 const strings=(value:unknown):value is string[]=>Array.isArray(value)&&value.every(text);
 const integer=(value:unknown):value is number=>typeof value==='number'&&Number.isSafeInteger(value)&&value>0;
 const vesselId=(value:unknown):value is string=>typeof value==='string'&&/^v[1-9]\d{0,3}$/.test(value);
-const validSource=(jurisdiction:unknown,id:unknown):id is string=>typeof id==='string'&&
-  (jurisdiction==='OR'?/^OG\.\d{7}(\.[A-Z0-9&]+)?$/.test(id):jurisdiction==='WA'&&/^wa-\d{3,9}$/.test(id));
+const isOregonSourceId=(id:unknown):id is string=>typeof id==='string'&&/^OG\.\d{7}(\.[A-Z0-9&]+)?$/.test(id);
 
 function parseVessel(value:unknown):Vessel|null {
   if(!object(value))return null;
@@ -75,7 +76,7 @@ export function parseSubmittedTrips(value:unknown) {
 function parsePublished(value:unknown):PublishedCaptainTrips {
   if(!object(value))throw new Error('Invalid public trip projection');
   const {jurisdiction,sourceId,publishedVersion,attribution,vessels,offerings}=value;
-  if((jurisdiction!=='OR'&&jurisdiction!=='WA')||!validSource(jurisdiction,sourceId)||!integer(publishedVersion)||
+  if(jurisdiction!=='OR'||!isOregonSourceId(sourceId)||!integer(publishedVersion)||
     attribution!=='captain_declared')throw new Error('Invalid public trip projection');
   return {jurisdiction,sourceId,publishedVersion,...parseSubmittedTrips({vessels,offerings})};
 }
