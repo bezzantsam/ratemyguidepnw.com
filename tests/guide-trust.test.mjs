@@ -55,7 +55,7 @@ test('guide profiles preserve trust panels and guard review access', () => {
       assert.match(code, /href="\/guides\/verification"/);
       assert.doesNotMatch(code, /<(CaptainMedia|CaptainDetails|CaptainReviews)\b/);
     } else {
-      assert.match(code, /<CaptainReviews/);
+      assert.match(code, /<WashingtonReviewStatus/);
       assert.match(code, /<GuideTrustPanel/);
     }
     assert.doesNotMatch(code, /<strong>No reviews yet<\/strong>/);

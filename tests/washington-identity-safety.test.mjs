@@ -26,6 +26,6 @@ test('claim targets cannot be submitted',()=>{
 });
 test('Washington profiles do not load other slug-based database widgets',()=>{
  const page=read('app/washington/[id]/page.tsx');
- assert.doesNotMatch(page,/<CaptainDetails|<CaptainMedia/);
- assert.match(page,/expectedName=\{g.name\} expectedBusiness=\{g.business\}/);
+ assert.doesNotMatch(page,/<CaptainDetails|<CaptainMedia|<CaptainReviews/);
+ assert.match(page,/<WashingtonReviewStatus/);
 });
