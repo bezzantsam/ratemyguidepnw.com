@@ -11,20 +11,36 @@ const reviewer='10000000-0000-4000-8000-000000000001',operator='20000000-0000-40
 const jwt=id=>`${Buffer.from('{"alg":"none"}').toString('base64url')}.${Buffer.from(JSON.stringify({sub:id,exp:Math.floor(Date.now()/1000)+3600,role:'authenticated'})).toString('base64url')}.fixture`;
 const tokens={[reviewer]:jwt(reviewer),[operator]:jwt(operator),[reporter]:jwt(reporter)};
 
+async function closeFixtureContext(context){
+ // Keep request interception installed until every application document has stopped.
+ // Closing a live auth page can otherwise release a late RPC while routes are torn down.
+ for(const page of context.pages())if(!page.isClosed())await page.goto('about:blank');
+ await context.close();
+}
+async function closeFixtureBrowser(browser){
+ for(const context of browser.contexts())await closeFixtureContext(context);
+ await browser.close();
+}
+
 test('synthetic browser connects mapped review, claim, moderation and published rating', {timeout:120000},async()=>{
  const browser=await chromium.launch({executablePath:browserPath,headless:true});
  const state={review:null,revision:null,claim:null,report:null,requests:[],blocked:[],errors:[]};
  async function contextFor(actor,viewport){
-  const context=await browser.newContext({viewport});
+  const context=await browser.newContext({viewport,serviceWorkers:'block'});
   const session={access_token:tokens[actor],refresh_token:'fixture-refresh',token_type:'bearer',expires_in:3600,expires_at:Math.floor(Date.now()/1000)+3600,user:{id:actor,email:'fixture@example.invalid',aud:'authenticated',role:'authenticated',email_confirmed_at:'2026-01-01T00:00:00Z',app_metadata:{},user_metadata:{}}};
-  await context.addInitScript(({session})=>{localStorage.setItem('sb-127-auth-token',JSON.stringify(session));Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async text=>{window.__fixtureCopied=text}}})},{session});
+  await context.addInitScript(({session,origin})=>{if(location.origin!==origin)return;localStorage.setItem('sb-127-auth-token',JSON.stringify(session));Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async text=>{window.__fixtureCopied=text}}})},{session,origin});
   await context.route('**/*',async route=>{
    const req=route.request(),url=new URL(req.url());
    if(url.origin===authOrigin){
-    if(url.pathname==='/auth/v1/user'&&req.method()==='OPTIONS')return route.fulfill({status:204,headers:{
-     'access-control-allow-origin':origin,'access-control-allow-methods':'GET','access-control-allow-headers':'*'
-    }});
-    if(url.pathname==='/auth/v1/user'&&req.method()==='GET')return route.fulfill({status:200,contentType:'application/json',headers:{'access-control-allow-origin':origin},body:JSON.stringify(session.user)});
+    const allowed=['/auth/v1/user','/rest/v1/rpc/rmg_account_saved_guides_v1'];
+    const headers={'access-control-allow-origin':origin,'access-control-allow-methods':'GET,POST,OPTIONS','access-control-allow-headers':'*'};
+    if(allowed.includes(url.pathname)&&req.method()==='OPTIONS')return route.fulfill({status:204,headers});
+    if(url.pathname==='/auth/v1/user'&&req.method()==='GET')return route.fulfill({status:200,headers,json:session.user});
+    if(url.pathname==='/rest/v1/rpc/rmg_account_saved_guides_v1'&&req.method()==='POST'){
+     assert.equal(req.headers().authorization,`Bearer ${tokens[actor]}`);
+     assert.deepEqual(req.postDataJSON(),{p_action:'list',p_guides:[]});
+     return route.fulfill({status:200,headers,json:{status:'listed',items:[]}});
+    }
     state.blocked.push(`auth:${url.pathname}`);return route.abort();
    }
    if(url.origin===origin&&url.pathname==='/api/launch'){
@@ -102,7 +118,7 @@ test('synthetic browser connects mapped review, claim, moderation and published 
   await reportPage.waitForURL(url=>url.hash==='#reviews');
   await reportPage.getByRole('button',{name:'Report review'}).click();await reportPage.getByLabel('What’s wrong with this review?').selectOption('other');await reportPage.getByRole('button',{name:'Send report'}).click();await reportPage.getByText('Report sent. We’ll review it.').waitFor();
   await queue.getByLabel('Submission type').selectOption('report');await queue.getByText('Review report · Fixture Guide').waitFor();await queue.getByRole('button',{name:'Resolve report'}).click();await queue.getByText('Report confirmed: resolved. The review was not changed.').waitFor();assert.equal(state.review.status,'published');assert.equal(state.report.status,'resolved');
-  await reportPage.waitForLoadState('networkidle');await reporting.close();
+  await reportPage.waitForLoadState('networkidle');await closeFixtureContext(reporting);
   await page.getByRole('button',{name:'Copy review link'}).click();assert.equal(await page.evaluate(()=>window.__fixtureCopied),`https://ratemyguidepnw.vercel.app/guides/og-0002254#review-${reviewId}`);
   await page.setViewportSize({width:390,height:844});await page.reload({waitUntil:'domcontentloaded'});await page.getByText('A good firsthand trip.').waitFor();assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
   await page.getByRole('button',{name:'Edit your review'}).click();
@@ -138,8 +154,8 @@ test('synthetic browser connects mapped review, claim, moderation and published 
   if(process.env.BROWSER_SCREENSHOT_DIR){mkdirSync(process.env.BROWSER_SCREENSHOT_DIR,{recursive:true});await page.screenshot({path:join(process.env.BROWSER_SCREENSHOT_DIR,'synthetic-launch-mobile.png'),fullPage:true})}
   await page.goto(`${origin}/write-review`,{waitUntil:'networkidle'});await page.getByRole('searchbox',{name:'Captain, business, operating name, or registration'}).fill('OG.0002254');await page.locator('.guide-result[href^="/guides/og-0002254?"][href*="q%3DOG.0002254"]').click();await page.waitForURL(ratingProfile);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
   await Promise.all([page.waitForLoadState('networkidle'),queue.waitForLoadState('networkidle')]);
-  assert.deepEqual(state.blocked,[]);assert.deepEqual(state.errors,[]);await admin.close();await context.close();
- }finally{await browser.close()}
+  assert.deepEqual(state.blocked,[]);assert.deepEqual(state.errors,[]);await closeFixtureContext(admin);await closeFixtureContext(context);
+ }finally{await closeFixtureBrowser(browser)}
 });
 
 test('phone review drafts survive interruption, reload and auth refresh without crossing account or guide boundaries', {timeout:120000},async()=>{
@@ -168,11 +184,16 @@ test('phone review drafts survive interruption, reload and auth refresh without 
   const request=route.request(),url=new URL(request.url());
   const actor=Object.keys(sessions).find(id=>request.headers().authorization===`Bearer ${tokens[id]}`);
   if(url.origin===authOrigin){
-   if(request.method()==='OPTIONS')return route.fulfill({status:204,headers:{
-    'access-control-allow-origin':origin,'access-control-allow-methods':'GET,POST','access-control-allow-headers':'*',
-   }});
-   if(url.pathname==='/auth/v1/user')return actor?json(route,sessions[actor].user):json(route,{message:'Unauthorized'},401);
-   if(url.pathname==='/auth/v1/logout'&&request.method()==='POST')return route.fulfill({status:204,headers:{'access-control-allow-origin':origin}});
+   const allowed=['/auth/v1/user','/auth/v1/logout','/rest/v1/rpc/rmg_account_saved_guides_v1'];
+   const headers={'access-control-allow-origin':origin,'access-control-allow-methods':'GET,POST,OPTIONS','access-control-allow-headers':'*'};
+   if(allowed.includes(url.pathname)&&request.method()==='OPTIONS')return route.fulfill({status:204,headers});
+   if(url.pathname==='/auth/v1/user'&&request.method()==='GET')return actor?json(route,sessions[actor].user):json(route,{message:'Unauthorized'},401);
+   if(url.pathname==='/auth/v1/logout'&&request.method()==='POST')return route.fulfill({status:204,headers});
+   if(url.pathname==='/rest/v1/rpc/rmg_account_saved_guides_v1'&&request.method()==='POST'){
+    assert.ok(actor,'only known synthetic accounts may read a shortlist');
+    assert.deepEqual(request.postDataJSON(),{p_action:'list',p_guides:[]});
+    return route.fulfill({status:200,headers,json:{status:'listed',items:[]}});
+   }
   }
   if(url.origin===origin && url.pathname==='/api/launch'){
    const input=request.postDataJSON();
@@ -380,6 +401,6 @@ test('phone review drafts survive interruption, reload and auth refresh without 
   assert.deepEqual(blocked,[]);
   assert.deepEqual(pageErrors,[]);
  }finally{
-  await browser.close();
+  await closeFixtureBrowser(browser);
  }
 });

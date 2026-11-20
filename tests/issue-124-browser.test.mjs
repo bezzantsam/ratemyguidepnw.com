@@ -8,12 +8,23 @@ const mode=process.env.TEST_REVIEW_MODE;
 const executablePath=process.env.BROWSER_EXECUTABLE;
 if(!origin||!authOrigin||![origin,authOrigin].every(value=>/^http:\/\/127\.0\.0\.1:\d+$/.test(value))||origin===authOrigin||!executablePath||!['enabled','disabled'].includes(mode))throw Error('Use distinct isolated loopback servers, a local browser and an explicit test mode.');
 
+async function closeFixtureContext(context){
+ // Keep request interception installed until every application document has stopped.
+ // Closing a live auth page can otherwise release a late RPC while routes are torn down.
+ for(const page of context.pages())if(!page.isClosed())await page.goto('about:blank');
+ await context.close();
+}
+async function closeFixtureBrowser(browser){
+ for(const context of browser.contexts())await closeFixtureContext(context);
+ await browser.close();
+}
+
 test(`rating-first discovery and profile availability (${mode})`,{timeout:120000},async()=>{
  const browser=await chromium.launch({executablePath,headless:true});
  const blocked=[];
  try {
   for(const viewport of [{width:1366,height:900},{width:390,height:844}]){
-   const context=await browser.newContext({viewport});
+   const context=await browser.newContext({viewport,serviceWorkers:'block'});
    await context.route('**/*',async route=>{
     const request=route.request(),url=new URL(request.url());
     if(url.origin!==origin){blocked.push(url.origin);return route.abort()}
@@ -77,10 +88,10 @@ test(`rating-first discovery and profile availability (${mode})`,{timeout:120000
    await page.locator('.guide-result').first().click();await page.waitForURL(/\/washington\//);
    await page.getByText('Reviews are unavailable for this guide right now.').first().waitFor();
    assert.equal(await page.locator('a[href="#write-review"]').count(),0);
-   await page.waitForLoadState('networkidle');await context.close();
+   await page.waitForLoadState('networkidle');await closeFixtureContext(context);
   }
   if(mode==='enabled'){
-   const moderatorContext=await browser.newContext({viewport:{width:390,height:844}});
+   const moderatorContext=await browser.newContext({viewport:{width:390,height:844},serviceWorkers:'block'});
    const moderatorPage=await moderatorContext.newPage();
    let attempts=0;
    await moderatorContext.route('**/*',async route=>{
@@ -112,12 +123,12 @@ test(`rating-first discovery and profile availability (${mode})`,{timeout:120000
    await send.click();
    await moderatorPage.getByText('Check your email for your Rate Your Guide sign-in link.').waitFor();
    assert.equal(attempts,2);
-   await moderatorPage.waitForLoadState('networkidle');await moderatorContext.close();
+   await moderatorPage.waitForLoadState('networkidle');await closeFixtureContext(moderatorContext);
 
-   const context=await browser.newContext({viewport:{width:390,height:844}});
+   const context=await browser.newContext({viewport:{width:390,height:844},serviceWorkers:'block'});
    const user={id:'10000000-0000-4000-8000-000000000001',email:'fixture@example.invalid',aud:'authenticated',role:'authenticated',email_confirmed_at:'2026-01-01T00:00:00Z',app_metadata:{},user_metadata:{}};
    const token=`${Buffer.from('{"alg":"none"}').toString('base64url')}.${Buffer.from(JSON.stringify({sub:user.id,exp:Math.floor(Date.now()/1000)+3600,role:'authenticated'})).toString('base64url')}.fixture`;
-   await context.addInitScript(({token,user})=>localStorage.setItem('sb-127-auth-token',JSON.stringify({access_token:token,refresh_token:'fixture',token_type:'bearer',expires_in:3600,expires_at:Math.floor(Date.now()/1000)+3600,user})),{token,user});
+   await context.addInitScript(({token,user,origin})=>{if(location.origin===origin)localStorage.setItem('sb-127-auth-token',JSON.stringify({access_token:token,refresh_token:'fixture',token_type:'bearer',expires_in:3600,expires_at:Math.floor(Date.now()/1000)+3600,user}))},{token,user,origin});
    let failAvailability=true;
    await context.route('**/*',async route=>{
     const request=route.request(),url=new URL(request.url());
@@ -126,6 +137,15 @@ test(`rating-first discovery and profile availability (${mode})`,{timeout:120000
       'access-control-allow-origin':origin,'access-control-allow-methods':'GET','access-control-allow-headers':'*'
      }});
      if(request.method()==='GET')return route.fulfill({status:200,contentType:'application/json',headers:{'access-control-allow-origin':origin},body:JSON.stringify(user)});
+    }
+    if(url.origin===authOrigin&&url.pathname==='/rest/v1/rpc/rmg_account_saved_guides_v1'){
+     const headers={'access-control-allow-origin':origin,'access-control-allow-methods':'POST,OPTIONS','access-control-allow-headers':'*'};
+     if(request.method()==='OPTIONS')return route.fulfill({status:204,headers});
+     if(request.method()==='POST'){
+      assert.equal(request.headers().authorization,`Bearer ${token}`);
+      assert.deepEqual(request.postDataJSON(),{p_action:'list',p_guides:[]});
+      return route.fulfill({status:200,headers,json:{status:'listed',items:[]}});
+     }
     }
     if(url.origin!==origin){blocked.push(url.origin);return route.abort()}
     if(url.pathname==='/api/launch'){
@@ -152,8 +172,8 @@ test(`rating-first discovery and profile availability (${mode})`,{timeout:120000
    await page.getByText('Review submissions are closed.').waitFor();
    assert.equal(await page.getByText('Are you the captain? Request this listing').count(),0);
    assert.equal(await page.locator('a[href="#write-review"]').count(),0);
-   await page.waitForLoadState('networkidle');await context.close();
+   await page.waitForLoadState('networkidle');await closeFixtureContext(context);
   }
   assert.deepEqual(blocked,[]);
- }finally{await browser.close()}
+ }finally{await closeFixtureBrowser(browser)}
 });
