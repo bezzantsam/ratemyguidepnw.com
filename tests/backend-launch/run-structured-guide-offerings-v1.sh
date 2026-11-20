@@ -45,15 +45,25 @@ shasum -a 256 "$foundation" | awk '{print $1}'
 run python3 "$root/tests/backend-launch/structured-guide-offerings-race.py" "$work"
 run node "$root/tests/backend-launch/structured-guide-offerings-http.mjs" "$work"
 
-if [[ ${2:-} == --review-summaries || ${2:-} == --wa-review-summaries ]]; then
+if [[ ${2:-} == --review-summaries || ${2:-} == --wa-review-summaries || ${2:-} == --wa-catalog-review ]]; then
   "${ps[@]}" -1 -f "$candidate/public-review-summaries-v1.sql"
   "${ps[@]}" -f "$root/tests/backend-launch/public-review-summaries-v1.sql"
 fi
 
-if [[ ${2:-} == --wa-review-summaries ]]; then
+if [[ ${2:-} == --wa-review-summaries || ${2:-} == --wa-catalog-review ]]; then
   "${ps[@]}" -1 -f "$candidate/wa-review-pilot-v1.sql" -f "$candidate/wa-listed-review-identity-proof-v1.sql" \
     -f "$candidate/wa-listed-review-adapter-v1.sql" -f "$candidate/wa-listed-review-summaries-v1.sql"
   "${ps[@]}" -v "listed_pause=$candidate/wa-listed-review-identity-disable-v1.sql" \
     -v "readonly_fix=$candidate/wa-listed-review-summaries-readonly-v1.sql" \
     -f "$root/tests/backend-launch/wa-listed-review-summaries-v1.sql"
+fi
+
+if [[ ${2:-} == --wa-catalog-review ]]; then
+  "${ps[@]}" -1 -f "$candidate/wa-catalog-review-targets-v1.sql"
+  if [[ -n ${3:-} ]]; then
+    "${ps[@]}" -v "catalog_rows=$3" -f "$root/tests/backend-launch/wa-catalog-review-manifest-v1.sql"
+  fi
+  "${ps[@]}" -v "catalog_pause=$candidate/wa-catalog-review-disable-v1.sql" \
+    -f "$root/tests/backend-launch/wa-catalog-review-v1.sql"
+  run python3 "$root/tests/backend-launch/wa-review-pilot-race.py" "$work" --catalog
 fi
