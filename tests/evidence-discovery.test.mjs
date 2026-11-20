@@ -274,11 +274,15 @@ test('method catalog stays selectable without coverage and approved fixtures pop
  const charters=load('lib/charter-offerings.ts',{'./directory-query':query});
  const canonical=load('lib/canonical-share.ts');
  const publicTrips=load('lib/public-captain-trips.ts',{'./captain-fishing/catalog.mjs':fishingCatalog});
+ const publicRatings=load('lib/public-guide-ratings.ts');
  const emptyState={};
  vm.runInNewContext(ts.transpileModule(read('components/DirectoryEmptyState.tsx'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020,jsx:ts.JsxEmit.ReactJSX,esModuleInterop:true}}).outputText,{exports:emptyState,require:name=>name==='@/lib/directory-recovery'?recovery:name.endsWith('.module.css')?{}:requireNode(name)});
  const exports={};
  const js=ts.transpileModule(read('components/UnifiedSearch.tsx'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020,jsx:ts.JsxEmit.ReactJSX,esModuleInterop:true}}).outputText;
- vm.runInNewContext(js,{exports,require:name=>name==='@/lib/directory-url'?url:name==='@/lib/directory-query'?query:name==='@/lib/charter-offerings'?charters:name==='@/lib/canonical-share'?canonical:name==='@/lib/public-captain-trips'?publicTrips:name==='@/lib/captain-fishing/catalog.mjs'?fishingCatalog:name==='./DirectoryEmptyState'?emptyState:requireNode(name)});
+ const dependencies={'@/lib/directory-url':url,'@/lib/directory-query':query,'@/lib/charter-offerings':charters,
+  '@/lib/canonical-share':canonical,'@/lib/public-captain-trips':publicTrips,'@/lib/public-guide-ratings':publicRatings,
+  '@/lib/captain-fishing/catalog.mjs':fishingCatalog,'./DirectoryEmptyState':emptyState,'./GuideSearchRating':{default:()=>null,__esModule:true}};
+ vm.runInNewContext(js,{exports,require:name=>dependencies[name]??requireNode(name)});
  const base={id:'OG.0000047',name:'Example',business:null,states:['Oregon'],areas:[],advertisedWaters:[],searchAliases:[],href:'/guides/example',source:'Oregon registry'};
  const empty=renderToStaticMarkup(React.createElement(exports.default,{entries:[base]}));
  assert.doesNotMatch(empty,/>Species/);

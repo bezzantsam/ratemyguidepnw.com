@@ -8,9 +8,12 @@ import {charterPorts,filterCharterOfferings,type CharterOffering} from '@/lib/ch
 import {PUBLIC_ORIGIN} from '@/lib/canonical-share';
 import {captainTripKey,captainTripMonths,fetchCaptainTripsForDirectory,type CaptainTrip} from '@/lib/public-captain-trips';
 import {fishingOptions} from '@/lib/captain-fishing/catalog.mjs';
+import {fetchPublicGuideRatings,guideRatingKey,type GuideRatingSummary} from '@/lib/public-guide-ratings';
 import DirectoryEmptyState from './DirectoryEmptyState';
+import GuideSearchRating from './GuideSearchRating';
 
 const noCharters: CharterOffering[] = [];
+const guideSource=({id,href}:DirectoryEntry)=>({jurisdiction:href.startsWith('/washington/')?'WA' as const:'OR' as const,sourceId:id});
 
 export default function UnifiedSearch({entries:sourceEntries,charters=noCharters,reviewMode=false,reviewEnabled=false,home=false,captainTripsEnabled=false}:{entries:DirectoryEntry[];charters?:CharterOffering[];reviewMode?:boolean;reviewEnabled?:boolean;home?:boolean;captainTripsEnabled?:boolean}){
  const readCaptainTrips=captainTripsEnabled&&!reviewMode;
@@ -25,12 +28,12 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
  },[readCaptainTrips]);
  const entries=useMemo(()=>readCaptainTrips&&published instanceof Map&&published.size
   ?sourceEntries.map(entry=>{
-   const source={jurisdiction:entry.href.startsWith('/washington/')?'WA' as const:'OR' as const,sourceId:entry.id};
-   const captainTrips=published.get(captainTripKey(source));
+   const captainTrips=published.get(captainTripKey(guideSource(entry)));
    return captainTrips?.length?{...entry,captainTrips}:entry;
   }):sourceEntries,[sourceEntries,readCaptainTrips,published]);
  const projectionPending=readCaptainTrips&&published===null;
  const [selection,setSelection]=useState<DirectoryState>(DEFAULT_DIRECTORY_STATE);
+ const [selectionRestored,setSelectionRestored]=useState(false);
  const [copyStatus,setCopyStatus]=useState('');
  const [fallback,setFallback]=useState(false);
  const resultsRef=useRef<HTMLDivElement>(null);
@@ -47,6 +50,7 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
   function restore(){
    const next=parseDirectoryState(window.location.search,entries,charters,reviewMode);
    setSelection(next);
+   setSelectionRestored(true);
    const query=directoryUrl(next).slice('/guides'.length);
    if(published!=='error'&&window.location.search!==query)window.history.replaceState(null,'',window.location.pathname+query);
   }
@@ -100,6 +104,23 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
  const guidePorts=useMemo(()=>locatedGuidePorts(entries),[entries]);
  const matchingCharters=filterCharterOfferings(charters,selection,guidePorts);
  const pages=Math.max(1,Math.ceil(filtered.length/size)),current=Math.min(page,pages);
+ const visibleGuides=useMemo(()=>filtered.slice((current-1)*size,current*size),[filtered,current,size]);
+ const readRatings=reviewEnabled&&!reviewMode;
+ const [ratings,setRatings]=useState<{guides:DirectoryEntry[];summaries:Map<string,GuideRatingSummary>}|null>(null);
+ useEffect(()=>{
+  if(!readRatings||!selectionRestored||projectionPending||!visibleGuides.length)return;
+  const controller=new AbortController();
+  const timer=window.setTimeout(()=>{
+   const sources=visibleGuides.map(guideSource);
+   void fetchPublicGuideRatings(sources,controller.signal).then(summaries=>{
+    if(!controller.signal.aborted)setRatings({guides:visibleGuides,summaries});
+   }).catch(()=>{
+    if(!controller.signal.aborted)setRatings({guides:visibleGuides,summaries:new Map()});
+   });
+  },150);
+  return ()=>{window.clearTimeout(timer);controller.abort()};
+ },[readRatings,selectionRestored,projectionPending,visibleGuides]);
+ const visibleRatings=ratings?.guides===visibleGuides?ratings.summaries:null;
  const setRegion=(s:DirectoryState['state'])=>change({state:s,area:'All areas',waterway:'All advertised waters',species:'All species',method:'All methods',gear:undefined,month:undefined,page:1});
 
  return <section className="directory-panel">
@@ -181,7 +202,7 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
    {matchingCharters.length>0&&<span>{matchingCharters.length} charter {matchingCharters.length===1?'offering':'offerings'}</span>}
    <span>{q.trim()?'Closest matches first':'A–Z'} · Page {current} of {pages}</span>
   </div>
-  <div className="guide-results">{filtered.slice((current-1)*size,current*size).map(g=>{
+  <div className="guide-results">{visibleGuides.map(g=>{
    const captainTrips=matchingCaptainTrips(g,captainFilters);
    const {species:targets,methods,trips,waters}=directoryFisheryFacets(g,state);
    const editorial=(g.editorialFishing??[]).filter(fact=>[...targets,...methods].includes(fact.value));
@@ -190,7 +211,8 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
      offer.value===label||offer.relationship?.species===label||offer.relationship?.method===label));
    return <div className="saved-guide-row" key={g.id}>
     <Link className="guide-result" href={{pathname:g.href,query:reviewMode&&reviewEnabled?{returnTo:resultsUrl,intent:'review'}:{returnTo:resultsUrl},hash:reviewMode&&reviewEnabled?'write-review':undefined}}>
-     <div className="rating-tile"><strong>—</strong><span>{reviewEnabled?'View reviews':'Reviews unavailable'}</span></div>
+     {readRatings?<GuideSearchRating summary={visibleRatings?.get(guideRatingKey(guideSource(g)))} loading={!visibleRatings}/>
+      :<div className="rating-tile"><strong>—</strong><span>{reviewEnabled?'View reviews':'Reviews unavailable'}</span></div>}
      <div className="guide-result-body">
       <div className="guide-result-top"><h3>{g.name}</h3>
        <span className="listing-chip">{g.states.join(' + ')}</span>
