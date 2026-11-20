@@ -38,6 +38,10 @@ test('server listing version matches the offline intake for all stable Washingto
   for(const [id,expected] of versions){
     assert.equal(server.washingtonReviewVersion(id,'catalog'),published.has(id)?expected:undefined,id);
   }
+  const charles=server.washingtonReviewVersion('wa-021','catalog');
+  assert.equal(server.washingtonCatalogModerationName('wa-021',charles),'Charles Stahley');
+  assert.equal(server.washingtonCatalogModerationName('wa-021','0'.repeat(64)),undefined);
+  assert.equal(server.washingtonCatalogModerationName('wa-900001',charles),undefined);
   for(const id of ['wa-900001','wa-021@catalog:'+'a'.repeat(64),'wa-021 ']){
     assert.equal(server.washingtonReviewVersion(id,'catalog'),undefined);
   }

@@ -17,3 +17,9 @@ export const washingtonReviewVersion: WashingtonReviewVersion = (sourceId,kind) 
  if(kind==='catalog'&&!washingtonGuides.some(guide=>guide.id===sourceId))return undefined;
  return washingtonListedReviewVersion(sourceId);
 };
+
+/** Resolve a moderator label only when its stored catalog version is still current. */
+export function washingtonCatalogModerationName(sourceId:string,version:string):string|undefined {
+ if(washingtonReviewVersion(sourceId,'catalog')!==version)return undefined;
+ return washingtonGuide(sourceId)?.name;
+}

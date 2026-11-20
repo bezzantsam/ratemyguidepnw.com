@@ -69,7 +69,12 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
     }
   },[api,stableSource,washington]);
   const loadOwnReview=useCallback(async(epoch=authEpoch.current)=>{setOwnReview({status:'loading'});try{const review=await api.ownReviewForGuide(stableSource);if(epoch===authEpoch.current)setOwnReview({status:'ready',review})}catch{if(epoch===authEpoch.current)setOwnReview({status:'error'})}},[api,stableSource]);
-  function recordWriteFailure(error:unknown){if(error instanceof LaunchClientError&&(['launch_unavailable','service_unavailable'].includes(error.code)||(washington&&error.code==='forbidden'))){availabilityEpoch.current++;setWriteReady(false)}}
+  function recordWriteFailure(error:unknown){
+    if(!(error instanceof LaunchClientError))return;
+    const closed=error.code==='launch_unavailable'||
+      (washington?error.code==='forbidden':error.code==='service_unavailable');
+    if(closed){availabilityEpoch.current++;setWriteReady(false)}
+  }
   async function reportReview(id:string,reason:ReportReason){try{return await api.reportReview(stableSource,id,reason)}catch(error){recordWriteFailure(error);throw error}}
   const loadSubmissions=useCallback(async(offset=0,epoch=authEpoch.current)=>{try{const rows=await api.mySubmissions(offset,50);if(epoch!==authEpoch.current)return;setSubmissions(previous=>offset===0?rows:[...(previous??[]),...rows]);setNextOffset(offset+rows.length);setMore(rows.length===50);setStatusError(false)}catch{if(epoch===authEpoch.current)setStatusError(true)}},[api]);
   const refreshSession=useCallback(async()=>{

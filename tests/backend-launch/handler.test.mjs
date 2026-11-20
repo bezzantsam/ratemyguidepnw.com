@@ -447,3 +447,46 @@ test('catalog profile lookup and mixed summary use exact version keys with bare 
   ...[catalogA,catalogB,catalogHeld].map(guide=>({...guide,sourceId:catalogRef(guide.sourceId)})),or,
  ]}]]);
 });
+
+test('operator queues show only an exact catalog listing name/link and omit internal version keys',async()=>{
+ const rows=[
+  {id:'row-a',guide_name:'Internal catalog carrier',catalog_source_id:'wa-001',catalog_listing_sha256:'a'.repeat(64)},
+  {id:'row-b',guide_name:'Internal catalog carrier',catalog_source_id:'wa-002',catalog_listing_sha256:'b'.repeat(64)},
+  {id:'row-c',guide_name:'Stale carrier',catalog_source_id:'wa-002',catalog_listing_sha256:'a'.repeat(64),
+    guide_profile_path:'https://invalid.example'},
+  {id:'row-or',guide_name:'Oregon Guide',catalog_source_id:null,catalog_listing_sha256:null},
+ ];
+ const expected=[
+  {id:'row-a',guide_name:'Washington Guide One',guide_profile_path:'/washington/wa-001'},
+  {id:'row-b',guide_name:'Washington Guide Two',guide_profile_path:'/washington/wa-002'},
+  {id:'row-c',guide_name:null},
+  {id:'row-or',guide_name:'Oregon Guide'},
+ ];
+ for(const kind of ['review','revision','report']){
+  const factory=()=>({
+   auth:{getUser:async()=>({data:{user:{id:'operator',email_confirmed_at:'yes'}}})},
+   rpc:async(name,pagination)=>{
+    if(name==='is_site_admin')return {data:true};
+    assert.equal(name,kind==='report'?'rmg_report_queue':'rmg_revision_queue');
+    assert.deepEqual(pagination,{p_offset:0,p_limit:10});
+    return {data:rows};
+   },
+   from:table=>{
+    assert.equal(table,'admin_pending_reviews');
+    const query={select:()=>query,order:()=>query,range:async()=>({data:rows})};
+    return query;
+   },
+  });
+  const lookup=(sourceId,version)=>version===catalogVersions.get(sourceId)?
+   (sourceId==='wa-001'?'Washington Guide One':'Washington Guide Two'):undefined;
+  const response=await handleLaunch(req({operation:'operator_queue',kind,offset:0,limit:10},'token'),
+   factory,catalogFlags,versionFor,lookup);
+  assert.equal(response.status,200);
+  assert.deepEqual(await response.json(),{items:expected,offset:0,limit:10});
+ }
+ const ordinary=backend();
+ const denied=await handleLaunch(req({operation:'operator_queue',kind:'review',offset:0,limit:10},'token'),
+  ordinary.factory,catalogFlags,versionFor,()=>assert.fail('Ordinary session read a moderation listing'));
+ assert.equal(denied.status,403);
+ assert.equal(ordinary.calls.at(-1)[0],'is_site_admin');
+});

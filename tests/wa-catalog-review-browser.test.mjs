@@ -11,7 +11,7 @@ assert.ok(executablePath);
 
 const charles={jurisdiction:'WA',sourceId:'wa-021',name:'Charles Stahley'};
 const andy={jurisdiction:'WA',sourceId:'wa-004',name:'Andy Coleman'};
-const held={jurisdiction:'WA',sourceId:'wa-144',name:'Shelby Ross'};
+const held={jurisdiction:'WA',sourceId:'wa-001',name:'Aaron Berg'};
 const rod={jurisdiction:'OR',sourceId:'OG.0002193'};
 const publishedId='10000000-0000-4000-8000-000000000001';
 const pendingId='10000000-0000-4000-8000-000000000002';
@@ -36,6 +36,7 @@ test('two separate unclaimed WA guides can be reviewed, with pending privacy and
   const calls=[];
   const unexpected=[];
   let pending=false;
+  let submitAttempts=0;
   let readinessError=false;
   const authorContext=await browser.newContext({viewport:{width:390,height:667},serviceWorkers:'block'});
   const anonymous=await browser.newContext({viewport:{width:1366,height:850},serviceWorkers:'block'});
@@ -89,6 +90,7 @@ test('two separate unclaimed WA guides can be reviewed, with pending privacy and
               assert.equal(sourceId,charles.sourceId);
               assert.equal(input.body,'Private firsthand fixture trip.');
               assert.equal(pending,false);
+              if(++submitAttempts===1)return route.fulfill({status:503,json:{error:'service_unavailable'}});
               pending=true;
               return route.fulfill({json:{id:pendingId,status:'pending'}});
           }
@@ -115,11 +117,17 @@ test('two separate unclaimed WA guides can be reviewed, with pending privacy and
     await phone.getByLabel('Your experience').fill('Private firsthand fixture trip.');
     await phone.getByLabel('I personally took this trip.').check();
     await phone.getByRole('button',{name:'Submit review'}).click();
+    await phone.getByRole('alert').filter({hasText:'Your draft is still here'}).waitFor();
+    assert.equal(await phone.getByLabel('Your experience').inputValue(),'Private firsthand fixture trip.');
+    assert.equal(await phone.getByRole('button',{name:'Submit review'}).isDisabled(),true);
+    await phone.getByRole('button',{name:'Check before retrying'}).click();
+    await phone.getByText('No review was found. You can submit your draft again.').waitFor();
+    await phone.getByRole('button',{name:'Submit review'}).click();
     const privateReceipt=phone.getByText('Your review is awaiting review and is not public.');
     await privateReceipt.waitFor();
     await phone.reload();
     await privateReceipt.waitFor();
-    assert.equal(calls.filter(call=>call.operation==='submit_review').length,1);
+    assert.equal(calls.filter(call=>call.operation==='submit_review').length,2);
 
     await openFinder(desktop,charles,'No reviews yet');
     await desktop.getByRole('button',{name:'Email me a sign-in link'}).waitFor();
