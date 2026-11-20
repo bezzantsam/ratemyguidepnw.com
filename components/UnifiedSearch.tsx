@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import {useEffect,useMemo,useRef,useState} from 'react';
+import {useEffect,useId,useMemo,useRef,useState} from 'react';
 import {DEFAULT_DIRECTORY_STATE,DIRECTORY_PAGE_SIZE,directoryUrl,parseDirectoryState,type DirectoryState} from '@/lib/directory-url';
 import type {DirectoryEntry} from '@/lib/directory';
 import {captainTripFacets,directoryEntryInState,directoryMethodLabel,directoryFisheryFacets,directoryMethodGroups,directorySpeciesLabels,directorySpeciesMenu,filterDirectoryEntries,guideSearchScore,locatedGuidePorts,matchingCaptainTrips} from '@/lib/directory-query';
@@ -39,6 +39,8 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
  const resultsRef=useRef<HTMLDivElement>(null);
  const searchRef=useRef<HTMLInputElement>(null),areaRef=useRef<HTMLSelectElement>(null),waterRef=useRef<HTMLSelectElement>(null),speciesRef=useRef<HTMLSelectElement>(null),methodRef=useRef<HTMLSelectElement>(null),allRef=useRef<HTMLButtonElement>(null);
  const gearRef=useRef<HTMLSelectElement>(null),monthRef=useRef<HTMLSelectElement>(null);
+ const [searchReady,setSearchReady]=useState(false);
+ const searchStatusId=useId();
  const {query:q,state,area,waterway,species,method,gear,month,page}=selection;
  const captainFilters={state,sourceZone:area,advertisedWater:waterway,species,method,gear,month,query:q,identityOnly:reviewMode};
  const routeBase=reviewMode?'/write-review':'/guides';
@@ -55,6 +57,8 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
    if(published!=='error'&&window.location.search!==query)window.history.replaceState(null,'',window.location.pathname+query);
   }
   restore();window.addEventListener('popstate',restore);
+  // Keep the server-rendered input disabled until the initial URL state is applied.
+  setSearchReady(true);
   return ()=>window.removeEventListener('popstate',restore);
  },[entries,charters,reviewMode,projectionPending,published]);
  function change(patch:Partial<DirectoryState>,replace=false){
@@ -105,10 +109,9 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
  const matchingCharters=filterCharterOfferings(charters,selection,guidePorts);
  const pages=Math.max(1,Math.ceil(filtered.length/size)),current=Math.min(page,pages);
  const visibleGuides=useMemo(()=>filtered.slice((current-1)*size,current*size),[filtered,current,size]);
- const readRatings=reviewEnabled&&!reviewMode;
  const [ratings,setRatings]=useState<{guides:DirectoryEntry[];summaries:Map<string,GuideRatingSummary>}|null>(null);
  useEffect(()=>{
-  if(!readRatings||!selectionRestored||projectionPending||!visibleGuides.length)return;
+  if(!reviewEnabled||!selectionRestored||projectionPending||!visibleGuides.length)return;
   const controller=new AbortController();
   const timer=window.setTimeout(()=>{
    const sources=visibleGuides.map(guideSource);
@@ -119,7 +122,7 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
    });
   },150);
   return ()=>{window.clearTimeout(timer);controller.abort()};
- },[readRatings,selectionRestored,projectionPending,visibleGuides]);
+ },[reviewEnabled,selectionRestored,projectionPending,visibleGuides]);
  const visibleRatings=ratings?.guides===visibleGuides?ratings.summaries:null;
  const setRegion=(s:DirectoryState['state'])=>change({state:s,area:'All areas',waterway:'All advertised waters',species:'All species',method:'All methods',gear:undefined,month:undefined,page:1});
 
@@ -131,9 +134,12 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
    {(['All','Oregon','Washington'] as const).map(s=><button key={s} ref={s==='All'?allRef:undefined} type="button" className={state===s?'active':''}
     aria-pressed={state===s} onClick={()=>setRegion(s)}>{s==='All'?'All guides':s}</button>)}
   </div>
+  {!searchReady&&<p id={searchStatusId} className="guide-meta" role="status">Search is loading…</p>}
   <div className="searchbar">
    <label>Captain, business, operating name, or registration
-    <input ref={searchRef} type="search" value={q} maxLength={120} onChange={e=>change({query:e.target.value,page:1},true)}
+    <input ref={searchRef} type="search" value={q} maxLength={120}
+     disabled={!searchReady} aria-describedby={searchReady?undefined:searchStatusId}
+     onChange={e=>change({query:e.target.value,page:1},true)}
      placeholder="Try a guide name, shad, squid, or bottom fishing"/>
    </label>
    <label>Area
@@ -211,8 +217,8 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
      offer.value===label||offer.relationship?.species===label||offer.relationship?.method===label));
    return <div className="saved-guide-row" key={g.id}>
     <Link className="guide-result" href={{pathname:g.href,query:reviewMode&&reviewEnabled?{returnTo:resultsUrl,intent:'review'}:{returnTo:resultsUrl},hash:reviewMode&&reviewEnabled?'write-review':undefined}}>
-     {readRatings?<GuideSearchRating summary={visibleRatings?.get(guideRatingKey(guideSource(g)))} loading={!visibleRatings}/>
-      :<div className="rating-tile"><strong>—</strong><span>{reviewEnabled?'View reviews':'Reviews unavailable'}</span></div>}
+     {reviewEnabled?<GuideSearchRating summary={visibleRatings?.get(guideRatingKey(guideSource(g)))} loading={!visibleRatings}/>
+      :<div className="rating-tile"><strong>—</strong><span>Reviews unavailable</span></div>}
      <div className="guide-result-body">
       <div className="guide-result-top"><h3>{g.name}</h3>
        <span className="listing-chip">{g.states.join(' + ')}</span>
