@@ -27,11 +27,12 @@ const queue=[
  trip_month:null,relationship_disclosure:'none',trip_responses:null,firsthand_attested:true,created_at:'2026-11-19T00:00:00Z',
 }));
 
-test('moderator session survives same-account events and clears stale queue on account switch',{timeout:90000},async()=>{
+test('moderator session, private decisions and recovery work in the phone queue',{timeout:90000},async()=>{
  const browser=await chromium.launch({headless:true,executablePath});
- const context=await browser.newContext({viewport:{width:390,height:667},serviceWorkers:'block'});
- const calls=[],unexpected=[];
- let holdQueue,queueStarted,sessionUnavailable=false;
+ const context=await browser.newContext({viewport:{width:390,height:667},isMobile:true,hasTouch:true,serviceWorkers:'block'});
+ const calls=[],unexpected=[],writes=[];
+ let holdQueue,queueStarted,sessionUnavailable=false,queueUnavailable=false;
+ let queueRows=queue,decisionReply;
  try{
   await context.addInitScript(({origin,key,operator})=>{
    if(location.origin!==origin||localStorage.getItem('fixture-primed'))return;
@@ -51,9 +52,14 @@ test('moderator session survives same-account events and clears stale queue on a
      calls.push(['logout',url.searchParams.get('scope')]);
      return route.fulfill({status:204,headers});
     }
+    if(url.pathname==='/rest/v1/rpc/rmg_account_saved_guides_v1'&&req.method()==='POST'&&actor){
+     assert.deepEqual(req.postDataJSON(),{p_action:'list',p_guides:[]});
+     return route.fulfill({headers,json:{status:'listed',items:[]}});
+    }
    }
    if(url.origin===origin&&url.pathname==='/api/launch'){
-    const {operation,offset,limit}=req.postDataJSON();
+    const payload=req.postDataJSON();
+    const {operation,offset,limit}=payload;
     calls.push([operation,actor?.user.email]);
     switch(operation){
      case 'session':
@@ -62,7 +68,15 @@ test('moderator session survives same-account events and clears stale queue on a
      case 'operator_queue':
       if(actor!==operator)return route.fulfill({status:403,json:{error:'forbidden'}});
       if(holdQueue){queueStarted();await holdQueue}
-      return route.fulfill({json:{items:queue,offset,limit}});
+      if(queueUnavailable)return route.fulfill({status:503,json:{error:'service_unavailable'}});
+      return route.fulfill({json:{items:queueRows,offset,limit}});
+     case 'operator_decide':
+      assert.equal(actor,operator);
+      assert.equal(payload.kind,'review');
+      assert.equal(payload.id,queue[1].id);
+      writes.push(payload);
+      assert.ok(decisionReply,'Only an explicitly expected synthetic decision may be sent');
+      return decisionReply(route,payload);
      case 'public_reviews':
       return route.fulfill({json:{summary:{count:0,averageQuality:null},reviews:[]}});
      case 'review_write_availability':
@@ -81,7 +95,16 @@ test('moderator session survives same-account events and clears stale queue on a
   page.on('pageerror',error=>unexpected.push(error.message));
   const other=page.locator('article').filter({hasText:'Other fixture guide'});
   const own=page.locator('article').filter({hasText:'Own fixture guide'});
-  const note=other.getByRole('textbox',{name:'Decision note'});
+  const note=other.getByRole('textbox',{name:'Private decision note',exact:true});
+  const approve=other.getByRole('button',{name:'Approve',exact:true});
+  const reject=other.getByRole('button',{name:'Reject',exact:true});
+  const checkQueue=other.getByRole('button',{name:'Check pending queue',exact:true});
+  const position=async button=>{
+   await button.scrollIntoViewIfNeeded();
+   const box=await button.boundingBox();
+   assert.ok(box);
+   return [box.x+box.width/2,box.y+box.height/2];
+  };
   async function event(event,session){
    await page.evaluate(({event,session,key})=>{
     localStorage.setItem(key,JSON.stringify(session));
@@ -113,6 +136,80 @@ test('moderator session survives same-account events and clears stale queue on a
   await page.getByText(operator.user.email,{exact:true}).waitFor();
   await page.goto(origin+'/admin');
   await other.getByRole('button',{name:'Approve'}).waitFor();
+
+  await other.getByText(/Approval requires at least 20 characters.*Rejection requires a reason/).waitFor();
+  await approve.focus();
+  await page.keyboard.press('Enter');
+  await other.getByRole('alert').filter({hasText:/Enter at least 20 characters/}).waitFor();
+  assert.equal(await note.evaluate(element=>element===document.activeElement),true);
+  assert.equal(await note.getAttribute('aria-invalid'),'true');
+  await note.fill('   ');
+  await reject.tap();
+  await other.getByRole('alert').filter({hasText:'Enter a reason before rejecting.'}).waitFor();
+  assert.equal(await note.evaluate(element=>element===document.activeElement),true);
+  assert.equal(writes.length,0);
+
+  const evidence='Synthetic test note for the mock decision only.';
+  await note.fill(evidence);
+  const approvalPoint=await position(approve);
+  const rejectionPoint=await position(reject);
+  let respond,gotDecision;
+  const waiting=new Promise(resolve=>{respond=resolve});
+  const sent=new Promise(resolve=>{gotDecision=resolve});
+  decisionReply=async route=>{gotDecision();await waiting;return route.abort('connectionreset')};
+  await page.touchscreen.tap(...approvalPoint);
+  await sent;
+  await page.touchscreen.tap(...approvalPoint);
+  await page.touchscreen.tap(...rejectionPoint);
+  assert.equal(writes.length,1);
+  assert.equal(await approve.isDisabled(),true);
+  assert.equal(await reject.isDisabled(),true);
+  await other.getByRole('status').filter({hasText:'Submitting approval…'}).waitFor();
+  respond();
+  await other.getByRole('alert').filter({hasText:/The decision could not be confirmed/}).waitFor();
+  assert.equal(await note.inputValue(),evidence);
+  assert.equal(await approve.isDisabled(),true);
+  assert.equal(writes.length,1);
+
+  queueUnavailable=true;
+  await checkQueue.tap();
+  await other.getByRole('alert').filter({hasText:'The pending queue could not be checked. Try checking again.'}).waitFor();
+  assert.equal(await reject.isDisabled(),true);
+  queueUnavailable=false;
+  await checkQueue.tap();
+  await other.getByRole('status').filter({hasText:/This submission is still pending/}).waitFor();
+  assert.equal(await approve.isEnabled(),true);
+  assert.equal(await note.inputValue(),evidence);
+  assert.equal(writes.length,1);
+
+  const rejection='Synthetic rejection reason.';
+  await note.fill(rejection);
+  decisionReply=(route,payload)=>{
+   assert.equal(payload.approve,false);
+   assert.equal(payload.reason,rejection);
+   queueRows=[queue[0]];
+   return route.fulfill({json:{id:payload.id,status:'rejected'}});
+  };
+  await reject.focus();
+  await page.keyboard.press('Space');
+  await other.getByRole('status').filter({hasText:'Decision confirmed: rejected.'}).waitFor();
+  assert.equal(await reject.count(),0);
+  assert.equal(await note.count(),0);
+  assert.equal(writes.length,2);
+
+  // Simulate a lost success receipt on another isolated run, where the row is already absent.
+  queueRows=queue;
+  await page.reload();
+  await approve.waitFor();
+  await note.fill(evidence);
+  decisionReply=route=>{queueRows=[queue[0]];return route.abort('connectionreset')};
+  await approve.tap();
+  await checkQueue.tap();
+  await other.getByRole('status').filter({hasText:/Its outcome could not be confirmed here/}).waitFor();
+  assert.equal(await approve.count(),0);
+  assert.equal(await reject.count(),0);
+  assert.equal(writes.length,3);
+  queueRows=queue;
 
   let release;
   holdQueue=new Promise(resolve=>{release=resolve});
