@@ -1,4 +1,4 @@
-/** Browser-only shortlist of public guide profile routes. */
+/** Legacy browser shortlist, retained for explicit import into an account. */
 export const SAVED_GUIDES_KEY = 'rmgpnw:saved-guides:v1';
 export const MAX_SAVED_GUIDES = 50;
 const SAVED_GUIDES_CHANGED = 'rmgpnw:saved-guides-changed';
@@ -56,4 +56,45 @@ export function toggleSavedGuide(href: string): 'saved' | 'removed' | 'full' | '
   }
   window.dispatchEvent(new Event(SAVED_GUIDES_CHANGED));
   return has ? 'removed' : 'saved';
+}
+
+export type SavedGuideIdentity = Readonly<{jurisdiction: 'OR' | 'WA'; sourceId: string}>;
+export type SavedGuideEntry = Readonly<{guide: SavedGuideIdentity; href: string; name: string}>;
+export type SavedGuideAction = 'list' | 'save' | 'remove' | 'import';
+export type SavedGuideStatus = 'listed' | 'saved' | 'removed' | 'imported' | 'full';
+
+export function savedGuideKey({jurisdiction, sourceId}: SavedGuideIdentity): string {
+  return `${jurisdiction}:${sourceId}`;
+}
+
+export function deviceGuidesForImport(paths: string[], entries: ReadonlyMap<string, SavedGuideEntry>): SavedGuideEntry[] {
+  const found = new Map<string, SavedGuideEntry>();
+  for (const path of paths) {
+    const entry = entries.get(path);
+    if (entry) found.set(savedGuideKey(entry.guide), entry);
+  }
+  return [...found.values()];
+}
+
+function isSavedGuide(value: unknown): value is SavedGuideIdentity {
+  if (!value || typeof value !== 'object') return false;
+  const {jurisdiction, sourceId} = value as Partial<SavedGuideIdentity>;
+  return typeof sourceId === 'string' &&
+    (jurisdiction === 'OR' ? /^OG\.[0-9]{7}(\.[A-Z0-9&]+)?$/.test(sourceId)
+      : jurisdiction === 'WA' && /^wa-[0-9]{3,9}$/.test(sourceId));
+}
+
+const resultStatuses: Record<SavedGuideAction, readonly SavedGuideStatus[]> = {
+  list: ['listed'], save: ['saved', 'full'], remove: ['removed'], import: ['imported', 'full'],
+};
+
+export function decodeAccountShortlist(value: unknown, action: SavedGuideAction) {
+  if (!value || typeof value !== 'object') throw new Error('Invalid Saved guides response');
+  const {items, status} = value as {items?: unknown; status?: SavedGuideStatus};
+  if (!status || !resultStatuses[action].includes(status) || !Array.isArray(items) ||
+      items.length > MAX_SAVED_GUIDES || !items.every(isSavedGuide) ||
+      new Set(items.map(savedGuideKey)).size !== items.length) {
+    throw new Error('Invalid Saved guides response');
+  }
+  return {items, status};
 }

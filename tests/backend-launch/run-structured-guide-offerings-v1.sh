@@ -72,3 +72,19 @@ if [[ ${2:-} == --wa-catalog-review ]]; then
   "${ps[@]}" -f "$root/tests/backend-launch/richer-review-ratings-v1.sql"
   "${ps[@]}" -f "$root/tests/backend-launch/review-moderator-own-submission-v1.sql"
 fi
+
+if [[ ${2:-} == --wa-catalog-review && ${4:-} == --account-saved-guides ]]; then
+  "${ps[@]}" <<'SQL'
+CREATE FUNCTION auth.jwt() RETURNS jsonb LANGUAGE sql STABLE AS
+ $$SELECT COALESCE(NULLIF(current_setting('request.jwt.claims',true),'')::jsonb,'{}')$$;
+GRANT EXECUTE ON FUNCTION auth.jwt() TO anon,authenticated;
+SQL
+  "${ps[@]}" -f "$candidate/account-saved-guides-v1.sql" -f "$root/tests/backend-launch/account-saved-guides-v1.sql"
+  run python3 "$root/tests/backend-launch/account-saved-guides-race.py" "$work"
+  "${ps[@]}" -f "$candidate/account-saved-guides-disable-v1.sql" -f - <<'SQL'
+SELECT public.fixture_assert((SELECT count(*) FROM rmg_private.account_saved_guides)=50
+ AND NOT has_function_privilege('authenticated','public.rmg_account_saved_guides_v1(text,jsonb)','EXECUTE')
+ AND NOT has_column_privilege('authenticated','rmg_private.account_saved_guides','source_id','SELECT'),
+ 'rollback revokes account API access and preserves saved rows');
+SQL
+fi
