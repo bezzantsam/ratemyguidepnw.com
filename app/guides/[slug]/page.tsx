@@ -2,6 +2,7 @@ import Link from 'next/link';
 import {notFound} from 'next/navigation';
 import CaptainTripCards from '@/components/CaptainTripCards';
 import GuideEnrichmentPanel from '@/components/GuideEnrichmentPanel';
+import SaveGuideButton from '@/components/SaveGuideButton';
 import ReturnToResults from '@/components/ReturnToResults';
 import {AuthCheck} from '@/components/launch/AuthCheck';
 import {ClaimProfile} from '@/components/launch/ClaimProfile';
@@ -62,6 +63,7 @@ export default async function Page({params}: ProfileParams) {
       <h1>{guide.name}</h1>
       {guide.business && <p className="lead">{guide.business}</p>}
     </div>
+    <SaveGuideButton href={path} name={guide.name}/>
     {enabled
       ? <GuideEngagement key={guide.registration} compactProfile source={{jurisdiction:'OR',sourceId:guide.registration}} profilePath={path} guideName={guide.name}>{claim}{registration}</GuideEngagement>
       : <><section className="guide-actions" aria-label="Profile actions">

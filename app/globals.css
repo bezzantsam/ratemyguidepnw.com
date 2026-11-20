@@ -225,3 +225,36 @@ nav a{display:inline-flex;align-items:center;min-height:44px}
 .captain-trip-card.card{min-height:0;padding:16px;overflow-wrap:anywhere}
 .captain-trip-card h3{font-size:1.125rem;margin-bottom:6px}
 .captain-trip-card p{font-size:.92rem;margin:3px 0}
+
+.save-guide-control { margin: 0 0 12px; }
+.save-guide-button {
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #a8bdb6;
+  border-radius: 8px;
+  color: #24483c;
+  font: inherit;
+  font-weight: 700;
+  padding: 8px 12px;
+  min-height: 44px;
+}
+.save-guide-button.saved { background: #e9f3e9; border-color: #497657; color: #24553a; }
+.save-guide-button:focus-visible, .saved-guide-list a:focus-visible {
+  outline: 3px solid #d8b26b;
+  outline-offset: 3px;
+}
+.saved-guide-status:not(:empty) { margin-top: 6px; }
+.saved-guide-list { max-width: 42rem; }
+.saved-guide-list ul { padding: 0; list-style: none; }
+.saved-guide-list a { text-decoration: underline; }
+.saved-guide-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid #587476;
+}
+.saved-guide-row p { margin: 0; }
+.saved-guide-row .save-guide-control { margin: 0; }
