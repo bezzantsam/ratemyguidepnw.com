@@ -63,6 +63,25 @@ SELECT public.fixture_assert(public.rmg_public_review_summaries_v1(:'batch')->'i
  'approved revision has exact profile parity and leaks no private fields');
 RESET ROLE;
 
+-- PostgREST calls a STABLE RPC in a read-only transaction even on POST.
+BEGIN READ ONLY;
+SET LOCAL ROLE anon;
+SELECT public.fixture_assert(
+ public.rmg_review_summary('WA',:'listed')->>'count'='1'
+ AND public.rmg_review_write_availability('WA',:'listed')='{"available":false}'
+ AND public.rmg_public_review_summaries_v1(:'batch')=:'oregon_only'::jsonb,
+ 'reproduced pre-repair batch omission in read-only mode while the published WA profile summary is present');
+ROLLBACK;
+
+\i :readonly_fix
+BEGIN READ ONLY;
+SET LOCAL ROLE anon;
+SELECT public.fixture_assert(public.rmg_public_review_summaries_v1(:'batch')='{"items":[
+ {"jurisdiction":"WA","sourceId":"wa-001","count":1,"averageQuality":5},
+ {"jurisdiction":"OR","sourceId":"OG.0001225.F&F","count":1,"averageQuality":4}]}',
+ 'repaired read-only public batch restores exact approved WA and Oregon scores and omits held/stale/unmapped sources');
+ROLLBACK;
+
 BEGIN;
 UPDATE rmg_private.wa_review_pilot_v1 SET enabled=true,source_id='wa-900001',
  guide_id='10000000-0000-0000-0000-000000000001',packet_sha256=repeat('3',64) WHERE singleton;
@@ -72,10 +91,11 @@ SELECT public.fixture_assert(public.rmg_public_review_summaries_v1(:'batch')=:'o
 ROLLBACK;
 \i :listed_pause
 \i :listed_pause
-SET ROLE anon;
+BEGIN READ ONLY;
+SET LOCAL ROLE anon;
 SELECT public.fixture_assert(public.rmg_public_review_summaries_v1(:'batch')=:'oregon_only'::jsonb,
- 'after committed WA pause the next batch omits WA and preserves Oregon without caching');
-RESET ROLE;
+ 'after committed WA pause the next read-only batch omits WA and preserves Oregon without caching');
+ROLLBACK;
 SELECT public.fixture_assert(EXISTS (SELECT 1 FROM public.reviews WHERE id=:'wa_review' AND guide_id=:'anchor'
   AND status='published' AND quality=5),'WA pause retained the exact accepted review');
 

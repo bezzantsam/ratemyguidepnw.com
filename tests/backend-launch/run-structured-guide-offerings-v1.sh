@@ -54,5 +54,6 @@ if [[ ${2:-} == --wa-review-summaries ]]; then
   "${ps[@]}" -1 -f "$candidate/wa-review-pilot-v1.sql" -f "$candidate/wa-listed-review-identity-proof-v1.sql" \
     -f "$candidate/wa-listed-review-adapter-v1.sql" -f "$candidate/wa-listed-review-summaries-v1.sql"
   "${ps[@]}" -v "listed_pause=$candidate/wa-listed-review-identity-disable-v1.sql" \
+    -v "readonly_fix=$candidate/wa-listed-review-summaries-readonly-v1.sql" \
     -f "$root/tests/backend-launch/wa-listed-review-summaries-v1.sql"
 fi
