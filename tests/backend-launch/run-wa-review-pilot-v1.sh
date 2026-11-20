@@ -38,3 +38,9 @@ echo 'PASS preflight Oregon split behavior on the fixture'
 echo 'PASS original Oregon split tests with the unconfigured WA extension installed'
 "${ps[@]}" -v "disable_sql=$candidate/wa-review-pilot-disable-v1.sql" -f "$root/tests/backend-launch/wa-review-pilot-v1.sql"
 run python3 "$root/tests/backend-launch/wa-review-pilot-race.py" "$work"
+
+if [[ ${1:-} == --listed-identity ]]; then
+  "${ps[@]}" -1 -f "$candidate/wa-listed-review-identity-proof-v1.sql"
+  "${ps[@]}" -v "listed_disable_sql=$candidate/wa-listed-review-identity-disable-v1.sql" \
+    -f "$root/tests/backend-launch/wa-listed-review-identity-proof-v1.sql"
+fi
