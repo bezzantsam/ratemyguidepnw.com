@@ -46,7 +46,8 @@ export function safeGuideReturnTo(candidate:string | null | undefined, profilePa
 /** Auth providers use the fragment for their response, so keep review intent in the query. */
 export function guideAuthRedirectPath(candidate:string, profilePath:string):string {
   canonicalProfileUrl(profilePath);
-  if (candidate === `${profilePath}?intent=review#write-review` || candidate === `${profilePath}?intent=review`) {
+  if (candidate === `${profilePath}?intent=review#write-review` || candidate === `${profilePath}?intent=review` ||
+      (profilePath.startsWith('/washington/') && candidate === `${profilePath}#write-review`)) {
     return `${profilePath}?intent=review`;
   }
   if(profilePath.startsWith('/guides/')&&[`${profilePath}?intent=claim#claim-profile`,`${profilePath}?intent=claim`,`${profilePath}#claim-profile`].includes(candidate)) {

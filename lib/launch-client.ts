@@ -13,7 +13,7 @@ export type SubmissionKind=OwnedKind|'report';
 export type ReportReason='not_firsthand'|'harassment_or_private_info'|'other';
 export type OwnSubmission=Readonly<{id:string;kind:OwnedKind;status:string;createdAt:string;jurisdiction:'OR'|'WA'|null;sourceId:string|null;reviewId:string|null;identities:readonly GuideSource[]}>;
 export type OwnerDetails=Readonly<{boat:string;gear:string;yearsExperience:number|null;expertise:string;species:string}>;
-export type OperatorItem=Readonly<{id:string;kind:SubmissionKind;guideName:string|null;reviewId:string|null;description:string;createdAt:string;canApprove:boolean}>;
+export type OperatorItem=Readonly<{id:string;kind:SubmissionKind;guideName:string|null;guideProfilePath?:string;reviewId:string|null;description:string;createdAt:string;canApprove:boolean}>;
 
 export class LaunchClientError extends Error {
   constructor(public readonly code:string) {super(code);this.name='LaunchClientError';}
@@ -192,12 +192,15 @@ export function createLaunchClient(options:Options) {
         if(!row||typeof row.id!=='string'||!UUID.test(row.id)||seen.has(row.id)||typeof row.created_at!=='string'||!Number.isFinite(Date.parse(row.created_at)))throw new LaunchClientError('service_unavailable');
         seen.add(row.id);
         const guideName=typeof row.guide_name==='string'&&row.guide_name.trim()?row.guide_name:null;
+        const guideProfilePath=typeof row.guide_profile_path==='string'&&row.guide_profile_path===row.guide_profile_path.trim()&&/^\/washington\/wa-[0-9]{3,9}$/.test(row.guide_profile_path)
+          ?row.guide_profile_path:undefined;
+        const listing=guideName&&guideProfilePath?{guideName,guideProfilePath}:{guideName};
         const reviewId=(kind==='revision'||kind==='report')&&typeof row.review_id==='string'&&UUID.test(row.review_id)?row.review_id:null;
         if((kind==='revision'||kind==='report')&&!reviewId)throw new LaunchClientError('service_unavailable');
         if(kind==='report') {
           if(typeof row.reason!=='string'||!row.reason.trim()||typeof row.review_status!=='string'||!REVIEW_STATES.includes(row.review_status)||(row.public_review_body!==null&&typeof row.public_review_body!=='string')||(row.review_status!=='published'&&row.public_review_body!==null))throw new LaunchClientError('service_unavailable');
           const reasons:Record<string,string>={not_firsthand:'Not about a firsthand trip',harassment_or_private_info:'Harassment or private information',other:'Other'};
-          return {id:row.id,kind,guideName,reviewId,createdAt:row.created_at,description:`Reason: ${reasons[row.reason]??'Earlier report category'}\nReview status: ${row.review_status}\n${row.public_review_body??'Review text is not public.'}`,canApprove:false};
+          return {id:row.id,kind,...listing,reviewId,createdAt:row.created_at,description:`Reason: ${reasons[row.reason]??'Earlier report category'}\nReview status: ${row.review_status}\n${row.public_review_body??'Review text is not public.'}`,canApprove:false};
         }
         if(kind==='claim') {
           const source=typeof row.source_id==='string'?row.source_id:'',name=typeof row.claimant_name==='string'?row.claimant_name:'',business=typeof row.business_name==='string'?row.business_name:'',evidence=typeof row.public_evidence==='string'?row.public_evidence:'';
@@ -211,7 +214,7 @@ export function createLaunchClient(options:Options) {
         const month=hasMonth?(kind==='revision'&&row.trip_month_specified===false?'Unchanged':readTripMonth(row.trip_month)??(kind==='revision'?'Cleared':'Not supplied')):'Unavailable';
         const intensity=hasIntensity?(row.intensity===null?'Not answered':`${row.intensity} / 5`):'Unavailable';
         const rebook=hasRebook?(row.would_book_again===null?'Not answered':row.would_book_again?'Yes':'No'):'Unavailable';
-        return {id:row.id,kind,guideName,reviewId,createdAt:row.created_at,description:`Rating: ${row.quality} / 5\nRelationship: ${relationship}\nTrip month: ${month}\nTrip intensity: ${intensity}\nWould book again: ${rebook}\n${row.body}\n${trip===null?'Trip details unavailable':trip.join('\n')}`,canApprove:!!guideName&&hasMonth&&hasIntensity&&hasRebook&&trip!==null&&['none','personal','financial','other'].includes(relationship)&&(kind==='revision'||row.firsthand_attested===true)};
+        return {id:row.id,kind,...listing,reviewId,createdAt:row.created_at,description:`Rating: ${row.quality} / 5\nRelationship: ${relationship}\nTrip month: ${month}\nTrip intensity: ${intensity}\nWould book again: ${rebook}\n${row.body}\n${trip===null?'Trip details unavailable':trip.join('\n')}`,canApprove:!!guideName&&hasMonth&&hasIntensity&&hasRebook&&trip!==null&&['none','personal','financial','other'].includes(relationship)&&(kind==='revision'||row.firsthand_attested===true)};
       });
     },
     async operatorDecide(kind:OwnedKind,id:string,approve:boolean,reason:string):Promise<{id:string;status:string}> {

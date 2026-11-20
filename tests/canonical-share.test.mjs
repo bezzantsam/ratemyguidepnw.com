@@ -105,6 +105,12 @@ test('only a production deployment with explicit cutover uses the new public ori
   assert.equal(share.guideAuthRedirectPath(profile+'?intent=review#write-review',profile),profile+'?intent=review');
 });
 
+test('WA in-page review action keeps the exact listing on email return',()=>{
+  const profile='/washington/wa-021';
+  assert.equal(exports.guideAuthRedirectPath(profile+'#write-review',profile),profile+'?intent=review');
+  assert.equal(exports.guideAuthRedirectPath('/washington/wa-022#write-review',profile),profile);
+});
+
 test('claim email preserves the exact suffixed Oregon listing and never returns to rating',()=>{
   const profile='/guides/og-0001225-f-f';
   const intent=`${profile}?intent=claim`;

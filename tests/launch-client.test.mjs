@@ -148,6 +148,18 @@ test('operator queue requires authorization and does not approve a revision with
   assert.equal(tokenRequested,true);assert.equal(item.reviewId,id);assert.equal(item.canApprove,false);
 });
 
+test('moderator guide links are limited to bare Washington profiles',async()=>{
+  const row={id,review_id:id,guide_name:'Fixture guide',reason:'other',review_status:'published',
+    public_review_body:'Fixture review',created_at:'2026-11-17T00:00:00Z'};
+  for(const path of ['/washington/wa-021','//untrusted.example','/washington/wa-021?intent=review','/washington/wa-021\n']){
+    const client=createLaunchClient({enabled:true,getAccessToken:async()=> 'token',
+      fetcher:async()=>response({items:[{...row,guide_profile_path:path}],offset:0,limit:50})});
+    const [item]=await client.operatorQueue('report');
+    assert.equal(item.guideProfilePath,path==='/washington/wa-021'?path:undefined);
+    assert.equal(item.guideName,'Fixture guide');
+  }
+});
+
 test('moderators see review and revision trip values and cannot approve missing values',async()=>{
   const row={id,guide_name:'Fixture guide',body:'A firsthand trip.',quality:4,intensity:3,would_book_again:false,trip_month:'2026-07-01',relationship_disclosure:'none',trip_responses:null,firsthand_attested:true,created_at:'2026-11-17T00:00:00Z'};
   const create=value=>createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async()=>response({items:[value],offset:0,limit:50})});
