@@ -172,3 +172,27 @@ test('edit starts with real answers, patches an explicit clear, and carries hist
   assert.deepEqual(JSON.parse(JSON.stringify(captured.ratings)),{knowledge:5,value:null});
   assert.deepEqual(JSON.parse(JSON.stringify(captured.tripResponses)),initial.tripResponses);
 });
+
+
+test('revision omits unchanged Yes and No, including after switching back, and sends an actual change',async()=>{
+  for(const [before,choices,expected] of [
+    [true,[],null],
+    [false,[],null],
+    [true,['no','yes'],null],
+    [true,['no'],false],
+    [false,['yes'],true],
+    [null,['no'],false],
+  ]){
+    let captured;
+    const initial={quality:3,intensity:null,wouldBookAgain:before,body:'Earlier fishing trip.',firsthand:false,
+      tripMonth:null,relationship:'none'};
+    const {render}=setup(async draft=>{captured=draft;return {id:receiptId,status:'pending'}},true,{mode:'revision',initial});
+    for(const choice of choices) {
+      find(render(),node=>node.type==='input'&&node.props.type==='radio'&&node.props.value===choice)
+        .props.onChange({target:{value:choice}});
+    }
+    find(render(),node=>node.type==='input'&&node.props.type==='checkbox').props.onChange({target:{checked:true}});
+    await render().props.onSubmit({preventDefault(){}});
+    assert.equal(captured.wouldBookAgain,expected);
+  }
+});

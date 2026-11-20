@@ -68,9 +68,12 @@ export function ReviewSubmission({onSubmit, onCheckBeforeRetry, allowTripRespons
       const after=ratings[key]??null;
       if(before!==after)patch[key]=after;
     }
+    const bookingAnswer=wouldBookAgain===''?null:wouldBookAgain==='yes';
+    // The versioned client omits a null booking patch on revisions.
+    const bookingPatch=mode==='revision'&&bookingAnswer===initial?.wouldBookAgain?null:bookingAnswer;
     const draft:ReviewDraft = {
       quality:Number(quality), intensity:intensity===''?null:Number(intensity),
-      wouldBookAgain:wouldBookAgain===''?null:wouldBookAgain==='yes',
+      wouldBookAgain:bookingPatch,
       body:body.trim(), firsthand, tripMonth:tripMonth||null, relationship:relationship||null,
       ...(allowTripResponses&&details.value?{tripResponses:details.value}:{}),
       ratingVersion:1, ...(Object.keys(patch).length?{ratings:patch}:{}),
