@@ -4,10 +4,12 @@ import {useCallback,useEffect,useMemo,useRef,useState} from 'react';
 import AuthPanel,{client as authClient} from '@/components/AuthPanel';
 import {createLaunchClient,type OperatorItem,type SubmissionKind} from '@/lib/launch-client';
 
+import TripProposalQueue from './TripProposalQueue';
+
 type Access = {status:'loading'|'signed_out'|'denied'|'error'} | {status:'operator';epoch:number};
 
 /** Access and every operation are independently checked by the server. */
-export function AdminConsole({claimsEnabled=false}:{claimsEnabled?:boolean}) {
+export function AdminConsole({claimsEnabled=false,offeringsEnabled=false}:{claimsEnabled?:boolean;offeringsEnabled?:boolean}) {
   const api=useMemo(()=>createLaunchClient({enabled:true,getAccessToken:async()=>{const result=await authClient?.auth.getSession();return result?.data.session?.access_token??null}}),[]);
   const [access,setAccess]=useState<Access>({status:'loading'});
   const [kind,setKind]=useState<SubmissionKind>('review'),[offset,setOffset]=useState(0),[items,setItems]=useState<OperatorItem[]|null>(null),[error,setError]=useState(''),[message,setMessage]=useState(''),[notes,setNotes]=useState<Record<string,string>>({});
@@ -79,5 +81,6 @@ export function AdminConsole({claimsEnabled=false}:{claimsEnabled?:boolean}) {
       </article>)}
       <div>{offset>0&&<button type="button" onClick={()=>setOffset(Math.max(0,offset-50))}>Previous page</button>}{items?.length===50&&<button type="button" onClick={()=>setOffset(offset+50)}>Next page</button>} <button type="button" onClick={()=>void load()}>Refresh queue</button></div>
     </section>}
+    {access.status==='operator'&&offeringsEnabled&&<TripProposalQueue key={access.epoch}/>}
   </main>;
 }
