@@ -241,7 +241,7 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
       </p>)}
       {waters.length>0&&<p className="guide-meta">Advertised waters (source-linked): {waters.slice(0,3).join(' · ')}{waters.length>3?' · + more':''}</p>}
       <p className="guide-meta">{g.source==='Oregon registry'?'Imported registration zones':'Imported directory areas / notes'}: {g.areas.slice(0,3).join(' · ')||'Not specified'}{g.areas.length>3?' · + more':''}</p>
-      <p className="guide-submeta">Imported source listing · {reviewEnabled?'See profile for reviews':'Review data unavailable'} · Current credentials not independently checked</p>
+      <p className="guide-submeta">Imported source listing · {!reviewEnabled&&'Review data unavailable · '}Current credentials not independently checked</p>
      </div><span className="result-chevron">›</span>
     </Link>
    </div>})}
