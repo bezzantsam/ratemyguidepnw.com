@@ -56,7 +56,7 @@ test('Washington source writes and availability remain closed even with both fla
   {...review,...source},
   {operation:'report_review',...source,reviewId:id,reason:'other'},
   {operation:'submit_claim',...source,claimantName:'Test Name',businessName:'',evidence:'Independently checked ownership'},
-  {operation:'edit_details',...source,boat:'',gear:'',yearsExperience:null,expertise:'',species:''}
+  {operation:'claim_status',...source}
  ]){
   const r=await handleLaunch(req(input,'token'),b.factory,flags);
   assert.equal(r.status,403);assert.deepEqual(await r.json(),{error:'forbidden'});
@@ -76,7 +76,7 @@ test('a basic review sends missing optional answers as null',async()=>{
 test('authorized moderator receives the persisted database decision',async()=>{
  const id='00000000-0000-0000-0000-000000000001',b=backend({admin:true,rpcResult:{id,status:'approved'}});
  const r=await handleLaunch(req({operation:'operator_decide',kind:'claim',id,approve:true,reason:'Independently checked ownership'},'token'),b.factory,{...env,RMG_CLAIMS_ENABLED:'true'});
- assert.equal(r.status,200);assert.deepEqual(await r.json(),{id,status:'approved'});assert.equal(b.calls.at(-1)[0],'rmg_decide_submission');
+ assert.equal(r.status,200);assert.deepEqual(await r.json(),{id,status:'approved'});assert.equal(b.calls.at(-1)[0],'rmg_decide_claim_v1');
 });
 test('rate limits and ordinary database conflicts have distinct safe errors',async()=>{
  let b=backend({rpcError:{code:'P4290',message:'private internal text'}}),r=await handleLaunch(req(review,'token'),b.factory,env);assert.equal(r.status,429);assert.deepEqual(await r.json(),{error:'rate_limited'});
@@ -163,4 +163,20 @@ test('sign-in check only verifies confirmed roles and reads queue availability w
   {operation:'operator_queue',kind:'review',offset:0,limit:1},
   {operation:'operator_queue',kind:'claim',offset:0,limit:1},
  ])assert.equal((await handleLaunch(req(candidate,'token'),()=>assert.fail('operation reached the database'),flags)).status,503);
+});
+
+
+test('claim workflow uses narrow RPCs and runs without the review launch flag',async()=>{
+ const source={jurisdiction:'OR',sourceId:'OG.0001225.F&F'};
+ const {RMG_LAUNCH_ENABLED,...rest}=env;
+ const flags={...rest,RMG_CLAIMS_ENABLED:'true'};
+ const b=backend({rpcResult:{available:true}});
+ assert.deepEqual(await (await handleLaunch(req({operation:'claim_availability',...source}),b.factory,flags)).json(),{available:true});
+ assert.deepEqual(b.calls.at(-1),['rmg_claim_availability_v1',{p_jurisdiction:'OR',p_source_id:source.sourceId}]);
+ assert.equal((await handleLaunch(req({operation:'claim_status',...source}),b.factory,flags)).status,401);
+ assert.equal((await handleLaunch(req({operation:'edit_details',...source,boat:'',gear:'',yearsExperience:null,expertise:'',species:''},'token'),b.factory,flags)).status,503);
+ assert.equal((await handleLaunch(req({operation:'claim_availability',...source}),b.factory,env)).status,503);
+ const queue=backend({admin:true,rpcResult:[]});
+ assert.equal((await handleLaunch(req({operation:'operator_queue',kind:'claim',offset:0,limit:10},'token'),queue.factory,flags)).status,200);
+ assert.equal(queue.calls.at(-1)[0],'rmg_claim_queue_v1');
 });

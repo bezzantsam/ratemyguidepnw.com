@@ -37,6 +37,7 @@ export function safeGuideReturnTo(candidate:string | null | undefined, profilePa
   canonicalProfileUrl(profilePath); // Reject an invalid expected profile too.
   const reviewPath=`${profilePath}?intent=review#write-review`;
   if(candidate===profilePath||candidate===reviewPath)return candidate;
+  if(profilePath.startsWith('/guides/')&&candidate===`${profilePath}?intent=claim#claim-profile`)return candidate;
   const prefix=`${profilePath}#review-`;
   if(candidate?.startsWith(prefix)&&publishedReviewIdFromHash(candidate.slice(profilePath.length)))return candidate;
   return profilePath;
@@ -47,6 +48,9 @@ export function guideAuthRedirectPath(candidate:string, profilePath:string):stri
   canonicalProfileUrl(profilePath);
   if (candidate === `${profilePath}?intent=review#write-review` || candidate === `${profilePath}?intent=review`) {
     return `${profilePath}?intent=review`;
+  }
+  if(profilePath.startsWith('/guides/')&&[`${profilePath}?intent=claim#claim-profile`,`${profilePath}?intent=claim`,`${profilePath}#claim-profile`].includes(candidate)) {
+    return `${profilePath}?intent=claim`;
   }
   const hash=candidate.startsWith(`${profilePath}#`)?candidate.slice(profilePath.length):'';
   const id=publishedReviewIdFromHash(hash);
@@ -61,6 +65,7 @@ export function guideAuthRestoredPath(pathname:string, search:string, hash:strin
   canonicalProfileUrl(profilePath);
   if(pathname!==profilePath)return null;
   if(search==='?intent=review'&&(hash===''||hash==='#write-review'))return `${profilePath}?intent=review#write-review`;
+  if(profilePath.startsWith('/guides/')&&search==='?intent=claim'&&(hash===''||hash==='#claim-profile'))return `${profilePath}?intent=claim#claim-profile`;
   const match=search.match(/^\?review=([0-9a-f-]+)$/i);
   if(match&&REVIEW_ID.test(match[1])&&(hash===''||publishedReviewIdFromHash(hash)===match[1].toLowerCase()))return `${profilePath}#review-${match[1].toLowerCase()}`;
   return null;
