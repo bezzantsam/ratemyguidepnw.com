@@ -26,7 +26,7 @@ test('one public request binds summaries to exact, requested source identities',
   {...or,count:2,averageQuality:4.25}, {...empty,count:0,averageQuality:null}, {...wa,count:5,averageQuality:5},
   {...or,sourceId:'OG.9999999',count:3,averageQuality:5},
  ]})});
- const summaries = await client.fetchPublicGuideRatings([or,empty,wa],signal);
+ const summaries = await client.fetchPublicGuideRatings([or,empty,or,wa],signal);
  assert.equal(client.calls.length,1);
  const [{path,options}] = client.calls;
  assert.equal(path,'/api/launch');
@@ -56,7 +56,8 @@ test('missing, invalid and duplicate summaries do not become visible ratings',as
 test('empty and oversized pages make no calls, and failures surface without per-guide fallback',async()=>{
  const client = api({ok:false});
  assert.equal((await client.fetchPublicGuideRatings([],signal)).size,0);
- await assert.rejects(client.fetchPublicGuideRatings(Array(31).fill(or),signal),/Too many guides/);
+ const oversized = Array.from({length:31},(_,index)=>({...or,sourceId:`OG.${String(index).padStart(7,'0')}`}));
+ await assert.rejects(client.fetchPublicGuideRatings(oversized,signal),/Too many guides/);
  assert.equal(client.calls.length,0);
  await assert.rejects(client.fetchPublicGuideRatings([or,wa],signal),/Ratings unavailable/);
  assert.equal(client.calls.length,1);
