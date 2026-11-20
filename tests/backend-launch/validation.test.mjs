@@ -44,3 +44,18 @@ test('auth return accepts only allowed internal destinations and intent',()=>{
  assert.equal(safeReturnTo(`/guides/og-123?review=${id}#review-${id}`),`/guides/og-123?review=${id}#review-${id}`);
  for(const bad of ['https://evil.example/','//evil.example/','/\\evil.example','/%2f%2fevil.example','/guides/a?token=secret','/guides/a#private','/other','/guides/a\n',`/guides/a?review=${id}&x=1`,`/guides/a?review=${id}#review-${other}`,`/admin?review=${id}`,`/guides/a?intent=review#review-${id}`,`/guides/a?review=${id}#write-review`])assert.equal(safeReturnTo(bad),null,bad);
 });
+
+test('trip survey records subjective ratings independently of fish landed, including zero',()=>{
+ const answered=value=>({state:'answered',value});
+ const valid=answers=>validateTripResponses({version:1,answers});
+ assert.equal(valid({organization:answered(3),kindness:answered(5),fishiness:answered(1),fish_landed:answered(0)}),true);
+ assert.equal(valid({fishiness:answered(5),fish_landed:answered(2147483647)}),true);
+ assert.equal(valid({fishiness:answered(5)}),true);
+ assert.equal(valid({fish_landed:{state:'not_applicable'}}),true);
+ for(const value of [-1,1.5,2147483648,'0',null,true]){
+  assert.equal(valid({fish_landed:answered(value)}),false);
+ }
+ for(const key of ['fishiness','kindness']){
+  for(const value of [0,2.5,6,'3'])assert.equal(valid({[key]:answered(value)}),false);
+ }
+});
