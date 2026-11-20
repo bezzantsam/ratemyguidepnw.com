@@ -8,6 +8,7 @@ import {AuthCheck} from '@/components/launch/AuthCheck';
 import {ClaimProfile} from '@/components/launch/ClaimProfile';
 import {CaptainTripsEditor} from '@/components/launch/CaptainTripsEditor';
 import {GuideEngagement} from '@/components/launch/GuideEngagement';
+import {PreferredNameHeading} from '@/components/launch/PreferredNameHeading';
 import {ProfileSharing} from '@/components/launch/ProfileSharing';
 import {profileShareMetadata} from '@/lib/canonical-share';
 import {findGuide, guideSlug} from '@/lib/registry';
@@ -35,10 +36,12 @@ export default async function Page({params}: ProfileParams) {
   const enabled = process.env.NEXT_PUBLIC_RMG_LAUNCH_ENABLED === 'true';
   const claimsEnabled = process.env.NEXT_PUBLIC_RMG_CLAIMS_ENABLED === 'true';
   const tripsEnabled = process.env.RMG_GUIDE_OFFERINGS_ENABLED === 'true';
+  const namesEnabled = enabled && process.env.RMG_PREFERRED_NAMES_ENABLED === 'true' &&
+    process.env.NEXT_PUBLIC_RMG_PREFERRED_NAMES_ENABLED === 'true';
   const tripEditor = tripsEnabled
     ? <CaptainTripsEditor key={guide.registration} sourceId={guide.registration}/> : undefined;
   const claim = claimsEnabled && <ClaimProfile key={guide.registration} sourceId={guide.registration} profilePath={path}
-    approvedEditor={tripEditor}/>;
+    approvedEditor={tripEditor} preferredNameEnabled={namesEnabled}/>;
 
   const registration = (
     <section className="guide-registration" aria-labelledby="registration-heading">
@@ -60,7 +63,7 @@ export default async function Page({params}: ProfileParams) {
     <ReturnToResults/>
     <div className="guide-identity">
       <p className="eyebrow">Oregon guide listing</p>
-      <h1>{guide.name}</h1>
+      {namesEnabled ? <PreferredNameHeading source={{jurisdiction:'OR',sourceId:guide.registration}} listed={guide.name} enabled/> : <h1>{guide.name}</h1>}
       {guide.business && <p className="lead">{guide.business}</p>}
     </div>
     <SaveGuideButton href={path} name={guide.name}/>

@@ -48,7 +48,7 @@ async function renderPages(wa){
   '@/components/CaptainReviews':stub,'@/components/CaptainMedia':stub,'@/components/GuideTrustPanel':stub,
   '@/components/launch/CaptainTripsEditor':{CaptainTripsEditor:stub},
   '@/components/CaptainTripCards':{__esModule:true,default:stub},
-  '@/components/launch/ProfileSharing':{ProfileSharing:stub},'@/components/launch/ClaimProfile':{ClaimProfile:stub},'@/components/launch/AuthCheck':{AuthCheck:()=>null},'@/components/launch/GuideEngagement':{GuideEngagement:stub},'@/lib/canonical-share':{profileShareMetadata:()=>({})}
+  '@/components/launch/ProfileSharing':{ProfileSharing:stub},'@/components/launch/PreferredNameHeading':{PreferredNameHeading:()=>null},'@/components/launch/ClaimProfile':{ClaimProfile:stub},'@/components/launch/AuthCheck':{AuthCheck:()=>null},'@/components/launch/GuideEngagement':{GuideEngagement:stub},'@/lib/canonical-share':{profileShareMetadata:()=>({})}
  };
  const profile=load('app/guides/[slug]/page.tsx',profileDeps);
  const washingtonProfile=load('app/washington/[id]/page.tsx',profileDeps);
