@@ -13,9 +13,9 @@ const share=compile('lib/canonical-share.ts');
 const stub={__esModule:true,default:()=>null};
 const common={
   '@/components/launch/CaptainTripsEditor':{CaptainTripsEditor:()=>null},
-  '@/components/ReturnToResults':stub,'@/components/GuideEnrichmentPanel':stub,'@/components/CaptainReviews':stub,
+  '@/components/ReturnToResults':stub,'@/components/GuideEnrichmentPanel':stub,'@/components/launch/WashingtonReviewStatus':{WashingtonReviewStatus:()=>null},
   '@/components/GuideTrustPanel':stub,'@/components/CaptainDetails':stub,'@/components/CaptainMedia':stub,
-  '@/components/CaptainTripCards':stub,
+  '@/components/CaptainTripCards':stub,'@/components/SaveGuideButton':stub,
   '@/components/launch/ProfileSharing':{ProfileSharing:()=>null},'@/components/launch/ClaimProfile':{ClaimProfile:()=>null},'@/components/launch/AuthCheck':{AuthCheck:()=>null},'@/components/launch/GuideEngagement':{GuideEngagement:()=>null},'@/lib/canonical-share':share,
   'next/navigation':{notFound:()=>{throw Error('not found')}},'next/link':stub,
   '@/lib/washington':{washingtonRecordForOregon:()=>null,washingtonGuide:id=>id==='wa-000'?{id,name:'WA Guide',business:null}:null},

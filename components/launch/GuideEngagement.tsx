@@ -5,6 +5,7 @@ import AuthPanel,{client as authClient} from '@/components/AuthPanel';
 import {createLaunchClient,LaunchClientError,type GuideSource,type OwnStatus,type OwnSubmission,type OwnerDetails,type ReportReason} from '@/lib/launch-client';
 import {publishedReviewIdFromHash} from '@/lib/canonical-share';
 import {ProfileSharing} from './ProfileSharing';
+import {WashingtonReviewStatus} from './WashingtonReviewStatus';
 import {PublishedReviews,ReviewCard,validReviewPage,type PublishedReview,type ReviewLoadState} from './PublishedReviews';
 import {ReviewSubmission} from './SubmissionViews';
 import type {ReviewDraft} from './submission-model';
@@ -38,6 +39,8 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
   const canReview=writeReady===true;
   const showReviewTools=!washington||canReview;
   const reviewLink=washington?`${profilePath}?intent=review#write-review`:'#write-review';
+  const page = showReviewTools && compactProfile && reviews.status==='ready' && validReviewPage(guideKey,reviews.page) ? reviews.page : null;
+  const canReadAccount = !washington || page !== null;
   const loadReviews=useCallback(async()=>{try{const result=await api.publicReviews(stableSource);setReviews({status:'ready',page:{guideKey,total:result.count,average:result.averageQuality,reviews:result.reviews.map(r=>({...r,guideKey,status:'published' as const,rating:r.quality}))}})}catch{setReviews({status:'error'})}},[api,guideKey,stableSource]);
   const loadDetails=useCallback(async()=>{try{setDetails({status:'ready',value:await api.profileDetails(stableSource)})}catch{setDetails({status:'error'})}},[api,stableSource]);
   const loadWriteReady=useCallback(async()=>{const epoch=++availabilityEpoch.current;setWriteReady(null);try{const available=await api.reviewWriteAvailability(stableSource);if(epoch===availabilityEpoch.current)setWriteReady(available)}catch{if(epoch===availabilityEpoch.current)setWriteReady('error')}},[api,stableSource]);
@@ -52,8 +55,29 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
   },[api,loadSubmissions,loadOwnReview]);
   useEffect(()=>{setFormActivated(false);setWriteReady(null);void loadWriteReady();return()=>{availabilityEpoch.current++}},[loadWriteReady]);
   useEffect(()=>{if(writeReady===true)setFormActivated(true)},[writeReady]);
-  useEffect(()=>{if(!showReviewTools)return;void loadReviews();if(!washington)void loadDetails();void refreshSession();if(!authClient)return;const {data:{subscription}}=authClient.auth.onAuthStateChange((_event,next)=>{authEpoch.current++;setSession(next?'loading':'signed_out');setReviewAccount(null);setSubmissions(null);setOwnReview({status:'loading'});setRevision(null);window.setTimeout(()=>void refreshSession(),0)});return()=>{authEpoch.current++;subscription.unsubscribe()}},[showReviewTools,washington,loadReviews,loadDetails,refreshSession]);
-  useEffect(()=>{if(!showReviewTools)return;let generation=0;function openReview(){const id=publishedReviewIdFromHash(window.location.hash),current=++generation;if(!id){setSelected(null);return}setSelected({status:'loading',id});void api.publicReview(stableSource,id).then(r=>{if(current===generation)setSelected({status:'ready',review:{...r,guideKey,status:'published',rating:r.quality}})}).catch(()=>{if(current===generation)setSelected({status:'error',id})})}window.addEventListener('hashchange',openReview);openReview();return()=>{generation++;window.removeEventListener('hashchange',openReview)}},[api,guideKey,stableSource,showReviewTools]);
+  useEffect(()=>{if(showReviewTools)void loadReviews()},[showReviewTools,loadReviews]);
+  useEffect(()=>{if(!washington)void loadDetails()},[washington,loadDetails]);
+  useEffect(()=>{
+    if(!canReadAccount)return;
+    let refreshTimer: number | undefined;
+    void refreshSession();
+    const subscription=authClient?.auth.onAuthStateChange((_event,next)=>{
+      authEpoch.current++;
+      setSession(next?'loading':'signed_out');
+      setReviewAccount(null);
+      setSubmissions(null);
+      setOwnReview({status:'loading'});
+      setRevision(null);
+      window.clearTimeout(refreshTimer);
+      refreshTimer=window.setTimeout(()=>void refreshSession(),0);
+    }).data.subscription;
+    return()=>{
+      authEpoch.current++;
+      window.clearTimeout(refreshTimer);
+      subscription?.unsubscribe();
+    };
+  },[canReadAccount,refreshSession]);
+  useEffect(()=>{if(!canReadAccount)return;let generation=0;function openReview(){const id=publishedReviewIdFromHash(window.location.hash),current=++generation;if(!id){setSelected(null);return}setSelected({status:'loading',id});void api.publicReview(stableSource,id).then(r=>{if(current===generation)setSelected({status:'ready',review:{...r,guideKey,status:'published',rating:r.quality}})}).catch(()=>{if(current===generation)setSelected({status:'error',id})})}window.addEventListener('hashchange',openReview);openReview();return()=>{generation++;window.removeEventListener('hashchange',openReview)}},[api,guideKey,stableSource,canReadAccount]);
   const own=(submissions??[]).filter(item=>item.identities.some(identity=>identity.jurisdiction===source.jurisdiction&&identity.sourceId===source.sourceId));
   const existingReview=ownReview.status==='ready'?ownReview.review:null;
   const pendingRevision=existingReview&&own.some(item=>item.kind==='revision'&&item.reviewId===existingReview.id&&item.status==='pending');
@@ -64,7 +88,6 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
       ? 'We couldn’t check review availability.'
       : 'Review submissions are unavailable for this guide right now.';
   async function editReview(id:string){setRevisionError('');try{setRevision({id,initial:await api.reviewDetail(source,id)})}catch{setRevisionError('This review cannot be edited right now. Its published version has not changed.')}}
-  const page = showReviewTools && compactProfile && reviews.status==='ready' && validReviewPage(guideKey,reviews.page) ? reviews.page : null;
   const offerReview = canReview && !!page;
   const inviteFirst = offerReview && (session==='signed_out' || (session==='signed_in' && ownReview.status==='ready' && !existingReview));
   async function submitFirstReview(draft: ReviewDraft) {
@@ -104,6 +127,11 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
     writeReady===false ? 'Review submissions are closed.' :
     writeReady===null || reviews.status==='loading' ? 'Loading review information…' : '';
   const historyOnly = !washington && compactProfile && page && !canReview && !formActivated && session==='signed_out';
+  if(washington && !page)return <>
+    <WashingtonReviewStatus checking={writeReady===null || (canReview && reviews.status==='loading')}/>
+    <ProfileSharing profilePath={profilePath} guideName={guideName} reviewAvailable={false}/>
+  </>;
+
   return <>
     {compactProfile ? <section className="guide-actions" aria-label="Profile actions">
       {page && <p className="guide-rating">{page.total>0
