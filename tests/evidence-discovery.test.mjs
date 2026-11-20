@@ -488,3 +488,39 @@ test('the sourced EJ alias binds to the existing Big Energy profile without intr
  assert.equal(facts[0].value,'EJ');
  assert.equal(facts[0].source.url,'https://bigenergy.fishing/meet-your-guide');
 });
+
+test('a complete sourced water query uses the exact water scope before fuzzy identity matching',()=>{
+ const water='Wilson River',otherWater='Other River';
+ const base={business:null,areas:[],searchAliases:[],advertisedWaters:[]};
+ const advertised={...base,id:'OG.0000001',name:'Sourced Guide',states:['Oregon'],advertisedWaters:[water]};
+ const surname={...base,id:'OG.0000002',name:'Hunter Wilson',states:['Oregon'],areas:['Columbia River']};
+ const other={...base,id:'OG.0000003',name:'Other Guide',states:['Oregon'],advertisedWaters:[otherWater]};
+ const outOfState={...base,id:'wa-999',name:'Washington Guide',states:['Washington'],advertisedWaters:[water],
+  fisheryOfferings:[{state:'OR',kind:'method',value:'Trolling',relationship:{waterway:water}}]};
+ const rows=[advertised,surname,other,outOfState];
+ const filters={state:'Oregon',sourceZone:'All areas',advertisedWater:'All advertised waters',query:water,identityOnly:true};
+ const ids=changes=>Array.from(query.filterDirectoryEntries(rows,{...filters,...changes}),row=>row.id);
+ assert.deepEqual(ids({}),[advertised.id]);
+ assert.deepEqual(ids({query:'  WILSON-RIVER  '}),[advertised.id]);
+ assert.deepEqual(ids({query:'',advertisedWater:water}),[advertised.id]);
+ assert.deepEqual(ids({state:'Washington'}),[]);
+ assert.deepEqual(ids({advertisedWater:otherWater}),[]);
+ assert.deepEqual(ids({query:'Hunter Wilson'}),[surname.id]);
+ assert.equal(url.parseDirectoryState('?q=Wilson+River&state=Oregon',rows,[],true).query,water);
+});
+
+test('a typed water with method and species keeps the same sourced-offering checks as the dropdown',()=>{
+ const water='Wilson River',otherWater='Other River';
+ const make=(id,methodWater)=>({id,name:id,business:null,areas:[],searchAliases:[],states:['Oregon'],
+  advertisedWaters:[water,otherWater],advertisedSpecies:['Steelhead'],advertisedMethods:['Fly fishing'],
+  fisheryOfferings:[
+   {state:'OR',kind:'species',value:'Steelhead',relationship:{species:'Steelhead',waterway:water}},
+   {state:'OR',kind:'method',value:'Fly fishing',relationship:{species:'Steelhead',method:'Fly fishing',waterway:methodWater}},
+  ]});
+ const entries=[make('OG.0000001',water),make('OG.0000002',otherWater)];
+ const filters={state:'Oregon',sourceZone:'All areas',advertisedWater:'All advertised waters',
+  query:water,species:'Steelhead',method:'Fly fishing'};
+ const ids=changes=>Array.from(query.filterDirectoryEntries(entries,{...filters,...changes}),row=>row.id);
+ assert.deepEqual(ids({}),['OG.0000001']);
+ assert.deepEqual(ids({query:'',advertisedWater:water}),['OG.0000001']);
+});

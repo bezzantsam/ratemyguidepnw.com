@@ -288,8 +288,23 @@ export function matchingCaptainTrips(entry:DirectoryEntry,filters:DirectoryFilte
  });
 }
 
+/** A full sourced water name uses the same scope as the explicit water filter. */
+export function applyDirectoryWaterQuery(entries:DirectoryEntry[],filters:DirectoryFilters):DirectoryFilters|null {
+ const query=normalizeGuideSearch(filters.query);
+ if(!query)return filters;
+ for(const entry of entries){
+  const water=entry.advertisedWaters.find(name=>normalizeGuideSearch(name)===query);
+  if(!water)continue;
+  if(filters.advertisedWater!=='All advertised waters'&&normalizeGuideSearch(filters.advertisedWater)!==query)return null;
+  return {...filters,query:'',advertisedWater:filters.advertisedWater==='All advertised waters'?water:filters.advertisedWater};
+ }
+ return filters;
+}
+
 /** Exact filters stay exact; fuzzy text matches never expand fisheries or merge identities. */
-export function filterDirectoryEntries(entries:DirectoryEntry[],filters:DirectoryFilters,charterCities:string[]=[]):DirectoryEntry[]{
+export function filterDirectoryEntries(entries:DirectoryEntry[],requested:DirectoryFilters,charterCities:string[]=[]):DirectoryEntry[]{
+ const filters=applyDirectoryWaterQuery(entries,requested);
+ if(!filters)return [];
  const portSearch=filters.query.trim() ? fisheryAtPort(filters.query,[
   ...charterCities,...locatedGuidePorts(entries),
  ],filters.method,filters.species) : null;
