@@ -3,11 +3,11 @@ import Link from 'next/link';
 import {useEffect,useId,useMemo,useRef,useState} from 'react';
 import {DEFAULT_DIRECTORY_STATE,DIRECTORY_PAGE_SIZE,directoryUrl,parseDirectoryState,type DirectoryState} from '@/lib/directory-url';
 import type {DirectoryEntry} from '@/lib/directory';
-import {applyDirectoryWaterQuery,captainTripFacets,directoryEntryInState,directoryMethodLabel,directoryFisheryFacets,directoryMethodGroups,directorySpeciesLabels,directorySpeciesMenu,filterDirectoryEntries,guideSearchScore,locatedGuidePorts,matchingCaptainTrips} from '@/lib/directory-query';
+import {applyDirectoryWaterQuery,captainTripFacets,directoryEntryInState,directoryMethodLabel,directoryFisheryFacets,directoryMethodGroups,directorySpeciesLabels,directorySpeciesMenu,filterDirectoryEntries,guideSearchScore,knownDirectoryMethod,locatedGuidePorts,matchingCaptainTrips} from '@/lib/directory-query';
 import {charterPorts,filterCharterOfferings,type CharterOffering} from '@/lib/charter-offerings';
 import {PUBLIC_ORIGIN} from '@/lib/canonical-share';
 import {captainTripKey,captainTripMonths,fetchCaptainTripsForDirectory,type CaptainTrip} from '@/lib/public-captain-trips';
-import {fishingOptions} from '@/lib/captain-fishing/catalog.mjs';
+import {fishingOptions,isLegacyFishingGear} from '@/lib/captain-fishing/catalog.mjs';
 import {fetchPublicGuideRatings,guideRatingKey,type GuideRatingSummary} from '@/lib/public-guide-ratings';
 import DirectoryEmptyState from './DirectoryEmptyState';
 import GuideSearchRating from './GuideSearchRating';
@@ -88,7 +88,8 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
   .map(entry=>directoryFisheryFacets(entry,state)),[entries,state,reviewMode]);
  const captainFacets=useMemo(()=>reviewMode?[]:entries.map(entry=>captainTripFacets(entry,state)),[entries,state,reviewMode]);
  const hasCaptainTrips=!reviewMode&&entries.some(entry=>entry.captainTrips?.length);
- const gearOptions=fishingOptions.filter(option=>option.kind==='gear');
+ const gearOptions=fishingOptions.filter(option=>option.kind==='gear'&&!isLegacyFishingGear(option.id));
+ const legacyMethod=isLegacyFishingGear(knownDirectoryMethod(method)?.id??'');
  const scopedCharters=useMemo(()=>charters.filter(offer=>state==='All'||offer.state===state),[charters,state]);
  const waters=useMemo(()=>['All advertised waters',...new Set([
   ...[...facets,...captainFacets].flatMap(facet=>facet.waters),
@@ -170,6 +171,7 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
    <label>Fishing methods
     <select ref={methodRef} value={method} onChange={e=>change({method:e.target.value,page:1})}>
      <option>All methods</option>
+     {legacyMethod&&<option value={method} hidden>{method}</option>}
      <optgroup label="Methods">{methodGroups.methods.map(label=><option key={label}>{label}</option>)}</optgroup>
      <optgroup label="Gear">{methodGroups.gear.map(label=><option key={label}>{label}</option>)}</optgroup>
     </select>
@@ -177,6 +179,7 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
    {(hasCaptainTrips||gear||month)&&<><label>Trip gear
     <select ref={gearRef} value={gear??''} onChange={e=>change({gear:e.target.value||undefined,page:1})}>
      <option value="">All gear</option>
+     {gear&&isLegacyFishingGear(gear)&&<option value={gear} hidden>{directoryMethodLabel(gear)}</option>}
      {gearOptions.map(option=><option key={option.id} value={option.id}>{option.label}</option>)}
     </select>
    </label>
