@@ -109,10 +109,9 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
  const matchingCharters=filterCharterOfferings(charters,selection,guidePorts);
  const pages=Math.max(1,Math.ceil(filtered.length/size)),current=Math.min(page,pages);
  const visibleGuides=useMemo(()=>filtered.slice((current-1)*size,current*size),[filtered,current,size]);
- const readRatings=reviewEnabled&&!reviewMode;
  const [ratings,setRatings]=useState<{guides:DirectoryEntry[];summaries:Map<string,GuideRatingSummary>}|null>(null);
  useEffect(()=>{
-  if(!readRatings||!selectionRestored||projectionPending||!visibleGuides.length)return;
+  if(!reviewEnabled||!selectionRestored||projectionPending||!visibleGuides.length)return;
   const controller=new AbortController();
   const timer=window.setTimeout(()=>{
    const sources=visibleGuides.map(guideSource);
@@ -123,7 +122,7 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
    });
   },150);
   return ()=>{window.clearTimeout(timer);controller.abort()};
- },[readRatings,selectionRestored,projectionPending,visibleGuides]);
+ },[reviewEnabled,selectionRestored,projectionPending,visibleGuides]);
  const visibleRatings=ratings?.guides===visibleGuides?ratings.summaries:null;
  const setRegion=(s:DirectoryState['state'])=>change({state:s,area:'All areas',waterway:'All advertised waters',species:'All species',method:'All methods',gear:undefined,month:undefined,page:1});
 
@@ -218,8 +217,8 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
      offer.value===label||offer.relationship?.species===label||offer.relationship?.method===label));
    return <div className="saved-guide-row" key={g.id}>
     <Link className="guide-result" href={{pathname:g.href,query:reviewMode&&reviewEnabled?{returnTo:resultsUrl,intent:'review'}:{returnTo:resultsUrl},hash:reviewMode&&reviewEnabled?'write-review':undefined}}>
-     {readRatings?<GuideSearchRating summary={visibleRatings?.get(guideRatingKey(guideSource(g)))} loading={!visibleRatings}/>
-      :<div className="rating-tile"><strong>—</strong><span>{reviewEnabled?'View reviews':'Reviews unavailable'}</span></div>}
+     {reviewEnabled?<GuideSearchRating summary={visibleRatings?.get(guideRatingKey(guideSource(g)))} loading={!visibleRatings}/>
+      :<div className="rating-tile"><strong>—</strong><span>Reviews unavailable</span></div>}
      <div className="guide-result-body">
       <div className="guide-result-top"><h3>{g.name}</h3>
        <span className="listing-chip">{g.states.join(' + ')}</span>
