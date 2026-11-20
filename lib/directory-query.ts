@@ -1,4 +1,4 @@
-import {fishingOptions, type FishingOption} from './captain-fishing/catalog.mjs';
+import {fishingOptions, isLegacyFishingGear, type FishingOption} from './captain-fishing/catalog.mjs';
 import type {DirectoryEntry} from './directory';
 import type {CaptainTrip} from './public-captain-trips';
 
@@ -101,7 +101,7 @@ export function directoryMethodLabel(value:string):string {
  return knownDirectoryMethod(value)?.label ?? canonicalFisheryLabel(value);
 }
 const catalogMethodLabels = fishingOptions.filter(option=>option.kind==='method').map(option=>option.label);
-const gearLabels = fishingOptions.filter(option=>option.kind==='gear').map(option=>option.label);
+const gearLabels = fishingOptions.filter(option=>option.kind==='gear'&&!isLegacyFishingGear(option.id)).map(option=>option.label);
 export function directoryMethodGroups(sourcedLabels:string[]) {
  const otherMethods = sourcedLabels.filter(label=>!knownDirectoryMethod(label)).map(directoryMethodLabel);
  return {methods:[...new Set([...catalogMethodLabels,...otherMethods])].sort(), gear:gearLabels};
