@@ -17,7 +17,7 @@ function find(node,predicate) {
   for(const child of [node.props?.children].flat(Infinity)){const result=find(child,predicate);if(result)return result}
 }
 function setup({moderator=false,authCheck=false,emailOnly=false,otpReply=async()=>({error:null}),storage=new Map()}={}) {
-  const profile='/guides/og-0002254', cells=[];let cursor=0,effects=[],listener,oauth,otp,replaced;
+  const profile='/guides/og-0002254', cells=[], scrolled=[];let cursor=0,effects=[],listener,oauth,otp,replaced;
   const location={origin:'https://preview.example',pathname:profile,search:'?intent=review',hash:'#write-review'};
   const browser={
     location,history:{state:{existing:true},replaceState(_state,_title,path){replaced=path}},dispatchEvent(){},
@@ -28,8 +28,9 @@ function setup({moderator=false,authCheck=false,emailOnly=false,otpReply=async()
   const canonical=compile('lib/canonical-share.ts');
   const directory=compile('lib/directory-url.ts',{'./directory-query':{}},{URL,URLSearchParams});
   const context=compile('lib/review-search-return.ts',{'./directory-url':directory},{window:browser,URLSearchParams});
-  const panel=compile('components/AuthPanel.tsx',{react,'@supabase/supabase-js':{createClient:()=>({auth})},'@/lib/canonical-share':canonical,'@/lib/review-search-return':context},{window:browser,Event,URLSearchParams,process:{env:{NEXT_PUBLIC_SUPABASE_URL:'https://example.invalid',NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:'public'}}});
-  return {profile,location,get oauth(){return oauth},get otp(){return otp},get replaced(){return replaced},render(){cursor=0;effects=[];return panel.default({profilePath:moderator?undefined:profile,moderator,authCheck,emailOnly})},start(){for(const fn of effects)fn()},emit(session){listener('SIGNED_IN',session)}};
+  const document={getElementById:id=>({scrollIntoView:()=>scrolled.push(id)})};
+  const panel=compile('components/AuthPanel.tsx',{react,'@supabase/supabase-js':{createClient:()=>({auth})},'@/lib/canonical-share':canonical,'@/lib/review-search-return':context},{window:browser,document,Event,URLSearchParams,process:{env:{NEXT_PUBLIC_SUPABASE_URL:'https://example.invalid',NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:'public'}}});
+  return {profile,location,scrolled,get oauth(){return oauth},get otp(){return otp},get replaced(){return replaced},render(){cursor=0;effects=[];return panel.default({profilePath:moderator?undefined:profile,moderator,authCheck,emailOnly})},start(){for(const fn of effects)fn()},emit(session){listener('SIGNED_IN',session)}};
 }
 
 test('both sign-in methods keep the selected guide and review intent without putting it in the auth fragment',()=>{
@@ -67,6 +68,7 @@ test('the email return restores a validated rating search locally across same-or
  callback.emit({user:{email:'angler@example.invalid'}});
  assert.equal(callback.replaced,`${start.profile}?intent=review&returnTo=${encodeURIComponent(target)}#write-review`);
  assert.equal(storage.size,0);
+ assert.deepEqual(callback.scrolled,['write-review']);
 });
 
 test('the email return ignores expired or unsafe stored search context',()=>{
@@ -87,6 +89,7 @@ test('auth callback never overwrites an unconsumed token fragment',()=>{
   const h=setup();h.render();h.start();
   h.location.hash='#access_token=private';h.emit({user:{email:'angler@example.invalid'}});
   assert.equal(h.replaced,undefined);
+  assert.deepEqual(h.scrolled,[]);
   h.location.hash='';h.emit({user:{email:'angler@example.invalid'}});
   assert.equal(h.replaced,`${h.profile}?intent=review#write-review`);
 });

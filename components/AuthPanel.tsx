@@ -30,6 +30,7 @@ export default function AuthPanel({onSignedIn,profilePath,claimIntent=false,mode
       : restored;
      window.history.replaceState(window.history.state,'',next);
      window.dispatchEvent(new Event('hashchange'));
+     if(search==='?intent=review'&&hash!=='#write-review')document.getElementById('write-review')?.scrollIntoView();
      if(search==='?intent=claim'&&hash!=='#claim-profile')document.getElementById('claim-profile')?.scrollIntoView();
     }
    }
