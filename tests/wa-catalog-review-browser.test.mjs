@@ -16,7 +16,7 @@ const rod={jurisdiction:'OR',sourceId:'OG.0002193'};
 const publishedId='10000000-0000-4000-8000-000000000001';
 const publishedReview={
   id:publishedId,quality:4,would_book_again:false,communication:2,value_rating:5,
-  trip_responses:{version:1,answers:{fishiness:{state:'answered',value:2},fish_landed:{state:'answered',value:0}}},
+  trip_responses:{version:1,answers:{kindness:{state:'not_applicable'},fishiness:{state:'answered',value:2},fish_landed:{state:'answered',value:0}}},
   body:'An independently moderated fixture review.',published_at:'2026-11-19T00:00:00Z',
 };
 const pendingId='10000000-0000-4000-8000-000000000002';
@@ -178,6 +178,8 @@ test('two separate unclaimed WA guides can be reviewed, with pending privacy and
     const linked=desktop.locator(`#review-${publishedId}`);
     await linked.getByText('Fish landed by the group, including releases: 0').waitFor();
     await linked.getByText('Overall quality: 4 / 5').waitFor();
+    const cleared=linked.locator('.published-review-dimensions > div').filter({hasText:'Kindness'});
+    assert.equal(await cleared.locator('dd').innerText(),'Unanswered');
 
     await phone.getByRole('link',{name:'4.0 / 5 · 1 review'}).waitFor();
     await phone.getByRole('button',{name:'Submit review'}).waitFor();
