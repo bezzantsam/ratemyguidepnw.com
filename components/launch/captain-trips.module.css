@@ -1,0 +1,50 @@
+.editor {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+  scroll-margin-top: 1rem;
+}
+
+.editor h3, .editor h4, .editor p { margin-block: 0; }
+.editor ul { margin-block: 0; padding-inline-start: 1.25rem; }
+.editor :focus-visible { outline: 3px solid #f1d487; outline-offset: 2px; }
+
+.editor .list {
+  display: grid;
+  gap: .5rem;
+  list-style: none;
+  padding-inline-start: 0;
+}
+
+.trip {
+  display: grid;
+  gap: .4rem;
+  min-width: 0;
+  padding: .75rem;
+  border: 1px solid #648279;
+  border-radius: .65rem;
+  overflow-wrap: anywhere;
+}
+
+.panel {
+  display: grid;
+  gap: .85rem;
+  min-width: 0;
+  padding: .75rem;
+  border: 1px solid #648279;
+  border-radius: .65rem;
+}
+
+.fields, .choices { display: grid; gap: .5rem; }
+.fields > *, .choices > * { min-width: 0; }
+.editor fieldset { min-width: 0; }
+.editor .choices { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.editor .actions { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+.editor .notice { padding: .65rem .75rem; border-inline-start: 3px solid #d8b26b; }
+.editor .selected { background: #f0d091; box-shadow: inset 0 0 0 2px #fff3d8; }
+
+@media (min-width: 680px) {
+  .trip { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+  .fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .editor .choices { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
