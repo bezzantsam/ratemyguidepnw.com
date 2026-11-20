@@ -12,6 +12,7 @@ function compile(path,imports={}) {
 const share=compile('lib/canonical-share.ts');
 const stub={__esModule:true,default:()=>null};
 const common={
+  '@/components/launch/CaptainTripsEditor':{CaptainTripsEditor:()=>null},
   '@/components/ReturnToResults':stub,'@/components/GuideEnrichmentPanel':stub,'@/components/CaptainReviews':stub,
   '@/components/GuideTrustPanel':stub,'@/components/CaptainDetails':stub,'@/components/CaptainMedia':stub,
   '@/components/CaptainTripCards':stub,

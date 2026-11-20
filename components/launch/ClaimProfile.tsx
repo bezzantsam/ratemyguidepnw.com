@@ -1,12 +1,11 @@
 'use client';
 
-import {useCallback,useEffect,useMemo,useRef,useState} from 'react';
+import {useCallback,useEffect,useMemo,useRef,useState,type ReactNode} from 'react';
 import AuthPanel,{client as authClient} from '@/components/AuthPanel';
 import {createLaunchClient,type ClaimStatus,type GuideSource} from '@/lib/launch-client';
-import {CaptainTripsEditor} from './CaptainTripsEditor';
 import {ClaimSubmission} from './SubmissionViews';
 
-export function ClaimProfile({sourceId,profilePath,tripsEnabled=false}:{sourceId:string;profilePath:string;tripsEnabled?:boolean}) {
+export function ClaimProfile({sourceId,profilePath,approvedEditor}:{sourceId:string;profilePath:string;approvedEditor?:ReactNode}) {
   const source=useMemo<GuideSource>(()=>({jurisdiction:'OR',sourceId}),[sourceId]);
   const api=useMemo(()=>createLaunchClient({enabled:true,getAccessToken:async()=>
     (await authClient?.auth.getSession())?.data.session?.access_token??null}),[]);
@@ -41,7 +40,8 @@ export function ClaimProfile({sourceId,profilePath,tripsEnabled=false}:{sourceId
   },[refresh]);
 
   return <section id="claim-profile" className="section" aria-label="Profile ownership">
-    {!open && status!=='unavailable' && status!=='loading' && <a href={`${profilePath}?intent=claim#claim-profile`} onClick={()=>setOpen(true)}>{status==='approved'&&tripsEnabled?'Manage my trips':status==='approved'||status==='pending'?'My profile claim':'Claim this profile'}</a>}
+    {!open && status==='approved' && approvedEditor && <a href="#my-trips">Manage my trips</a>}
+    {!open && !(status==='approved' && approvedEditor) && status!=='unavailable' && status!=='loading' && <a href={`${profilePath}?intent=claim#claim-profile`}>{status==='approved'||status==='pending'?'My profile claim':'Claim this profile'}</a>}
     {open && <>
       <h2>{status==='approved'?'Your guide profile':'Claim this profile'}</h2>
       {status==='loading'&&<p role="status">Checking claim availability…</p>}
@@ -59,9 +59,9 @@ export function ClaimProfile({sourceId,profilePath,tripsEnabled=false}:{sourceId
       }}/>}
       {status==='pending'&&<p role="status">Your claim request is pending review. Your evidence is private.</p>}
       {status==='approved'&&<p role="status">Your claim has been approved for this profile.</p>}
-      {status==='approved'&&tripsEnabled&&<CaptainTripsEditor key={sourceId} sourceId={sourceId}/>}
       {status==='denied'&&<p role="status">Your claim was not approved. You do not have editing access.</p>}
       {(status==='pending'||status==='approved'||status==='denied')&&<button type="button" onClick={()=>void refresh()}>Check claim status</button>}
     </>}
+    {status==='approved'&&approvedEditor}
   </section>;
 }
