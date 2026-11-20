@@ -10,6 +10,8 @@ const code = ts.transpileModule(readFileSync(new URL('../lib/public-guide-rating
 const or = {jurisdiction:'OR',sourceId:'OG.9999999.A&B'};
 const empty = {jurisdiction:'OR',sourceId:'OG.9999998'};
 const wa = {jurisdiction:'WA',sourceId:'wa-999'};
+const waEmpty = {jurisdiction:'WA',sourceId:'wa-998'};
+const waHeld = {jurisdiction:'WA',sourceId:'wa-997'};
 const signal = new AbortController().signal;
 
 function api(reply) {
@@ -23,10 +25,14 @@ function api(reply) {
 
 test('one public request binds summaries to exact, requested source identities',async()=>{
  const client = api({ok:true,json:async()=>({items:[
-  {...or,count:2,averageQuality:4.25}, {...empty,count:0,averageQuality:null}, {...wa,count:5,averageQuality:5},
+  {...or,count:2,averageQuality:4.25}, {...empty,count:0,averageQuality:null},
+  {...wa,count:5,averageQuality:5}, {...waEmpty,count:0,averageQuality:null},
   {...or,sourceId:'OG.9999999',count:3,averageQuality:5},
+  {...wa,sourceId:'wa-996',count:3,averageQuality:5},
+  {...wa,jurisdiction:'OR',count:3,averageQuality:4},
+  {...waHeld,jurisdiction:'OR',count:3,averageQuality:4},
  ]})});
- const summaries = await client.fetchPublicGuideRatings([or,empty,or,wa],signal);
+ const summaries = await client.fetchPublicGuideRatings([or,empty,or,wa,waEmpty,waHeld],signal);
  assert.equal(client.calls.length,1);
  const [{path,options}] = client.calls;
  assert.equal(path,'/api/launch');
@@ -37,11 +43,15 @@ test('one public request binds summaries to exact, requested source identities',
  assert.equal(options.redirect,'error');
  assert.equal(options.cache,'no-store');
  assert.deepEqual(Object.entries(options.headers),[['Content-Type','application/json']]);
- assert.deepEqual(JSON.parse(options.body),{operation:'public_review_summaries',guides:[or,empty,wa]});
- assert.equal(summaries.size,2);
+ assert.deepEqual(JSON.parse(options.body),{operation:'public_review_summaries',guides:[or,empty,wa,waEmpty,waHeld]});
+ assert.equal(summaries.size,4);
  assert.equal(summaries.get(client.guideRatingKey(or)).averageQuality,4.25);
  assert.equal(summaries.get(client.guideRatingKey(empty)).count,0);
- assert.equal(summaries.has(client.guideRatingKey(wa)),false);
+ assert.equal(summaries.get(client.guideRatingKey(wa)).averageQuality,5);
+ assert.equal(summaries.get(client.guideRatingKey(wa)).count,5);
+ assert.equal(summaries.get(client.guideRatingKey(waEmpty)).count,0);
+ assert.equal(summaries.get(client.guideRatingKey(waEmpty)).averageQuality,null);
+ assert.equal(summaries.has(client.guideRatingKey(waHeld)),false);
 });
 
 test('missing, invalid and duplicate summaries do not become visible ratings',async()=>{
@@ -49,8 +59,10 @@ test('missing, invalid and duplicate summaries do not become visible ratings',as
  const client = api({ok:true,json:async()=>({items:[
   {...or,count:2,averageQuality:4.25},{...or,count:2,averageQuality:4},
   {...empty,count:1,averageQuality:null},
+  {...wa,count:1,averageQuality:4},{...wa,count:1,averageQuality:5},
+  {...waEmpty,count:0,averageQuality:5},
  ]})});
- assert.equal((await client.fetchPublicGuideRatings([or,empty,missing],signal)).size,0);
+ assert.equal((await client.fetchPublicGuideRatings([or,empty,missing,wa,waEmpty],signal)).size,0);
 });
 
 test('empty and oversized pages make no calls, and failures surface without per-guide fallback',async()=>{
