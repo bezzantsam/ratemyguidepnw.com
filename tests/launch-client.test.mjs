@@ -161,9 +161,15 @@ test('moderator guide links are limited to bare Washington profiles',async()=>{
 });
 
 test('moderators see review and revision trip values and cannot approve missing values',async()=>{
-  const row={id,guide_name:'Fixture guide',body:'A firsthand trip.',quality:4,intensity:3,would_book_again:false,trip_month:'2026-07-01',relationship_disclosure:'none',trip_responses:null,firsthand_attested:true,created_at:'2026-11-17T00:00:00Z'};
+  const row={id,guide_name:'Fixture guide',is_own_submission:false,body:'A firsthand trip.',quality:4,intensity:3,would_book_again:false,trip_month:'2026-07-01',relationship_disclosure:'none',trip_responses:null,firsthand_attested:true,created_at:'2026-11-17T00:00:00Z'};
   const create=value=>createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async()=>response({items:[value],offset:0,limit:50})});
   const review=(await create(row).operatorQueue('review'))[0];
+  assert.equal(review.ownSubmission,false);
+  for(const flag of [true,undefined,'false']){
+    const [item]=await create({...row,is_own_submission:flag}).operatorQueue('review');
+    assert.equal(item.ownSubmission,flag===true?true:null);
+    assert.equal(item.canApprove,false);
+  }
   assert.equal(review.canApprove,true);assert.match(review.description,/Trip month: 2026-07/);assert.match(review.description,/Trip intensity: 3 \/ 5/);assert.match(review.description,/Would book again: No/);
   const skipped=(await create({...row,intensity:null,would_book_again:null,trip_month:null}).operatorQueue('review'))[0];
   assert.match(skipped.description,/Trip intensity: Not answered/);assert.match(skipped.description,/Would book again: Not answered/);assert.match(skipped.description,/Trip month: Not supplied/);

@@ -448,16 +448,17 @@ test('catalog profile lookup and mixed summary use exact version keys with bare 
  ]}]]);
 });
 
-test('operator queues show only an exact catalog listing name/link and omit internal version keys',async()=>{
+test('operator queues resolve the catalog label and forward ownership without author identities',async()=>{
  const rows=[
-  {id:'row-a',guide_name:'Internal catalog carrier',catalog_source_id:'wa-001',catalog_listing_sha256:'a'.repeat(64)},
+  {id:'row-a',guide_name:'Internal catalog carrier',catalog_source_id:'wa-001',catalog_listing_sha256:'a'.repeat(64),
+    is_own_submission:true,author_id:'private-author',review_author_id:'private-review-author',author_email:'private@example.invalid'},
   {id:'row-b',guide_name:'Internal catalog carrier',catalog_source_id:'wa-002',catalog_listing_sha256:'b'.repeat(64)},
   {id:'row-c',guide_name:'Stale carrier',catalog_source_id:'wa-002',catalog_listing_sha256:'a'.repeat(64),
     guide_profile_path:'https://invalid.example'},
   {id:'row-or',guide_name:'Oregon Guide',catalog_source_id:null,catalog_listing_sha256:null},
  ];
  const expected=[
-  {id:'row-a',guide_name:'Washington Guide One',guide_profile_path:'/washington/wa-001'},
+  {id:'row-a',guide_name:'Washington Guide One',guide_profile_path:'/washington/wa-001',is_own_submission:true},
   {id:'row-b',guide_name:'Washington Guide Two',guide_profile_path:'/washington/wa-002'},
   {id:'row-c',guide_name:null},
   {id:'row-or',guide_name:'Oregon Guide'},

@@ -85,7 +85,7 @@ export function AdminConsole({claimsEnabled=false,offeringsEnabled=false}:{claim
   useEffect(()=>{void load()},[load]);
   async function decide(item:OperatorItem,approve:boolean){
     if(access.status!=='operator'||access.epoch!==authEpoch.current||item.kind==='report'||
-       (item.kind==='claim'&&!claimsEnabled))return;
+       (item.kind==='claim'?!claimsEnabled:item.ownSubmission!==false))return;
     const {epoch}=access,pending=processing.current;
     if(pending.has(item.id))return;
     const reason=(notes[item.id]??'').trim();
@@ -120,7 +120,9 @@ export function AdminConsole({claimsEnabled=false,offeringsEnabled=false}:{claim
       {error&&<p role="alert">{error}</p>}{message&&<p role="status">{message}</p>}
       {items===null?!error&&<p role="status">Loading submissions…</p>:items.length===0?<p>No pending submissions on this page.</p>:items.map(item=><article className="card" key={`${item.kind}:${item.id}`}>
         <h3>{item.kind==='review'?'Review':item.kind==='claim'?'Claim request':item.kind==='revision'?'Review edit':'Review report'} · {item.guideName??'Listing unavailable'}</h3>{item.guideProfilePath&&<p><a href={item.guideProfilePath}>Washington listing {item.guideProfilePath.split('/').at(-1)}</a></p>}{item.reviewId&&<p>Review reference: {item.reviewId}</p>}<p>Submitted: {item.createdAt}</p><p style={{whiteSpace:'pre-wrap'}}>{item.description}</p>
-        {item.kind==='report'?<><p>Resolving a report records its review; it does not hide or change the review.</p><button type="button" onClick={()=>void resolveReport(item)}>Resolve report</button></>:<>{!item.canApprove&&<p>Required information is unavailable; approval is disabled.</p>}<label>Decision note<textarea maxLength={500} value={notes[item.id]??''} onChange={e=>setNotes({...notes,[item.id]:e.target.value})}/></label>
+        {item.kind==='report'?<><p>Resolving a report records its review; it does not hide or change the review.</p><button type="button" onClick={()=>void resolveReport(item)}>Resolve report</button></>:item.kind!=='claim'&&item.ownSubmission!==false?<p>{item.ownSubmission===true
+          ?'Your submission. Another moderator must make the decision.'
+          :'Submission ownership could not be confirmed. Decisions are unavailable.'}</p>:<>{!item.canApprove&&<p>Required information is unavailable; approval is disabled.</p>}<label>Decision note<textarea maxLength={500} value={notes[item.id]??''} onChange={e=>setNotes({...notes,[item.id]:e.target.value})}/></label>
         <div className="launch-actions"><button type="button" disabled={!item.canApprove} onClick={()=>void decide(item,true)}>Approve</button><button type="button" onClick={()=>void decide(item,false)}>Reject</button></div></>}
       </article>)}
       <div>{offset>0&&<button type="button" onClick={()=>setOffset(Math.max(0,offset-50))}>Previous page</button>}{items?.length===50&&<button type="button" onClick={()=>setOffset(offset+50)}>Next page</button>} <button type="button" onClick={()=>void load()}>Refresh queue</button></div>
