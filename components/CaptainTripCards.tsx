@@ -10,19 +10,24 @@ const labels=new Map(fishingOptions.map(option=>[option.id,option.label]));
 
 export default function CaptainTripCards({jurisdiction,sourceId}:CaptainTripSource) {
   const key=captainTripKey({jurisdiction,sourceId});
+  const [attempt,setAttempt]=useState(0);
   const [state,setState]=useState<{
     key:string;profile:Awaited<ReturnType<typeof fetchCaptainTripsForProfile>>;
-  }|null>(null);
+  }|{key:string;error:true}|null>(null);
 
   useEffect(()=>{
     const controller=new AbortController();
     void fetchCaptainTripsForProfile({jurisdiction,sourceId},controller.signal).then(profile=>{
       if(!controller.signal.aborted)setState({key,profile});
-    }).catch(()=>{ if(!controller.signal.aborted)setState({key,profile:null}); });
+    }).catch(()=>{ if(!controller.signal.aborted)setState({key,error:true}); });
     return ()=>controller.abort();
-  },[jurisdiction,sourceId,key]);
+  },[jurisdiction,sourceId,key,attempt]);
 
-  const profile=state?.key===key?state.profile:null;
+  if(state?.key===key && 'error' in state)return <section className="section launch-controls" aria-label="Guide trips">
+    <p role="status">We couldn’t load this guide’s trips.</p>
+    <button type="button" onClick={()=>{setState(null);setAttempt(value=>value+1);}}>Retry loading trips</button>
+  </section>;
+  const profile=state?.key===key && 'profile' in state?state.profile:null;
   if(!profile?.offerings.length)return null;
   return <section className="section" aria-labelledby="captain-trips-heading">
     <h2 id="captain-trips-heading">Captain-provided trips</h2>
