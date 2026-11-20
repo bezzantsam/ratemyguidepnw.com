@@ -15,13 +15,16 @@ export function parseDirectoryState(search:string,entries:DirectoryEntry[],chart
  const q=single('q');const rawState=single('state');const rawArea=single('area');const rawWater=single('water');const rawSpecies=canonicalFisheryLabel(single('species'));const rawMethod=directoryMethodLabel(single('method'));const rawPage=single('page');
  const state:DirectoryState['state']=rawState==='Oregon'||rawState==='Washington'?rawState:'All';
  const scoped=entries.filter(entry=>directoryEntryInState(entry,state,!identityOnly));
- const facets=[...scoped.map(entry=>directoryFisheryFacets(entry,state)),
-  ...(!identityOnly?entries.map(entry=>captainTripFacets(entry,state)):[])];
+ const directoryFacets=scoped.map(entry=>directoryFisheryFacets(entry,state));
+ const captainFacets=identityOnly?[]:entries.map(entry=>captainTripFacets(entry,state));
+ const facets=[...directoryFacets,...captainFacets];
  const area=rawArea.length<=256&&scoped.some(entry=>entry.areas.includes(rawArea))?rawArea:'All areas';
  const scopedCharters=charters.filter(offer=>state==='All'||offer.state===state);
  const waterway=rawWater.length<=256&&(facets.some(entry=>entry.waters.includes(rawWater))||scopedCharters.some(offer=>offer.waterway===rawWater||offer.waters?.includes(rawWater)))?rawWater:'All advertised waters';
  const charterSpecies=scopedCharters.some(offer=>offer.species&&directorySpeciesLabels([offer.species]).includes(rawSpecies));
- const species=rawSpecies.length>0&&rawSpecies.length<=256&&(charterSpecies||facets.some(entry=>directorySpeciesLabels(entry.species).includes(rawSpecies)))?rawSpecies:'All species';
+ const species=rawSpecies.length>0&&rawSpecies.length<=256&&(charterSpecies||
+  directoryFacets.some(entry=>directorySpeciesLabels(entry.species).includes(rawSpecies))||
+  captainFacets.some(entry=>entry.species.includes(rawSpecies)))?rawSpecies:'All species';
  const method=rawMethod.length>0&&rawMethod.length<=256&&(knownDirectoryMethod(rawMethod)||facets.some(entry=>entry.methods.some(label=>directoryMethodLabel(label)===rawMethod))||scopedCharters.some(offer=>offer.method&&directoryMethodLabel(offer.method)===rawMethod))?rawMethod:'All methods';
  const gearOption=knownDirectoryMethod(single('gear'));
  const gear=!identityOnly&&gearOption?.kind==='gear'?gearOption.id:undefined;

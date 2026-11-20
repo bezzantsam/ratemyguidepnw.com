@@ -146,19 +146,30 @@ test('moderator parser keeps empty proposals and rejects malformed, duplicate or
 });
 
 test('mixed fisheries match only supported broad targets and methods',async()=>{
-  const mixed={...nearshore,title:'Mixed bottomfish',species:[]};
+  const mixed={...nearshore,title:'Nearshore trip',species:[],gearIds:[]};
   const crabbing={...nearshore,title:'Mixed crabbing',species:['Crabbing'],methodIds:[],gearIds:[]};
   const dungeness={...crabbing,species:['Dungeness crab']};
   const {client,signal}=projection(()=>({profile:{...profile,offerings:[mixed]}}));
-  assert.equal((await client.fetchCaptainTripsForProfile(source,signal)).offerings.length,1);
+  const approved=await client.fetchCaptainTripsForProfile(source,signal);
+  assert.equal(approved.offerings[0].species.length,0);
+  assert.throws(()=>client.parseSubmittedTrips({vessels:[],offerings:[{...mixed,methodIds:['jigging']}]}),/Invalid trip contents/);
+  assert.equal(query.canonicalFisheryLabel('mixed groundfish'),'mixed groundfish');
   for(const [trip,filters,wanted] of [
     [mixed,{method:'Bottom fishing'},1],[mixed,{query:'mixed groundfish'},1],
+    [mixed,{query:'mixed bottomfish Ilwaco'},1],
     [mixed,{species:'Rockfish'},0],[mixed,{query:'Lingcod'},0],
-    [{...mixed,species:['Bottom fishing'],methodIds:[]},{method:'Bottom fishing'},1],
+    [{...mixed,species:['Rockfish'],methodIds:['jigging']},{query:'mixed groundfish'},0],
+    [{...mixed,species:['Bottom fishing'],methodIds:[]},{method:'Bottom fishing'},0],
     [crabbing,{species:'Crabbing'},1],[crabbing,{query:'crab'},1],
     [crabbing,{species:'Dungeness crab'},0],[crabbing,{method:'Crab ring fishing'},0],
-    [crabbing,{gear:'crab-pots'},0],[dungeness,{species:'Crabbing'},1],
+    [crabbing,{method:'Pot fishing'},0],[crabbing,{gear:'crab-pots'},0],
+    [crabbing,{query:'Ilwaco Dungeness crabbing'},0],[dungeness,{query:'Ilwaco Dungeness crabbing'},1],
+    [dungeness,{species:'Crabbing'},0],[dungeness,{species:'Dungeness crab'},1],
   ])assert.equal(query.matchingCaptainTrips({...listing,captainTrips:[trip]},{...baseline,...filters}).length,wanted,JSON.stringify(filters));
+  const dungenessOnly={...listing,captainTrips:[dungeness]};
+  assert.deepEqual(Array.from(query.captainTripFacets(dungenessOnly,'All').species),['Dungeness crab']);
+  assert.equal(url.parseDirectoryState('?species=Crabbing',[dungenessOnly]).species,'All species');
+  assert.equal(url.parseDirectoryState('?species=Dungeness+crab',[dungenessOnly]).species,'Dungeness crab');
 });
 
 test('only Oregon source listings publish, while individual trips may be in Washington',async()=>{
