@@ -8,7 +8,7 @@ import * as catalog from '../lib/captain-fishing/catalog.mjs';
 function load(path,dependencies={},globals={}) {
   const exports={};
   const {outputText}=ts.transpileModule(readFileSync(path,'utf8'),{
-    compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022},
+    compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,jsx:ts.JsxEmit.ReactJSX},
   });
   runInNewContext(outputText,{exports,URL,URLSearchParams,require:id=>dependencies[id],...globals});
   return exports;
@@ -35,6 +35,61 @@ const listing={
 };
 const otherListing={...listing,id:secondSource.sourceId,name:'Another Captain',captainTrips:[]};
 const baseline={state:'All',sourceZone:'All areas',advertisedWater:'All advertised waters',query:''};
+
+test('legacy clam gear still parses and matches old filters without appearing in gear menus',async()=>{
+  const legacy=['clam-guns','clam-shovels','clam-rakes'];
+  const trip={...nearshore,species:['Rockfish'],gearIds:legacy};
+  const row={...listing,captainTrips:[trip]};
+  const {client,signal}=projection(()=>({profile:{...profile,offerings:[trip]}}));
+  assert.deepEqual(Array.from((await client.fetchCaptainTripsForProfile(source,signal)).offerings[0].gearIds),legacy);
+  const menu=query.directoryMethodGroups(['Clam tube','Clam digging','Clamming']);
+  assert.ok(menu.methods.includes('Clam digging'));
+  assert.ok(menu.gear.includes('Crab pots'));
+  for(const id of legacy){
+    const label=query.directoryMethodLabel(id);
+    assert.ok(!menu.gear.includes(label)&&!menu.methods.includes(label));
+    const state=url.parseDirectoryState('?gear='+id+'&method='+encodeURIComponent(label),[row]);
+    assert.equal(state.gear,id);
+    assert.equal(state.method,label);
+    assert.equal(query.matchingCaptainTrips(row,{...baseline,gear:id,method:label}).length,1);
+    assert.equal(query.matchingCaptainTrips(listing,{...baseline,gear:id}).length,0);
+  }
+  assert.equal(url.parseDirectoryState('?method=clam+tube',[row]).method,'Clam guns');
+});
+
+test('captains can remove saved clam gear and cannot find it as a new editor choice',()=>{
+  let search='',expanded=true,hook=0;
+  const jsx=(type,props)=>({type,props});
+  const {FishingChoices}=load('components/launch/CaptainFishingChoices.tsx',{
+    react:{useState:()=>[hook++===0?search:expanded,()=>{}]},
+    'react/jsx-runtime':{jsx,jsxs:jsx},
+    '@/lib/captain-fishing/catalog.mjs':catalog,
+  });
+  function findAll(node,predicate){
+    if(Array.isArray(node))return node.flatMap(child=>findAll(child,predicate));
+    if(!node||typeof node!=='object')return [];
+    return [...(predicate(node)?[node]:[]),...findAll(node.props?.children,predicate)];
+  }
+  let ids=['clam-guns','clam-shovels','clam-rakes','crab-pots'];
+  const gear=()=>{
+    hook=0;
+    const view=FishingChoices({kind:'gear',ids,disabled:false,onToggle:(id,checked)=>{
+      assert.equal(checked,false);
+      ids=ids.filter(saved=>saved!==id);
+    }});
+    return findAll(view,node=>node.type==='label'&&node.props.children[0]?.props?.type==='checkbox');
+  };
+  const legacyLabels=['Clam guns','Clam shovels','Clam rakes'];
+  for(const label of legacyLabels){
+    const row=gear().find(node=>node.props.children[1]===label);
+    assert.equal(row.props.children[0].props.checked,true);
+    row.props.children[0].props.onChange({target:{checked:false}});
+  }
+  assert.deepEqual(ids,['crab-pots']);
+  assert.ok(gear().every(node=>!legacyLabels.includes(node.props.children[1])));
+  search='clam';
+  assert.equal(gear().length,0);
+});
 
 test('two approved trips never combine location, state, species, method, gear or month',()=>{
   const ids=overrides=>Array.from(query.filterDirectoryEntries([listing,otherListing],{...baseline,...overrides}),entry=>entry.id);

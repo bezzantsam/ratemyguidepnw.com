@@ -20,7 +20,7 @@ const trip=compile('components/launch/trip-responses.ts');
 const details=compile('components/launch/TripDetails.tsx',{'./trip-responses':trip});
 const views=compile('components/launch/SubmissionViews.tsx',{'./submission-model':model,'./trip-responses':trip,'./TripDetails':details});
 const queue=compile('components/launch/ModerationQueue.tsx',{'./submission-model':model,'./SubmissionViews':views});
-const published=compile('components/launch/PublishedReviews.tsx',{'./ReviewShare':{ReviewShare:()=>null},'./ReportReview':{ReportReview:()=>null}});
+const published=compile('components/launch/PublishedReviews.tsx',{'./submission-model':model,'./ReviewShare':{ReviewShare:()=>null},'./ReportReview':{ReportReview:()=>null}});
 const receiptId='10000000-0000-4000-8000-000000000001';
 
 test('basic review requires a rating, nonempty narrative, disclosure and firsthand attestation',()=>{
@@ -128,4 +128,50 @@ test('compact reviews follow the profile summary and invite a first reviewer onl
   for (const state of [{status: 'loading'}, {status: 'error'}, {status: 'ready', page: {...empty, guideKey: 'OR:2'}}]) {
     assert.equal(render(state), '');
   }
+});
+
+
+test('new form places explicit booking and unselected dimension controls before relationship and narrative',()=>{
+  const html=renderToStaticMarkup(React.createElement(views.ReviewSubmission,{onSubmit:async()=>({status:'pending'}),allowTripResponses:true}));
+  const order=['Overall quality','Would you book again?','Rate individual aspects (optional)','Your relationship','Your experience'];
+  assert.deepEqual(order.map(text=>html.indexOf(text)).sort((a,b)=>a-b),order.map(text=>html.indexOf(text)));
+  assert.equal((html.match(/type="radio"/g)??[]).length,2);
+  assert.doesNotMatch(html,/checked=""/);
+  assert.equal((html.match(/selected="">Not rated/g)??[]).length,7);
+});
+
+test('published detail presents explicit No and only the dimension answers actually supplied',()=>{
+  const review={id:'r1',guideKey:'WA:1',status:'published',rating:4,wouldBookAgain:false,
+    ratings:{communication:5,value:2},body:'Firsthand account.',publishedAt:'2026-11-17'};
+  const html=renderToStaticMarkup(React.createElement(published.ReviewCard,{review}));
+  assert.match(html,/Overall quality: 4 \/ 5/);
+  assert.match(html,/Would book again: <strong>No<\/strong>/);
+  assert.match(html,/<dt>Communication<\/dt><dd>5 \/ 5<\/dd>/);
+  assert.match(html,/<dt>Value<\/dt><dd>2 \/ 5<\/dd>/);
+  assert.doesNotMatch(html,/Professionalism|Safety/);
+  const legacy=renderToStaticMarkup(React.createElement(published.ReviewCard,{review:{...review,wouldBookAgain:undefined,ratings:undefined}}));
+  assert.doesNotMatch(legacy,/Would book again|Individual ratings/);
+});
+
+
+test('form leads with safety, survey ratings and catch and asks for organization only once',()=>{
+  const html=renderToStaticMarkup(React.createElement(views.ReviewSubmission,{onSubmit:async()=>({status:'pending'}),allowTripResponses:true}));
+  const ordered=['Overall quality','Would you book again?','>Safety</label>','>Kindness</label>','>Organization</label>','>Finding fish</label>','How many fish did your group land?','Your experience'];
+  const offsets=ordered.map(label=>html.indexOf(label));
+  assert.ok(offsets.every(offset=>offset>=0));
+  assert.deepEqual(offsets,[...offsets].sort((a,b)=>a-b));
+  assert.equal((html.match(/>Organization<\/label>/g)??[]).length,1);
+  assert.equal((html.match(/>Effort<\/label>/g)??[]).length,1);
+  assert.match(html,/Include fish your group released\. Enter 0 if none landed\./);
+});
+
+test('published survey shows finding fish and reported zero separately from overall',()=>{
+  const review={id:'r1',guideKey:'WA:1',status:'published',rating:5,body:'Earlier fishing trip.',publishedAt:'2026-11-17',
+    tripHighlights:[{key:'fishiness',label:'Finding fish',answer:'2 / 5'},{key:'fish_landed',label:'Fish landed by the group',answer:'0'}]};
+  const publicCard=renderToStaticMarkup(React.createElement(published.ReviewCard,{review}));
+  assert.match(publicCard,/Overall quality: 5 \/ 5/);
+  assert.match(publicCard,/<dt>Finding fish<\/dt><dd>2 \/ 5<\/dd>/);
+  assert.match(publicCard,/Fish landed by the group, including releases: <strong>0<\/strong>/);
+  const noCatch=renderToStaticMarkup(React.createElement(published.ReviewCard,{review:{...review,tripHighlights:[]}}));
+  assert.doesNotMatch(noCatch,/Fish landed/);
 });

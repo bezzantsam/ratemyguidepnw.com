@@ -161,9 +161,15 @@ test('moderator guide links are limited to bare Washington profiles',async()=>{
 });
 
 test('moderators see review and revision trip values and cannot approve missing values',async()=>{
-  const row={id,guide_name:'Fixture guide',body:'A firsthand trip.',quality:4,intensity:3,would_book_again:false,trip_month:'2026-07-01',relationship_disclosure:'none',trip_responses:null,firsthand_attested:true,created_at:'2026-11-17T00:00:00Z'};
+  const row={id,guide_name:'Fixture guide',is_own_submission:false,body:'A firsthand trip.',quality:4,intensity:3,would_book_again:false,trip_month:'2026-07-01',relationship_disclosure:'none',trip_responses:null,firsthand_attested:true,created_at:'2026-11-17T00:00:00Z'};
   const create=value=>createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async()=>response({items:[value],offset:0,limit:50})});
   const review=(await create(row).operatorQueue('review'))[0];
+  assert.equal(review.ownSubmission,false);
+  for(const flag of [true,undefined,'false']){
+    const [item]=await create({...row,is_own_submission:flag}).operatorQueue('review');
+    assert.equal(item.ownSubmission,flag===true?true:null);
+    assert.equal(item.canApprove,false);
+  }
   assert.equal(review.canApprove,true);assert.match(review.description,/Trip month: 2026-07/);assert.match(review.description,/Trip intensity: 3 \/ 5/);assert.match(review.description,/Would book again: No/);
   const skipped=(await create({...row,intensity:null,would_book_again:null,trip_month:null}).operatorQueue('review'))[0];
   assert.match(skipped.description,/Trip intensity: Not answered/);assert.match(skipped.description,/Would book again: Not answered/);assert.match(skipped.description,/Trip month: Not supplied/);
@@ -229,4 +235,87 @@ test('public review details retain explicit negatives and not applicable respons
   const [result]=(await client.publicReviews(source)).reviews;
   assert.ok(result.tripDetails.some(line=>line.includes('Was a dog present? No')));
   assert.ok(result.tripDetails.some(line=>line.includes('Were children on the trip? Not applicable')));
+});
+
+
+test('v1 ratings serialize sparse new and revision fields including false and intentional clears',async()=>{
+  let payload;
+  const client=createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async(_url,init)=>{
+    payload=JSON.parse(init.body);return response({id,status:'pending'});
+  }});
+  await client.submitReview(source,{...draft,ratingVersion:1,ratings:{effort:5,value:2}});
+  assert.equal(payload.ratingVersion,1);assert.equal(payload.wouldBookAgain,false);
+  assert.deepEqual(payload.ratings,{effort:5,value:2});
+  await assert.rejects(client.submitReview(source,{...draft,ratingVersion:1,wouldBookAgain:null}),errorCode('invalid_input'));
+  await assert.rejects(client.submitReview(source,{...draft,ratingVersion:1,ratings:{safety:null}}),errorCode('invalid_input'));
+  await client.submitRevision(id,{...draft,ratingVersion:1,wouldBookAgain:null,ratings:{value:null,safety:4}});
+  assert.equal(Object.hasOwn(payload,'wouldBookAgain'),false);
+  assert.deepEqual(payload.ratings,{value:null,safety:4});
+});
+
+test('readback binds typed legacy dimensions and explicit No to the published review and edit draft',async()=>{
+  const review={id,quality:4,intensity:null,would_book_again:false,communication:3,value_rating:5,safety:null,
+    body:draft.body,relationship_disclosure:'none',published_at:'2026-11-17T00:00:00Z',trip_month:null,trip_responses:null};
+  const client=createLaunchClient({enabled:true,getAccessToken:async()=>null,fetcher:async()=>response({review})});
+  const published=await client.publicReview(source,id);
+  const edit=await client.reviewDetail(source,id);
+  assert.equal(published.wouldBookAgain,false);
+  assert.deepEqual(JSON.parse(JSON.stringify(published.ratings)),{communication:3,value:5});
+  assert.deepEqual(JSON.parse(JSON.stringify(edit.ratings)),{communication:3,value:5});
+  review.would_book_again=null;
+  assert.equal((await client.publicReview(source,id)).wouldBookAgain,undefined);
+  assert.equal((await client.reviewDetail(source,id)).wouldBookAgain,null);
+  review.communication=0;
+  await assert.rejects(client.reviewDetail(source,id),errorCode('service_unavailable'));
+});
+
+test('operator queue shows exact optional rating labels for reviews and effective revisions',async()=>{
+  const row={id,review_id:id,guide_name:'Synthetic guide',guide_profile_path:'/washington/wa-144',
+    body:'Synthetic firsthand trip.',quality:4,intensity:null,would_book_again:false,
+    trip_month:null,trip_month_specified:false,relationship_disclosure:'none',trip_responses:null,
+    firsthand_attested:true,is_own_submission:false,created_at:'2026-11-19T00:00:00Z'};
+  const queue=async(kind,fields)=>{
+    const client=createLaunchClient({enabled:true,getAccessToken:async()=> 'fixture-token',
+      fetcher:async()=>response({items:[{...row,...fields}],offset:0,limit:50})});
+    return (await client.operatorQueue(kind))[0];
+  };
+  const full={communication:1,professionalism:2,safety:3,equipment:4,knowledge:5,effort:4,value_rating:2};
+  const expected=['Communication: 1 / 5','Professionalism: 2 / 5','Safety: 3 / 5',
+    'Equipment: 4 / 5','Knowledge: 5 / 5','Effort: 4 / 5','Value: 2 / 5'];
+  for(const kind of ['review','revision']){
+    const complete=await queue(kind,full);
+    for(const line of expected)assert.ok(complete.description.includes(line),line);
+    assert.equal(complete.guideProfilePath,'/washington/wa-144');
+    assert.equal(complete.canApprove,true);
+    const sparse=await queue(kind,{safety:5,communication:null});
+    assert.match(sparse.description,/Safety: 5 \/ 5/);
+    assert.doesNotMatch(sparse.description,/Communication:|Value:|Individual ratings unavailable/);
+    assert.equal(sparse.canApprove,true);
+    const legacy=await queue(kind,{});
+    assert.doesNotMatch(legacy.description,/Communication:|Safety:|Individual ratings unavailable/);
+    assert.equal(legacy.canApprove,true);
+    const malformed=await queue(kind,{communication:0,safety:'5',value_rating:5});
+    assert.match(malformed.description,/Individual ratings unavailable/);
+    assert.doesNotMatch(malformed.description,/Communication:|Safety:|Value:/);
+    assert.equal(malformed.canApprove,false);
+  }
+});
+
+test('published list and canonical detail split in survey answers without changing summary or legacy details',async()=>{
+  const review={id,quality:4,body:draft.body,published_at:'2026-11-17T00:00:00Z',trip_responses:{version:1,
+    answers:{fishiness:{state:'answered',value:2},fish_landed:{state:'answered',value:0},effort:{state:'answered',value:3}}}};
+  const client=createLaunchClient({enabled:true,getAccessToken:async()=>null,fetcher:async(_url,init)=>{
+    return response(JSON.parse(init.body).operation==='public_reviews'?
+      {summary:{count:1,averageQuality:4},reviews:[review]}:{review});
+  }});
+  const list=await client.publicReviews(source);
+  const detail=await client.publicReview(source,id);
+  assert.equal(list.averageQuality,4);
+  assert.equal(detail.quality,4);
+  assert.deepEqual(JSON.parse(JSON.stringify(list.reviews[0].tripHighlights)),[
+    {key:'fishiness',label:'Finding fish',answer:'2 / 5'},
+    {key:'fish_landed',label:'Fish landed by the group',answer:'0'},
+  ]);
+  assert.deepEqual(list.reviews[0].tripHighlights,detail.tripHighlights);
+  assert.deepEqual(Array.from(detail.tripDetails),['How would you rate the guide’s effort? 3 / 5']);
 });

@@ -1,4 +1,4 @@
-import {fishingOptions, type FishingOption} from './captain-fishing/catalog.mjs';
+import {fishingOptions, isLegacyFishingGear, type FishingOption} from './captain-fishing/catalog.mjs';
 import type {DirectoryEntry} from './directory';
 import type {CaptainTrip} from './public-captain-trips';
 
@@ -101,7 +101,7 @@ export function directoryMethodLabel(value:string):string {
  return knownDirectoryMethod(value)?.label ?? canonicalFisheryLabel(value);
 }
 const catalogMethodLabels = fishingOptions.filter(option=>option.kind==='method').map(option=>option.label);
-const gearLabels = fishingOptions.filter(option=>option.kind==='gear').map(option=>option.label);
+const gearLabels = fishingOptions.filter(option=>option.kind==='gear'&&!isLegacyFishingGear(option.id)).map(option=>option.label);
 export function directoryMethodGroups(sourcedLabels:string[]) {
  const otherMethods = sourcedLabels.filter(label=>!knownDirectoryMethod(label)).map(directoryMethodLabel);
  return {methods:[...new Set([...catalogMethodLabels,...otherMethods])].sort(), gear:gearLabels};
@@ -288,8 +288,23 @@ export function matchingCaptainTrips(entry:DirectoryEntry,filters:DirectoryFilte
  });
 }
 
+/** A full sourced water name uses the same scope as the explicit water filter. */
+export function applyDirectoryWaterQuery(entries:DirectoryEntry[],filters:DirectoryFilters):DirectoryFilters|null {
+ const query=normalizeGuideSearch(filters.query);
+ if(!query)return filters;
+ for(const entry of entries){
+  const water=entry.advertisedWaters.find(name=>normalizeGuideSearch(name)===query);
+  if(!water)continue;
+  if(filters.advertisedWater!=='All advertised waters'&&normalizeGuideSearch(filters.advertisedWater)!==query)return null;
+  return {...filters,query:'',advertisedWater:filters.advertisedWater==='All advertised waters'?water:filters.advertisedWater};
+ }
+ return filters;
+}
+
 /** Exact filters stay exact; fuzzy text matches never expand fisheries or merge identities. */
-export function filterDirectoryEntries(entries:DirectoryEntry[],filters:DirectoryFilters,charterCities:string[]=[]):DirectoryEntry[]{
+export function filterDirectoryEntries(entries:DirectoryEntry[],requested:DirectoryFilters,charterCities:string[]=[]):DirectoryEntry[]{
+ const filters=applyDirectoryWaterQuery(entries,requested);
+ if(!filters)return [];
  const portSearch=filters.query.trim() ? fisheryAtPort(filters.query,[
   ...charterCities,...locatedGuidePorts(entries),
  ],filters.method,filters.species) : null;

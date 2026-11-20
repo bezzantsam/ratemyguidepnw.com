@@ -21,7 +21,7 @@ function hookHarness() {
     reset(){cursor=0},
     react:{
       useId:()=>':test:',
-      useState(initial){const slot=cursor++;if(!(slot in cells))cells[slot]=typeof initial==='function'?initial():initial;return [cells[slot],value=>{cells[slot]=value}]},
+      useState(initial){const slot=cursor++;if(!(slot in cells))cells[slot]=typeof initial==='function'?initial():initial;return [cells[slot],value=>{cells[slot]=typeof value==='function'?value(cells[slot]):value}]},
       useRef(initial){const slot=cursor++;if(!(slot in cells))cells[slot]={current:initial};return cells[slot]},
     },
   };
@@ -32,11 +32,11 @@ function find(element, predicate) {
   for(const child of [element.props?.children].flat(Infinity)) {const match=find(child,predicate);if(match)return match}
   return undefined;
 }
-function setup(onSubmit,allowTripResponses=false) {
+function setup(onSubmit,allowTripResponses=false,props={}) {
   const hooks=hookHarness();
   const model=compile('components/launch/submission-model.ts');
   const views=compile('components/launch/SubmissionViews.tsx',{react:hooks.react,'./submission-model':model,'./trip-responses':trip,'./TripDetails':details});
-  const render=()=>{hooks.reset();return views.ReviewSubmission({onSubmit,allowTripResponses})};
+  const render=()=>{hooks.reset();return views.ReviewSubmission({onSubmit,allowTripResponses,...props})};
   return {render,views};
 }
 
@@ -50,14 +50,15 @@ test('optional trip answers are validated and passed without inventing unanswere
   assert.equal(captured.tripResponses.answers.actual_duration_minutes.value,0);
   assert.equal(Object.hasOwn(captured.tripResponses.answers,'guide_patience'),false);
 });
-function enterReview(render) {
+function enterReview(render,booking='no') {
   const tree=render();
-  for(const [suffix,value] of [['-quality','5'],['-intensity','3'],['-again','no'],['-relationship','none'],['-body','A firsthand description of the fishing trip. '.repeat(3)]]) {
+  for(const [suffix,value] of [['-quality','5'],['-intensity','3'],['-relationship','none'],['-body','A firsthand description of the fishing trip. '.repeat(3)]]) {
     const control=find(tree,node=>node.props?.id?.endsWith(suffix));
-    if(!control&&['-intensity','-again'].includes(suffix))continue;
+    if(!control&&suffix==='-intensity')continue;
     assert.ok(control,suffix);
     control.props.onChange({target:{value}});
   }
+  if(booking)find(tree,node=>node.type==='input'&&node.props.type==='radio'&&node.props.value===booking).props.onChange({target:{value:booking}});
   const checkbox=find(tree,node=>node.type==='input'&&node.props.type==='checkbox');
   checkbox.props.onChange({target:{checked:true}});
 }
@@ -134,4 +135,64 @@ test('moderation requires a rejection reason and waits for the actual decision',
   await new Promise(resolve=>setImmediate(resolve));
   const status=find(render(),node=>node.type===views.SubmissionStatus);
   assert.equal(status.props.receipt.status,'denied');
+});
+
+
+test('new review waits for a booking choice and sends selected ratings only',async()=>{
+  let captured;
+  const {render}=setup(async draft=>{captured=draft;return {id:receiptId,status:'pending'}},true);
+  enterReview(render,null);
+  await render().props.onSubmit({preventDefault(){}});
+  assert.equal(captured,undefined);
+  assert.match(find(render(),node=>node.props?.role==='alert').props.children,/Choose Yes or No/);
+  enterReview(render,'yes');
+  const fields=find(render(),node=>node.type?.name==='ReviewDimensionFields');
+  fields.props.onChange('safety','4');
+  fields.props.onChange('value','2');
+  await render().props.onSubmit({preventDefault(){}});
+  assert.equal(captured.ratingVersion,1);
+  assert.equal(captured.wouldBookAgain,true);
+  assert.deepEqual(JSON.parse(JSON.stringify(captured.ratings)),{safety:4,value:2});
+});
+
+test('edit starts with real answers, patches an explicit clear, and carries historical trip data',async()=>{
+  let captured;
+  const initial={quality:3,intensity:null,wouldBookAgain:null,body:'Earlier fishing trip.',firsthand:false,
+    tripMonth:'2026-07',relationship:'none',ratings:{communication:3,value:4},
+    tripResponses:{version:1,answers:{effort:{state:'answered',value:2},dog_present:{state:'answered',value:false}}}};
+  const {render}=setup(async draft=>{captured=draft;return {id:receiptId,status:'pending'}},true,{mode:'revision',initial});
+  const fields=find(render(),node=>node.type?.name==='ReviewDimensionFields');
+  assert.equal(fields.props.ratings.value,4);
+  assert.equal(fields.props.ratings.communication,3);
+  fields.props.onChange('value','');
+  fields.props.onChange('knowledge','5');
+  find(render(),node=>node.type==='input'&&node.props.type==='checkbox').props.onChange({target:{checked:true}});
+  await render().props.onSubmit({preventDefault(){}});
+  assert.equal(captured.wouldBookAgain,null);
+  assert.deepEqual(JSON.parse(JSON.stringify(captured.ratings)),{knowledge:5,value:null});
+  assert.deepEqual(JSON.parse(JSON.stringify(captured.tripResponses)),initial.tripResponses);
+});
+
+
+test('revision omits unchanged Yes and No, including after switching back, and sends an actual change',async()=>{
+  for(const [before,choices,expected] of [
+    [true,[],null],
+    [false,[],null],
+    [true,['no','yes'],null],
+    [true,['no'],false],
+    [false,['yes'],true],
+    [null,['no'],false],
+  ]){
+    let captured;
+    const initial={quality:3,intensity:null,wouldBookAgain:before,body:'Earlier fishing trip.',firsthand:false,
+      tripMonth:null,relationship:'none'};
+    const {render}=setup(async draft=>{captured=draft;return {id:receiptId,status:'pending'}},true,{mode:'revision',initial});
+    for(const choice of choices) {
+      find(render(),node=>node.type==='input'&&node.props.type==='radio'&&node.props.value===choice)
+        .props.onChange({target:{value:choice}});
+    }
+    find(render(),node=>node.type==='input'&&node.props.type==='checkbox').props.onChange({target:{checked:true}});
+    await render().props.onSubmit({preventDefault(){}});
+    assert.equal(captured.wouldBookAgain,expected);
+  }
 });

@@ -3,11 +3,11 @@ import Link from 'next/link';
 import {useEffect,useId,useMemo,useRef,useState} from 'react';
 import {DEFAULT_DIRECTORY_STATE,DIRECTORY_PAGE_SIZE,directoryUrl,parseDirectoryState,type DirectoryState} from '@/lib/directory-url';
 import type {DirectoryEntry} from '@/lib/directory';
-import {captainTripFacets,directoryEntryInState,directoryMethodLabel,directoryFisheryFacets,directoryMethodGroups,directorySpeciesLabels,directorySpeciesMenu,filterDirectoryEntries,guideSearchScore,locatedGuidePorts,matchingCaptainTrips} from '@/lib/directory-query';
+import {applyDirectoryWaterQuery,captainTripFacets,directoryEntryInState,directoryMethodLabel,directoryFisheryFacets,directoryMethodGroups,directorySpeciesLabels,directorySpeciesMenu,filterDirectoryEntries,guideSearchScore,knownDirectoryMethod,locatedGuidePorts,matchingCaptainTrips} from '@/lib/directory-query';
 import {charterPorts,filterCharterOfferings,type CharterOffering} from '@/lib/charter-offerings';
 import {PUBLIC_ORIGIN} from '@/lib/canonical-share';
 import {captainTripKey,captainTripMonths,fetchCaptainTripsForDirectory,type CaptainTrip} from '@/lib/public-captain-trips';
-import {fishingOptions} from '@/lib/captain-fishing/catalog.mjs';
+import {fishingOptions,isLegacyFishingGear} from '@/lib/captain-fishing/catalog.mjs';
 import {fetchPublicGuideRatings,guideRatingKey,type GuideRatingSummary} from '@/lib/public-guide-ratings';
 import DirectoryEmptyState from './DirectoryEmptyState';
 import GuideSearchRating from './GuideSearchRating';
@@ -42,7 +42,8 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
  const [searchReady,setSearchReady]=useState(false);
  const searchStatusId=useId();
  const {query:q,state,area,waterway,species,method,gear,month,page}=selection;
- const captainFilters={state,sourceZone:area,advertisedWater:waterway,species,method,gear,month,query:q,identityOnly:reviewMode};
+ const captainFilters=applyDirectoryWaterQuery(entries,{state,sourceZone:area,advertisedWater:waterway,species,method,gear,month,query:q,identityOnly:reviewMode});
+ const matchedWater=captainFilters?.advertisedWater;
  const routeBase=reviewMode?'/write-review':'/guides';
  const resultsUrl=directoryUrl(selection,home?'/':routeBase);
  const shareUrl=PUBLIC_ORIGIN+directoryUrl(selection,routeBase);
@@ -87,7 +88,8 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
   .map(entry=>directoryFisheryFacets(entry,state)),[entries,state,reviewMode]);
  const captainFacets=useMemo(()=>reviewMode?[]:entries.map(entry=>captainTripFacets(entry,state)),[entries,state,reviewMode]);
  const hasCaptainTrips=!reviewMode&&entries.some(entry=>entry.captainTrips?.length);
- const gearOptions=fishingOptions.filter(option=>option.kind==='gear');
+ const gearOptions=fishingOptions.filter(option=>option.kind==='gear'&&!isLegacyFishingGear(option.id));
+ const legacyMethod=isLegacyFishingGear(knownDirectoryMethod(method)?.id??'');
  const scopedCharters=useMemo(()=>charters.filter(offer=>state==='All'||offer.state===state),[charters,state]);
  const waters=useMemo(()=>['All advertised waters',...new Set([
   ...[...facets,...captainFacets].flatMap(facet=>facet.waters),
@@ -106,7 +108,9 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
   ...scopedCharters.flatMap(offer=>offer.method?[offer.method]:[]),
  ]),[facets,captainFacets,scopedCharters]);
  const guidePorts=useMemo(()=>locatedGuidePorts(entries),[entries]);
- const matchingCharters=filterCharterOfferings(charters,selection,guidePorts);
+ const matchingCharters=captainFilters?filterCharterOfferings(charters,{
+  ...selection,query:captainFilters.query,waterway:captainFilters.advertisedWater,
+ },guidePorts):[];
  const pages=Math.max(1,Math.ceil(filtered.length/size)),current=Math.min(page,pages);
  const visibleGuides=useMemo(()=>filtered.slice((current-1)*size,current*size),[filtered,current,size]);
  const [ratings,setRatings]=useState<{guides:DirectoryEntry[];summaries:Map<string,GuideRatingSummary>}|null>(null);
@@ -167,6 +171,7 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
    <label>Fishing methods
     <select ref={methodRef} value={method} onChange={e=>change({method:e.target.value,page:1})}>
      <option>All methods</option>
+     {legacyMethod&&<option value={method} hidden>{method}</option>}
      <optgroup label="Methods">{methodGroups.methods.map(label=><option key={label}>{label}</option>)}</optgroup>
      <optgroup label="Gear">{methodGroups.gear.map(label=><option key={label}>{label}</option>)}</optgroup>
     </select>
@@ -174,6 +179,7 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
    {(hasCaptainTrips||gear||month)&&<><label>Trip gear
     <select ref={gearRef} value={gear??''} onChange={e=>change({gear:e.target.value||undefined,page:1})}>
      <option value="">All gear</option>
+     {gear&&isLegacyFishingGear(gear)&&<option value={gear} hidden>{directoryMethodLabel(gear)}</option>}
      {gearOptions.map(option=><option key={option.id} value={option.id}>{option.label}</option>)}
     </select>
    </label>
@@ -206,11 +212,12 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
   {readCaptainTrips&&published==='error'&&<p className="guide-meta" role="status">Captain-provided trips are temporarily unavailable.</p>}
   <div ref={resultsRef} tabIndex={-1} className="results-heading" role="status" aria-live="polite" aria-atomic="true"><strong>{filtered.length.toLocaleString()} captain {filtered.length===1?'listing':'listings'}</strong>
    {matchingCharters.length>0&&<span>{matchingCharters.length} charter {matchingCharters.length===1?'offering':'offerings'}</span>}
-   <span>{q.trim()?'Closest matches first':'A–Z'} · Page {current} of {pages}</span>
+   <span>{q.trim()&&captainFilters?.query===''?matchedWater:q.trim()?'Closest matches first':'A–Z'} · Page {current} of {pages}</span>
   </div>
   <div className="guide-results">{visibleGuides.map(g=>{
-   const captainTrips=matchingCaptainTrips(g,captainFilters);
+   const captainTrips=captainFilters?matchingCaptainTrips(g,captainFilters):[];
    const {species:targets,methods,trips,waters}=directoryFisheryFacets(g,state);
+   const displayWaters=matchedWater&&waters.includes(matchedWater)?[matchedWater,...waters.filter(water=>water!==matchedWater)]:waters;
    const editorial=(g.editorialFishing??[]).filter(fact=>[...targets,...methods].includes(fact.value));
    const labels=[...new Set([...targets,...methods,...trips])].filter(label=>
     !editorial.some(fact=>fact.value===label)||g.fisheryOfferings?.some(offer=>
@@ -239,7 +246,7 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
       {captainTrips.slice(0,2).map(trip=><p className="guide-meta" key={trip.id}>
         <strong>Captain-provided trip:</strong> {trip.title} · {[trip.waterway,trip.launchArea,trip.jurisdiction].filter(Boolean).join(' · ')}
       </p>)}
-      {waters.length>0&&<p className="guide-meta">Advertised waters (source-linked): {waters.slice(0,3).join(' · ')}{waters.length>3?' · + more':''}</p>}
+      {displayWaters.length>0&&<p className="guide-meta">Advertised waters (source-linked): {displayWaters.slice(0,3).join(' · ')}{displayWaters.length>3?' · + more':''}</p>}
       <p className="guide-meta">{g.source==='Oregon registry'?'Imported registration zones':'Imported directory areas / notes'}: {g.areas.slice(0,3).join(' · ')||'Not specified'}{g.areas.length>3?' · + more':''}</p>
       <p className="guide-submeta">Imported source listing · {!reviewEnabled&&'Review data unavailable · '}Current credentials not independently checked</p>
      </div><span className="result-chevron">›</span>

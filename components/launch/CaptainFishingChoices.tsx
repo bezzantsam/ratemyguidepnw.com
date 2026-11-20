@@ -1,7 +1,7 @@
 'use client';
 
 import {useState} from 'react';
-import {fishingOptions} from '@/lib/captain-fishing/catalog.mjs';
+import {fishingOptions,isLegacyFishingGear} from '@/lib/captain-fishing/catalog.mjs';
 const commonIds = new Set(['trolling','jigging','fly-fishing','mooching','bottom-fishing','drift-fishing',
   'electric-fishing-reels','downriggers','manual-pot-pullers','electric-pot-pullers','crab-pots','spinning-tackle']);
 
@@ -13,8 +13,9 @@ export function FishingChoices({kind, ids, disabled, onToggle}: {
   const [expanded, setExpanded] = useState(false);
   const label = kind === 'method' ? 'Fishing methods' : 'Gear';
   const options = fishingOptions.filter(option => option.kind === kind);
+  const selectableCount = options.filter(option => !isLegacyFishingGear(option.id)).length;
   const query = search.trim().toLowerCase().replace(/^mixed\s+/, '');
-  const visible = options.filter(option => query
+  const visible = options.filter(option => !isLegacyFishingGear(option.id) || ids.includes(option.id)).filter(option => query
     ? [option.label, ...option.aliases].some(text => text.toLowerCase().includes(query)) ||
       (option.id==='bottom-fishing'&&['bottom fish','groundfish','ground fish'].includes(query))
     : expanded || commonIds.has(option.id) || ids.includes(option.id));
@@ -32,7 +33,7 @@ export function FishingChoices({kind, ids, disabled, onToggle}: {
         )}
         {visible.length === 0 && <p>No matching options.</p>}
         {!query && <button type="button" onClick={() => setExpanded(value => !value)}>
-          {expanded ? 'Show common options' : `Show all ${options.length} options`}
+          {expanded ? 'Show common options' : `Show all ${selectableCount} options`}
         </button>}
       </div>
     </details>

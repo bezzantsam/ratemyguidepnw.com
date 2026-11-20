@@ -14,14 +14,18 @@ if(!executablePath) throw new Error('Set BROWSER_EXECUTABLE and use the isolated
 test('public MVP discovery and fail-closed identity flow in a browser', {timeout:120000}, async()=>{
  const browser=await chromium.launch({executablePath,headless:true});
  const context=await browser.newContext({viewport:{width:1280,height:800}});
- const requests=[];const blocked=[];const errors=[];
+ const requests=[];const localApi=[];const blocked=[];const errors=[];
  await context.route('**/*',async route=>{
   const request=route.request();const url=new URL(request.url());
   if(url.origin===fakeApi){
    requests.push({method:request.method(),path:url.pathname,query:url.search});
    return route.fulfill({status:503,contentType:'application/json',body:'{"error":"backend unavailable"}'});
   }
-  if(url.origin===origin||url.protocol==='data:'||url.protocol==='blob:')return route.continue();
+  if(url.origin===origin){
+   if(url.pathname.startsWith('/api/'))localApi.push(url.pathname);
+   return route.continue();
+  }
+  if(url.protocol==='data:'||url.protocol==='blob:')return route.continue();
   blocked.push(url.origin);return route.abort();
  });
  const page=await context.newPage();page.setDefaultTimeout(15000);page.on('pageerror',e=>errors.push(`${page.url()}: ${e.message}`));
@@ -180,15 +184,18 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
   await page.getByRole('button',{name:'Washington',exact:true}).click();await q.fill('Aaron O’Leary');
   const before=requests.length;await page.getByRole('link',{name:/Aaron O’Leary/}).first().click();
   await page.getByRole('heading',{name:'Aaron O’Leary',exact:true}).waitFor();
-  await page.getByText('Review data is unavailable.').waitFor();
+  const heldReviews=page.locator('#write-review');
+  await heldReviews.getByRole('heading',{name:'Reviews',exact:true}).waitFor();
+  await heldReviews.getByRole('status').filter({hasText:'Reviews are unavailable for this guide right now.'}).waitFor();
+  assert.equal(await heldReviews.locator('form').count(),0);
+  assert.equal(await page.locator('#claim-profile, input[type="email"], textarea').count(),0);
   assert.equal(await page.getByText('Local fixture review for navigation test').count(),0);
-  await page.getByText('Review submissions are not currently available.').waitFor();
   await page.getByRole('link',{name:'Claiming currently unavailable →'}).click();
   await page.getByText('Profile claim submissions are not currently available.').waitFor();
+  assert.equal(await page.locator('form, input[type="email"], textarea').count(),0);
+  assert.equal(await page.getByRole('button',{name:/submit claim|sign in/i}).count(),0);
   await page.waitForTimeout(300);
   assert.deepEqual(requests.slice(before).filter(r=>r.path.startsWith('/rest/v1/')),[],'Washington profile and claim must not query guide data');
-  assert.deepEqual(requests,[],'directory must not access the unavailable backend');
-  assert.deepEqual(blocked,[],'no external network requests');assert.deepEqual(errors,[],'no uncaught page errors');
   await page.setViewportSize({width:375,height:812});await page.goto(`${origin}/guides`,{waitUntil:'domcontentloaded'});
   await q.waitFor();
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+1),'mobile page does not overflow horizontally');
@@ -197,5 +204,8 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
   await page.keyboard.press('Tab');
   assert.ok(await page.evaluate(()=>document.activeElement?.tagName==='SELECT'),'keyboard moves from search to area filter');
   if(process.env.BROWSER_SCREENSHOT_DIR)await page.screenshot({path:join(process.env.BROWSER_SCREENSHOT_DIR,'mobile.png'),fullPage:true});
+  assert.deepEqual(localApi,[],'closed fixture must not use same-origin API routes');
+  assert.deepEqual(requests,[],'directory must not access the unavailable backend');
+  assert.deepEqual(blocked,[],'no external network requests');assert.deepEqual(errors,[],'no uncaught page errors');
  }finally{await context.close();await browser.close()}
 });

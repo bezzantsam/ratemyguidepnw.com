@@ -32,11 +32,11 @@ test('synthetic browser connects mapped review, claim, moderation and published 
     if(!['public_reviews','profile_details','review_detail','review_write_availability','claim_availability'].includes(input.operation)&&headers.authorization!==`Bearer ${tokens[actor]}`)return route.fulfill({status:401,contentType:'application/json',body:'{"error":"sign_in_required"}'});
     let data;
     switch(input.operation){
-     case 'public_reviews':data={summary:{count:state.review?.status==='published'?1:0,averageQuality:state.review?.status==='published'?state.review.quality:null},reviews:state.review?.status==='published'?[{id:reviewId,quality:state.review.quality,body:state.review.body,published_at:'2026-11-17T00:00:00Z',trip_month:state.review.tripMonth?`${state.review.tripMonth}-01`:null,trip_responses:state.review.tripResponses??null}]:[],limit:100};break;
+     case 'public_reviews':data={summary:{count:state.review?.status==='published'?1:0,averageQuality:state.review?.status==='published'?state.review.quality:null},reviews:state.review?.status==='published'?[{id:reviewId,quality:state.review.quality,would_book_again:state.review.wouldBookAgain,communication:state.review.ratings?.communication,value_rating:state.review.ratings?.value,body:state.review.body,published_at:'2026-11-17T00:00:00Z',trip_month:state.review.tripMonth?`${state.review.tripMonth}-01`:null,trip_responses:state.review.tripResponses??null}]:[],limit:100};break;
      case 'review_write_availability':data={available:true};break;
      case 'own_review_for_guide':data={review:actor===reviewer&&state.review?{id:reviewId,status:state.review.status}:null};break;
      case 'profile_details':data={details:null,attribution:'captain_declared'};break;
-     case 'review_detail':if(state.review?.status!=='published'||input.id!==reviewId)return route.fulfill({status:404,contentType:'application/json',body:'{"error":"not_found"}'});data={review:{id:reviewId,quality:state.review.quality,intensity:null,would_book_again:null,body:state.review.body,relationship_disclosure:'none',published_at:'2026-11-17T00:00:00Z',trip_month:state.review.tripMonth?`${state.review.tripMonth}-01`:null,trip_responses:null}};break;
+     case 'review_detail':if(state.review?.status!=='published'||input.id!==reviewId)return route.fulfill({status:404,contentType:'application/json',body:'{"error":"not_found"}'});data={review:{id:reviewId,quality:state.review.quality,intensity:null,would_book_again:state.review.wouldBookAgain,communication:4,value_rating:3,body:state.review.body,relationship_disclosure:'none',published_at:'2026-11-17T00:00:00Z',trip_month:state.review.tripMonth?`${state.review.tripMonth}-01`:null,trip_responses:{version:1,answers:{effort:{state:'answered',value:2},organization:{state:'answered',value:3},fish_landed:{state:'answered',value:0}}}}};break;
      case 'session':data={authenticated:true,operator:actor===operator};break;
      case 'my_submissions':data={items:actor===reviewer?[...(state.review?[{id:reviewId,kind:'review',status:state.review.status,created_at:'2026-11-17T00:00:00Z',jurisdiction:'OR',source_id:'OG.0002254',review_id:null}]:[]),...(state.revision?[{id:state.revision.id,kind:'revision',status:'pending',created_at:'2026-11-17T00:00:00Z',jurisdiction:'OR',source_id:'OG.0002254',review_id:reviewId}]:[]),...(state.claim?[{id:claimId,kind:'claim',status:'pending',created_at:'2026-11-17T00:00:00Z',jurisdiction:'OR',source_id:'OG.0002254',review_id:null}]:[])]:[],offset:input.offset,limit:input.limit};break;
      case 'submit_review':state.review={...input,status:'pending'};data={id:reviewId,status:'pending'};break;
@@ -45,7 +45,7 @@ test('synthetic browser connects mapped review, claim, moderation and published 
      case 'claim_status':data={status:state.claim?'pending':'none'};break;
      case 'submit_claim':state.claim=input;data={id:claimId,status:'pending',existing:false};break;
      case 'report_review':if(actor!==reporter||state.review?.status!=='published'||input.reviewId!==reviewId)throw Error('Unexpected synthetic report');data={id:reportId,status:'submitted',existing:!!state.report};state.report={reason:input.reason,status:'submitted'};break;
-     case 'operator_queue':data={items:input.kind==='review'&&state.review?.status==='pending'?[{id:reviewId,guide_name:'Fixture Guide',body:state.review.body,quality:state.review.quality,intensity:state.review.intensity,would_book_again:state.review.wouldBookAgain,trip_month:state.review.tripMonth?`${state.review.tripMonth}-01`:null,firsthand_attested:true,relationship_disclosure:'none',trip_responses:null,created_at:'2026-11-17T00:00:00Z'}]:input.kind==='report'&&state.report?.status==='submitted'?[{id:reportId,review_id:reviewId,guide_name:'Fixture Guide',reason:state.report.reason,review_status:state.review.status,public_review_body:state.review.body,created_at:'2026-11-17T00:00:00Z'}]:[],offset:input.offset,limit:input.limit};break;
+     case 'operator_queue':data={items:input.kind==='review'&&state.review?.status==='pending'?[{id:reviewId,guide_name:'Fixture Guide',is_own_submission:false,body:state.review.body,quality:state.review.quality,intensity:state.review.intensity,would_book_again:state.review.wouldBookAgain,trip_month:state.review.tripMonth?`${state.review.tripMonth}-01`:null,firsthand_attested:true,relationship_disclosure:'none',trip_responses:null,created_at:'2026-11-17T00:00:00Z'}]:input.kind==='report'&&state.report?.status==='submitted'?[{id:reportId,review_id:reviewId,guide_name:'Fixture Guide',reason:state.report.reason,review_status:state.review.status,public_review_body:state.review.body,created_at:'2026-11-17T00:00:00Z'}]:[],offset:input.offset,limit:input.limit};break;
      case 'operator_decide':if(actor!==operator||input.id!==reviewId)throw Error('Unexpected synthetic moderation action');state.review.status=input.approve?'published':'rejected';data={id:reviewId,status:state.review.status};break;
      case 'resolve_report':if(actor!==operator||input.id!==reportId||!state.report)throw Error('Unexpected synthetic report resolution');state.report.status='resolved';data={id:reportId,status:'resolved'};break;
      default:throw Error(`Unexpected synthetic operation: ${input.operation}`);
@@ -66,13 +66,21 @@ test('synthetic browser connects mapped review, claim, moderation and published 
   await page.waitForURL(ratingProfile);
   await page.getByText('No published reviews yet.').waitFor();
   await page.getByText('Fished with this guide? Be the first to share your experience.').waitFor();
-  await page.getByLabel('Overall quality').selectOption('5');await page.getByLabel('Your relationship to this guide or business').selectOption('none');await page.getByLabel('Your experience').fill('A good firsthand trip.');await page.getByLabel('I personally took this trip.').check();
+  await page.getByLabel('Overall quality').selectOption('5');
+  await page.getByRole('radio',{name:'Yes',exact:true}).check();
+  await page.getByText('More ratings (optional)',{exact:true}).click();
+  await page.getByLabel('Communication',{exact:true}).selectOption('4');
+  await page.getByLabel('Value',{exact:true}).selectOption('3');
+  await page.getByLabel('Your relationship to this guide or business').selectOption('none');await page.getByLabel('Your experience').fill('A good firsthand trip.');await page.getByLabel('I personally took this trip.').check();
   await page.getByText('Tell us more',{exact:true}).click();await page.getByLabel('Trip month (optional)').fill('2026-07');
   await page.getByRole('button',{name:'Submit review'}).click();await page.getByText(/Your review is (pending|awaiting review)/).first().waitFor();
   const reviewStatus=page.getByRole('link',{name:'View your review status'});
   await reviewStatus.waitFor();
   assert.equal(await reviewStatus.getAttribute('href'),'#your-submissions');
-  assert.equal(state.review.intensity,null);assert.equal(state.review.wouldBookAgain,null);assert.equal(state.review.sourceId,'OG.0002254');assert.equal(state.review.tripMonth,'2026-07');
+  assert.equal(state.review.intensity,null);assert.equal(state.review.wouldBookAgain,true);
+  assert.equal(state.review.ratingVersion,1);
+  assert.deepEqual(state.review.ratings,{communication:4,value:3});
+  assert.equal(state.review.sourceId,'OG.0002254');assert.equal(state.review.tripMonth,'2026-07');
   await page.getByRole('link',{name:'Claim this profile'}).click();const claimSection=page.locator('#claim-profile');await claimSection.getByLabel('Your name').fill('Fixture Captain');await claimSection.getByLabel('Your connection to this listing').fill('I operate the guide business shown on this listing.');await claimSection.getByRole('button',{name:'Submit claim request'}).click();await claimSection.getByText('Your claim request is pending review. Your evidence is private.').waitFor();await page.reload();await claimSection.getByText('Your claim request is pending review. Your evidence is private.').waitFor();
   await page.getByText('Sharing options',{exact:true}).click();await page.getByRole('button',{name:'Copy review request link'}).click();assert.equal(await page.evaluate(()=>window.__fixtureCopied),'https://ratemyguidepnw.vercel.app/guides/og-0002254?intent=review#write-review');
   const admin=await contextFor(operator,{width:1280,height:800}),queue=await admin.newPage();queue.on('pageerror',e=>state.errors.push(e.message));await queue.goto(`${origin}/admin`,{waitUntil:'domcontentloaded'});await queue.getByText('Fixture Guide',{exact:false}).waitFor();
@@ -98,11 +106,23 @@ test('synthetic browser connects mapped review, claim, moderation and published 
   await page.getByRole('button',{name:'Copy review link'}).click();assert.equal(await page.evaluate(()=>window.__fixtureCopied),`https://ratemyguidepnw.vercel.app/guides/og-0002254#review-${reviewId}`);
   await page.setViewportSize({width:390,height:844});await page.reload({waitUntil:'domcontentloaded'});await page.getByText('A good firsthand trip.').waitFor();assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
   await page.getByRole('button',{name:'Edit your review'}).click();
+  const editor=page.locator('form').filter({has:page.getByRole('heading',{name:'Edit your review'})});
+  await editor.getByText('More ratings (optional)',{exact:true}).click();
+  assert.equal(await editor.getByLabel('Communication',{exact:true}).inputValue(),'4');
+  assert.equal(await editor.getByRole('radio',{name:'Yes',exact:true}).isChecked(),true);
+  assert.equal(await editor.getByLabel('Organization',{exact:true}).inputValue(),'value:3');
+  assert.equal(await editor.getByLabel('How many fish did your group land?',{exact:false}).inputValue(),'0');
+  await editor.getByLabel('Value',{exact:true}).selectOption('');
   await page.getByLabel('Your experience').fill('A good firsthand trip with a corrected detail.');
   await page.getByLabel('I personally took this trip.').check();
   await page.getByRole('button',{name:'Submit changes for review'}).click();
   await page.getByText('Your changes are pending review. Your current published review is still visible.').waitFor();
   assert.equal(state.revision.body,'A good firsthand trip with a corrected detail.');
+  assert.deepEqual(state.revision.ratings,{value:null});
+  assert.equal(Object.hasOwn(state.revision,'wouldBookAgain'),false);
+  assert.equal(state.revision.tripResponses.answers.effort.value,2);
+  assert.equal(state.revision.tripResponses.answers.organization.value,3);
+  assert.equal(state.revision.tripResponses.answers.fish_landed.value,0);
   assert.equal(state.review.body,'A good firsthand trip.');
   if(process.env.BROWSER_SCREENSHOT_DIR){mkdirSync(process.env.BROWSER_SCREENSHOT_DIR,{recursive:true});await page.screenshot({path:join(process.env.BROWSER_SCREENSHOT_DIR,'synthetic-launch-mobile.png'),fullPage:true})}
   await page.goto(`${origin}/write-review`,{waitUntil:'networkidle'});await page.getByRole('searchbox',{name:'Captain, business, operating name, or registration'}).fill('OG.0002254');await page.locator('.guide-result[href^="/guides/og-0002254?"][href*="q%3DOG.0002254"]').click();await page.waitForURL(ratingProfile);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
@@ -184,7 +204,7 @@ test('phone review retry preserves a private draft and checks for a receipt befo
   async function fill(id,body){
    await page.goto(origin+guidePath(id),{waitUntil:'domcontentloaded'});
    await text.fill(body);
-   await page.getByLabel('Overall quality').selectOption('5');
+   await page.getByLabel('Overall quality').selectOption('5');await page.getByRole('radio',{name:'No',exact:true}).check();
    await page.getByLabel('Your relationship to this guide or business').selectOption('none');
    await page.getByLabel('I personally took this trip.').check();
   }

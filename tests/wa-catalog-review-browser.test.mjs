@@ -14,6 +14,11 @@ const andy={jurisdiction:'WA',sourceId:'wa-004',name:'Andy Coleman'};
 const held={jurisdiction:'WA',sourceId:'wa-001',name:'Aaron Berg'};
 const rod={jurisdiction:'OR',sourceId:'OG.0002193'};
 const publishedId='10000000-0000-4000-8000-000000000001';
+const publishedReview={
+  id:publishedId,quality:4,would_book_again:false,communication:2,value_rating:5,
+  trip_responses:{version:1,answers:{fishiness:{state:'answered',value:2},fish_landed:{state:'answered',value:0}}},
+  body:'An independently moderated fixture review.',published_at:'2026-11-19T00:00:00Z',
+};
 const pendingId='10000000-0000-4000-8000-000000000002';
 const authorId='10000000-0000-4000-8000-000000000003';
 const email='fixture@example.invalid';
@@ -29,7 +34,7 @@ const score=(sourceId)=>sourceId===andy.sourceId?{count:1,averageQuality:4}:{cou
 const finder=name=>'/write-review?'+new URLSearchParams({q:name,state:'Washington'}).toString();
 const profile=source=>'/washington/'+source.sourceId;
 const known=new Set([charles.sourceId,andy.sourceId,held.sourceId,rod.sourceId]);
-const publicOps=new Set(['public_review_summaries','review_write_availability','public_reviews','claim_availability','profile_details']);
+const publicOps=new Set(['public_review_summaries','review_write_availability','public_reviews','review_detail','claim_availability','profile_details']);
 
 test('two separate unclaimed WA guides can be reviewed, with pending privacy and a held neighbor', {timeout:120000},async()=>{
   const browser=await chromium.launch({executablePath,headless:true});
@@ -68,10 +73,11 @@ test('two separate unclaimed WA guides can be reviewed, with pending privacy and
               return route.fulfill({json:{available:sourceId!==held.sourceId}});
             case 'public_reviews':
               assert.notEqual(sourceId,held.sourceId);
-              return route.fulfill({json:{summary:score(sourceId),reviews:sourceId===andy.sourceId?[{
-                id:publishedId,quality:4,body:'An independently moderated fixture review.',
-                published_at:'2026-11-19T00:00:00Z',
-              }]:[]}});
+              return route.fulfill({json:{summary:score(sourceId),reviews:sourceId===andy.sourceId?[publishedReview]:[]}});
+            case 'review_detail':
+              assert.equal(sourceId,andy.sourceId);
+              assert.equal(input.id,publishedId);
+              return route.fulfill({json:{review:publishedReview}});
             case 'claim_availability':
             case 'profile_details':
               assert.equal(sourceId,rod.sourceId);
@@ -89,6 +95,13 @@ test('two separate unclaimed WA guides can be reviewed, with pending privacy and
             case 'submit_review':
               assert.equal(sourceId,charles.sourceId);
               assert.equal(input.body,'Private firsthand fixture trip.');
+              assert.equal(input.ratingVersion,1);
+              assert.equal(input.wouldBookAgain,false);
+              assert.deepEqual(input.ratings,{professionalism:4,safety:2});
+              assert.deepEqual(input.tripResponses,{version:1,answers:{
+                kindness:{state:'answered',value:4},organization:{state:'answered',value:3},
+                fishiness:{state:'answered',value:5},fish_landed:{state:'answered',value:0},
+              }});
               assert.equal(pending,false);
               if(++submitAttempts===1)return route.fulfill({status:503,json:{error:'service_unavailable'}});
               pending=true;
@@ -112,7 +125,25 @@ test('two separate unclaimed WA guides can be reviewed, with pending privacy and
 
     await openFinder(phone,charles,'No reviews yet');
     await phone.getByRole('button',{name:'Submit review'}).waitFor();
+    const booking=phone.getByRole('group',{name:'Would you book again?'});
+    const optional=phone.getByRole('group',{name:'Rate individual aspects (optional)'});
+    assert.equal(await booking.getByRole('radio',{checked:true}).count(),0);
+    assert.ok((await booking.boundingBox()).y<(await optional.boundingBox()).y);
+    assert.equal(await phone.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+    assert.deepEqual(await optional.getByRole('combobox').evaluateAll(items=>items.map(item=>item.value)),Array(4).fill(''));
     await phone.getByLabel('Overall quality').selectOption('5');
+    await booking.getByRole('radio',{name:'Yes',exact:true}).focus();
+    await phone.keyboard.press('ArrowRight');
+    assert.equal(await booking.getByRole('radio',{name:'No',exact:true}).isChecked(),true);
+    await optional.getByLabel('Kindness',{exact:true}).selectOption('value:4');
+    await optional.getByLabel('Organization',{exact:true}).selectOption('value:3');
+    await optional.getByLabel('Finding fish',{exact:true}).selectOption('value:5');
+    const fishLanded=phone.getByLabel('How many fish did your group land?',{exact:false});
+    assert.equal(await fishLanded.inputValue(),'');
+    await fishLanded.fill('0');
+    await optional.getByText('More ratings (optional)',{exact:true}).click();
+    await optional.getByLabel('Professionalism').selectOption('4');
+    await optional.getByLabel('Safety').selectOption('2');
     await phone.getByLabel('Your relationship to this guide or business').selectOption('none');
     await phone.getByLabel('Your experience').fill('Private firsthand fixture trip.');
     await phone.getByLabel('I personally took this trip.').check();
@@ -136,6 +167,18 @@ test('two separate unclaimed WA guides can be reviewed, with pending privacy and
 
     await openFinder(phone,andy,'4.0');
     await phone.getByText('An independently moderated fixture review.').waitFor();
+    const details=phone.locator(`#review-${publishedId}`);
+    await details.getByText('Would book again: No').waitFor();
+    await details.getByText('Fish landed by the group, including releases: 0').waitFor();
+    assert.match(await details.locator('.published-review-dimensions').innerText(),/Finding fish\s+2 \/ 5/);
+    assert.match(await details.locator('.published-review-dimensions').innerText(),/Communication\s+2 \/ 5[\s\S]+Value\s+5 \/ 5/);
+    assert.equal(await details.getByText('Safety',{exact:true}).count(),0);
+    await desktop.goto(origin+profile(andy)+'#review-'+publishedId);
+    await desktop.getByRole('heading',{name:'Linked angler review'}).waitFor();
+    const linked=desktop.locator(`#review-${publishedId}`);
+    await linked.getByText('Fish landed by the group, including releases: 0').waitFor();
+    await linked.getByText('Overall quality: 4 / 5').waitFor();
+
     await phone.getByRole('link',{name:'4.0 / 5 · 1 review'}).waitFor();
     await phone.getByRole('button',{name:'Submit review'}).waitFor();
     assert.equal(await privateReceipt.count(),0);

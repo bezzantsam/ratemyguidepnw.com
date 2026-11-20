@@ -404,7 +404,8 @@ test('catalog misses, pauses, invalid browser versions and old-pilot collisions 
 
 test('catalog profile lookup and mixed summary use exact version keys with bare public IDs',async()=>{
  const guideId='10000000-0000-4000-8000-000000000021';
- const published={id:'10000000-0000-4000-8000-000000000010',quality:4,body:'Public fixture'};
+ const published={id:'10000000-0000-4000-8000-000000000010',quality:4,body:'Public fixture',
+  communication:5,professionalism:null,safety:4,equipment:3,knowledge:2,effort:null,value_rating:5};
  const summary={count:1,averageQuality:4};
  const calls=[];
  const factory=()=>({
@@ -418,7 +419,12 @@ test('catalog profile lookup and mixed summary use exact version keys with bare 
   from:table=>{
    assert.equal(table,'public_angler_reviews');
    const query={
-    select:()=>query,eq:(key,value)=>{
+    select:columns=>{
+     const selected=columns.split(',');
+     assert.ok(Object.keys(published).every(key=>selected.includes(key)));
+     assert.ok(!selected.includes('author_id'));
+     return query;
+    },eq:(key,value)=>{
      assert.equal(value,key==='guide_id'?guideId:published.id);
      return query;
     },order:()=>query,limit:async()=>({data:[published]}),maybeSingle:async()=>({data:published}),
@@ -448,16 +454,17 @@ test('catalog profile lookup and mixed summary use exact version keys with bare 
  ]}]]);
 });
 
-test('operator queues show only an exact catalog listing name/link and omit internal version keys',async()=>{
+test('operator queues resolve the catalog label and forward ownership without author identities',async()=>{
  const rows=[
-  {id:'row-a',guide_name:'Internal catalog carrier',catalog_source_id:'wa-001',catalog_listing_sha256:'a'.repeat(64)},
+  {id:'row-a',guide_name:'Internal catalog carrier',catalog_source_id:'wa-001',catalog_listing_sha256:'a'.repeat(64),
+    is_own_submission:true,author_id:'private-author',review_author_id:'private-review-author',author_email:'private@example.invalid'},
   {id:'row-b',guide_name:'Internal catalog carrier',catalog_source_id:'wa-002',catalog_listing_sha256:'b'.repeat(64)},
   {id:'row-c',guide_name:'Stale carrier',catalog_source_id:'wa-002',catalog_listing_sha256:'a'.repeat(64),
     guide_profile_path:'https://invalid.example'},
   {id:'row-or',guide_name:'Oregon Guide',catalog_source_id:null,catalog_listing_sha256:null},
  ];
  const expected=[
-  {id:'row-a',guide_name:'Washington Guide One',guide_profile_path:'/washington/wa-001'},
+  {id:'row-a',guide_name:'Washington Guide One',guide_profile_path:'/washington/wa-001',is_own_submission:true},
   {id:'row-b',guide_name:'Washington Guide Two',guide_profile_path:'/washington/wa-002'},
   {id:'row-c',guide_name:null},
   {id:'row-or',guide_name:'Oregon Guide'},
@@ -489,4 +496,46 @@ test('operator queues show only an exact catalog listing name/link and omit inte
   ordinary.factory,catalogFlags,versionFor,()=>assert.fail('Ordinary session read a moderation listing'));
  assert.equal(denied.status,403);
  assert.equal(ordinary.calls.at(-1)[0],'is_site_admin');
+});
+
+test('versioned richer review submits explicit No and distinct typed ratings on OR and exact WA',async()=>{
+ const ratings={communication:5,professionalism:4,safety:3,equipment:2,knowledge:1,effort:4,value:3};
+ const tripResponses={version:1,answers:{organization:{state:'answered',value:4},
+  kindness:{state:'answered',value:5},fishiness:{state:'answered',value:3},fish_landed:{state:'answered',value:0}}};
+ for(const source of [{jurisdiction:'OR',sourceId:'OG.0000090.F&F'},catalogA]){
+  const b=backend();
+  const response=await handleLaunch(req({...review,...source,ratingVersion:1,ratings,tripResponses,wouldBookAgain:false},'token'),
+   b.factory,catalogFlags,versionFor);
+  assert.equal(response.status,200);
+  const [name,params]=b.calls.at(-1);
+  assert.equal(name,'rmg_submit_review_v3');
+  assert.equal(params.p_source_id,source.jurisdiction==='WA'?source.sourceId+'@catalog:'+versionFor(source.sourceId,'catalog'):source.sourceId);
+  assert.deepEqual(params.p_ratings,ratings);
+  assert.deepEqual(params.p_trip_responses,tripResponses);
+  assert.equal(params.p_rebook,false);
+ }
+ const {wouldBookAgain, ...basic}=review;
+ for(const input of [
+  {...basic,ratingVersion:1},{...basic,ratingVersion:1,wouldBookAgain:null},
+  {...review,ratingVersion:1,quality:0},{...review,ratingVersion:2},
+  {...review,ratings},{...review,ratingVersion:1,ratings:{communication:null}},
+  {...review,ratingVersion:1,ratings:{communication:'5'}},{...review,ratingVersion:1,ratings:{communication:2.5}},
+  {...review,ratingVersion:1,ratings:{value:6}},{...review,ratingVersion:1,ratings:{value_rating:3}},
+ ]){
+  const b=backend();
+  assert.equal((await handleLaunch(req(input,'token'),b.factory,env)).status,400);
+  assert.deepEqual(b.calls,[]);
+ }
+});
+
+test('versioned edits pass missing booking and the sparse patch to the existing authenticated review lane',async()=>{
+ const {jurisdiction,sourceId,wouldBookAgain,...base}=review;
+ const b=backend();
+ const response=await handleLaunch(req({...base,operation:'submit_revision',
+  reviewId:'00000000-0000-0000-0000-000000000001',ratingVersion:1,ratings:{safety:null,value:4}},'token'),b.factory,env);
+ assert.equal(response.status,200);
+ const [name,params]=b.calls.at(-1);
+ assert.equal(name,'rmg_submit_revision_v3');
+ assert.deepEqual(params.p_ratings,{safety:null,value:4});
+ assert.equal(params.p_rebook,null);
 });

@@ -1,11 +1,10 @@
 'use client';
 
 import {useId, useRef, useState} from 'react';
-import {type ClaimDraft, type RelationshipDisclosure, type ReviewDraft, type SubmissionReceipt, isSubmissionReceipt, validateClaimDraft, validateReviewDraft} from './submission-model';
-import {TripDetails} from './TripDetails';
-import {decodeTripResponses,encodeTripResponses,type TripDraft} from './trip-responses';
+import {type ClaimDraft, REVIEW_DIMENSIONS, type ReviewDimension, type ReviewDimensions, type ReviewRatingPatch, type RelationshipDisclosure, type ReviewDraft, type SubmissionReceipt, isSubmissionReceipt, validateClaimDraft, validateReviewDraft} from './submission-model';
+import {TripDetails,TripFields} from './TripDetails';
+import {FISH_LANDED_FIELD,REVIEW_TRIP_RATINGS,decodeTripResponses,encodeTripResponses,type TripDraft} from './trip-responses';
 
-/** These views are not connected to a backend until the reviewed integration supplies one. */
 type SubmitReview = (draft: ReviewDraft) => Promise<SubmissionReceipt>;
 type SubmitClaim = (draft: ClaimDraft) => Promise<SubmissionReceipt>;
 
@@ -35,6 +34,14 @@ export function ReviewSubmission({onSubmit, onCheckBeforeRetry, allowTripRespons
   const [quality, setQuality] = useState(initial?String(initial.quality):'');
   const [intensity, setIntensity] = useState(initial?.intensity==null?'':String(initial.intensity));
   const [wouldBookAgain, setWouldBookAgain] = useState(initial?.wouldBookAgain===true?'yes':initial?.wouldBookAgain===false?'no':'');
+  const [ratings, setRatings] = useState<ReviewDimensions>(() => {
+    const scores:ReviewDimensions={};
+    for(const {key} of REVIEW_DIMENSIONS) {
+      const score=initial?.ratings?.[key];
+      if(score!=null)scores[key]=score;
+    }
+    return scores;
+  });
   const [body, setBody] = useState(initial?.body??'');
   const [tripMonth, setTripMonth] = useState(initial?.tripMonth??'');
   const [tripDraft, setTripDraft] = useState<TripDraft|null>(()=>decodeTripResponses(initial?.tripResponses));
@@ -55,8 +62,23 @@ export function ReviewSubmission({onSubmit, onCheckBeforeRetry, allowTripRespons
     if (!allowTripResponses && Object.keys(tripDraft).length) {setError('Trip details are no longer available. Refresh before submitting.');return;}
     const details=encodeTripResponses(tripDraft);
     if(details.error) {setError(details.error);return;}
-    const draft = {quality: Number(quality), intensity: intensity === '' ? null : Number(intensity), wouldBookAgain: wouldBookAgain === '' ? null : wouldBookAgain === 'yes', body: body.trim(), firsthand, tripMonth: tripMonth||null, relationship:relationship || null,...(allowTripResponses&&details.value?{tripResponses:details.value}:{})};
-    const problem = validateReviewDraft(draft);
+    const patch:ReviewRatingPatch={};
+    for(const {key} of REVIEW_DIMENSIONS) {
+      const before=initial?.ratings?.[key]??null;
+      const after=ratings[key]??null;
+      if(before!==after)patch[key]=after;
+    }
+    const bookingAnswer=wouldBookAgain===''?null:wouldBookAgain==='yes';
+    // The versioned client omits a null booking patch on revisions.
+    const bookingPatch=mode==='revision'&&bookingAnswer===initial?.wouldBookAgain?null:bookingAnswer;
+    const draft:ReviewDraft = {
+      quality:Number(quality), intensity:intensity===''?null:Number(intensity),
+      wouldBookAgain:bookingPatch,
+      body:body.trim(), firsthand, tripMonth:tripMonth||null, relationship:relationship||null,
+      ...(allowTripResponses&&details.value?{tripResponses:details.value}:{}),
+      ratingVersion:1, ...(Object.keys(patch).length?{ratings:patch}:{}),
+    };
+    const problem = validateReviewDraft(draft,mode);
     if (problem) { setError(problem); return; }
     submitting.current = true; setBusy(true); setError(''); setRetryMessage('');
     try { const result = await onSubmit(draft); if (!isSubmissionReceipt(result,'review') || (mode==='revision'&&result.status!=='pending')) throw new Error('Invalid receipt'); setReceipt(result); }
@@ -96,11 +118,28 @@ export function ReviewSubmission({onSubmit, onCheckBeforeRetry, allowTripRespons
   return <form onSubmit={submit} className="card launch-form">
     <h3>{mode==='revision'?'Edit your review':'Share your trip experience'}</h3>
     {mode==='revision'&&<p>Your changes will be reviewed. Your current published review stays visible while the changes are pending.</p>}
-    <p>Write about a trip you personally took. State any personal or paid connection, or say that you have none. Your review is checked before publication. Signing in confirms your account, not that a trip occurred.</p>
     <label htmlFor={`${prefix}-quality`}>Overall quality</label>
     <select id={`${prefix}-quality`} value={quality} onChange={event=>setQuality(event.target.value)} required>
       <option value="">Choose a rating</option>{[1,2,3,4,5].map(value=><option key={value} value={value}>{value} / 5</option>)}
     </select>
+    <fieldset className="review-book-again">
+      <legend>Would you book again?</legend>
+      <div className="review-book-again-options">
+        {['yes','no'].map(value=><label key={value}>
+          <input type="radio" name={`${prefix}-again`} value={value} checked={wouldBookAgain===value}
+            required={mode==='review'} onChange={event=>setWouldBookAgain(event.target.value)}/>
+          {value==='yes'?'Yes':'No'}
+        </label>)}
+      </div>
+    </fieldset>
+    <ReviewDimensionFields ratings={ratings} onChange={(key,value)=>setRatings(current=>{
+      const next={...current};
+      if(value==='')delete next[key];else next[key]=Number(value);
+      return next;
+    })}>
+      {allowTripResponses&&tripDraft&&<TripFields fields={REVIEW_TRIP_RATINGS} draft={tripDraft} onChange={setTripDraft}/>}
+    </ReviewDimensionFields>
+    {allowTripResponses&&tripDraft&&<TripFields fields={catchFields} draft={tripDraft} onChange={setTripDraft}/>}
     <label htmlFor={`${prefix}-relationship`}>Your relationship to this guide or business</label>
     <select id={`${prefix}-relationship`} value={relationship} onChange={event=>setRelationship(event.target.value as RelationshipDisclosure | '')} required>
       <option value="">Choose an answer</option><option value="none">None</option><option value="personal">Personal</option><option value="financial">Financial</option><option value="other">Other</option>
@@ -110,10 +149,9 @@ export function ReviewSubmission({onSubmit, onCheckBeforeRetry, allowTripRespons
       <input type="month" id={`${prefix}-month`} value={tripMonth} onChange={event=>setTripMonth(event.target.value)} />
       <label htmlFor={`${prefix}-intensity`}>Trip intensity (optional)</label>
       <select id={`${prefix}-intensity`} value={intensity} onChange={event=>setIntensity(event.target.value)}><option value="">Not answered</option>{[1,2,3,4,5].map(value=><option key={value} value={value}>{value} / 5</option>)}</select>
-      <label htmlFor={`${prefix}-again`}>Would you book again? (optional)</label>
-      <select id={`${prefix}-again`} value={wouldBookAgain} onChange={event=>setWouldBookAgain(event.target.value)}><option value="">Not answered</option><option value="yes">Yes</option><option value="no">No</option></select>
     </TripDetails>}
     <label htmlFor={`${prefix}-body`}>Your experience</label>
+    <p>Write about a trip you personally took. Your review is checked before publication. Signing in confirms your account, not that a trip occurred.</p>
     <p id={`${prefix}-body-help`}>Write up to 3,000 characters.</p>
     <textarea id={`${prefix}-body`} aria-describedby={`${prefix}-body-help`} value={body} onChange={event=>setBody(event.target.value)} minLength={1} maxLength={3000} required />
     <label><input type="checkbox" checked={firsthand} onChange={event=>setFirsthand(event.target.checked)} required/> I personally took this trip.</label>
@@ -123,6 +161,41 @@ export function ReviewSubmission({onSubmit, onCheckBeforeRetry, allowTripRespons
     {onCheckBeforeRetry && (needsCheck || !writeAvailable) && <button type="button" disabled={busy || checking} onClick={()=>void checkBeforeRetry()}>{checking ? 'Checking…' : 'Check before retrying'}</button>}
     <button type="submit" disabled={busy || checking || needsCheck || !writeAvailable}>{busy ? 'Submitting…' : mode==='revision' ? 'Submit changes for review' : 'Submit review'}</button>
   </form>;
+}
+
+const catchFields=[FISH_LANDED_FIELD];
+
+function ReviewDimensionFields({ratings,onChange,children}:{
+  ratings:ReviewDimensions;
+  onChange:(key:ReviewDimension,value:string)=>void;
+  children?:React.ReactNode;
+}) {
+  const prefix=useId();
+  function renderScore({key,label}:typeof REVIEW_DIMENSIONS[number]) {
+    const id=`${prefix}-${key}`;
+    return <div key={key}>
+      <label htmlFor={id}>{label}</label>
+      <select id={id} value={ratings[key]??''} onChange={event=>onChange(key,event.target.value)}>
+        <option value="">Not rated</option>
+        {[1,2,3,4,5].map(value=><option key={value} value={value}>{value} / 5</option>)}
+      </select>
+    </div>;
+  }
+
+  return <fieldset className="review-dimensions">
+    <legend>Rate individual aspects (optional)</legend>
+    <p>1 is poor and 5 is excellent. Finding fish is your assessment of how well the guide put you on fish.</p>
+    <div className="review-dimension-fields">
+      {REVIEW_DIMENSIONS.filter(field=>field.key==='safety').map(renderScore)}
+      {children}
+    </div>
+    <details>
+      <summary>More ratings (optional)</summary>
+      <div className="review-dimension-fields">
+        {REVIEW_DIMENSIONS.filter(field=>field.key!=='safety').map(renderScore)}
+      </div>
+    </details>
+  </fieldset>;
 }
 
 export function ClaimSubmission({onSubmit}: {onSubmit: SubmitClaim}) {

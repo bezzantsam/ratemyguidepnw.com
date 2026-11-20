@@ -66,4 +66,9 @@ if [[ ${2:-} == --wa-catalog-review ]]; then
   "${ps[@]}" -v "catalog_pause=$candidate/wa-catalog-review-disable-v1.sql" \
     -f "$root/tests/backend-launch/wa-catalog-review-v1.sql"
   run python3 "$root/tests/backend-launch/wa-review-pilot-race.py" "$work" --catalog
+  "${ps[@]}" -1 -f "$candidate/richer-review-ratings-v1.sql" \
+    -f "$candidate/richer-review-survey-v1.sql" \
+    -f "$candidate/review-moderator-own-submission-v1.sql"
+  "${ps[@]}" -f "$root/tests/backend-launch/richer-review-ratings-v1.sql"
+  "${ps[@]}" -f "$root/tests/backend-launch/review-moderator-own-submission-v1.sql"
 fi
