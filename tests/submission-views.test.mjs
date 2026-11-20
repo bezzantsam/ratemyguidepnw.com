@@ -17,8 +17,9 @@ function compile(path, imports={}) {
 }
 const model=compile('components/launch/submission-model.ts');
 const trip=compile('components/launch/trip-responses.ts');
+const draftStorage=compile('components/launch/review-draft-storage.ts',{'./submission-model':model,'./trip-responses':trip});
 const details=compile('components/launch/TripDetails.tsx',{'./trip-responses':trip});
-const views=compile('components/launch/SubmissionViews.tsx',{'./submission-model':model,'./trip-responses':trip,'./TripDetails':details});
+const views=compile('components/launch/SubmissionViews.tsx',{'./submission-model':model,'./trip-responses':trip,'./TripDetails':details,'./review-draft-storage':draftStorage});
 const queue=compile('components/launch/ModerationQueue.tsx',{'./submission-model':model,'./SubmissionViews':views});
 const published=compile('components/launch/PublishedReviews.tsx',{'./submission-model':model,'./ReviewShare':{ReviewShare:()=>null},'./ReportReview':{ReportReview:()=>null}});
 const receiptId='10000000-0000-4000-8000-000000000001';

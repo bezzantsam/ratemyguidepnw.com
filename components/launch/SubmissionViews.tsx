@@ -1,9 +1,10 @@
 'use client';
 
-import {useId, useRef, useState} from 'react';
+import {useEffect, useId, useRef, useState} from 'react';
 import {type ClaimDraft, REVIEW_DIMENSIONS, type ReviewDimension, type ReviewDimensions, type ReviewRatingPatch, type RelationshipDisclosure, type ReviewDraft, type SubmissionReceipt, isSubmissionReceipt, validateClaimDraft, validateReviewDraft} from './submission-model';
 import {TripDetails,TripFields} from './TripDetails';
-import {FISH_LANDED_FIELD,REVIEW_TRIP_RATINGS,decodeTripResponses,encodeTripResponses,isTripHighlight,type TripDraft} from './trip-responses';
+import {FISH_LANDED_FIELD,REVIEW_TRIP_RATINGS,decodeTripResponses,encodeTripResponses,isTripHighlight} from './trip-responses';
+import {clearReviewDraft,readReviewDraft,reviewDraftStorageKey,saveReviewDraft,type ReviewDraftScope,type SavedReviewDraft} from './review-draft-storage';
 
 type SubmitReview = (draft: ReviewDraft) => Promise<SubmissionReceipt>;
 type SubmitClaim = (draft: ClaimDraft) => Promise<SubmissionReceipt>;
@@ -22,42 +23,99 @@ export function SubmissionStatus({kind, receipt}: {kind: 'review' | 'claim'; rec
 
 type ReviewRetryStatus = 'ready' | 'closed' | 'submitted';
 
-export function ReviewSubmission({onSubmit, onCheckBeforeRetry, allowTripResponses=false, writeAvailable=true, initial, mode='review'}: {
+function initialReviewForm(initial?: ReviewDraft): SavedReviewDraft {
+  const ratings:ReviewDimensions={};
+  for(const {key} of REVIEW_DIMENSIONS) {
+    const score=initial?.ratings?.[key];
+    if(score!=null)ratings[key]=score;
+  }
+  return {
+    quality:initial?String(initial.quality):'', intensity:initial?.intensity==null?'':String(initial.intensity),
+    wouldBookAgain:initial?.wouldBookAgain===true?'yes':initial?.wouldBookAgain===false?'no':'',
+    ratings, body:initial?.body??'', tripMonth:initial?.tripMonth??'',
+    tripDraft:decodeTripResponses(initial?.tripResponses), relationship:initial?.relationship??'',
+    firsthand:false, needsCheck:false,
+  };
+}
+
+export function ReviewSubmission({onSubmit, onCheckBeforeRetry, allowTripResponses=false, writeAvailable=true, initial, mode='review', draftScope}: {
   onSubmit: SubmitReview;
   onCheckBeforeRetry?: () => Promise<ReviewRetryStatus>;
   allowTripResponses?: boolean;
   writeAvailable?: boolean;
   initial?: ReviewDraft;
   mode?: 'review' | 'revision';
+  draftScope?: ReviewDraftScope;
 }) {
   const prefix = useId();
-  const [quality, setQuality] = useState(initial?String(initial.quality):'');
-  const [intensity, setIntensity] = useState(initial?.intensity==null?'':String(initial.intensity));
-  const [wouldBookAgain, setWouldBookAgain] = useState(initial?.wouldBookAgain===true?'yes':initial?.wouldBookAgain===false?'no':'');
-  const [ratings, setRatings] = useState<ReviewDimensions>(() => {
-    const scores:ReviewDimensions={};
-    for(const {key} of REVIEW_DIMENSIONS) {
-      const score=initial?.ratings?.[key];
-      if(score!=null)scores[key]=score;
-    }
-    return scores;
-  });
-  const [body, setBody] = useState(initial?.body??'');
-  const [tripMonth, setTripMonth] = useState(initial?.tripMonth??'');
-  const [tripDraft, setTripDraft] = useState<TripDraft|null>(()=>decodeTripResponses(initial?.tripResponses));
-  const [relationship, setRelationship] = useState<RelationshipDisclosure | ''>(initial?.relationship??'');
-  const [firsthand, setFirsthand] = useState(false);
+  const scopeKey = draftScope ? reviewDraftStorageKey(draftScope,mode) ?? 'invalid-scope' : 'unscoped';
+  const [values, setValues] = useState<SavedReviewDraft>(()=>initialReviewForm(initial));
+  const {quality,intensity,wouldBookAgain,ratings,body,tripMonth,tripDraft,relationship,firsthand,needsCheck}=values;
+  const [readyScope, setReadyScope] = useState<string|null>(draftScope?null:scopeKey);
+  const [draftStatus, setDraftStatus] = useState('');
   const [busy, setBusy] = useState(false);
   const [checking, setChecking] = useState(false);
-  const [needsCheck, setNeedsCheck] = useState(false);
   const [retryMessage, setRetryMessage] = useState('');
   const [error, setError] = useState('');
   const [receipt, setReceipt] = useState<SubmissionReceipt | null>(null);
   const submitting = useRef(false);
+  const latest = useRef({scopeKey,values,dirty:false,active:!draftScope});
+  const ready = readyScope===scopeKey;
+
+  useEffect(()=>{
+    const saved=draftScope?readReviewDraft(draftScope,mode):{status:'empty' as const};
+    const restored=saved.status==='restored'?saved.draft:initialReviewForm(initial);
+    latest.current={scopeKey,values:restored,dirty:false,active:true};
+    setValues(restored);
+    setReceipt(null);
+    setError(restored.needsCheck?'We couldn’t confirm your last submission. Check its status before trying again.':'');
+    setRetryMessage('');
+    setDraftStatus(saved.status==='restored'?'Draft saved on this device.':saved.status==='unavailable'?'This browser cannot save your draft. Keep this page open to avoid losing it.':'');
+    setReadyScope(scopeKey);
+    function flush(){
+      if(draftScope&&latest.current.active&&latest.current.scopeKey===scopeKey&&latest.current.dirty){
+        const saved=saveReviewDraft(draftScope,mode,latest.current.values);
+        latest.current.dirty=!saved;
+        setDraftStatus(saved?'Draft saved on this device.':'This browser cannot save your draft. Keep this page open to avoid losing it.');
+      }
+    }
+    function background(){if(document.visibilityState==='hidden')flush()}
+    window.addEventListener('pagehide',flush);
+    document.addEventListener('visibilitychange',background);
+    return ()=>{
+      window.removeEventListener('pagehide',flush);
+      document.removeEventListener('visibilitychange',background);
+      // Never save during cleanup: sign-out, discard, or a receipt may have removed it.
+      if(latest.current.scopeKey===scopeKey)latest.current.active=false;
+    };
+  },[scopeKey]);
+
+  function change(patch:Partial<SavedReviewDraft>){
+    if(!latest.current.active||latest.current.scopeKey!==scopeKey)return;
+    const next={...latest.current.values,...patch};
+    latest.current.values=next;
+    latest.current.dirty=true;
+    setValues(next);
+    if(draftScope){
+      // Write the event's next value synchronously, before the browser can suspend this page.
+      const saved=saveReviewDraft(draftScope,mode,next);
+      latest.current.dirty=!saved;
+      setDraftStatus(saved?'Draft saved on this device.':'This browser cannot save your draft. Keep this page open to avoid losing it.');
+    }
+  }
+
+  function discard(){
+    if(submitting.current)return;
+    const cleared=!draftScope||clearReviewDraft(draftScope,mode);
+    const reset=initialReviewForm(initial);
+    latest.current={scopeKey,values:reset,dirty:false,active:true};
+    setValues(reset);setError('');setRetryMessage('');
+    setDraftStatus(cleared?'Draft discarded.':'Your form was reset, but this browser could not remove the saved draft.');
+  }
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (submitting.current || !writeAvailable || needsCheck) return;
+    if (submitting.current || !ready || !writeAvailable || needsCheck) return;
     if (!tripDraft) {setError('Your saved trip details cannot be edited here. No changes were submitted.');return;}
     const tripAnswers={...tripDraft};
     if(mode==='revision') {
@@ -88,10 +146,17 @@ export function ReviewSubmission({onSubmit, onCheckBeforeRetry, allowTripRespons
     const problem = validateReviewDraft(draft,mode);
     if (problem) { setError(problem); return; }
     submitting.current = true; setBusy(true); setError(''); setRetryMessage('');
-    try { const result = await onSubmit(draft); if (!isSubmissionReceipt(result,'review') || (mode==='revision'&&result.status!=='pending')) throw new Error('Invalid receipt'); setReceipt(result); }
+    // An interrupted request may have reached the server even if its receipt never arrived.
+    if(onCheckBeforeRetry)change({needsCheck:true});
+    try {
+      const result = await onSubmit(draft);
+      if (!isSubmissionReceipt(result,'review') || (mode==='revision'&&result.status!=='pending')) throw new Error('Invalid receipt');
+      latest.current.dirty=false;latest.current.active=false;
+      if(draftScope)clearReviewDraft(draftScope,mode);
+      setReceipt(result);
+    }
     catch {
       if (onCheckBeforeRetry) {
-        setNeedsCheck(true);
         setError('We couldn’t confirm your submission. Your draft is still here. Check before trying again.');
       } else {
         setError('We could not confirm your submission. Check your review status before trying again.');
@@ -109,10 +174,14 @@ export function ReviewSubmission({onSubmit, onCheckBeforeRetry, allowTripRespons
     try {
       const status = await onCheckBeforeRetry();
       if (status === 'ready') {
-        setNeedsCheck(false);
+        change({needsCheck:false});
         setRetryMessage('No review was found. You can submit your draft again.');
       } else if (status === 'closed') {
         setRetryMessage('Reviews are still unavailable. Your draft is still here.');
+      } else if (status === 'submitted') {
+        latest.current.dirty=false;latest.current.active=false;
+        if(draftScope)clearReviewDraft(draftScope,mode);
+        setRetryMessage('Your submission was found. Check your submissions for its status.');
       }
     } catch {
       setError('We couldn’t check your review. Your draft is still here.');
@@ -121,12 +190,13 @@ export function ReviewSubmission({onSubmit, onCheckBeforeRetry, allowTripRespons
       setChecking(false);
     }
   }
+  if(!ready)return <p role="status">Restoring your review draft…</p>;
   if (receipt) return mode==='revision'?<p role="status">Your changes are pending review. Your current published review is still visible.</p>:<SubmissionStatus kind="review" receipt={receipt}/>;
   return <form onSubmit={submit} className="card launch-form">
     <h3>{mode==='revision'?'Edit your review':'Share your trip experience'}</h3>
     {mode==='revision'&&<p>Your changes will be reviewed. Your current published review stays visible while the changes are pending.</p>}
     <label htmlFor={`${prefix}-quality`}>Overall quality</label>
-    <select id={`${prefix}-quality`} value={quality} onChange={event=>setQuality(event.target.value)} required>
+    <select id={`${prefix}-quality`} value={quality} onChange={event=>change({quality:event.target.value})} required>
       <option value="">Choose a rating</option>{[1,2,3,4,5].map(value=><option key={value} value={value}>{value} / 5</option>)}
     </select>
     <fieldset className="review-book-again">
@@ -134,39 +204,41 @@ export function ReviewSubmission({onSubmit, onCheckBeforeRetry, allowTripRespons
       <div className="review-book-again-options">
         {['yes','no'].map(value=><label key={value}>
           <input type="radio" name={`${prefix}-again`} value={value} checked={wouldBookAgain===value}
-            required={mode==='review'} onChange={event=>setWouldBookAgain(event.target.value)}/>
+            required={mode==='review'} onChange={event=>change({wouldBookAgain:event.target.value})}/>
           {value==='yes'?'Yes':'No'}
         </label>)}
       </div>
     </fieldset>
-    <ReviewDimensionFields ratings={ratings} onChange={(key,value)=>setRatings(current=>{
-      const next={...current};
+    <ReviewDimensionFields ratings={ratings} onChange={(key,value)=>{
+      const next={...latest.current.values.ratings};
       if(value==='')delete next[key];else next[key]=Number(value);
-      return next;
-    })}>
-      {allowTripResponses&&tripDraft&&<TripFields fields={REVIEW_TRIP_RATINGS} draft={tripDraft} onChange={setTripDraft}/>}
+      change({ratings:next});
+    }}>
+      {allowTripResponses&&tripDraft&&<TripFields fields={REVIEW_TRIP_RATINGS} draft={tripDraft} onChange={tripDraft=>change({tripDraft})}/>}
     </ReviewDimensionFields>
-    {allowTripResponses&&tripDraft&&<TripFields fields={catchFields} draft={tripDraft} onChange={setTripDraft}/>}
+    {allowTripResponses&&tripDraft&&<TripFields fields={catchFields} draft={tripDraft} onChange={tripDraft=>change({tripDraft})}/>}
     <label htmlFor={`${prefix}-relationship`}>Your relationship to this guide or business</label>
-    <select id={`${prefix}-relationship`} value={relationship} onChange={event=>setRelationship(event.target.value as RelationshipDisclosure | '')} required>
+    <select id={`${prefix}-relationship`} value={relationship} onChange={event=>change({relationship:event.target.value as RelationshipDisclosure | ''})} required>
       <option value="">Choose an answer</option><option value="none">None</option><option value="personal">Personal</option><option value="financial">Financial</option><option value="other">Other</option>
     </select>
-    {allowTripResponses && tripDraft && <TripDetails draft={tripDraft} onChange={setTripDraft}>
+    {allowTripResponses && tripDraft && <TripDetails draft={tripDraft} onChange={tripDraft=>change({tripDraft})}>
       <label htmlFor={`${prefix}-month`}>Trip month (optional)</label>
-      <input type="month" id={`${prefix}-month`} value={tripMonth} onChange={event=>setTripMonth(event.target.value)} />
+      <input type="month" id={`${prefix}-month`} value={tripMonth} onChange={event=>change({tripMonth:event.target.value})} />
       <label htmlFor={`${prefix}-intensity`}>Trip intensity (optional)</label>
-      <select id={`${prefix}-intensity`} value={intensity} onChange={event=>setIntensity(event.target.value)}><option value="">Not answered</option>{[1,2,3,4,5].map(value=><option key={value} value={value}>{value} / 5</option>)}</select>
+      <select id={`${prefix}-intensity`} value={intensity} onChange={event=>change({intensity:event.target.value})}><option value="">Not answered</option>{[1,2,3,4,5].map(value=><option key={value} value={value}>{value} / 5</option>)}</select>
     </TripDetails>}
     <label htmlFor={`${prefix}-body`}>Your experience</label>
     <p>Write about a trip you personally took. Your review is checked before publication. Signing in confirms your account, not that a trip occurred.</p>
     <p id={`${prefix}-body-help`}>Write up to 3,000 characters.</p>
-    <textarea id={`${prefix}-body`} aria-describedby={`${prefix}-body-help`} value={body} onChange={event=>setBody(event.target.value)} minLength={1} maxLength={3000} required />
-    <label><input type="checkbox" checked={firsthand} onChange={event=>setFirsthand(event.target.checked)} required/> I personally took this trip.</label>
+    <textarea id={`${prefix}-body`} aria-describedby={`${prefix}-body-help`} value={body} onChange={event=>change({body:event.target.value})} minLength={1} maxLength={3000} required />
+    <label><input type="checkbox" checked={firsthand} onChange={event=>change({firsthand:event.target.checked})} required/> I personally took this trip.</label>
+    {draftStatus&&<p role="status" className="muted">{draftStatus}</p>}
     {error && <p role="alert">{error}</p>}
     {retryMessage && <p role="status">{retryMessage}</p>}
     {!writeAvailable && !error && !retryMessage && <p role="status">Review submissions are temporarily unavailable. Your draft remains here while you check again.</p>}
     {onCheckBeforeRetry && (needsCheck || !writeAvailable) && <button type="button" disabled={busy || checking} onClick={()=>void checkBeforeRetry()}>{checking ? 'Checking…' : 'Check before retrying'}</button>}
     <button type="submit" disabled={busy || checking || needsCheck || !writeAvailable}>{busy ? 'Submitting…' : mode==='revision' ? 'Submit changes for review' : 'Submit review'}</button>
+    <button type="button" disabled={busy || checking} onClick={discard}>Discard draft</button>
   </form>;
 }
 

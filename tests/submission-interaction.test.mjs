@@ -8,6 +8,7 @@ const require=createRequire(import.meta.url);
 const ts=require('typescript');
 const receiptId='10000000-0000-4000-8000-000000000001';
 const trip=compile('components/launch/trip-responses.ts');
+const draftStorage=compile('components/launch/review-draft-storage.ts',{'./submission-model':compile('components/launch/submission-model.ts'),'./trip-responses':trip});
 const details={TripDetails:function TripDetails(){},TripFields:function TripFields(){}};
 function compile(path, imports={}) {
   const code=ts.transpileModule(readFileSync(path,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX}}).outputText;
@@ -23,6 +24,7 @@ function hookHarness() {
       useId:()=>':test:',
       useState(initial){const slot=cursor++;if(!(slot in cells))cells[slot]=typeof initial==='function'?initial():initial;return [cells[slot],value=>{cells[slot]=typeof value==='function'?value(cells[slot]):value}]},
       useRef(initial){const slot=cursor++;if(!(slot in cells))cells[slot]={current:initial};return cells[slot]},
+      useEffect(){cursor++},
     },
   };
 }
@@ -35,7 +37,7 @@ function find(element, predicate) {
 function setup(onSubmit,allowTripResponses=false,props={}) {
   const hooks=hookHarness();
   const model=compile('components/launch/submission-model.ts');
-  const views=compile('components/launch/SubmissionViews.tsx',{react:hooks.react,'./submission-model':model,'./trip-responses':trip,'./TripDetails':details});
+  const views=compile('components/launch/SubmissionViews.tsx',{react:hooks.react,'./submission-model':model,'./trip-responses':trip,'./TripDetails':details,'./review-draft-storage':draftStorage});
   const render=()=>{hooks.reset();return views.ReviewSubmission({onSubmit,allowTripResponses,...props})};
   return {render,views};
 }
@@ -96,7 +98,7 @@ test('an unconfirmed submission stays on the form and offers no false success',a
 test('claim submission preserves the persisted denied state',async()=>{
   const hooks=hookHarness();
   const model=compile('components/launch/submission-model.ts');
-  const views=compile('components/launch/SubmissionViews.tsx',{react:hooks.react,'./submission-model':model,'./trip-responses':trip,'./TripDetails':details});
+  const views=compile('components/launch/SubmissionViews.tsx',{react:hooks.react,'./submission-model':model,'./trip-responses':trip,'./TripDetails':details,'./review-draft-storage':draftStorage});
   let captured;
   const render=()=>{hooks.reset();return views.ClaimSubmission({onSubmit:async draft=>{captured=draft;return {id:receiptId,status:'denied'}}})};
   find(render(),node=>node.props?.id?.endsWith('-claimant')).props.onChange({target:{value:' A Guide '}});
@@ -112,7 +114,7 @@ test('claim submission preserves the persisted denied state',async()=>{
 test('moderation requires a rejection reason and waits for the actual decision',async()=>{
   const hooks=hookHarness();
   const model=compile('components/launch/submission-model.ts');
-  const views=compile('components/launch/SubmissionViews.tsx',{react:hooks.react,'./submission-model':model,'./trip-responses':trip,'./TripDetails':details});
+  const views=compile('components/launch/SubmissionViews.tsx',{react:hooks.react,'./submission-model':model,'./trip-responses':trip,'./TripDetails':details,'./review-draft-storage':draftStorage});
   const queue=compile('components/launch/ModerationQueue.tsx',{react:hooks.react,'./submission-model':model,'./SubmissionViews':views});
   let calls=0,resolveDecision,captured;
   const item={id:receiptId,kind:'claim',guideName:'Guide',description:'Evidence',submittedAt:'2026-11-17'};

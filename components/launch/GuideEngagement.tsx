@@ -9,6 +9,7 @@ import {ProfileSharing} from './ProfileSharing';
 import {WashingtonReviewStatus} from './WashingtonReviewStatus';
 import {PublishedReviews,ReviewCard,validReviewPage,type PublishedReview,type ReviewLoadState} from './PublishedReviews';
 import {ReviewSubmission} from './SubmissionViews';
+import {clearReviewDraft,clearReviewDraftsForAccount} from './review-draft-storage';
 import type {ReviewDraft} from './submission-model';
 
 type DetailsState={status:'loading'|'error'}|{status:'ready';value:OwnerDetails|null};
@@ -26,6 +27,7 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
   const [reviews,setReviews]=useState<ReviewLoadState>({status:'loading'}),[details,setDetails]=useState<DetailsState>({status:'loading'});
   const [session,setSession]=useState<'loading'|'signed_out'|'signed_in'|'error'>('loading');
   const [reviewAccount,setReviewAccount]=useState<string|null>(null);
+  const reviewAccountRef=useRef<string|null>(null);
   const reviewApi=useMemo(()=>createLaunchClient({enabled:true,getAccessToken:async()=>{
     const session=(await authClient?.auth.getSession())?.data.session;
     return reviewAccount && session?.user.id===reviewAccount ? session.access_token : null;
@@ -68,7 +70,7 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
       if(epoch===availabilityEpoch.current)setWriteReady('error');
     }
   },[api,stableSource,washington]);
-  const loadOwnReview=useCallback(async(epoch=authEpoch.current)=>{setOwnReview({status:'loading'});try{const review=await api.ownReviewForGuide(stableSource);if(epoch===authEpoch.current)setOwnReview({status:'ready',review})}catch{if(epoch===authEpoch.current)setOwnReview({status:'error'})}},[api,stableSource]);
+  const loadOwnReview=useCallback(async(epoch=authEpoch.current)=>{setOwnReview({status:'loading'});try{const review=await api.ownReviewForGuide(stableSource);if(epoch===authEpoch.current){if(review&&reviewAccountRef.current)clearReviewDraft({...stableSource,accountId:reviewAccountRef.current});setOwnReview({status:'ready',review})}}catch{if(epoch===authEpoch.current)setOwnReview({status:'error'})}},[api,stableSource]);
   function recordWriteFailure(error:unknown){
     if(!(error instanceof LaunchClientError))return;
     const closed=error.code==='launch_unavailable'||
@@ -79,8 +81,8 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
   const loadSubmissions=useCallback(async(offset=0,epoch=authEpoch.current)=>{try{const rows=await api.mySubmissions(offset,50);if(epoch!==authEpoch.current)return;setSubmissions(previous=>offset===0?rows:[...(previous??[]),...rows]);setNextOffset(offset+rows.length);setMore(rows.length===50);setStatusError(false)}catch{if(epoch===authEpoch.current)setStatusError(true)}},[api]);
   const refreshSession=useCallback(async()=>{
     const epoch=++authEpoch.current;
-    try{const result=await authClient?.auth.getSession();if(epoch!==authEpoch.current)return;if(!result?.data.session){setSession('signed_out');setReviewAccount(null);setSubmissions(null);setOwnReview({status:'loading'});return}await api.session();if(epoch!==authEpoch.current)return;setReviewAccount(result.data.session.user.id);setSession('signed_in');await Promise.all([loadSubmissions(0,epoch),loadOwnReview(epoch)])}
-    catch{if(epoch===authEpoch.current){setSession('error');setReviewAccount(null);setSubmissions(null);setOwnReview({status:'error'})}}
+    try{const result=await authClient?.auth.getSession();if(epoch!==authEpoch.current)return;if(!result?.data.session){reviewAccountRef.current=null;setSession('signed_out');setReviewAccount(null);setSubmissions(null);setOwnReview({status:'loading'});return}await api.session();if(epoch!==authEpoch.current)return;reviewAccountRef.current=result.data.session.user.id;setReviewAccount(result.data.session.user.id);setSession('signed_in');await Promise.all([loadSubmissions(0,epoch),loadOwnReview(epoch)])}
+    catch{if(epoch===authEpoch.current){reviewAccountRef.current=null;setSession('error');setReviewAccount(null);setSubmissions(null);setOwnReview({status:'error'})}}
   },[api,loadSubmissions,loadOwnReview]);
   useEffect(()=>{setFormActivated(false);setWriteReady(null);void loadWriteReady();return()=>{availabilityEpoch.current++}},[loadWriteReady]);
   useEffect(()=>{if(writeReady===true)setFormActivated(true)},[writeReady]);
@@ -90,7 +92,13 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
     if(!canReadAccount)return;
     let refreshTimer: number | undefined;
     void refreshSession();
-    const subscription=authClient?.auth.onAuthStateChange((_event,next)=>{
+    const subscription=authClient?.auth.onAuthStateChange((event,next)=>{
+      // Supabase also announces SIGNED_IN when an existing tab regains focus.
+      // The current account already passed the session check; its new token is
+      // read on each API call. Keep the mounted form and in-flight work intact.
+      if(next?.user.id&&next.user.id===reviewAccountRef.current)return;
+      if(event==='SIGNED_OUT'&&reviewAccountRef.current)clearReviewDraftsForAccount(reviewAccountRef.current);
+      reviewAccountRef.current=null;
       authEpoch.current++;
       setSession(next?'loading':'signed_out');
       setReviewAccount(null);
@@ -116,13 +124,23 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
     : availabilityError
       ? 'We couldn’t check review availability.'
       : 'Review submissions are unavailable for this guide right now.';
-  async function editReview(id:string){setRevisionError('');try{setRevision({id,initial:await api.reviewDetail(source,id)})}catch{setRevisionError('This review cannot be edited right now. Its published version has not changed.')}}
+  async function editReview(id:string){
+    const epoch=authEpoch.current,account=reviewAccount;
+    setRevisionError('');
+    try{
+      const initial=await reviewApi.reviewDetail(stableSource,id);
+      if(epoch===authEpoch.current&&account===reviewAccountRef.current)setRevision({id,initial});
+    }catch{
+      if(epoch===authEpoch.current&&account===reviewAccountRef.current)setRevisionError('This review cannot be edited right now. Its published version has not changed.');
+    }
+  }
   const offerReview = canReview && !!page;
   const inviteFirst = offerReview && (session==='signed_out' || (session==='signed_in' && ownReview.status==='ready' && !existingReview));
   async function submitFirstReview(draft: ReviewDraft) {
     const epoch=authEpoch.current;
     try {
       const receipt=await reviewApi.submitReview(stableSource,draft);
+      if(reviewAccount)clearReviewDraft({...stableSource,accountId:reviewAccount});
       if(epoch===authEpoch.current){
         setOwnReview({status:'ready',review:receipt});
         void loadSubmissions(0,epoch);
@@ -139,6 +157,7 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
     const existing=await reviewApi.ownReviewForGuide(stableSource);
     if(epoch!==authEpoch.current)throw new Error('Review account changed');
     if(existing){
+      if(reviewAccount)clearReviewDraft({...stableSource,accountId:reviewAccount});
       setOwnReview({status:'ready',review:existing});
       void loadSubmissions(0,epoch);
       return 'submitted' as const;
@@ -151,6 +170,9 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
   }
 
   const retryAvailability = () => {void loadWriteReady();if(showReviewTools&&!washington)void loadReviews()};
+  // AuthPanel receives the same focus/token notifications. Its callback must
+  // not restart the account lookup and unmount a form for an accepted account.
+  const onSignedIn = () => {if(!reviewAccountRef.current)void refreshSession()};
   const compactError = (showReviewTools && (reviews.status==='error' || (reviews.status==='ready' && !page))) || writeReady==='error';
   const compactStatus = compactError ? 'Couldn’t load review information.' :
     writeReady===false ? 'Review submissions are closed.' :
@@ -191,18 +213,18 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
     {details.status==='ready'&&details.value&&<section className="card"><h2>Captain-declared details</h2><p>These details were supplied by the approved captain and are not independently verified.</p>{details.value.boat&&<p><strong>Boat:</strong> {details.value.boat}</p>}{details.value.gear&&<p><strong>Gear:</strong> {details.value.gear}</p>}{details.value.yearsExperience!==null&&<p><strong>Years of experience:</strong> {details.value.yearsExperience}</p>}{details.value.expertise&&<p><strong>Expertise:</strong> {details.value.expertise}</p>}{details.value.species&&<p><strong>Species:</strong> {details.value.species}</p>}</section>}
     {showReviewTools&&<section className="section launch-controls" id="write-review">
       {historyOnly ? <details><summary>Check a previous submission</summary>
-        <AuthPanel emailOnly profilePath={profilePath} onSignedIn={()=>void refreshSession()}/>
+        <AuthPanel emailOnly profilePath={profilePath} onSignedIn={onSignedIn}/>
       </details> : (!compactProfile || (page && (canReview || formActivated || session==='signed_in'))) && <>
       <h2>Rate {guideName}</h2>
       {washington&&<ReturnToResults fallback="/write-review"/>}
-      {reviews.status==='ready'?<>{session==='signed_out'&&<p>{writeReady===true?'Sign in to share a firsthand experience with this guide.':'Sign in to check your existing submissions.'}</p>}<AuthPanel emailOnly profilePath={profilePath} onSignedIn={()=>void refreshSession()}/>
+      {reviews.status==='ready'?<>{session==='signed_out'&&<p>{writeReady===true?'Sign in to share a firsthand experience with this guide.':'Sign in to check your existing submissions.'}</p>}<AuthPanel emailOnly profilePath={profilePath} onSignedIn={onSignedIn}/>
         {session==='loading'&&<p role="status">Checking your account…</p>}{session==='error'&&<p role="status">Your account status is temporarily unavailable.</p>}
         {session==='signed_in'&&<>{ownReview.status==='loading'&&<p role="status">Checking your review for this guide…</p>}{ownReview.status==='error'&&<><p role="status">Your review status is temporarily unavailable.</p><button type="button" onClick={()=>void loadOwnReview()}>Retry review status</button></>}
-          {reviewAccount&&ownReview.status==='ready'&&!existingReview&&(canReview||formActivated)&&<ReviewSubmission key={`${guideKey}:${reviewAccount}`} allowTripResponses writeAvailable={canReview} onCheckBeforeRetry={checkBeforeRetry} onSubmit={submitFirstReview}/>}
+          {reviewAccount&&ownReview.status==='ready'&&!existingReview&&(canReview||formActivated)&&<ReviewSubmission key={`${guideKey}:${reviewAccount}`} draftScope={{...stableSource,accountId:reviewAccount}} allowTripResponses writeAvailable={canReview} onCheckBeforeRetry={checkBeforeRetry} onSubmit={submitFirstReview}/>}
           {!compactProfile&&writeReady===false&&<><p role="status">Reviews aren’t available for this guide right now.</p>{source.jurisdiction==='OR'&&<button type="button" onClick={()=>void loadWriteReady()}>Check review availability</button>}</>}
           {!compactProfile&&writeReady==='error'&&<p role="status">We couldn’t check review availability. Try again before submitting.</p>}
           <section id="your-submissions"><h3>Your submissions</h3>{existingReview&&<div><p>Review: <strong>{existingReview.status}</strong></p><p>{existingReview.status==='pending'?'Your review is awaiting review and is not public.':existingReview.status==='published'?'Your review is published.':existingReview.status==='removed'?'Your review is no longer published.':'Your review was not published.'}</p>{canReview&&existingReview.status==='published'&&!pendingRevision&&!more&&submissions!==null&&!statusError&&<button type="button" onClick={()=>void editReview(existingReview.id)}>Edit your review</button>}{existingReview.status==='published'&&pendingRevision&&<p>Your changes are awaiting review.</p>}</div>}{statusError?<><p role="status">Your submission status is temporarily unavailable.</p><button type="button" onClick={()=>void loadSubmissions()}>Retry status</button></>:submissions===null?<p role="status">Loading your submissions…</p>:<>{own.filter(item=>item.kind!=='review').map(item=><div key={`${item.kind}:${item.id}`}><p>{item.kind==='revision'?'Review edit':'Claim request'}: <strong>{item.status}</strong></p><p>{nextSteps(item)}</p></div>)}{more&&<><p>Load the remaining submissions to check your full review history.</p><button type="button" onClick={()=>void loadSubmissions(nextOffset)}>Load more submissions</button></>}</>}
-            {revisionError&&<p role="alert">{revisionError}</p>}{revision&&<ReviewSubmission key={revision.id} initial={revision.initial} mode="revision" allowTripResponses writeAvailable={canReview} onSubmit={async draft=>{try{const receipt=await api.submitRevision(revision.id,draft);void loadSubmissions();return receipt}catch(error){recordWriteFailure(error);throw error}}}/>}
+            {revisionError&&<p role="alert">{revisionError}</p>}{revision&&reviewAccount&&<ReviewSubmission key={`${guideKey}:${reviewAccount}:${revision.id}`} draftScope={{...stableSource,accountId:reviewAccount,reviewId:revision.id}} initial={revision.initial} mode="revision" allowTripResponses writeAvailable={canReview} onSubmit={async draft=>{const epoch=authEpoch.current;try{const receipt=await reviewApi.submitRevision(revision.id,draft);clearReviewDraft({...stableSource,accountId:reviewAccount,reviewId:revision.id},'revision');if(epoch===authEpoch.current)void loadSubmissions();return receipt}catch(error){if(epoch===authEpoch.current)recordWriteFailure(error);throw error}}}/>}
           </section>
         </>}
       </>:<p role="status">Review tools are temporarily unavailable for this listing.</p>}
