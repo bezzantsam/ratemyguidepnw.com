@@ -16,23 +16,25 @@ const {approvedAttributes}=evidence;
 const query=load('lib/directory-query.ts',{'./captain-fishing/catalog.mjs':fishingCatalog});
 const url=load('lib/directory-url.ts',{'./directory-query':query});
 const fixture=JSON.parse(read('tests/fixtures/discovery-attributes.json'));
+const salmonFixture=fixture.find(row=>row.value==='Salmon'&&!row.relationship);
+const flyFixture=fixture.find(row=>row.kind==='method'&&row.value==='Fly fishing');
 const known=new Set(['OG.0000047','OG.0000050','OG.0001116','OG.0000782','OG.0001224','OG.0001881']);
 const clone=x=>JSON.parse(JSON.stringify(x));
 test('only approved, attributed and uniquely identified facts pass',()=>{
  const approved=approvedAttributes(fixture,known);
- assert.equal(approved.length,6);
+ assert.equal(approved.length,7);
  assert.ok(approved.every(x=>x.editorial_status==='approved'&&x.publication_approved));
  for(const change of [x=>delete x.source.url,x=>delete x.source.locator,x=>x.source.reviewed_on='2026-02-30',x=>x.source.reviewed_on='2999-01-01',x=>x.guide_id='OG.9999999',x=>x.editorial_status='unknown',x=>x.publication_approved=false]){
-  const record=clone(fixture[0]);change(record);assert.equal(approvedAttributes([record],known).length,0);
+  const record=clone(salmonFixture);change(record);assert.equal(approvedAttributes([record],known).length,0);
  }
- const duplicate=clone(fixture[0]);duplicate.editorial_status='rejected';duplicate.publication_approved=false;
- assert.equal(approvedAttributes([fixture[0],duplicate],known).length,0);
+ const duplicate=clone(salmonFixture);duplicate.editorial_status='rejected';duplicate.publication_approved=false;
+ assert.equal(approvedAttributes([salmonFixture,duplicate],known).length,0);
 });
 test('holds and explicit discontinued water fail closed even if marked approved',()=>{
  for(const id of ['OG.0000782','OG.0001224','OG.0001881']){
-  const r=clone(fixture[0]);r.guide_id=id;assert.equal(approvedAttributes([r],known).length,0);
+  const r=clone(salmonFixture);r.guide_id=id;assert.equal(approvedAttributes([r],known).length,0);
  }
- const burrell=clone(fixture[0]);burrell.guide_id='OG.0001116';burrell.relationship={species:'Salmon',waterway:'Grindstone Lakes'};
+ const burrell=clone(salmonFixture);burrell.guide_id='OG.0001116';burrell.relationship={species:'Salmon',waterway:'Grindstone Lakes'};
  assert.equal(approvedAttributes([burrell],known).length,0);
  delete burrell.relationship;burrell.value='Grindstone Lakes';assert.equal(approvedAttributes([burrell],known).length,0);
 });
@@ -81,7 +83,7 @@ test('combined filters preserve flat callers and require one offering for struct
 });
 
 test('only explicitly provided relationships survive; malformed relationships are rejected',()=>{
- const independent=approvedAttributes(fixture,known).find(x=>x.value==='Salmon');
+ const independent=approvedAttributes(fixture,known).find(x=>x.value==='Salmon'&&!x.relationship);
  assert.equal(independent.relationship,undefined);
  const connected=approvedAttributes(fixture,known).find(x=>x.value==='Chinook Salmon');
  assert.equal(connected.relationship.waterway,'Fixture River');
@@ -92,7 +94,7 @@ test('only explicitly provided relationships survive; malformed relationships ar
  assert.equal(approvedAttributes([connected,clone(connected)],known).length,1);
  another.editorial_status='pending';another.publication_approved=false;
  assert.equal(approvedAttributes([connected,another],known).length,0);
- const denied=clone(fixture[1]);denied.guide_id=connected.guide_id;denied.value=connected.relationship.method;denied.editorial_status='rejected';denied.publication_approved=false;
+ const denied=clone(flyFixture);denied.guide_id=connected.guide_id;denied.value=connected.relationship.method;denied.editorial_status='rejected';denied.publication_approved=false;
  assert.equal(approvedAttributes([connected,denied],known).length,0,'a rejected component blocks the relationship');
 });
 test('saltwater aliases match sourced offerings and keep regional identities distinct',()=>{
@@ -115,7 +117,7 @@ test('saltwater aliases match sourced offerings and keep regional identities dis
  assert.deepEqual(result('Buoy 10 salmon'),['OG.0000050']);
 });
 test('operator team scope stays attached to its approved trip only',()=>{
- const item={...fixture[0],kind:'trip_type',value:'Buoy 10 salmon',relationship:undefined,offering_scope:'operator_business'};
+ const item={...salmonFixture,kind:'trip_type',value:'Buoy 10 salmon',relationship:undefined,offering_scope:'operator_business'};
  assert.equal(approvedAttributes([item],known)[0]?.offering_scope,'operator_business');
  assert.equal(approvedAttributes([{...item,kind:'species'}],known).length,0);
  assert.equal(approvedAttributes([{...item,offering_scope:'unknown'}],known).length,0);
