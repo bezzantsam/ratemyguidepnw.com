@@ -33,5 +33,12 @@ test('server listing version matches the offline intake for all stable Washingto
   const versions=Object.entries(JSON.parse(python.stdout));
   assert.equal(versions.length,158);
   for(const [id,expected] of versions)assert.equal(server.washingtonListedReviewVersion(id),expected,id);
-  assert.equal(server.washingtonListedReviewVersion('wa-900001'),undefined);
+  const registry=load(resolve('lib/washington.ts'));
+  const published=new Set(registry.washingtonGuides.map(guide=>guide.id));
+  for(const [id,expected] of versions){
+    assert.equal(server.washingtonReviewVersion(id,'catalog'),published.has(id)?expected:undefined,id);
+  }
+  for(const id of ['wa-900001','wa-021@catalog:'+'a'.repeat(64),'wa-021 ']){
+    assert.equal(server.washingtonReviewVersion(id,'catalog'),undefined);
+  }
 });

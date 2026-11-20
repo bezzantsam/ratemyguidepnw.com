@@ -48,7 +48,7 @@ test('review launch alone does not dispatch claim or owner mutations or the clai
  assert.equal(status.status,200);assert.equal(b.calls.at(-1)[0],'rmg_own_status');
 });
 test('Washington source writes and availability remain closed even with both flags enabled',async()=>{
- const id='00000000-0000-0000-0000-000000000001',source={jurisdiction:'WA',sourceId:'wa-1'};
+ const id='00000000-0000-0000-0000-000000000001',source={jurisdiction:'WA',sourceId:'wa-001'};
  const b=backend({admin:true}),flags={...env,RMG_CLAIMS_ENABLED:'true'};
  const availability=await handleLaunch(req({operation:'review_write_availability',...source}),b.factory,flags);
  assert.deepEqual(await availability.json(),{available:false});
@@ -158,7 +158,7 @@ test('sign-in check only verifies confirmed roles and reads queue availability w
  assert.equal((await handleLaunch(req(session),()=>assert.fail('anonymous client'),flags)).status,401);
  for(const candidate of [
   review,
-  {...review,jurisdiction:'WA'},
+  {...review,jurisdiction:'WA',sourceId:'wa-001'},
   {operation:'review_write_availability',jurisdiction:'OR',sourceId:'or-1'},
   {operation:'operator_queue',kind:'review',offset:0,limit:1},
   {operation:'operator_queue',kind:'claim',offset:0,limit:1},
@@ -199,7 +199,7 @@ test('public ratings use exactly one anonymous batch RPC and allow only public r
  assert.equal(response.status,200);
  assert.equal(response.headers.get('cache-control'),'no-store');
  assert.deepEqual(await response.json(),{items});
- assert.deepEqual(b.calls,[['headers',{}],['rmg_public_review_summaries_v1',{p_guides:ratingsGuides}]]);
+ assert.deepEqual(b.calls,[['headers',{}],['rmg_public_review_summaries_v1',{p_guides:[ratingsGuides[0],ratingsGuides[2]]}]]);
 });
 
 test('rating batches enforce their bounds and fail closed for mismatched identities and gates',async()=>{
@@ -264,7 +264,6 @@ test('existing WA review requests use the current server listing version and kee
  const readiness={operation:'review_write_availability',...source};
  for(const [input,flags,sourceVersion] of [
   [{...readiness,sourceId:'wa-002'},config,version],
-  [{...readiness,sourceId:source.sourceId+'@'+digest},config,version],
   [readiness,config,()=>undefined],
   [readiness,{...config,RMG_WA_REVIEW_PILOT_SOURCE_ID:'wa-900001'},version],
  ]){
@@ -272,6 +271,9 @@ test('existing WA review requests use the current server listing version and kee
   assert.deepEqual(await r.json(),{available:false});
   assert.deepEqual(b.calls,[]);
  }
+ const forged=backend();
+ assert.equal((await handleLaunch(req({...readiness,sourceId:source.sourceId+'@'+digest}),forged.factory,config,version)).status,400);
+ assert.deepEqual(forged.calls,[]);
  const live=backend({rpcResult:{available:true}});
  const ready=await handleLaunch(req(readiness),live.factory,config,version);
  assert.deepEqual(await ready.json(),{available:true});
@@ -309,7 +311,7 @@ test('public ratings bind only the exact configured Washington source and make o
  assert.deepEqual(await response.json(),{items});
  assert.deepEqual(lookedUp,['wa-001']);
  const versioned={...wa,sourceId:'wa-001@'+sourceVersion};
- assert.deepEqual(b.calls,[['headers',{}],['rmg_public_review_summaries_v1',{p_guides:[versioned,or,neighbor,versioned]}]]);
+ assert.deepEqual(b.calls,[['headers',{}],['rmg_public_review_summaries_v1',{p_guides:[versioned,or]}]]);
  assert.equal(response.headers.get('cache-control'),'no-store');
  const spoof=backend();
  assert.equal((await handleLaunch(req({operation:'public_review_summaries',guides:[versioned]}),
@@ -332,8 +334,116 @@ test('public ratings omit WA when closed or version lookup fails and refuse unex
   const response=await handleLaunch(req(input),b.factory,config,version);
   assert.equal(response.status,200);
   assert.deepEqual(await response.json(),{items:[]});
-  assert.deepEqual(b.calls,[['headers',{}],['rmg_public_review_summaries_v1',{p_guides:guides}]]);
+  assert.deepEqual(b.calls,[['headers',{}],['rmg_public_review_summaries_v1',{p_guides:[]}]]);
  }
  const b=backend({rpcResult:{items:[{jurisdiction:'WA',sourceId:'wa-002',count:1,averageQuality:4}]}});
  assert.equal((await handleLaunch(req(input),b.factory,flags,()=> 'b'.repeat(64))).status,503);
+});
+
+const catalogFlags={...env,RMG_WA_CATALOG_REVIEWS_ENABLED:'true',RMG_CLAIMS_ENABLED:'true'};
+const catalogA={jurisdiction:'WA',sourceId:'wa-001'};
+const catalogB={jurisdiction:'WA',sourceId:'wa-002'};
+const catalogHeld={jurisdiction:'WA',sourceId:'wa-003'};
+const catalogVersions=new Map([
+ [catalogA.sourceId,'a'.repeat(64)],[catalogB.sourceId,'b'.repeat(64)],[catalogHeld.sourceId,'c'.repeat(64)],
+]);
+const versionFor=(id,kind)=>kind==='catalog'?catalogVersions.get(id):undefined;
+const catalogRef=id=>id+'@catalog:'+catalogVersions.get(id);
+
+test('WA catalog admits separate versioned review targets without requiring claims or credentials',async()=>{
+ for(const source of [catalogA,catalogB]){
+  const read=backend({rpcResult:{available:true}});
+  const ready=await handleLaunch(req({operation:'review_write_availability',...source}),read.factory,catalogFlags,versionFor);
+  assert.deepEqual(await ready.json(),{available:true});
+  assert.deepEqual(read.calls,[['headers',{}],['rmg_review_write_availability',{p_jurisdiction:'WA',p_source_id:catalogRef(source.sourceId)}]]);
+  const pending={id:'10000000-0000-4000-8000-000000000010',status:'pending'};
+  const write=backend({rpcResult:pending});
+  const submitted=await handleLaunch(req({...review,...source},'ordinary-token'),write.factory,catalogFlags,versionFor);
+  assert.equal(submitted.status,200);
+  assert.deepEqual(await submitted.json(),pending);
+  assert.equal(write.calls.at(-1)[0],'rmg_submit_review_v2');
+  assert.equal(write.calls.at(-1)[1].p_source_id,catalogRef(source.sourceId));
+  assert.deepEqual(write.calls.map(([name])=>name),['headers','getUser','rmg_submit_review_v2']);
+ }
+ for(const operation of ['claim_availability','claim_status','profile_details']){
+  const forbidden=backend();
+  const r=await handleLaunch(req({operation,...catalogA},'valid-token'),forbidden.factory,catalogFlags,versionFor);
+  assert.deepEqual(await r.json(),operation==='claim_availability'?{available:false}:{error:'forbidden'});
+  assert.deepEqual(forbidden.calls,[]);
+ }
+});
+
+test('catalog misses, pauses, invalid browser versions and old-pilot collisions never use a legacy resolver',async()=>{
+ const absent={jurisdiction:'WA',sourceId:'wa-999'};
+ const availability=source=>({operation:'review_write_availability',...source});
+ for(const [source,flags] of [[absent,catalogFlags],[catalogA,env]]){
+  const b=backend(),r=await handleLaunch(req(availability(source)),b.factory,flags,versionFor);
+  assert.deepEqual(await r.json(),{available:false});
+  assert.deepEqual(b.calls,[]);
+ }
+ const forged=backend();
+ assert.equal((await handleLaunch(req(availability({...catalogA,sourceId:catalogRef(catalogA.sourceId)})),
+  forged.factory,catalogFlags,versionFor)).status,400);
+ assert.deepEqual(forged.calls,[]);
+ const conflict=backend(),flags={...catalogFlags,RMG_WA_LISTED_REVIEW_PILOT_SOURCE_ID:catalogA.sourceId};
+ const conflicted=await handleLaunch(req(availability(catalogA)),conflict.factory,flags,versionFor);
+ assert.deepEqual(await conflicted.json(),{available:false});
+ assert.deepEqual(conflict.calls,[]);
+ for(const operation of ['public_reviews','review_detail','own_review_for_guide']){
+  const b=backend({rpcResult:{available:false}});
+  const extra=operation==='review_detail'?{id:'10000000-0000-4000-8000-000000000010'}:{};
+  const r=await handleLaunch(req({operation,...catalogHeld,...extra},'ordinary-token'),b.factory,catalogFlags,versionFor);
+  assert.equal(r.status,403);
+  assert.deepEqual(b.calls.slice(2),[['rmg_review_write_availability',{p_jurisdiction:'WA',p_source_id:catalogRef(catalogHeld.sourceId)}]]);
+ }
+ const pausedWrite=backend({rpcError:{code:'P5030'}});
+ const paused=await handleLaunch(req({...review,...catalogA},'ordinary-token'),pausedWrite.factory,catalogFlags,versionFor);
+ assert.equal(paused.status,503);
+ assert.deepEqual(await paused.json(),{error:'launch_unavailable'});
+});
+
+test('catalog profile lookup and mixed summary use exact version keys with bare public IDs',async()=>{
+ const guideId='10000000-0000-4000-8000-000000000021';
+ const published={id:'10000000-0000-4000-8000-000000000010',quality:4,body:'Public fixture'};
+ const summary={count:1,averageQuality:4};
+ const calls=[];
+ const factory=()=>({
+  rpc:async(name,args)=>{
+   calls.push([name,args.p_source_id]);
+   if(name==='rmg_review_write_availability')return {data:{available:true}};
+   if(name==='rmg_resolve_review_target_v1')return {data:guideId};
+   if(name==='rmg_review_summary')return {data:summary};
+   assert.fail('Unexpected resolver '+name);
+  },
+  from:table=>{
+   assert.equal(table,'public_angler_reviews');
+   const query={
+    select:()=>query,eq:(key,value)=>{
+     assert.equal(value,key==='guide_id'?guideId:published.id);
+     return query;
+    },order:()=>query,limit:async()=>({data:[published]}),maybeSingle:async()=>({data:published}),
+   };
+   return query;
+  },
+ });
+ const profile=await handleLaunch(req({operation:'public_reviews',...catalogB}),factory,catalogFlags,versionFor);
+ assert.deepEqual(await profile.json(),{summary,reviews:[published],limit:100});
+ assert.deepEqual(calls,[
+  ['rmg_review_write_availability',catalogRef(catalogB.sourceId)],
+  ['rmg_resolve_review_target_v1',catalogRef(catalogB.sourceId)],
+  ['rmg_review_summary',catalogRef(catalogB.sourceId)],
+ ]);
+ const detail=await handleLaunch(req({operation:'review_detail',...catalogB,id:published.id}),factory,catalogFlags,versionFor);
+ assert.deepEqual(await detail.json(),{review:published});
+ const or={jurisdiction:'OR',sourceId:'OG.0001225.F&F'};
+ const unknown={jurisdiction:'WA',sourceId:'wa-999'};
+ const items=[{...catalogA,count:0,averageQuality:null},{...catalogB,...summary},{...or,count:2,averageQuality:4.5}];
+ const batch=backend({rpcResult:{items}});
+ const input={operation:'public_review_summaries',guides:[catalogA,catalogB,catalogHeld,or,unknown,catalogA]};
+ const response=await handleLaunch(req(input,'must-be-ignored'),batch.factory,catalogFlags,versionFor);
+ assert.equal(response.status,200);
+ assert.deepEqual(await response.json(),{items});
+ assert.deepEqual(batch.calls,[['headers',{}],['rmg_public_review_summaries_v1',{p_guides:[
+  ...[catalogA,catalogB,catalogHeld].map(guide=>({...guide,sourceId:catalogRef(guide.sourceId)})),or,
+ ]}]]);
 });

@@ -2,6 +2,7 @@
 
 import {useCallback,useEffect,useMemo,useRef,useState,type ReactNode} from 'react';
 import AuthPanel,{client as authClient} from '@/components/AuthPanel';
+import ReturnToResults from '@/components/ReturnToResults';
 import {createLaunchClient,LaunchClientError,type GuideSource,type OwnStatus,type OwnSubmission,type OwnerDetails,type ReportReason} from '@/lib/launch-client';
 import {publishedReviewIdFromHash} from '@/lib/canonical-share';
 import {ProfileSharing} from './ProfileSharing';
@@ -34,16 +35,39 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
   const [submissions,setSubmissions]=useState<OwnSubmission[]|null>(null),[nextOffset,setNextOffset]=useState(0),[more,setMore]=useState(false),[statusError,setStatusError]=useState(false);
   const [revision,setRevision]=useState<{id:string;initial:ReviewDraft}|null>(null),[revisionError,setRevisionError]=useState('');
   const [selected,setSelected]=useState<{status:'loading'|'error';id:string}|{status:'ready';review:PublishedReview}|null>(null);
-  const authEpoch=useRef(0),availabilityEpoch=useRef(0);
+  const authEpoch=useRef(0),availabilityEpoch=useRef(0),reviewLoadEpoch=useRef(0);
   const washington=source.jurisdiction==='WA';
   const canReview=writeReady===true;
   const showReviewTools=!washington||canReview;
-  const reviewLink=washington?`${profilePath}?intent=review#write-review`:'#write-review';
   const page = showReviewTools && compactProfile && reviews.status==='ready' && validReviewPage(guideKey,reviews.page) ? reviews.page : null;
   const canReadAccount = !washington || page !== null;
-  const loadReviews=useCallback(async()=>{try{const result=await api.publicReviews(stableSource);setReviews({status:'ready',page:{guideKey,total:result.count,average:result.averageQuality,reviews:result.reviews.map(r=>({...r,guideKey,status:'published' as const,rating:r.quality}))}})}catch{setReviews({status:'error'})}},[api,guideKey,stableSource]);
+  const loadReviews=useCallback(async()=>{
+    const epoch=++reviewLoadEpoch.current;
+    try{
+      const result=await api.publicReviews(stableSource);
+      if(epoch!==reviewLoadEpoch.current)return;
+      setReviews({status:'ready',page:{guideKey,total:result.count,average:result.averageQuality,reviews:result.reviews.map(r=>({...r,guideKey,status:'published' as const,rating:r.quality}))}});
+    }catch(error){
+      if(epoch!==reviewLoadEpoch.current)return;
+      if(washington&&error instanceof LaunchClientError&&['forbidden','not_found'].includes(error.code))setWriteReady(false);
+      setReviews({status:'error'});
+    }
+  },[api,guideKey,stableSource,washington]);
   const loadDetails=useCallback(async()=>{try{setDetails({status:'ready',value:await api.profileDetails(stableSource)})}catch{setDetails({status:'error'})}},[api,stableSource]);
-  const loadWriteReady=useCallback(async()=>{const epoch=++availabilityEpoch.current;setWriteReady(null);try{const available=await api.reviewWriteAvailability(stableSource);if(epoch===availabilityEpoch.current)setWriteReady(available)}catch{if(epoch===availabilityEpoch.current)setWriteReady('error')}},[api,stableSource]);
+  const loadWriteReady=useCallback(async()=>{
+    const epoch=++availabilityEpoch.current;
+    if(washington){
+      reviewLoadEpoch.current++;
+      setReviews({status:'loading'});
+    }
+    setWriteReady(null);
+    try{
+      const available=await api.reviewWriteAvailability(stableSource);
+      if(epoch===availabilityEpoch.current)setWriteReady(available);
+    }catch{
+      if(epoch===availabilityEpoch.current)setWriteReady('error');
+    }
+  },[api,stableSource,washington]);
   const loadOwnReview=useCallback(async(epoch=authEpoch.current)=>{setOwnReview({status:'loading'});try{const review=await api.ownReviewForGuide(stableSource);if(epoch===authEpoch.current)setOwnReview({status:'ready',review})}catch{if(epoch===authEpoch.current)setOwnReview({status:'error'})}},[api,stableSource]);
   function recordWriteFailure(error:unknown){if(error instanceof LaunchClientError&&(['launch_unavailable','service_unavailable'].includes(error.code)||(washington&&error.code==='forbidden'))){availabilityEpoch.current++;setWriteReady(false)}}
   async function reportReview(id:string,reason:ReportReason){try{return await api.reportReview(stableSource,id,reason)}catch(error){recordWriteFailure(error);throw error}}
@@ -121,14 +145,16 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
     return ready ? 'ready' as const : 'closed' as const;
   }
 
-  const retryAvailability = () => {void loadWriteReady();if(showReviewTools)void loadReviews()};
+  const retryAvailability = () => {void loadWriteReady();if(showReviewTools&&!washington)void loadReviews()};
   const compactError = (showReviewTools && (reviews.status==='error' || (reviews.status==='ready' && !page))) || writeReady==='error';
   const compactStatus = compactError ? 'Couldn’t load review information.' :
     writeReady===false ? 'Review submissions are closed.' :
     writeReady===null || reviews.status==='loading' ? 'Loading review information…' : '';
   const historyOnly = !washington && compactProfile && page && !canReview && !formActivated && session==='signed_out';
   if(washington && !page)return <>
-    <WashingtonReviewStatus checking={writeReady===null || (canReview && reviews.status==='loading')}/>
+    <WashingtonReviewStatus
+      status={writeReady===false?'held':compactError?'error':'checking'}
+      onRetry={retryAvailability}/>
     <ProfileSharing profilePath={profilePath} guideName={guideName} reviewAvailable={false}/>
   </>;
 
@@ -141,7 +167,7 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
         primaryAction={page && existingReview
           ? <a className="button guide-rate" href="#your-submissions">View your review status</a>
           : offerReview
-          ? <a className="button guide-rate" href={reviewLink}>Rate {guideName}</a>
+          ? <a className="button guide-rate" href="#write-review">Rate {guideName}</a>
           : <button type="button" className="button guide-rate" disabled aria-describedby="guide-write-status">Rate {guideName}</button>}/>
       {compactStatus && <p id="guide-write-status" className="guide-status" role="status">{compactStatus}
         {compactError && <button type="button" className="guide-retry" onClick={retryAvailability}>Retry</button>}</p>}
@@ -149,7 +175,7 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
       {canReview&&reviews.status==='ready'
         ? existingReview
           ? <a className="button" href="#your-submissions">View your review status</a>
-          : <a className="button" href={reviewLink}>Rate {guideName}</a>
+          : <a className="button" href="#write-review">Rate {guideName}</a>
         : <><h2>Rate {guideName}</h2><p role="status">{availabilityMessage}</p>{availabilityError&&<button type="button" onClick={()=>{void loadWriteReady();if(reviews.status==='error')void loadReviews()}}>Retry review availability</button>}</>}
     </section>}
     {showReviewTools&&<section className="section" id="reviews">
@@ -163,6 +189,7 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
         <AuthPanel emailOnly profilePath={profilePath} onSignedIn={()=>void refreshSession()}/>
       </details> : (!compactProfile || (page && (canReview || formActivated || session==='signed_in'))) && <>
       <h2>Rate {guideName}</h2>
+      {washington&&<ReturnToResults fallback="/write-review"/>}
       {reviews.status==='ready'?<>{session==='signed_out'&&<p>{writeReady===true?'Sign in to share a firsthand experience with this guide.':'Sign in to check your existing submissions.'}</p>}<AuthPanel emailOnly profilePath={profilePath} onSignedIn={()=>void refreshSession()}/>
         {session==='loading'&&<p role="status">Checking your account…</p>}{session==='error'&&<p role="status">Your account status is temporarily unavailable.</p>}
         {session==='signed_in'&&<>{ownReview.status==='loading'&&<p role="status">Checking your review for this guide…</p>}{ownReview.status==='error'&&<><p role="status">Your review status is temporarily unavailable.</p><button type="button" onClick={()=>void loadOwnReview()}>Retry review status</button></>}
