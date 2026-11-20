@@ -24,7 +24,7 @@ python3 "$root/tests/backend-launch/reconstruct.py" > "$tmp/schema.sql"
 "${ps[@]}" -q -f "$root/tests/backend-launch/oregon-reviews-split-v1.sql" >/dev/null
 "${ps[@]}" -q -f "$root/supabase/review-candidates/10-oregon-claims-v1.sql" -f "$root/supabase/review-candidates/11-guard-legacy-claim-decision-v1.sql"
 "${ps[@]}" -q -f "$root/tests/backend-launch/oregon-claims-v1.sql" >/dev/null
-"${ps[@]}" -q -1 -f "$root/supabase/review-candidates/structured-guide-offerings-v1.sql"
+"${ps[@]}" -q -1 -f "$root/supabase/review-candidates/structured-guide-offerings-v1.sql" -f "$root/supabase/review-candidates/public-review-summaries-v1.sql"
 git -C "$root" show 656a98d:supabase/maintenance/revoke-oregon-guide-claim.sql > "$tmp/revoke.sql"
 "${ps[@]}" -q -c "INSERT INTO public.guides(id,slug,full_name,listing_status) VALUES ('10000000-0000-0000-0000-000000000004','fixture-four','Existing declaration','published'); INSERT INTO public.guide_claims(id,guide_id,claimant_id,status) VALUES ('20000000-0000-0000-0000-000000000003','10000000-0000-0000-0000-000000000004','00000000-0000-0000-0000-000000000006','approved'); INSERT INTO public.guide_details(guide_id,boat) VALUES ('10000000-0000-0000-0000-000000000004','Prior boat'); INSERT INTO rmg_private.profile_declarations(guide_id,declared_by) VALUES ('10000000-0000-0000-0000-000000000004','00000000-0000-0000-0000-000000000006');"
 python3 - "$root/supabase/review-candidates/08-preferred-name-v1.sql" "$tmp/injected.sql" <<'PYCODE'

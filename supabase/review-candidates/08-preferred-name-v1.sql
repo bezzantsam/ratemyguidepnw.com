@@ -187,7 +187,7 @@ BEGIN
   PERFORM rmg_private.require_profile_name_v1();
   gid:=rmg_private.oregon_claim_guide_v1(p_jurisdiction,p_source_id);
   IF gid IS NULL THEN RAISE EXCEPTION 'Oregon listing unavailable' USING ERRCODE='P0002'; END IF;
-  SELECT jsonb_build_object('captain_name',d.preferred_name,'captain_name_active',coalesce(d.preferred_name IS NOT NULL AND EXISTS(SELECT 1 FROM public.guide_claims c WHERE c.guide_id=gid AND c.claimant_id=d.preferred_name_by AND c.status='approved'),false),'admin_name',a.preferred_name,
+  SELECT jsonb_build_object('captain_name',d.preferred_name,'captain_name_active',coalesce(d.preferred_name IS NOT NULL AND EXISTS(SELECT 1 FROM public.guide_claims c WHERE c.guide_id=gid AND c.claimant_id=d.preferred_name_by AND c.status='approved') AND (SELECT count(*) FROM public.guide_claims c WHERE c.guide_id=gid AND c.status='approved')=1,false),'admin_name',a.preferred_name,
    'history',coalesce((SELECT jsonb_agg(jsonb_build_object('origin',h.origin,'old_name',h.old_name,'new_name',h.new_name,'reason',h.reason,'created_at',h.created_at) ORDER BY h.id DESC) FROM (SELECT id,origin,old_name,new_name,reason,created_at FROM rmg_private.profile_name_audit_v1 WHERE guide_id=gid ORDER BY id DESC LIMIT 50) h),'[]'::jsonb)) INTO result
   FROM (SELECT gid AS id) x LEFT JOIN rmg_private.profile_declarations d ON d.guide_id=x.id LEFT JOIN rmg_private.profile_name_admin_v1 a ON a.guide_id=x.id;
   RETURN result;

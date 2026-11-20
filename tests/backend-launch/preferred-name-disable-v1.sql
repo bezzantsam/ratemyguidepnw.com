@@ -18,3 +18,8 @@ SELECT public.fixture_assert((SELECT enabled FROM rmg_private.claim_control_v1)
  AND public.rmg_guide_offerings_public_v1('public_profile','{"jurisdiction":"OR","sourceId":"OG.0000004"}')
      ->'profile'->'offerings'->0->>'title'='Fixture reef trip',
  'name disable preserves the live claims and offerings controls and approved trips');
+SET ROLE anon;
+SELECT public.fixture_assert(public.rmg_public_review_summaries_v1('[{"jurisdiction":"OR","sourceId":"OG.0001225.F&F"}]')
+  ='{"items":[{"jurisdiction":"OR","sourceId":"OG.0001225.F&F","count":1,"averageQuality":5}]}'::jsonb,
+ 'name disable preserves the exact public directory review average and count');
+RESET ROLE;
