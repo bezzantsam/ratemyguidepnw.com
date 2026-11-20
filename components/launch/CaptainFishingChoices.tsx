@@ -13,9 +13,10 @@ export function FishingChoices({kind, ids, disabled, onToggle}: {
   const [expanded, setExpanded] = useState(false);
   const label = kind === 'method' ? 'Fishing methods' : 'Gear';
   const options = fishingOptions.filter(option => option.kind === kind);
-  const query = search.trim().toLowerCase();
+  const query = search.trim().toLowerCase().replace(/^mixed\s+/, '');
   const visible = options.filter(option => query
-    ? [option.label, ...option.aliases].some(text => text.toLowerCase().includes(query))
+    ? [option.label, ...option.aliases].some(text => text.toLowerCase().includes(query)) ||
+      (option.id==='bottom-fishing'&&['bottom fish','groundfish','ground fish'].includes(query))
     : expanded || commonIds.has(option.id) || ids.includes(option.id));
 
   return <fieldset disabled={disabled}>

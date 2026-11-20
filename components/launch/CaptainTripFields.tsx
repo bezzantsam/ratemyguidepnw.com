@@ -21,7 +21,7 @@ const places = {
   WA:{ports:['Ilwaco','Westport','La Push','Neah Bay','Port Angeles','Sekiu','Long Beach','Anacortes'],
     waters:['Buoy 10 / Columbia Estuary','Lower Columbia River','Cowlitz River','Kalama River','Lewis River','Drano Lake','Hanford Reach','Grays Harbor','Puget Sound','Strait of Juan de Fuca']},
 };
-const commonSpecies = new Set(['Chinook Salmon','Coho Salmon','Steelhead','Trout','Sturgeon','Lingcod','Rockfish','Albacore tuna','Halibut','Sablefish (black cod)','Walleye','Bass']);
+const commonSpecies = new Set(['Chinook Salmon','Coho Salmon','Steelhead','Trout','Sturgeon','Lingcod','Rockfish','Albacore tuna','Halibut','Sablefish (black cod)','Walleye','Bass','Bottom fishing','Crabbing']);
 
 export type Boat = {
   id:string; label:string; type:string; covered:boolean; heated:boolean; maxAnglers:number|null; fishCare:string[];
@@ -48,10 +48,12 @@ function toggle<T>(values:T[], value:T, selected:boolean):T[] {
 function Species({selected,onChange}:{selected:string[];onChange:(values:string[])=>void}){
   const [search,setSearch]=useState('');
   const [expanded,setExpanded]=useState(false);
-  const query=normalizeGuideSearch(search);
+  const query=normalizeGuideSearch(search).replace(/^mixed\s+/,'');
   const canonical=query&&canonicalFisheryLabel(query);
+  const crabSearch=['crab','crabbing','dungeness crabbing'].includes(query);
   const choices=speciesCatalog.filter(value=>selected.includes(value)||
-    (query?normalizeGuideSearch(value).includes(query)||value===canonical:expanded||commonSpecies.has(value)));
+    (query?normalizeGuideSearch(value).includes(query)||value===canonical||
+      (crabSearch&&['Crabbing','Dungeness crab'].includes(value)):expanded||commonSpecies.has(value)));
   return <fieldset>
     <legend>Target species</legend>
     <label>Find a species<input type="search" value={search} onChange={event=>setSearch(event.target.value)}/></label>
