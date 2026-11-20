@@ -24,7 +24,7 @@ test('unapproved source-backed preview follows the actual directory journey',{ti
   await page.getByRole('combobox',{name:/^Fishing waters\b/}).selectOption({label:'McKenzie River'});
   const saved=page.url();await page.getByRole('link',{name:/Kelsey Helfrich/}).first().waitFor();await page.screenshot({path:join(shots,'preview-directory-desktop.png'),fullPage:true});
   await page.getByRole('link',{name:/Kelsey Helfrich/}).first().click();await page.getByRole('heading',{name:'Kelsey Helfrich',exact:true}).waitFor();
-  await page.getByText('Separate items do not establish a combined trip.',{exact:false}).waitFor();
+  await page.getByText('Separate listings do not establish a combined trip or verify licensing.',{exact:false}).waitFor();
   assert.equal(await page.locator('.guide-enrichment li').filter({hasText:'method: Fly fishing'}).count(),2,'two independently attributed sources remain visible');
   await page.getByText('Source explicitly connects: Rainbow Trout · Fly fishing · McKenzie River',{exact:false}).waitFor();
   await page.getByText('Source explicitly connects: Steelhead · Fly fishing · Rogue River',{exact:false}).waitFor();
