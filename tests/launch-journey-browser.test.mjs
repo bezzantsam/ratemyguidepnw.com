@@ -110,7 +110,9 @@ test('synthetic browser connects mapped review, claim, moderation and published 
   await editor.getByText('More ratings (optional)',{exact:true}).click();
   assert.equal(await editor.getByLabel('Communication',{exact:true}).inputValue(),'4');
   assert.equal(await editor.getByRole('radio',{name:'Yes',exact:true}).isChecked(),true);
-  assert.equal(await editor.getByLabel('Organization',{exact:true}).inputValue(),'value:3');
+  const organization=editor.getByLabel('Organization',{exact:true});
+  assert.equal(await organization.inputValue(),'value:3');
+  await organization.selectOption('');
   assert.equal(await editor.getByLabel('How many fish did your group land?',{exact:false}).inputValue(),'0');
   await editor.getByLabel('Value',{exact:true}).selectOption('');
   await page.getByLabel('Your experience').fill('A good firsthand trip with a corrected detail.');
@@ -121,7 +123,7 @@ test('synthetic browser connects mapped review, claim, moderation and published 
   assert.deepEqual(state.revision.ratings,{value:null});
   assert.equal(Object.hasOwn(state.revision,'wouldBookAgain'),false);
   assert.equal(state.revision.tripResponses.answers.effort.value,2);
-  assert.equal(state.revision.tripResponses.answers.organization.value,3);
+  assert.deepEqual(state.revision.tripResponses.answers.organization,{state:'not_applicable'});
   assert.equal(state.revision.tripResponses.answers.fish_landed.value,0);
   assert.equal(state.review.body,'A good firsthand trip.');
   if(process.env.BROWSER_SCREENSHOT_DIR){mkdirSync(process.env.BROWSER_SCREENSHOT_DIR,{recursive:true});await page.screenshot({path:join(process.env.BROWSER_SCREENSHOT_DIR,'synthetic-launch-mobile.png'),fullPage:true})}
