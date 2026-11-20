@@ -1,7 +1,8 @@
 import {fishingOptions, type FishingOption} from './captain-fishing/catalog.mjs';
 import type {DirectoryEntry} from './directory';
+import type {CaptainTrip} from './public-captain-trips';
 
-export type DirectoryFilters={state:string;sourceZone:string;advertisedWater:string;query:string;species?:string;method?:string;identityOnly?:boolean};
+export type DirectoryFilters={state:string;sourceZone:string;advertisedWater:string;query:string;species?:string;method?:string;gear?:string;month?:number;identityOnly?:boolean};
 
 /** Search expansions only. These do NOT add identity aliases or credential evidence. */
 const nicknameFamilies=[
@@ -212,14 +213,14 @@ function matchesBusinessKeyword(entry:DirectoryEntry,query:string):boolean {
  }));
 }
 /** Lower scores mean closer matches. Null means at least one query term is unsupported. */
-export function guideSearchScore(entry:DirectoryEntry,query:string):number|null {
+export function guideSearchScore(entry:DirectoryEntry,query:string,identityOnly=false):number|null {
  const raw=query.trim().toLowerCase();if(!raw)return 0;
  const index=indexFor(entry);
  // Registration/WA IDs must never be silently corrected to another identity.
  if(/^(og[.\s-]?\d|wa[.\s-]?\d)/i.test(raw))return index.id===raw?0:index.id.startsWith(raw)?1:null;
  const needle=normalizeGuideSearch(raw);if(!needle)return null;
  const fishery=matchesFisherySearch(needle,[...(entry.advertisedSpecies??[]),...(entry.advertisedMethods??[]),...(entry.advertisedTrips??[])],entry.advertisedMethods??[]);
- if (fishery!==null)return fishery ? 30 : null;
+ if (!identityOnly&&fishery!==null)return fishery ? 30 : null;
  if(index.identity.includes(needle)||matchesBusinessKeyword(entry,needle))return 0;
  if(index.identity.some(value=>value.startsWith(needle)))return 1;
  if(index.identity.some(value=>value.includes(needle)))return 2;
@@ -232,17 +233,53 @@ export function guideSearchScore(entry:DirectoryEntry,query:string):number|null 
   if(index.tokens.includes(term))cost=0;
   else if(index.tokens.some(token=>token.startsWith(term)))cost=1;
   else if(nicknameLookup.get(term)?.includes(index.firstName))cost=2;
-  else if(index.contextTokens.includes(term))cost=3;
-  else if(index.contextTokens.some(token=>token.startsWith(term)))cost=4;
+  else if(!identityOnly&&index.contextTokens.includes(term))cost=3;
+  else if(!identityOnly&&index.contextTokens.some(token=>token.startsWith(term)))cost=4;
   else if(term.length>=4){
    const distance=term.length>=7?2:1;
    if(index.tokens.some(token=>token.length>=4&&closeSpelling(term,token,distance)))cost=5;
-   else if(index.contextTokens.some(token=>token.length>=4&&closeSpelling(term,token,distance)))cost=6;
+   else if(!identityOnly&&index.contextTokens.some(token=>token.length>=4&&closeSpelling(term,token,distance)))cost=6;
   }
   if(cost===null)return null;
   worst=Math.max(worst,cost);total+=cost;
  }
  return 10+worst*10+total/terms.length;
+}
+
+export function captainTripFacets(entry:DirectoryEntry,state:string) {
+ const local=(entry.captainTrips??[]).filter(trip=>state==='All'||state===(trip.jurisdiction==='OR'?'Oregon':'Washington'));
+ return {
+  waters:local.flatMap(trip=>[trip.waterway,trip.launchArea]).filter(Boolean),
+  species:local.flatMap(trip=>trip.species),
+  methods:local.flatMap(trip=>trip.methodIds.map(directoryMethodLabel)),
+ };
+}
+
+/** Every selected trip attribute and fishery search term must match this offering. */
+export function matchingCaptainTrips(entry:DirectoryEntry,filters:DirectoryFilters):CaptainTrip[] {
+ if(filters.identityOnly||!entry.captainTrips?.length)return [];
+ if(filters.sourceZone!=='All areas'&&!entry.areas.includes(filters.sourceZone))return [];
+ const query=normalizeGuideSearch(filters.query);
+ const queryIdentity=query?guideSearchScore(entry,filters.query,true):null;
+ return entry.captainTrips.filter(trip=>{
+  const state=trip.jurisdiction==='OR'?'Oregon':'Washington';
+  if(filters.state!=='All'&&filters.state!==state)return false;
+  const places=[trip.waterway,trip.launchArea].filter(Boolean);
+  if(filters.advertisedWater!=='All advertised waters'&&!places.includes(filters.advertisedWater))return false;
+  if(filters.species&&filters.species!=='All species'&&!directorySpeciesLabels(trip.species).includes(filters.species))return false;
+  const methods=[...trip.methodIds,...trip.gearIds].map(directoryMethodLabel);
+  if(filters.method&&filters.method!=='All methods'&&!methods.includes(directoryMethodLabel(filters.method)))return false;
+  if(filters.gear&&!trip.gearIds.includes(filters.gear))return false;
+  if(filters.month&&!trip.months.includes(filters.month))return false;
+  if(!query)return true;
+  const atPort=fisheryAtPort(query,places,filters.method,filters.species);
+  if(atPort)return matchesFisherySearch(atPort.term,trip.species,methods)===true;
+  const fishery=matchesFisherySearch(query,trip.species,methods);
+  if(fishery!==null)return fishery;
+  if(queryIdentity!==null)return true;
+  const context=normalizeGuideSearch([trip.title,...places,...trip.species,...methods].join(' '));
+  return query.split(' ').every(term=>context.split(' ').includes(term));
+ });
 }
 
 /** Exact filters stay exact; fuzzy text matches never expand fisheries or merge identities. */
@@ -258,13 +295,14 @@ export function filterDirectoryEntries(entries:DirectoryEntry[],filters:Director
  const sameMethod=(value:string|undefined)=>value!==undefined && directoryMethodLabel(value)===selectedMethod;
  const hasWater=filters.advertisedWater!=='All advertised waters';
  const includeFishery=!filters.identityOnly&&(Boolean(portSearch)||isKnownFishery(filters.query)||hasSpecies||hasMethod||hasWater);
- return entries.map(entry=>{
+ const existingScore=(entry:DirectoryEntry):number|null=>{
+  if(filters.gear||filters.month)return null;
   if(!directoryEntryInState(entry,filters.state,includeFishery)||
-     (filters.sourceZone!=='All areas'&&!entry.areas.includes(filters.sourceZone)))return {entry,score:null};
+     (filters.sourceZone!=='All areas'&&!entry.areas.includes(filters.sourceZone)))return null;
   const facets=directoryFisheryFacets(entry,filters.state);
   if((hasWater&&!facets.waters.includes(filters.advertisedWater))||
      (hasSpecies&&!directorySpeciesLabels(facets.species).includes(filters.species!))||
-     (hasMethod&&!facets.methods.some(sameMethod)))return {entry,score:null};
+     (hasMethod&&!facets.methods.some(sameMethod)))return null;
   if(!portSearch){
    const pairedSpecies=hasSpecies?filters.species:
     textSpecies&&directorySpeciesLabels(facets.species).includes(textSpecies)?textSpecies:undefined;
@@ -276,7 +314,7 @@ export function filterDirectoryEntries(entries:DirectoryEntry[],filters:Director
      const {species,method}=offeringFacets(item);
      return species&&directorySpeciesLabels([species]).includes(pairedSpecies)&&
       method&&directoryMethodLabel(method)===pairedMethod;
-    }))return {entry,score:null};
+    }))return null;
    }
    const exactFishery=isKnownFishery(filters.query);
    if(hasWater&&(hasSpecies||hasMethod||exactFishery)){
@@ -289,10 +327,10 @@ export function filterDirectoryEntries(entries:DirectoryEntry[],filters:Director
      const labels=[species,method,trip].filter((value):value is string=>Boolean(value));
      return (!hasSpecies||Boolean(species&&directorySpeciesLabels([species]).includes(filters.species!)))&&
       (!hasMethod||sameMethod(method))&&(!exactFishery||matchesFisherySearch(filters.query,labels,method?[method]:[])===true);
-    }))return {entry,score:null};
+    }))return null;
    }
    const match=matchesFisherySearch(filters.query,[...facets.species,...facets.methods,...facets.trips],facets.methods);
-   return {entry,score:match===null?guideSearchScore(entry,filters.query):match?30:null};
+   return match===null?guideSearchScore(entry,filters.query):match?30:null;
   }
   const match=sourcedOfferings(entry).some(item=>{
    if(!offeringPlaces(item).some(place=>normalizeGuideSearch(place)===portSearch.city)||
@@ -303,7 +341,14 @@ export function filterDirectoryEntries(entries:DirectoryEntry[],filters:Director
     (!hasSpecies||Boolean(species&&directorySpeciesLabels([species]).includes(filters.species!)))&&
     (!hasMethod||sameMethod(method))&&(!hasWater||filters.advertisedWater===waterway);
   });
-  return {entry,score:match?30:null};
+  return match?30:null;
+ };
+ return entries.map(entry=>{
+  const score=existingScore(entry);
+  const trips=matchingCaptainTrips(entry,filters);
+  if(!trips.length)return {entry,score};
+  const captainScore=filters.query.trim()?guideSearchScore(entry,filters.query,true)??30:0;
+  return {entry,score:score===null?captainScore:Math.min(score,captainScore)};
  })
   .filter((match):match is {entry:DirectoryEntry;score:number}=>match.score!==null)
   .sort((a,b)=>a.score-b.score||a.entry.name.localeCompare(b.entry.name,'en',{sensitivity:'base'})||a.entry.id.localeCompare(b.entry.id))

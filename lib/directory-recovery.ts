@@ -2,7 +2,7 @@ import type {DirectoryEntry} from './directory';
 import {filterDirectoryEntries} from './directory-query';
 import {DEFAULT_DIRECTORY_STATE, directoryUrl, type DirectoryState} from './directory-url';
 
-type RecoveryKey = 'state' | 'area' | 'waterway' | 'species' | 'method' | 'query' | 'filters';
+type RecoveryKey = 'state' | 'area' | 'waterway' | 'species' | 'method' | 'gear' | 'month' | 'query' | 'filters';
 export type DirectoryRecovery = {
   key: RecoveryKey;
   label: string;
@@ -13,7 +13,7 @@ export type DirectoryRecovery = {
 function countMatches(entries: DirectoryEntry[], value: DirectoryState): number {
   return filterDirectoryEntries(entries, {
     query: value.query, state: value.state, sourceZone: value.area,
-    advertisedWater: value.waterway, species: value.species, method: value.method,
+    advertisedWater: value.waterway, species: value.species, method: value.method, gear: value.gear, month: value.month,
   }).length;
 }
 
@@ -28,10 +28,13 @@ export function directoryRecoveryOptions(entries: DirectoryEntry[], selection: D
   if (selection.species !== 'All species') candidates.push({key: 'species', label: 'Remove species filter', patch: {species: 'All species'}});
   if (selection.method !== 'All methods') candidates.push({key: 'method', label: 'Remove fishing method filter', patch: {method: 'All methods'}});
 
+  if (selection.gear) candidates.push({key: 'gear', label: 'Remove gear filter', patch: {gear: undefined}});
+  if (selection.month) candidates.push({key: 'month', label: 'Remove month filter', patch: {month: undefined}});
+
   // If multiple filters conflict, preserve the person's search text as a fallback.
   if (candidates.length > 1) candidates.push({
     key: 'filters', label: selection.query.trim() ? 'Keep search text, remove all filters' : 'Remove all filters',
-    patch: {...DEFAULT_DIRECTORY_STATE, query: selection.query},
+    patch: {...DEFAULT_DIRECTORY_STATE, query: selection.query, gear: undefined, month: undefined},
   });
   if (selection.query.trim()) candidates.push({key: 'query', label: 'Clear search text', patch: {query: ''}});
 

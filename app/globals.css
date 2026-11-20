@@ -220,3 +220,8 @@ nav a{display:inline-flex;align-items:center;min-height:44px}
   .compact-sharing .profile-sharing-actions { gap: 8px; }
   .compact-sharing .guide-rate { flex: 1 1 9rem; overflow-wrap: anywhere; }
 }
+
+.captain-trip-list{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr));gap:12px}
+.captain-trip-card.card{min-height:0;padding:16px;overflow-wrap:anywhere}
+.captain-trip-card h3{font-size:1.125rem;margin-bottom:6px}
+.captain-trip-card p{font-size:.92rem;margin:3px 0}

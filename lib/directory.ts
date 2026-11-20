@@ -4,6 +4,7 @@ import {washingtonRecordForOregon} from './washington';
 import {advertisedWaterwayNames,guideSearchTerms} from './guide-enrichment';
 import {attributesFor} from './guide-attributes-server';
 import type {EvidenceAttribute} from './guide-attributes';
+import type {CaptainTrip} from './public-captain-trips';
 import {editorialGuideCorrections} from './editorial-guide-corrections';
 
 export type DirectoryEntry={
@@ -27,6 +28,7 @@ export type DirectoryEntry={
   businessAdvertisedOfferings?:string[];
   locatedOfferings?:(NonNullable<EvidenceAttribute['location']>&Pick<EvidenceAttribute,'value'|'kind'|'relationship'>)[];
   fisheryOfferings?:(Pick<EvidenceAttribute,'value'|'kind'|'relationship'>&Partial<NonNullable<EvidenceAttribute['location']>>)[];
+  captainTrips?:CaptainTrip[];
   testFixture?:boolean;
   /** Separate people associated with saltwater trips; never captain identity aliases. */
   href:string;

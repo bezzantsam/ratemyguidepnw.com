@@ -3,34 +3,56 @@ import Link from 'next/link';
 import {useEffect,useMemo,useRef,useState} from 'react';
 import {DEFAULT_DIRECTORY_STATE,DIRECTORY_PAGE_SIZE,directoryUrl,parseDirectoryState,type DirectoryState} from '@/lib/directory-url';
 import type {DirectoryEntry} from '@/lib/directory';
-import {directoryEntryInState,directoryFisheryFacets,directoryMethodGroups,directorySpeciesLabels,directorySpeciesMenu,filterDirectoryEntries,guideSearchScore,locatedGuidePorts} from '@/lib/directory-query';
+import {captainTripFacets,directoryEntryInState,directoryMethodLabel,directoryFisheryFacets,directoryMethodGroups,directorySpeciesLabels,directorySpeciesMenu,filterDirectoryEntries,guideSearchScore,locatedGuidePorts,matchingCaptainTrips} from '@/lib/directory-query';
 import {charterPorts,filterCharterOfferings,type CharterOffering} from '@/lib/charter-offerings';
 import {PUBLIC_ORIGIN} from '@/lib/canonical-share';
+import {captainTripKey,captainTripMonths,fetchCaptainTripsForDirectory,type CaptainTrip} from '@/lib/public-captain-trips';
+import {fishingOptions} from '@/lib/captain-fishing/catalog.mjs';
 import DirectoryEmptyState from './DirectoryEmptyState';
 
 const noCharters: CharterOffering[] = [];
 
-export default function UnifiedSearch({entries,charters=noCharters,reviewMode=false,reviewEnabled=false,home=false}:{entries:DirectoryEntry[];charters?:CharterOffering[];reviewMode?:boolean;reviewEnabled?:boolean;home?:boolean}){
+export default function UnifiedSearch({entries:sourceEntries,charters=noCharters,reviewMode=false,reviewEnabled=false,home=false,captainTripsEnabled=false}:{entries:DirectoryEntry[];charters?:CharterOffering[];reviewMode?:boolean;reviewEnabled?:boolean;home?:boolean;captainTripsEnabled?:boolean}){
+ const readCaptainTrips=captainTripsEnabled&&!reviewMode;
+ const [published,setPublished]=useState<Map<string,CaptainTrip[]>|'error'|null>(null);
+ useEffect(()=>{
+  if(!readCaptainTrips)return;
+  const controller=new AbortController();
+  void fetchCaptainTripsForDirectory(controller.signal).then(trips=>{
+   if(!controller.signal.aborted)setPublished(trips);
+  }).catch(()=>{if(!controller.signal.aborted)setPublished('error');});
+  return ()=>controller.abort();
+ },[readCaptainTrips]);
+ const entries=useMemo(()=>readCaptainTrips&&published instanceof Map&&published.size
+  ?sourceEntries.map(entry=>{
+   const source={jurisdiction:entry.href.startsWith('/washington/')?'WA' as const:'OR' as const,sourceId:entry.id};
+   const captainTrips=published.get(captainTripKey(source));
+   return captainTrips?.length?{...entry,captainTrips}:entry;
+  }):sourceEntries,[sourceEntries,readCaptainTrips,published]);
+ const projectionPending=readCaptainTrips&&published===null;
  const [selection,setSelection]=useState<DirectoryState>(DEFAULT_DIRECTORY_STATE);
  const [copyStatus,setCopyStatus]=useState('');
  const [fallback,setFallback]=useState(false);
  const resultsRef=useRef<HTMLDivElement>(null);
  const searchRef=useRef<HTMLInputElement>(null),areaRef=useRef<HTMLSelectElement>(null),waterRef=useRef<HTMLSelectElement>(null),speciesRef=useRef<HTMLSelectElement>(null),methodRef=useRef<HTMLSelectElement>(null),allRef=useRef<HTMLButtonElement>(null);
- const {query:q,state,area,waterway,species,method,page}=selection;
+ const gearRef=useRef<HTMLSelectElement>(null),monthRef=useRef<HTMLSelectElement>(null);
+ const {query:q,state,area,waterway,species,method,gear,month,page}=selection;
+ const captainFilters={state,sourceZone:area,advertisedWater:waterway,species,method,gear,month,query:q,identityOnly:reviewMode};
  const routeBase=reviewMode?'/write-review':'/guides';
  const resultsUrl=directoryUrl(selection,home?'/':routeBase);
  const shareUrl=PUBLIC_ORIGIN+directoryUrl(selection,routeBase);
  const size=DIRECTORY_PAGE_SIZE;
  useEffect(()=>{
+  if(projectionPending)return;
   function restore(){
    const next=parseDirectoryState(window.location.search,entries,charters,reviewMode);
    setSelection(next);
    const query=directoryUrl(next).slice('/guides'.length);
-   if(window.location.search!==query)window.history.replaceState(null,'',window.location.pathname+query);
+   if(published!=='error'&&window.location.search!==query)window.history.replaceState(null,'',window.location.pathname+query);
   }
   restore();window.addEventListener('popstate',restore);
   return ()=>window.removeEventListener('popstate',restore);
- },[entries,charters,reviewMode]);
+ },[entries,charters,reviewMode,projectionPending,published]);
  function change(patch:Partial<DirectoryState>,replace=false){
   const next=parseDirectoryState(directoryUrl({...selection,...patch}).slice('/guides'.length),entries,charters,reviewMode);
   setSelection(next);setCopyStatus('');setFallback(false);
@@ -45,8 +67,8 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
   catch{setFallback(true);setCopyStatus('Copy the search link from the field below.')}
  }
  const filtered=useMemo(()=>filterDirectoryEntries(entries,{
-  state,sourceZone:area,advertisedWater:waterway,species,method,query:q,identityOnly:reviewMode
- },charters.flatMap(charterPorts)),[entries,charters,q,state,area,waterway,species,method,reviewMode]);
+  state,sourceZone:area,advertisedWater:waterway,species,method,gear,month,query:q,identityOnly:reviewMode
+ },charters.flatMap(charterPorts)),[entries,charters,q,state,area,waterway,species,method,gear,month,reviewMode]);
 
  const areas=useMemo(()=>
   ['All areas',...new Set(entries.filter(g=>state==='All'||g.states.includes(state as 'Oregon'|'Washington'))
@@ -55,24 +77,30 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
 
  const facets=useMemo(()=>entries.filter(entry=>directoryEntryInState(entry,state,!reviewMode))
   .map(entry=>directoryFisheryFacets(entry,state)),[entries,state,reviewMode]);
+ const captainFacets=useMemo(()=>reviewMode?[]:entries.map(entry=>captainTripFacets(entry,state)),[entries,state,reviewMode]);
+ const hasCaptainTrips=!reviewMode&&entries.some(entry=>entry.captainTrips?.length);
+ const gearOptions=fishingOptions.filter(option=>option.kind==='gear');
  const scopedCharters=useMemo(()=>charters.filter(offer=>state==='All'||offer.state===state),[charters,state]);
  const waters=useMemo(()=>['All advertised waters',...new Set([
-  ...facets.flatMap(facet=>facet.waters),
+  ...[...facets,...captainFacets].flatMap(facet=>facet.waters),
   ...scopedCharters.flatMap(offer=>[...(offer.waterway?[offer.waterway]:[]),...(offer.waters??[])]),
- ])].sort((a,b)=>a==='All advertised waters'?-1:b==='All advertised waters'?1:a.localeCompare(b)),[facets,scopedCharters]);
+ ])].sort((a,b)=>a==='All advertised waters'?-1:b==='All advertised waters'?1:a.localeCompare(b)),[facets,captainFacets,scopedCharters]);
  const speciesOptions=useMemo(()=>[...new Set([
-  ...facets.flatMap(facet=>directorySpeciesLabels(facet.species)),
+  ...[...facets,...captainFacets].flatMap(facet=>directorySpeciesLabels(facet.species)),
   ...scopedCharters.flatMap(offer=>directorySpeciesLabels(offer.species?[offer.species]:[])),
- ])].sort(),[facets,scopedCharters]);
+ ])].sort(),[facets,captainFacets,scopedCharters]);
  const speciesMenu=directorySpeciesMenu(speciesOptions,species);
+ const commonSpecies=new Set(speciesMenu.groups.flatMap(group=>group.choices));
+ const captainSpecies=[...new Set(captainFacets.flatMap(facet=>directorySpeciesLabels(facet.species)))]
+  .filter(label=>!commonSpecies.has(label)).sort();
  const methodGroups=useMemo(()=>directoryMethodGroups([
   ...facets.flatMap(facet=>facet.methods),
   ...scopedCharters.flatMap(offer=>offer.method?[offer.method]:[]),
- ]),[facets,scopedCharters]);
+ ]),[facets,captainFacets,scopedCharters]);
  const guidePorts=useMemo(()=>locatedGuidePorts(entries),[entries]);
  const matchingCharters=filterCharterOfferings(charters,selection,guidePorts);
  const pages=Math.max(1,Math.ceil(filtered.length/size)),current=Math.min(page,pages);
- const setRegion=(s:DirectoryState['state'])=>change({state:s,area:'All areas',waterway:'All advertised waters',species:'All species',method:'All methods',page:1});
+ const setRegion=(s:DirectoryState['state'])=>change({state:s,area:'All areas',waterway:'All advertised waters',species:'All species',method:'All methods',gear:undefined,month:undefined,page:1});
 
  return <section className="directory-panel">
   <h2>{reviewMode?'Find the guide you fished with':'Find a captain'}</h2>
@@ -92,18 +120,21 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
      {areas.map(a=><option key={a}>{a}</option>)}
     </select>
    </label>
-   <label>Fishing waters
+   <label>{hasCaptainTrips?'Fishing waters or launch ports':'Fishing waters'}
     <select ref={waterRef} value={waterway} onChange={e=>change({waterway:e.target.value,page:1})}>
      {waters.map(a=><option key={a} value={a}>{a==='All advertised waters'?'All waters':a}</option>)}
     </select>
    </label>
-   {(speciesMenu.groups.length>0||speciesMenu.selectedOnly)&&<label>Species
+   {(speciesMenu.groups.length>0||speciesMenu.selectedOnly||captainSpecies.length>0)&&<label>Species
     <select ref={speciesRef} value={species} onChange={e=>change({species:e.target.value,page:1})}>
      <option>All species</option>
-     {speciesMenu.selectedOnly&&<option value={species} hidden>{species}</option>}
+     {speciesMenu.selectedOnly&&!captainSpecies.includes(species)&&<option value={species} hidden>{species}</option>}
      {speciesMenu.groups.map(group=><optgroup key={group.label} label={group.label}>
       {group.choices.map(choice=><option key={choice}>{choice}</option>)}
      </optgroup>)}
+     {captainSpecies.length>0&&<optgroup label="Captain trip species">
+      {captainSpecies.map(label=><option key={label}>{label}</option>)}
+     </optgroup>}
     </select>
    </label>}
    <label>Fishing methods
@@ -113,28 +144,45 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
      <optgroup label="Gear">{methodGroups.gear.map(label=><option key={label}>{label}</option>)}</optgroup>
     </select>
    </label>
+   {(hasCaptainTrips||gear||month)&&<><label>Trip gear
+    <select ref={gearRef} value={gear??''} onChange={e=>change({gear:e.target.value||undefined,page:1})}>
+     <option value="">All gear</option>
+     {gearOptions.map(option=><option key={option.id} value={option.id}>{option.label}</option>)}
+    </select>
+   </label>
+   <label>Trip month
+    <select ref={monthRef} value={month??''} onChange={e=>change({month:Number(e.target.value)||undefined,page:1})}>
+     <option value="">All months</option>
+     {captainTripMonths.map((label,index)=><option key={label} value={index+1}>{label}</option>)}
+    </select>
+   </label></>}
   </div>
   <p className="muted">Search recognizes common nicknames and small spelling mistakes. Check the captain and business name before choosing a profile.</p>
   <div className="search-actions">
    <button type="button" onClick={()=>void copyLink()}>Copy search link</button>
    <Link href={directoryUrl(selection)}>Open search in directory</Link>
-   <button type="button" onClick={()=>change(DEFAULT_DIRECTORY_STATE)}>Clear all filters</button>
+   <button type="button" onClick={()=>change({...DEFAULT_DIRECTORY_STATE,gear:undefined,month:undefined})}>Clear all filters</button>
    <span role="status">{copyStatus}</span>
    {fallback&&<label>Search link<input readOnly value={shareUrl} onFocus={e=>e.currentTarget.select()}/></label>}
   </div>
-  {(q||state!=='All'||area!=='All areas'||waterway!=='All advertised waters'||species!=='All species'||method!=='All methods')&&<div className="active-filters" aria-label="Active filters"><strong>Active filters:</strong>
+  {(q||state!=='All'||area!=='All areas'||waterway!=='All advertised waters'||species!=='All species'||method!=='All methods'||gear||month)&&<div className="active-filters" aria-label="Active filters"><strong>Active filters:</strong>
    {q&&<button type="button" onClick={()=>{change({query:'',page:1});searchRef.current?.focus()}}>Remove search: {q}</button>}
    {state!=='All'&&<button type="button" onClick={()=>{setRegion('All');allRef.current?.focus()}}>Remove state: {state}</button>}
    {area!=='All areas'&&<button type="button" onClick={()=>{change({area:'All areas',page:1});areaRef.current?.focus()}}>Remove area: {area}</button>}
    {species!=='All species'&&<button type="button" onClick={()=>{change({species:'All species',page:1});speciesRef.current?.focus()}}>Remove species: {species}</button>}
    {method!=='All methods'&&<button type="button" onClick={()=>{change({method:'All methods',page:1});methodRef.current?.focus()}}>Remove method: {method}</button>}
    {waterway!=='All advertised waters'&&<button type="button" onClick={()=>{change({waterway:'All advertised waters',page:1});waterRef.current?.focus()}}>Remove waterway: {waterway}</button>}
+   {gear&&<button type="button" onClick={()=>{change({gear:undefined,page:1});gearRef.current?.focus()}}>Remove gear: {directoryMethodLabel(gear)}</button>}
+   {month&&<button type="button" onClick={()=>{change({month:undefined,page:1});monthRef.current?.focus()}}>Remove month: {captainTripMonths[month-1]}</button>}
   </div>}
+  {projectionPending&&<p className="guide-meta" role="status">Loading captain-provided trips…</p>}
+  {readCaptainTrips&&published==='error'&&<p className="guide-meta" role="status">Captain-provided trips are temporarily unavailable.</p>}
   <div ref={resultsRef} tabIndex={-1} className="results-heading" role="status" aria-live="polite" aria-atomic="true"><strong>{filtered.length.toLocaleString()} captain {filtered.length===1?'listing':'listings'}</strong>
    {matchingCharters.length>0&&<span>{matchingCharters.length} charter {matchingCharters.length===1?'offering':'offerings'}</span>}
    <span>{q.trim()?'Closest matches first':'A–Z'} · Page {current} of {pages}</span>
   </div>
   <div className="guide-results">{filtered.slice((current-1)*size,current*size).map(g=>{
+   const captainTrips=matchingCaptainTrips(g,captainFilters);
    const {species:targets,methods,trips,waters}=directoryFisheryFacets(g,state);
    const editorial=(g.editorialFishing??[]).filter(fact=>[...targets,...methods].includes(fact.value));
    const labels=[...new Set([...targets,...methods,...trips])].filter(label=>
@@ -160,6 +208,9 @@ export default function UnifiedSearch({entries,charters=noCharters,reviewMode=fa
           return label+category+scope;
         }).join(' · ')}</p>}
       {editorial.map(fact=><p className="guide-meta" key={fact.value}>Editorial fishing note supplied by {fact.attributedTo}: {fact.value}</p>)}
+      {captainTrips.slice(0,2).map(trip=><p className="guide-meta" key={trip.id}>
+        <strong>Captain-provided trip:</strong> {trip.title} · {[trip.waterway,trip.launchArea,trip.jurisdiction].filter(Boolean).join(' · ')}
+      </p>)}
       {waters.length>0&&<p className="guide-meta">Advertised waters (source-linked): {waters.slice(0,3).join(' · ')}{waters.length>3?' · + more':''}</p>}
       <p className="guide-meta">{g.source==='Oregon registry'?'Imported registration zones':'Imported directory areas / notes'}: {g.areas.slice(0,3).join(' · ')||'Not specified'}{g.areas.length>3?' · + more':''}</p>
       <p className="guide-submeta">Imported source listing · {reviewEnabled?'See profile for reviews':'Review data unavailable'} · Current credentials not independently checked</p>

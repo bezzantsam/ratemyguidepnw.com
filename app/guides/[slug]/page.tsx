@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import {notFound} from 'next/navigation';
+import CaptainTripCards from '@/components/CaptainTripCards';
 import GuideEnrichmentPanel from '@/components/GuideEnrichmentPanel';
 import ReturnToResults from '@/components/ReturnToResults';
 import {AuthCheck} from '@/components/launch/AuthCheck';
@@ -70,6 +71,8 @@ export default async function Page({params}: ProfileParams) {
       <p>This captain has a matching listing in the supplied Washington directories.</p>
       <p><strong>{washington.source.source}:</strong> {washington.source.business}{washington.source.notes && <> · {washington.source.notes}</>}</p>
     </section>}
+    {process.env.RMG_GUIDE_OFFERINGS_ENABLED==='true' &&
+      <CaptainTripCards jurisdiction="OR" sourceId={guide.registration}/>}
     <GuideEnrichmentPanel registration={guide.registration}/>
   </main>;
 }

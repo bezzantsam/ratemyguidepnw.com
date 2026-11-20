@@ -24,7 +24,7 @@ export function charterPorts(offer: CharterOffering): string[] {
 }
 
 export function filterCharterOfferings(offerings: CharterOffering[], filters: DirectoryState, guidePorts: string[] = []) {
-  if (filters.area !== 'All areas') return [];
+  if (filters.area !== 'All areas' || filters.gear || filters.month) return [];
   const query = normalizeGuideSearch(filters.query);
   const portSearch = query ? fisheryAtPort(query, [...guidePorts, ...offerings.flatMap(charterPorts)], filters.method, filters.species) : null;
   return offerings.filter(offer => {
