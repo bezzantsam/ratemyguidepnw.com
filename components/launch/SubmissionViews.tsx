@@ -111,7 +111,7 @@ export function ClaimSubmission({onSubmit}: {onSubmit: SubmitClaim}) {
     <label htmlFor={`${prefix}-business`}>Business name, if applicable</label>
     <input id={`${prefix}-business`} value={businessName} onChange={event=>setBusinessName(event.target.value)} maxLength={160} />
     <label htmlFor={`${prefix}-claim`}>Your connection to this listing</label>
-    <p id={`${prefix}-claim-help`}>Write 20 to 1,200 characters.</p>
+    <p id={`${prefix}-claim-help`}>Include a business site or another source a moderator can check. Write 20 to 1,200 characters. Do not include passwords, identity documents, or payment details.</p>
     <textarea id={`${prefix}-claim`} aria-describedby={`${prefix}-claim-help`} value={statement} onChange={event=>setStatement(event.target.value)} minLength={20} maxLength={1200} required />
     {error && <p role="alert">{error}</p>}
     <button type="submit" disabled={busy}>{busy ? 'Submitting…' : 'Submit claim request'}</button>

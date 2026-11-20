@@ -5,7 +5,7 @@ import {BRAND_NAME,guideAuthRedirectPath,guideAuthRestoredPath} from '@/lib/cano
 import {rememberReviewSearch,takeReviewSearch} from '@/lib/review-search-return';
 const url=process.env.NEXT_PUBLIC_SUPABASE_URL,key=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 export const client=url&&key?createClient(url,key):null;
-export default function AuthPanel({onSignedIn,profilePath,moderator=false,authCheck=false,emailOnly=false}:{onSignedIn?:()=>void;profilePath?:string;moderator?:boolean;authCheck?:boolean;emailOnly?:boolean}){
+export default function AuthPanel({onSignedIn,profilePath,claimIntent=false,moderator=false,authCheck=false,emailOnly=false}:{onSignedIn?:()=>void;profilePath?:string;claimIntent?:boolean;moderator?:boolean;authCheck?:boolean;emailOnly?:boolean}){
  const usesEmailOnly=moderator||authCheck||emailOnly;
  const[email,setEmail]=useState(''),[message,setMessage]=useState(''),[user,setUser]=useState<string|null>(null),[busy,setBusy]=useState(false);
  const onSignedInRef=useRef(onSignedIn);onSignedInRef.current=onSignedIn;
@@ -30,6 +30,7 @@ export default function AuthPanel({onSignedIn,profilePath,moderator=false,authCh
       : restored;
      window.history.replaceState(window.history.state,'',next);
      window.dispatchEvent(new Event('hashchange'));
+     if(search==='?intent=claim'&&hash!=='#claim-profile')document.getElementById('claim-profile')?.scrollIntoView();
     }
    }
    onSignedInRef.current?.();
@@ -41,6 +42,7 @@ export default function AuthPanel({onSignedIn,profilePath,moderator=false,authCh
  function redirectTo(){
   const {origin,pathname,search,hash}=window.location;
   if(moderator)return origin+'/admin';
+  if(claimIntent&&profilePath)return origin+guideAuthRedirectPath(`${profilePath}?intent=claim`,profilePath);
   const params=new URLSearchParams(search);
   params.delete('returnTo');
   const query=params.toString();

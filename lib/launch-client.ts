@@ -7,6 +7,7 @@ export type PendingReceipt = Readonly<{id:string;status:'pending';existing?:bool
 export type OwnStatus = Readonly<{id:string;status:'pending'|'published'|'rejected'|'removed'|'approved'|'denied'}>;
 export type PublicReview = Readonly<{id:string;quality:number;body:string;publishedAt:string;tripMonth:string|null;tripDetails:readonly string[]|null}>;
 export type PublicReviews = Readonly<{count:number;averageQuality:number|null;reviews:readonly PublicReview[]}>;
+export type ClaimStatus='none'|'pending'|'approved'|'denied'|'unavailable';
 export type OwnedKind='review'|'claim'|'revision';
 export type SubmissionKind=OwnedKind|'report';
 export type ReportReason='not_firsthand'|'harassment_or_private_info'|'other';
@@ -93,6 +94,17 @@ export function createLaunchClient(options:Options) {
       const body=draft.body.trim();
       if(body.length<1||body.length>3000) throw new LaunchClientError('invalid_input');
       return receipt(await call('submit_review',{...sourceArgs(source),quality:draft.quality,intensity:draft.intensity,wouldBookAgain:draft.wouldBookAgain,body,firsthandAttested:draft.firsthand,relationship:draft.relationship,tripMonth:draft.tripMonth,...(draft.tripResponses?{tripResponses:draft.tripResponses}:{})},true));
+    },
+    async claimAvailability(source:GuideSource):Promise<boolean> {
+      const data=record(await call('claim_availability',sourceArgs(source),false));
+      if(!data||typeof data.available!=='boolean')throw new LaunchClientError('service_unavailable');
+      return data.available;
+    },
+    async claimStatus(source:GuideSource):Promise<ClaimStatus> {
+      const data=record(await call('claim_status',sourceArgs(source),true));
+      const status=data?.status;
+      if(status==='none'||status==='pending'||status==='approved'||status==='denied'||status==='unavailable')return status;
+      throw new LaunchClientError('service_unavailable');
     },
     async submitClaim(source:GuideSource,draft:ClaimDraft):Promise<PendingReceipt> {
       const claimantName=draft.claimantName.trim(),businessName=draft.businessName.trim(),evidence=draft.evidence.trim();
@@ -188,8 +200,8 @@ export function createLaunchClient(options:Options) {
           return {id:row.id,kind,guideName,reviewId,createdAt:row.created_at,description:`Reason: ${reasons[row.reason]??'Earlier report category'}\nReview status: ${row.review_status}\n${row.public_review_body??'Review text is not public.'}`,canApprove:false};
         }
         if(kind==='claim') {
-          const name=typeof row.claimant_name==='string'?row.claimant_name:'',business=typeof row.business_name==='string'?row.business_name:'',evidence=typeof row.public_evidence==='string'?row.public_evidence:'';
-          return {id:row.id,kind,guideName,reviewId,createdAt:row.created_at,description:`Claimant: ${name||'Unavailable'}\nBusiness: ${business||'Not supplied'}\nEvidence: ${evidence||'Unavailable'}`,canApprove:!!guideName&&!!name.trim()&&!!evidence.trim()};
+          const source=typeof row.source_id==='string'?row.source_id:'',name=typeof row.claimant_name==='string'?row.claimant_name:'',business=typeof row.business_name==='string'?row.business_name:'',evidence=typeof row.public_evidence==='string'?row.public_evidence:'';
+          return {id:row.id,kind,guideName,reviewId,createdAt:row.created_at,description:`Oregon listing: ${source||'Unavailable'}\nClaimant: ${name||'Unavailable'}\nBusiness: ${business||'Not supplied'}\nEvidence: ${evidence||'Unavailable'}`,canApprove:!!guideName&&!!source&&!!name.trim()&&evidence.trim().length>=20};
         }
         if(typeof row.body!=='string'||!row.body.trim()||!Number.isInteger(row.quality)||(row.quality as number)<1||(row.quality as number)>5)throw new LaunchClientError('service_unavailable');
         const trip=Object.hasOwn(row,'trip_responses')?describeTripResponses(row.trip_responses):null, relationship=typeof row.relationship_disclosure==='string'?row.relationship_disclosure:'Unavailable';

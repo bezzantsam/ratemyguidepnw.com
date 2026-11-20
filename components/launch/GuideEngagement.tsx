@@ -6,10 +6,9 @@ import {createLaunchClient,LaunchClientError,type GuideSource,type OwnStatus,typ
 import {publishedReviewIdFromHash} from '@/lib/canonical-share';
 import {ProfileSharing} from './ProfileSharing';
 import {PublishedReviews,ReviewCard,validReviewPage,type PublishedReview,type ReviewLoadState} from './PublishedReviews';
-import {ClaimSubmission,ReviewSubmission} from './SubmissionViews';
+import {ReviewSubmission} from './SubmissionViews';
 import type {ReviewDraft} from './submission-model';
 
-const blankDetails:OwnerDetails={boat:'',gear:'',yearsExperience:null,expertise:'',species:''};
 type DetailsState={status:'loading'|'error'}|{status:'ready';value:OwnerDetails|null};
 type OwnReviewState={status:'loading'|'error'}|{status:'ready';review:OwnStatus|null};
 function nextSteps(item:OwnSubmission):string {
@@ -18,24 +17,7 @@ function nextSteps(item:OwnSubmission):string {
   return item.status==='pending'?'Your review is awaiting review and is not public.':item.status==='published'?'Your review is published.':item.status==='removed'?'Your review is no longer published.':'Your review was not published.';
 }
 
-function OwnerEditor({initial,onSave}:{initial:OwnerDetails|null;onSave:(value:OwnerDetails)=>Promise<void>}) {
-  const [value,setValue]=useState<OwnerDetails>(initial??blankDetails),[busy,setBusy]=useState(false),[message,setMessage]=useState('');
-  async function submit(event:React.FormEvent<HTMLFormElement>){
-    event.preventDefault();if(busy)return;setBusy(true);setMessage('');
-    try {await onSave(value);setMessage('Your declared details were saved.');} catch {setMessage('We could not confirm your changes. Refresh the profile before trying again.');} finally {setBusy(false)}
-  }
-  return <form className="card launch-form" onSubmit={submit}>
-    <h3>Edit captain-declared details</h3><p>These details are supplied by the approved captain and are not independently verified.</p>
-    <label>Boat<input value={value.boat} maxLength={250} onChange={e=>setValue({...value,boat:e.target.value})}/></label>
-    <label>Gear<input value={value.gear} maxLength={500} onChange={e=>setValue({...value,gear:e.target.value})}/></label>
-    <label>Years of experience<input type="number" min="0" max="80" step="1" value={value.yearsExperience??''} onChange={e=>setValue({...value,yearsExperience:e.target.value===''?null:Number(e.target.value)})}/></label>
-    <label>Expertise<textarea value={value.expertise} maxLength={500} onChange={e=>setValue({...value,expertise:e.target.value})}/></label>
-    <label>Species<input value={value.species} maxLength={350} onChange={e=>setValue({...value,species:e.target.value})}/></label>
-    <button type="submit" disabled={busy}>{busy?'Saving…':'Save details'}</button>{message&&<p role="status">{message}</p>}
-  </form>;
-}
-
-export function GuideEngagement({source,profilePath,guideName,claimsEnabled=false,compactProfile=false,children}:{source:GuideSource;profilePath:string;guideName:string;claimsEnabled?:boolean;compactProfile?:boolean;children?:ReactNode}) {
+export function GuideEngagement({source,profilePath,guideName,compactProfile=false,children}:{source:GuideSource;profilePath:string;guideName:string;compactProfile?:boolean;children?:ReactNode}) {
   const guideKey=`${source.jurisdiction}:${source.sourceId}`;
   const stableSource=useMemo(()=>({jurisdiction:source.jurisdiction,sourceId:source.sourceId}),[source.jurisdiction,source.sourceId]);
   const api=useMemo(()=>createLaunchClient({enabled:true,getAccessToken:async()=>{const result=await authClient?.auth.getSession();return result?.data.session?.access_token??null}}),[]);
@@ -66,9 +48,7 @@ export function GuideEngagement({source,profilePath,guideName,claimsEnabled=fals
   const own=(submissions??[]).filter(item=>item.identities.some(identity=>identity.jurisdiction===source.jurisdiction&&identity.sourceId===source.sourceId));
   const existingReview=ownReview.status==='ready'?ownReview.review:null;
   const pendingRevision=existingReview&&own.some(item=>item.kind==='revision'&&item.reviewId===existingReview.id&&item.status==='pending');
-  const owner=own.some(item=>item.kind==='claim'&&item.status==='approved');
   const canReview=source.jurisdiction==='OR'&&writeReady===true;
-  const canClaim=claimsEnabled&&canReview;
   const availabilityError=source.jurisdiction==='OR'&&(writeReady==='error'||reviews.status==='error');
   const availabilityMessage=source.jurisdiction==='WA'
     ? 'Review submissions are unavailable for this guide right now.'
@@ -78,7 +58,6 @@ export function GuideEngagement({source,profilePath,guideName,claimsEnabled=fals
       ? 'We couldn’t check review availability.'
       : 'Review submissions are unavailable for this guide right now.';
   async function editReview(id:string){setRevisionError('');try{setRevision({id,initial:await api.reviewDetail(source,id)})}catch{setRevisionError('This review cannot be edited right now. Its published version has not changed.')}}
-  async function saveDetails(value:OwnerDetails){await api.editDetails(source,value);const saved=await api.profileDetails(source);if(!saved||saved.boat!==value.boat.trim()||saved.gear!==value.gear.trim()||saved.expertise!==value.expertise.trim()||saved.species!==value.species.trim()||saved.yearsExperience!==value.yearsExperience)throw new Error('No confirmed readback');setDetails({status:'ready',value:saved})}
   const page = compactProfile && reviews.status==='ready' && validReviewPage(guideKey,reviews.page) ? reviews.page : null;
   const offerReview = canReview && !!page;
   const inviteFirst = offerReview && (session==='signed_out' || (session==='signed_in' && ownReview.status==='ready' && !existingReview));
@@ -125,11 +104,9 @@ export function GuideEngagement({source,profilePath,guideName,claimsEnabled=fals
           {source.jurisdiction==='OR'&&ownReview.status==='ready'&&!existingReview&&(canReview||formActivated)&&<ReviewSubmission allowTripResponses writeAvailable={canReview} onDuplicate={()=>void loadOwnReview(undefined,true)} onSubmit={async draft=>{try{const receipt=await api.submitReview(stableSource,draft);void loadOwnReview(undefined,true);void loadSubmissions();return receipt}catch(error){recordWriteFailure(error);if(error instanceof LaunchClientError&&error.code==='service_unavailable')void loadOwnReview(undefined,true);throw error}}}/>}
           {!compactProfile&&writeReady===false&&<><p role="status">Reviews aren’t available for this guide right now.</p>{source.jurisdiction==='OR'&&<button type="button" onClick={()=>void loadWriteReady()}>Check review availability</button>}</>}
           {!compactProfile&&writeReady==='error'&&<p role="status">We couldn’t check review availability. Try again before submitting.</p>}
-          {canClaim&&<details><summary>Are you the captain? Request this listing</summary><ClaimSubmission onSubmit={async draft=>{const receipt=await api.submitClaim(source,draft);void loadSubmissions();return receipt}}/></details>}
           <section id="your-submissions"><h3>Your submissions</h3>{existingReview&&<div><p>Review: <strong>{existingReview.status}</strong></p><p>{existingReview.status==='pending'?'Your review is awaiting review and is not public.':existingReview.status==='published'?'Your review is published.':existingReview.status==='removed'?'Your review is no longer published.':'Your review was not published.'}</p>{canReview&&existingReview.status==='published'&&!pendingRevision&&!more&&submissions!==null&&!statusError&&<button type="button" onClick={()=>void editReview(existingReview.id)}>Edit your review</button>}{existingReview.status==='published'&&pendingRevision&&<p>Your changes are awaiting review.</p>}</div>}{statusError?<><p role="status">Your submission status is temporarily unavailable.</p><button type="button" onClick={()=>void loadSubmissions()}>Retry status</button></>:submissions===null?<p role="status">Loading your submissions…</p>:<>{own.filter(item=>item.kind!=='review').map(item=><div key={`${item.kind}:${item.id}`}><p>{item.kind==='revision'?'Review edit':'Claim request'}: <strong>{item.status}</strong></p><p>{nextSteps(item)}</p></div>)}{more&&<><p>Load the remaining submissions to check your full review history.</p><button type="button" onClick={()=>void loadSubmissions(nextOffset)}>Load more submissions</button></>}</>}
             {revisionError&&<p role="alert">{revisionError}</p>}{revision&&<ReviewSubmission key={revision.id} initial={revision.initial} mode="revision" allowTripResponses writeAvailable={canReview} onSubmit={async draft=>{try{const receipt=await api.submitRevision(revision.id,draft);void loadSubmissions();return receipt}catch(error){recordWriteFailure(error);throw error}}}/>}
           </section>
-          {canClaim&&owner&&details.status==='ready'&&<OwnerEditor initial={details.value} onSave={saveDetails}/>}
         </>}
       </>:<p role="status">Review tools are temporarily unavailable for this listing.</p>}
     </>}
