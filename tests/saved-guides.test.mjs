@@ -66,3 +66,30 @@ test('full lists can remove an entry and then save a different guide', () => {
   assert.equal(api.toggleSavedGuide('/guides/g0'), 'removed');
   assert.equal(api.toggleSavedGuide('/washington/wa-002'), 'saved');
 });
+
+test('device import maps only exact known profile paths and leaves the device list intact', () => {
+  const paths = ['/guides/og-9999999-a-b', '/washington/wa-999', '/guides/gone'];
+  const {api, events} = harness({initial: JSON.stringify(paths)});
+  const entries = [
+    {href: paths[0], name:'Fixture Oregon', guide:{jurisdiction:'OR', sourceId:'OG.9999999.A&B'}},
+    {href: paths[1], name:'Fixture Washington', guide:{jurisdiction:'WA', sourceId:'wa-999'}},
+  ];
+  const found=api.deviceGuidesForImport([...paths, paths[0]],new Map(entries.map(entry=>[entry.href,entry])));
+  assert.deepEqual(Array.from(found,entry=>api.savedGuideKey(entry.guide)),['OR:OG.9999999.A&B','WA:wa-999']);
+  assert.deepEqual(Array.from(api.readSavedGuides()),paths);
+  assert.deepEqual(events,[]);
+});
+
+test('account responses require exact unique identities and a status for the requested action', () => {
+  const {api} = harness();
+  const or={jurisdiction:'OR',sourceId:'OG.9999999.A&B'};
+  const wa={jurisdiction:'WA',sourceId:'wa-999'};
+  assert.equal(api.decodeAccountShortlist({items:[or,wa],status:'imported'},'import').items.length,2);
+  assert.equal(api.decodeAccountShortlist({items:[or],status:'full'},'save').status,'full');
+  for(const response of [
+    {items:[or,or],status:'listed'},
+    {items:[{...or,jurisdiction:'WA'}],status:'listed'},
+    {items:[wa],status:'saved'},
+    {items:[{...wa,sourceId:'wa-999@catalog:synthetic'}],status:'listed'},
+  ])assert.throws(()=>api.decodeAccountShortlist(response,'list'),/Invalid Saved guides response/);
+});

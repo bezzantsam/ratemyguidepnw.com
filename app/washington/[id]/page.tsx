@@ -38,7 +38,7 @@ export default async function Page({params}:{params:Promise<{id:string}>}){
     <p className="eyebrow">WASHINGTON DIRECTORY LISTING · UNVERIFIED</p>
     <h1>{g.name}</h1>
     <p className="lead">{g.business||'Independent fishing guide'}</p>
-    {washingtonGuides.some(guide => guide.id === g.id) && <SaveGuideButton href={path} name={g.name}/>}
+    {washingtonGuides.some(guide => guide.id === g.id) && <SaveGuideButton href={path} name={g.name} guide={{jurisdiction:'WA',sourceId:g.id}}/>}
     {canCheckReviews
       ? <GuideEngagement key={g.id} compactProfile source={{jurisdiction:'WA',sourceId:g.id}} profilePath={path} guideName={g.name}/>
       : <WashingtonReviewStatus/>}

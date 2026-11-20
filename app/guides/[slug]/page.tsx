@@ -63,7 +63,7 @@ export default async function Page({params}: ProfileParams) {
       <h1>{guide.name}</h1>
       {guide.business && <p className="lead">{guide.business}</p>}
     </div>
-    <SaveGuideButton href={path} name={guide.name}/>
+    <SaveGuideButton href={path} name={guide.name} guide={{jurisdiction:'OR',sourceId:guide.registration}}/>
     {enabled
       ? <GuideEngagement key={guide.registration} compactProfile source={{jurisdiction:'OR',sourceId:guide.registration}} profilePath={path} guideName={guide.name}>{claim}{registration}</GuideEngagement>
       : <><section className="guide-actions" aria-label="Profile actions">
