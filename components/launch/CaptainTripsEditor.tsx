@@ -22,7 +22,8 @@ function problems(draft:TripPayload,complete:boolean):string[]{
     field(`${label} name`,trip.title);
     field(`${label} waterway`,trip.waterway);
     field(`${label} launch town or port`,trip.launchArea);
-    if(complete&&!trip.species.length)errors.push(`${label} needs at least one target species.`);
+    if(complete&&!trip.species.length&&!trip.methodIds.includes('bottom-fishing'))
+      errors.push(`${label} needs a target species or the Bottom fishing method.`);
   });
   draft.vessels.forEach((boat,index)=>{
     field(`Boat ${index+1} name`,boat.label);
