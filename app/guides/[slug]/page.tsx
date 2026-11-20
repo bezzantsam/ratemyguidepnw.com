@@ -32,7 +32,8 @@ export default async function Page({params}: ProfileParams) {
   const washington = washingtonRecordForOregon(guide.registration);
   const enabled = process.env.NEXT_PUBLIC_RMG_LAUNCH_ENABLED === 'true';
   const claimsEnabled = process.env.NEXT_PUBLIC_RMG_CLAIMS_ENABLED === 'true';
-  const claim = claimsEnabled && <ClaimProfile key={guide.registration} sourceId={guide.registration} profilePath={path}/>;
+  const tripsEnabled = process.env.RMG_GUIDE_OFFERINGS_ENABLED === 'true';
+  const claim = claimsEnabled && <ClaimProfile key={guide.registration} sourceId={guide.registration} profilePath={path} tripsEnabled={tripsEnabled}/>;
 
   const registration = (
     <section className="guide-registration" aria-labelledby="registration-heading">
@@ -73,7 +74,7 @@ export default async function Page({params}: ProfileParams) {
       <p>This captain has a matching listing in the supplied Washington directories.</p>
       <p><strong>{washington.source.source}:</strong> {washington.source.business}{washington.source.notes && <> · {washington.source.notes}</>}</p>
     </section>}
-    {process.env.RMG_GUIDE_OFFERINGS_ENABLED==='true' &&
+    {tripsEnabled &&
       <CaptainTripCards jurisdiction="OR" sourceId={guide.registration}/>}
     <GuideEnrichmentPanel registration={guide.registration}/>
   </main>;
