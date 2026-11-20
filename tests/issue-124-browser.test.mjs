@@ -75,7 +75,7 @@ test(`rating-first discovery and profile availability (${mode})`,{timeout:120000
    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
    await page.goto(`${origin}/washington`,{waitUntil:'domcontentloaded'});
    await page.locator('.guide-result').first().click();await page.waitForURL(/\/washington\//);
-   await page.getByText(mode==='enabled'?'Review submissions are unavailable for this guide right now.':'Review submissions are not open yet.').first().waitFor();
+   await page.getByText('Reviews are unavailable for this guide right now.').first().waitFor();
    assert.equal(await page.locator('a[href="#write-review"]').count(),0);
    await page.waitForLoadState('networkidle');await context.close();
   }

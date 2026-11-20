@@ -45,7 +45,7 @@ async function renderPages(wa){
   '@/lib/registry':{findGuide:()=>orGuide,guideSlug:()=> 'og-9999000',oregonGuides:[orGuide]},'@/lib/washington':wa,
   '@/components/SaveGuideButton':({href})=>React.createElement('button',{'data-save-guide':href}),
   '@/components/ReturnToResults':stub,'@/components/GuideEnrichmentPanel':stub,'@/components/CaptainDetails':stub,
-  '@/components/CaptainReviews':stub,'@/components/CaptainMedia':stub,'@/components/GuideTrustPanel':stub,
+  '@/components/launch/WashingtonReviewStatus':{WashingtonReviewStatus:stub},'@/components/CaptainMedia':stub,'@/components/GuideTrustPanel':stub,
   '@/components/launch/CaptainTripsEditor':{CaptainTripsEditor:stub},
   '@/components/CaptainTripCards':{__esModule:true,default:stub},
   '@/components/launch/ProfileSharing':{ProfileSharing:stub},'@/components/launch/ClaimProfile':{ClaimProfile:stub},'@/components/launch/AuthCheck':{AuthCheck:()=>null},'@/components/launch/GuideEngagement':{GuideEngagement:stub},'@/lib/canonical-share':{profileShareMetadata:()=>({})}

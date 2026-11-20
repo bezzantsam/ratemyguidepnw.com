@@ -2,10 +2,10 @@ import CaptainTripCards from '@/components/CaptainTripCards';
 import SaveGuideButton from '@/components/SaveGuideButton';
 import ReturnToResults from '@/components/ReturnToResults';
 import GuideEnrichmentPanel from '@/components/GuideEnrichmentPanel';
-import CaptainReviews from '@/components/CaptainReviews';
 import GuideTrustPanel from '@/components/GuideTrustPanel';
 import {ProfileSharing} from '@/components/launch/ProfileSharing';
 import {GuideEngagement} from '@/components/launch/GuideEngagement';
+import {WashingtonReviewStatus} from '@/components/launch/WashingtonReviewStatus';
 import {profileShareMetadata} from '@/lib/canonical-share';
 import Link from 'next/link';
 import {notFound} from 'next/navigation';
@@ -42,16 +42,7 @@ export default async function Page({params}:{params:Promise<{id:string}>}){
     {washingtonGuides.some(guide => guide.id === g.id) && <SaveGuideButton href={path} name={g.name}/>}
     {pilot
       ? <GuideEngagement key={g.id} compactProfile source={{jurisdiction:'WA',sourceId:g.id}} profilePath={path} guideName={g.name}/>
-      : <>
-        <section className="section" aria-label={`Rate ${g.name}`}>
-          <h2>Rate {g.name}</h2>
-          <p role="status">{legacyClosed?'Review submissions are not open yet.':'Review submissions are unavailable for this guide right now.'}</p>
-        </section>
-        <div className="profile-summary">
-          <div className="rating-tile"><strong>—</strong><span>Reviews unavailable</span></div>
-          <div><strong>Angler reviews</strong><p className="muted">Source information comes from an imported directory; review details appear below.</p></div>
-        </div>
-      </>}
+      : <WashingtonReviewStatus/>}
     <section className="card">
       <h2>Directory information</h2>
       <p><strong>Source:</strong> {g.source}</p>
@@ -60,7 +51,6 @@ export default async function Page({params}:{params:Promise<{id:string}>}){
     </section>
     <GuideTrustPanel jurisdiction="Washington" sourceLabel={g.source}/>
     {!pilot&&<>
-      <CaptainReviews key={JSON.stringify([g.id,g.name,g.business])} slug={g.id} expectedName={g.name} expectedBusiness={g.business}/>
       {legacyClosed&&<section className="section card">
         <h2>Are you {g.name}?</h2>
         <Link className="button" href={`/claim/${g.id}`}>Claiming currently unavailable →</Link>
