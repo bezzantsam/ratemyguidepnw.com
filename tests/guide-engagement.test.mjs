@@ -24,7 +24,7 @@ test('Oregon profile connects ratings and review callbacks while held Washington
   function PublishedReviews(){}function ReviewCard(){}function ReviewSubmission(){}function ClaimSubmission(){}function ProfileSharing(){}function AuthPanel(){}
   const browser={location:{hash:''},setTimeout:()=>0,clearTimeout(){},addEventListener(_name,fn){hashListener=fn},removeEventListener(){}};
   const canonical=compile('lib/canonical-share.ts',{});
-  const {validReviewPage}=compile('components/launch/PublishedReviews.tsx',{'./ReviewShare':{},'./ReportReview':{}});
+  const {validReviewPage}=compile('components/launch/PublishedReviews.tsx',{'./submission-model':compile('components/launch/submission-model.ts'),'./ReviewShare':{},'./ReportReview':{}});
   function ReturnToResults(){}
   const returnToResults={'@/components/ReturnToResults':{__esModule:true,default:ReturnToResults}};
   const washingtonStatus=compile('components/launch/WashingtonReviewStatus.tsx',returnToResults);

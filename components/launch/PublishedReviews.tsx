@@ -1,5 +1,6 @@
 import {ReviewShare} from './ReviewShare';
 import {ReportReview} from './ReportReview';
+import {REVIEW_DIMENSIONS,type ReviewDimensions} from './submission-model';
 import type {ReportReason} from '@/lib/launch-client';
 type ReportAction=(id:string,reason:ReportReason)=>Promise<{id:string;status:'submitted';existing:boolean}>;
 
@@ -9,6 +10,8 @@ export type PublishedReview = Readonly<{
   guideKey: string;
   status: 'published';
   rating: number;
+  wouldBookAgain?: boolean;
+  ratings?: ReviewDimensions;
   body: string;
   publishedAt: string;
   tripMonth?: string | null;
@@ -38,7 +41,15 @@ export type ReviewLoadState = Readonly<{status:'loading'}> | Readonly<{status:'e
 
 export function ReviewCard({review,profilePath,guideName,onReport,allowSignIn=true}:{review:PublishedReview;profilePath?:string;guideName?:string;onReport?:ReportAction;allowSignIn?:boolean}) {
   return <article className="card" id={`review-${review.id}`}>
-    <p><strong>{review.rating} / 5</strong> · Published {review.publishedAt}</p><p>{review.body}</p>{review.tripMonth&&<p>Trip month reported by the angler: {review.tripMonth}</p>}
+    <p><strong>Overall quality: {review.rating} / 5</strong> · Published {review.publishedAt}</p>
+    {typeof review.wouldBookAgain==='boolean'&&<p>Would book again: <strong>{review.wouldBookAgain?'Yes':'No'}</strong></p>}
+    {!!review.ratings&&Object.keys(review.ratings).length>0&&<dl className="published-review-dimensions" aria-label="Individual ratings">
+      {REVIEW_DIMENSIONS.map(({key,label})=>review.ratings?.[key]===undefined?null:<div key={key}>
+        <dt>{label}</dt><dd>{review.ratings[key]} / 5</dd>
+      </div>)}
+    </dl>}
+    <p>{review.body}</p>
+    {review.tripMonth&&<p>Trip month reported by the angler: {review.tripMonth}</p>}
     {review.tripDetails===null?<p>Trip details are temporarily unavailable.</p>:!!review.tripDetails?.length&&<details><summary>Trip details reported by the angler</summary><ul>{review.tripDetails.map((item,index)=><li key={index}>{item}</li>)}</ul></details>}
     {profilePath&&guideName&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(review.id)&&<ReviewShare profilePath={profilePath} reviewId={review.id} guideName={guideName}/>}
     <ReportReview onReport={onReport?(reason=>onReport(review.id,reason)):undefined} allowSignIn={allowSignIn}/>

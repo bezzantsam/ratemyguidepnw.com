@@ -236,3 +236,35 @@ test('public review details retain explicit negatives and not applicable respons
   assert.ok(result.tripDetails.some(line=>line.includes('Was a dog present? No')));
   assert.ok(result.tripDetails.some(line=>line.includes('Were children on the trip? Not applicable')));
 });
+
+
+test('v1 ratings serialize sparse new and revision fields including false and intentional clears',async()=>{
+  let payload;
+  const client=createLaunchClient({enabled:true,getAccessToken:async()=> 'token',fetcher:async(_url,init)=>{
+    payload=JSON.parse(init.body);return response({id,status:'pending'});
+  }});
+  await client.submitReview(source,{...draft,ratingVersion:1,ratings:{effort:5,value:2}});
+  assert.equal(payload.ratingVersion,1);assert.equal(payload.wouldBookAgain,false);
+  assert.deepEqual(payload.ratings,{effort:5,value:2});
+  await assert.rejects(client.submitReview(source,{...draft,ratingVersion:1,wouldBookAgain:null}),errorCode('invalid_input'));
+  await assert.rejects(client.submitReview(source,{...draft,ratingVersion:1,ratings:{safety:null}}),errorCode('invalid_input'));
+  await client.submitRevision(id,{...draft,ratingVersion:1,wouldBookAgain:null,ratings:{value:null,safety:4}});
+  assert.equal(Object.hasOwn(payload,'wouldBookAgain'),false);
+  assert.deepEqual(payload.ratings,{value:null,safety:4});
+});
+
+test('readback binds typed legacy dimensions and explicit No to the published review and edit draft',async()=>{
+  const review={id,quality:4,intensity:null,would_book_again:false,communication:3,value_rating:5,safety:null,
+    body:draft.body,relationship_disclosure:'none',published_at:'2026-11-17T00:00:00Z',trip_month:null,trip_responses:null};
+  const client=createLaunchClient({enabled:true,getAccessToken:async()=>null,fetcher:async()=>response({review})});
+  const published=await client.publicReview(source,id);
+  const edit=await client.reviewDetail(source,id);
+  assert.equal(published.wouldBookAgain,false);
+  assert.deepEqual(JSON.parse(JSON.stringify(published.ratings)),{communication:3,value:5});
+  assert.deepEqual(JSON.parse(JSON.stringify(edit.ratings)),{communication:3,value:5});
+  review.would_book_again=null;
+  assert.equal((await client.publicReview(source,id)).wouldBookAgain,undefined);
+  assert.equal((await client.reviewDetail(source,id)).wouldBookAgain,null);
+  review.communication=0;
+  await assert.rejects(client.reviewDetail(source,id),errorCode('service_unavailable'));
+});
