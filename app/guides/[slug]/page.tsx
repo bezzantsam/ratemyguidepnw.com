@@ -3,6 +3,7 @@ import {notFound} from 'next/navigation';
 import GuideEnrichmentPanel from '@/components/GuideEnrichmentPanel';
 import ReturnToResults from '@/components/ReturnToResults';
 import {AuthCheck} from '@/components/launch/AuthCheck';
+import {ClaimProfile} from '@/components/launch/ClaimProfile';
 import {GuideEngagement} from '@/components/launch/GuideEngagement';
 import {ProfileSharing} from '@/components/launch/ProfileSharing';
 import {profileShareMetadata} from '@/lib/canonical-share';
@@ -29,7 +30,8 @@ export default async function Page({params}: ProfileParams) {
   const path = `/guides/${guideSlug(guide)}`;
   const washington = washingtonRecordForOregon(guide.registration);
   const enabled = process.env.NEXT_PUBLIC_RMG_LAUNCH_ENABLED === 'true';
-  const claimsEnabled = enabled && process.env.NEXT_PUBLIC_RMG_CLAIMS_ENABLED === 'true';
+  const claimsEnabled = process.env.NEXT_PUBLIC_RMG_CLAIMS_ENABLED === 'true';
+  const claim = claimsEnabled && <ClaimProfile key={guide.registration} sourceId={guide.registration} profilePath={path}/>;
 
   const registration = (
     <section className="guide-registration" aria-labelledby="registration-heading">
@@ -55,7 +57,7 @@ export default async function Page({params}: ProfileParams) {
       {guide.business && <p className="lead">{guide.business}</p>}
     </div>
     {enabled
-      ? <GuideEngagement key={guide.registration} compactProfile source={{jurisdiction:'OR',sourceId:guide.registration}} profilePath={path} guideName={guide.name} claimsEnabled={claimsEnabled}>{registration}</GuideEngagement>
+      ? <GuideEngagement key={guide.registration} compactProfile source={{jurisdiction:'OR',sourceId:guide.registration}} profilePath={path} guideName={guide.name}>{claim}{registration}</GuideEngagement>
       : <><section className="guide-actions" aria-label="Profile actions">
           <ProfileSharing profilePath={path} guideName={guide.name} reviewAvailable={false}
             primaryAction={<button type="button" className="button guide-rate" disabled aria-describedby="guide-write-status">Rate {guide.name}</button>}/>
@@ -65,7 +67,7 @@ export default async function Page({params}: ProfileParams) {
           <h2>Sign in for {guide.name}’s reviews</h2>
           <AuthCheck profilePath={path}/>
         </section>}
-        {registration}</>}
+        {claim}{registration}</>}
     {washington && <section className="section card"><h2>Also listed in Washington</h2>
       <p>This captain has a matching listing in the supplied Washington directories.</p>
       <p><strong>{washington.source.source}:</strong> {washington.source.business}{washington.source.notes && <> · {washington.source.notes}</>}</p>

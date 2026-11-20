@@ -104,3 +104,15 @@ test('only a production deployment with explicit cutover uses the new public ori
   assert.equal(metadata.openGraph.images[0].url,'https://rateyourguide.com/share-card.png');
   assert.equal(share.guideAuthRedirectPath(profile+'?intent=review#write-review',profile),profile+'?intent=review');
 });
+
+test('claim email preserves the exact suffixed Oregon listing and never returns to rating',()=>{
+  const profile='/guides/og-0001225-f-f';
+  const intent=`${profile}?intent=claim`;
+  const landing=`${intent}#claim-profile`;
+  assert.equal(exports.guideAuthRedirectPath(landing,profile),intent);
+  assert.equal(exports.guideAuthRestoredPath(profile,'?intent=claim','',profile),landing);
+  assert.equal(exports.safeGuideReturnTo(landing,profile),landing);
+  assert.equal(exports.guideAuthRestoredPath(profile,'?intent=claim','#write-review',profile),null);
+  assert.equal(exports.guideAuthRestoredPath('/guides/og-0001225','?intent=claim','',profile),null);
+  assert.equal(exports.guideAuthRestoredPath('/washington/wa-001','?intent=claim','','/washington/wa-001'),null);
+});
