@@ -291,3 +291,49 @@ test('existing WA review requests use the current server listing version and kee
   businessName:'',evidence:'Synthetic ownership evidence'},'token'),claims.factory,config,version)).status,403);
  assert.deepEqual(claims.calls,[]);
 });
+
+test('public ratings bind only the exact configured Washington source and make one anonymous RPC',async()=>{
+ const wa={jurisdiction:'WA',sourceId:'wa-001'};
+ const neighbor={jurisdiction:'WA',sourceId:'wa-002'};
+ const or={jurisdiction:'OR',sourceId:'OG.0001225.F&F'};
+ const sourceVersion='b'.repeat(64);
+ const flags={...env,RMG_WA_LISTED_REVIEW_PILOT_SOURCE_ID:wa.sourceId};
+ const guides=[wa,or,neighbor,wa];
+ const items=[{...wa,count:0,averageQuality:null},{...or,count:2,averageQuality:4.5}];
+ const b=backend({rpcResult:{items}});
+ const lookedUp=[];
+ const response=await handleLaunch(req({operation:'public_review_summaries',guides},'ignored'),b.factory,flags,id=>{
+  lookedUp.push(id);return sourceVersion;
+ });
+ assert.equal(response.status,200);
+ assert.deepEqual(await response.json(),{items});
+ assert.deepEqual(lookedUp,['wa-001']);
+ const versioned={...wa,sourceId:'wa-001@'+sourceVersion};
+ assert.deepEqual(b.calls,[['headers',{}],['rmg_public_review_summaries_v1',{p_guides:[versioned,or,neighbor,versioned]}]]);
+ assert.equal(response.headers.get('cache-control'),'no-store');
+ const spoof=backend();
+ assert.equal((await handleLaunch(req({operation:'public_review_summaries',guides:[versioned]}),
+  spoof.factory,flags,()=>sourceVersion)).status,400);
+ assert.deepEqual(spoof.calls,[]);
+});
+
+test('public ratings omit WA when closed or version lookup fails and refuse unexpected WA output',async()=>{
+ const wa={jurisdiction:'WA',sourceId:'wa-001'};
+ const guides=[wa];
+ const input={operation:'public_review_summaries',guides};
+ const flags={...env,RMG_WA_LISTED_REVIEW_PILOT_SOURCE_ID:wa.sourceId};
+ for(const [config,version] of [
+  [env,()=>{throw Error('default closed')}],
+  [{...flags,RMG_WA_REVIEW_PILOT_SOURCE_ID:'wa-900001'},()=>{throw Error('conflicting pilot')}],
+  [flags,()=>undefined],
+  [flags,()=> 'invalid'],
+ ]){
+  const b=backend({rpcResult:{items:[]}});
+  const response=await handleLaunch(req(input),b.factory,config,version);
+  assert.equal(response.status,200);
+  assert.deepEqual(await response.json(),{items:[]});
+  assert.deepEqual(b.calls,[['headers',{}],['rmg_public_review_summaries_v1',{p_guides:guides}]]);
+ }
+ const b=backend({rpcResult:{items:[{jurisdiction:'WA',sourceId:'wa-002',count:1,averageQuality:4}]}});
+ assert.equal((await handleLaunch(req(input),b.factory,flags,()=> 'b'.repeat(64))).status,503);
+});

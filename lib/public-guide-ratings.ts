@@ -28,7 +28,7 @@ export async function fetchPublicGuideRatings(guides: GuideSource[], signal: Abo
  const seen = new Set<string>();
  for (const value of data.items) {
   const item = record(value);
-  if (item?.jurisdiction !== 'OR' || typeof item.sourceId !== 'string') continue;
+  if (!item || (item.jurisdiction !== 'OR' && item.jurisdiction !== 'WA') || typeof item.sourceId !== 'string') continue;
   const key = guideRatingKey({jurisdiction: item.jurisdiction, sourceId: item.sourceId});
   if (!requested.has(key)) continue;
   if (seen.has(key)) { summaries.delete(key); continue; }
