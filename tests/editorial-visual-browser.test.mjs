@@ -43,7 +43,9 @@ test('unapproved source-backed preview follows the actual directory journey',{ti
   await page.setViewportSize({width:375,height:812});await page.screenshot({path:join(shots,'preview-profile-mobile.png'),fullPage:true});
   await page.getByRole('link',{name:'← Search guides'}).click();await page.waitForURL(saved);await page.getByRole('link',{name:/Kelsey Helfrich/}).first().waitFor();
   await page.screenshot({path:join(shots,'preview-directory-mobile.png'),fullPage:true});
-  await page.goto(`${preview}/guides?q=Kevin+Hawkins+Fishing`,{waitUntil:'domcontentloaded'});await page.getByRole('link',{name:/Kevin Hawkins/}).first().waitFor();await page.getByText('Other names (business or person): Kevin Hawkins Fishing',{exact:false}).first().waitFor();
+  await page.goto(`${preview}/guides?q=Kevin+Hawkins+Fishing`,{waitUntil:'domcontentloaded'});
+  const kevin=page.getByRole('link',{name:/Kevin Hawkins/}).first();
+  await kevin.getByText(/^Other names:.*Kevin Hawkins Fishing/).waitFor();
   await page.goto(`${preview}/guides?q=Marc+Bush`,{waitUntil:'domcontentloaded'});const marc=page.getByRole('link',{name:/Marc Bush/}).first();await marc.waitFor();assert.equal(await marc.locator('.listing-chip').innerText(),'Oregon');
   await marc.click();await page.getByRole('heading',{name:'Marc Bush',exact:true}).waitFor();assert.equal(await page.getByRole('heading',{name:'Also listed in Washington'}).count(),0);assert.equal(await page.locator('.guide-enrichment li strong').filter({hasText:/^Salmon$/}).count(),0);
   await page.goto(`${preview}/editorial-changes`,{waitUntil:'domcontentloaded'});await page.getByRole('heading',{name:'Proposed changes'}).waitFor();await page.getByText('Unapproved editorial preview',{exact:false}).first().waitFor();
