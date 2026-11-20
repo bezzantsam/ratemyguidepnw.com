@@ -268,3 +268,35 @@ test('readback binds typed legacy dimensions and explicit No to the published re
   review.communication=0;
   await assert.rejects(client.reviewDetail(source,id),errorCode('service_unavailable'));
 });
+
+test('operator queue shows exact optional rating labels for reviews and effective revisions',async()=>{
+  const row={id,review_id:id,guide_name:'Synthetic guide',guide_profile_path:'/washington/wa-144',
+    body:'Synthetic firsthand trip.',quality:4,intensity:null,would_book_again:false,
+    trip_month:null,trip_month_specified:false,relationship_disclosure:'none',trip_responses:null,
+    firsthand_attested:true,created_at:'2026-11-19T00:00:00Z'};
+  const queue=async(kind,fields)=>{
+    const client=createLaunchClient({enabled:true,getAccessToken:async()=> 'fixture-token',
+      fetcher:async()=>response({items:[{...row,...fields}],offset:0,limit:50})});
+    return (await client.operatorQueue(kind))[0];
+  };
+  const full={communication:1,professionalism:2,safety:3,equipment:4,knowledge:5,effort:4,value_rating:2};
+  const expected=['Communication: 1 / 5','Professionalism: 2 / 5','Safety: 3 / 5',
+    'Equipment: 4 / 5','Knowledge: 5 / 5','Effort: 4 / 5','Value: 2 / 5'];
+  for(const kind of ['review','revision']){
+    const complete=await queue(kind,full);
+    for(const line of expected)assert.ok(complete.description.includes(line),line);
+    assert.equal(complete.guideProfilePath,'/washington/wa-144');
+    assert.equal(complete.canApprove,true);
+    const sparse=await queue(kind,{safety:5,communication:null});
+    assert.match(sparse.description,/Safety: 5 \/ 5/);
+    assert.doesNotMatch(sparse.description,/Communication:|Value:|Individual ratings unavailable/);
+    assert.equal(sparse.canApprove,true);
+    const legacy=await queue(kind,{});
+    assert.doesNotMatch(legacy.description,/Communication:|Safety:|Individual ratings unavailable/);
+    assert.equal(legacy.canApprove,true);
+    const malformed=await queue(kind,{communication:0,safety:'5',value_rating:5});
+    assert.match(malformed.description,/Individual ratings unavailable/);
+    assert.doesNotMatch(malformed.description,/Communication:|Safety:|Value:/);
+    assert.equal(malformed.canApprove,false);
+  }
+});
