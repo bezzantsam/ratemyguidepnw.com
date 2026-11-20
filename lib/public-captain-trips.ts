@@ -52,9 +52,10 @@ function parseTrip(value:unknown):CaptainTrip|null {
   if(!object(value))return null;
   const {id,title,jurisdiction,waterway,launchArea,species,months,methodIds,gearIds,vesselId:boat,duration,bookingStyle}=value;
   if(typeof id!=='string'||!/^p[1-9]\d{0,3}$/.test(id)||!text(title)||(jurisdiction!=='OR'&&jurisdiction!=='WA')||
-    !text(waterway)||!text(launchArea)||!strings(species)||!species.length||!Array.isArray(months)||
+    !text(waterway)||!text(launchArea)||!strings(species)||!Array.isArray(months)||
     !months.every(month=>integer(month)&&month<=12)||!strings(methodIds)||!strings(gearIds)||
-    !validFishingSelection(methodIds,gearIds)||!(boat===null||vesselId(boat))||
+    !validFishingSelection(methodIds,gearIds)||(!species.length&&!methodIds.includes('bottom-fishing'))||
+    !(boat===null||vesselId(boat))||
     (duration!=='unspecified'&&duration!=='half_day'&&duration!=='full_day'&&duration!=='multi_day')||
     (bookingStyle!=='call_to_confirm'&&bookingStyle!=='per_seat'&&bookingStyle!=='private_boat'&&bookingStyle!=='both'))return null;
   return {id,title,jurisdiction,waterway,launchArea,species,months,methodIds,gearIds,vesselId:boat,duration,bookingStyle};
