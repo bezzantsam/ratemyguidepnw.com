@@ -154,7 +154,7 @@ test('reviews and edits publish automatically, while flags wait for an authorize
   assert.equal(await editor.getByLabel('Your experience').inputValue(),'A good firsthand trip with a corrected detail.');assert.equal(await editor.getByLabel('Overall quality').inputValue(),'4');
   await editor.getByText('More ratings (optional)',{exact:true}).click();assert.equal(await editor.getByLabel('Value',{exact:true}).inputValue(),'');assert.equal(await editor.getByLabel('Organization',{exact:true}).inputValue(),'');assert.equal(await editor.getByLabel('I personally took this trip.').isChecked(),true);
   await editor.getByRole('button',{name:'Save changes',exact:true}).click();
-  await page.getByText('Your changes have been published.').waitFor();
+  await page.getByRole('status').filter({hasText:'Review edit: approved'}).getByText('Your changes have been published.',{exact:true}).waitFor();
   await page.locator('#reviews').getByText('A good firsthand trip with a corrected detail.',{exact:true}).waitFor();await page.getByRole('link',{name:'4.0 / 5 · 1 review'}).waitFor();
   assert.equal(state.revision.status,'approved');assert.deepEqual(state.revision.ratings,{value:null});assert.equal(Object.hasOwn(state.revision,'wouldBookAgain'),false);assert.deepEqual(state.revision.tripResponses.answers.organization,{state:'not_applicable'});assert.equal(state.revision.tripResponses.answers.fish_landed.value,0);
   assert.equal(state.review.body,'A good firsthand trip with a corrected detail.');assert.equal(state.requests.some(r=>r.operation==='operator_decide'),false);
