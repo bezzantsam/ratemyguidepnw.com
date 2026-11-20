@@ -44,3 +44,8 @@ shasum -a 256 "$foundation" | awk '{print $1}'
 "${ps[@]}" -v "disable_sql=$candidate/structured-guide-offerings-disable-v1.sql"  -f "$root/tests/backend-launch/structured-guide-offerings-v1.sql"
 run python3 "$root/tests/backend-launch/structured-guide-offerings-race.py" "$work"
 run node "$root/tests/backend-launch/structured-guide-offerings-http.mjs" "$work"
+
+if [[ ${2:-} == --review-summaries ]]; then
+  "${ps[@]}" -1 -f "$candidate/public-review-summaries-v1.sql"
+  "${ps[@]}" -f "$root/tests/backend-launch/public-review-summaries-v1.sql"
+fi

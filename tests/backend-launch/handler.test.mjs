@@ -180,3 +180,46 @@ test('claim workflow uses narrow RPCs and runs without the review launch flag',a
  assert.equal((await handleLaunch(req({operation:'operator_queue',kind:'claim',offset:0,limit:10},'token'),queue.factory,flags)).status,200);
  assert.equal(queue.calls.at(-1)[0],'rmg_claim_queue_v1');
 });
+
+const ratingsGuides=[
+ {jurisdiction:'OR',sourceId:'OG.0001225.F&F'},
+ {jurisdiction:'WA',sourceId:'wa-001'},
+ {jurisdiction:'OR',sourceId:'OG.0000484.BRO'},
+ {jurisdiction:'OR',sourceId:'OG.0001225.F&F'},
+];
+const ratingsBatch={operation:'public_review_summaries',guides:ratingsGuides};
+
+test('public ratings use exactly one anonymous batch RPC and allow only public response fields',async()=>{
+ const items=[
+  {jurisdiction:'OR',sourceId:'OG.0001225.F&F',count:2,averageQuality:4.5},
+  {jurisdiction:'OR',sourceId:'OG.0000484.BRO',count:0,averageQuality:null},
+ ];
+ const b=backend({rpcResult:{items:[{...items[0],private:'must not leave route'},items[1]]}});
+ const response=await handleLaunch(req(ratingsBatch,'signed-in-token'),b.factory,env);
+ assert.equal(response.status,200);
+ assert.equal(response.headers.get('cache-control'),'no-store');
+ assert.deepEqual(await response.json(),{items});
+ assert.deepEqual(b.calls,[['headers',{}],['rmg_public_review_summaries_v1',{p_guides:ratingsGuides}]]);
+});
+
+test('rating batches enforce their bounds and fail closed for mismatched identities and gates',async()=>{
+ for(const guides of [
+  Array(31).fill(ratingsGuides[0]), undefined, [null],
+  [{jurisdiction:['OR'],sourceId:'OG.0001225.F&F'}],
+  [{jurisdiction:'OR',sourceId:'OG.0001225.F&F\n'}],
+  [{...ratingsGuides[0],guideId:'private'}],
+ ]){
+  const b=backend();
+  assert.equal((await handleLaunch(req({...ratingsBatch,guides}),b.factory,env)).status,400);
+  assert.deepEqual(b.calls,[]);
+ }
+ let b=backend();
+ assert.equal((await handleLaunch(req(ratingsBatch),b.factory,{RMG_CLAIMS_ENABLED:'true'})).status,503);
+ assert.deepEqual(b.calls,[]);
+ b=backend({rpcError:{code:'P5030'}});
+ assert.deepEqual(await (await handleLaunch(req(ratingsBatch),b.factory,env)).json(),{error:'launch_unavailable'});
+ b=backend({rpcResult:{items:[{...ratingsGuides[1],count:1,averageQuality:5}]}});
+ assert.deepEqual(await (await handleLaunch(req(ratingsBatch),b.factory,env)).json(),{error:'service_unavailable'});
+ b=backend({rpcResult:{items:[]}});
+ assert.deepEqual(await (await handleLaunch(req({...ratingsBatch,guides:[]}),b.factory,env)).json(),{items:[]});
+});
