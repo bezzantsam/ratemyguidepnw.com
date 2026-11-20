@@ -139,7 +139,10 @@ RESET ROLE;
 
 SET ROLE authenticated;
 SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000001',false);
-SELECT public.rmg_guide_offerings_authorized_v1('owner_save',:'two'::jsonb||jsonb_build_object('expectedRevision',0,'draft',:'empty_draft'::jsonb));
+SELECT jsonb_build_object('vessels','[]'::jsonb,'offerings',jsonb_build_array(
+ jsonb_set(:'full_draft'::jsonb->'offerings'->1,'{title}','"Synthetic suffix trip"'))) AS suffix_draft \gset
+SELECT public.rmg_guide_offerings_authorized_v1('owner_save',
+ :'two'::jsonb||jsonb_build_object('expectedRevision',0,'draft',:'suffix_draft'::jsonb));
 SELECT public.rmg_guide_offerings_authorized_v1('owner_submit',:'two'::jsonb||'{"expectedRevision":1}')->'proposal'->>'id' AS second \gset
 RESET ROLE;
 SET ROLE authenticated;
@@ -152,8 +155,18 @@ SET ROLE anon;
 SELECT public.fixture_assert(public.rmg_guide_offerings_public_v1('public_batch','{"afterSourceId":null,"limit":1}')->>'nextCursor'='OG.0000001'
  AND public.rmg_guide_offerings_public_v1('public_batch','{"afterSourceId":"OG.0000001","limit":1}')->'items'->0->>'sourceId'='OG.0001225.F&F'
  AND public.rmg_guide_offerings_public_v1('public_batch','{"afterSourceId":"OG.0001225.F&F","limit":1}')='{"items":[],"nextCursor":null}'
- AND public.rmg_guide_offerings_public_v1('public_profile',:'two')->'profile'->>'sourceId'='OG.0001225.F&F',
- 'approved suffix identity uses exact profile and batch cursor with no neighbor inference');
+ AND public.rmg_guide_offerings_public_v1('public_profile',:'two')->'profile' =
+  :'suffix_draft'::jsonb||'{"jurisdiction":"OR","sourceId":"OG.0001225.F&F","publishedVersion":1,"attribution":"captain_declared"}'
+ AND public.rmg_guide_offerings_public_v1('public_profile','{"jurisdiction":"OR","sourceId":"OG.0001225"}')='{"profile":null}',
+ 'approved suffix trip and payload use exact profile and batch cursor with no stripped-ID fallback');
+WITH batch AS (
+ SELECT public.rmg_guide_offerings_public_v1('public_batch','{"afterSourceId":null,"limit":2}')->'items' AS items
+)
+SELECT public.fixture_assert(items->0->>'sourceId'='OG.0000001'
+ AND items->0->'offerings'->0->>'title'='Estuary sturgeon'
+ AND items->1->>'sourceId'='OG.0001225.F&F'
+ AND items->1->'offerings'=(:'suffix_draft'::jsonb->'offerings'),
+ 'mixed approved batch retains both the ordinary and ampersand source with their own trips') FROM batch;
 RESET ROLE;
 
 BEGIN;
