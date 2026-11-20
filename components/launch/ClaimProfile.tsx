@@ -3,10 +3,9 @@
 import {useCallback,useEffect,useMemo,useRef,useState,type ReactNode} from 'react';
 import AuthPanel,{client as authClient} from '@/components/AuthPanel';
 import {createLaunchClient,type ClaimStatus,type GuideSource} from '@/lib/launch-client';
-import {PreferredNameOwner} from './PreferredNameOwner';
 import {ClaimSubmission} from './SubmissionViews';
 
-export function ClaimProfile({sourceId,profilePath,approvedEditor,preferredNameEnabled=false}:{sourceId:string;profilePath:string;approvedEditor?:ReactNode;preferredNameEnabled?:boolean}) {
+export function ClaimProfile({sourceId,profilePath,approvedEditor}:{sourceId:string;profilePath:string;approvedEditor?:ReactNode}) {
   const source=useMemo<GuideSource>(()=>({jurisdiction:'OR',sourceId}),[sourceId]);
   const api=useMemo(()=>createLaunchClient({enabled:true,getAccessToken:async()=>
     (await authClient?.auth.getSession())?.data.session?.access_token??null}),[]);
@@ -63,7 +62,6 @@ export function ClaimProfile({sourceId,profilePath,approvedEditor,preferredNameE
       {status==='denied'&&<p role="status">Your claim was not approved. You do not have editing access.</p>}
       {(status==='pending'||status==='approved'||status==='denied')&&<button type="button" onClick={()=>void refresh()}>Check claim status</button>}
     </>}
-    {status==='approved'&&preferredNameEnabled&&<PreferredNameOwner key={sourceId} source={source} api={api}/>}
     {status==='approved'&&approvedEditor}
   </section>;
 }
