@@ -85,6 +85,33 @@ test('submission sends user answers once and shows only the confirmed receipt',a
   assert.equal(result.props.receipt.status,'pending');
 });
 
+test('automatic publication and approved edits show their confirmed public outcome without a moderation wait',async()=>{
+  const review=setup(async()=>({id:receiptId,status:'published'}));
+  enterReview(review.render);
+  await review.render().props.onSubmit({preventDefault(){}});
+  assert.equal(review.render().type,review.views.SubmissionStatus);
+  assert.equal(review.render().props.receipt.status,'published');
+  for(const [status,message] of [
+    ['approved','Your changes have been published.'],
+    ['pending','Your changes are pending review. Your current published review is still visible.'],
+  ]){
+    const edit=setup(async()=>({id:receiptId,status}),false,{mode:'revision'});
+    enterReview(edit.render);
+    await edit.render().props.onSubmit({preventDefault(){}});
+    assert.equal(edit.render().type,edit.views.SubmissionStatus);
+    const statusView=edit.views.SubmissionStatus(edit.render().props);
+    assert.equal(statusView.props.role,'status');
+    assert.ok(find(statusView,node=>node.type==='p'&&node.props.children===message));
+  }
+  for(const [mode,status] of [['review','approved'],['review','removed'],['revision','published'],['revision','rejected']]){
+    const invalid=setup(async()=>({id:receiptId,status}),false,{mode});
+    enterReview(invalid.render);
+    await invalid.render().props.onSubmit({preventDefault(){}});
+    assert.equal(invalid.render().type,'form');
+    assert.match(find(invalid.render(),node=>node.props?.role==='alert').props.children,/could not confirm/i);
+  }
+});
+
 test('an unconfirmed submission stays on the form and offers no false success',async()=>{
   const {render}=setup(async()=>({status:'not-a-real-status'}));
   enterReview(render);

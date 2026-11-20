@@ -14,9 +14,10 @@ import type {ReviewDraft} from './submission-model';
 
 type DetailsState={status:'loading'|'error'}|{status:'ready';value:OwnerDetails|null};
 type OwnReviewState={status:'loading'|'error'}|{status:'ready';review:OwnStatus|null};
+type RevisionWrite={epoch:number;accountId:string;editorId:number};
 function nextSteps(item:OwnSubmission):string {
   if(item.kind==='claim')return item.status==='pending'?'Your request is awaiting review. Editing is not available yet.':item.status==='approved'?'Your ownership request was approved. You may edit captain-declared details when available.':'Your ownership request was not approved.';
-  if(item.kind==='revision')return item.status==='pending'?'Your changes are awaiting review.':item.status==='approved'?'Your updated review was approved.':'Your changes were not published.';
+  if(item.kind==='revision')return item.status==='pending'?'Your changes are awaiting review.':item.status==='approved'?'Your changes have been published.':'Your changes were not published.';
   return item.status==='pending'?'Your review is awaiting review and is not public.':item.status==='published'?'Your review is published.':item.status==='removed'?'Your review is no longer published.':'Your review was not published.';
 }
 
@@ -25,6 +26,7 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
   const stableSource=useMemo(()=>({jurisdiction:source.jurisdiction,sourceId:source.sourceId}),[source.jurisdiction,source.sourceId]);
   const api=useMemo(()=>createLaunchClient({enabled:true,getAccessToken:async()=>{const result=await authClient?.auth.getSession();return result?.data.session?.access_token??null}}),[]);
   const [reviews,setReviews]=useState<ReviewLoadState>({status:'loading'}),[details,setDetails]=useState<DetailsState>({status:'loading'});
+  const [publishedVersion,setPublishedVersion]=useState(0);
   const [session,setSession]=useState<'loading'|'signed_out'|'signed_in'|'error'>('loading');
   const [reviewAccount,setReviewAccount]=useState<string|null>(null);
   const reviewAccountRef=useRef<string|null>(null);
@@ -35,9 +37,13 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
   const [ownReview,setOwnReview]=useState<OwnReviewState>({status:'loading'});
   const [writeReady,setWriteReady]=useState<boolean|'error'|null>(null),[formActivated,setFormActivated]=useState(false);
   const [submissions,setSubmissions]=useState<OwnSubmission[]|null>(null),[nextOffset,setNextOffset]=useState(0),[more,setMore]=useState(false),[statusError,setStatusError]=useState(false);
-  const [revision,setRevision]=useState<{id:string;initial:ReviewDraft}|null>(null),[revisionError,setRevisionError]=useState('');
+  const [revision,setRevision]=useState<{id:string;initial:ReviewDraft;editorId:number;epoch:number}|null>(null),[revisionError,setRevisionError]=useState('');
+  const [revisionWrite,setRevisionWrite]=useState<RevisionWrite|null>(null);
+  const revisionWriteRef=useRef<RevisionWrite|null>(null);
   const [selected,setSelected]=useState<{status:'loading'|'error';id:string}|{status:'ready';review:PublishedReview}|null>(null);
   const authEpoch=useRef(0),availabilityEpoch=useRef(0),reviewLoadEpoch=useRef(0);
+  const revisionEditorId=useRef(0);
+  const revisionBusy=revisionWrite!==null&&revisionWrite.epoch===authEpoch.current&&revisionWrite.accountId===reviewAccount;
   const washington=source.jurisdiction==='WA';
   const canReview=writeReady===true;
   const showReviewTools=!washington||canReview;
@@ -86,7 +92,7 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
   },[api,loadSubmissions,loadOwnReview]);
   useEffect(()=>{setFormActivated(false);setWriteReady(null);void loadWriteReady();return()=>{availabilityEpoch.current++}},[loadWriteReady]);
   useEffect(()=>{if(writeReady===true)setFormActivated(true)},[writeReady]);
-  useEffect(()=>{if(showReviewTools)void loadReviews()},[showReviewTools,loadReviews]);
+  useEffect(()=>{if(showReviewTools)void loadReviews()},[showReviewTools,loadReviews,publishedVersion]);
   useEffect(()=>{if(!washington)void loadDetails()},[washington,loadDetails]);
   useEffect(()=>{
     if(!canReadAccount)return;
@@ -114,7 +120,7 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
       subscription?.unsubscribe();
     };
   },[canReadAccount,refreshSession]);
-  useEffect(()=>{if(!canReadAccount)return;let generation=0;function openReview(){const id=publishedReviewIdFromHash(window.location.hash),current=++generation;if(!id){setSelected(null);return}setSelected({status:'loading',id});void api.publicReview(stableSource,id).then(r=>{if(current===generation)setSelected({status:'ready',review:{...r,guideKey,status:'published',rating:r.quality}})}).catch(()=>{if(current===generation)setSelected({status:'error',id})})}window.addEventListener('hashchange',openReview);openReview();return()=>{generation++;window.removeEventListener('hashchange',openReview)}},[api,guideKey,stableSource,canReadAccount]);
+  useEffect(()=>{if(!canReadAccount)return;let generation=0;function openReview(){const id=publishedReviewIdFromHash(window.location.hash),current=++generation;if(!id){setSelected(null);return}setSelected({status:'loading',id});void api.publicReview(stableSource,id).then(r=>{if(current===generation)setSelected({status:'ready',review:{...r,guideKey,status:'published',rating:r.quality}})}).catch(()=>{if(current===generation)setSelected({status:'error',id})})}window.addEventListener('hashchange',openReview);openReview();return()=>{generation++;window.removeEventListener('hashchange',openReview)}},[api,guideKey,stableSource,canReadAccount,publishedVersion]);
   const own=(submissions??[]).filter(item=>item.identities.some(identity=>identity.jurisdiction===source.jurisdiction&&identity.sourceId===source.sourceId));
   const existingReview=ownReview.status==='ready'?ownReview.review:null;
   const pendingRevision=existingReview&&own.some(item=>item.kind==='revision'&&item.reviewId===existingReview.id&&item.status==='pending');
@@ -125,11 +131,12 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
       ? 'We couldn’t check review availability.'
       : 'Review submissions are unavailable for this guide right now.';
   async function editReview(id:string){
-    const epoch=authEpoch.current,account=reviewAccount;
+    if(!reviewAccount||reviewAccount!==reviewAccountRef.current||revisionWriteRef.current?.epoch===authEpoch.current)return;
+    const epoch=authEpoch.current,account=reviewAccount,editorId=++revisionEditorId.current;
     setRevisionError('');
     try{
       const initial=await reviewApi.reviewDetail(stableSource,id);
-      if(epoch===authEpoch.current&&account===reviewAccountRef.current)setRevision({id,initial});
+      if(epoch===authEpoch.current&&account===reviewAccountRef.current&&editorId===revisionEditorId.current)setRevision({id,initial,editorId,epoch});
     }catch{
       if(epoch===authEpoch.current&&account===reviewAccountRef.current)setRevisionError('This review cannot be edited right now. Its published version has not changed.');
     }
@@ -144,11 +151,38 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
       if(epoch===authEpoch.current){
         setOwnReview({status:'ready',review:receipt});
         void loadSubmissions(0,epoch);
+        if(receipt.status==='published')setPublishedVersion(version=>version+1);
       }
       return receipt;
     } catch(error) {
       if(epoch===authEpoch.current)recordWriteFailure(error);
       throw error;
+    }
+  }
+
+  async function submitRevision(draft:ReviewDraft){
+    if(!revision||!reviewAccount||revision.epoch!==authEpoch.current||reviewAccount!==reviewAccountRef.current||revision.editorId!==revisionEditorId.current)throw new Error('Review editor is unavailable');
+    if(revisionWriteRef.current?.epoch===authEpoch.current)throw new Error('Your review changes are already being saved');
+    const epoch=authEpoch.current;
+    const write={epoch,accountId:reviewAccount,editorId:revision.editorId};
+    revisionWriteRef.current=write;
+    setRevisionWrite(write);
+    try{
+      const receipt=await reviewApi.submitRevision(revision.id,draft);
+      // An old session must not clear a newer draft, including in the form's
+      // own receipt handler after this promise resolves.
+      if(revisionWriteRef.current!==write||epoch!==authEpoch.current||reviewAccount!==reviewAccountRef.current)throw new Error('Review account changed');
+      clearReviewDraft({...stableSource,accountId:reviewAccount,reviewId:revision.id},'revision');
+      if(epoch===authEpoch.current){
+        void loadSubmissions(0,epoch);
+        if(receipt.status==='approved')setPublishedVersion(version=>version+1);
+      }
+      return receipt;
+    }catch(error){
+      if(epoch===authEpoch.current)recordWriteFailure(error);
+      throw error;
+    }finally{
+      if(revisionWriteRef.current===write){revisionWriteRef.current=null;setRevisionWrite(null)}
     }
   }
 
@@ -160,6 +194,7 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
       if(reviewAccount)clearReviewDraft({...stableSource,accountId:reviewAccount});
       setOwnReview({status:'ready',review:existing});
       void loadSubmissions(0,epoch);
+      if(existing.status==='published')setPublishedVersion(version=>version+1);
       return 'submitted' as const;
     }
     const availability=++availabilityEpoch.current;
@@ -223,8 +258,8 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
           {reviewAccount&&ownReview.status==='ready'&&!existingReview&&(canReview||formActivated)&&<ReviewSubmission key={`${guideKey}:${reviewAccount}`} draftScope={{...stableSource,accountId:reviewAccount}} allowTripResponses writeAvailable={canReview} onCheckBeforeRetry={checkBeforeRetry} onSubmit={submitFirstReview}/>}
           {!compactProfile&&writeReady===false&&<><p role="status">Reviews aren’t available for this guide right now.</p>{source.jurisdiction==='OR'&&<button type="button" onClick={()=>void loadWriteReady()}>Check review availability</button>}</>}
           {!compactProfile&&writeReady==='error'&&<p role="status">We couldn’t check review availability. Try again before submitting.</p>}
-          <section id="your-submissions"><h3>Your submissions</h3>{existingReview&&<div><p>Review: <strong>{existingReview.status}</strong></p><p>{existingReview.status==='pending'?'Your review is awaiting review and is not public.':existingReview.status==='published'?'Your review is published.':existingReview.status==='removed'?'Your review is no longer published.':'Your review was not published.'}</p>{canReview&&existingReview.status==='published'&&!pendingRevision&&!more&&submissions!==null&&!statusError&&<button type="button" onClick={()=>void editReview(existingReview.id)}>Edit your review</button>}{existingReview.status==='published'&&pendingRevision&&<p>Your changes are awaiting review.</p>}</div>}{statusError?<><p role="status">Your submission status is temporarily unavailable.</p><button type="button" onClick={()=>void loadSubmissions()}>Retry status</button></>:submissions===null?<p role="status">Loading your submissions…</p>:<>{own.filter(item=>item.kind!=='review').map(item=><div key={`${item.kind}:${item.id}`}><p>{item.kind==='revision'?'Review edit':'Claim request'}: <strong>{item.status}</strong></p><p>{nextSteps(item)}</p></div>)}{more&&<><p>Load the remaining submissions to check your full review history.</p><button type="button" onClick={()=>void loadSubmissions(nextOffset)}>Load more submissions</button></>}</>}
-            {revisionError&&<p role="alert">{revisionError}</p>}{revision&&reviewAccount&&<ReviewSubmission key={`${guideKey}:${reviewAccount}:${revision.id}`} draftScope={{...stableSource,accountId:reviewAccount,reviewId:revision.id}} initial={revision.initial} mode="revision" allowTripResponses writeAvailable={canReview} onSubmit={async draft=>{const epoch=authEpoch.current;try{const receipt=await reviewApi.submitRevision(revision.id,draft);clearReviewDraft({...stableSource,accountId:reviewAccount,reviewId:revision.id},'revision');if(epoch===authEpoch.current)void loadSubmissions();return receipt}catch(error){if(epoch===authEpoch.current)recordWriteFailure(error);throw error}}}/>}
+          <section id="your-submissions"><h3>Your submissions</h3>{existingReview&&<div><p>Review: <strong>{existingReview.status}</strong></p><p>{existingReview.status==='pending'?'Your review is awaiting review and is not public.':existingReview.status==='published'?'Your review is published.':existingReview.status==='removed'?'Your review is no longer published.':'Your review was not published.'}</p>{canReview&&existingReview.status==='published'&&!pendingRevision&&!more&&submissions!==null&&!statusError&&<button type="button" disabled={revisionBusy} onClick={()=>void editReview(existingReview.id)}>Edit your review</button>}{existingReview.status==='published'&&pendingRevision&&<p>Your changes are awaiting review.</p>}</div>}{statusError?<><p role="status">Your submission status is temporarily unavailable.</p><button type="button" onClick={()=>void loadSubmissions()}>Retry status</button></>:submissions===null?<p role="status">Loading your submissions…</p>:<>{own.filter(item=>item.kind!=='review').map(item=><div key={`${item.kind}:${item.id}`}><p>{item.kind==='revision'?'Review edit':'Claim request'}: <strong>{item.status}</strong></p><p>{nextSteps(item)}</p></div>)}{more&&<><p>Load the remaining submissions to check your full review history.</p><button type="button" onClick={()=>void loadSubmissions(nextOffset)}>Load more submissions</button></>}</>}
+            {revisionError&&<p role="alert">{revisionError}</p>}{revision&&reviewAccount&&<ReviewSubmission key={`${guideKey}:${reviewAccount}:${revision.id}:${revision.editorId}`} draftScope={{...stableSource,accountId:reviewAccount,reviewId:revision.id}} initial={revision.initial} mode="revision" allowTripResponses writeAvailable={canReview} onSubmit={submitRevision}/>}
           </section>
         </>}
       </>:<p role="status">Review tools are temporarily unavailable for this listing.</p>}

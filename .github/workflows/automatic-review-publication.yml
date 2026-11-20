@@ -1,0 +1,57 @@
+name: Automatic review publication PostgreSQL 17
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/automatic-review-publication.yml'
+      - 'supabase/review-candidates/**'
+      - 'tests/backend-launch/automatic-review-publication*'
+      - 'tests/backend-launch/reconstruct.py'
+      - 'tests/backend-launch/fixture-catalog.json'
+      - 'tests/backend-launch/fixtures.sql'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/automatic-review-publication.yml'
+      - 'supabase/review-candidates/**'
+      - 'tests/backend-launch/automatic-review-publication*'
+      - 'tests/backend-launch/reconstruct.py'
+      - 'tests/backend-launch/fixture-catalog.json'
+      - 'tests/backend-launch/fixtures.sql'
+
+permissions:
+  contents: read
+
+jobs:
+  disposable-postgres-17:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: rmg_fixture_owner
+          POSTGRES_PASSWORD: rmg-local-fixture-only
+          POSTGRES_DB: rmg_automatic_publication_fixture
+        ports:
+          - 5432/tcp
+        options: >-
+          --health-cmd "pg_isready -U rmg_fixture_owner -d rmg_automatic_publication_fixture"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes postgresql-client
+      - name: Rehearse policy and authorization in the disposable database
+        env:
+          RMG_AUTOMATIC_PUBLICATION_FIXTURE: '1'
+          RMG_FIXTURE_HOST: 127.0.0.1
+          RMG_FIXTURE_PORT: ${{ job.services.postgres.ports[5432] }}
+          RMG_FIXTURE_PASSWORD: rmg-local-fixture-only
+        run: bash tests/backend-launch/automatic-review-publication-run.sh

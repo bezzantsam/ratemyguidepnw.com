@@ -33,3 +33,48 @@ test('only confirmed duplicate-review code gets a duplicate message',async()=>{
  const review={operation:'submit_review',jurisdiction:'OR',sourceId:'fixture-one',quality:5,body:'Good',firsthandAttested:true,relationship:'none'};
  for(const [code,expected] of [['P4091','duplicate_review'],['23505','conflict'],['P0001','conflict']]){const c=client({error:{code}}),r=await handleLaunch(request(review),c.factory,env);assert.equal(r.status,409);assert.deepEqual(await r.json(),{error:expected});}
 });
+
+test('flag decisions accept only keep or remove with bounded private notes',()=>{
+ const decision={operation:'resolve_report',id,action:'keep',reason:''};
+ assert.equal(validate(decision),true);
+ assert.equal(validate({...decision,action:'remove',reason:'Not firsthand'}),true);
+ assert.equal(validate({...decision,reason:'x'.repeat(500)}),true);
+ for(const change of [{action:'approve'},{action:null},{action:'remove'},{action:'remove',reason:'   '},{reason:'x'.repeat(501)},{reason:null},{reviewId:id},{actor:id},{status:'removed'}]){
+  assert.equal(validate({...decision,...change}),false,JSON.stringify(change));
+ }
+ assert.equal(validate({operation:'resolve_report',id,reason:'unbound note'}),false);
+ assert.equal(validate({operation:'resolve_report',id,action:'keep'}),false);
+});
+
+test('explicit flag decisions require admin authorization and use the reported review target',async()=>{
+ const reviewId='00000000-0000-0000-0000-000000000002';
+ const decision={operation:'resolve_report',id,action:'remove',reason:'  Not firsthand  '};
+ let c=client(),r=await handleLaunch(request(decision,null),c.factory,env);
+ assert.equal(r.status,401);assert.deepEqual(c.calls,[]);
+ c=client();r=await handleLaunch(request(decision),c.factory,env);
+ assert.equal(r.status,403);assert.deepEqual(c.calls,[['is_site_admin',undefined]]);
+ const receipt={id,status:'resolved',review_id:reviewId,review_status:'removed'};
+ c=client({admin:true,data:receipt});r=await handleLaunch(request(decision),c.factory,env);
+ assert.equal(r.status,200);assert.deepEqual(await r.json(),receipt);
+ assert.deepEqual(c.calls.at(-1),['rmg_resolve_report_v2',{p_id:id,p_action:'remove',p_reason:'Not firsthand'}]);
+ c=client({admin:true,data:{...receipt,review_status:'published'}});
+ r=await handleLaunch(request({...decision,action:'keep',reason:''}),c.factory,env);
+ assert.equal(r.status,200);
+ assert.deepEqual(c.calls.at(-1),['rmg_resolve_report_v2',{p_id:id,p_action:'keep',p_reason:''}]);
+ c=client({admin:true,data:receipt});r=await handleLaunch(request({...decision,action:'keep',reason:''}),c.factory,env);
+ assert.equal(r.status,200);assert.equal((await r.json()).review_status,'removed','dismissing a later flag does not republish a removed review');
+});
+
+test('flag decisions fail closed when the persisted receipt is incomplete or inconsistent',async()=>{
+ const reviewId='00000000-0000-0000-0000-000000000002';
+ const decision={operation:'resolve_report',id,action:'remove',reason:'Not firsthand'};
+ const receipt={id,status:'resolved',review_id:reviewId,review_status:'removed'};
+ for(const data of [null,{}, {id,status:'resolved'}, {...receipt,id:reviewId}, {...receipt,status:'pending'}, {...receipt,review_id:'not-a-uuid'}, {...receipt,review_status:'published'}, {...receipt,review_status:'approved'}]){
+  const c=client({admin:true,data}),r=await handleLaunch(request(decision),c.factory,env);
+  assert.equal(r.status,503);assert.deepEqual(await r.json(),{error:'service_unavailable'});
+ }
+ for(const [code,status,error] of [['42501',403,'forbidden'],['P0002',404,'not_found'],['P0001',409,'conflict'],['P5030',503,'launch_unavailable']]){
+  const c=client({admin:true,error:{code,message:'private details'}}),r=await handleLaunch(request(decision),c.factory,env);
+  assert.equal(r.status,status);assert.deepEqual(await r.json(),{error});
+ }
+});

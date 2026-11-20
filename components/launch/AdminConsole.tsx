@@ -2,7 +2,7 @@
 
 import {useCallback,useEffect,useMemo,useRef,useState} from 'react';
 import AuthPanel,{client as authClient} from '@/components/AuthPanel';
-import {createLaunchClient,LaunchClientError,type OperatorItem,type SubmissionKind} from '@/lib/launch-client';
+import {createLaunchClient,LaunchClientError,type OperatorItem,type ReportAction,type SubmissionKind} from '@/lib/launch-client';
 
 import TripProposalQueue from './TripProposalQueue';
 
@@ -19,7 +19,7 @@ const needsQueueCheck='The decision could not be confirmed. Check the pending qu
 /** Access and every operation are independently checked by the server. */
 export function AdminConsole({claimsEnabled=false,offeringsEnabled=false}:{claimsEnabled?:boolean;offeringsEnabled?:boolean}) {
   const [access,setAccess]=useState<Access>({status:'loading'});
-  const [kind,setKind]=useState<SubmissionKind>('review'),[offset,setOffset]=useState(0),[items,setItems]=useState<OperatorItem[]|null>(null),[error,setError]=useState(''),[message,setMessage]=useState(''),[notes,setNotes]=useState<Record<string,string>>({});
+  const [kind,setKind]=useState<SubmissionKind>('report'),[offset,setOffset]=useState(0),[items,setItems]=useState<OperatorItem[]|null>(null),[error,setError]=useState(''),[message,setMessage]=useState(''),[notes,setNotes]=useState<Record<string,string>>({});
   const [decisions,setDecisions]=useState<Record<string,DecisionFeedback|undefined>>({});
   const processing=useRef(new Set<string>());
   const authEpoch=useRef(0),queueEpoch=useRef(0);
@@ -73,7 +73,7 @@ export function AdminConsole({claimsEnabled=false,offeringsEnabled=false}:{claim
       processing.current=new Set();
       setDecisions({});
       setItems(null);setNotes({});setError('');setMessage('');
-      setKind('review');setOffset(0);
+      setKind('report');setOffset(0);
       setAccess({status:id?'loading':'signed_out'});
       // Auth callbacks run under the provider lock. All API and auth reads run later.
       if(id)timer=window.setTimeout(()=>void verifyAccess(epoch),0);
@@ -143,9 +143,9 @@ export function AdminConsole({claimsEnabled=false,offeringsEnabled=false}:{claim
       const fresh=rows.find(row=>rowKey(row)===key);
       if(fresh){
         setItems(previous=>previous?.map(row=>rowKey(row)===key?fresh:row)??null);
-        showDecision(key,{phase:'retry',text:'This submission is still pending. Review your note before trying again.'});
+        showDecision(key,{phase:'retry',text:item.kind==='report'?'This flag is still open. Review your note before trying again.':'This submission is still pending. Review your note before trying again.'});
       }else{
-        showDecision(key,{phase:'absent',text:'This submission is no longer on this pending page. Its outcome could not be confirmed here.'});
+        showDecision(key,{phase:'absent',text:item.kind==='report'?'This flag is no longer on this queue page. Its outcome could not be confirmed here.':'This submission is no longer on this pending page. Its outcome could not be confirmed here.'});
       }
     }catch(error){
       if(epoch!==authEpoch.current)return;
@@ -154,17 +154,30 @@ export function AdminConsole({claimsEnabled=false,offeringsEnabled=false}:{claim
       if(error instanceof LaunchClientError&&error.code==='forbidden')setAccess({status:'denied'});
     }finally{pending.delete(key)}
   }
-  async function resolveReport(item:OperatorItem){
+  async function resolveReport(item:OperatorItem,action:ReportAction){
     if(access.status!=='operator'||access.epoch!==authEpoch.current||item.kind!=='report')return;
-    const {epoch}=access,pending=processing.current;
-    if(pending.has(item.id))return;
-    pending.add(item.id);setError('');setMessage('');
+    const {epoch}=access,key=rowKey(item),pending=processing.current;
+    const phase=decisions[key]?.phase;
+    if(pending.has(key)||(phase&&phase!=='invalid'&&phase!=='retry'))return;
+    const reason=(notes[key]??'').trim();
+    if(action==='remove'&&!reason){
+      showDecision(key,{phase:'invalid',text:'Enter a reason before removing this review.'});
+      document.getElementById(noteId(item))?.focus();
+      return;
+    }
+    pending.add(key);setError('');setMessage('');
+    showDecision(key,{phase:'saving',text:action==='remove'?'Removing review…':'Dismissing flag…'});
     try{
-      const receipt=await api.resolveReport(item.id);
-      if(epoch===authEpoch.current){setMessage(`Report confirmed: ${receipt.status}. The review was not changed.`);await load()}
+      const receipt=await api.resolveReport(item.id,reason,action);
+      if(epoch!==authEpoch.current)return;
+      if(receipt.reviewId!==item.reviewId)throw new Error('Unconfirmed review identity');
+      setNotes(previous=>{const next={...previous};delete next[key];return next});
+      const text=action==='remove'?'Review removed from public view. Flag resolved.':
+        receipt.reviewStatus==='published'?'Flag dismissed. The review remains published.':'Flag dismissed. The review’s publication status was unchanged.';
+      showDecision(key,{phase:'confirmed',text});
     }catch{
-      if(epoch===authEpoch.current)setError('The report resolution could not be confirmed. Refresh the queue before trying again.');
-    }finally{pending.delete(item.id)}
+      if(epoch===authEpoch.current)showDecision(key,{phase:'uncertain',text:needsQueueCheck});
+    }finally{pending.delete(key)}
   }
   const busy=Object.values(decisions).some(isBusy);
   return <main className="launch-controls"><p className="eyebrow">SITE OPERATIONS</p><h1>Moderation</h1><AuthPanel moderator/>
@@ -172,9 +185,9 @@ export function AdminConsole({claimsEnabled=false,offeringsEnabled=false}:{claim
     {access.status==='expired'&&<p role="status">Your moderator session could not be verified. Check access again, or sign out and request a new link.</p>}
     {access.status==='error'&&<p role="status">Operator access is temporarily unavailable.</p>}
     {(access.status==='denied'||access.status==='expired'||access.status==='error')&&<button type="button" onClick={retryAccess}>Check access again</button>}
-    {access.status==='operator'&&<section><h2>Pending submissions</h2><label>Submission type <select value={kind} disabled={busy} onChange={e=>{queueEpoch.current++;setItems(null);setKind(e.target.value as SubmissionKind);setOffset(0);setMessage('')}}><option value="review">Reviews</option>{claimsEnabled&&<option value="claim">Claims</option>}<option value="revision">Review edits</option><option value="report">Review reports</option></select></label>
+    {access.status==='operator'&&<section><h2>{kind==='report'?'Flagged reviews':'Pending submissions'}</h2><label>Submission type <select value={kind} disabled={busy} onChange={e=>{queueEpoch.current++;setItems(null);setKind(e.target.value as SubmissionKind);setOffset(0);setMessage('')}}><option value="report">Flagged reviews</option><option value="review">Earlier pending reviews</option><option value="revision">Earlier pending edits</option>{claimsEnabled&&<option value="claim">Claims</option>}</select></label>
       {error&&<p role="alert">{error}</p>}{message&&<p role="status">{message}</p>}
-      {items===null?!error&&<p role="status">Loading submissions…</p>:items.length===0?<p>No pending submissions on this page.</p>:items.map(item=>{
+      {items===null?!error&&<p role="status">{kind==='report'?'Loading flagged reviews…':'Loading submissions…'}</p>:items.length===0?<p>{kind==='report'?'No open flags on this page.':'No pending submissions on this page.'}</p>:items.map(item=>{
         const key=rowKey(item),feedback=decisions[key],id=noteId(item);
         const invalid=feedback?.phase==='invalid';
         const locked=isBusy(feedback)||feedback?.phase==='uncertain';
@@ -185,7 +198,21 @@ export function AdminConsole({claimsEnabled=false,offeringsEnabled=false}:{claim
             {item.guideProfilePath&&<p><a href={item.guideProfilePath}>Washington listing {item.guideProfilePath.split('/').at(-1)}</a></p>}
             {item.reviewId&&<p>Review reference: {item.reviewId}</p>}
             <p>Submitted: {item.createdAt}</p><p style={{whiteSpace:'pre-wrap'}}>{item.description}</p>
-            {item.kind==='report'?<><p>Resolving a report records its review; it does not hide or change the review.</p><button type="button" onClick={()=>void resolveReport(item)}>Resolve report</button></>
+            {item.kind==='report'?<>
+              <p>Review the flag, then keep the review or remove it from public view.</p>
+              <label htmlFor={id}>Private decision note</label>
+              <p id={`${id}-help`}>A reason is required to remove a review. A note is optional when dismissing a flag. Maximum 500 characters.</p>
+              <textarea id={id} maxLength={500} readOnly={locked} aria-invalid={invalid||undefined}
+                aria-describedby={`${id}-help${invalid?` ${id}-feedback`:''}`} value={notes[key]??''} onChange={e=>{
+                  const value=e.target.value;
+                  setNotes(previous=>({...previous,[key]:value}));
+                  if(invalid)showDecision(key,undefined);
+                }}/>
+              <div className="launch-actions">
+                <button type="button" disabled={locked} onClick={()=>void resolveReport(item,'keep')}>Keep review and dismiss flag</button>
+                <button type="button" disabled={locked} onClick={()=>void resolveReport(item,'remove')}>Remove review</button>
+              </div>
+            </>
               :item.kind!=='claim'&&item.ownSubmission!==false?<p>{item.ownSubmission===true
                 ?'Your submission. Another moderator must make the decision.'
                 :'Submission ownership could not be confirmed. Decisions are unavailable.'}</p>

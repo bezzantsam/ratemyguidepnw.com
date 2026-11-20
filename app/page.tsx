@@ -29,7 +29,7 @@ export default function Home() {
       </section>
       <p className="muted" style={{ marginTop: 22 }}>
         <ShieldCheck size={15} aria-hidden="true" style={{ verticalAlign: 'middle', marginRight: 6 }} />
-        Directory records are not live license checks. {enabled?'Reviews are checked before publication;':'Review submissions are unavailable;'}
+        Directory records are not live license checks. {enabled?'Anglers can flag reviews for moderator attention;':'Review submissions are unavailable;'}
         guide rankings cannot be purchased.
       </p>
     </main>

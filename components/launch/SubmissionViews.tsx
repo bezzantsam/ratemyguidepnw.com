@@ -9,10 +9,14 @@ import {clearReviewDraft,readReviewDraft,reviewDraftStorageKey,saveReviewDraft,t
 type SubmitReview = (draft: ReviewDraft) => Promise<SubmissionReceipt>;
 type SubmitClaim = (draft: ClaimDraft) => Promise<SubmissionReceipt>;
 
-export function SubmissionStatus({kind, receipt}: {kind: 'review' | 'claim'; receipt: SubmissionReceipt}) {
+export function SubmissionStatus({kind, receipt}: {kind: 'review' | 'claim' | 'revision'; receipt: SubmissionReceipt}) {
   if (!isSubmissionReceipt(receipt,kind)) return <p role="status">Submission status is temporarily unavailable.</p>;
-  const label = kind === 'review' ? 'Review' : 'Claim request';
-  const next = receipt.status === 'pending'
+  const label = kind === 'review' ? 'Review' : kind === 'revision' ? 'Review edit' : 'Claim request';
+  const next = kind === 'revision'
+    ? receipt.status === 'approved' ? 'Your changes have been published.'
+      : receipt.status === 'pending' ? 'Your changes are pending review. Your current published review is still visible.'
+      : 'Your changes were not published.'
+    : receipt.status === 'pending'
     ? kind === 'review' ? 'Your review is pending. It is not on the public page.' : 'Your claim request is pending review.'
     : receipt.status === 'published' ? 'Your review has been published.'
     : receipt.status === 'removed' ? 'Your review is no longer published.'
@@ -150,7 +154,8 @@ export function ReviewSubmission({onSubmit, onCheckBeforeRetry, allowTripRespons
     if(onCheckBeforeRetry)change({needsCheck:true});
     try {
       const result = await onSubmit(draft);
-      if (!isSubmissionReceipt(result,'review') || (mode==='revision'&&result.status!=='pending')) throw new Error('Invalid receipt');
+      if (!isSubmissionReceipt(result,mode) ||
+          !(mode==='revision'?['pending','approved']:['pending','published']).includes(result.status)) throw new Error('Invalid receipt');
       latest.current.dirty=false;latest.current.active=false;
       if(draftScope)clearReviewDraft(draftScope,mode);
       setReceipt(result);
@@ -191,10 +196,10 @@ export function ReviewSubmission({onSubmit, onCheckBeforeRetry, allowTripRespons
     }
   }
   if(!ready)return <p role="status">Restoring your review draft…</p>;
-  if (receipt) return mode==='revision'?<p role="status">Your changes are pending review. Your current published review is still visible.</p>:<SubmissionStatus kind="review" receipt={receipt}/>;
+  if (receipt) return <SubmissionStatus kind={mode} receipt={receipt}/>;
   return <form onSubmit={submit} className="card launch-form">
     <h3>{mode==='revision'?'Edit your review':'Share your trip experience'}</h3>
-    {mode==='revision'&&<p>Your changes will be reviewed. Your current published review stays visible while the changes are pending.</p>}
+    {mode==='revision'&&<p>Update your firsthand experience. You’ll see whether your changes are published or pending after you save.</p>}
     <label htmlFor={`${prefix}-quality`}>Overall quality</label>
     <select id={`${prefix}-quality`} value={quality} onChange={event=>change({quality:event.target.value})} required>
       <option value="">Choose a rating</option>{[1,2,3,4,5].map(value=><option key={value} value={value}>{value} / 5</option>)}
@@ -228,7 +233,7 @@ export function ReviewSubmission({onSubmit, onCheckBeforeRetry, allowTripRespons
       <select id={`${prefix}-intensity`} value={intensity} onChange={event=>change({intensity:event.target.value})}><option value="">Not answered</option>{[1,2,3,4,5].map(value=><option key={value} value={value}>{value} / 5</option>)}</select>
     </TripDetails>}
     <label htmlFor={`${prefix}-body`}>Your experience</label>
-    <p>Write about a trip you personally took. Your review is checked before publication. Signing in confirms your account, not that a trip occurred.</p>
+    <p>Write about a trip you personally took. Anglers can flag reviews for moderator attention. Signing in confirms your account, not that a trip occurred.</p>
     <p id={`${prefix}-body-help`}>Write up to 3,000 characters.</p>
     <textarea id={`${prefix}-body`} aria-describedby={`${prefix}-body-help`} value={body} onChange={event=>change({body:event.target.value})} minLength={1} maxLength={3000} required />
     <label><input type="checkbox" checked={firsthand} onChange={event=>change({firsthand:event.target.checked})} required/> I personally took this trip.</label>
@@ -237,7 +242,7 @@ export function ReviewSubmission({onSubmit, onCheckBeforeRetry, allowTripRespons
     {retryMessage && <p role="status">{retryMessage}</p>}
     {!writeAvailable && !error && !retryMessage && <p role="status">Review submissions are temporarily unavailable. Your draft remains here while you check again.</p>}
     {onCheckBeforeRetry && (needsCheck || !writeAvailable) && <button type="button" disabled={busy || checking} onClick={()=>void checkBeforeRetry()}>{checking ? 'Checking…' : 'Check before retrying'}</button>}
-    <button type="submit" disabled={busy || checking || needsCheck || !writeAvailable}>{busy ? 'Submitting…' : mode==='revision' ? 'Submit changes for review' : 'Submit review'}</button>
+    <button type="submit" disabled={busy || checking || needsCheck || !writeAvailable}>{busy ? 'Submitting…' : mode==='revision' ? 'Save changes' : 'Submit review'}</button>
     <button type="button" disabled={busy || checking} onClick={discard}>Discard draft</button>
   </form>;
 }
