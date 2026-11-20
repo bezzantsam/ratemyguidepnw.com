@@ -104,7 +104,8 @@ export function describeTripResponseEntries(value:unknown):TripResponseDescripti
   for(const field of TRIP_FIELDS) {
     const entry=draft[field.key];if(!entry)continue;
     const raw=entry.slice(6);
-    const answer=entry==='na'?'Not applicable':
+    const unanswered=isTripHighlight(field.key)?'Unanswered':'Not applicable';
+    const answer=entry==='na'?unanswered:
       field.kind==='boolean'?(raw==='yes'?'Yes':'No'):
       field.kind==='rating'?`${raw} / 5`:
       field.kind==='minutes'?`${raw} minutes`:

@@ -68,3 +68,22 @@ test('survey ratings reuse organization once and keep blank and numeric zero sep
   }
   assert.equal(model.encodeTripResponses({fish_landed:'value:2147483647'}).value.answers.fish_landed.value,2147483647);
 });
+
+
+test('cleared survey ratings and catch display as unanswered without changing stored state',()=>{
+  const doc={version:1,answers:{kindness:{state:'not_applicable'},organization:{state:'not_applicable'},
+    fishiness:{state:'not_applicable'},fish_landed:{state:'not_applicable'},children_present:{state:'not_applicable'}}};
+  const draft=model.decodeTripResponses(doc);
+  assert.deepEqual(plain(model.encodeTripResponses(draft).value),doc);
+  assert.deepEqual(Array.from(model.describeTripResponses(doc)),[
+    'Were children on the trip? Not applicable','Kindness: Unanswered','Organization: Unanswered',
+    'Finding fish: Unanswered','Fish landed by the group: Unanswered',
+  ]);
+  const views=compile('components/launch/TripDetails.tsx',{react:{useId:()=>':test:'},'./trip-responses':model});
+  const tree=views.TripFields({fields:[...model.REVIEW_TRIP_RATINGS,model.FISH_LANDED_FIELD],draft,onChange:()=>{}});
+  for(const key of ['kindness','organization','fishiness','fish_landed']) {
+    const field=find(tree,node=>(node.type==='select'||node.type==='input')&&node.props.id.endsWith('-'+key));
+    assert.equal(field.props.value,'');
+  }
+  assert.equal(find(tree,node=>node.type==='option'&&node.props.value==='na'),undefined);
+});
