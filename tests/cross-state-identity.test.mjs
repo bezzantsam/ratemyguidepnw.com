@@ -40,16 +40,20 @@ const stub=()=>null;
 const Link=({href,children})=>React.createElement('a',{href:typeof href==='string'?href:href.pathname},children);
 async function renderPages(wa){
  const waPage=load('app/washington/page.tsx',{'next/link':Link,'@/components/WashingtonSearch':stub,'@/lib/washington':wa});
- const profile=load('app/guides/[slug]/page.tsx',{
+ const profileDeps={
   'next/link':Link,'next/navigation':{notFound:()=>{throw Error('unexpected notFound')}},
   '@/lib/registry':{findGuide:()=>orGuide,guideSlug:()=> 'og-9999000',oregonGuides:[orGuide]},'@/lib/washington':wa,
+  '@/components/SaveGuideButton':({href})=>React.createElement('button',{'data-save-guide':href}),
   '@/components/ReturnToResults':stub,'@/components/GuideEnrichmentPanel':stub,'@/components/CaptainDetails':stub,
   '@/components/CaptainReviews':stub,'@/components/CaptainMedia':stub,'@/components/GuideTrustPanel':stub,
   '@/components/launch/CaptainTripsEditor':{CaptainTripsEditor:stub},
   '@/components/CaptainTripCards':{__esModule:true,default:stub},
   '@/components/launch/ProfileSharing':{ProfileSharing:stub},'@/components/launch/ClaimProfile':{ClaimProfile:stub},'@/components/launch/AuthCheck':{AuthCheck:()=>null},'@/components/launch/GuideEngagement':{GuideEngagement:stub},'@/lib/canonical-share':{profileShareMetadata:()=>({})}
- });
- return {wa:renderToStaticMarkup(React.createElement(waPage.default)),profile:renderToStaticMarkup(await profile.default({params:Promise.resolve({slug:'og-9999000'})}))};
+ };
+ const profile=load('app/guides/[slug]/page.tsx',profileDeps);
+ const washingtonProfile=load('app/washington/[id]/page.tsx',profileDeps);
+ const renderWashington=async id=>renderToStaticMarkup(await washingtonProfile.default({params:Promise.resolve({id})}));
+ return {wa:renderToStaticMarkup(React.createElement(waPage.default)),profile:renderToStaticMarkup(await profile.default({params:Promise.resolve({slug:'og-9999000'})})),renderWashington};
 }
 
 test('missing, pending, ambiguous, rejected, malformed and conflicting decisions fail closed',()=>{
@@ -77,6 +81,9 @@ test('synthetic reviewed link governs search, badge, profile and exact source su
  const html=await renderPages(wa);
  assert.match(html.profile,/Also listed in Washington/);
  assert.match(html.profile,/Fixture directory/);
+ assert.match(html.profile,/data-save-guide="\/guides\/og-9999000"/);
+ assert.doesNotMatch(await html.renderWashington('wa-900'),/data-save-guide/);
+ assert.match(await html.renderWashington('wa-901'),/data-save-guide="\/washington\/wa-901"/);
  assert.match(html.wa,/Reviewed cross-state links/);
  assert.match(html.wa,/\/guides\/og-9999000/);
 });
