@@ -2,19 +2,23 @@ import type {Metadata} from 'next';
 import SavedGuides from '@/components/SavedGuides';
 import {guideSlug, oregonGuides} from '@/lib/registry';
 import {washingtonGuides} from '@/lib/washington';
+import type {SavedGuideEntry} from '@/lib/saved-guides';
 
 export const metadata: Metadata = {title: 'Saved guides | Rate Your Guide', robots: {index: false, follow: false}};
 
 export default function SavedPage() {
-  const entries: [string, string][] = [
-    ...oregonGuides.map((guide): [string, string] => [`/guides/${guideSlug(guide)}`, guide.name]),
-    ...washingtonGuides.map((guide): [string, string] => [`/washington/${guide.id}`, guide.name]),
+  const entries: SavedGuideEntry[] = [
+    ...oregonGuides.map((guide): SavedGuideEntry => ({
+      guide:{jurisdiction:'OR',sourceId:guide.registration}, href:`/guides/${guideSlug(guide)}`, name:guide.name,
+    })),
+    ...washingtonGuides.map((guide): SavedGuideEntry => ({
+      guide:{jurisdiction:'WA',sourceId:guide.id}, href:`/washington/${guide.id}`, name:guide.name,
+    })),
   ];
 
   return <main>
     <h1>Saved guides</h1>
-    <p className="lead">Keep a shortlist of fishing guides in this browser. No account required.</p>
-    <p>Anyone using this browser can see your shortlist. Clearing site storage removes it.</p>
+    <p className="lead">Your private shortlist follows your account across devices.</p>
     <SavedGuides entries={entries}/>
   </main>;
 }

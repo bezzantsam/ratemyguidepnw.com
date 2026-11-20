@@ -72,15 +72,17 @@ test('held Washington review entry and exact pilot readiness on phone and deskto
       });
       await back.waitFor();
       await page.waitForFunction(expected=>document.querySelector('#write-review a')?.getAttribute('href')===expected,finder);
-      const save=page.getByRole('button',{name:'Save guide: Charles Stahley'});
+      const save=page.getByRole('button',{name:'Sign in to save Charles Stahley'});
       await save.click();
-      assert.equal(await save.getAttribute('aria-pressed'),'true');
+      await page.locator('.save-guide-control .auth-panel input[type=email]').waitFor();
+      assert.equal(await page.evaluate(()=>localStorage.getItem('rmgpnw:saved-guides:v1')),null);
       await back.click();
       await page.waitForURL(origin+finder);
       await charles.waitFor();
       assert.equal(await search.inputValue(),'Charles Stahley');
       await page.getByRole('link',{name:'Saved guides',exact:true}).click();
-      await page.locator('a[href="/washington/wa-021"]').waitFor();
+      await page.getByText('Sign in to see your shortlist.',{exact:true}).waitFor();
+      assert.equal(await page.locator('a[href="/washington/wa-021"]').count(),0);
       assert.deepEqual(calls.filter(([id])=>id==='wa-021'),[]);
 
       await page.goto(origin+'/washington/wa-021?intent=review&returnTo=https%3A%2F%2Fexample.invalid#write-review');
