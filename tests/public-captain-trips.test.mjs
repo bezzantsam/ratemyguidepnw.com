@@ -123,3 +123,24 @@ test('profile projection binds exact identity and replaces approved versions inc
   publicVersion=null;
   assert.equal(await client.fetchCaptainTripsForProfile(source,signal),null);
 });
+
+test('malformed or ambiguous batch rows cannot erase another guide’s valid projection',async()=>{
+  const suffix={jurisdiction:'OR',sourceId:'OG.0001225.F&F'};
+  const {calls,client,signal}=projection(request=>!request.afterSourceId
+    ?{items:[{...profile,...suffix},{...profile,sourceId:'bad-id'},{...profile,...secondSource,offerings:[{...estuary,months:[13]}]}],nextCursor:suffix.sourceId}
+    :{items:[{...profile,...secondSource},{...profile,...secondSource,publishedVersion:2},profile],nextCursor:null});
+  const rows=await client.fetchCaptainTripsForDirectory(signal);
+  assert.equal(rows.get(client.captainTripKey(suffix)).length,2);
+  assert.equal(rows.get(client.captainTripKey(source)).length,2);
+  assert.equal(rows.has(client.captainTripKey(secondSource)),false);
+  assert.equal(calls[1].afterSourceId,suffix.sourceId);
+});
+
+test('moderator parser keeps empty proposals and rejects malformed, duplicate or orphaned trips',()=>{
+  const {client}=projection(()=>null);
+  assert.equal(client.parseSubmittedTrips({vessels:[],offerings:[estuary,nearshore]}).offerings.length,2);
+  assert.equal(client.parseSubmittedTrips({vessels:[],offerings:[]}).offerings.length,0);
+  for(const bad of [[estuary,{...nearshore,months:[13]}],[estuary,estuary],[{...estuary,vesselId:'v1'}]]){
+    assert.throws(()=>client.parseSubmittedTrips({vessels:[],offerings:bad}),/Invalid trip contents/);
+  }
+});

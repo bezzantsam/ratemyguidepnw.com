@@ -60,17 +60,23 @@ function parseTrip(value:unknown):CaptainTrip|null {
   return {id,title,jurisdiction,waterway,launchArea,species,months,methodIds,gearIds,vesselId:boat,duration,bookingStyle};
 }
 
+/** A moderator must see every submitted trip and its vessel, or reject the payload. */
+export function parseSubmittedTrips(value:unknown) {
+  if(!object(value)||!Array.isArray(value.vessels)||value.vessels.length>4||
+    !Array.isArray(value.offerings)||value.offerings.length>8)throw new Error('Invalid trip contents');
+  const boats=value.vessels.map(parseVessel),trips=value.offerings.map(parseTrip);
+  if(!boats.every(boat=>boat!==null)||!trips.every(trip=>trip!==null)||
+    new Set(boats.map(boat=>boat.id)).size!==boats.length||new Set(trips.map(trip=>trip.id)).size!==trips.length||
+    trips.some(trip=>trip.vesselId!==null&&!boats.some(boat=>boat.id===trip.vesselId)))throw new Error('Invalid trip contents');
+  return {vessels:boats,offerings:trips};
+}
+
 function parsePublished(value:unknown):PublishedCaptainTrips {
   if(!object(value))throw new Error('Invalid public trip projection');
   const {jurisdiction,sourceId,publishedVersion,attribution,vessels,offerings}=value;
   if((jurisdiction!=='OR'&&jurisdiction!=='WA')||!validSource(jurisdiction,sourceId)||!integer(publishedVersion)||
-    attribution!=='captain_declared'||!Array.isArray(vessels)||vessels.length>4||
-    !Array.isArray(offerings)||offerings.length>8)throw new Error('Invalid public trip projection');
-  const boats=vessels.map(parseVessel),trips=offerings.map(parseTrip);
-  if(!boats.every(boat=>boat!==null)||!trips.every(trip=>trip!==null)||
-    new Set(boats.map(boat=>boat.id)).size!==boats.length||new Set(trips.map(trip=>trip.id)).size!==trips.length||
-    trips.some(trip=>trip.vesselId!==null&&!boats.some(boat=>boat.id===trip.vesselId)))throw new Error('Invalid public trip projection');
-  return {jurisdiction,sourceId,publishedVersion,vessels:boats,offerings:trips};
+    attribution!=='captain_declared')throw new Error('Invalid public trip projection');
+  return {jurisdiction,sourceId,publishedVersion,...parseSubmittedTrips({vessels,offerings})};
 }
 
 async function readPublicTrips(body:object,signal:AbortSignal):Promise<unknown> {
@@ -98,12 +104,20 @@ export async function fetchCaptainTripsForDirectory(signal:AbortSignal):Promise<
   const profiles=new Map<string,CaptainTrip[]>();
   let cursor:string|null=null;
   const seen=new Set<string>();
+  const ambiguous=new Set<string>();
   for(let page=0;page<maxBatchPages;page++){
     const result=await readPublicTrips({operation:'public_batch',afterSourceId:cursor,limit:batchSize},signal);
     if(!object(result)||!Array.isArray(result.items)||result.items.length>batchSize)throw new Error('Invalid public trip batch');
     for(const item of result.items){
-      const profile=parsePublished(item),key=captainTripKey(profile);
-      if(profiles.has(key))throw new Error('Duplicate public trip profile');
+      let profile:PublishedCaptainTrips;
+      try{profile=parsePublished(item)}catch{continue;}
+      const key=captainTripKey(profile);
+      if(ambiguous.has(key))continue;
+      if(profiles.has(key)){
+        profiles.delete(key);
+        ambiguous.add(key);
+        continue;
+      }
       profiles.set(key,profile.offerings);
     }
     if(result.nextCursor===null)return profiles;
