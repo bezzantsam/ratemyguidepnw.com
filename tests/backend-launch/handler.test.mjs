@@ -167,3 +167,36 @@ test('Washington pilot requires an exact server source ID and defers review auth
  assert.equal(submit.calls.at(-1)[1].p_jurisdiction,'WA');
  assert.equal(submit.calls.at(-1)[1].p_source_id,source.sourceId);
 });
+
+test('existing WA review requests use the current server listing version and keep neighbors closed',async()=>{
+ const source={jurisdiction:'WA',sourceId:'wa-001'};
+ const config={...env,RMG_WA_LISTED_REVIEW_PILOT_SOURCE_ID:source.sourceId,RMG_CLAIMS_ENABLED:'true'};
+ const digest='b'.repeat(64);
+ const version=id=>id===source.sourceId?digest:undefined;
+ const readiness={operation:'review_write_availability',...source};
+ for(const [input,flags,sourceVersion] of [
+  [{...readiness,sourceId:'wa-002'},config,version],
+  [{...readiness,sourceId:source.sourceId+'@'+digest},config,version],
+  [readiness,config,()=>undefined],
+  [readiness,{...config,RMG_WA_REVIEW_PILOT_SOURCE_ID:'wa-900001'},version],
+ ]){
+  const b=backend(),r=await handleLaunch(req(input),b.factory,flags,sourceVersion);
+  assert.deepEqual(await r.json(),{available:false});
+  assert.deepEqual(b.calls,[]);
+ }
+ const live=backend({rpcResult:{available:true}});
+ const ready=await handleLaunch(req(readiness),live.factory,config,version);
+ assert.deepEqual(await ready.json(),{available:true});
+ assert.deepEqual(live.calls.at(-1),['rmg_review_write_availability',{p_jurisdiction:'WA',p_source_id:'wa-001@'+digest}]);
+ const ordinary=backend();
+ const posted=await handleLaunch(req({...review,...source},'token'),ordinary.factory,config,version);
+ assert.equal(posted.status,200);
+ assert.equal(ordinary.calls.at(-1)[1].p_source_id,'wa-001@'+digest);
+ const paused=backend({rpcResult:{available:false}});
+ assert.equal((await handleLaunch(req({operation:'public_reviews',...source}),paused.factory,config,version)).status,403);
+ assert.equal(paused.calls.at(-1)[0],'rmg_review_write_availability');
+ const claims=backend();
+ assert.equal((await handleLaunch(req({operation:'submit_claim',...source,claimantName:'Fixture',
+  businessName:'',evidence:'Synthetic ownership evidence'},'token'),claims.factory,config,version)).status,403);
+ assert.deepEqual(claims.calls,[]);
+});

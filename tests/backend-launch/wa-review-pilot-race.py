@@ -10,12 +10,17 @@ socket = Path(sys.argv[1]).resolve(strict=True)
 assert socket.name.startswith('rmg-wa-pilot.') and (socket / 'data/PG_VERSION').read_text().strip() == '17'
 psql = ['psql', '-XAtq', '-v', 'ON_ERROR_STOP=1', '-v', 'VERBOSITY=verbose',
         '-h', str(socket), '-U', 'audit_owner', '-d', 'postgres']
-enable = "UPDATE rmg_private.wa_review_pilot_v1 SET enabled=true WHERE singleton;"
-disable = "UPDATE rmg_private.wa_review_pilot_v1 SET enabled=false WHERE singleton;"
-submit = """SET ROLE authenticated;
-SET request.jwt.claim.sub='00000000-0000-0000-0000-000000000006';
+listed = len(sys.argv) == 3 and sys.argv[2] == '--listed-adapter'
+table, where, source, actor = (
+    ('wa_listed_review_identity_v1', "source_id='wa-001'", 'wa-001@'+'b'*64, '1')
+    if listed else ('wa_review_pilot_v1', 'singleton', 'wa-900001', '6')
+)
+enable = f"UPDATE rmg_private.{table} SET enabled=true WHERE {where};"
+disable = f"UPDATE rmg_private.{table} SET enabled=false WHERE {where};"
+submit = f"""SET ROLE authenticated;
+SET request.jwt.claim.sub='00000000-0000-0000-0000-00000000000{actor}';
 DO $$ BEGIN
- PERFORM public.rmg_submit_review_v2('WA','wa-900001',4::smallint,NULL,NULL,
+ PERFORM public.rmg_submit_review_v2('WA','{source}',4::smallint,NULL,NULL,
  'Synthetic WA race review',true,'none',NULL,NULL);
 END $$;"""
 
@@ -80,5 +85,5 @@ assert query(snapshot) == before
 query(enable)
 race(disable, submit, 'COMMIT;', expected='P5030')
 assert query(snapshot) == before
-assert query("SELECT NOT enabled FROM rmg_private.wa_review_pilot_v1") == 't'
-print('PASS WA-only close waits for an admitted writer; a queued writer observes committed closure and leaves rows intact')
+assert query(f"SELECT NOT enabled FROM rmg_private.{table} WHERE {where}") == 't'
+print(f'PASS {table}: WA-only close waits for an admitted writer; a queued writer observes committed closure and leaves rows intact')

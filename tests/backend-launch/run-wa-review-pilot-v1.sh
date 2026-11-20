@@ -11,7 +11,14 @@ run() { "${clean[@]}" "$@"; }
 run initdb -D "$work/data" --username=audit_owner --auth=trust --no-locale --encoding=UTF8 >"$work/init.log" 2>&1
 # Private Unix socket and no TCP listener. No external connection setting is inherited.
 run pg_ctl -D "$work/data" -l "$work/server.log" -o "-c listen_addresses='' -c unix_socket_directories='$work'" -w start >/dev/null
-trap 'run pg_ctl -D "$work/data" -m fast -w stop >/dev/null' EXIT
+cleanup() {
+  run pg_ctl -D "$work/data" -m fast -w stop >/dev/null
+  if [[ ${1:-} == --listed-adapter ]]; then
+    cd /
+    rm -r -- "$work"
+  fi
+}
+trap 'cleanup "${1:-}"' EXIT
 printf 'Disposable PostgreSQL fixture %s\n' "$work"
 ps=("${clean[@]}" psql -X -q -v ON_ERROR_STOP=1 -h "$work" -U audit_owner -d postgres)
 run python3 "$root/tests/backend-launch/reconstruct.py" >"$work/schema.sql"
@@ -34,13 +41,23 @@ candidate="$root/supabase/review-candidates"
 "${ps[@]}" -f "$root/tests/backend-launch/oregon-reviews-split-v1.sql" >/dev/null
 echo 'PASS preflight Oregon split behavior on the fixture'
 "${ps[@]}" -1 -f "$candidate/wa-review-pilot-v1.sql"
+if [[ ${1:-} == --listed-adapter ]]; then
+  "${ps[@]}" -1 -f "$candidate/wa-listed-review-identity-proof-v1.sql" -f "$candidate/wa-listed-review-adapter-v1.sql"
+fi
 "${ps[@]}" -f "$root/tests/backend-launch/oregon-reviews-split-v1.sql" >/dev/null
 echo 'PASS original Oregon split tests with the unconfigured WA extension installed'
 "${ps[@]}" -v "disable_sql=$candidate/wa-review-pilot-disable-v1.sql" -f "$root/tests/backend-launch/wa-review-pilot-v1.sql"
 run python3 "$root/tests/backend-launch/wa-review-pilot-race.py" "$work"
 
-if [[ ${1:-} == --listed-identity ]]; then
-  "${ps[@]}" -1 -f "$candidate/wa-listed-review-identity-proof-v1.sql"
+if [[ ${1:-} == --listed-identity || ${1:-} == --listed-adapter ]]; then
+  if [[ ${1:-} == --listed-identity ]]; then
+    "${ps[@]}" -1 -f "$candidate/wa-listed-review-identity-proof-v1.sql"
+  fi
   "${ps[@]}" -v "listed_disable_sql=$candidate/wa-listed-review-identity-disable-v1.sql" \
     -f "$root/tests/backend-launch/wa-listed-review-identity-proof-v1.sql"
+fi
+if [[ ${1:-} == --listed-adapter ]]; then
+  "${ps[@]}" -v "listed_disable_sql=$candidate/wa-listed-review-identity-disable-v1.sql" \
+    -f "$root/tests/backend-launch/wa-listed-review-adapter-v1.sql"
+  run python3 "$root/tests/backend-launch/wa-review-pilot-race.py" "$work" --listed-adapter
 fi
