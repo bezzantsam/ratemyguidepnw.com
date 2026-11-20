@@ -198,7 +198,7 @@ BEGIN
    COALESCE((SELECT jsonb_agg(jsonb_build_object('jurisdiction',i.jurisdiction,'source_id',i.source_id) ORDER BY i.jurisdiction,i.source_id) FROM (
     SELECT jurisdiction,source_id FROM rmg_private.guide_identity_map WHERE guide_id=z.guide_id
     UNION ALL SELECT 'WA',source_id FROM rmg_private.wa_listed_review_identity_v1
-     WHERE z.kind='review' AND review_identity=z.guide_id
+     WHERE z.kind IN ('review','revision') AND review_identity=z.guide_id
    ) i),'[]'::jsonb) AS identities FROM (
    SELECT 'review'::text kind,r.id,r.status,r.created_at,NULL::uuid review_id,r.guide_id FROM public.reviews r WHERE r.author_id=actor
    UNION ALL SELECT 'claim',c.id,c.status,c.created_at,NULL::uuid,c.guide_id FROM public.guide_claims c WHERE c.claimant_id=actor
@@ -206,7 +206,7 @@ BEGIN
   ) z LEFT JOIN LATERAL (SELECT jurisdiction,source_id FROM (
     SELECT jurisdiction,source_id FROM rmg_private.guide_identity_map WHERE guide_id=z.guide_id
     UNION ALL SELECT 'WA',source_id FROM rmg_private.wa_listed_review_identity_v1
-     WHERE z.kind='review' AND review_identity=z.guide_id
+     WHERE z.kind IN ('review','revision') AND review_identity=z.guide_id
    ) identity ORDER BY jurisdiction,source_id LIMIT 1) m ON true
   ORDER BY z.created_at DESC,z.id OFFSET p_offset LIMIT p_limit
  ) q;
