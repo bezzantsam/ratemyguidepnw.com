@@ -6,6 +6,8 @@ import GuideTrustPanel from '@/components/GuideTrustPanel';
 import {ProfileSharing} from '@/components/launch/ProfileSharing';
 import {GuideEngagement} from '@/components/launch/GuideEngagement';
 import {WashingtonReviewStatus} from '@/components/launch/WashingtonReviewStatus';
+import {washingtonReviewSource} from '@/lib/backend-launch/wa-review-source.mjs';
+import {washingtonReviewVersion} from '@/lib/wa-listed-review-version';
 import {profileShareMetadata} from '@/lib/canonical-share';
 import Link from 'next/link';
 import {notFound} from 'next/navigation';
@@ -27,11 +29,8 @@ export default async function Page({params}:{params:Promise<{id:string}>}){
   const g=washingtonGuide(id);
   if(!g)notFound();
   const path=`/washington/${g.id}`;
-  const prospectivePilot=process.env.RMG_WA_REVIEW_PILOT_SOURCE_ID;
-  const listedPilot=process.env.RMG_WA_LISTED_REVIEW_PILOT_SOURCE_ID;
-  const pilot=process.env.RMG_LAUNCH_ENABLED==='true' &&
-    /^wa-[0-9]{3,9}$/.test(g.id) &&
-    ((g.id===listedPilot&&!prospectivePilot)||(g.id===prospectivePilot&&!listedPilot));
+  const canCheckReviews=process.env.RMG_LAUNCH_ENABLED==='true' &&
+    !!washingtonReviewSource(g.id,process.env,washingtonReviewVersion);
   const legacyClosed=process.env.NEXT_PUBLIC_RMG_LAUNCH_ENABLED!=='true';
 
   return <main>
@@ -40,7 +39,7 @@ export default async function Page({params}:{params:Promise<{id:string}>}){
     <h1>{g.name}</h1>
     <p className="lead">{g.business||'Independent fishing guide'}</p>
     {washingtonGuides.some(guide => guide.id === g.id) && <SaveGuideButton href={path} name={g.name}/>}
-    {pilot
+    {canCheckReviews
       ? <GuideEngagement key={g.id} compactProfile source={{jurisdiction:'WA',sourceId:g.id}} profilePath={path} guideName={g.name}/>
       : <WashingtonReviewStatus/>}
     <section className="card">
@@ -50,7 +49,7 @@ export default async function Page({params}:{params:Promise<{id:string}>}){
       <p className="muted">This source listing does not constitute verification of an active guide license.</p>
     </section>
     <GuideTrustPanel jurisdiction="Washington" sourceLabel={g.source}/>
-    {!pilot&&<>
+    {!canCheckReviews&&<>
       {legacyClosed&&<section className="section card">
         <h2>Are you {g.name}?</h2>
         <Link className="button" href={`/claim/${g.id}`}>Claiming currently unavailable →</Link>

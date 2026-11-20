@@ -51,9 +51,9 @@ test('held Washington review entry and exact pilot readiness on phone and deskto
 
       const section=page.locator('#write-review');
       const back=section.getByRole('link',{name:'← Back to rating search'});
-      async function expectHeld(){
-        await section.getByText(heldMessage,{exact:true}).waitFor();
-        assert.equal(await page.getByText(heldMessage,{exact:true}).count(),1);
+      async function expectHeld(message=heldMessage){
+        await section.getByText(message,{exact:true}).waitFor();
+        assert.equal(await page.getByText(message,{exact:true}).count(),1);
         assert.equal(await page.locator('#write-review').count(),1);
         assert.equal(await page.locator('input[type=email], a[href="#your-submissions"], button.guide-rate, #reviews').count(),0);
       }
@@ -93,7 +93,7 @@ test('held Washington review entry and exact pilot readiness on phone and deskto
         calls.length=0;
         if(page.url()===origin+pilotPath)await page.reload();
         else await page.goto(origin+pilotPath);
-        await expectHeld();
+        await expectHeld(pilotMode==='paused'?heldMessage:'Couldn’t load review information. Try again shortly.');
         await page.waitForFunction(expected=>document.querySelector('#write-review a')?.getAttribute('href')===expected,finder);
         const operations=[...new Set(calls.filter(([id])=>id==='wa-002').map(([,op])=>op))].sort();
         assert.deepEqual(operations,pilotMode==='reviews error'?['public_reviews','review_write_availability']:['review_write_availability'],pilotMode);

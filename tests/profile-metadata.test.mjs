@@ -13,7 +13,8 @@ const share=compile('lib/canonical-share.ts');
 const stub={__esModule:true,default:()=>null};
 const common={
   '@/components/launch/CaptainTripsEditor':{CaptainTripsEditor:()=>null},
-  '@/components/ReturnToResults':stub,'@/components/GuideEnrichmentPanel':stub,'@/components/launch/WashingtonReviewStatus':{WashingtonReviewStatus:()=>null},
+  '@/components/ReturnToResults':stub,'@/components/GuideEnrichmentPanel':stub,'@/lib/backend-launch/wa-review-source.mjs':{washingtonReviewSource:()=>undefined},
+  '@/lib/wa-listed-review-version':{washingtonReviewVersion:()=>undefined},'@/components/launch/WashingtonReviewStatus':{WashingtonReviewStatus:()=>null},
   '@/components/GuideTrustPanel':stub,'@/components/CaptainDetails':stub,'@/components/CaptainMedia':stub,
   '@/components/CaptainTripCards':stub,'@/components/SaveGuideButton':stub,
   '@/components/launch/ProfileSharing':{ProfileSharing:()=>null},'@/components/launch/ClaimProfile':{ClaimProfile:()=>null},'@/components/launch/AuthCheck':{AuthCheck:()=>null},'@/components/launch/GuideEngagement':{GuideEngagement:()=>null},'@/lib/canonical-share':share,
