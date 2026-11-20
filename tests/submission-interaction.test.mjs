@@ -8,7 +8,7 @@ const require=createRequire(import.meta.url);
 const ts=require('typescript');
 const receiptId='10000000-0000-4000-8000-000000000001';
 const trip=compile('components/launch/trip-responses.ts');
-const details={TripDetails:function TripDetails(){}};
+const details={TripDetails:function TripDetails(){},TripFields:function TripFields(){}};
 function compile(path, imports={}) {
   const code=ts.transpileModule(readFileSync(path,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX}}).outputText;
   const exports={};
@@ -195,4 +195,26 @@ test('revision omits unchanged Yes and No, including after switching back, and s
     await render().props.onSubmit({preventDefault(){}});
     assert.equal(captured.wouldBookAgain,expected);
   }
+});
+
+
+test('survey edits distinguish intentional clears from untouched skips and retain earlier answers',async()=>{
+  let captured;
+  const initial={quality:3,intensity:null,wouldBookAgain:true,body:'Earlier fishing trip.',firsthand:false,
+    tripMonth:null,relationship:'none',tripResponses:{version:1,answers:{
+      organization:{state:'answered',value:4},fishiness:{state:'answered',value:2},
+      fish_landed:{state:'answered',value:0},effort:{state:'answered',value:3}}}};
+  const {render}=setup(async draft=>{captured=draft;return {id:receiptId,status:'pending'}},true,{mode:'revision',initial});
+  const catchField=find(render(),node=>node.type===details.TripFields&&node.props.fields[0].key==='fish_landed');
+  assert.equal(catchField.props.draft.fish_landed,'value:0');
+  // The blank optional fields were removed from the draft by their controls.
+  catchField.props.onChange({fishiness:'value:2',effort:'value:3'});
+  find(render(),node=>node.type==='input'&&node.props.type==='checkbox').props.onChange({target:{checked:true}});
+  await render().props.onSubmit({preventDefault(){}});
+  const answers=JSON.parse(JSON.stringify(captured.tripResponses.answers));
+  assert.deepEqual(answers,{
+    organization:{state:'not_applicable'},fishiness:{state:'answered',value:2},
+    fish_landed:{state:'not_applicable'},effort:{state:'answered',value:3},
+  });
+  assert.equal(Object.hasOwn(answers,'kindness'),false);
 });
