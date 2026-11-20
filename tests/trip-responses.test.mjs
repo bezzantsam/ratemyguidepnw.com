@@ -35,8 +35,9 @@ test('editing round trips recognized answers and rejects unknown or malformed ve
 
 test('optional controls start unanswered and never collect names or free text',()=>{
   const views=compile('components/launch/TripDetails.tsx',{react:{useId:()=>':test:'},'./trip-responses':model});
-  let draft={};const render=()=>views.TripDetails({draft,onChange:value=>{draft=value}});
-  let tree=render();assert.equal(tree.type,'details');
+  let draft={};const render=()=>views.TripFields({fields:model.TRIP_FIELDS,draft,onChange:value=>{draft=value}});
+  assert.equal(views.TripDetails({draft,onChange:()=>{}}).type,'details');
+  let tree=render();
   const dog=find(tree,n=>n.type==='select'&&n.props.id.endsWith('-dog_present'));
   assert.equal(dog.props.value,'');dog.props.onChange({target:{value:'value:no'}});
   tree=render();const duration=find(tree,n=>n.type==='select'&&n.props.id.endsWith('-actual_duration_minutes'));
@@ -46,4 +47,24 @@ test('optional controls start unanswered and never collect names or free text',(
   assert.equal(model.encodeTripResponses(draft).value.answers.dog_present.value,false);
   assert.equal(model.encodeTripResponses(draft).value.answers.actual_duration_minutes.value,0);
   assert.equal(find(render(),n=>n.type==='textarea'),undefined);
+});
+
+
+test('survey ratings reuse organization once and keep blank and numeric zero separate',()=>{
+  assert.equal(model.TRIP_FIELDS.filter(field=>field.key==='organization').length,1);
+  const draft={organization:'value:4',kindness:'value:5',fishiness:'value:2',fish_landed:'value:0'};
+  const payload=model.encodeTripResponses(draft).value;
+  assert.deepEqual(plain(model.decodeTripResponses(payload)),draft);
+  assert.equal(payload.answers.fish_landed.value,0);
+  const skipped=model.encodeTripResponses({...draft,fish_landed:''}).value;
+  assert.equal(Object.hasOwn(skipped.answers,'fish_landed'),false);
+  const unavailable=model.encodeTripResponses({...draft,fish_landed:'na'}).value;
+  assert.deepEqual(plain(unavailable.answers.fish_landed),{state:'not_applicable'});
+  assert.deepEqual(Array.from(model.describeTripResponses(payload)),[
+    'Kindness: 5 / 5','Organization: 4 / 5','Finding fish: 2 / 5','Fish landed by the group: 0',
+  ]);
+  for(const entry of ['value:-1','value:2.5','value:2147483648','value:','value:unknown']) {
+    assert.ok(model.encodeTripResponses({fish_landed:entry}).error,entry);
+  }
+  assert.equal(model.encodeTripResponses({fish_landed:'value:2147483647'}).value.answers.fish_landed.value,2147483647);
 });

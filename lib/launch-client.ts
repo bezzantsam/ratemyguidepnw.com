@@ -1,11 +1,11 @@
 import {type ClaimDraft, type ReviewDraft, type ReviewDimensions, readReviewDimensions, REVIEW_DIMENSIONS, validateReviewDraft} from '@/components/launch/submission-model';
-import {decodeTripResponses,describeTripResponses,encodeTripResponses} from '@/components/launch/trip-responses';
+import {decodeTripResponses,describeTripResponseEntries,describeTripResponses,encodeTripResponses,formatTripResponse,isTripHighlight,type TripResponseDescription} from '@/components/launch/trip-responses';
 
 /** Same-origin adapter for profile and review operations. */
 export type GuideSource = Readonly<{jurisdiction:'OR'|'WA';sourceId:string}>;
 export type PendingReceipt = Readonly<{id:string;status:'pending';existing?:boolean}>;
 export type OwnStatus = Readonly<{id:string;status:'pending'|'published'|'rejected'|'removed'|'approved'|'denied'}>;
-export type PublicReview = Readonly<{id:string;quality:number;wouldBookAgain?:boolean;ratings?:ReviewDimensions;body:string;publishedAt:string;tripMonth:string|null;tripDetails:readonly string[]|null}>;
+export type PublicReview = Readonly<{id:string;quality:number;wouldBookAgain?:boolean;ratings?:ReviewDimensions;tripHighlights?:readonly TripResponseDescription[];body:string;publishedAt:string;tripMonth:string|null;tripDetails:readonly string[]|null}>;
 export type PublicReviews = Readonly<{count:number;averageQuality:number|null;reviews:readonly PublicReview[]}>;
 export type ClaimStatus='none'|'pending'|'approved'|'denied'|'unavailable';
 export type OwnedKind='review'|'claim'|'revision';
@@ -69,8 +69,12 @@ export function createLaunchClient(options:Options) {
     const r=record(value);
     if(!r||typeof r.id!=='string'||!UUID.test(r.id)||(expectedId!==undefined&&r.id!==expectedId)||(r.status!==undefined&&r.status!=='published')||!Number.isInteger(r.quality)||(r.quality as number)<1||(r.quality as number)>5||typeof r.body!=='string'||!r.body.trim()||typeof r.published_at!=='string'||!r.published_at||!Number.isFinite(Date.parse(r.published_at)))throw new LaunchClientError('service_unavailable');
     const ratings=readReviewDimensions(r);
+    const trip=describeTripResponseEntries(r.trip_responses);
+    const tripHighlights=trip?.filter(item=>isTripHighlight(item.key))??[];
     return {id:r.id,quality:r.quality as number,body:r.body,publishedAt:r.published_at,
-      tripMonth:readTripMonth(r.trip_month),tripDetails:describeTripResponses(r.trip_responses),
+      tripMonth:readTripMonth(r.trip_month),
+      tripDetails:trip?.filter(item=>!isTripHighlight(item.key)).map(formatTripResponse)??null,
+      ...(tripHighlights.length?{tripHighlights}:{}),
       ...(typeof r.would_book_again==='boolean'?{wouldBookAgain:r.would_book_again}:{}),
       ...(ratings&&Object.keys(ratings).length?{ratings}:{})};
   }

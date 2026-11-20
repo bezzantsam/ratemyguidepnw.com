@@ -1,8 +1,21 @@
-/** Draft v1 interface from 06. Keep disconnected until the backend is finalized. */
+/** Versioned optional answers about the trip, separate from overall quality. */
 type Option = Readonly<{value:string;label:string}>;
-type Field = Readonly<{key:string;label:string;kind:'boolean'|'rating'|'minutes'|'enum';options?:readonly Option[]}>;
+export type TripField = Readonly<{
+  key:string;
+  label:string;
+  kind:'boolean'|'rating'|'minutes'|'count'|'enum';
+  options?:readonly Option[];
+}>;
+export const FISH_LANDED_MAX=2147483647;
+export const REVIEW_TRIP_RATINGS:readonly TripField[]=[
+  {key:'kindness',label:'Kindness',kind:'rating'},
+  {key:'organization',label:'Organization',kind:'rating'},
+  {key:'fishiness',label:'Finding fish',kind:'rating'},
+];
+export const FISH_LANDED_FIELD:TripField={key:'fish_landed',label:'How many fish did your group land?',kind:'count'};
+export const isTripHighlight=(key:string)=>key===FISH_LANDED_FIELD.key||REVIEW_TRIP_RATINGS.some(field=>field.key===key);
 const options=(...values:string[]):Option[]=>values.map(value=>({value,label:value.replaceAll('_',' ')}));
-export const TRIP_FIELDS:readonly Field[]=[
+export const TRIP_FIELDS:readonly TripField[]=[
   {key:'target_species',label:'What species were you targeting?',kind:'enum',options:options('chinook','coho','steelhead','other','unknown')},
   {key:'setting',label:'Where did you fish?',kind:'enum',options:options('river','ocean','estuary','other','unknown')},
   {key:'teaching_requested',label:'Did you ask for instruction?',kind:'boolean'},
@@ -11,7 +24,8 @@ export const TRIP_FIELDS:readonly Field[]=[
   {key:'guide_patience',label:'How patient was the guide with the children?',kind:'rating'},
   {key:'effort',label:'How would you rate the guide’s effort?',kind:'rating'},
   {key:'attentiveness',label:'How attentive was the guide?',kind:'rating'},
-  {key:'organization',label:'How organized was the trip?',kind:'rating'},
+  ...REVIEW_TRIP_RATINGS,
+  FISH_LANDED_FIELD,
   {key:'cleanliness',label:'How clean was the equipment and setting?',kind:'rating'},
   {key:'agreed_duration_minutes',label:'What duration did you agree on, in minutes?',kind:'minutes'},
   {key:'actual_duration_minutes',label:'How long was the trip, in minutes?',kind:'minutes'},
@@ -44,6 +58,9 @@ export function encodeTripResponses(draft:TripDraft):{value:TripResponses|null;e
     } else if(field.kind==='rating') {
       if(!/^[1-5]$/.test(raw)) return {value:null,error:`Choose a rating: ${field.label}`};
       value=Number(raw);
+    } else if(field.kind==='count') {
+      if(!/^\d{1,10}$/.test(raw)||Number(raw)>FISH_LANDED_MAX) return {value:null,error:'Enter a nonnegative whole number for fish landed, or leave it blank.'};
+      value=Number(raw);
     } else if(field.kind==='minutes') {
       if(!/^\d{1,4}$/.test(raw)||Number(raw)>1440) return {value:null,error:`Enter 0 to 1440 minutes: ${field.label}`};
       value=Number(raw);
@@ -71,23 +88,37 @@ export function decodeTripResponses(value:unknown):TripDraft|null {
     else if(answer.state==='answered'&&Object.keys(answer).length===2&&Object.hasOwn(answer,'value')) {
       const raw=answer.value;
       if(field.kind==='boolean') {if(typeof raw!=='boolean')return null;draft[key]=`value:${raw?'yes':'no'}`}
-      else if(field.kind==='rating'||field.kind==='minutes') {if(typeof raw!=='number'||!Number.isInteger(raw))return null;draft[key]=`value:${raw}`}
+      else if(field.kind==='rating'||field.kind==='minutes'||field.kind==='count') {if(typeof raw!=='number'||!Number.isInteger(raw))return null;draft[key]=`value:${raw}`}
       else {if(typeof raw!=='string')return null;draft[key]=`value:${raw}`}
     } else return null;
   }
   return encodeTripResponses(draft).error?null:draft;
 }
 
+export type TripResponseDescription=Readonly<{key:string;label:string;answer:string}>;
+
 /** Human-readable, attributed answers for a public review or authorized queue. */
-export function describeTripResponses(value:unknown):string[]|null {
+export function describeTripResponseEntries(value:unknown):TripResponseDescription[]|null {
   const draft=decodeTripResponses(value);if(!draft)return null;
-  const lines:string[]=[];
+  const entries:TripResponseDescription[]=[];
   for(const field of TRIP_FIELDS) {
     const entry=draft[field.key];if(!entry)continue;
     const raw=entry.slice(6);
-    const answer=entry==='na'?'Not applicable':field.kind==='boolean'?(raw==='yes'?'Yes':'No'):field.kind==='rating'?`${raw} / 5`:field.kind==='minutes'?`${raw} minutes`:field.options?.find(option=>option.value===raw)?.label;
-    if(!answer)return null;
-    lines.push(`${field.label} ${answer}`);
+    const answer=entry==='na'?'Not applicable':
+      field.kind==='boolean'?(raw==='yes'?'Yes':'No'):
+      field.kind==='rating'?`${raw} / 5`:
+      field.kind==='minutes'?`${raw} minutes`:
+      field.kind==='count'?raw:field.options?.find(option=>option.value===raw)?.label;
+    if(answer===undefined)return null;
+    entries.push({key:field.key,label:field.kind==='count'?'Fish landed by the group':field.label,answer});
   }
-  return lines;
+  return entries;
+}
+
+export function formatTripResponse({label,answer}:TripResponseDescription):string {
+  return `${label}${label.endsWith('?')?' ':': '}${answer}`;
+}
+
+export function describeTripResponses(value:unknown):string[]|null {
+  return describeTripResponseEntries(value)?.map(formatTripResponse)??null;
 }
