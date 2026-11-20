@@ -83,9 +83,11 @@ function projection(respond) {
     fetch:async (path,options)=>{
       assert.equal(path,'/api/guide-offerings');
       assert.equal(options.method,'POST');
-      assert.equal(options.credentials,'omit');
+      assert.equal(options.mode,'same-origin');
+      assert.equal(options.credentials,'same-origin');
+      assert.equal(options.redirect,'error');
       assert.equal(options.cache,'no-store');
-      assert.equal(options.headers.Authorization,undefined);
+      assert.deepEqual(Object.entries(options.headers),[['Content-Type','application/json']]);
       const body=JSON.parse(options.body);
       calls.push(body);
       return {ok:true,json:async()=>respond(body)};
