@@ -15,6 +15,9 @@
 .guide-result:hover{background:#f0f8f3;text-decoration:none}
 .rating-tile{width:72px;height:72px;flex-shrink:0;border-radius:9px;background:#e4ede9;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#355c55}
 .rating-tile strong{font-size:27px}.rating-tile span{font-size:11px}
+.rating-tile.guide-rating-tile{box-sizing:border-box;min-height:72px;height:auto;padding:6px 3px;text-align:center;line-height:1.2;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.guide-rating-tile strong{font-size:23px}
+.guide-rating-description{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
 .guide-result-body{flex:1;min-width:0}
 .guide-result-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .guide-result h3{font-size:19px;margin:0}
@@ -26,6 +29,7 @@
 .result-chevron{color:#739287;font-size:28px}
 .directory-panel .pager{color:#254c45}
 @media(max-width:680px){.directory-panel .searchbar{padding:15px;}.guide-result{padding:14px;gap:12px}.rating-tile{width:58px;height:62px}.guide-result h3{font-size:17px}.result-chevron{display:none}.results-heading{padding:13px 15px}}
+@media(max-width:680px){.rating-tile.guide-rating-tile{min-height:62px}}
 
 .state-switch{display:flex;gap:8px;flex-wrap:wrap;margin:16px 25px 0}
 .state-switch button{border:1px solid #abc4ba;background:#e7eee9;color:#284c42;border-radius:24px;padding:9px 17px;cursor:pointer;font-weight:700}
@@ -225,3 +229,36 @@ nav a{display:inline-flex;align-items:center;min-height:44px}
 .captain-trip-card.card{min-height:0;padding:16px;overflow-wrap:anywhere}
 .captain-trip-card h3{font-size:1.125rem;margin-bottom:6px}
 .captain-trip-card p{font-size:.92rem;margin:3px 0}
+
+.save-guide-control { margin: 0 0 12px; }
+.save-guide-button {
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #a8bdb6;
+  border-radius: 8px;
+  color: #24483c;
+  font: inherit;
+  font-weight: 700;
+  padding: 8px 12px;
+  min-height: 44px;
+}
+.save-guide-button.saved { background: #e9f3e9; border-color: #497657; color: #24553a; }
+.save-guide-button:focus-visible, .saved-guide-list a:focus-visible {
+  outline: 3px solid #d8b26b;
+  outline-offset: 3px;
+}
+.saved-guide-status:not(:empty) { margin-top: 6px; }
+.saved-guide-list { max-width: 42rem; }
+.saved-guide-list ul { padding: 0; list-style: none; }
+.saved-guide-list a { text-decoration: underline; }
+.saved-guide-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid #587476;
+}
+.saved-guide-row p { margin: 0; }
+.saved-guide-row .save-guide-control { margin: 0; }

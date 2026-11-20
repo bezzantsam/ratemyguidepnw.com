@@ -21,6 +21,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <nav aria-label="Main navigation">
             <Link href="/write-review">Write a Review</Link>
             <Link href="/guides">Find a Guide</Link>
+            <Link href="/saved">Saved guides</Link>
             <Link href="/about">About</Link>
           </nav>
         </header>

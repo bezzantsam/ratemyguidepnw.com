@@ -21,7 +21,16 @@ export function SubmissionStatus({kind, receipt}: {kind: 'review' | 'claim'; rec
   return <div role="status"><strong>{label}: {receipt.status}</strong><p>{next}</p>{receipt.message && <p>{receipt.message}</p>}</div>;
 }
 
-export function ReviewSubmission({onSubmit, onDuplicate, allowTripResponses=false, writeAvailable=true, initial, mode='review'}: {onSubmit: SubmitReview;onDuplicate?:()=>void;allowTripResponses?:boolean;writeAvailable?:boolean;initial?:ReviewDraft;mode?:'review'|'revision'}) {
+type ReviewRetryStatus = 'ready' | 'closed' | 'submitted';
+
+export function ReviewSubmission({onSubmit, onCheckBeforeRetry, allowTripResponses=false, writeAvailable=true, initial, mode='review'}: {
+  onSubmit: SubmitReview;
+  onCheckBeforeRetry?: () => Promise<ReviewRetryStatus>;
+  allowTripResponses?: boolean;
+  writeAvailable?: boolean;
+  initial?: ReviewDraft;
+  mode?: 'review' | 'revision';
+}) {
   const prefix = useId();
   const [quality, setQuality] = useState(initial?String(initial.quality):'');
   const [intensity, setIntensity] = useState(initial?.intensity==null?'':String(initial.intensity));
@@ -32,13 +41,16 @@ export function ReviewSubmission({onSubmit, onDuplicate, allowTripResponses=fals
   const [relationship, setRelationship] = useState<RelationshipDisclosure | ''>(initial?.relationship??'');
   const [firsthand, setFirsthand] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [checking, setChecking] = useState(false);
+  const [needsCheck, setNeedsCheck] = useState(false);
+  const [retryMessage, setRetryMessage] = useState('');
   const [error, setError] = useState('');
   const [receipt, setReceipt] = useState<SubmissionReceipt | null>(null);
   const submitting = useRef(false);
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (submitting.current||!writeAvailable) return;
+    if (submitting.current || !writeAvailable || needsCheck) return;
     if (!tripDraft) {setError('Your saved trip details cannot be edited here. No changes were submitted.');return;}
     if (!allowTripResponses && Object.keys(tripDraft).length) {setError('Trip details are no longer available. Refresh before submitting.');return;}
     const details=encodeTripResponses(tripDraft);
@@ -46,10 +58,39 @@ export function ReviewSubmission({onSubmit, onDuplicate, allowTripResponses=fals
     const draft = {quality: Number(quality), intensity: intensity === '' ? null : Number(intensity), wouldBookAgain: wouldBookAgain === '' ? null : wouldBookAgain === 'yes', body: body.trim(), firsthand, tripMonth: tripMonth||null, relationship:relationship || null,...(allowTripResponses&&details.value?{tripResponses:details.value}:{})};
     const problem = validateReviewDraft(draft);
     if (problem) { setError(problem); return; }
-    submitting.current = true; setBusy(true); setError('');
+    submitting.current = true; setBusy(true); setError(''); setRetryMessage('');
     try { const result = await onSubmit(draft); if (!isSubmissionReceipt(result,'review') || (mode==='revision'&&result.status!=='pending')) throw new Error('Invalid receipt'); setReceipt(result); }
-    catch (failure) { if(mode==='review'&&typeof failure==='object'&&failure!==null&&'code' in failure&&failure.code==='duplicate_review'){setError('You’ve already submitted a review for this guide. Check your review status below.');onDuplicate?.()}else setError('We could not confirm your submission. Check your review status before trying again.'); }
+    catch {
+      if (onCheckBeforeRetry) {
+        setNeedsCheck(true);
+        setError('We couldn’t confirm your submission. Your draft is still here. Check before trying again.');
+      } else {
+        setError('We could not confirm your submission. Check your review status before trying again.');
+      }
+    }
     finally { submitting.current = false; setBusy(false); }
+  }
+
+  async function checkBeforeRetry() {
+    if (submitting.current || !onCheckBeforeRetry) return;
+    submitting.current = true;
+    setChecking(true);
+    setError('');
+    setRetryMessage('');
+    try {
+      const status = await onCheckBeforeRetry();
+      if (status === 'ready') {
+        setNeedsCheck(false);
+        setRetryMessage('No review was found. You can submit your draft again.');
+      } else if (status === 'closed') {
+        setRetryMessage('Reviews are still unavailable. Your draft is still here.');
+      }
+    } catch {
+      setError('We couldn’t check your review. Your draft is still here.');
+    } finally {
+      submitting.current = false;
+      setChecking(false);
+    }
   }
   if (receipt) return mode==='revision'?<p role="status">Your changes are pending review. Your current published review is still visible.</p>:<SubmissionStatus kind="review" receipt={receipt}/>;
   return <form onSubmit={submit} className="card launch-form">
@@ -77,8 +118,10 @@ export function ReviewSubmission({onSubmit, onDuplicate, allowTripResponses=fals
     <textarea id={`${prefix}-body`} aria-describedby={`${prefix}-body-help`} value={body} onChange={event=>setBody(event.target.value)} minLength={1} maxLength={3000} required />
     <label><input type="checkbox" checked={firsthand} onChange={event=>setFirsthand(event.target.checked)} required/> I personally took this trip.</label>
     {error && <p role="alert">{error}</p>}
-    {!writeAvailable&&<p role="status">Review submissions are temporarily unavailable. Your draft remains here while you check again.</p>}
-    <button type="submit" disabled={busy||!writeAvailable}>{busy ? 'Submitting…' : mode==='revision' ? 'Submit changes for review' : 'Submit review'}</button>
+    {retryMessage && <p role="status">{retryMessage}</p>}
+    {!writeAvailable && !error && !retryMessage && <p role="status">Review submissions are temporarily unavailable. Your draft remains here while you check again.</p>}
+    {onCheckBeforeRetry && (needsCheck || !writeAvailable) && <button type="button" disabled={busy || checking} onClick={()=>void checkBeforeRetry()}>{checking ? 'Checking…' : 'Check before retrying'}</button>}
+    <button type="submit" disabled={busy || checking || needsCheck || !writeAvailable}>{busy ? 'Submitting…' : mode==='revision' ? 'Submit changes for review' : 'Submit review'}</button>
   </form>;
 }
 
