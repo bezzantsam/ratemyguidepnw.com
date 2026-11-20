@@ -18,14 +18,21 @@ SELECT public.fixture_offerings_denial($q$SELECT public.rmg_submit_review_v3('OR
 SELECT public.fixture_offerings_denial($q$SELECT public.rmg_submit_review_v3('OR','OG.0000090.F&F',NULL,NULL,true,'Synthetic strict rating',true,'none',NULL,NULL,'{}')$q$,'22023');
 SELECT public.fixture_offerings_denial($q$SELECT public.rmg_submit_review_v3('OR','OG.0000090.F&F',5::smallint,NULL,true,'Synthetic strict rating',true,'none',NULL,NULL,'{"communication":2.5}')$q$,'22023');
 SELECT public.fixture_offerings_denial($q$SELECT public.rmg_submit_review_v3('OR','OG.0000090.F&F',5::smallint,NULL,true,'Synthetic strict rating',true,'none',NULL,NULL,'{"communication":null}')$q$,'22023');
-SELECT public.rmg_submit_review_v3('OR','OG.0000090.F&F',4::smallint,NULL,false,'Synthetic Oregon review',true,'none',NULL,'2026-01',
+SELECT public.fixture_offerings_denial($q$SELECT public.rmg_submit_review_v3('OR','OG.0000090.F&F',5::smallint,NULL,true,'Synthetic invalid landed count',true,'none','{"version":1,"answers":{"fish_landed":{"state":"answered","value":-1}}}',NULL,'{}')$q$,'22023');
+SELECT public.fixture_offerings_denial($q$SELECT public.rmg_submit_review_v3('OR','OG.0000090.F&F',5::smallint,NULL,true,'Synthetic invalid fishiness',true,'none','{"version":1,"answers":{"fishiness":{"state":"answered","value":0}}}',NULL,'{}')$q$,'22023');
+SELECT public.rmg_submit_review_v3('OR','OG.0000090.F&F',4::smallint,NULL,false,'Synthetic Oregon review',true,'none',
+ '{"version":1,"answers":{"organization":{"state":"answered","value":4},"kindness":{"state":"answered","value":5},"fishiness":{"state":"answered","value":5},"fish_landed":{"state":"answered","value":0}}}','2026-01',
  '{"communication":5,"professionalism":4,"safety":3,"equipment":2,"knowledge":1,"effort":4,"value":3}')->>'id' AS or_review \gset
-SELECT public.rmg_submit_review_v3('WA',:'wa_source',3::smallint,NULL,true,'Synthetic Washington review',true,'none',NULL,NULL,
+SELECT public.rmg_submit_review_v3('WA',:'wa_source',3::smallint,NULL,true,'Synthetic Washington review',true,'none',
+ '{"version":1,"answers":{"fishiness":{"state":"answered","value":2}}}',NULL,
  '{"equipment":5,"effort":2}')->>'id' AS wa_review \gset
 SELECT public.fixture_offerings_denial($q$SELECT public.rmg_revision_queue(0,100)$q$,'42501');
 
 SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000032',true);
-SELECT public.rmg_submit_review_v2('OR','OG.0000090.F&F',2::smallint,NULL,NULL,'Synthetic legacy review',true,'none',NULL,NULL)->>'id' AS legacy_review \gset
+SELECT public.rmg_submit_review_v2('OR','OG.0000090.F&F',2::smallint,NULL,NULL,'Synthetic legacy review',true,'none',
+ '{"version":1,"answers":{"organization":{"state":"answered","value":3}}}',NULL)->>'id' AS legacy_review \gset
+RESET ROLE;
+UPDATE public.reviews SET catch_outcome='caught' WHERE id=:'legacy_review';
 
 SET LOCAL ROLE anon;
 SELECT public.fixture_assert(NOT EXISTS(SELECT 1 FROM public.public_angler_reviews WHERE id IN (:'or_review',:'wa_review',:'legacy_review'))
@@ -45,9 +52,11 @@ SELECT public.rmg_decide_submission('review',:'wa_review',true,'Synthetic Washin
 SELECT public.rmg_decide_submission('review',:'legacy_review',true,'Synthetic legacy review approval');
 
 SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000031',true);
-SELECT public.rmg_submit_revision_v3(:'or_review',5::smallint,NULL,NULL,'Synthetic Oregon revision',true,'none',NULL,false,NULL,
+SELECT public.rmg_submit_revision_v3(:'or_review',5::smallint,NULL,NULL,'Synthetic Oregon revision',true,'none',
+ '{"version":1,"answers":{"kindness":{"state":"not_applicable"}}}',false,NULL,
  '{"communication":null,"equipment":4}')->>'id' AS or_edit \gset
-SELECT public.rmg_submit_revision_v3(:'wa_review',2::smallint,NULL,false,'Synthetic Washington revision',true,'none',NULL,false,NULL,
+SELECT public.rmg_submit_revision_v3(:'wa_review',2::smallint,NULL,false,'Synthetic Washington revision',true,'none',
+ '{"version":1,"answers":{"fish_landed":{"state":"answered","value":7}}}',false,NULL,
  '{"knowledge":3,"effort":null}')->>'id' AS wa_edit \gset
 SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000032',true);
 SELECT public.rmg_submit_revision_v3(:'legacy_review',2::smallint,NULL,NULL,'Synthetic legacy text revision',true,'none',NULL,false,NULL,
@@ -55,9 +64,12 @@ SELECT public.rmg_submit_revision_v3(:'legacy_review',2::smallint,NULL,NULL,'Syn
 
 SET LOCAL ROLE anon;
 SELECT public.fixture_assert(EXISTS(SELECT 1 FROM public.public_angler_reviews WHERE id=:'or_review'
- AND quality=4 AND communication=5 AND equipment=2 AND would_book_again=false AND trip_month='2026-01-01')
+ AND quality=4 AND communication=5 AND equipment=2 AND would_book_again=false AND trip_month='2026-01-01'
+ AND trip_responses#>'{answers,fish_landed,value}'='0' AND trip_responses#>'{answers,kindness,value}'='5'
+ AND trip_responses#>'{answers,fishiness,value}'='5')
  AND EXISTS(SELECT 1 FROM public.public_angler_reviews WHERE id=:'wa_review'
- AND quality=3 AND equipment=5 AND knowledge IS NULL AND effort=2 AND would_book_again=true)
+ AND quality=3 AND equipment=5 AND knowledge IS NULL AND effort=2 AND would_book_again=true
+ AND trip_responses#>'{answers,fish_landed}' IS NULL AND trip_responses#>'{answers,fishiness,value}'='2')
  AND public.rmg_review_summary('OR','OG.0000090.F&F') @> '{"count":2,"averageQuality":3,"wouldBookAgainPercent":0,"wouldBookAgainResponses":1}'
  AND public.rmg_review_summary('WA',:'wa_source') @> '{"count":1,"averageQuality":3,"wouldBookAgainPercent":100,"wouldBookAgainResponses":1}',
  'pending revisions keep published detail and aggregates stable, historical non-response excluded');
@@ -69,25 +81,36 @@ SELECT public.fixture_assert(public.rmg_revision_queue(0,100) @> jsonb_build_arr
  jsonb_build_object('id',:'wa_edit','catalog_source_id','wa-090','knowledge',3,'effort',NULL,'equipment',5,'would_book_again',false),
  jsonb_build_object('id',:'legacy_edit','communication',NULL,'would_book_again',NULL)),
  'revision queue displays effective proposed ratings, including a clear and a historical unknown');
+SELECT public.fixture_assert(public.rmg_revision_queue(0,100) @> jsonb_build_array(
+ jsonb_build_object('id',:'or_edit','trip_responses','{"version":1,"answers":{"organization":{"state":"answered","value":4},"kindness":{"state":"not_applicable"},"fishiness":{"state":"answered","value":5},"fish_landed":{"state":"answered","value":0}}}'::jsonb),
+ jsonb_build_object('id',:'wa_edit','trip_responses','{"version":1,"answers":{"fishiness":{"state":"answered","value":2},"fish_landed":{"state":"answered","value":7}}}'::jsonb)),
+ 'moderators see the preserved survey fields and proposed clear or actual count');
 SELECT public.rmg_decide_revision(:'or_edit',true,'Synthetic Oregon revision approval');
 SELECT public.rmg_decide_revision(:'wa_edit',true,'Synthetic Washington revision approval');
 SELECT public.rmg_decide_revision(:'legacy_edit',true,'Synthetic legacy revision approval');
 
 SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000031',true);
-SELECT public.rmg_submit_revision_v3(:'wa_review',1::smallint,NULL,true,'Synthetic rejected Washington revision',true,'none',NULL,false,NULL,
+SELECT public.rmg_submit_revision_v2(:'wa_review',2::smallint,NULL,false,'Synthetic legacy client Washington revision',true,'none',NULL,false,NULL)->>'id' AS wa_legacy_edit \gset
+SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000032',true);
+SELECT public.rmg_submit_revision_v3(:'legacy_review',1::smallint,NULL,true,'Synthetic rejected Oregon revision',true,'none',NULL,false,NULL,
  '{"equipment":1}')->>'id' AS rejected_edit \gset
 SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000004',true);
-SELECT public.rmg_decide_revision(:'rejected_edit',false,'Synthetic Washington revision rejection');
+SELECT public.rmg_decide_revision(:'wa_legacy_edit',true,'Synthetic Washington legacy client revision approval');
+SELECT public.rmg_decide_revision(:'rejected_edit',false,'Synthetic Oregon revision rejection');
 
 SET LOCAL ROLE anon;
 SELECT public.fixture_assert(EXISTS(SELECT 1 FROM public.public_angler_reviews WHERE id=:'or_review'
  AND quality=5 AND communication IS NULL AND equipment=4 AND professionalism=4 AND safety=3
- AND knowledge=1 AND effort=4 AND value_rating=3 AND would_book_again=false AND trip_month='2026-01-01')
+ AND knowledge=1 AND effort=4 AND value_rating=3 AND would_book_again=false AND trip_month='2026-01-01'
+ AND trip_responses#>'{answers,fish_landed,value}'='0' AND trip_responses#>'{answers,fishiness,value}'='5'
+ AND trip_responses#>>'{answers,kindness,state}'='not_applicable' AND trip_responses#>'{answers,organization,value}'='4')
  AND EXISTS(SELECT 1 FROM public.public_angler_reviews WHERE id=:'wa_review'
- AND quality=2 AND equipment=5 AND knowledge=3 AND effort IS NULL AND would_book_again=false)
+ AND quality=2 AND equipment=5 AND knowledge=3 AND effort IS NULL AND would_book_again=false
+ AND trip_responses#>'{answers,fish_landed,value}'='7' AND trip_responses#>'{answers,fishiness,value}'='2')
  AND EXISTS(SELECT 1 FROM public.public_angler_reviews WHERE id=:'legacy_review' AND communication IS NULL
  AND professionalism IS NULL AND safety IS NULL AND equipment IS NULL AND knowledge IS NULL AND effort IS NULL
- AND value_rating IS NULL AND would_book_again IS NULL)
+ AND value_rating IS NULL AND would_book_again IS NULL AND catch_outcome='caught'
+ AND trip_responses#>'{answers,organization,value}'='3' AND NOT ((trip_responses->'answers') ?| ARRAY['fish_landed','fishiness','kindness']))
  AND public.rmg_review_summary('OR','OG.0000090.F&F') @> '{"count":2,"averageQuality":3.5,"wouldBookAgainPercent":0,"wouldBookAgainResponses":1}'
  AND public.rmg_review_summary('WA',:'wa_source') @> '{"count":1,"averageQuality":2,"wouldBookAgainPercent":0,"wouldBookAgainResponses":1}'
  AND public.rmg_public_review_summaries_v1(jsonb_build_array(
@@ -95,7 +118,7 @@ SELECT public.fixture_assert(EXISTS(SELECT 1 FROM public.public_angler_reviews W
  jsonb_build_object('jurisdiction','WA','sourceId',:'wa_source'))) @> '{"items":[
  {"jurisdiction":"OR","sourceId":"OG.0000090.F&F","count":2,"averageQuality":3.5},
  {"jurisdiction":"WA","sourceId":"wa-090","count":1,"averageQuality":2}]}',
- 'approved edits replace only specified metrics, rejection changes nothing, prior nulls and overall aggregates remain correct');
+ 'approved old and new client edits preserve entered survey answers, distinguish zero from absent, and leave historical catch outcome intact');
 
 RESET ROLE;
 UPDATE rmg_private.wa_catalog_review_control_v1 SET enabled=false WHERE singleton;

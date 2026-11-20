@@ -499,15 +499,18 @@ test('operator queues show only an exact catalog listing name/link and omit inte
 
 test('versioned richer review submits explicit No and distinct typed ratings on OR and exact WA',async()=>{
  const ratings={communication:5,professionalism:4,safety:3,equipment:2,knowledge:1,effort:4,value:3};
+ const tripResponses={version:1,answers:{organization:{state:'answered',value:4},
+  kindness:{state:'answered',value:5},fishiness:{state:'answered',value:3},fish_landed:{state:'answered',value:0}}};
  for(const source of [{jurisdiction:'OR',sourceId:'OG.0000090.F&F'},catalogA]){
   const b=backend();
-  const response=await handleLaunch(req({...review,...source,ratingVersion:1,ratings,wouldBookAgain:false},'token'),
+  const response=await handleLaunch(req({...review,...source,ratingVersion:1,ratings,tripResponses,wouldBookAgain:false},'token'),
    b.factory,catalogFlags,versionFor);
   assert.equal(response.status,200);
   const [name,params]=b.calls.at(-1);
   assert.equal(name,'rmg_submit_review_v3');
   assert.equal(params.p_source_id,source.jurisdiction==='WA'?source.sourceId+'@catalog:'+versionFor(source.sourceId,'catalog'):source.sourceId);
   assert.deepEqual(params.p_ratings,ratings);
+  assert.deepEqual(params.p_trip_responses,tripResponses);
   assert.equal(params.p_rebook,false);
  }
  const {wouldBookAgain, ...basic}=review;
