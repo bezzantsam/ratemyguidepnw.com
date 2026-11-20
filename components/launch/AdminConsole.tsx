@@ -2,32 +2,42 @@
 
 import {useCallback,useEffect,useMemo,useRef,useState} from 'react';
 import AuthPanel,{client as authClient} from '@/components/AuthPanel';
-import {createLaunchClient,type OperatorItem,type SubmissionKind} from '@/lib/launch-client';
+import {createLaunchClient,LaunchClientError,type OperatorItem,type SubmissionKind} from '@/lib/launch-client';
 
 import TripProposalQueue from './TripProposalQueue';
 
-type Access = {status:'loading'|'signed_out'|'denied'|'error'} | {status:'operator';epoch:number};
+type Access = {status:'loading'|'signed_out'|'denied'|'expired'|'error'} | {status:'operator';epoch:number};
 
 /** Access and every operation are independently checked by the server. */
 export function AdminConsole({claimsEnabled=false,offeringsEnabled=false}:{claimsEnabled?:boolean;offeringsEnabled?:boolean}) {
-  const api=useMemo(()=>createLaunchClient({enabled:true,getAccessToken:async()=>{const result=await authClient?.auth.getSession();return result?.data.session?.access_token??null}}),[]);
   const [access,setAccess]=useState<Access>({status:'loading'});
   const [kind,setKind]=useState<SubmissionKind>('review'),[offset,setOffset]=useState(0),[items,setItems]=useState<OperatorItem[]|null>(null),[error,setError]=useState(''),[message,setMessage]=useState(''),[notes,setNotes]=useState<Record<string,string>>({});
   const processing=useRef(new Set<string>());
   const authEpoch=useRef(0),queueEpoch=useRef(0);
-  const refreshAccess=useCallback(async()=>{
-    const epoch=++authEpoch.current;
+  const actor=useRef<string|null|undefined>(undefined);
+  const api=useMemo(()=>createLaunchClient({enabled:true,getAccessToken:async()=>{
+    const expected=actor.current,epoch=authEpoch.current;
+    const session=(await authClient?.auth.getSession())?.data.session;
+    return expected&&session?.user.id===expected&&epoch===authEpoch.current?session.access_token:null;
+  }}),[]);
+  const verifyAccess=useCallback(async(epoch:number)=>{
+    if(epoch!==authEpoch.current)return;
     try{
-      const session=await authClient?.auth.getSession();
-      if(epoch!==authEpoch.current)return;
-      if(!session?.data.session){setAccess({status:'signed_out'});setItems(null);return}
       const result=await api.session();
-      if(epoch!==authEpoch.current)return;
-      setAccess(result.operator?{status:'operator',epoch}:{status:'denied'});
-    }catch{
-      if(epoch===authEpoch.current){setAccess({status:'error'});setItems(null)}
+      if(epoch===authEpoch.current)setAccess(result.operator?{status:'operator',epoch}:{status:'denied'});
+    }catch(error){
+      if(epoch===authEpoch.current)setAccess({status:error instanceof LaunchClientError&&error.code==='sign_in_required'?'expired':'error'});
     }
   },[api]);
+  function retryAccess(){
+    if(!actor.current||access.status==='expired'){
+      // The initial provider read failed. Re-entering the page reinitializes that read.
+      window.location.reload();
+      return;
+    }
+    setAccess({status:'loading'});setItems(null);
+    void verifyAccess(++authEpoch.current);
+  }
   const load=useCallback(async()=>{
     if(access.status!=='operator'||access.epoch!==authEpoch.current)return;
     const {epoch}=access,queue=++queueEpoch.current;
@@ -35,43 +45,77 @@ export function AdminConsole({claimsEnabled=false,offeringsEnabled=false}:{claim
     try{
       const rows=await api.operatorQueue(kind,offset,50);
       if(epoch===authEpoch.current&&queue===queueEpoch.current)setItems(rows);
-    }catch{
-      if(epoch===authEpoch.current&&queue===queueEpoch.current)setError('The moderation queue is temporarily unavailable.');
+    }catch(error){
+      if(epoch!==authEpoch.current||queue!==queueEpoch.current)return;
+      if(error instanceof LaunchClientError&&error.code==='sign_in_required')setAccess({status:'expired'});
+      else if(error instanceof LaunchClientError&&error.code==='forbidden')setAccess({status:'denied'});
+      else setError('The moderation queue is temporarily unavailable.');
     }
   },[access,api,kind,offset]);
   useEffect(()=>{
-    void refreshAccess();
-    if(!authClient)return;
-    const {data:{subscription}}=authClient.auth.onAuthStateChange((_event,next)=>{
+    if(!authClient){setAccess({status:'error'});return}
+    let active=true,timer:number|undefined;
+    function observe(id:string|null){
+      if(!active||id===actor.current)return;
+      actor.current=id;
       const epoch=++authEpoch.current;
       queueEpoch.current++;
-      setAccess({status:next?'loading':'signed_out'});
-      setItems(null);setNotes({});
-      if(next)window.setTimeout(()=>{if(epoch===authEpoch.current)void refreshAccess()},0);
-    });
-    return()=>{authEpoch.current++;queueEpoch.current++;subscription.unsubscribe()};
-  },[refreshAccess]);
+      window.clearTimeout(timer);
+      processing.current=new Set();
+      setItems(null);setNotes({});setError('');setMessage('');
+      setKind('review');setOffset(0);
+      setAccess({status:id?'loading':'signed_out'});
+      // Auth callbacks run under the provider lock. All API and auth reads run later.
+      if(id)timer=window.setTimeout(()=>void verifyAccess(epoch),0);
+    }
+    const {data:{subscription}}=authClient.auth.onAuthStateChange((_event,session)=>observe(session?.user.id??null));
+    void authClient.auth.getSession().then(({data,error})=>{
+      if(!active||actor.current!==undefined)return;
+      if(error)setAccess({status:'error'});
+      else observe(data.session?.user.id??null);
+    }).catch(()=>{if(active&&actor.current===undefined)setAccess({status:'error'})});
+    return()=>{
+      active=false;
+      actor.current=undefined;
+      authEpoch.current++;queueEpoch.current++;
+      window.clearTimeout(timer);
+      subscription.unsubscribe();
+    };
+  },[verifyAccess]);
   useEffect(()=>{void load()},[load]);
   async function decide(item:OperatorItem,approve:boolean){
-    if(item.kind==='report'||(item.kind==='claim'&&!claimsEnabled))return;
-    if(processing.current.has(item.id))return;
+    if(access.status!=='operator'||access.epoch!==authEpoch.current||item.kind==='report'||
+       (item.kind==='claim'&&!claimsEnabled))return;
+    const {epoch}=access,pending=processing.current;
+    if(pending.has(item.id))return;
     const reason=(notes[item.id]??'').trim();
     if((approve&&reason.length<20)||(!approve&&!reason)){setError(approve?'Record at least 20 characters of manual review evidence.':'Add a reason before rejecting.');return}
     if(approve&&!item.canApprove){setError('Required review information is unavailable. This item cannot be approved here.');return}
-    processing.current.add(item.id);setError('');setMessage('');
-    try{const receipt=await api.operatorDecide(item.kind,item.id,approve,reason);setMessage(`Decision confirmed: ${receipt.status}.`);await load()}
-    catch{setError('The decision could not be confirmed. Refresh the queue before trying again.')}
-    finally{processing.current.delete(item.id)}
+    pending.add(item.id);setError('');setMessage('');
+    try{
+      const receipt=await api.operatorDecide(item.kind,item.id,approve,reason);
+      if(epoch===authEpoch.current){setMessage(`Decision confirmed: ${receipt.status}.`);await load()}
+    }catch{
+      if(epoch===authEpoch.current)setError('The decision could not be confirmed. Refresh the queue before trying again.');
+    }finally{pending.delete(item.id)}
   }
   async function resolveReport(item:OperatorItem){
-    if(item.kind!=='report'||processing.current.has(item.id))return;
-    processing.current.add(item.id);setError('');setMessage('');
-    try{const receipt=await api.resolveReport(item.id);setMessage(`Report confirmed: ${receipt.status}. The review was not changed.`);await load()}
-    catch{setError('The report resolution could not be confirmed. Refresh the queue before trying again.')}
-    finally{processing.current.delete(item.id)}
+    if(access.status!=='operator'||access.epoch!==authEpoch.current||item.kind!=='report')return;
+    const {epoch}=access,pending=processing.current;
+    if(pending.has(item.id))return;
+    pending.add(item.id);setError('');setMessage('');
+    try{
+      const receipt=await api.resolveReport(item.id);
+      if(epoch===authEpoch.current){setMessage(`Report confirmed: ${receipt.status}. The review was not changed.`);await load()}
+    }catch{
+      if(epoch===authEpoch.current)setError('The report resolution could not be confirmed. Refresh the queue before trying again.');
+    }finally{pending.delete(item.id)}
   }
   return <main className="launch-controls"><p className="eyebrow">SITE OPERATIONS</p><h1>Moderation</h1><AuthPanel moderator/>
-    {access.status==='loading'&&<p role="status">Checking operator access…</p>}{access.status==='signed_out'&&<p>Sign in with an authorized operator account.</p>}{access.status==='denied'&&<p role="status">This account does not have operator access.</p>}{access.status==='error'&&<p role="status">Operator access is temporarily unavailable.</p>}
+    {access.status==='loading'&&<p role="status">Checking operator access…</p>}{access.status==='signed_out'&&<p>Sign in with an authorized operator account.</p>}{access.status==='denied'&&<p role="status">This account does not have operator access. Sign out, then use your authorized moderator email.</p>}
+    {access.status==='expired'&&<p role="status">Your moderator session could not be verified. Check access again, or sign out and request a new link.</p>}
+    {access.status==='error'&&<p role="status">Operator access is temporarily unavailable.</p>}
+    {(access.status==='denied'||access.status==='expired'||access.status==='error')&&<button type="button" onClick={retryAccess}>Check access again</button>}
     {access.status==='operator'&&<section><h2>Pending submissions</h2><label>Submission type <select value={kind} onChange={e=>{queueEpoch.current++;setItems(null);setKind(e.target.value as SubmissionKind);setOffset(0);setMessage('')}}><option value="review">Reviews</option>{claimsEnabled&&<option value="claim">Claims</option>}<option value="revision">Review edits</option><option value="report">Review reports</option></select></label>
       {error&&<p role="alert">{error}</p>}{message&&<p role="status">{message}</p>}
       {items===null?!error&&<p role="status">Loading submissions…</p>:items.length===0?<p>No pending submissions on this page.</p>:items.map(item=><article className="card" key={`${item.kind}:${item.id}`}>
