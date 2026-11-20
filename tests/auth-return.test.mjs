@@ -146,6 +146,15 @@ test('throttled email sign-in gives both roles a recovery path without exposing 
  }
 });
 
+test('the sign-in check lets server verification own the status after browser authentication',async()=>{
+ const h=setup({authCheck:true});
+ h.render();h.start();await new Promise(setImmediate);
+ h.emit({user:{email:'participant@example.invalid'}});
+ const tree=h.render();
+ assert.equal(find(tree,n=>n.props?.children==='Signed in.'),undefined);
+ assert.ok(find(tree,n=>n.type==='button'&&n.props.children==='Sign out'));
+});
+
 test('legacy and new public hosts keep guide and moderator email callbacks on the initiating host',()=>{
   for(const origin of ['https://ratemyguidepnw.vercel.app','https://rateyourguide.com']){
     for(const moderator of [false,true]){
