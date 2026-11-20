@@ -180,9 +180,11 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
   await page.getByRole('button',{name:'Washington',exact:true}).click();await q.fill('Aaron O’Leary');
   const before=requests.length;await page.getByRole('link',{name:/Aaron O’Leary/}).first().click();
   await page.getByRole('heading',{name:'Aaron O’Leary',exact:true}).waitFor();
-  await page.getByText('Review data is unavailable.').waitFor();
+  const heldReviews=page.locator('#write-review');
+  await heldReviews.getByRole('heading',{name:'Reviews',exact:true}).waitFor();
+  await heldReviews.getByRole('status').filter({hasText:'Reviews are unavailable for this guide right now.'}).waitFor();
+  assert.equal(await heldReviews.locator('form').count(),0);
   assert.equal(await page.getByText('Local fixture review for navigation test').count(),0);
-  await page.getByText('Review submissions are not currently available.').waitFor();
   await page.getByRole('link',{name:'Claiming currently unavailable →'}).click();
   await page.getByText('Profile claim submissions are not currently available.').waitFor();
   await page.waitForTimeout(300);
