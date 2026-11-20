@@ -30,6 +30,7 @@ export function TripFields({fields,draft,onChange}:{
   }
   return <>{fields.map(field=>{
       const id=`${prefix}-${field.key}`, entry=draft[field.key]??'';
+      const highlight=isTripHighlight(field.key);
       const minuteMode=entry==='na'?'na':entry.startsWith('value:')?'value':'';
       const choices=field.kind==='boolean'?[{value:'yes',label:'Yes'},{value:'no',label:'No'}]:field.kind==='rating'?[1,2,3,4,5].map(n=>({value:String(n),label:`${n} / 5`})):(field.options??[]);
       if(field.kind==='count')return <div key={field.key}>
@@ -37,7 +38,7 @@ export function TripFields({fields,draft,onChange}:{
         <input id={id} type="number" inputMode="numeric" min={0} max={FISH_LANDED_MAX} step={1}
           aria-describedby={`${id}-help`} value={entry.startsWith('value:')?entry.slice(6):''}
           onChange={event=>update(field.key,event.target.value===''?'':`value:${event.target.value}`)}/>
-        <p id={`${id}-help`}>{entry==='na'?'Previously marked not applicable. ':''}Include fish your group released. Enter 0 if none landed.</p>
+        <p id={`${id}-help`}>Include fish your group released. Enter 0 if none landed.</p>
       </div>;
       return <div key={field.key}>
         <label htmlFor={id}>{field.label}</label>
@@ -46,8 +47,8 @@ export function TripFields({fields,draft,onChange}:{
             <option value="">Not answered</option><option value="na">Not applicable</option><option value="value">Enter minutes</option>
           </select>
           {minuteMode==='value' && <><label htmlFor={`${id}-minutes`}>Minutes</label><input id={`${id}-minutes`} type="number" min="0" max="1440" step="1" value={entry.slice(6)} onChange={event=>update(field.key,`value:${event.target.value}`)}/></>}
-        </> : <select id={id} value={entry} onChange={event=>update(field.key,event.target.value)}>
-          <option value="">Not answered</option><option value="na">Not applicable</option>{choices.map(choice=><option key={choice.value} value={`value:${choice.value}`}>{choice.label}</option>)}
+        </> : <select id={id} value={highlight&&entry==='na'?'':entry} onChange={event=>update(field.key,event.target.value)}>
+          <option value="">Not answered</option>{!highlight&&<option value="na">Not applicable</option>}{choices.map(choice=><option key={choice.value} value={`value:${choice.value}`}>{choice.label}</option>)}
         </select>}
       </div>;
     })}</>;
