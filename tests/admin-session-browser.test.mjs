@@ -157,7 +157,12 @@ test('moderator session, private decisions and recovery work in the phone queue'
   const waiting=new Promise(resolve=>{respond=resolve});
   const sent=new Promise(resolve=>{gotDecision=resolve});
   decisionReply=async route=>{gotDecision();await waiting;return route.abort('connectionreset')};
-  await page.touchscreen.tap(...approvalPoint);
+  await approve.evaluate(button=>{
+   // Dispatch in the same task to exercise the guard before a disabled render.
+   button.click();
+   button.click();
+   button.nextElementSibling.click();
+  });
   await sent;
   await page.touchscreen.tap(...approvalPoint);
   await page.touchscreen.tap(...rejectionPoint);

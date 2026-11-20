@@ -21,8 +21,6 @@ export function AdminConsole({claimsEnabled=false,offeringsEnabled=false}:{claim
   const [access,setAccess]=useState<Access>({status:'loading'});
   const [kind,setKind]=useState<SubmissionKind>('review'),[offset,setOffset]=useState(0),[items,setItems]=useState<OperatorItem[]|null>(null),[error,setError]=useState(''),[message,setMessage]=useState(''),[notes,setNotes]=useState<Record<string,string>>({});
   const [decisions,setDecisions]=useState<Record<string,DecisionFeedback|undefined>>({});
-  // Update the guard synchronously, before React can render the disabled buttons.
-  const decisionGuard=useRef(decisions);
   const processing=useRef(new Set<string>());
   const authEpoch=useRef(0),queueEpoch=useRef(0);
   const actor=useRef<string|null|undefined>(undefined);
@@ -73,7 +71,7 @@ export function AdminConsole({claimsEnabled=false,offeringsEnabled=false}:{claim
       queueEpoch.current++;
       window.clearTimeout(timer);
       processing.current=new Set();
-      decisionGuard.current={};setDecisions(decisionGuard.current);
+      setDecisions({});
       setItems(null);setNotes({});setError('');setMessage('');
       setKind('review');setOffset(0);
       setAccess({status:id?'loading':'signed_out'});
@@ -97,18 +95,14 @@ export function AdminConsole({claimsEnabled=false,offeringsEnabled=false}:{claim
   useEffect(()=>{void load()},[load]);
 
   function showDecision(key:string,feedback:DecisionFeedback|undefined){
-    decisionGuard.current={...decisionGuard.current,[key]:feedback};
-    setDecisions(decisionGuard.current);
-  }
-  function decisionInProgress(){
-    return Object.values(decisionGuard.current).some(isBusy);
+    setDecisions(previous=>({...previous,[key]:feedback}));
   }
   async function decide(item:OperatorItem,approve:boolean){
     if(access.status!=='operator'||access.epoch!==authEpoch.current||item.kind==='report'||
        (item.kind==='claim'?!claimsEnabled:item.ownSubmission!==false)||(approve&&!item.canApprove))return;
-    const {epoch}=access,key=rowKey(item);
-    const phase=decisionGuard.current[key]?.phase;
-    if(phase&&phase!=='invalid'&&phase!=='retry')return;
+    const {epoch}=access,key=rowKey(item),pending=processing.current;
+    const phase=decisions[key]?.phase;
+    if(pending.has(key)||(phase&&phase!=='invalid'&&phase!=='retry'))return;
     const reason=(notes[key]??'').trim();
     if((approve&&reason.length<20)||(!approve&&!reason)){
       showDecision(key,{phase:'invalid',text:approve
@@ -117,6 +111,7 @@ export function AdminConsole({claimsEnabled=false,offeringsEnabled=false}:{claim
       document.getElementById(noteId(item))?.focus();
       return;
     }
+    pending.add(key);
     showDecision(key,{phase:'saving',text:approve?'Submitting approval…':'Submitting rejection…'});
     try{
       const receipt=await api.operatorDecide(item.kind,item.id,approve,reason);
@@ -129,13 +124,14 @@ export function AdminConsole({claimsEnabled=false,offeringsEnabled=false}:{claim
       showDecision(key,{phase:'confirmed',text:`Decision confirmed: ${receipt.status}.`});
     }catch{
       if(epoch===authEpoch.current)showDecision(key,{phase:'uncertain',text:needsQueueCheck});
-    }
+    }finally{pending.delete(key)}
   }
 
   async function checkDecision(item:OperatorItem){
-    const key=rowKey(item);
-    if(access.status!=='operator'||access.epoch!==authEpoch.current||decisionGuard.current[key]?.phase!=='uncertain')return;
+    const key=rowKey(item),pending=processing.current;
+    if(access.status!=='operator'||access.epoch!==authEpoch.current||pending.has(key)||decisions[key]?.phase!=='uncertain')return;
     const {epoch}=access,queue=queueEpoch.current;
+    pending.add(key);
     showDecision(key,{phase:'checking',text:'Checking the pending queue…'});
     try{
       const rows=await api.operatorQueue(kind,offset,50);
@@ -156,7 +152,7 @@ export function AdminConsole({claimsEnabled=false,offeringsEnabled=false}:{claim
       showDecision(key,{phase:'uncertain',text:'The pending queue could not be checked. Try checking again.'});
       if(error instanceof LaunchClientError&&error.code==='sign_in_required')setAccess({status:'expired'});
       if(error instanceof LaunchClientError&&error.code==='forbidden')setAccess({status:'denied'});
-    }
+    }finally{pending.delete(key)}
   }
   async function resolveReport(item:OperatorItem){
     if(access.status!=='operator'||access.epoch!==authEpoch.current||item.kind!=='report')return;
@@ -176,7 +172,7 @@ export function AdminConsole({claimsEnabled=false,offeringsEnabled=false}:{claim
     {access.status==='expired'&&<p role="status">Your moderator session could not be verified. Check access again, or sign out and request a new link.</p>}
     {access.status==='error'&&<p role="status">Operator access is temporarily unavailable.</p>}
     {(access.status==='denied'||access.status==='expired'||access.status==='error')&&<button type="button" onClick={retryAccess}>Check access again</button>}
-    {access.status==='operator'&&<section><h2>Pending submissions</h2><label>Submission type <select value={kind} disabled={busy} onChange={e=>{if(decisionInProgress())return;queueEpoch.current++;setItems(null);setKind(e.target.value as SubmissionKind);setOffset(0);setMessage('')}}><option value="review">Reviews</option>{claimsEnabled&&<option value="claim">Claims</option>}<option value="revision">Review edits</option><option value="report">Review reports</option></select></label>
+    {access.status==='operator'&&<section><h2>Pending submissions</h2><label>Submission type <select value={kind} disabled={busy} onChange={e=>{queueEpoch.current++;setItems(null);setKind(e.target.value as SubmissionKind);setOffset(0);setMessage('')}}><option value="review">Reviews</option>{claimsEnabled&&<option value="claim">Claims</option>}<option value="revision">Review edits</option><option value="report">Review reports</option></select></label>
       {error&&<p role="alert">{error}</p>}{message&&<p role="status">{message}</p>}
       {items===null?!error&&<p role="status">Loading submissions…</p>:items.length===0?<p>No pending submissions on this page.</p>:items.map(item=>{
         const key=rowKey(item),feedback=decisions[key],id=noteId(item);
@@ -201,7 +197,7 @@ export function AdminConsole({claimsEnabled=false,offeringsEnabled=false}:{claim
                   aria-describedby={`${id}-help${invalid?` ${id}-feedback`:''}`} value={notes[key]??''} onChange={e=>{
                     const value=e.target.value;
                     setNotes(previous=>({...previous,[key]:value}));
-                    if(decisionGuard.current[key]?.phase==='invalid')showDecision(key,undefined);
+                    if(invalid)showDecision(key,undefined);
                   }}/>
                 <div className="launch-actions">
                   <button type="button" disabled={locked||!item.canApprove} onClick={()=>void decide(item,true)}>Approve</button>
@@ -216,9 +212,9 @@ export function AdminConsole({claimsEnabled=false,offeringsEnabled=false}:{claim
         </article>;
       })}
       <div>
-        {offset>0&&<button type="button" disabled={busy} onClick={()=>{if(!decisionInProgress())setOffset(Math.max(0,offset-50))}}>Previous page</button>}
-        {items?.length===50&&<button type="button" disabled={busy} onClick={()=>{if(!decisionInProgress())setOffset(offset+50)}}>Next page</button>}
-        <button type="button" disabled={busy} onClick={()=>{if(!decisionInProgress())void load()}}>Refresh queue</button>
+        {offset>0&&<button type="button" disabled={busy} onClick={()=>setOffset(Math.max(0,offset-50))}>Previous page</button>}
+        {items?.length===50&&<button type="button" disabled={busy} onClick={()=>setOffset(offset+50)}>Next page</button>}
+        <button type="button" disabled={busy} onClick={()=>void load()}>Refresh queue</button>
       </div>
     </section>}
     {access.status==='operator'&&offeringsEnabled&&<TripProposalQueue key={access.epoch}/>}
