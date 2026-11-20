@@ -1,1 +1,1 @@
-export function handleLaunch(request: Request, createClient: any, env: NodeJS.ProcessEnv, listedVersion?: (sourceId: string) => string | undefined): Promise<Response>;
+export function handleLaunch(request: Request, createClient: any, env: NodeJS.ProcessEnv): Promise<Response>;
