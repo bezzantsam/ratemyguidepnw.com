@@ -51,7 +51,12 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
   await page.getByRole('link',{name:/John Hanson/}).first().waitFor();
   assert.equal(await page.getByRole('link',{name:/Shea Fisher/}).count(),0,'broad Salmon does not imply Chinook');
   assert.equal(new URL(page.url()).searchParams.get('species'),'Salmon');
-  await page.getByRole('combobox',{name:/^Fishing waters\b/}).selectOption({label:'Fixture River'});
+  const water=page.getByRole('combobox',{name:/^Fishing waters\b/});
+  await water.selectOption({label:'Fixture Estuary'});
+  await page.getByRole('link',{name:/John Hanson/}).first().waitFor();
+  await water.selectOption({label:'Fixture River'});
+  await page.getByRole('heading',{name:'No matching guides.'}).waitFor();
+  assert.equal(await page.getByRole('link',{name:/John Hanson/}).count(),0);
   await page.getByRole('button',{name:'Remove waterway: Fixture River'}).click();
   assert.equal(await species.inputValue(),'Salmon');assert.equal(await method.inputValue(),'Fly fishing');
   const filteredUrl=page.url();await page.reload({waitUntil:'domcontentloaded'});
