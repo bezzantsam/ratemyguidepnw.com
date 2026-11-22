@@ -193,6 +193,9 @@ test('phone review drafts survive interruption, reload and auth refresh without 
   localStorage.setItem('sb-127-auth-token',JSON.stringify(sessions[reviewer]));
  },{sessions,reviewer,origin});
  const first='OG.0002254',second='OG.0002193';
+ let rejectedLookupCount=0;
+ const previousRejection={id:'70000000-0000-4000-8000-000000000007',status:'rejected'};
+ stored.set(reviewer+':'+first,previousRejection);
  const guidePath=id=>'/guides/'+id.toLowerCase().replace('.','-')+'?intent=review#write-review';
  const expectedText='A firsthand review that must stay in this form.';
  const error={error:'service_unavailable'};
@@ -222,15 +225,18 @@ test('phone review drafts survive interruption, reload and auth refresh without 
     case 'claim_availability': return json(route,{available:false});
     case 'claim_status': return json(route,{status:'none'});
     case 'session': return actor?json(route,{authenticated:true,operator:false}):json(route,error,401);
-    case 'my_submissions': return json(route,{items:[],offset:0,limit:50});
+    case 'my_submissions': return json(route,{items:actor===reviewer?[{...previousRejection,kind:'review',created_at:'2026-11-19T00:00:00Z',jurisdiction:'OR',source_id:first,review_id:null}]:[],offset:0,limit:50});
     case 'own_review_for_guide': {
      if(failStatus){failStatus=false;return json(route,error,503);}
-     return json(route,{review:stored.get(key)??null});
+     const review=stored.get(key)??null;
+     // Older servers return the rejected row. The current lookup returns only blocking reviews.
+     if(review?.status==='rejected'&&++rejectedLookupCount>1)return json(route,{review:null});
+     return json(route,{review});
     }
     case 'submit_review': {
      attempts.push({actor,source:input.sourceId,body:input.body});
      if(input.sourceId===first&&attempts.length===1)return json(route,error,503);
-     if(stored.has(key))return json(route,{error:'duplicate_review'},409);
+     if(stored.has(key)&&stored.get(key).status!=='rejected')return json(route,{error:'duplicate_review'},409);
      const receipt={id:reviewId,status:'published'};
      stored.set(key,receipt);
      return input.sourceId===second?json(route,error,503):json(route,receipt);
@@ -303,7 +309,8 @@ test('phone review drafts survive interruption, reload and auth refresh without 
   assert.equal(await page.getByLabel('What duration did you agree on, in minutes?',{exact:true}).inputValue(),'value');
   assert.equal(await page.getByLabel('Minutes',{exact:true}).inputValue(),'');
   await page.getByLabel('What duration did you agree on, in minutes?',{exact:true}).selectOption('');
-  assert.equal(attempts.length,0,'restoring an unfinished draft must not submit it');
+  await page.locator('#your-submissions').getByText('rejected',{exact:true}).waitFor();
+  assert.equal(attempts.length,0,'a prior rejection must keep the fresh draft editable on reload');
 
   // Simulate browser lifecycle notifications and Supabase's same-account refocus notifications.
   // Real iOS process eviction is represented separately by a complete page reload above.
@@ -342,12 +349,14 @@ test('phone review drafts survive interruption, reload and auth refresh without 
   assert.equal(await submit.isDisabled(),true);
   assert.equal(await text.inputValue(),expectedText);
   await check.click();
-  await page.getByText('No review was found. You can submit your draft again.').waitFor();
+  await page.getByText('You can submit your draft again.',{exact:true}).waitFor();
   assert.equal(attempts.length,1);
   await submit.click();
   await page.locator('#your-submissions').getByText('Your review is published.').waitFor();
   assert.deepEqual(attempts.slice(0,2),[0,1].map(()=>({actor:reviewer,source:first,body:expectedText})));
   assert.deepEqual(await draftEntries(),[],'a confirmed receipt clears the saved draft');
+  assert.equal(await page.locator('#your-submissions').getByText('rejected',{exact:true}).count(),1,'the earlier rejection appears once alongside the active review');
+  assert.equal(await submit.count(),0,'a published replacement must keep its usual edit flow');
 
   await fill(second,'A review saved before its response arrived.');
   await submit.click();

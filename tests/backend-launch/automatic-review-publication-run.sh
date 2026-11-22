@@ -94,4 +94,38 @@ done
 "${ps[@]}" --file="$root/tests/backend-launch/automatic-review-publication-rollback-before.sql" \
  --file="$root/supabase/review-candidates/automatic-review-publication-v1-rollback.sql" \
  --file="$root/tests/backend-launch/automatic-review-publication-rollback-after.sql"
-echo 'PASS: automatic review publication, revision, report and authorization fixture on PostgreSQL 17.'
+# The rollback rehearsal above runs inside its own rolled-back transaction.
+# Install twice to cover the candidate's idempotent path before exercising public RPCs.
+candidate="$root/supabase/review-candidates/rejected-review-resubmission-v1.sql"
+"${ps[@]}" --single-transaction --file="$candidate"
+"${ps[@]}" --single-transaction --file="$candidate"
+"${ps[@]}" --file="$root/tests/backend-launch/automatic-review-publication-resubmission.sql"
+
+# Two overlapping transactions try to replace the same rejected review. Keep
+# the winner's transaction open briefly so the other writer contends for its lock.
+race_sql="BEGIN;
+ SET LOCAL statement_timeout='8s';
+ SET LOCAL ROLE authenticated;
+ SET LOCAL request.jwt.claim.sub='00000000-0000-0000-0000-000000000181';
+ SELECT public.rmg_submit_review_v3('OR','OG.0000184',4::smallint,NULL,true,'Synthetic concurrent replacement',true,'none',NULL,NULL,'{}');
+ SELECT pg_sleep(0.4);
+ COMMIT;"
+pids=()
+for worker in first second; do
+  "${ps[@]}" --set=VERBOSITY=verbose --command="$race_sql" >"$work/$worker.log" 2>&1 &
+  pids+=("$!")
+done
+successes=0
+for pid in "${pids[@]}"; do
+  if wait "$pid"; then successes=$((successes + 1)); fi
+done
+if (( successes != 1 )) || ! grep -q 'P4091:' "$work/first.log" "$work/second.log"; then
+  cat "$work/first.log" "$work/second.log" >&2
+  exit 1
+fi
+"${ps[@]}" --command="SELECT public.fixture_assert(
+  (SELECT count(*)=2 AND count(*) FILTER (WHERE status='rejected')=1 FROM public.reviews
+      WHERE guide_id='10000000-0000-0000-0000-000000000184')
+  AND public.rmg_review_summary('OR','OG.0000184') @> '{\"count\":1}',
+  'concurrent replacements produce one publication and preserve rejected history');"
+echo 'PASS: automatic review publication, resubmission, revision, report and authorization fixture on PostgreSQL 17.'

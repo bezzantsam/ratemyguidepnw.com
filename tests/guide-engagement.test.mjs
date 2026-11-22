@@ -156,6 +156,24 @@ test('Oregon profile connects ratings and review callbacks while held Washington
   assert.equal(changedPage.average,2);assert.equal(changedPage.reviews[0].body,changed.body);
   assert.ok(publicReads>readsBeforeEdit,'approved edits refresh the public review and aggregate without reloading');
   assert.ok(clearedDrafts.some(item=>item.mode==='revision'&&item.scope.reviewId===id),'confirmed revision clears only its scoped draft');
+  // The old lookup includes rejected history. New servers exclude it from the blocking lookup.
+  const denied={id:claim,kind:'review',status:'rejected',identities:[source]};
+  api.mySubmissions=async()=>[denied];
+  for(const lookup of [denied,null]){
+    api.ownReviewForGuide=async()=>lookup;
+    const clearCount=clearedDrafts.length;
+    await reauthenticate();tree=render(true);
+    const fresh=find(tree,n=>n.type===ReviewSubmission&&n.props.mode!=='revision');
+    assert.ok(fresh,'an earlier rejection allows a fresh form with either lookup response');
+    assert.equal(find(tree,n=>n.type===ProfileSharing).props.primaryAction.props.href,'#write-review');
+    assert.equal(await fresh.props.onCheckBeforeRetry(),'ready');
+    assert.equal(clearedDrafts.length,clearCount,'the new draft survives both load and receipt recovery');
+    assert.ok(find(tree,n=>n.type==='strong'&&n.props.children==='rejected'),'history remains visible');
+    assert.equal(Boolean(find(tree,n=>n.type==='div'&&n.key==='review:'+claim)),lookup===null,'history renders once');
+  }
+  api.ownReviewForGuide=async()=>({id,status:'removed'});await reauthenticate();tree=render(true);
+  assert.equal(find(tree,n=>n.type===ReviewSubmission),undefined,'moderator removal still blocks a fresh review');
+  assert.equal(find(tree,n=>n.type===ProfileSharing).props.primaryAction.props.href,'#your-submissions');
   api.mySubmissions=async()=>[];api.ownReviewForGuide=async()=>null;await reauthenticate();tree=render();
   const review=find(tree,n=>n.type===ReviewSubmission&&n.props.mode!=='revision');assert.ok(review);assert.equal(review.props.allowTripResponses,true);assert.equal(review.props.draftScope.accountId,id);assert.equal(review.props.draftScope.sourceId,source.sourceId);const readsBeforeSubmit=publicReads;await review.props.onSubmit(initial);await tick();await tick();assert.equal(submitted.s.sourceId,source.sourceId);
   tree=await settle();

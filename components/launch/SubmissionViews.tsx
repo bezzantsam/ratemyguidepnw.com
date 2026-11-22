@@ -180,7 +180,7 @@ export function ReviewSubmission({onSubmit, onCheckBeforeRetry, allowTripRespons
       const status = await onCheckBeforeRetry();
       if (status === 'ready') {
         change({needsCheck:false});
-        setRetryMessage('No review was found. You can submit your draft again.');
+        setRetryMessage('You can submit your draft again.');
       } else if (status === 'closed') {
         setRetryMessage('Reviews are still unavailable. Your draft is still here.');
       } else if (status === 'submitted') {
