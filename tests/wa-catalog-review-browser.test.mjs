@@ -152,7 +152,7 @@ test('two separate unclaimed WA guides can be reviewed, with pending privacy and
     assert.equal(await phone.getByLabel('Your experience').inputValue(),'Private firsthand fixture trip.');
     assert.equal(await phone.getByRole('button',{name:'Submit review'}).isDisabled(),true);
     await phone.getByRole('button',{name:'Check before retrying'}).click();
-    await phone.getByText('No review was found. You can submit your draft again.').waitFor();
+    await phone.getByText('You can submit your draft again.').waitFor();
     await phone.getByRole('button',{name:'Submit review'}).click();
     const privateReceipt=phone.getByText('Your review is awaiting review and is not public.');
     await privateReceipt.waitFor();

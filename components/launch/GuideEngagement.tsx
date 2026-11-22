@@ -15,6 +15,9 @@ import type {ReviewDraft} from './submission-model';
 type DetailsState={status:'loading'|'error'}|{status:'ready';value:OwnerDetails|null};
 type OwnReviewState={status:'loading'|'error'}|{status:'ready';review:OwnStatus|null};
 type RevisionWrite={epoch:number;accountId:string;editorId:number};
+function blocksNewReview(review:OwnStatus|null):boolean {
+  return review !== null && review.status !== 'rejected';
+}
 function nextSteps(item:OwnSubmission):string {
   if(item.kind==='claim')return item.status==='pending'?'Your request is awaiting review. Editing is not available yet.':item.status==='approved'?'Your ownership request was approved. You may edit captain-declared details when available.':'Your ownership request was not approved.';
   if(item.kind==='revision')return item.status==='pending'?'Your changes are awaiting review.':item.status==='approved'?'Your changes have been published.':'Your changes were not published.';
@@ -76,7 +79,7 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
       if(epoch===availabilityEpoch.current)setWriteReady('error');
     }
   },[api,stableSource,washington]);
-  const loadOwnReview=useCallback(async(epoch=authEpoch.current)=>{setOwnReview({status:'loading'});try{const review=await api.ownReviewForGuide(stableSource);if(epoch===authEpoch.current){if(review&&reviewAccountRef.current)clearReviewDraft({...stableSource,accountId:reviewAccountRef.current});setOwnReview({status:'ready',review})}}catch{if(epoch===authEpoch.current)setOwnReview({status:'error'})}},[api,stableSource]);
+  const loadOwnReview=useCallback(async(epoch=authEpoch.current)=>{setOwnReview({status:'loading'});try{const review=await api.ownReviewForGuide(stableSource);if(epoch===authEpoch.current){if(blocksNewReview(review)&&reviewAccountRef.current)clearReviewDraft({...stableSource,accountId:reviewAccountRef.current});setOwnReview({status:'ready',review})}}catch{if(epoch===authEpoch.current)setOwnReview({status:'error'})}},[api,stableSource]);
   function recordWriteFailure(error:unknown){
     if(!(error instanceof LaunchClientError))return;
     const closed=error.code==='launch_unavailable'||
@@ -123,6 +126,8 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
   useEffect(()=>{if(!canReadAccount)return;let generation=0;function openReview(){const id=publishedReviewIdFromHash(window.location.hash),current=++generation;if(!id){setSelected(null);return}setSelected({status:'loading',id});void api.publicReview(stableSource,id).then(r=>{if(current===generation)setSelected({status:'ready',review:{...r,guideKey,status:'published',rating:r.quality}})}).catch(()=>{if(current===generation)setSelected({status:'error',id})})}window.addEventListener('hashchange',openReview);openReview();return()=>{generation++;window.removeEventListener('hashchange',openReview)}},[api,guideKey,stableSource,canReadAccount,publishedVersion]);
   const own=(submissions??[]).filter(item=>item.identities.some(identity=>identity.jurisdiction===source.jurisdiction&&identity.sourceId===source.sourceId));
   const existingReview=ownReview.status==='ready'?ownReview.review:null;
+  const hasActiveReview=blocksNewReview(existingReview);
+  const history=own.filter(item=>item.kind!=='review'||(item.status==='rejected'&&item.id!==existingReview?.id));
   const pendingRevision=existingReview&&own.some(item=>item.kind==='revision'&&item.reviewId===existingReview.id&&item.status==='pending');
   const availabilityError=writeReady==='error'||reviews.status==='error';
   const availabilityMessage=writeReady===null||reviews.status==='loading'
@@ -142,7 +147,7 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
     }
   }
   const offerReview = canReview && !!page;
-  const inviteFirst = offerReview && (session==='signed_out' || (session==='signed_in' && ownReview.status==='ready' && !existingReview));
+  const inviteFirst = offerReview && (session==='signed_out' || (session==='signed_in' && ownReview.status==='ready' && !hasActiveReview));
   async function submitFirstReview(draft: ReviewDraft) {
     const epoch=authEpoch.current;
     try {
@@ -190,7 +195,7 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
     const epoch=authEpoch.current;
     const existing=await reviewApi.ownReviewForGuide(stableSource);
     if(epoch!==authEpoch.current)throw new Error('Review account changed');
-    if(existing){
+    if(existing && blocksNewReview(existing)){
       if(reviewAccount)clearReviewDraft({...stableSource,accountId:reviewAccount});
       setOwnReview({status:'ready',review:existing});
       void loadSubmissions(0,epoch);
@@ -226,7 +231,7 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
         ? <a href="#reviews"><strong>{page.average?.toFixed(1)} / 5</strong> · {page.total} {page.total===1?'review':'reviews'}</a>
         : 'No published reviews yet.'}</p>}
       <ProfileSharing profilePath={profilePath} guideName={guideName} reviewAvailable={offerReview}
-        primaryAction={page && existingReview
+        primaryAction={page && hasActiveReview
           ? <a className="button guide-rate" href="#your-submissions">View your review status</a>
           : offerReview
           ? <a className="button guide-rate" href="#write-review">Rate {guideName}</a>
@@ -235,7 +240,7 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
         {compactError && <button type="button" className="guide-retry" onClick={retryAvailability}>Retry</button>}</p>}
     </section> : <section className="section" aria-label={`Rate ${guideName}`}>
       {canReview&&reviews.status==='ready'
-        ? existingReview
+        ? hasActiveReview
           ? <a className="button" href="#your-submissions">View your review status</a>
           : <a className="button" href="#write-review">Rate {guideName}</a>
         : <><h2>Rate {guideName}</h2><p role="status">{availabilityMessage}</p>{availabilityError&&<button type="button" onClick={()=>{void loadWriteReady();if(reviews.status==='error')void loadReviews()}}>Retry review availability</button>}</>}
@@ -255,10 +260,10 @@ export function GuideEngagement({source,profilePath,guideName,compactProfile=fal
       {reviews.status==='ready'?<>{session==='signed_out'&&<p>{writeReady===true?'Sign in to share a firsthand experience with this guide.':'Sign in to check your existing submissions.'}</p>}<AuthPanel emailOnly profilePath={profilePath} onSignedIn={onSignedIn}/>
         {session==='loading'&&<p role="status">Checking your account…</p>}{session==='error'&&<p role="status">Your account status is temporarily unavailable.</p>}
         {session==='signed_in'&&<>{ownReview.status==='loading'&&<p role="status">Checking your review for this guide…</p>}{ownReview.status==='error'&&<><p role="status">Your review status is temporarily unavailable.</p><button type="button" onClick={()=>void loadOwnReview()}>Retry review status</button></>}
-          {reviewAccount&&ownReview.status==='ready'&&!existingReview&&(canReview||formActivated)&&<ReviewSubmission key={`${guideKey}:${reviewAccount}`} draftScope={{...stableSource,accountId:reviewAccount}} allowTripResponses writeAvailable={canReview} onCheckBeforeRetry={checkBeforeRetry} onSubmit={submitFirstReview}/>}
+          {reviewAccount&&ownReview.status==='ready'&&!hasActiveReview&&(canReview||formActivated)&&<ReviewSubmission key={`${guideKey}:${reviewAccount}`} draftScope={{...stableSource,accountId:reviewAccount}} allowTripResponses writeAvailable={canReview} onCheckBeforeRetry={checkBeforeRetry} onSubmit={submitFirstReview}/>}
           {!compactProfile&&writeReady===false&&<><p role="status">Reviews aren’t available for this guide right now.</p>{source.jurisdiction==='OR'&&<button type="button" onClick={()=>void loadWriteReady()}>Check review availability</button>}</>}
           {!compactProfile&&writeReady==='error'&&<p role="status">We couldn’t check review availability. Try again before submitting.</p>}
-          <section id="your-submissions"><h3>Your submissions</h3>{existingReview&&<div><p>Review: <strong>{existingReview.status}</strong></p><p>{existingReview.status==='pending'?'Your review is awaiting review and is not public.':existingReview.status==='published'?'Your review is published.':existingReview.status==='removed'?'Your review is no longer published.':'Your review was not published.'}</p>{canReview&&existingReview.status==='published'&&!pendingRevision&&!more&&submissions!==null&&!statusError&&<button type="button" disabled={revisionBusy} onClick={()=>void editReview(existingReview.id)}>Edit your review</button>}{existingReview.status==='published'&&pendingRevision&&<p>Your changes are awaiting review.</p>}</div>}{statusError?<><p role="status">Your submission status is temporarily unavailable.</p><button type="button" onClick={()=>void loadSubmissions()}>Retry status</button></>:submissions===null?<p role="status">Loading your submissions…</p>:<>{own.filter(item=>item.kind!=='review').map(item=><div key={`${item.kind}:${item.id}`}><p>{item.kind==='revision'?'Review edit':'Claim request'}: <strong>{item.status}</strong></p><p>{nextSteps(item)}</p></div>)}{more&&<><p>Load the remaining submissions to check your full review history.</p><button type="button" onClick={()=>void loadSubmissions(nextOffset)}>Load more submissions</button></>}</>}
+          <section id="your-submissions"><h3>Your submissions</h3>{existingReview&&<div><p>Review: <strong>{existingReview.status}</strong></p><p>{existingReview.status==='pending'?'Your review is awaiting review and is not public.':existingReview.status==='published'?'Your review is published.':existingReview.status==='removed'?'Your review is no longer published.':'Your review was not published.'}</p>{canReview&&existingReview.status==='published'&&!pendingRevision&&!more&&submissions!==null&&!statusError&&<button type="button" disabled={revisionBusy} onClick={()=>void editReview(existingReview.id)}>Edit your review</button>}{existingReview.status==='published'&&pendingRevision&&<p>Your changes are awaiting review.</p>}</div>}{statusError?<><p role="status">Your submission status is temporarily unavailable.</p><button type="button" onClick={()=>void loadSubmissions()}>Retry status</button></>:submissions===null?<p role="status">Loading your submissions…</p>:<>{history.map(item=><div key={`${item.kind}:${item.id}`}><p>{item.kind==='review'?'Previous review':item.kind==='revision'?'Review edit':'Claim request'}: <strong>{item.status}</strong></p><p>{nextSteps(item)}</p></div>)}{more&&<><p>Load the remaining submissions to check your full review history.</p><button type="button" onClick={()=>void loadSubmissions(nextOffset)}>Load more submissions</button></>}</>}
             {revisionError&&<p role="alert">{revisionError}</p>}{revision&&reviewAccount&&<ReviewSubmission key={`${guideKey}:${reviewAccount}:${revision.id}:${revision.editorId}`} draftScope={{...stableSource,accountId:reviewAccount,reviewId:revision.id}} initial={revision.initial} mode="revision" allowTripResponses writeAvailable={canReview} onSubmit={submitRevision}/>}
           </section>
         </>}
