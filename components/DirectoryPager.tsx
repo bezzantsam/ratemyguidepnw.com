@@ -5,20 +5,20 @@ import {useLayoutEffect, useRef, type RefObject} from 'react';
 type DirectoryPagerProps = {
   page: number;
   pages: number;
-  resultsRef: RefObject<HTMLDivElement | null>;
+  listRef: RefObject<HTMLDivElement | null>;
   onPageChange: (page: number) => void;
 };
 
-export default function DirectoryPager({page, pages, resultsRef, onPageChange}: DirectoryPagerProps) {
+export default function DirectoryPager({page, pages, listRef, onPageChange}: DirectoryPagerProps) {
   const requestedPage = useRef<number | null>(null);
 
   useLayoutEffect(() => {
     if (requestedPage.current !== page) return;
     requestedPage.current = null;
-    const heading = resultsRef.current;
-    heading?.focus({preventScroll: true});
-    heading?.scrollIntoView({block: 'start'});
-  }, [page, resultsRef]);
+    const list = listRef.current;
+    list?.querySelector<HTMLAnchorElement>('a[href]')?.focus({preventScroll: true});
+    list?.scrollIntoView({block: 'start'});
+  }, [page, listRef]);
 
   function goToPage(next: number) {
     requestedPage.current = next;

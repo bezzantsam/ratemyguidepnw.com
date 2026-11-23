@@ -92,19 +92,19 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
   await page.setViewportSize({width:390,height:844});
   await q.fill('David');
   const firstGuide=page.locator('.guide-result').first();
-  const firstPageGuide=await firstGuide.getAttribute('href');
+  const firstPageGuide=await firstGuide.locator('h3').textContent();
   for(const [button,pageNumber] of [['Next →',2],['← Previous',1]]){
    await page.getByRole('button',{name:button,exact:true}).click();
    await page.waitForFunction(n=>{
     const heading=document.querySelector('.results-heading');
     const first=document.querySelector('.guide-result');
     if(!heading||!first)return false;
-    const top=heading.getBoundingClientRect().top;
-    return heading===document.activeElement&&heading.textContent.includes('Page '+n+' of')&&
-     top>=-1&&top<5&&first.getBoundingClientRect().top<innerHeight;
+    const top=first.getBoundingClientRect().top;
+    return first===document.activeElement&&heading.textContent.includes('Page '+n+' of')&&
+     top>=-1&&top<innerHeight/3;
    },pageNumber);
    assert.equal(await q.inputValue(),'David');
-   assert.equal((await firstGuide.getAttribute('href'))===firstPageGuide,pageNumber===1);
+   assert.equal((await firstGuide.locator('h3').textContent())===firstPageGuide,pageNumber===1);
   }
   await page.getByRole('button',{name:'Clear all filters'}).click();
   await page.setViewportSize({width:1280,height:800});
