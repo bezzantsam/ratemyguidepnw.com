@@ -89,6 +89,25 @@ test('public MVP discovery and fail-closed identity flow in a browser', {timeout
   function staticFiles(dir){return readdirSync(dir,{withFileTypes:true}).flatMap(e=>e.isDirectory()?staticFiles(join(dir,e.name)):[join(dir,e.name)])}
   for(const file of staticFiles('.next/static'))if(/\.(js|json)$/.test(file))assert.doesNotMatch(readFileSync(file,'utf8'),/Pending Secret Species|Rejected Secret Method/);
   await page.getByRole('button',{name:'Clear all filters'}).click();
+  await page.setViewportSize({width:390,height:844});
+  await q.fill('David');
+  const firstGuide=page.locator('.guide-result').first();
+  const firstPageGuide=await firstGuide.locator('h3').textContent();
+  for(const [button,pageNumber] of [['Next →',2],['← Previous',1]]){
+   await page.getByRole('button',{name:button,exact:true}).click();
+   await page.waitForFunction(n=>{
+    const heading=document.querySelector('.results-heading');
+    const first=document.querySelector('.guide-result');
+    if(!heading||!first)return false;
+    const top=first.getBoundingClientRect().top;
+    return first===document.activeElement&&heading.textContent.includes('Page '+n+' of')&&
+     top>=-1&&top<innerHeight/3;
+   },pageNumber);
+   assert.equal(await q.inputValue(),'David');
+   assert.equal((await firstGuide.locator('h3').textContent())===firstPageGuide,pageNumber===1);
+  }
+  await page.getByRole('button',{name:'Clear all filters'}).click();
+  await page.setViewportSize({width:1280,height:800});
   // A shareable URL survives refresh and profile navigation, including page 2.
   await page.goto(`${origin}/guides?state=Oregon&area=Coos-Coquille&page=2`,{waitUntil:'domcontentloaded'});
   await page.waitForFunction(()=>new URLSearchParams(location.search).get('page')==='2');

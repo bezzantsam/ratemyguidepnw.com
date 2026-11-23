@@ -9,6 +9,7 @@ import {PUBLIC_ORIGIN} from '@/lib/canonical-share';
 import {captainTripKey,captainTripMonths,fetchCaptainTripsForDirectory,type CaptainTrip} from '@/lib/public-captain-trips';
 import {fishingOptions,isLegacyFishingGear} from '@/lib/captain-fishing/catalog.mjs';
 import {fetchPublicGuideRatings,guideRatingKey,type GuideRatingSummary} from '@/lib/public-guide-ratings';
+import DirectoryPager from './DirectoryPager';
 import DirectoryEmptyState from './DirectoryEmptyState';
 import GuideSearchRating from './GuideSearchRating';
 
@@ -36,6 +37,7 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
  const [selectionRestored,setSelectionRestored]=useState(false);
  const [copyStatus,setCopyStatus]=useState('');
  const [fallback,setFallback]=useState(false);
+ const listRef=useRef<HTMLDivElement>(null);
  const resultsRef=useRef<HTMLDivElement>(null);
  const searchRef=useRef<HTMLInputElement>(null),areaRef=useRef<HTMLSelectElement>(null),waterRef=useRef<HTMLSelectElement>(null),speciesRef=useRef<HTMLSelectElement>(null),methodRef=useRef<HTMLSelectElement>(null),allRef=useRef<HTMLButtonElement>(null);
  const gearRef=useRef<HTMLSelectElement>(null),monthRef=useRef<HTMLSelectElement>(null);
@@ -214,7 +216,7 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
    {matchingCharters.length>0&&<span>{matchingCharters.length} charter {matchingCharters.length===1?'offering':'offerings'}</span>}
    <span>{q.trim()&&captainFilters?.query===''?matchedWater:q.trim()?'Closest matches first':'A–Z'} · Page {current} of {pages}</span>
   </div>
-  <div className="guide-results">{visibleGuides.map(g=>{
+  <div ref={listRef} className="guide-results">{visibleGuides.map(g=>{
    const captainTrips=captainFilters?matchingCaptainTrips(g,captainFilters):[];
    const {species:targets,methods,trips,waters}=directoryFisheryFacets(g,state);
    const displayWaters=matchedWater&&waters.includes(matchedWater)?[matchedWater,...waters.filter(water=>water!==matchedWater)]:waters;
@@ -255,9 +257,6 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
    </li>)}</ul>
   </section>}
   {!filtered.length&&!matchingCharters.length&&<DirectoryEmptyState entries={entries} selection={selection} onChoose={next=>{change(next);resultsRef.current?.focus()}}/>}
-  {pages>1&&<div className="pager"><button disabled={current===1} onClick={()=>change({page:Math.max(1,current-1)})}>← Previous</button>
-   <span>Page {current} / {pages}</span>
-   <button disabled={current===pages} onClick={()=>change({page:Math.min(pages,current+1)})}>Next →</button>
-  </div>}
+  <DirectoryPager page={current} pages={pages} listRef={listRef} onPageChange={page=>change({page})}/>
  </section>;
 }
