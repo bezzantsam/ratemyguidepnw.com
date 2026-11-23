@@ -18,8 +18,9 @@ function compile(path, imports={}) {
 const model=compile('components/launch/submission-model.ts');
 const trip=compile('components/launch/trip-responses.ts');
 const draftStorage=compile('components/launch/review-draft-storage.ts',{'./submission-model':model,'./trip-responses':trip});
-const details=compile('components/launch/TripDetails.tsx',{'./trip-responses':trip});
-const views=compile('components/launch/SubmissionViews.tsx',{'./submission-model':model,'./trip-responses':trip,'./TripDetails':details,'./review-draft-storage':draftStorage});
+const stars=compile('components/launch/StarRating.tsx');
+const details=compile('components/launch/TripDetails.tsx',{'./trip-responses':trip,'./StarRating':stars});
+const views=compile('components/launch/SubmissionViews.tsx',{'./submission-model':model,'./trip-responses':trip,'./TripDetails':details,'./StarRating':stars,'./review-draft-storage':draftStorage});
 const queue=compile('components/launch/ModerationQueue.tsx',{'./submission-model':model,'./SubmissionViews':views});
 const published=compile('components/launch/PublishedReviews.tsx',{'./submission-model':model,'./ReviewShare':{ReviewShare:()=>null},'./ReportReview':{ReportReview:()=>null}});
 const receiptId='10000000-0000-4000-8000-000000000001';
@@ -144,9 +145,19 @@ test('new form places explicit booking and unselected dimension controls before 
   const html=renderToStaticMarkup(React.createElement(views.ReviewSubmission,{onSubmit:async()=>({status:'pending'}),allowTripResponses:true}));
   const order=['Overall quality','Would you book again?','Rate individual aspects (optional)','Your relationship','Your experience'];
   assert.deepEqual(order.map(text=>html.indexOf(text)).sort((a,b)=>a-b),order.map(text=>html.indexOf(text)));
-  assert.equal((html.match(/type="radio"/g)??[]).length,2);
+  const booking=html.match(/<legend>Would you book again\?<\/legend>([\s\S]*?)<\/fieldset>/)[1];
+  assert.equal((booking.match(/type="radio"/g)??[]).length,2);
   assert.doesNotMatch(html,/checked=""/);
-  assert.equal((html.match(/selected="">Not rated/g)??[]).length,7);
+  for(const label of ['Overall quality',...model.REVIEW_DIMENSIONS.map(field=>field.label)]) {
+    const field=html.split(`>${label}</legend>`)[1].split('</fieldset>')[0];
+    const radios=field.match(/<input[^>]+type="radio"[^>]*>/g)??[];
+    assert.equal(radios.length,5,label);
+    radios.forEach((radio,index)=>{
+      const score=index+1;
+      assert.ok(radio.includes(`aria-label="${score} ${score===1?'star':'stars'}"`),label);
+    });
+    assert.equal(radios.some(radio=>radio.includes('required=""')),label==='Overall quality',label);
+  }
 });
 
 test('published detail presents explicit No and only the dimension answers actually supplied',()=>{
@@ -165,12 +176,12 @@ test('published detail presents explicit No and only the dimension answers actua
 
 test('form leads with safety, survey ratings and catch and asks for organization only once',()=>{
   const html=renderToStaticMarkup(React.createElement(views.ReviewSubmission,{onSubmit:async()=>({status:'pending'}),allowTripResponses:true}));
-  const ordered=['Overall quality','Would you book again?','>Safety</label>','>Kindness</label>','>Organization</label>','>Finding fish</label>','How many fish did your group land?','Your experience'];
+  const ordered=['Overall quality','Would you book again?','>Safety</legend>','>Kindness</legend>','>Organization</legend>','>Finding fish</legend>','How many fish did your group land?','Your experience'];
   const offsets=ordered.map(label=>html.indexOf(label));
   assert.ok(offsets.every(offset=>offset>=0));
   assert.deepEqual(offsets,[...offsets].sort((a,b)=>a-b));
-  assert.equal((html.match(/>Organization<\/label>/g)??[]).length,1);
-  assert.equal((html.match(/>Effort<\/label>/g)??[]).length,1);
+  assert.equal((html.match(/>Organization<\/legend>/g)??[]).length,1);
+  assert.equal((html.match(/>Effort<\/legend>/g)??[]).length,1);
   assert.match(html,/Include fish your group released\. Enter 0 if none landed\./);
 });
 

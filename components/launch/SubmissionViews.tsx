@@ -3,6 +3,7 @@
 import {useEffect, useId, useRef, useState} from 'react';
 import {type ClaimDraft, REVIEW_DIMENSIONS, type ReviewDimension, type ReviewDimensions, type ReviewRatingPatch, type RelationshipDisclosure, type ReviewDraft, type SubmissionReceipt, isSubmissionReceipt, validateClaimDraft, validateReviewDraft} from './submission-model';
 import {TripDetails,TripFields} from './TripDetails';
+import {StarRating} from './StarRating';
 import {FISH_LANDED_FIELD,REVIEW_TRIP_RATINGS,decodeTripResponses,encodeTripResponses,isTripHighlight} from './trip-responses';
 import {clearReviewDraft,readReviewDraft,reviewDraftStorageKey,saveReviewDraft,type ReviewDraftScope,type SavedReviewDraft} from './review-draft-storage';
 
@@ -200,10 +201,7 @@ export function ReviewSubmission({onSubmit, onCheckBeforeRetry, allowTripRespons
   return <form onSubmit={submit} className="card launch-form">
     <h3>{mode==='revision'?'Edit your review':'Share your trip experience'}</h3>
     {mode==='revision'&&<p>Update your firsthand experience. You’ll see whether your changes are published or pending after you save.</p>}
-    <label htmlFor={`${prefix}-quality`}>Overall quality</label>
-    <select id={`${prefix}-quality`} value={quality} onChange={event=>change({quality:event.target.value})} required>
-      <option value="">Choose a rating</option>{[1,2,3,4,5].map(value=><option key={value} value={value}>{value} / 5</option>)}
-    </select>
+    <StarRating label="Overall quality" value={quality} onChange={quality=>change({quality})} required />
     <fieldset className="review-book-again">
       <legend>Would you book again?</legend>
       <div className="review-book-again-options">
@@ -229,8 +227,7 @@ export function ReviewSubmission({onSubmit, onCheckBeforeRetry, allowTripRespons
     {allowTripResponses && tripDraft && <TripDetails draft={tripDraft} onChange={tripDraft=>change({tripDraft})}>
       <label htmlFor={`${prefix}-month`}>Trip month (optional)</label>
       <input type="month" id={`${prefix}-month`} value={tripMonth} onChange={event=>change({tripMonth:event.target.value})} />
-      <label htmlFor={`${prefix}-intensity`}>Trip intensity (optional)</label>
-      <select id={`${prefix}-intensity`} value={intensity} onChange={event=>change({intensity:event.target.value})}><option value="">Not answered</option>{[1,2,3,4,5].map(value=><option key={value} value={value}>{value} / 5</option>)}</select>
+      <StarRating label="Trip intensity (optional)" value={intensity} onChange={intensity=>change({intensity})} />
     </TripDetails>}
     <label htmlFor={`${prefix}-body`}>Your experience</label>
     <p>Write about a trip you personally took. Anglers can flag reviews for moderator attention. Signing in confirms your account, not that a trip occurred.</p>
@@ -254,16 +251,8 @@ function ReviewDimensionFields({ratings,onChange,children}:{
   onChange:(key:ReviewDimension,value:string)=>void;
   children?:React.ReactNode;
 }) {
-  const prefix=useId();
   function renderScore({key,label}:typeof REVIEW_DIMENSIONS[number]) {
-    const id=`${prefix}-${key}`;
-    return <div key={key}>
-      <label htmlFor={id}>{label}</label>
-      <select id={id} value={ratings[key]??''} onChange={event=>onChange(key,event.target.value)}>
-        <option value="">Not rated</option>
-        {[1,2,3,4,5].map(value=><option key={value} value={value}>{value} / 5</option>)}
-      </select>
-    </div>;
+    return <StarRating key={key} label={label} value={String(ratings[key]??'')} onChange={value=>onChange(key,value)} />;
   }
 
   return <fieldset className="review-dimensions">
