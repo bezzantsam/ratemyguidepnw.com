@@ -1,6 +1,7 @@
 'use client';
 
 import {useId} from 'react';
+import {StarRating} from './StarRating';
 import {FISH_LANDED_MAX,TRIP_FIELDS,isTripHighlight,type TripDraft,type TripField} from './trip-responses';
 
 /** Optional, versioned questions; the caller must validate before submission. */
@@ -32,7 +33,12 @@ export function TripFields({fields,draft,onChange}:{
       const id=`${prefix}-${field.key}`, entry=draft[field.key]??'';
       const highlight=isTripHighlight(field.key);
       const minuteMode=entry==='na'?'na':entry.startsWith('value:')?'value':'';
-      const choices=field.kind==='boolean'?[{value:'yes',label:'Yes'},{value:'no',label:'No'}]:field.kind==='rating'?[1,2,3,4,5].map(n=>({value:String(n),label:`${n} / 5`})):(field.options??[]);
+      if(field.kind==='rating') {
+        const score=entry.startsWith('value:') ? entry.slice(6) : highlight ? '' : entry;
+        return <StarRating key={field.key} label={field.label} value={score} allowNotApplicable={!highlight}
+          onChange={value=>update(field.key, value==='' || value==='na' ? value : `value:${value}`)} />;
+      }
+      const choices=field.kind==='boolean'?[{value:'yes',label:'Yes'},{value:'no',label:'No'}]:(field.options??[]);
       if(field.kind==='count')return <div key={field.key}>
         <label htmlFor={id}>{field.label} (optional)</label>
         <input id={id} type="number" inputMode="numeric" min={0} max={FISH_LANDED_MAX} step={1}

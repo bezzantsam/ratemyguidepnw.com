@@ -43,7 +43,7 @@ test('two separate unclaimed WA guides can be reviewed, with pending privacy and
   let pending=false;
   let submitAttempts=0;
   let readinessError=false;
-  const authorContext=await browser.newContext({viewport:{width:390,height:667},serviceWorkers:'block'});
+  const authorContext=await browser.newContext({viewport:{width:390,height:667},hasTouch:true,serviceWorkers:'block'});
   const anonymous=await browser.newContext({viewport:{width:1366,height:850},serviceWorkers:'block'});
   try{
     await authorContext.addInitScript(({origin,session})=>{
@@ -130,20 +130,27 @@ test('two separate unclaimed WA guides can be reviewed, with pending privacy and
     assert.equal(await booking.getByRole('radio',{checked:true}).count(),0);
     assert.ok((await booking.boundingBox()).y<(await optional.boundingBox()).y);
     assert.equal(await phone.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
-    assert.deepEqual(await optional.getByRole('combobox').evaluateAll(items=>items.map(item=>item.value)),Array(4).fill(''));
-    await phone.getByLabel('Overall quality').selectOption('5');
+    const group=name=>phone.getByRole('group',{name,exact:true});
+    const star=(name,score)=>group(name).getByRole('radio',{name:score===1?'1 star':`${score} stars`,exact:true});
+    for(const name of ['Overall quality','Safety','Kindness','Organization','Finding fish']){
+      assert.equal(await group(name).getByRole('radio').count(),5);
+      assert.equal(await group(name).getByRole('radio',{checked:true}).count(),0);
+    }
+    await star('Overall quality',5).tap();
     await booking.getByRole('radio',{name:'Yes',exact:true}).focus();
     await phone.keyboard.press('ArrowRight');
     assert.equal(await booking.getByRole('radio',{name:'No',exact:true}).isChecked(),true);
-    await optional.getByLabel('Kindness',{exact:true}).selectOption('value:4');
-    await optional.getByLabel('Organization',{exact:true}).selectOption('value:3');
-    await optional.getByLabel('Finding fish',{exact:true}).selectOption('value:5');
+    await star('Kindness',3).tap();
+    await star('Kindness',3).press('ArrowRight');
+    assert.equal(await star('Kindness',4).isChecked(),true);
+    await star('Organization',3).tap();
+    await star('Finding fish',5).tap();
     const fishLanded=phone.getByLabel('How many fish did your group land?',{exact:false});
     assert.equal(await fishLanded.inputValue(),'');
     await fishLanded.fill('0');
     await optional.getByText('More ratings (optional)',{exact:true}).click();
-    await optional.getByLabel('Professionalism').selectOption('4');
-    await optional.getByLabel('Safety').selectOption('2');
+    await star('Professionalism',4).tap();
+    await star('Safety',2).tap();
     await phone.getByLabel('Your relationship to this guide or business').selectOption('none');
     await phone.getByLabel('Your experience').fill('Private firsthand fixture trip.');
     await phone.getByLabel('I personally took this trip.').check();

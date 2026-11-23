@@ -11,6 +11,13 @@ const reviewer='10000000-0000-4000-8000-000000000001',operator='20000000-0000-40
 const jwt=id=>`${Buffer.from('{"alg":"none"}').toString('base64url')}.${Buffer.from(JSON.stringify({sub:id,exp:Math.floor(Date.now()/1000)+3600,role:'authenticated'})).toString('base64url')}.fixture`;
 const tokens={[reviewer]:jwt(reviewer),[operator]:jwt(operator),[reporter]:jwt(reporter)};
 
+function rating(scope,label){
+ return scope.getByRole('group',{name:label,exact:true});
+}
+function star(scope,label,score){
+ return rating(scope,label).getByRole('radio',{name:score===1?'1 star':`${score} stars`,exact:true});
+}
+
 async function closeFixtureContext(context){
  // Keep request interception installed until every application document has stopped.
  // Closing a live auth page can otherwise release a late RPC while routes are torn down.
@@ -99,12 +106,12 @@ test('reviews and edits publish automatically, while flags wait for an authorize
   await page.waitForURL(ratingProfile);
   await page.getByText('No published reviews yet.').waitFor();
   await page.getByText('Fished with this guide? Be the first to share your experience.').waitFor();
-  await page.getByLabel('Overall quality').selectOption('5');
+  await star(page,'Overall quality',5).check();
   await page.getByRole('radio',{name:'Yes',exact:true}).check();
-  await page.getByLabel('Organization',{exact:true}).selectOption('value:3');
+  await star(page,'Organization',3).check();
   await page.getByLabel('How many fish did your group land?',{exact:false}).fill('0');
   await page.getByText('More ratings (optional)',{exact:true}).click();
-  await page.getByLabel('Communication',{exact:true}).selectOption('4');await page.getByLabel('Value',{exact:true}).selectOption('3');
+  await star(page,'Communication',4).check();await star(page,'Value',3).check();
   await page.getByLabel('Your relationship to this guide or business').selectOption('none');await page.getByLabel('Your experience').fill('A good firsthand trip.');await page.getByLabel('I personally took this trip.').check();
   await page.getByText('Tell us more',{exact:true}).click();await page.getByLabel('Trip month (optional)').fill('2026-07');
   await page.getByRole('button',{name:'Submit review'}).click();
@@ -146,13 +153,14 @@ test('reviews and edits publish automatically, while flags wait for an authorize
   await page.setViewportSize({width:390,height:844});await page.reload({waitUntil:'domcontentloaded'});await page.locator('#reviews').getByText('A good firsthand trip.',{exact:true}).waitFor();assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
   await page.getByRole('button',{name:'Edit your review'}).click();
   const editor=page.locator('form').filter({has:page.getByRole('heading',{name:'Edit your review'})});
-  await editor.getByText('More ratings (optional)',{exact:true}).click();assert.equal(await editor.getByLabel('Communication',{exact:true}).inputValue(),'4');assert.equal(await editor.getByRole('radio',{name:'Yes',exact:true}).isChecked(),true);
-  const organization=editor.getByLabel('Organization',{exact:true});assert.equal(await organization.inputValue(),'value:3');await organization.selectOption('');
-  assert.equal(await editor.getByLabel('How many fish did your group land?',{exact:false}).inputValue(),'0');await editor.getByLabel('Value',{exact:true}).selectOption('');
-  await editor.getByLabel('Overall quality').selectOption('4');await editor.getByLabel('Your experience').fill('A good firsthand trip with a corrected detail.');await editor.getByLabel('I personally took this trip.').check();
+  await editor.getByText('More ratings (optional)',{exact:true}).click();assert.equal(await star(editor,'Communication',4).isChecked(),true);assert.equal(await editor.getByRole('radio',{name:'Yes',exact:true}).isChecked(),true);
+  assert.equal(await star(editor,'Organization',3).isChecked(),true);
+  await rating(editor,'Organization').getByRole('button',{name:'Clear',exact:true}).click();
+  assert.equal(await editor.getByLabel('How many fish did your group land?',{exact:false}).inputValue(),'0');await rating(editor,'Value').getByRole('button',{name:'Clear',exact:true}).click();
+  await star(editor,'Overall quality',4).check();await editor.getByLabel('Your experience').fill('A good firsthand trip with a corrected detail.');await editor.getByLabel('I personally took this trip.').check();
   await page.reload({waitUntil:'domcontentloaded'});await page.getByRole('button',{name:'Edit your review'}).click();await editor.getByLabel('Your experience').waitFor();
-  assert.equal(await editor.getByLabel('Your experience').inputValue(),'A good firsthand trip with a corrected detail.');assert.equal(await editor.getByLabel('Overall quality').inputValue(),'4');
-  await editor.getByText('More ratings (optional)',{exact:true}).click();assert.equal(await editor.getByLabel('Value',{exact:true}).inputValue(),'');assert.equal(await editor.getByLabel('Organization',{exact:true}).inputValue(),'');assert.equal(await editor.getByLabel('I personally took this trip.').isChecked(),true);
+  assert.equal(await editor.getByLabel('Your experience').inputValue(),'A good firsthand trip with a corrected detail.');assert.equal(await star(editor,'Overall quality',4).isChecked(),true);
+  await editor.getByText('More ratings (optional)',{exact:true}).click();assert.equal(await rating(editor,'Value').getByRole('radio',{checked:true}).count(),0);assert.equal(await rating(editor,'Organization').getByRole('radio',{checked:true}).count(),0);assert.equal(await editor.getByLabel('I personally took this trip.').isChecked(),true);
   await editor.getByRole('button',{name:'Save changes',exact:true}).click();
   await page.getByRole('status').filter({hasText:'Review edit: approved'}).getByText('Your changes have been published.',{exact:true}).waitFor();
   await page.locator('#reviews').getByText('A good firsthand trip with a corrected detail.',{exact:true}).waitFor();await page.getByRole('link',{name:'4.0 / 5 · 1 review'}).waitFor();
@@ -267,38 +275,40 @@ test('phone review drafts survive interruption, reload and auth refresh without 
   async function fill(id,body){
    await page.goto(origin+guidePath(id),{waitUntil:'domcontentloaded'});
    await text.fill(body);
-   await page.getByLabel('Overall quality').selectOption('5');await page.getByRole('radio',{name:'No',exact:true}).check();
+   await star(page,'Overall quality',5).check();await page.getByRole('radio',{name:'No',exact:true}).check();
    await page.getByLabel('Your relationship to this guide or business').selectOption('none');
    await page.getByLabel('I personally took this trip.').check();
   }
   // This is still an unfinished draft: no submit or explicit save has occurred.
   await fill(first,expectedText);
-  await page.getByLabel('Safety',{exact:true}).selectOption('4');
-  await page.getByLabel('Organization',{exact:true}).selectOption('value:3');
+  await star(page,'Safety',4).check();
+  await star(page,'Organization',3).check();
   await page.getByLabel('How many fish did your group land?',{exact:false}).fill('0');
   await page.getByText('More ratings (optional)',{exact:true}).click();
-  await page.getByLabel('Communication',{exact:true}).selectOption('2');
+  await star(page,'Communication',2).check();
   await page.getByText('Tell us more',{exact:true}).click();
   await page.getByLabel('Trip month (optional)').fill('2026-07');
-  await page.getByLabel('Trip intensity (optional)').selectOption('3');
+  await star(page,'Trip intensity (optional)',3).check();
+  await rating(page,'How was the instruction you received?').getByRole('radio',{name:'Not applicable',exact:true}).check();
   await page.getByLabel('Was a dog present?',{exact:true}).selectOption('value:no');
   await page.getByLabel('What duration did you agree on, in minutes?',{exact:true}).selectOption('value');
   // Persist an incomplete optional answer as typed, without submission validation erasing it.
   await page.reload({waitUntil:'domcontentloaded'});
   await text.waitFor();
   assert.equal(await text.inputValue(),expectedText);
-  assert.equal(await page.getByLabel('Overall quality').inputValue(),'5');
+  assert.equal(await star(page,'Overall quality',5).isChecked(),true);
   assert.equal(await page.getByRole('radio',{name:'No',exact:true}).isChecked(),true);
   assert.equal(await page.getByLabel('Your relationship to this guide or business').inputValue(),'none');
   assert.equal(await page.getByLabel('I personally took this trip.').isChecked(),true);
-  assert.equal(await page.getByLabel('Safety',{exact:true}).inputValue(),'4');
-  assert.equal(await page.getByLabel('Organization',{exact:true}).inputValue(),'value:3');
+  assert.equal(await star(page,'Safety',4).isChecked(),true);
+  assert.equal(await star(page,'Organization',3).isChecked(),true);
   assert.equal(await page.getByLabel('How many fish did your group land?',{exact:false}).inputValue(),'0');
   await page.getByText('More ratings (optional)',{exact:true}).click();
-  assert.equal(await page.getByLabel('Communication',{exact:true}).inputValue(),'2');
+  assert.equal(await star(page,'Communication',2).isChecked(),true);
   await page.getByText('Tell us more',{exact:true}).click();
   assert.equal(await page.getByLabel('Trip month (optional)').inputValue(),'2026-07');
-  assert.equal(await page.getByLabel('Trip intensity (optional)').inputValue(),'3');
+  assert.equal(await star(page,'Trip intensity (optional)',3).isChecked(),true);
+  assert.equal(await rating(page,'How was the instruction you received?').getByRole('radio',{name:'Not applicable',exact:true}).isChecked(),true);
   assert.equal(await page.getByLabel('Was a dog present?',{exact:true}).inputValue(),'value:no');
   assert.equal(await page.getByLabel('What duration did you agree on, in minutes?',{exact:true}).inputValue(),'value');
   assert.equal(await page.getByLabel('Minutes',{exact:true}).inputValue(),'');

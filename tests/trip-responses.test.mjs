@@ -9,6 +9,8 @@ function compile(path,imports={}) {
   const exports={};vm.runInNewContext(code,{exports,require:name=>imports[name]??require(name)});return exports;
 }
 const model=compile('components/launch/trip-responses.ts');
+const stars=compile('components/launch/StarRating.tsx');
+const views=compile('components/launch/TripDetails.tsx',{react:{useId:()=>':test:'},'./trip-responses':model,'./StarRating':stars});
 function plain(value){return JSON.parse(JSON.stringify(value))}
 function find(node,predicate){if(!node||typeof node!=='object')return;if(predicate(node))return node;for(const child of [node.props?.children].flat(Infinity)){const found=find(child,predicate);if(found)return found}}
 
@@ -34,7 +36,6 @@ test('editing round trips recognized answers and rejects unknown or malformed ve
 });
 
 test('optional controls start unanswered and never collect names or free text',()=>{
-  const views=compile('components/launch/TripDetails.tsx',{react:{useId:()=>':test:'},'./trip-responses':model});
   let draft={};const render=()=>views.TripFields({fields:model.TRIP_FIELDS,draft,onChange:value=>{draft=value}});
   assert.equal(views.TripDetails({draft,onChange:()=>{}}).type,'details');
   let tree=render();
@@ -79,11 +80,24 @@ test('cleared survey ratings and catch display as unanswered without changing st
     'Were children on the trip? Not applicable','Kindness: Unanswered','Organization: Unanswered',
     'Finding fish: Unanswered','Fish landed by the group: Unanswered',
   ]);
-  const views=compile('components/launch/TripDetails.tsx',{react:{useId:()=>':test:'},'./trip-responses':model});
   const tree=views.TripFields({fields:[...model.REVIEW_TRIP_RATINGS,model.FISH_LANDED_FIELD],draft,onChange:()=>{}});
-  for(const key of ['kindness','organization','fishiness','fish_landed']) {
-    const field=find(tree,node=>(node.type==='select'||node.type==='input')&&node.props.id.endsWith('-'+key));
+  for(const {label} of model.REVIEW_TRIP_RATINGS) {
+    const field=find(tree,node=>node.type===stars.StarRating&&node.props.label===label);
     assert.equal(field.props.value,'');
+    assert.ok(!field.props.allowNotApplicable);
   }
-  assert.equal(find(tree,node=>node.type==='option'&&node.props.value==='na'),undefined);
+  const catchField=find(tree,node=>node.type==='input'&&node.props.id.endsWith('-fish_landed'));
+  assert.equal(catchField.props.value,'');
+});
+
+test('trip rating input preserves the difference between a score, not applicable, and a clear',()=>{
+  const field=model.TRIP_FIELDS.find(field=>field.key==='guide_patience');
+  let draft={};
+  const render=()=>find(views.TripFields({fields:[field],draft,onChange:next=>{draft=next}}),node=>node.type===stars.StarRating);
+  assert.ok(render().props.allowNotApplicable);
+  for(const [choice,stored] of [['4','value:4'],['na','na'],['',undefined]]) {
+    render().props.onChange(choice);
+    assert.equal(draft.guide_patience,stored);
+    assert.equal(render().props.value,choice);
+  }
 });
