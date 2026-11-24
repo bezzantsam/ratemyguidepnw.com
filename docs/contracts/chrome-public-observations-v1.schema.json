@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/bezzantsam/ratemyguidepnw.com/blob/main/docs/contracts/chrome-public-observations-v1.schema.json",
+  "title": "Chrome-AI → public consumers: reviewed historical Buoy 10 Chinook observations (v1)",
+  "description": "Versioned public-only contract proposal. NOT a live endpoint. Zero private model, forecast, reviewer, or guide customer fields. RatemyguidePNW may consume this only when Chrome-AI publishes a separately approved artifact.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "release_id",
+    "publication_status",
+    "species",
+    "fishery_id",
+    "released_at_utc",
+    "source",
+    "target_metric",
+    "observation_scope",
+    "observations",
+    "limitations"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "release_id": {
+      "type": "string",
+      "minLength": 12,
+      "maxLength": 120,
+      "pattern": "^[a-zA-Z0-9_-]+$"
+    },
+    "publication_status": {
+      "const": "independently_reviewed_public_historical"
+    },
+    "species": {
+      "const": "Chinook"
+    },
+    "fishery_id": {
+      "const": "wdfw_buoy10"
+    },
+    "released_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "agency",
+        "url",
+        "source_sha256",
+        "source_updated_on",
+        "preliminary"
+      ],
+      "properties": {
+        "agency": {
+          "const": "WDFW"
+        },
+        "url": {
+          "const": "https://wdfw.wa.gov/fishing/reports/creel/buoy10"
+        },
+        "source_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source_updated_on": {
+          "type": "string",
+          "format": "date"
+        },
+        "preliminary": {
+          "const": true
+        }
+      }
+    },
+    "target_metric": {
+      "const": "retained_chinook_per_sampled_angler"
+    },
+    "observation_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "period",
+        "coverage_start",
+        "coverage_end",
+        "unit",
+        "spatial_scope"
+      ],
+      "properties": {
+        "period": {
+          "const": "historical_august_2026_only"
+        },
+        "coverage_start": {
+          "const": "2026-08-01"
+        },
+        "coverage_end": {
+          "const": "2026-08-31"
+        },
+        "unit": {
+          "const": "fish_per_sampled_angler"
+        },
+        "spatial_scope": {
+          "const": "WDFW Buoy 10 creel sampling"
+        }
+      }
+    },
+    "observations": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 31,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "date",
+          "sampled_anglers",
+          "retained_chinook",
+          "retained_chinook_per_sampled_angler"
+        ],
+        "properties": {
+          "date": {
+            "type": "string",
+            "pattern": "^2026-08-(0[1-9]|[12][0-9]|3[01])$"
+          },
+          "sampled_anglers": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5000
+          },
+          "retained_chinook": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10000
+          },
+          "retained_chinook_per_sampled_angler": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 2
+          }
+        }
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 10,
+        "maxLength": 600
+      },
+      "minItems": 2,
+      "maxItems": 12
+    }
+  },
+  "x_validation_requirements": [
+    "Schema validation alone is insufficient. A release test MUST recalculate each ratio from the integer counts with documented numeric tolerance, enforce strictly increasing unique dates, ensure sample/retention status was independently approved, and check a pinned source hash against reviewed original bytes.",
+    "Do not publish zeroes for unsampled days, closures, or unknown Chinook retention. Exclude all such dates rather than changing the denominator.",
+    "No model predictions, prospective accuracy, personal identifiers, guide reviews, ratings, or raw private database records may appear."
+  ]
+}
