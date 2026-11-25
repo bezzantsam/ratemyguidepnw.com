@@ -70,7 +70,7 @@ export const directoryEntries:DirectoryEntry[]=[
    advertisedSpecies:[...new Set([...sourced.advertisedSpecies,...tags.filter(x=>x.kind==='species').map(x=>x.value)])],
    advertisedMethods:[...new Set([...sourced.advertisedMethods,...tags.filter(x=>x.kind==='method').map(x=>x.value)])],
    ...(fishingTags.length?{fishingTags}:{}),
-   searchAliases:[...(g.preferredName?[g.name]:[]),...guideSearchTerms(g.registration),...sourced.sourceNames,...aliases],
+   searchAliases:[...(g.registrySearchName?[g.registrySearchName]:[]),...guideSearchTerms(g.registration),...sourced.sourceNames,...aliases],
    ...(businessKeywords.length?{businessSearchKeywords:businessKeywords}:{}),
    href:'/guides/'+guideSlug(g),source:'Oregon registry',
  })}),

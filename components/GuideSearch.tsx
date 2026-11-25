@@ -9,7 +9,7 @@ export default function GuideSearch({guides}:{guides:RegistryGuide[]}){
  const [page,setPage]=useState(1);
  const pageSize=60;
  const areas=['All areas',...Array.from(new Set(guides.flatMap(g=>g.areas))).sort((a,b)=>a.localeCompare(b))];
- const filtered=useMemo(()=>guides.filter(g=>(!q||[g.preferredName,g.name,g.business||'',g.registration,...g.areas].join(' ').toLowerCase().includes(q.toLowerCase()))&&(area==='All areas'||g.areas.includes(area))).sort((a,b)=>(a.preferredName??a.name).localeCompare(b.preferredName??b.name,'en',{sensitivity:'base'})||a.registration.localeCompare(b.registration)),[guides,q,area]);
+ const filtered=useMemo(()=>guides.filter(g=>(!q||[g.preferredName??g.name,g.registrySearchName,g.business||'',g.registration,...g.areas].join(' ').toLowerCase().includes(q.toLowerCase()))&&(area==='All areas'||g.areas.includes(area))).sort((a,b)=>(a.preferredName??a.name).localeCompare(b.preferredName??b.name,'en',{sensitivity:'base'})||a.registration.localeCompare(b.registration)),[guides,q,area]);
  const pages=Math.max(1,Math.ceil(filtered.length/pageSize));
  const currentPage=Math.min(page,pages);
  const shown=filtered.slice((currentPage-1)*pageSize,currentPage*pageSize);

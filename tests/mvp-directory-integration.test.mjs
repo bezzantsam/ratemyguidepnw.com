@@ -270,6 +270,7 @@ test('preferred names, registered names and business keywords find the same guid
  const original=actualDirectory(false).directory.directoryEntries;
  const bigEnergy=directory.getDirectoryEntry('OG.0004049');
  assert.ok(bigEnergy.searchAliases.includes('EJ'));
+ assert.doesNotMatch(JSON.stringify(bigEnergy),/Edwin/i);
  assert.equal(bigEnergy.searchAliases.includes('TJ'),false);
  assert.equal(bigEnergy.searchAliases.includes('T.J.'),false);
  for(const query of ['EJ','EJ Big Energy','EJ Snyder']){
@@ -281,7 +282,7 @@ test('preferred names, registered names and business keywords find the same guid
   assert.equal(matches.includes(bigEnergy.id),false,query);
  }
  for(const [id,name,queries] of [
-  ['OG.0004049','EJ Snyder',['EJ Snyder','Edwin Snyder','TJ','T.J. Big Energy','TJ Big Energy Guide Service','Big Energy T.J.']],
+  ['OG.0004049','EJ Snyder',['EJ Snyder','TJ','T.J. Big Energy','TJ Big Energy Guide Service','Big Energy T.J.']],
   ['OG.0002193','Rod Shulley',['Roderick Shulley','Rod','Rod Shulley','Rod Reel Em Up']],
  ]){
   const entry=directory.getDirectoryEntry(id);
