@@ -1,0 +1,4 @@
+{"test_id": "SYN-001", "synthetic": true, "scenario": "Two 75-foot hulls at the same dock", "expected_decision": "separate_vessels", "evidence": "Two separately reviewed hull identities appear in the registry."}
+{"test_id": "SYN-002", "synthetic": true, "scenario": "Relief captain on the same documented hull", "expected_decision": "same_vessel", "evidence": "The official hull identifier and reviewed registry match persist across both assignments."}
+{"test_id": "SYN-003", "synthetic": true, "scenario": "A new hull operates under the former boat name", "expected_decision": "separate_vessels", "evidence": "Dated replacement evidence identifies distinct hulls."}
+{"test_id": "SYN-004", "synthetic": true, "scenario": "Two publishers use the same boat name with inconsistent lengths", "expected_decision": "hold", "evidence": "Available evidence does not distinguish a measurement difference from another hull."}

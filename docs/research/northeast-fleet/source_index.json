@@ -1,0 +1,311 @@
+{
+  "checked_date": "2026-11-25",
+  "sources": [
+    {
+      "url": "https://captainronsfishermen.com/the-fishermen",
+      "publisher_site": "captainronsfishermen.com",
+      "roles": [
+        "vessel or operating evidence"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://captjohn.com/about/our-fleet/",
+      "publisher_site": "captjohn.com",
+      "roles": [
+        "supporting page"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://gamblerfishing.net/",
+      "publisher_site": "gamblerfishing.net",
+      "roles": [
+        "vessel or operating evidence"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://helen-h.com/angler-3/",
+      "publisher_site": "helen-h.com",
+      "roles": [
+        "vessel or operating evidence"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://helen-h.com/capt-john-and-son-2/",
+      "publisher_site": "helen-h.com",
+      "roles": [
+        "vessel or operating evidence"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://helen-h.com/fish-hawk/",
+      "publisher_site": "helen-h.com",
+      "roles": [
+        "vessel or operating evidence"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://helen-h.com/helen-h-trips/",
+      "publisher_site": "helen-h.com",
+      "roles": [
+        "vessel or operating evidence"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://helen-h.com/isabella-h-2/",
+      "publisher_site": "helen-h.com",
+      "roles": [
+        "vessel or operating evidence"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://helen-h.com/nantucket-shoals/",
+      "publisher_site": "helen-h.com",
+      "roles": [
+        "vessel or operating evidence"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://helen-h.com/nantucket-sound-4/",
+      "publisher_site": "helen-h.com",
+      "roles": [
+        "vessel or operating evidence"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://helen-h.com/private-fishing-charters/",
+      "publisher_site": "helen-h.com",
+      "roles": [
+        "supporting page"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://helen-h.com/starfish/",
+      "publisher_site": "helen-h.com",
+      "roles": [
+        "vessel or operating evidence"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://helen-h.com/tos/",
+      "publisher_site": "helen-h.com",
+      "roles": [
+        "booking and chatbot terms"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://helen-h.com/vessels/",
+      "publisher_site": "helen-h.com",
+      "roles": [
+        "roster",
+        "vessel or operating evidence"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://jamaicaii.com/fishing/fluke-marathon/",
+      "publisher_site": "jamaicaii.com",
+      "roles": [
+        "vessel or operating evidence"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://prowler5.com/reports.htm",
+      "publisher_site": "prowler5.com",
+      "roles": [
+        "supporting page"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://prowler5.com/schedule.htm",
+      "publisher_site": "prowler5.com",
+      "roles": [
+        "vessel or operating evidence"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://www.ahnj.com/ahnj/Accessibility/",
+      "publisher_site": "www.ahnj.com",
+      "roles": [
+        "accessibility policy"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://www.ahnj.com/ahnj/Harbor/Fishing%20%26%20Cruising%20Info/Charter%20Boats/",
+      "publisher_site": "www.ahnj.com",
+      "roles": [
+        "separate charter roster"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://www.ahnj.com/ahnj/Harbor/Fishing%20%26%20Cruising%20Info/Open%20Party%20Boats/",
+      "publisher_site": "www.ahnj.com",
+      "roles": [
+        "roster"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://www.angelicafisheries.com/charter-bookings",
+      "publisher_site": "www.angelicafisheries.com",
+      "roles": [
+        "vessel or operating evidence"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://www.angelicafisheries.com/faqs",
+      "publisher_site": "www.angelicafisheries.com",
+      "roles": [
+        "supporting page"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://www.bigjamaica.com/",
+      "publisher_site": "www.bigjamaica.com",
+      "roles": [
+        "vessel or operating evidence"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://www.bogansbasin.com/deep-sea-fishing-new-jersey",
+      "publisher_site": "www.bogansbasin.com",
+      "roles": [
+        "roster"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://www.captainronsfishermen.com/contact",
+      "publisher_site": "www.captainronsfishermen.com",
+      "roles": [
+        "supporting page"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://www.dauntlessfishing.com/",
+      "publisher_site": "www.dauntlessfishing.com",
+      "roles": [
+        "vessel or operating evidence"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://www.dauntlessfishing.com/fishingreport",
+      "publisher_site": "www.dauntlessfishing.com",
+      "roles": [
+        "supporting page"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://www.ebbtidetoo.com/",
+      "publisher_site": "www.ebbtidetoo.com",
+      "roles": [
+        "vessel or operating evidence"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://www.fishdarkhorse.com/about",
+      "publisher_site": "www.fishdarkhorse.com",
+      "roles": [
+        "vessel or operating evidence"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://www.fishdarkhorse.com/trips-rates",
+      "publisher_site": "www.fishdarkhorse.com",
+      "roles": [
+        "supporting page"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://www.missmichele.com/",
+      "publisher_site": "www.missmichele.com",
+      "roles": [
+        "vessel or operating evidence"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://www.missmichele.com/rates",
+      "publisher_site": "www.missmichele.com",
+      "roles": [
+        "supporting page"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://www.seatiger2.com/",
+      "publisher_site": "www.seatiger2.com",
+      "roles": [
+        "vessel or operating evidence"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://www.tobyanncharters.com/",
+      "publisher_site": "www.tobyanncharters.com",
+      "roles": [
+        "vessel or operating evidence"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://www.tunatailcharters.com/",
+      "publisher_site": "www.tunatailcharters.com",
+      "roles": [
+        "vessel or operating evidence"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://www.yankeefleet.com/about-yankee-fleet/directions/",
+      "publisher_site": "www.yankeefleet.com",
+      "roles": [
+        "supporting page"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://www.yankeefleet.com/about-yankee-fleet/vessels/",
+      "publisher_site": "www.yankeefleet.com",
+      "roles": [
+        "roster",
+        "vessel or operating evidence"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    },
+    {
+      "url": "https://www.yankeefleet.com/privacy-policy/",
+      "publisher_site": "www.yankeefleet.com",
+      "roles": [
+        "privacy policy"
+      ],
+      "commercial_fleet_reuse": "unknown"
+    }
+  ]
+}
