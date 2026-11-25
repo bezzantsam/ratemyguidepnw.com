@@ -1,34 +1,9 @@
-# Northeast Fleet Research - November 25, 2026
+# Northeast fishing fleet research
 
-## Scope
-New Jersey: Atlantic Highlands, Point Pleasant Beach / Brielle.  
-Massachusetts: Gloucester, Hyannis.  
+On November 25, 2026 we audited 28 roster entries and operator examples across New Jersey and Massachusetts. Primary pages confirmed 25 fishing offers. The evidence distinguished **23 physical vessels** for private research. Two identities and three fishing-use questions remain open. All commercial reuse decisions remain open. The cleared JSONL contains zero records.
 
-Research-only inventory of bookable fishing vessels from primary landing rosters and operator pages. No outreach. Public branch contains source index, methodology, coverage counts, synthetic test cases, and hold summary. Full candidate records with unresolved commercial reuse rights are held in private working notes (not redistributed here).
+Helen H is the first fleet to pursue for operator participation. Eight individual vessel pages document fishing offers. Seven hull identities were supported, and one of those seven sails from Barnstable. The site combines fishing, sightseeing and ferry services. Use the vessel’s trip page to identify where the angler boards. [Vessels](https://helen-h.com/vessels/) · [Fishing charters](https://helen-h.com/private-fishing-charters/)
 
-## Counts by Landing (honest, not padded)
-- Atlantic Highlands, NJ: Roster names ~6-8 party/open boats. Independently cross-checked: 6. Unresolved: 2-3 older or secondary listings.
-- Point Pleasant Beach / Brielle, NJ: Roster names ~8-10. Cross-checked: 5. Unresolved: several private six-packs and secondary docks.
-- Gloucester, MA: Yankee Fleet names 3 vessels; additional independent operators ~4-6. Cross-checked: 6. Unresolved: smaller six-packs without vessel pages.
-- Hyannis, MA: Helen H primary fleet names 7-8 vessels. Cross-checked: 7. Unresolved: 1-2 outside main dock.
+The highest-risk identity error in the audit is inheriting the reviews of an older boat when a charter business changes hulls. A New Jersey operator documents its earlier Keyport boat and a larger replacement. That history is evidence for two identities. [Operator history](https://www.fishdarkhorse.com/about)
 
-Total defensible vessel candidates: 22 (cross-checked with direct operator or official roster URL).
-
-## Strongest fleet to onboard first
-Helen H (Hyannis): Multiple named vessels with explicit length, capacity, and departure on primary operator site. Clear separation of hulls.
-
-## Most dangerous false match
-Merging Prowler 5 (75' aluminum, Atlantic Highlands Municipal Harbor) with Mi-Jo (75' aluminum, same harbor). Distinct operators, captains, and booking desks; both appear on local rosters. Secondary risk: Angler (75') and Nantucket Sound (75') under same Helen H operator but distinct names and features.
-
-## Methodology
-See methodology.md. All observations dated 2026-11-25. Fields kept separate: vessel, operator, booking desk, captain, departure.
-
-## Deliverables
-- source_index.json
-- methodology.md
-- coverage_counts.md
-- hold_summary.md
-- synthetic_tests.jsonl
-- candidates_cleared.jsonl (empty; none fully cleared for bulk commercial reuse)
-
-Date checked: 2026-11-25.
+[Coverage and denominators](coverage_counts.md) · [Sources](source_index.json) · [Method](methodology.md) · [Holds](hold_summary.md) · [Synthetic examples](synthetic_tests.jsonl)

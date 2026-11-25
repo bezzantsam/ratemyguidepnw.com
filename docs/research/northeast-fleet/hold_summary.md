@@ -1,15 +1,5 @@
-# Hold Summary
+# Outstanding evidence
 
-## Unresolved Reuse Rights
-All private operator websites (Yankee Fleet, Helen H, Miss Michele, Capt Ron's, Mi-Jo, etc.) are silent on commercial directory reuse, bulk access, or attribution for third-party redistribution. No explicit permission found. Records kept out of public candidate JSONL.
+Two of the 25 confirmed fishing offers require a hull-identity check. In Atlantic Highlands the business relationship is documented but the current hull suffix and dimensions are unresolved. In Massachusetts two fleet pages describe a similarly named boat with different lengths. A documentation number or independent dated record would help resolve it. Three additional Helen H fleet labels lack evidence for an in-scope fishing offer. [Borough roster](https://www.ahnj.com/ahnj/Harbor/Fishing%20%26%20Cruising%20Info/Open%20Party%20Boats/) · [Hyannis source](https://helen-h.com/capt-john-and-son-2/) · [Plymouth source](https://captjohn.com/about/our-fleet/)
 
-Municipal harbor pages (Atlantic Highlands) contain public facts and are lower risk.
-
-## Identity Holds
-- Dark Horse: moved to Atlantic Highlands Municipal Marina spring 2025 (from Keyport six-pack). Current vessel confirmed; prior assignment dated.
-- Multiple 75' aluminum party boats in Atlantic Highlands (Prowler 5 and Mi-Jo): distinct operators. Hold on any auto-merge by length + location.
-- Yankee Star: new to fleet spring 2024. Prior vessel name not confirmed as replacement.
-- No clear renamed boat or pure replacement hull using old name observed in primary sources this pass.
-
-## Next Steps
-Permission outreach or legal review before any bulk commercial use of candidate records. Reviews must attach to physical hull, not rotating captains.
+Commercial directory reuse, bulk access and attribution remain unresolved for all sampled vessel records. The municipal roster supplies no applicable grant. Yankee’s privacy statement and Helen H’s booking and chatbot terms do not establish commercial rights to redistribute fleet records. The cleared file therefore has zero rows. [Borough accessibility](https://www.ahnj.com/ahnj/Accessibility/) · [Yankee privacy statement](https://www.yankeefleet.com/privacy-policy/) · [Helen H terms](https://helen-h.com/tos/)
