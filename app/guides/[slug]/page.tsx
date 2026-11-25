@@ -23,13 +23,14 @@ export async function generateMetadata({params}: ProfileParams) {
   const {slug} = await params;
   const guide = findGuide(slug);
   if (!guide) notFound();
-  return profileShareMetadata(`/guides/${guideSlug(guide)}`, guide.name, guide.business);
+  return profileShareMetadata(`/guides/${guideSlug(guide)}`, guide.preferredName ?? guide.name, guide.business);
 }
 
 export default async function Page({params}: ProfileParams) {
   const {slug} = await params;
   const guide = findGuide(slug);
   if (!guide) notFound();
+  const name = guide.preferredName ?? guide.name;
   const path = `/guides/${guideSlug(guide)}`;
   const washington = washingtonRecordForOregon(guide.registration);
   const enabled = process.env.NEXT_PUBLIC_RMG_LAUNCH_ENABLED === 'true';
@@ -60,19 +61,19 @@ export default async function Page({params}: ProfileParams) {
     <ReturnToResults/>
     <div className="guide-identity">
       <p className="eyebrow">Oregon guide listing</p>
-      <h1>{guide.name}</h1>
+      <h1>{name}</h1>
       {guide.business && <p className="lead">{guide.business}</p>}
     </div>
-    <SaveGuideButton href={path} name={guide.name} guide={{jurisdiction:'OR',sourceId:guide.registration}}/>
+    <SaveGuideButton href={path} name={name} guide={{jurisdiction:'OR',sourceId:guide.registration}}/>
     {enabled
-      ? <GuideEngagement key={guide.registration} compactProfile source={{jurisdiction:'OR',sourceId:guide.registration}} profilePath={path} guideName={guide.name}>{claim}{registration}</GuideEngagement>
+      ? <GuideEngagement key={guide.registration} compactProfile source={{jurisdiction:'OR',sourceId:guide.registration}} profilePath={path} guideName={name}>{claim}{registration}</GuideEngagement>
       : <><section className="guide-actions" aria-label="Profile actions">
-          <ProfileSharing profilePath={path} guideName={guide.name} reviewAvailable={false}
-            primaryAction={<button type="button" className="button guide-rate" disabled aria-describedby="guide-write-status">Rate {guide.name}</button>}/>
+          <ProfileSharing profilePath={path} guideName={name} reviewAvailable={false}
+            primaryAction={<button type="button" className="button guide-rate" disabled aria-describedby="guide-write-status">Rate {name}</button>}/>
           <p className="guide-status" id="guide-write-status">Review submissions are closed.</p>
         </section>
         {process.env.NEXT_PUBLIC_RMG_AUTH_CHECK_ENABLED === 'true' && guide.registration === 'OG.0002193' && <section className="section launch-controls" id="write-review">
-          <h2>Sign in for {guide.name}’s reviews</h2>
+          <h2>Sign in for {name}’s reviews</h2>
           <AuthCheck profilePath={path}/>
         </section>}
         {claim}{registration}</>}

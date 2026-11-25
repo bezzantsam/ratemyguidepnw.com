@@ -62,7 +62,7 @@ export const directoryEntries:DirectoryEntry[]=[
   const fishingTags=tags.filter(tag=>tag.kind==='species'||tag.kind==='method').map(tag=>tag.value);
   const sourced=discovery(g.registration);
   return ({
-   id:g.registration,name:g.name,business:g.business,
+   id:g.registration,name:g.preferredName??g.name,business:g.business,
    states:(washingtonRecordForOregon(g.registration)?['Oregon','Washington']:['Oregon']) as ('Oregon'|'Washington')[],
    areas:g.areas,
    advertisedWaters:[...new Set([...advertisedWaterwayNames(g.registration),...sourced.linkedWaters])],
@@ -70,7 +70,7 @@ export const directoryEntries:DirectoryEntry[]=[
    advertisedSpecies:[...new Set([...sourced.advertisedSpecies,...tags.filter(x=>x.kind==='species').map(x=>x.value)])],
    advertisedMethods:[...new Set([...sourced.advertisedMethods,...tags.filter(x=>x.kind==='method').map(x=>x.value)])],
    ...(fishingTags.length?{fishingTags}:{}),
-   searchAliases:[...guideSearchTerms(g.registration),...sourced.sourceNames,...aliases],
+   searchAliases:[...(g.registrySearchName?[g.registrySearchName]:[]),...guideSearchTerms(g.registration),...sourced.sourceNames,...aliases],
    ...(businessKeywords.length?{businessSearchKeywords:businessKeywords}:{}),
    href:'/guides/'+guideSlug(g),source:'Oregon registry',
  })}),

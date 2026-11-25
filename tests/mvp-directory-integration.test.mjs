@@ -171,6 +171,23 @@ test('species and method filters respect Jerad Sorber’s sourced trip pairings 
  }
 });
 
+test('EJ and Rod appear for their fisheries and Rod’s bottom-fishing trips match the named targets',()=>{
+ const {directory}=actualDirectory();
+ const matches=(id,filters)=>filter(directory.directoryEntries,{...all,state:'Oregon',...filters}).some(entry=>entry.id===id);
+ for(const [id,species] of [
+  ['OG.0004049',['Salmon','Steelhead','Sturgeon']],
+  ['OG.0002193',['Salmon','Crabbing','Lingcod','Rockfish','Sturgeon','Walleye']],
+ ]){
+  for(const target of species)assert.ok(matches(id,{species:target}),target);
+ }
+ for(const species of ['Lingcod','Rockfish']){
+  assert.ok(matches('OG.0002193',{species,method:'Bottom fishing'}),species);
+ }
+ for(const species of ['Salmon','Sturgeon','Walleye','Crabbing']){
+  assert.equal(matches('OG.0002193',{species,method:'Bottom fishing'}),false,species);
+ }
+});
+
 test('editorial corrections preserve all original profiles, IDs, fields and unrelated attributes',()=>{
  const before=actualDirectory(false).directory.directoryEntries;
  const after=actualDirectory(true).directory.directoryEntries;
@@ -181,8 +198,20 @@ test('editorial corrections preserve all original profiles, IDs, fields and unre
   if(original.id==='OG.0004049'){
    assert.deepEqual(updated.businessSearchKeywords,[{value:'TJ',variants:['T.J.']}]);
    delete updated.businessSearchKeywords;
+   const species=['Salmon','Steelhead','Sturgeon'];
+   assert.deepEqual(updated.advertisedSpecies,[...new Set([...original.advertisedSpecies,...species])]);
+   assert.deepEqual(updated.fishingTags,species);
+   updated.advertisedSpecies=original.advertisedSpecies;
+   delete updated.fishingTags;
   }
   if(original.id==='OG.0002193'){
+   const species=['Salmon','Crabbing','Lingcod','Rockfish','Sturgeon','Walleye'];
+   assert.deepEqual(updated.advertisedSpecies,[...new Set([...original.advertisedSpecies,...species])]);
+   assert.deepEqual(updated.advertisedMethods,[...new Set([...original.advertisedMethods,'Bottom fishing'])]);
+   assert.deepEqual(updated.fishingTags,[...species,'Bottom fishing']);
+   updated.advertisedSpecies=original.advertisedSpecies;
+   updated.advertisedMethods=original.advertisedMethods;
+   delete updated.fishingTags;
    assert.deepEqual(updated.searchAliases,[...original.searchAliases,'Rod Shulley']);
    updated.searchAliases=original.searchAliases;
   }
@@ -217,12 +246,14 @@ test('editorial corrections preserve all original profiles, IDs, fields and unre
 });
 
 test('public tags exclude private provenance and require the exact registry record',()=>{
- const {editorial,directory}=actualDirectory();
+ const {editorial}=actualDirectory();
+ const records=JSON.parse(read('lib/oregon-guides.json'));
  const facts=JSON.parse(read('lib/directory-guide-tags.json'));
- assert.equal(facts.length,9);
+ assert.equal(facts.length,19);
  for(const fact of facts){
   assert.ok(Object.keys(fact).every(key=>['guide_id','expected_name','expected_business','kind','value','status','search_variants'].includes(key)));
-  const guide=directory.getDirectoryEntry(fact.guide_id);
+  const record=records.find(row=>row.registration===fact.guide_id);
+  const guide={id:record.registration,name:record.name,business:record.business};
   assert.equal(editorial.guideTagsFor(guide,[fact]).length,1);
   for(const changed of [
    {...fact,guide_id:'OG.9999999'}, {...fact,expected_name:'Another Person'},
@@ -234,11 +265,12 @@ test('public tags exclude private provenance and require the exact registry reco
  assert.equal(editorial.guideTagsFor({id:'OG.0001200',name:'Toby Wyatt',business:'Reel Time Fishing LLC'},facts).length,0);
 });
 
-test('Big Energy business keywords and the Rod alias bind only to their intended legal-name profiles',()=>{
+test('preferred names, registered names and business keywords find the same guides',()=>{
  const {directory}=actualDirectory();
  const original=actualDirectory(false).directory.directoryEntries;
  const bigEnergy=directory.getDirectoryEntry('OG.0004049');
  assert.ok(bigEnergy.searchAliases.includes('EJ'));
+ assert.doesNotMatch(JSON.stringify(bigEnergy),/Edwin/i);
  assert.equal(bigEnergy.searchAliases.includes('TJ'),false);
  assert.equal(bigEnergy.searchAliases.includes('T.J.'),false);
  for(const query of ['EJ','EJ Big Energy','EJ Snyder']){
@@ -250,8 +282,8 @@ test('Big Energy business keywords and the Rod alias bind only to their intended
   assert.equal(matches.includes(bigEnergy.id),false,query);
  }
  for(const [id,name,queries] of [
-  ['OG.0004049','Edwin Snyder',['TJ','T.J. Big Energy','TJ Big Energy Guide Service','Big Energy T.J.']],
-  ['OG.0002193','Roderick Shulley',['Rod','Rod Shulley','Rod Reel Em Up']],
+  ['OG.0004049','EJ Snyder',['EJ Snyder','TJ','T.J. Big Energy','TJ Big Energy Guide Service','Big Energy T.J.']],
+  ['OG.0002193','Rod Shulley',['Roderick Shulley','Rod','Rod Shulley','Rod Reel Em Up']],
  ]){
   const entry=directory.getDirectoryEntry(id);
   assert.equal(entry.name,name);

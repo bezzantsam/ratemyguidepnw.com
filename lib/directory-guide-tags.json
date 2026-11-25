@@ -73,5 +73,85 @@
     "kind": "search_alias",
     "value": "Rod Shulley",
     "status": "approved"
+  },
+  {
+    "guide_id": "OG.0004049",
+    "expected_name": "Edwin Snyder",
+    "expected_business": "Big Energy Guide Service LLC",
+    "kind": "species",
+    "value": "Salmon",
+    "status": "approved"
+  },
+  {
+    "guide_id": "OG.0004049",
+    "expected_name": "Edwin Snyder",
+    "expected_business": "Big Energy Guide Service LLC",
+    "kind": "species",
+    "value": "Steelhead",
+    "status": "approved"
+  },
+  {
+    "guide_id": "OG.0004049",
+    "expected_name": "Edwin Snyder",
+    "expected_business": "Big Energy Guide Service LLC",
+    "kind": "species",
+    "value": "Sturgeon",
+    "status": "approved"
+  },
+  {
+    "guide_id": "OG.0002193",
+    "expected_name": "Roderick Shulley",
+    "expected_business": "Reel  Em Up Fishing Adventures",
+    "kind": "species",
+    "value": "Salmon",
+    "status": "approved"
+  },
+  {
+    "guide_id": "OG.0002193",
+    "expected_name": "Roderick Shulley",
+    "expected_business": "Reel  Em Up Fishing Adventures",
+    "kind": "species",
+    "value": "Crabbing",
+    "status": "approved"
+  },
+  {
+    "guide_id": "OG.0002193",
+    "expected_name": "Roderick Shulley",
+    "expected_business": "Reel  Em Up Fishing Adventures",
+    "kind": "species",
+    "value": "Lingcod",
+    "status": "approved"
+  },
+  {
+    "guide_id": "OG.0002193",
+    "expected_name": "Roderick Shulley",
+    "expected_business": "Reel  Em Up Fishing Adventures",
+    "kind": "species",
+    "value": "Rockfish",
+    "status": "approved"
+  },
+  {
+    "guide_id": "OG.0002193",
+    "expected_name": "Roderick Shulley",
+    "expected_business": "Reel  Em Up Fishing Adventures",
+    "kind": "species",
+    "value": "Sturgeon",
+    "status": "approved"
+  },
+  {
+    "guide_id": "OG.0002193",
+    "expected_name": "Roderick Shulley",
+    "expected_business": "Reel  Em Up Fishing Adventures",
+    "kind": "species",
+    "value": "Walleye",
+    "status": "approved"
+  },
+  {
+    "guide_id": "OG.0002193",
+    "expected_name": "Roderick Shulley",
+    "expected_business": "Reel  Em Up Fishing Adventures",
+    "kind": "method",
+    "value": "Bottom fishing",
+    "status": "approved"
   }
 ]
