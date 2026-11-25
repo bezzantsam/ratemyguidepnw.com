@@ -282,8 +282,9 @@ test('phone review drafts survive interruption, reload and auth refresh without 
   await page.getByLabel('Trip month (optional)').fill('2026-07');
   await page.getByLabel('Trip intensity (optional)').selectOption('3');
   await page.getByLabel('Was a dog present?',{exact:true}).selectOption('value:no');
-  await page.getByLabel('What duration did you agree on, in minutes?',{exact:true}).selectOption('value');
-  // Persist an incomplete optional answer as typed, without submission validation erasing it.
+  await page.getByLabel('How long was the trip booked for?',{exact:true}).selectOption('value:over_6_to_8');
+  await page.getByLabel('How long did the trip last?',{exact:true}).selectOption('value:over_8_to_10');
+  await page.getByLabel('The guide stayed past our booked time to keep fishing',{exact:true}).check();
   await page.reload({waitUntil:'domcontentloaded'});
   await text.waitFor();
   assert.equal(await text.inputValue(),expectedText);
@@ -300,9 +301,9 @@ test('phone review drafts survive interruption, reload and auth refresh without 
   assert.equal(await page.getByLabel('Trip month (optional)').inputValue(),'2026-07');
   assert.equal(await page.getByLabel('Trip intensity (optional)').inputValue(),'3');
   assert.equal(await page.getByLabel('Was a dog present?',{exact:true}).inputValue(),'value:no');
-  assert.equal(await page.getByLabel('What duration did you agree on, in minutes?',{exact:true}).inputValue(),'value');
-  assert.equal(await page.getByLabel('Minutes',{exact:true}).inputValue(),'');
-  await page.getByLabel('What duration did you agree on, in minutes?',{exact:true}).selectOption('');
+  assert.equal(await page.getByLabel('How long was the trip booked for?',{exact:true}).inputValue(),'value:over_6_to_8');
+  assert.equal(await page.getByLabel('How long did the trip last?',{exact:true}).inputValue(),'value:over_8_to_10');
+  assert.equal(await page.getByLabel('The guide stayed past our booked time to keep fishing',{exact:true}).isChecked(),true);
   assert.equal(attempts.length,0,'restoring an unfinished draft must not submit it');
 
   // Simulate browser lifecycle notifications and Supabase's same-account refocus notifications.

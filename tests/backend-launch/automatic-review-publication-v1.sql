@@ -53,6 +53,15 @@ SELECT public.fixture_assert(
  AND NOT has_column_privilege('anon','public.reviews','author_id','SELECT'),
  'policy installation leaves existing pending data and direct-access restrictions intact');
 
+-- Exact-minute reviews from older clients continue to validate. A band and a
+-- precise duration cannot both describe the same question.
+SELECT public.fixture_assert(
+ rmg_private.valid_trip_responses('{"version":1,"answers":{"actual_duration_minutes":{"state":"answered","value":240}}}')
+ AND NOT rmg_private.valid_trip_responses('{"version":1,"answers":{"actual_duration_minutes":{"state":"answered","value":240},"actual_duration_band":{"state":"answered","value":"over_10"}}}')
+ AND NOT rmg_private.valid_trip_responses('{"version":1,"answers":{"agreed_duration_band":{"state":"answered","value":"4h"}}}')
+ AND NOT rmg_private.valid_trip_responses('{"version":1,"answers":{"guide_stayed_extra":{"state":"answered","value":false}}}'),
+ 'trip timing validates exact minutes, the duration scale, and explicit recognition');
+
 SET LOCAL ROLE anon;
 SELECT public.fixture_auto_denial($q$SELECT public.rmg_submit_review_v3('OR','OG.0000150.F&F',5::smallint,NULL,true,'Anonymous submission',true,'none',NULL,NULL,'{}')$q$,'42501');
 SELECT public.fixture_auto_denial($q$SELECT public.rmg_resolve_report_v2('00000000-0000-0000-0000-000000000000','keep','')$q$,'42501');
@@ -73,7 +82,7 @@ SELECT public.fixture_auto_denial($q$SELECT public.rmg_submit_review_v3('OR','OG
 SELECT public.fixture_auto_denial($q$SELECT public.rmg_submit_review_v3('WA','wa-150@catalog:wrong-version',5::smallint,NULL,true,'Wrong catalog identity',true,'none',NULL,NULL,'{}')$q$,'P5030');
 INSERT INTO auto_receipts VALUES('positive',public.rmg_submit_review_v3(
  'OR','OG.0000150.F&F',5::smallint,4::smallint,true,'Synthetic positive published review',true,'none',
- '{"version":1,"answers":{"organization":{"state":"answered","value":4},"kindness":{"state":"answered","value":5},"fish_landed":{"state":"answered","value":0}}}',
+ '{"version":1,"answers":{"organization":{"state":"answered","value":4},"kindness":{"state":"answered","value":5},"fish_landed":{"state":"answered","value":0},"agreed_duration_band":{"state":"answered","value":"over_4_to_6"},"actual_duration_band":{"state":"answered","value":"over_8_to_10"},"guide_stayed_extra":{"state":"answered","value":true}}}',
  '2026-01','{"communication":5,"equipment":2,"safety":4}'));
 INSERT INTO auto_receipts VALUES('legacy_v2',public.rmg_submit_review_v2(
  'OR','OG.0000151.F&F',3::smallint,NULL,NULL,'Synthetic legacy v2 published review',true,'none',NULL,'2026-02'));
@@ -96,7 +105,9 @@ SET LOCAL ROLE anon;
 SELECT public.fixture_assert(
  EXISTS(SELECT 1 FROM public.public_angler_reviews WHERE id=(SELECT (receipt->>'id')::uuid FROM auto_receipts WHERE name='positive')
   AND quality=5 AND communication=5 AND equipment=2 AND safety=4 AND trip_month='2026-01-01'
-  AND trip_responses#>>'{answers,fish_landed,value}'='0')
+  AND trip_responses#>>'{answers,fish_landed,value}'='0'
+  AND trip_responses#>>'{answers,agreed_duration_band,value}'='over_4_to_6'
+  AND trip_responses#>>'{answers,guide_stayed_extra,value}'='true')
  AND EXISTS(SELECT 1 FROM public.public_angler_reviews WHERE id=(SELECT (receipt->>'id')::uuid FROM auto_receipts WHERE name='negative') AND quality=1)
  AND EXISTS(SELECT 1 FROM public.public_angler_reviews WHERE id=(SELECT (receipt->>'id')::uuid FROM auto_receipts WHERE name='wa') AND knowledge=4 AND trip_month='2026-03-01')
  AND public.rmg_review_summary('OR','OG.0000150.F&F') @> '{"count":2,"averageQuality":3,"wouldBookAgainPercent":50}'
@@ -112,14 +123,20 @@ INSERT INTO auto_receipts SELECT 'edit_v3',public.rmg_submit_revision_v3((receip
 SELECT public.fixture_assert(EXISTS(SELECT 1 FROM public.public_angler_reviews
  WHERE id=(SELECT (receipt->>'id')::uuid FROM auto_receipts WHERE name='positive')
  AND quality=3 AND communication IS NULL AND equipment=4 AND safety=4 AND would_book_again=true
- AND trip_month='2026-04-01' AND trip_responses#>>'{answers,kindness,value}'='5'),
+ AND trip_month='2026-04-01' AND trip_responses#>>'{answers,kindness,value}'='5'
+ AND trip_responses#>>'{answers,actual_duration_band,value}'='over_8_to_10'
+ AND trip_responses#>>'{answers,guide_stayed_extra,value}'='true'),
  'v3 edit atomically applies rating clears and month while preserving omitted answers');
 INSERT INTO auto_receipts SELECT 'edit_v2',public.rmg_submit_revision_v2((receipt->>'id')::uuid,
- 2::smallint,NULL,false,'Synthetic complete automatic v2 edit',true,'none',NULL,true,'2026-05')
+ 2::smallint,NULL,false,'Synthetic complete automatic v2 edit',true,'none',
+ '{"version":1,"answers":{"actual_duration_minutes":{"state":"answered","value":510},"guide_stayed_extra":{"state":"not_applicable"}}}',true,'2026-05')
  FROM auto_receipts WHERE name='positive';
 SELECT public.fixture_assert(EXISTS(SELECT 1 FROM public.public_angler_reviews
  WHERE id=(SELECT (receipt->>'id')::uuid FROM auto_receipts WHERE name='positive')
- AND quality=2 AND equipment=4 AND safety=4 AND would_book_again=false AND trip_month='2026-05-01'),
+ AND quality=2 AND equipment=4 AND safety=4 AND would_book_again=false AND trip_month='2026-05-01'
+ AND NOT ((trip_responses->'answers') ? 'actual_duration_band')
+ AND trip_responses#>>'{answers,actual_duration_minutes,value}'='510'
+ AND trip_responses#>>'{answers,guide_stayed_extra,state}'='not_applicable'),
  'v2 edit automatically applies its month and preserves richer ratings');
 INSERT INTO auto_receipts SELECT 'edit_v1',public.rmg_submit_revision((receipt->>'id')::uuid,
  4::smallint,NULL,false,'Synthetic complete automatic v1 edit',true,'none',NULL)
@@ -128,6 +145,7 @@ SELECT public.fixture_assert((SELECT bool_and(receipt->>'status'='approved') FRO
  AND EXISTS(SELECT 1 FROM public.public_angler_reviews
  WHERE id=(SELECT (receipt->>'id')::uuid FROM auto_receipts WHERE name='positive')
  AND quality=4 AND equipment=4 AND communication IS NULL AND trip_month='2026-05-01'
+ AND trip_responses#>>'{answers,agreed_duration_band,value}'='over_4_to_6'
  AND trip_responses#>>'{answers,fish_landed,value}'='0'),
  'all edit receipts are approved; legacy v1 retains month, ratings and recorded survey answers');
 SELECT public.fixture_auto_denial(format($q$SELECT public.rmg_submit_revision_v3(%L::uuid,5::smallint,NULL,true,'Fourth revision in one day',true,'none',NULL,false,NULL,'{}')$q$,

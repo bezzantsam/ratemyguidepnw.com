@@ -3,7 +3,8 @@ type Option = Readonly<{value:string;label:string}>;
 export type TripField = Readonly<{
   key:string;
   label:string;
-  kind:'boolean'|'rating'|'minutes'|'count'|'enum';
+  kind:'boolean'|'rating'|'minutes'|'count'|'enum'|'recognition';
+  legacyMinutesKey?:string;
   options?:readonly Option[];
 }>;
 export const FISH_LANDED_MAX=2147483647;
@@ -15,6 +16,19 @@ export const REVIEW_TRIP_RATINGS:readonly TripField[]=[
 export const FISH_LANDED_FIELD:TripField={key:'fish_landed',label:'How many fish did your group land?',kind:'count'};
 export const isTripHighlight=(key:string)=>key===FISH_LANDED_FIELD.key||REVIEW_TRIP_RATINGS.some(field=>field.key===key);
 const options=(...values:string[]):Option[]=>values.map(value=>({value,label:value.replaceAll('_',' ')}));
+const durationBands:readonly Option[]=[
+  {value:'up_to_4',label:'4 hours or less'},
+  {value:'over_4_to_6',label:'Over 4 to 6 hours'},
+  {value:'over_6_to_8',label:'Over 6 to 8 hours'},
+  {value:'over_8_to_10',label:'Over 8 to 10 hours'},
+  {value:'over_10',label:'Over 10 hours'},
+];
+export const TRIP_TIMING_FIELDS:readonly TripField[]=[
+  {key:'agreed_duration_band',label:'How long was the trip booked for?',kind:'enum',options:durationBands,legacyMinutesKey:'agreed_duration_minutes'},
+  {key:'actual_duration_band',label:'How long did the trip last?',kind:'enum',options:durationBands,legacyMinutesKey:'actual_duration_minutes'},
+  {key:'limited_out_early',label:'We limited out early',kind:'recognition'},
+  {key:'guide_stayed_extra',label:'The guide stayed past our booked time to keep fishing',kind:'recognition'},
+];
 export const TRIP_FIELDS:readonly TripField[]=[
   {key:'target_species',label:'What species were you targeting?',kind:'enum',options:options('chinook','coho','steelhead','other','unknown')},
   {key:'setting',label:'Where did you fish?',kind:'enum',options:options('river','ocean','estuary','other','unknown')},
@@ -27,6 +41,7 @@ export const TRIP_FIELDS:readonly TripField[]=[
   ...REVIEW_TRIP_RATINGS,
   FISH_LANDED_FIELD,
   {key:'cleanliness',label:'How clean was the equipment and setting?',kind:'rating'},
+  ...TRIP_TIMING_FIELDS,
   {key:'agreed_duration_minutes',label:'What duration did you agree on, in minutes?',kind:'minutes'},
   {key:'actual_duration_minutes',label:'How long was the trip, in minutes?',kind:'minutes'},
   {key:'duration_change_reason',label:'If the duration changed, what reason were you given?',kind:'enum',options:options('weather','safety','customer_request','guide_decision','other','unknown')},
@@ -45,6 +60,11 @@ export type TripResponses={version:1;answers:Record<string,TripAnswer>};
 export function encodeTripResponses(draft:TripDraft):{value:TripResponses|null;error:null}|{value:null;error:string} {
   const answers:Record<string,TripAnswer>={};
   if(Object.keys(draft).some(key=>!TRIP_FIELDS.some(field=>field.key===key))) return {value:null,error:'An unrecognized trip answer was provided.'};
+  for(const field of TRIP_TIMING_FIELDS) {
+    if(field.legacyMinutesKey && draft[field.key] && draft[field.legacyMinutesKey]) {
+      return {value:null,error:`Choose one duration for: ${field.label}`};
+    }
+  }
   for(const field of TRIP_FIELDS) {
     const entry=draft[field.key]??'';
     if(entry==='') continue;
@@ -52,7 +72,10 @@ export function encodeTripResponses(draft:TripDraft):{value:TripResponses|null;e
     if(!entry.startsWith('value:')) return {value:null,error:`Complete or clear: ${field.label}`};
     const raw=entry.slice(6);
     let value:boolean|number|string;
-    if(field.kind==='boolean') {
+    if(field.kind==='recognition') {
+      if(raw!=='yes') return {value:null,error:`Choose or clear: ${field.label}`};
+      value=true;
+    } else if(field.kind==='boolean') {
       if(raw!=='yes'&&raw!=='no') return {value:null,error:`Choose an answer: ${field.label}`};
       value=raw==='yes';
     } else if(field.kind==='rating') {
@@ -87,7 +110,7 @@ export function decodeTripResponses(value:unknown):TripDraft|null {
     if(answer.state==='not_applicable'&&Object.keys(answer).length===1)draft[key]='na';
     else if(answer.state==='answered'&&Object.keys(answer).length===2&&Object.hasOwn(answer,'value')) {
       const raw=answer.value;
-      if(field.kind==='boolean') {if(typeof raw!=='boolean')return null;draft[key]=`value:${raw?'yes':'no'}`}
+      if(field.kind==='boolean'||field.kind==='recognition') {if(typeof raw!=='boolean')return null;draft[key]=`value:${raw?'yes':'no'}`}
       else if(field.kind==='rating'||field.kind==='minutes'||field.kind==='count') {if(typeof raw!=='number'||!Number.isInteger(raw))return null;draft[key]=`value:${raw}`}
       else {if(typeof raw!=='string')return null;draft[key]=`value:${raw}`}
     } else return null;
@@ -103,10 +126,11 @@ export function describeTripResponseEntries(value:unknown):TripResponseDescripti
   const entries:TripResponseDescription[]=[];
   for(const field of TRIP_FIELDS) {
     const entry=draft[field.key];if(!entry)continue;
+    if(entry==='na' && (field.legacyMinutesKey || field.kind==='recognition')) continue;
     const raw=entry.slice(6);
     const unanswered=isTripHighlight(field.key)?'Unanswered':'Not applicable';
     const answer=entry==='na'?unanswered:
-      field.kind==='boolean'?(raw==='yes'?'Yes':'No'):
+      field.kind==='boolean'||field.kind==='recognition'?(raw==='yes'?'Yes':'No'):
       field.kind==='rating'?`${raw} / 5`:
       field.kind==='minutes'?`${raw} minutes`:
       field.kind==='count'?raw:field.options?.find(option=>option.value===raw)?.label;
@@ -116,7 +140,8 @@ export function describeTripResponseEntries(value:unknown):TripResponseDescripti
   return entries;
 }
 
-export function formatTripResponse({label,answer}:TripResponseDescription):string {
+export function formatTripResponse({key,label,answer}:TripResponseDescription):string {
+  if(TRIP_TIMING_FIELDS.some(field=>field.key===key && field.kind==='recognition')) return label;
   return `${label}${label.endsWith('?')?' ':': '}${answer}`;
 }
 

@@ -1,7 +1,7 @@
 'use client';
 
 import {useId} from 'react';
-import {FISH_LANDED_MAX,TRIP_FIELDS,isTripHighlight,type TripDraft,type TripField} from './trip-responses';
+import {FISH_LANDED_MAX,TRIP_FIELDS,TRIP_TIMING_FIELDS,isTripHighlight,type TripDraft,type TripField} from './trip-responses';
 
 /** Optional, versioned questions; the caller must validate before submission. */
 export function TripDetails({draft,onChange,children}:{draft:TripDraft;onChange:(draft:TripDraft)=>void;children?:React.ReactNode}) {
@@ -10,12 +10,16 @@ export function TripDetails({draft,onChange,children}:{draft:TripDraft;onChange:
     <h4>Tell us more about your trip</h4>
     <p>These questions are optional. Answer only what applies to your experience; please leave out names and other personal details.</p>
     {children}
+    <fieldset>
+      <legend>Trip length and guide effort</legend>
+      <TripFields fields={TRIP_TIMING_FIELDS} draft={draft} onChange={onChange}/>
+    </fieldset>
     <TripFields fields={otherTripFields} draft={draft} onChange={onChange}/>
   </details>;
 }
 
 // Earlier effort responses remain in the draft without asking for the typed effort rating twice.
-const otherTripFields=TRIP_FIELDS.filter(field=>field.key!=='effort'&&!isTripHighlight(field.key));
+const otherTripFields=TRIP_FIELDS.filter(field=>field.key!=='effort' && field.kind!=='minutes' && !TRIP_TIMING_FIELDS.includes(field) && !isTripHighlight(field.key));
 
 export function TripFields({fields,draft,onChange}:{
   fields:readonly TripField[];
@@ -23,15 +27,32 @@ export function TripFields({fields,draft,onChange}:{
   onChange:(draft:TripDraft)=>void;
 }) {
   const prefix=useId();
-  function update(key:string,value:string) {
+  function update(key:string,value:string,legacyKey?:string) {
     const next={...draft};
+    if(legacyKey) delete next[legacyKey];
     if(value==='') delete next[key]; else next[key]=value;
     onChange(next);
   }
   return <>{fields.map(field=>{
       const id=`${prefix}-${field.key}`, entry=draft[field.key]??'';
       const highlight=isTripHighlight(field.key);
-      const minuteMode=entry==='na'?'na':entry.startsWith('value:')?'value':'';
+      if(field.kind==='minutes') return null;
+      if(field.kind==='recognition') return <label key={field.key}>
+        <input type="checkbox" id={id} checked={entry==='value:yes'}
+          onChange={event=>update(field.key,event.target.checked?'value:yes':'')}/>
+        {field.label}
+      </label>;
+      const legacy=field.legacyMinutesKey?draft[field.legacyMinutesKey]:undefined;
+      let selected=entry;
+      let legacyLabel='';
+      if(legacy) {
+        selected='legacy';
+        if(legacy==='na') legacyLabel='Previously marked not applicable';
+        else if(legacy==='value:') legacyLabel='Choose a range to complete your saved answer';
+        else legacyLabel=`Previously reported as ${legacy.slice(6)} minutes`;
+      } else if(entry==='na' && (highlight || field.legacyMinutesKey)) {
+        selected='';
+      }
       const choices=field.kind==='boolean'?[{value:'yes',label:'Yes'},{value:'no',label:'No'}]:field.kind==='rating'?[1,2,3,4,5].map(n=>({value:String(n),label:`${n} / 5`})):(field.options??[]);
       if(field.kind==='count')return <div key={field.key}>
         <label htmlFor={id}>{field.label} (optional)</label>
@@ -42,14 +63,13 @@ export function TripFields({fields,draft,onChange}:{
       </div>;
       return <div key={field.key}>
         <label htmlFor={id}>{field.label}</label>
-        {field.kind==='minutes' ? <>
-          <select id={id} value={minuteMode} onChange={event=>update(field.key,event.target.value==='value'?'value:':event.target.value)}>
-            <option value="">Not answered</option><option value="na">Not applicable</option><option value="value">Enter minutes</option>
-          </select>
-          {minuteMode==='value' && <><label htmlFor={`${id}-minutes`}>Minutes</label><input id={`${id}-minutes`} type="number" min="0" max="1440" step="1" value={entry.slice(6)} onChange={event=>update(field.key,`value:${event.target.value}`)}/></>}
-        </> : <select id={id} value={highlight&&entry==='na'?'':entry} onChange={event=>update(field.key,event.target.value)}>
-          <option value="">Not answered</option>{!highlight&&<option value="na">Not applicable</option>}{choices.map(choice=><option key={choice.value} value={`value:${choice.value}`}>{choice.label}</option>)}
-        </select>}
+        <select id={id} value={selected}
+          onChange={event=>update(field.key,event.target.value,field.legacyMinutesKey)}>
+          <option value="">Not answered</option>
+          {legacy && <option value="legacy">{legacyLabel}</option>}
+          {!highlight&&!field.legacyMinutesKey&&<option value="na">Not applicable</option>}
+          {choices.map(choice=><option key={choice.value} value={`value:${choice.value}`}>{choice.label}</option>)}
+        </select>
       </div>;
     })}</>;
 }
