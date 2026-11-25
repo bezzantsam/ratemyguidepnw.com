@@ -3347,5 +3347,65 @@
       "waterway": "Pacific Ocean"
     },
     "trip_note": "The booking page lists ocean and Columbia River options separately. Confirm the ocean option and dates when booking."
+  },
+  {
+    "guide_id": "OG.0002193",
+    "kind": "species",
+    "value": "Lingcod",
+    "source": {
+      "url": "https://captainexperiences.com/trip/3976/salmon-fishing-and-crabbing-combo",
+      "source_type": "third_party_directory",
+      "reviewed_on": "2026-11-25",
+      "locator": "Captain Rod’s Garibaldi trip lists rockfish and lingcod together in the trip description and bottom fishing in the techniques section."
+    },
+    "supporting_sources": [
+      {
+        "url": "https://fishingbooker.com/charters/view/8049",
+        "source_type": "third_party_directory",
+        "reviewed_on": "2026-11-25",
+        "locator": "The Reel Em Up listing identifies Rod Shulley as captain and offers a dedicated full-day rockfish and lingcod trip."
+      }
+    ],
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "location": {
+      "city": "Garibaldi",
+      "state": "OR"
+    },
+    "relationship": {
+      "species": "Lingcod",
+      "method": "Bottom fishing"
+    }
+  },
+  {
+    "guide_id": "OG.0002193",
+    "kind": "species",
+    "value": "Rockfish",
+    "source": {
+      "url": "https://captainexperiences.com/trip/3976/salmon-fishing-and-crabbing-combo",
+      "source_type": "third_party_directory",
+      "reviewed_on": "2026-11-25",
+      "locator": "Captain Rod’s Garibaldi trip lists rockfish and lingcod together in the trip description and bottom fishing in the techniques section."
+    },
+    "supporting_sources": [
+      {
+        "url": "https://fishingbooker.com/charters/view/8049",
+        "source_type": "third_party_directory",
+        "reviewed_on": "2026-11-25",
+        "locator": "The Reel Em Up listing identifies Rod Shulley as captain and offers a dedicated full-day rockfish and lingcod trip."
+      }
+    ],
+    "evidence_scope": "operator_advertises",
+    "editorial_status": "approved",
+    "publication_approved": true,
+    "location": {
+      "city": "Garibaldi",
+      "state": "OR"
+    },
+    "relationship": {
+      "species": "Rockfish",
+      "method": "Bottom fishing"
+    }
   }
 ]

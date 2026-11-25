@@ -65,7 +65,7 @@ test('phone search waits for restoration and preserves blank, URL and Back query
     assert.equal(query(), 'Rod Shulley');
     await rod.click();
     await page.waitForURL(url => url.pathname === '/guides/og-0002193');
-    const rate = page.getByRole('link', { name: 'Rate Roderick Shulley', exact: true });
+    const rate = page.getByRole('link', { name: 'Rate Rod Shulley', exact: true });
     await rate.waitFor();
     assert.equal(await rate.getAttribute('href'), '#write-review');
     await page.goBack({ waitUntil: 'commit' });

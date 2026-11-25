@@ -219,6 +219,7 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
    const {species:targets,methods,trips,waters}=directoryFisheryFacets(g,state);
    const displayWaters=matchedWater&&waters.includes(matchedWater)?[matchedWater,...waters.filter(water=>water!==matchedWater)]:waters;
    const labels=[...new Set([...targets,...methods,...trips])];
+   const otherNames=[...new Set(g.searchAliases)].filter(name=>name!==g.name);
    return <div className="saved-guide-row" key={g.id}>
     <Link className="guide-result" href={{pathname:g.href,query:reviewMode&&reviewEnabled?{returnTo:resultsUrl,intent:'review'}:{returnTo:resultsUrl},hash:reviewMode&&reviewEnabled?'write-review':undefined}}>
      {reviewEnabled?<GuideSearchRating summary={visibleRatings?.get(guideRatingKey(guideSource(g)))} loading={!visibleRatings}/>
@@ -229,7 +230,7 @@ export default function UnifiedSearch({entries:sourceEntries,charters=noCharters
       </div>
       {(guideSearchScore(g,q)??0)>=60&&<p className="guide-meta"><strong>Similar spelling match</strong> · Confirm the person and business.</p>}
       <p className="outfit-name">{g.business||'Fishing guide'}</p>
-      {g.searchAliases.length>0&&<p className="guide-meta">Other names: {[...new Set(g.searchAliases)].join(' · ')}</p>}
+      {otherNames.length>0&&<p className="guide-meta">Other names: {otherNames.join(' · ')}</p>}
       {!directoryEntryInState(g,state)&&<p className="guide-meta">{state} fishing offering</p>}
       {labels.length>0&&
         <p className="guide-meta">Fishing targets and trips: {labels.map(label=>{

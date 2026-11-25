@@ -9,7 +9,7 @@ export const metadata: Metadata = {title: 'Saved guides | Rate Your Guide', robo
 export default function SavedPage() {
   const entries: SavedGuideEntry[] = [
     ...oregonGuides.map((guide): SavedGuideEntry => ({
-      guide:{jurisdiction:'OR',sourceId:guide.registration}, href:`/guides/${guideSlug(guide)}`, name:guide.name,
+      guide:{jurisdiction:'OR',sourceId:guide.registration}, href:`/guides/${guideSlug(guide)}`, name:guide.preferredName ?? guide.name,
     })),
     ...washingtonGuides.map((guide): SavedGuideEntry => ({
       guide:{jurisdiction:'WA',sourceId:guide.id}, href:`/washington/${guide.id}`, name:guide.name,
