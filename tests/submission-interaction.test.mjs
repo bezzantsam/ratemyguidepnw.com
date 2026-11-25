@@ -232,7 +232,8 @@ test('survey edits distinguish intentional clears from untouched skips and retai
   const initial={quality:3,intensity:null,wouldBookAgain:true,body:'Earlier fishing trip.',firsthand:false,
     tripMonth:null,relationship:'none',tripResponses:{version:1,answers:{
       organization:{state:'answered',value:4},fishiness:{state:'answered',value:2},
-      fish_landed:{state:'answered',value:0},effort:{state:'answered',value:3}}}};
+      fish_landed:{state:'answered',value:0},effort:{state:'answered',value:3},
+      actual_duration_band:{state:'answered',value:'up_to_4'},limited_out_early:{state:'answered',value:true}}}};
   const {render}=setup(async draft=>{captured=draft;return {id:receiptId,status:'pending'}},true,{mode:'revision',initial});
   const catchField=find(render(),node=>node.type===details.TripFields&&node.props.fields[0].key==='fish_landed');
   assert.equal(catchField.props.draft.fish_landed,'value:0');
@@ -244,6 +245,7 @@ test('survey edits distinguish intentional clears from untouched skips and retai
   assert.deepEqual(answers,{
     organization:{state:'not_applicable'},fishiness:{state:'answered',value:2},
     fish_landed:{state:'not_applicable'},effort:{state:'answered',value:3},
+    actual_duration_band:{state:'not_applicable'},limited_out_early:{state:'not_applicable'},
   });
   assert.equal(Object.hasOwn(answers,'kindness'),false);
 });

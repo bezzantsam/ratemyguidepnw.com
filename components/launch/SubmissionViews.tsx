@@ -3,7 +3,7 @@
 import {useEffect, useId, useRef, useState} from 'react';
 import {type ClaimDraft, REVIEW_DIMENSIONS, type ReviewDimension, type ReviewDimensions, type ReviewRatingPatch, type RelationshipDisclosure, type ReviewDraft, type SubmissionReceipt, isSubmissionReceipt, validateClaimDraft, validateReviewDraft} from './submission-model';
 import {TripDetails,TripFields} from './TripDetails';
-import {FISH_LANDED_FIELD,REVIEW_TRIP_RATINGS,decodeTripResponses,encodeTripResponses,isTripHighlight} from './trip-responses';
+import {FISH_LANDED_FIELD,REVIEW_TRIP_RATINGS,TRIP_TIMING_FIELDS,decodeTripResponses,encodeTripResponses,isTripHighlight} from './trip-responses';
 import {clearReviewDraft,readReviewDraft,reviewDraftStorageKey,saveReviewDraft,type ReviewDraftScope,type SavedReviewDraft} from './review-draft-storage';
 
 type SubmitReview = (draft: ReviewDraft) => Promise<SubmissionReceipt>;
@@ -123,9 +123,11 @@ export function ReviewSubmission({onSubmit, onCheckBeforeRetry, allowTripRespons
     if (!tripDraft) {setError('Your saved trip details cannot be edited here. No changes were submitted.');return;}
     const tripAnswers={...tripDraft};
     if(mode==='revision') {
-      // An omitted highlight keeps its published value. Clearing a saved answer writes an explicit state.
+      // Older clients omit retained fields. Send an explicit clear when this editor removes one.
       for(const key of Object.keys(initial?.tripResponses?.answers??{})) {
-        if(isTripHighlight(key)&&!Object.hasOwn(tripAnswers,key))tripAnswers[key]='na';
+        const timingField=TRIP_TIMING_FIELDS.find(field=>field.key===key);
+        if(Object.hasOwn(tripAnswers,key) || (timingField?.legacyMinutesKey && tripAnswers[timingField.legacyMinutesKey])) continue;
+        if(isTripHighlight(key) || timingField) tripAnswers[key]='na';
       }
     }
     if (!allowTripResponses && Object.keys(tripAnswers).length) {setError('Trip details are no longer available. Refresh before submitting.');return;}

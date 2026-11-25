@@ -87,7 +87,8 @@ for migration in \
  richer-review-ratings-v1.sql \
  richer-review-survey-v1.sql \
  review-moderator-own-submission-v1.sql \
- automatic-review-publication-v1.sql; do
+ automatic-review-publication-v1.sql \
+ trip-timing-survey-v1.sql; do
   "${ps[@]}" --single-transaction --file="$root/supabase/review-candidates/$migration"
 done
 "${ps[@]}" --file="$root/tests/backend-launch/automatic-review-publication-v1.sql"

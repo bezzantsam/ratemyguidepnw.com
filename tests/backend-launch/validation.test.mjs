@@ -59,3 +59,22 @@ test('trip survey records subjective ratings independently of fish landed, inclu
   for(const value of [0,2.5,6,'3'])assert.equal(valid({[key]:answered(value)}),false);
  }
 });
+
+test('trip timing accepts one duration per question and only explicit recognition',()=>{
+ const answered=value=>({state:'answered',value});
+ const valid=answers=>validateTripResponses({version:1,answers});
+ for(const prefix of ['agreed','actual']){
+  const band=prefix+'_duration_band',minutes=prefix+'_duration_minutes';
+  for(const value of ['up_to_4','over_4_to_6','over_6_to_8','over_8_to_10','over_10']){
+   assert.equal(valid({[band]:answered(value)}),true);
+  }
+  for(const value of [0,'8+','Over 10 hours'])assert.equal(valid({[band]:answered(value)}),false);
+  assert.equal(valid({[minutes]:answered(0)}),true);
+  assert.equal(valid({[minutes]:answered(320),[band]:answered('over_4_to_6')}),false);
+ }
+ for(const key of ['limited_out_early','guide_stayed_extra']){
+  assert.equal(valid({[key]:answered(true)}),true);
+  assert.equal(valid({[key]:{state:'not_applicable'}}),true);
+  for(const value of [false,'true',1,null])assert.equal(valid({[key]:answered(value)}),false);
+ }
+});

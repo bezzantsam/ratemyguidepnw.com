@@ -40,12 +40,11 @@ test('optional controls start unanswered and never collect names or free text',(
   let tree=render();
   const dog=find(tree,n=>n.type==='select'&&n.props.id.endsWith('-dog_present'));
   assert.equal(dog.props.value,'');dog.props.onChange({target:{value:'value:no'}});
-  tree=render();const duration=find(tree,n=>n.type==='select'&&n.props.id.endsWith('-actual_duration_minutes'));
-  duration.props.onChange({target:{value:'value'}});
-  assert.ok(model.encodeTripResponses(draft).error);
-  tree=render();find(tree,n=>n.type==='input'&&n.props.id.endsWith('-actual_duration_minutes-minutes')).props.onChange({target:{value:'0'}});
+  const duration=find(render(),n=>n.type==='select'&&n.props.id.endsWith('-actual_duration_band'));
+  assert.equal(duration.props.value,'');
+  duration.props.onChange({target:{value:'value:over_6_to_8'}});
   assert.equal(model.encodeTripResponses(draft).value.answers.dog_present.value,false);
-  assert.equal(model.encodeTripResponses(draft).value.answers.actual_duration_minutes.value,0);
+  assert.equal(model.encodeTripResponses(draft).value.answers.actual_duration_band.value,'over_6_to_8');
   assert.equal(find(render(),n=>n.type==='textarea'),undefined);
 });
 
@@ -86,4 +85,38 @@ test('cleared survey ratings and catch display as unanswered without changing st
     assert.equal(field.props.value,'');
   }
   assert.equal(find(tree,node=>node.type==='option'&&node.props.value==='na'),undefined);
+});
+
+test('timing bands replace old minutes only on a deliberate edit and recognition is independently selectable',()=>{
+  const views=compile('components/launch/TripDetails.tsx',{react:{useId:()=>':trip:'},'./trip-responses':model});
+  let draft={actual_duration_minutes:'value:310',agreed_duration_minutes:'value:0'};
+  const render=()=>views.TripFields({fields:model.TRIP_TIMING_FIELDS,draft,onChange:next=>{draft=next}});
+  const control=key=>find(render(),node=>node.props?.id?.endsWith('-'+key));
+  const actual=control('actual_duration_band');
+  assert.equal(actual.props.value,'legacy');
+  assert.match(find(actual,n=>n.type==='option'&&n.props.value==='legacy').props.children,/310 minutes/);
+  assert.equal(control('agreed_duration_band').props.value,'legacy');
+  assert.deepEqual(Object.keys(model.encodeTripResponses(draft).value.answers),['agreed_duration_minutes','actual_duration_minutes']);
+  actual.props.onChange({target:{value:'value:over_4_to_6'}});
+  control('agreed_duration_band').props.onChange({target:{value:''}});
+  control('limited_out_early').props.onChange({target:{checked:true}});
+  control('guide_stayed_extra').props.onChange({target:{checked:true}});
+  assert.equal(control('limited_out_early').props.checked,true);
+  assert.equal(control('guide_stayed_extra').props.checked,true);
+  const encoded=model.encodeTripResponses(draft).value;
+  assert.deepEqual(plain(model.decodeTripResponses(encoded)),plain(draft));
+  assert.deepEqual(Array.from(model.describeTripResponses(encoded)),[
+    'How long did the trip last? Over 4 to 6 hours','We limited out early',
+    'The guide stayed past our booked time to keep fishing',
+  ]);
+  control('limited_out_early').props.onChange({target:{checked:false}});
+  assert.equal(Object.hasOwn(draft,'limited_out_early'),false);
+  assert.equal(control('guide_stayed_extra').props.checked,true);
+  for(const invalid of [
+    {guide_stayed_extra:'value:no'}, {actual_duration_band:'value:over_20'},
+    {actual_duration_band:'value:up_to_4',actual_duration_minutes:'value:100'},
+  ]) assert.ok(model.encodeTripResponses(invalid).error);
+  assert.deepEqual(Array.from(model.describeTripResponses({version:1,answers:{
+    limited_out_early:{state:'not_applicable'},actual_duration_band:{state:'not_applicable'},
+  }})),[]);
 });
