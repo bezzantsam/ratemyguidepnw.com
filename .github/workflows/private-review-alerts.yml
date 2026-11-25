@@ -1,0 +1,23 @@
+name: Deliver private review alerts
+on:
+  schedule:
+    - cron: '14,44 * * * *'
+  workflow_dispatch:
+permissions: {}
+concurrency:
+  group: private-review-alerts
+  cancel-in-progress: false
+jobs:
+  deliver:
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && vars.RMG_REVIEW_ALERT_SCHEDULE_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Dispatch pending notifications
+        env:
+          JOB_SECRET: ${{ secrets.RMG_REVIEW_ALERT_JOB_SECRET }}
+        run: |
+          status=$(curl --silent --show-error --fail --max-time 55 --output /dev/null --write-out '%{http_code}' \
+            --request POST --header "Authorization: Bearer $JOB_SECRET" \
+            https://rateyourguide.com/api/private/review-alerts)
+          test "$status" = 204
