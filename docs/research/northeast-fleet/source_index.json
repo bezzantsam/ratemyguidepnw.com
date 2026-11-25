@@ -1,0 +1,55 @@
+{
+  "research_date": "2026-11-25",
+  "region": "Northeast (NJ + MA)",
+  "sources": [
+    {
+      "name": "Atlantic Highlands Borough Open Party Boats",
+      "url": "https://www.ahnj.com/ahnj/Harbor/Fishing%20%26%20Cruising%20Info/Open%20Party%20Boats/",
+      "type": "municipal roster",
+      "reuse_status": "public government facts",
+      "notes": "Lists Ebbtide, Dark Horse, Fisherman, Prowler, Sea Tiger"
+    },
+    {
+      "name": "Capt Ron's Fishermen",
+      "url": "https://captainronsfishermen.com/",
+      "type": "operator",
+      "reuse_status": "unknown / silent on commercial reuse",
+      "notes": "72' Fishermen, Municipal Harbor"
+    },
+    {
+      "name": "Mi-Jo",
+      "url": "https://www.njfishing.com/mi-jo/",
+      "type": "operator",
+      "reuse_status": "unknown",
+      "notes": "75' aluminum, Capt Mike Scardigno"
+    },
+    {
+      "name": "Yankee Fleet Vessels",
+      "url": "https://www.yankeefleet.com/about-yankee-fleet/vessels/",
+      "type": "operator fleet page",
+      "reuse_status": "unknown",
+      "notes": "Clipper 75', Star 69', Pearl 42'"
+    },
+    {
+      "name": "Helen H Private Fishing Charters / Fleet",
+      "url": "https://helen-h.com/private-fishing-charters/",
+      "type": "operator fleet",
+      "reuse_status": "unknown",
+      "notes": "Helen H 100', Capt John and Son II 90', Angler 75', Nantucket Sound 75', etc."
+    },
+    {
+      "name": "Miss Michele III",
+      "url": "https://www.missmichele.com",
+      "type": "operator",
+      "reuse_status": "unknown",
+      "notes": "65' Miss Michele III, 415 Broadway Point Pleasant Beach"
+    },
+    {
+      "name": "PartyBoatsUSA / secondary",
+      "url": "https://www.partyboatsusa.com/",
+      "type": "directory",
+      "reuse_status": "unknown",
+      "notes": "Cross-check only; not primary"
+    }
+  ]
+}
