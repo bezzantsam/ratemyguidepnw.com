@@ -1,0 +1,192 @@
+{
+  "state": "Connecticut",
+  "phase": "inventory",
+  "checked_date": "2026-11-25",
+  "sources": [
+    {
+      "url": "https://portal.ct.gov/deep/fishing/general-information/fisheries-licenses-and-permits",
+      "publisher": "Connecticut Department of Energy and Environmental Protection",
+      "access_date": "2026-11-25",
+      "source_date": null,
+      "terms_url": "https://portal.ct.gov/policies/disclaimer",
+      "field_scope": "Saved lead. Recreational, commercial, vessel, and guide credentials. The page states content last updated May 2026. Party and charter vessel registration is required to carry sport anglers for a fee. Guide registration is a separate person credential, and operators of a registered charter, party, or head boat are described as exempt while guiding on that vessel. No holder list. Office phones and emails were not copied.",
+      "bulk": "Not a roster.",
+      "attribution": null,
+      "request_process": "The page points purchases to the online licensing system and paper vessel applications to the marine fisheries office. The portal was not opened.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://www.cga.ct.gov/current/pub/chap_490.htm#sec_26-142a",
+      "publisher": "Connecticut General Assembly",
+      "access_date": "2026-11-25",
+      "source_date": "2016-01-01",
+      "terms_url": "https://www.cga.ct.gov/current/pub/chap_490.htm#sec_26-142a",
+      "field_scope": "Current compilation of section 26-142a. Defines a party or charter fishing vessel. Requires a registration issued to the owner. Fee $315. The operator must hold a current Coast Guard passenger-for-hire license. Section history records the party-or-charter amendments as effective January 1, 2016.",
+      "bulk": "Statute text. Not a roster.",
+      "attribution": "Official statute.",
+      "request_process": "Application containing the information the commissioner prescribes, plus the fee.",
+      "reuse_status": "official_text_no_roster_grant"
+    },
+    {
+      "url": "https://www.cga.ct.gov/current/pub/chap_490.htm#sec_26-31c",
+      "publisher": "Connecticut General Assembly",
+      "access_date": "2026-11-25",
+      "source_date": "2015-01-01",
+      "terms_url": "https://www.cga.ct.gov/current/pub/chap_490.htm#sec_26-31c",
+      "field_scope": "Guide-services registration. Fee $100. Expires the last day of December. Collects name, residential address, business address, business telephone, and services offered. Exempts the user, operator, or crew of a 26-142a charter, party, or head boat from subsection (a). Subsection (c) limits some vessel guide services to two customers. That sentence was not applied to a registered party boat. Effective January 1, 2015.",
+      "bulk": "Not a roster.",
+      "attribution": "Official statute.",
+      "request_process": "Form prescribed by the commissioner.",
+      "reuse_status": "official_text_no_roster_grant"
+    },
+    {
+      "url": "https://www.cga.ct.gov/current/pub/chap_490.htm#sec_26-27",
+      "publisher": "Connecticut General Assembly",
+      "access_date": "2026-11-25",
+      "source_date": null,
+      "terms_url": "https://www.cga.ct.gov/current/pub/chap_490.htm#sec_26-27",
+      "field_scope": "Fishing-license requirement and the passenger exemption. No fishing license is required for a passenger on a party or charter fishing vessel registered under section 26-142a and operating solely in the marine district.",
+      "bulk": "Not a roster.",
+      "attribution": "Official statute.",
+      "request_process": null,
+      "reuse_status": "official_text_no_roster_grant"
+    },
+    {
+      "url": "https://www.cga.ct.gov/current/pub/chap_490.htm#sec_26-28b",
+      "publisher": "Connecticut General Assembly",
+      "access_date": "2026-11-25",
+      "source_date": "2016-01-01",
+      "terms_url": "https://www.cga.ct.gov/current/pub/chap_490.htm#sec_26-28b",
+      "field_scope": "Marine waters fishing license. The same passenger exemption for a registered party or charter fishing vessel operating solely in the marine district. History of the current wording is effective January 1, 2016.",
+      "bulk": "Not a roster.",
+      "attribution": "Official statute.",
+      "request_process": null,
+      "reuse_status": "official_text_no_roster_grant"
+    },
+    {
+      "url": "https://www.cga.ct.gov/current/pub/chap_490.htm#sec_26-157b",
+      "publisher": "Connecticut General Assembly",
+      "access_date": "2026-11-25",
+      "source_date": null,
+      "terms_url": "https://www.cga.ct.gov/current/pub/chap_490.htm#sec_26-157b",
+      "field_scope": "Reporting. A party or charter registration holder must report what the commissioner requires, which may include passengers carried to fish, area, effort, and catch. The section does not publish the reports or say they may be copied into a directory.",
+      "bulk": "Reports to the commissioner. No public file was found.",
+      "attribution": "Official statute.",
+      "request_process": "Forms and intervals set by the commissioner. No public download.",
+      "reuse_status": "official_text_no_roster_grant"
+    },
+    {
+      "url": "https://www.cga.ct.gov/current/pub/chap_268.htm#sec_15-145b",
+      "publisher": "Connecticut General Assembly",
+      "access_date": "2026-11-25",
+      "source_date": "2016-01-01",
+      "terms_url": "https://www.cga.ct.gov/current/pub/chap_268.htm#sec_15-145b",
+      "field_scope": "Boating chapter search extract. A person who holds a current Coast Guard passenger-for-hire license and a current party or charter fishing vessel registration under section 26-142a is not prohibited from operating a marine-dealer-numbered vessel for a recreational charter fishing guide service. Not a roster. The section body was not downloaded as its own file.",
+      "bulk": "Not a roster.",
+      "attribution": "Official statute extract.",
+      "request_process": null,
+      "reuse_status": "official_text_no_roster_grant",
+      "note": "Search extract of the current chapter text."
+    },
+    {
+      "url": "https://portal.ct.gov/-/media/deep/fishing/fishing_forms/fishingvesselpermitapplicationpdf.pdf",
+      "publisher": "Connecticut Department of Energy and Environmental Protection",
+      "access_date": "2026-11-25",
+      "source_date": null,
+      "terms_url": "https://portal.ct.gov/policies/disclaimer",
+      "field_scope": "Vessel permit application, revision April 2024. Search extract. The PDF was not downloaded. Party and charter registration is $315 and is required for each vessel. The form asks for vessel name, state registration or Coast Guard number, length, capacity, home port, Connecticut landing port, and marina. Personal fields were not stored.",
+      "bulk": "Blank form. Not a roster.",
+      "attribution": null,
+      "request_process": "Mail to the license and revenue unit. The mailing address on the form was not copied into the notes as a contact channel beyond the statute's application requirement.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://portal.ct.gov/policies/disclaimer",
+      "publisher": "State of Connecticut",
+      "access_date": "2026-11-25",
+      "source_date": null,
+      "terms_url": "https://portal.ct.gov/policies/disclaimer",
+      "field_scope": "Site disclaimer. No warranty for documents or data. Data are not legal documents. The disclaimer applies to individual and aggregate use. Permission is required to reproduce the state arms, seal, and CT.gov logo. No copyright grant for a license table.",
+      "bulk": "Silent on bulk reuse of registration files.",
+      "attribution": "Silent.",
+      "request_process": "Seal and logo requests go to the offices named on the page. Those addresses were not used as a fishing-roster request path.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://ctsportfishing.com/boats.html",
+      "publisher": "Connecticut Charter and Party Boat Association",
+      "access_date": "2026-11-25",
+      "source_date": null,
+      "terms_url": null,
+      "field_scope": "Member boats page. The list is printed twice and was counted once: 26 headings. Seven state Waterford or Niantic. One states no port. Passenger counts and telephones are uneven, and the two copies of one card do not use the same telephone. Telephones were not copied. Not a department registration extract.",
+      "bulk": "One HTML directory. Copyright is asserted. No bulk grant.",
+      "attribution": "Footer copyright. No credit sentence that authorizes a third-party directory.",
+      "request_process": "The page tells a reader to call a boat. That is a booking instruction, not a data license. The membership packet was not used as hull evidence.",
+      "reuse_status": "copyright_asserted_no_directory_grant"
+    },
+    {
+      "url": null,
+      "publisher": "Operator pages for five Waterford and Niantic hulls",
+      "access_date": "2026-11-25",
+      "source_date": null,
+      "terms_url": null,
+      "field_scope": "First-party booking and about pages for five hulls. Length, builder, or model was read where the page stated it. Identities stay in the private packet. One operator's home, about, and contact fetches returned titles only, and the about claims used for that row are from a search extract.",
+      "bulk": "One opened site reserves all rights. The other opened landing is silent.",
+      "attribution": "All rights reserved where a copyright line was present. Otherwise silent.",
+      "request_process": "No directory-license contact was published on the pages used for hull evidence.",
+      "reuse_status": "not_granted_or_unknown"
+    }
+  ],
+  "coverage": [
+    {
+      "roster_url": null,
+      "population": "Hunting or fishing guide registrations under section 26-31c",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0,
+      "note": "Person credential. No public holder list was found. Operators of a registered charter, party, or head boat are exempt from the registration subsection."
+    },
+    {
+      "roster_url": null,
+      "population": "Party or charter fishing vessel registrations under section 26-142a",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0,
+      "note": "The license page, the statute, and the application do not publish the holder file. Catch reports are not a public roster."
+    },
+    {
+      "roster_url": "https://ctsportfishing.com/boats.html",
+      "population": "Association boat headings, counted once",
+      "roster_count": 26,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0,
+      "note": "The page repeats the list. Headings were counted once. This is not the department registration population."
+    },
+    {
+      "roster_url": "https://ctsportfishing.com/boats.html",
+      "population": "Association headings that state Waterford or Niantic",
+      "roster_count": 7,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0,
+      "note": "Includes one fleet heading. Excludes a heading with no port and excludes New London, Groton, Noank, Mystic, and other ports."
+    },
+    {
+      "roster_url": null,
+      "population": "Operator-described bookable hulls at Waterford and Niantic",
+      "roster_count": null,
+      "sampled_rows": 5,
+      "supported_rows": 4,
+      "held_rows": 1,
+      "independent_publisher_matches": 1,
+      "note": "Three named hulls at one landing have a stated length and are not named on the association card. One hull matches an association name and a six-passenger count without a stated length. The held hull does not share the association's name string and has no stated length."
+    }
+  ]
+}
