@@ -1,0 +1,297 @@
+{
+  "state": "Wisconsin",
+  "phase": "wisconsin-inventory",
+  "checked_date": "2026-11-25",
+  "target_waters": [
+    "Sheboygan"
+  ],
+  "licensed_departure_population": null,
+  "sources": [
+    {
+      "url": "https://dnr.wisconsin.gov/topic/Fishing/GreatLakesFishingGuide",
+      "publisher": "Wisconsin Department of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://dnr.wisconsin.gov/legal/acceptableuse",
+      "field_scope": "Great Lakes fishing guide page. A guide license is issued to a person paid to guide, direct, or assist someone fishing on the Great Lakes and tributaries by any means other than sport trolling for salmon and trout. It is also required for species other than trout and salmon on outlying waters, and for pre-placed ice-fishing structures. Renting a boat or gear for independent use, without further guiding, is not guiding. A U.S. Coast Guard license is still required to guide passengers from a vessel on those waters. Licenses are bought in Go Wild or at a sales location and run January 1 through December 31. A business that hires guides may itself hold a guide license and report for its staff for a full calendar year. Electronic trip reports use Survey123 within 24 hours where reporting is required. The page's 2027-and-onward reporting locations are Green Bay for all species, Lake Michigan smallmouth bass in Door County waters only, and Lake Superior for all species. Sheboygan is not one of those locations. No licensee roster is on the page. Staff names were not stored.",
+      "bulk": "No roster download. Forms and grid maps are separate files.",
+      "attribution": null,
+      "request_process": "Reporting is a licensee duty in Survey123. It is not a public file and not a reuse grant.",
+      "reuse_status": "noncommercial_public_use_permission_outside_fair_use",
+      "rights_basis": "DNR website content. Acceptable use limits the material to noncommercial use of the general public, applies fair use, and requires permission from the page contact for other copying."
+    },
+    {
+      "url": "https://dnr.wisconsin.gov/topic/Fishing/lakemichigan/CharterForm",
+      "publisher": "Wisconsin Department of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://dnr.wisconsin.gov/legal/acceptableuse",
+      "field_scope": "Charter sport-trolling page. An outlying-water sport-trolling license is required to guide salmon or trout by sport trolling on Lake Superior, Lake Michigan, and Green Bay, including tributaries up to the first fish impasse. The licensee is the person. Boats used by the licensee must meet U.S. Coast Guard and Wisconsin boat requirements. The page says licenses may be issued only to persons over 18. Returning captains buy the license in Go Wild. It is valid January 1 through December 31. New captains mail Form 9400-245. Electronic reporting has been required since May 1, 2023, including months with no trips after the license is purchased. Within 30 minutes of returning, the report includes the captain's customer ID, name, boat information, trip location, angler count, hours, and total harvest. Species harvest is due by 11:59 p.m. the same day. The month is transmitted by the 10th. No public roster of licensees or boats is on the page. An organizational mailbox is named and was not stored or used.",
+      "bulk": "Linked forms and grid maps are separate files. No licensee download.",
+      "attribution": null,
+      "request_process": "The mailbox is for charter reporting accounts. It was not used. It is not a reuse grant.",
+      "reuse_status": "noncommercial_public_use_permission_outside_fair_use",
+      "rights_basis": "DNR website content under the acceptable-use policy."
+    },
+    {
+      "url": "https://dnr.wisconsin.gov/permits/professionalicenses.html",
+      "publisher": "Wisconsin Department of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://dnr.wisconsin.gov/legal/acceptableuse",
+      "field_scope": "Commercial licenses index. Guide, bait, fur, and taxidermy licenses are bought in Go Wild. The page says there is no longer a paper application for those, and a Department of Revenue check happens at purchase. A nonresident guide license covers fishing only. The sport-trolling row says the license is required to guide sport trolling for trout or salmon on the outlying waters and may be issued to a person over the age of 17. It links Form 9400-245. It does not list holders, ports, or boats.",
+      "bulk": "No roster.",
+      "attribution": null,
+      "request_process": "A toll-free customer-service number is printed for commercial-license questions. It was not used.",
+      "reuse_status": "noncommercial_public_use_permission_outside_fair_use",
+      "rights_basis": "DNR website content."
+    },
+    {
+      "url": "https://dnr.wisconsin.gov/legal/acceptableuse",
+      "publisher": "Wisconsin Department of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://dnr.wisconsin.gov/legal/acceptableuse",
+      "field_scope": "Acceptable use policy for dnr.wi.gov. The page says the material is for the noncommercial use of the general public and that fair-use guidelines apply. It says the department remains the sole owner of specifically copyrighted information it created and posted. Photographs and graphics are property of the department or of an agency that holds a license to display them. Use outside fair use requires permission from the person listed as responsible for the page, or from the department if no page contact can be identified. If permission to reproduce or redistribute is granted, the credit must read: Reproduced with permission from the Department of Natural Resources. Links to dnr.wi.gov are welcome. The department will not make reciprocal link agreements. A link is not an endorsement. No date is printed on the policy.",
+      "bulk": null,
+      "attribution": "The required credit applies only after permission to reproduce or redistribute is granted. No permission was requested.",
+      "request_process": "Ask the listed page contact, or the department if the page contact cannot be identified. No request was sent.",
+      "reuse_status": "noncommercial_public_use_permission_outside_fair_use",
+      "rights_basis": "This is the policy for the DNR pages and PDFs opened here. It does not grant a commercial directory license. Terms for a later public-records file are not stated on this page."
+    },
+    {
+      "url": "https://dnr.wisconsin.gov/contact/OpenRecordsRequest.html",
+      "publisher": "Wisconsin Department of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://dnr.wisconsin.gov/legal/acceptableuse",
+      "field_scope": "Public records request page. Email is described as the preferred way to submit a request. A form, 9500-096, is optional. Requests after 5 p.m. start the next business day. Copying is $0.0113 per black-and-white side. Scanning is waived. Location is $25 an hour when the cost is $50 or more, and the department may pre-bill under Wis. Stat. 19.35(3)(f). Review for redaction is not charged. Electronic copies of records that already exist electronically are not charged per page. Questions are not records requests. No request was sent. The page does not say whether a sport-trolling licensee list or trip-report boat names would be released.",
+      "bulk": "No sport-trolling download is linked from this page.",
+      "attribution": null,
+      "request_process": "The page names an organizational mailbox and a coordinator phone number. Neither was used, and neither was copied into this note. A request would be for records, not a standing commercial-reuse grant.",
+      "reuse_status": "unknown",
+      "rights_basis": "The page describes how to ask for records and what copying costs. It does not state reuse terms for a file that has not been released. Website text remains under the acceptable-use policy."
+    },
+    {
+      "url": "https://docs.legis.wisconsin.gov/document/statutes/29.512",
+      "publisher": "Wisconsin Legislature",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Compiled statutes displayed from the 29.512 address. Section 29.512 requires a guide license before a person is employed for compensation to guide, direct, or assist another person in hunting, fishing, or trapping. Hunting and trapping guide licenses are resident-only. No guide license may be issued under age 18. Section 29.514, on the same retrieved compilation, requires a sport-trolling license before a person is employed for compensation to guide sport trolling for trout or salmon on the outlying waters. No sport-trolling license may be issued under age 18. The application must include the applicant's name and address, the home port from which the applicant will operate, the applicant's valid U.S. Coast Guard operator's license number, and other information the department requires. The licensee and everyone aboard must comply with this chapter. Boats used by the licensee must meet Coast Guard and state boat requirements. Subsection (2) requires monthly records of fish taken, due by the 10th day of the next month. The statute does not say the boat holds the license. Legislature site reuse terms were not on this display.",
+      "bulk": null,
+      "attribution": null,
+      "request_process": null,
+      "reuse_status": "no_affirmative_grant",
+      "rights_basis": "The sections create person licenses and a reporting duty. They do not publish a roster and do not grant commercial reuse of licensee or boat records."
+    },
+    {
+      "url": "https://docs.legis.wisconsin.gov/document/statutes/29.563",
+      "publisher": "Wisconsin Legislature",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Fee schedule subsection 29.563(5), read from the legislature's displayed compilation and from the chapter PDF text, which agreed. Resident guide $39.25. Resident sport trolling $100. Nonresident guide $99.25. Nonresident Lake Michigan and Green Bay sport trolling $400. Nonresident Lake Superior sport trolling $400. A separate issuing-fee subsection was not reconciled to the 25-cent amounts printed on the application form. Proposal text that would raise these fees was visible in search and was not treated as law. The compiled amounts above are the ones read as current.",
+      "bulk": null,
+      "attribution": null,
+      "request_process": null,
+      "reuse_status": "no_affirmative_grant",
+      "rights_basis": "A fee statute is not a directory license."
+    },
+    {
+      "url": "https://docs.legis.wisconsin.gov/code/admin_code/nr/001/20/iv/60",
+      "publisher": "Wisconsin Legislative Reference Bureau, administrative code display",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "NR 20.60, monthly sport-trolling reports, and the start of NR 20.65, guide reports, on the same display. NR 20.60 requires the electronic system except during an outage. For each trip the licensee records name, license number, date, documented boat name or 8-digit state registration number, locations fished, anglers, hours, and harvest, within half an hour of returning to the dock or shore. Species detail is due by 11:59 p.m. that day. The month is submitted by the 10th. A month with no trips still needs a no-trip report. Paper copies are kept five years. The report must be shown to a department representative on request. History on the section shows the electronic-reporting rewrite effective May 1, 2023. NR 20.65 defines a fishing guide as a person licensed under 29.512 and lets an employing guide licensee report for its guides for the license year. The guide report fields in the portion read include guide identity, date, location, anglers, hours, and fish. A boat-name field was not in that guide-report list. Neither section publishes the reports.",
+      "bulk": "The reports are entered in a department system. No public extract is linked from the rule text.",
+      "attribution": null,
+      "request_process": "Exhibition to a department representative is an enforcement duty, not a public download.",
+      "reuse_status": "no_affirmative_grant",
+      "rights_basis": "The rule tells licensees what to file. It does not release the file or license commercial reuse. The boat name or registration number exists in the sport-trolling report and is not posted."
+    },
+    {
+      "url": "https://dnr.wisconsin.gov/sites/default/files/topic/Fishing/GL_9400-245.pdf",
+      "publisher": "Wisconsin Department of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://dnr.wisconsin.gov/legal/acceptableuse",
+      "field_scope": "Blank Form 9400-245, revision R 1/22, Outlying Water Sport Trolling License Application. PDFKit reported one page. It says use is required for an application under s. 29.514. It says collected information may be used for surveys, eligibility, law enforcement, and other secondary purposes, and that the department may provide the information to requesters under the public records law, ss. 19.31 to 19.39. Printed fees are $100.25 resident and $400.25 nonresident. The license expires December 31. Payment is not sent with the form. Fields in the extracted text are name, email, address, phone, date of birth, sex, DNR customer ID, residency, and fishing location checkboxes for Lake Michigan, Lake Superior, and Green Bay. The certification says the applicant's U.S. Coast Guard operator's license number is current and that the applicant will not use a boat that fails Coast Guard or Wisconsin boat requirements. A labeled home-port blank and a labeled boat-name blank were not in the extracted text. The statute still requires the home port and the Coast Guard number on the application. Mail goes to the Sturgeon Bay Service Center. This is a blank form, not a roster.",
+      "bulk": "One blank PDF. No issued-license file.",
+      "attribution": null,
+      "request_process": "Mail the application to the service center named on the form. That path was not used. The public-records sentence is about information the department holds, not a license to copy a directory.",
+      "reuse_status": "noncommercial_public_use_permission_outside_fair_use",
+      "rights_basis": "The PDF is DNR website content. Its public-records sentence does not identify which fields would be released or authorize commercial reuse."
+    },
+    {
+      "url": "https://dnr.wisconsin.gov/sites/default/files/topic/Permits/Guidelicenses.pdf",
+      "publisher": "Wisconsin Department of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://dnr.wisconsin.gov/legal/acceptableuse",
+      "field_scope": "Guide and Sport Trolling Informational Document, revised 03/2022. Two pages. It says it is an interpreted summary and points readers to the statutes and administrative code. It repeats the guide-versus-sport-trolling split. It prints new-guide costs of $40 resident and $100 nonresident, and sport-trolling costs of $100.25 resident and $400.25 nonresident, with a minimum age of 18. It says a valid operator's license number must be provided on the sport-trolling application, and that a Coast Guard operator's license is required to carry passengers for hire on federally navigable waters. It defines outlying waters by citing s. 29.001(63) as Lake Superior, Lake Michigan, Green Bay, Sturgeon Bay, Sawyer's Harbor, and the Fox River from its mouth to the dam at De Pere. Section 29.001 was not opened separately. The sheet says the licensee is responsible for the number of fish taken aboard the boat. It is not a roster. The March 2022 fee lines do not match the compiled statute amounts read the same day.",
+      "bulk": "One PDF. No holder list.",
+      "attribution": null,
+      "request_process": null,
+      "reuse_status": "noncommercial_public_use_permission_outside_fair_use",
+      "rights_basis": "DNR website PDF. Dated March 2022. It is not the fee statute."
+    },
+    {
+      "url": "https://dnr.wisconsin.gov/sites/default/files/topic/Fishing/Creel%20harvest%20tables%20for%20website%202021-2025%20FINAL.pdf",
+      "publisher": "Wisconsin Department of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://dnr.wisconsin.gov/legal/acceptableuse",
+      "field_scope": "Lake Michigan and Green Bay sportfishing effort and harvest tables. PDFKit reported 14 pages. Page 1 says the tables show estimated angler effort and harvest of trout and salmon. Table 1 is total fishing effort in angler hours by angler group from 2011 through 2025. The 2025 charter column is 256,540 angler hours. The 2025 total across ramp, moored, charter, pier, shore, and stream is 2,307,077. Table 2 is effort by county for 2021 through 2025, all angler groups together. Sheboygan is 175,574, 213,660, 153,181, 197,849, and 162,117. Later tables count fish harvested by fishery type, including a charter column. Those cells were not copied forward as boat counts. No hull, captain, or trip-count roster is in the pages read. No publication date is printed on page 1.",
+      "bulk": "One PDF of estimates. No microdata and no stated bulk license.",
+      "attribution": null,
+      "request_process": null,
+      "reuse_status": "noncommercial_public_use_permission_outside_fair_use",
+      "rights_basis": "DNR website PDF. Estimated hours and harvest are not a license to rebuild a charter directory and are not a count of Sheboygan departures."
+    },
+    {
+      "url": "https://visitsheboygan.com/outdoors/fishing/",
+      "publisher": "Visit Sheboygan",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Tourism fishing page. It describes charter fishing in general and does not name a boat, a captain, or a fleet count. It names two public launches: South 8th Street and Riverfront Drive into the river, and Harbor Centre Marina at 821 Broughton Drive into the harbor inside the mouth of the Sheboygan River. It names one tackle shop. No reuse terms were in the retrieved text.",
+      "bulk": "One HTML page. No download.",
+      "attribution": null,
+      "request_process": null,
+      "reuse_status": "unknown",
+      "rights_basis": "The retrieved text does not state a copyright license or a commercial-use grant. The page is not a DNR record."
+    },
+    {
+      "url": "https://www.sheboyganwi.gov/330/Harbor-Centre-Marina",
+      "publisher": "City of Sheboygan",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Harbor Centre Marina municipal page. A direct download returned HTTP 403. A second fetch returned a bot interstitial and no marina text. A related host, harborcentremarina.com, timed out on two attempts. Search snippets described a riverfront sentence about the charter fleet. That sentence was not used because the pages were not retrieved. Whether the city page lists charter boats is unknown.",
+      "bulk": null,
+      "attribution": null,
+      "request_process": null,
+      "reuse_status": "unavailable",
+      "rights_basis": "The municipal page could not be read. No terms and no roster were obtained."
+    },
+    {
+      "url": "https://licensesearch.wi.gov/",
+      "publisher": "Wisconsin credential search, host unresolved",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "The host licensesearch.wi.gov did not resolve on two attempts, including the www hostname. No search form opened. No name was queried. Whether DNR guide or sport-trolling licenses would appear in a credential search was not re-checked.",
+      "bulk": null,
+      "attribution": null,
+      "request_process": null,
+      "reuse_status": "unavailable",
+      "rights_basis": "The lookup named in earlier project notes could not be opened on this check."
+    },
+    {
+      "url": null,
+      "publisher": "Two Sheboygan fishing operators and one booking marketplace. Addresses withheld.",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Two operator sites were opened. One describes one hull, a length, and a builder, states a passenger maximum, and also says several boats are available. One repeats one length and builder, and a passenger maximum, on its own trip cards. The amenities text on that site did not add a second hull. A marketplace listing for the first operator returned HTTP 403. A search extract of that listing was not treated as an independent measurement. A third operator host returned HTTP 403 and was not used. No documentation or registration number was displayed. No reuse license was in the retrieved text.",
+      "bulk": null,
+      "attribution": null,
+      "request_process": null,
+      "reuse_status": "unknown",
+      "rights_basis": "Operator pages are not DNR records and are not covered by the DNR acceptable-use policy. No reuse license was in the retrieved text."
+    }
+  ],
+  "coverage": [
+    {
+      "roster_url": "https://dnr.wisconsin.gov/topic/Fishing/lakemichigan/CharterForm",
+      "population": "Posted sport-trolling licensees or boats. The page describes the person license and the trip report. It does not list holders or hulls.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://dnr.wisconsin.gov/topic/Fishing/GreatLakesFishingGuide",
+      "population": "Posted guide licensees. The page has no name list. Sheboygan is not a 2027 guide-reporting location on this page.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://dnr.wisconsin.gov/sites/default/files/topic/Fishing/Creel%20harvest%20tables%20for%20website%202021-2025%20FINAL.pdf",
+      "population": "Hull or departure rows in the sportfishing effort tables. Sheboygan County total effort in 2025 is 162,117 angler hours for all angler groups. Statewide charter effort in 2025 is 256,540 angler hours. Neither figure is a roster count.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://visitsheboygan.com/outdoors/fishing/",
+      "population": "Charter hulls named on the Visit Sheboygan fishing page. The page names launches and does not name boats.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": null,
+      "population": "Hull described on one Sheboygan operator home page. The page also says several boats are available. Those extra boats are not named and were not given rows. The URL is withheld.",
+      "roster_count": 1,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": null,
+      "population": "Hull description repeated on one operator's Sheboygan trip cards. The URL is withheld.",
+      "roster_count": 1,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 0
+    }
+  ],
+  "sample_summary": {
+    "observations": 2,
+    "supported": 0,
+    "held": 2,
+    "operator_samples": [
+      {
+        "sampled_rows": 1,
+        "supported_rows": 0,
+        "held_rows": 1
+      },
+      {
+        "sampled_rows": 1,
+        "supported_rows": 0,
+        "held_rows": 1
+      }
+    ],
+    "agency_lists_sample": {
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0
+    },
+    "samples_are_not_additive": true,
+    "note": "Guide licenses, sport-trolling licenses, creel hours, and the two held hulls are different lists. None is a count of licensed Sheboygan departures."
+  },
+  "next_investigations": [
+    {
+      "question": "Does the 2024 or 2025 open-water effort narrative separate charter angler hours for Sheboygan County from the all-group county total?",
+      "source_url": "https://dnr.wisconsin.gov/topic/Fishing/lakemichigan/ManagementReports",
+      "publisher": "Wisconsin Department of Natural Resources",
+      "why_new": "The creel table PDF gives Sheboygan's all-group hours and a statewide charter-hour column. It does not give Sheboygan charter hours. The management-reports page links the annual effort narratives and was not opened. A county charter-hour figure would still not be a licensed-hull census."
+    },
+    {
+      "question": "Does the Lake Michigan grid map identify Sheboygan as an origin port for sport-trolling reports?",
+      "source_url": "https://dnr.wisconsin.gov/sites/default/files/topic/Fishing/LM_GridMap.pdf",
+      "publisher": "Wisconsin Department of Natural Resources",
+      "why_new": "The charter page links this map for reporting locations. It was not opened. A labeled port cell would show how the department groups Sheboygan trips. It would not identify a hull."
+    },
+    {
+      "question": "What boat fields are printed on the blank monthly sport-trolling report, Form 9400-249?",
+      "source_url": "https://dnr.wisconsin.gov/sites/default/files/topic/Fishing/GL_9400-249R4-23.pdf",
+      "publisher": "Wisconsin Department of Natural Resources",
+      "why_new": "NR 20.60 requires a documented boat name or an 8-digit registration number. The blank monthly form was linked from the charter page and was not opened. Its labels would show the exact boat fields without opening any licensee's report."
+    }
+  ],
+  "next_questions": [
+    "Will the department release a current list of sport-trolling licensees, home ports, or the boat-name field required by NR 20.60? The records page describes how to ask and what copying costs. It does not say those fields would be released or how they could be reused. No request was sent. The most useful next primary source that can be read without a request is the open-water effort narrative linked from the Lake Michigan management reports page, to see whether charter angler hours are split out for Sheboygan County.",
+    "Which fee does Go Wild charge today? The compiled statute, Form 9400-245 revision R 1/22, and the March 2022 information sheet do not print the same dollar amounts. No account was opened.",
+    "Does the live sport-trolling application still collect the home port required by s. 29.514? The extracted text of the R 1/22 blank does not show that label.",
+    "Two Sheboygan booking hulls stay held. One operator page describes a length and a builder and also says several boats are available. Its marketplace cross-check was a search extract after HTTP 403. The other operator repeats a length and builder only on its own trip cards. Neither page showed a documentation number. The city marina page was not retrieved."
+  ]
+}
