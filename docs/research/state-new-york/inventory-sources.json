@@ -1,0 +1,244 @@
+{
+  "state": "New York",
+  "phase": "new-york-inventory",
+  "checked_date": "2026-11-25",
+  "target_waters": [
+    "Montauk"
+  ],
+  "licensed_departure_population": null,
+  "sources": [
+    {
+      "url": "https://dec.ny.gov/regulatory/permits-licenses/fish-wildlife-plant/licensed-guide-program",
+      "publisher": "New York State Department of Environmental Conservation",
+      "access_date": "2026-11-25",
+      "terms_url": "https://dec.ny.gov/about/website-usage-and-policies/website-content-usage",
+      "field_scope": "A guide is a person 18 or older who offers services for hire that include directing, instructing, or aiding another in fishing, hunting, camping, hiking, whitewater rafting, canoeing, or kayaking, or rock and ice climbing. The license is not limited to New York residents. It is valid for five years. The page states a fee of $100 for the first category, including the application fee, and $20 for each additional category, with no additional fee for boats and canoes. The page says a guide license is not required for a person operating or assisting on a U.S. Coast Guard licensed public vessel for hire on the Atlantic Ocean and on listed marine, coastal, and tidal waters, including the Hudson River to the Troy Barrier Dam, the St. Lawrence, the Great Lakes, Lake Champlain, and Cayuga and Seneca Lakes, each with the navigable portion of its tributaries. A current guide list is linked to the DEC licensed-guide search. The page does not list vessels, ports, or Montauk departures.",
+      "bulk": "No roster file on this page. The linked search is a separate application.",
+      "attribution": null,
+      "request_process": "Exam registration is online. The application is issued after a passing score. Renewal is mailed. That is a licensing path, not a reuse grant.",
+      "reuse_status": "written_permission_except_education",
+      "rights_basis": "This is a DEC website page. The DEC web-content policy allows educational use and requires explicit written permission for other use, including commercial use."
+    },
+    {
+      "url": "https://dec.ny.gov/docs/legal_protection_pdf/guidesregs.pdf",
+      "publisher": "New York State Department of Environmental Conservation",
+      "access_date": "2026-11-25",
+      "terms_url": "https://dec.ny.gov/about/website-usage-and-policies/website-content-usage",
+      "field_scope": "Agency PDF linked from the guide program page. Page 1 prints Environmental Conservation Law section 11-0533. A guide is a person offering those hired services. Subdivision 2 requires a department license except for persons operating or assisting on a public vessel for hire that is licensed by the U.S. Coast Guard or New York State, on the Atlantic Ocean and other marine and coastal waters, tidal waters including the Hudson to the Troy Barrier Dam, the St. Lawrence, the Great Lakes and the navigable parts of their tributaries, and other navigable waters determined by the department. The license term is five calendar years. The fee is set by the department and may not exceed $200. Subdivision 8 says the department shall publish a list of guides annually. Page 2 begins 6 NYCRR Part 197. Fishing is defined as taking fish from state waters, including attempts and assistance. For hire means services offered to the public for compensation, not mere reimbursement of travel, meals, and lodging. A guide is a person. The rest of the 12-page PDF was not read.",
+      "bulk": null,
+      "attribution": null,
+      "request_process": null,
+      "reuse_status": "written_permission_except_education",
+      "rights_basis": "The PDF states a duty to publish an annual guide list. It does not grant commercial reuse of that list. The file sits on the DEC website."
+    },
+    {
+      "url": "https://data.ny.gov/Recreation/Guides-Currently-Licensed-in-New-York-State/q9d5-zxbn",
+      "publisher": "Open NY, attributed to the New York State Department of Environmental Conservation",
+      "access_date": "2026-11-25",
+      "terms_url": "https://data.ny.gov/api/views/77gx-ii52/files/ef0c1840-ad54-4240-92fd-6397c49fde46?download=true",
+      "field_scope": "Person-level rows for active guide licenses. Columns include first and last name, residence city, state, ZIP, county for New York residents, badge number, activity, business name, phone, expiration date, and a geocode of the address components. There is no vessel, port, or hull field. Metadata says the file is limited to licenses active at publication, is refreshed once a year, and that an expiration date past the five-year term is a data error to be disregarded. The view's rowsUpdatedAt timestamp is 2026-10-01T19:45:03Z. Attribution on the view is the Department of Environmental Conservation. Dataset owner text names the Division of Fish and Wildlife, while the description says the Division of Forest Protection issues the licenses and Forest Rangers monitor compliance. On this check the API returned 6,746 activity rows and 2,718 distinct badges. Fishing rows were 1,457, all with a badge, across 1,445 distinct badges. Twelve badges appear on two fishing rows. Suffolk County fishing rows were 41, across 41 badges. Residence city Montauk had 5 activity rows and 2 badges, of which 2 rows and 2 badges were fishing. Those are residence facts, not departure ports.",
+      "bulk": "The Open NY handbook describes CSV, JSON, and other downloads plus a REST API for published tabular datasets. This dataset is on that platform. The metadata says the file is refreshed annually and points to the DEC search for newer information.",
+      "attribution": "View attribution is the New York State Department of Environmental Conservation. The portal terms do not impose a general attribution requirement.",
+      "request_process": "Metadata names a DEC special-licenses mailbox as the dataset contact. Questions about whether a posted field is protected are directed by the portal terms to the supplying agency. That contact path was not used.",
+      "reuse_status": "revocable_license_no_general_preapproval",
+      "rights_basis": "OPEN-NY terms last modified March 8, 2013. They invite private-sector reuse, state no general attribution, share-alike, or pre-approval requirement, and also grant only a non-exclusive revocable license. Content-specific terms may apply. Third-party graphics and marks are not licensed. The state does not warrant accuracy after download and prohibits implied endorsement. Phone numbers are present in the file and were not copied here."
+    },
+    {
+      "url": "https://data.ny.gov/api/views/77gx-ii52/files/ef0c1840-ad54-4240-92fd-6397c49fde46?download=true",
+      "publisher": "New York State Office of Information Technology Services",
+      "access_date": "2026-11-25",
+      "terms_url": "https://data.ny.gov/api/views/77gx-ii52/files/ef0c1840-ad54-4240-92fd-6397c49fde46?download=true",
+      "field_scope": "OPEN-NY Terms of Use, six pages, last modified March 8, 2013. The welcome text says the terms do not require attribution, relicensing, share-alike, or pre-approval, and that lawful private-sector reuse is allowed. The contract text says other terms may be imposed on specific content. The intellectual-property section grants a non-exclusive revocable license to use content consistent with the terms, and also says access does not give ownership or a license to intellectual-property rights in the content. Protected images, logos, and marks need prior written permission. The state seal and site graphics need written permission. The state disclaims accuracy, timeliness, completeness, and continued accuracy after download. Agencies remain the authoritative sources. Links are not endorsements. Use does not create an agency relationship. Unexpressed rights are reserved. The license can be withdrawn and the content removed.",
+      "bulk": "Bulk download and API behavior are described in the Open Data Handbook, not in this PDF.",
+      "attribution": "No general attribution requirement is stated. A preferred citation may be supplied as metadata and may change.",
+      "request_process": "Privacy questions about a particular dataset go to the supplying agency or to ITS Counsel. A written notice from the state to stop a use must be followed. No separate commercial-directory application is printed.",
+      "reuse_status": "revocable_license_no_general_preapproval",
+      "rights_basis": "The terms are the portal-wide license for content published on data.ny.gov. They are not the DEC website copyright policy."
+    },
+    {
+      "url": "https://ny.github.io/open-data-handbook/publicuse.html",
+      "publisher": "New York State Open Data Handbook",
+      "access_date": "2026-11-25",
+      "terms_url": "https://data.ny.gov/api/views/77gx-ii52/files/ef0c1840-ad54-4240-92fd-6397c49fde46?download=true",
+      "field_scope": "Public-use chapter. It describes citizen feedback, bulk download of tabular datasets as CSV, JSON, PDF, RDF, RSS, XLS, XLSX, and XML, support for large files, and a REST API over HTTPS that returns JSON, XML, or RSS. It says published datasets should be uniformly accessible for automated processing. It does not itself grant rights beyond the portal terms.",
+      "bulk": "Documents the bulk and API paths for datasets that are actually published.",
+      "attribution": null,
+      "request_process": "The portal accepts feedback and suggestions for datasets that are not published. A suggestion is not a records request.",
+      "reuse_status": "unknown",
+      "rights_basis": "The chapter describes access methods. The license is the OPEN-NY terms."
+    },
+    {
+      "url": "https://extapps.dec.ny.gov/cfmx/extapps/DECLicensedGuide/index.cfm",
+      "publisher": "New York State Department of Environmental Conservation",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "The older guide-search address redirects to https://appfactory.dec.ny.gov/LicensedGuides/ and says the application has moved. The destination was requested twice. Both attempts ended with a connection reset before any search form or count was returned. No account was created.",
+      "bulk": null,
+      "attribution": null,
+      "request_process": null,
+      "reuse_status": "unavailable",
+      "rights_basis": "The live search named by the dataset notes as more current than the annual file could not be opened on this check."
+    },
+    {
+      "url": "https://dec.ny.gov/things-to-do/saltwater-fishing/marine-permits-licenses/marine-district-party-charter-boat-license",
+      "publisher": "New York State Department of Environmental Conservation",
+      "access_date": "2026-11-25",
+      "terms_url": "https://dec.ny.gov/about/website-usage-and-policies/website-content-usage",
+      "field_scope": "The party and charter boat license allows the holder to carry recreational fishing passengers for hire on a registered vessel, or to land fish taken by those passengers outside state territorial waters. Fee $250. Applicants 18 or under need a parent or guardian signature. The permit expires December 31 of each year. The page says the current holder list is on Open NY. The application requires a signed form, the fee, a copy of a valid U.S. Coast Guard captain's license, the vessel's state registration or Coast Guard documentation, captain's licenses for every person who may operate the vessel, and a Coast Guard certificate of inspection if the vessel carries more than six passengers. Renewal is mailed. The holder must submit vessel trip reports monthly to DEC, or to NMFS if a federal permit is held. Federal for-hire fishing from 3 to 200 miles for listed species requires a separate Greater Atlantic region vessel charter or party permit. The page cites ECL 13-0336 and 6 NYCRR Part 40. It does not define party boat and charter boat as different hire units.",
+      "bulk": "The holder list is the linked Open NY dataset, not a file on this page.",
+      "attribution": null,
+      "request_process": "Mail or in-person application to the Marine Permit Office at 123 Kings Park Blvd., Kings Park, NY 11754. That is an application path, not a reuse grant.",
+      "reuse_status": "written_permission_except_education",
+      "rights_basis": "DEC website page. It points to the open-data list but does not add a directory license of its own."
+    },
+    {
+      "url": "https://dec.ny.gov/things-to-do/saltwater-fishing/marine-permits-licenses",
+      "publisher": "New York State Department of Environmental Conservation",
+      "access_date": "2026-11-25",
+      "terms_url": "https://dec.ny.gov/about/website-usage-and-policies/website-content-usage",
+      "field_scope": "Marine permit index. The party and charter row is $250, requires a captain's license and vessel registration or Coast Guard documentation each year, may require a certificate of inspection, and requires reporting. A numerical cap applies only to licenses for six passengers or fewer, described as OUPV. Inspected passenger vessels that carry more than six passengers must submit a valid Coast Guard certificate of inspection. The page does not publish the cap number or a holder count.",
+      "bulk": null,
+      "attribution": null,
+      "request_process": "The Marine Permit Office address and public counter hours are on this page. Not used as a reuse request.",
+      "reuse_status": "written_permission_except_education",
+      "rights_basis": "DEC website page."
+    },
+    {
+      "url": "https://dec.ny.gov/sites/default/files/2024-01/bmrpartycharterpermitapp.pdf",
+      "publisher": "New York State Department of Environmental Conservation",
+      "access_date": "2026-11-25",
+      "terms_url": "https://dec.ny.gov/about/website-usage-and-policies/website-content-usage",
+      "field_scope": "Party and charter permit application package. PDFKit reported 5 pages. The extracted text says the affirmation signature is on page 6, so the page count and the form's own numbering do not match. No revision date was found in the extracted text. The form collects the applicant's identity, a legal street address if a post office box is used, a U.S. Coast Guard captain's license and reference number, vessel registration or documentation number, a certificate of inspection when the vessel carries more than six passengers including captain and crew, a passport-size photograph except on a renewal from the preceding year, and corporate or assumed-name documents when the applicant is a business. Mail applications are paid by check or money order. Cash and card are accepted in person. It is a blank form, not a roster.",
+      "bulk": "No download of issued licenses.",
+      "attribution": null,
+      "request_process": "Application to the Marine Permit Office. Not a request path for a copy of the holder file.",
+      "reuse_status": "no_affirmative_grant",
+      "rights_basis": "The form grants no right to copy issued permits. Issued-holder reuse is governed by the Open NY terms for the published dataset, not by this blank form."
+    },
+    {
+      "url": "https://www.nysenate.gov/legislation/laws/ENV/13-0336",
+      "publisher": "New York State Senate",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "ECL section 13-0336, displayed as the most recent revision dated 2014-09-22. Subdivisions 1 and 2 were on the page. No owner or operator of a party boat or charter boat may carry recreational fishing passengers in the marine and coastal district, or land fish taken outside state territorial waters, without a party or charter boat license and a recreational marine fishing registration. The annual fee stated in the section is $250. The license and registration must be on the vessel. They are issued only to persons domiciled in New York or in a state that offers reciprocal privileges. For this subdivision, party boats and charter boats are vessels used to carry passengers for hire, with a direct or indirect fee, for taking or attempting to take marine fish for recreation. Licenses expire December 31. The senate page for section 11-0533 returned HTTP 403, so the guide statute was read from the DEC PDF instead.",
+      "bulk": null,
+      "attribution": null,
+      "request_process": null,
+      "reuse_status": "no_affirmative_grant",
+      "rights_basis": "The section creates the license. It does not grant or withhold a directory license. The published holder file is a separate object on Open NY."
+    },
+    {
+      "url": "https://data.ny.gov/Energy-Environment/List-of-Current-Party-and-Charter-Boat-License-Hol/mxx4-xx35",
+      "publisher": "Open NY, attributed to the Department of Environmental Conservation",
+      "access_date": "2026-11-25",
+      "terms_url": "https://data.ny.gov/api/views/77gx-ii52/files/ef0c1840-ad54-4240-92fd-6397c49fde46?download=true",
+      "field_scope": "Described as all individuals and corporate entities holding a valid party and charter boat license for the current calendar year, plus general locations. One license is required for each vessel. The license expires December 31 and must be renewed annually. Columns are holder name, mailing city, county, New York county FIPS, state, vessel name, and vessel registration or documentation number, plus generated geocodes. The disclaimer says city, county, and state come from the mailing address and may not be the place of operation. There is no length, builder, passenger capacity, or hailing-port field. rowsUpdatedAt is 2026-11-20T19:11:18Z. Posting frequency is weekly. On this check the API returned 39 rows, 39 distinct vessel names, 39 distinct registration values, and no blank vessel names. No vessel name was repeated. Mailing county counts were OTHER 17, Suffolk 11, Nassau 9, Putnam 1, and Queens 1. Mailing city Montauk had 2 rows. Registration values were 22 with letters and 17 all digits; character lengths were 8, 7, and 6. Names of vessels were not copied into this note. Several hulls described on Montauk booking pages are absent from the 39 names.",
+      "bulk": "SODA queries and the portal download formats apply. Counts above are aggregates. Individual registration numbers and holder names were not stored.",
+      "attribution": "View attribution is the Department of Environmental Conservation. Portal terms do not require attribution in general.",
+      "request_process": "Metadata names the Marine Permit Office mailbox as the dataset contact. Not contacted.",
+      "reuse_status": "revocable_license_no_general_preapproval",
+      "rights_basis": "Same OPEN-NY terms as the guide file. The terms license the published rows. They do not make a 39-row mailing-address file into a Montauk departure census. Holder names and registration numbers were left in the source."
+    },
+    {
+      "url": "https://dec.ny.gov/about/website-usage-and-policies/website-content-usage",
+      "publisher": "New York State Department of Environmental Conservation",
+      "access_date": "2026-11-25",
+      "terms_url": "https://dec.ny.gov/about/website-usage-and-policies/website-content-usage",
+      "field_scope": "DEC web content usage policy. Educational distribution is encouraged. Other reproduction, modification, distribution, or commercial use of DEC website content requires explicit written permission. The page says the department discourages resale of work created with public funding and will refuse uses that imply DEC sponsorship. A usage-request form is linked. Except for public-domain materials, the page claims copyright in DEC website content and in the compilation. The DEC logo may not be used in a way that implies DEC is the source of someone else's product. This policy is for dec.ny.gov. It is not the OPEN-NY license.",
+      "bulk": null,
+      "attribution": null,
+      "request_process": "A DEC division or region may grant written permission if it determines that DEC owns the requested work. The linked form is https://dec.ny.gov/sites/default/files/2024-03/usagepolicyform.pdf. That PDF was not opened.",
+      "reuse_status": "written_permission_except_education",
+      "rights_basis": "Explicit split between educational use and all other use. Commercial directory use of DEC web pages is in the permission class. Open NY datasets are outside this page."
+    },
+    {
+      "url": "https://www.marinebasin.com/charter_boats",
+      "publisher": "Montauk Marine Basin",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.marinebasin.com/charter_boats",
+      "field_scope": "Charter-boat page for one Montauk marina. The footer claims a 2014 copyright and says all rights are reserved. The body still uses 2016 booking language. It is not a dated current census and it does not say the boats hold a DEC party and charter license. Six hull labels can be separated. One additional length sentence is not tied cleanly to a label, and one label is also described as an upgrade to a different model, so those were not counted as extra hulls. No registration or documentation number is printed. Four of the six labels were sampled. Hull names are omitted here.",
+      "bulk": "One HTML page. No download.",
+      "attribution": null,
+      "request_process": null,
+      "reuse_status": "all_rights_reserved_claim",
+      "rights_basis": "The footer states a copyright claim and an all-rights-reserved claim. No reuse license is offered."
+    },
+    {
+      "url": null,
+      "publisher": "One Montauk landing operator and one multi-hull operator, URLs withheld",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Four booking or fleet pages were opened and are withheld because the addresses identify the businesses. Two pages state matching physical descriptions for one hull and disagree on passenger authorization. One page repeats the marina's hull sentences closely enough that it was not treated as an independent measurement. Two pages belong to one operator and disagree on passenger authorization for the sampled hull. One linked host did not resolve. No page that was opened displayed a documentation number. Copyright claims were present on one operator page and absent from the retrieved text of the others.",
+      "bulk": null,
+      "attribution": null,
+      "request_process": null,
+      "reuse_status": "unknown_or_all_rights_reserved",
+      "rights_basis": "Operator pages are not DEC records and are not covered by the OPEN-NY terms. One footer claims all rights reserved. The others were silent in the text that was retrieved."
+    }
+  ],
+  "coverage": [
+    {
+      "roster_url": "https://www.marinebasin.com/charter_boats",
+      "population": "Named hull labels on one Montauk marina charter page. The page copyright is 2014 and the body still uses 2016 wording. Not a DEC license list.",
+      "roster_count": 6,
+      "sampled_rows": 4,
+      "supported_rows": 1,
+      "held_rows": 3,
+      "independent_publisher_matches": 1
+    },
+    {
+      "roster_url": null,
+      "population": "Hulls named by one Montauk operator on its own fleet page. The URL is withheld because it identifies the business. The page mixes party boats, a ferry, cruise use, and a commercial vessel.",
+      "roster_count": 7,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://data.ny.gov/Energy-Environment/List-of-Current-Party-and-Charter-Boat-License-Hol/mxx4-xx35",
+      "population": "Rows in the Open NY party and charter holder file. City is the mailing address, not the port. Montauk departures are not this count.",
+      "roster_count": 39,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://data.ny.gov/Recreation/Guides-Currently-Licensed-in-New-York-State/q9d5-zxbn",
+      "population": "Fishing-activity rows in the annual licensed-guide file. Holders are people. A city value is a residence.",
+      "roster_count": 1457,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    }
+  ],
+  "sample_summary": {
+    "observations": 5,
+    "supported": 1,
+    "held": 4,
+    "marina_page_sample": {
+      "sampled_rows": 4,
+      "supported_rows": 1,
+      "held_rows": 3
+    },
+    "operator_fleet_sample": {
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1
+    },
+    "license_files_sample": {
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0
+    },
+    "samples_are_not_additive": true,
+    "note": "People, hull names, and booking URLs are omitted. The marina sample and the operator-fleet sample are different lists. Neither is a count of DEC licenses."
+  },
+  "next_questions": [
+    "Is the Open NY party and charter file, 39 rows on this check, the complete set of current licenses? The agency page calls it the current holder list. The file says the city is a mailing address. It cannot be read as the number of Montauk departures.",
+    "Does the guide-license exemption for Coast Guard licensed public vessels for hire cover six-pack boats as well as inspected passenger vessels? The statute and the program page state the exemption. They do not define a six-pack.",
+    "The most useful next primary source is a Greater Atlantic Region charter and party vessel permit list. The state license page says federal for-hire trips need that permit, and the state file has no hailing port or length."
+  ]
+}
