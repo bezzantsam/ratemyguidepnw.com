@@ -1,0 +1,186 @@
+{
+  "state": "Iowa",
+  "phase": "iowa-inventory",
+  "scope": "Iowa Great Lakes bookable fishing guides in the Dickinson County chain",
+  "checked_date": "2026-11-25",
+  "base_commit": "7f69f59f4760afa53f1ef06bc64f6fb0824665e2",
+  "recommended_first_source": "The 2026 Iowa Code chapter 483A section index (https://www.legis.iowa.gov/law/iowaCode/sections?codeChapter=483A) is the fishing-and-hunting license chapter. No section title on that index is a fishing-guide, charter, or outfitter license. Section 483A.22A is the department's authority to charge for lists of licensees. It is not a roster.",
+  "highest_priority_permission_question": "Section 483A.22A says the department may set a fee for lists of licensees that may exceed the cost of copying, notwithstanding section 22.3. No fishing-guide roster was found. Do section 22.3 or a rule under 483A.22A authorize buying a licensee list and copying names into a commercial directory? The policies page does not grant that use. Both Iowa Great Lakes directories reserve all rights.",
+  "license_roster": {
+    "url": "https://www.legis.iowa.gov/law/iowaCode/sections?codeChapter=483A",
+    "source_date": null,
+    "code_year": 2026,
+    "guide_section_title_found": false,
+    "issued_guide_count": null,
+    "public_lookup_found": false,
+    "public_lookup_submitted": false,
+    "hull_fields_published": false
+  },
+  "association_roster": {
+    "url": "https://iagreatlakesfishingclub.org/guides",
+    "publisher": "Iowa Great Lakes Fishing Club",
+    "source_date": "2024",
+    "headings": 18,
+    "guide_page_trip_headings": 16,
+    "fish_cleaning_headings": 2,
+    "sampled_rows": 4,
+    "supported_rows": 0,
+    "held_rows": 4,
+    "unopened_trip_headings": 8,
+    "fetch_failures_outside_sample": 3,
+    "unreadable_outside_sample": 1,
+    "independent_publisher_matches": 0
+  },
+  "tourism_directory": {
+    "url": "https://vacationokoboji.com/things-to-do/fishing/",
+    "publisher": "Vacation Okoboji",
+    "source_date": "2025",
+    "results": 16,
+    "page_1_results": 12,
+    "page_2_results": 4,
+    "guide_or_charter_titles": 7,
+    "expedition_titles": 2,
+    "other_titles": 7,
+    "sampled_rows": 0,
+    "supported_rows": 0,
+    "held_rows": 0,
+    "business_name_overlaps_with_held_sample": 2
+  },
+  "sources": [
+    {
+      "publisher": "Iowa Department of Natural Resources",
+      "url": "https://www.iowadnr.gov/things-do/fishing/regulations-laws",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.iowa.gov/policies",
+      "reuse_status": "unknown",
+      "bulk": "Not a roster. The page links a 40.88 MB regulations PDF that was not downloaded.",
+      "request_process": "No directory process. Tournament permits use a separate special-events system."
+    },
+    {
+      "publisher": "Iowa Department of Natural Resources",
+      "url": "https://www.iowadnr.gov/things-do/fishing/fishing-licenses",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.iowa.gov/policies",
+      "reuse_status": "unknown",
+      "bulk": "Ten resident fee rows and seven nonresident fee rows. Not a licensee list.",
+      "request_process": "Licenses are sold through Go Outdoors Iowa or a retailer. No directory process."
+    },
+    {
+      "publisher": "Iowa Department of Natural Resources",
+      "url": "https://www.iowadnr.gov/things-do/fishing/fishing-licenses/commercial-fishing",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.iowa.gov/policies",
+      "reuse_status": "unknown",
+      "bulk": "Fourteen commercial fee rows. Not a guide roster and not an Iowa Great Lakes list.",
+      "request_process": "Application PDFs are linked. No directory process."
+    },
+    {
+      "publisher": "Go Outdoors Iowa",
+      "url": "https://license.gooutdoorsiowa.com/Licensing/CustomerLookup.aspx",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.iowa.gov/policies",
+      "reuse_status": "unknown",
+      "bulk": "Account login. No public result set was returned.",
+      "request_process": "The form asks for customer identifiers. It was not submitted."
+    },
+    {
+      "publisher": "State of Iowa",
+      "url": "https://www.iowa.gov/policies",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.iowa.gov/policies",
+      "reuse_status": "unknown",
+      "bulk": "No bulk-download permission is stated.",
+      "request_process": "The copyright section is a notice process for infringement claims. No directory form is stated."
+    },
+    {
+      "publisher": "Iowa Legislature",
+      "url": "https://www.legis.iowa.gov/law/iowaCode/sections?codeChapter=483A",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.legis.iowa.gov/law/disclaimer",
+      "reuse_status": "unknown",
+      "bulk": "Section index for the 2026 fishing and hunting license chapter. Not a roster.",
+      "request_process": null
+    },
+    {
+      "publisher": "Iowa Legislature",
+      "url": "https://www.legis.iowa.gov/docs/code/2026/483A.22A.pdf",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.legis.iowa.gov/law/disclaimer",
+      "reuse_status": "unknown",
+      "bulk": "One section. Not a licensee file.",
+      "request_process": "The section lets the department set a fee for lists of licensees. No order form is in the section."
+    },
+    {
+      "publisher": "Iowa Legislature",
+      "url": "https://www.legis.iowa.gov/docs/code/2026/482.4.pdf",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.legis.iowa.gov/law/disclaimer",
+      "reuse_status": "unknown",
+      "bulk": "Commercial gear license fees. Not a roster.",
+      "request_process": null
+    },
+    {
+      "publisher": "Iowa Legislature",
+      "url": "https://www.legis.iowa.gov/law/iowaCode/sections?codeChapter=462A",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.legis.iowa.gov/law/disclaimer",
+      "reuse_status": "unknown",
+      "bulk": "2026 water-navigation section index. Not a fishing-guide roster.",
+      "request_process": null
+    },
+    {
+      "publisher": "Iowa Legislature",
+      "url": "https://www.legis.iowa.gov/law/disclaimer",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.legis.iowa.gov/law/disclaimer",
+      "reuse_status": "unknown",
+      "bulk": "No bulk-data license for the code text is stated.",
+      "request_process": "Image-use requests go to the Associated Press or to the House or Senate clerk. That process is about photographs."
+    },
+    {
+      "publisher": "eRegulations",
+      "url": "https://www.eregulations.com/iowa/fishing/license-information",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.eregulations.com/iowa/fishing/license-information",
+      "reuse_status": "not_granted",
+      "bulk": "License-information page. Not a roster.",
+      "request_process": "The footer reserves all rights. No directory form is stated."
+    },
+    {
+      "publisher": "Vacation Okoboji",
+      "url": "https://vacationokoboji.com/things-to-do/fishing/",
+      "access_date": "2026-11-25",
+      "terms_url": "https://vacationokoboji.com/things-to-do/fishing/",
+      "reuse_status": "not_granted",
+      "bulk": "Sixteen mixed results across two pages. Not a license download.",
+      "request_process": "The footer reserves all rights. No directory-permission form was found."
+    },
+    {
+      "publisher": "Vacation Okoboji",
+      "url": "https://vacationokoboji.com/things-to-do/fishing/page/2/",
+      "access_date": "2026-11-25",
+      "terms_url": "https://vacationokoboji.com/things-to-do/fishing/page/2/",
+      "reuse_status": "not_granted",
+      "bulk": "Results 13 through 16 of 16.",
+      "request_process": "Same footer. All rights reserved."
+    },
+    {
+      "publisher": "Vacation Okoboji",
+      "url": "https://vacationokoboji.com/privacy-policy/",
+      "access_date": "2026-11-25",
+      "terms_url": "https://vacationokoboji.com/privacy-policy/",
+      "reuse_status": "not_granted",
+      "bulk": "Privacy boilerplate. It does not grant a directory.",
+      "request_process": "The page footer reserves all rights."
+    },
+    {
+      "publisher": "Iowa Great Lakes Fishing Club",
+      "url": "https://iagreatlakesfishingclub.org/guides",
+      "access_date": "2026-11-25",
+      "terms_url": "https://iagreatlakesfishingclub.org/guides",
+      "reuse_status": "not_granted",
+      "bulk": "Eighteen headings on one page. Membership opt-in. Not a license download.",
+      "request_process": "The page says a local guide is listed by becoming a member. The footer reserves all rights."
+    }
+  ]
+}
