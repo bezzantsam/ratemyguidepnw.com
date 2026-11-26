@@ -1,0 +1,296 @@
+{
+  "state": "Missouri",
+  "phase": "missouri-inventory",
+  "scope": "MDC angler permits, the rescinded sport-guide permit, and Table Rock Lake bookable trips",
+  "checked_date": "2026-11-25",
+  "base_commit": "7f69f59f4760afa53f1ef06bc64f6fb0824665e2",
+  "recommended_first_source": "3 CSR 10-10.770 records the Guide's Permit as rescinded on December 31, 1976. The fishing-permit catalog is an angler fee list. 3 CSR 10-10.950 sets commercial-fishing fees and is not a guide roll.",
+  "highest_priority_permission_question": "Will any Missouri office release a current list of businesses that guide sport fishing on Table Rock Lake, limited to business name, water, and any applicable commercial-use authorization, and authorize commercial-directory reuse? The sources checked on 2026-11-25 do not answer the question. There is no current sport-guide license roll.",
+  "guide_license": {
+    "rule": "3 CSR 10-10.770",
+    "status": "rescinded",
+    "rescinded_date": "1976-12-31",
+    "code_url": "https://www.sos.mo.gov/CMSImages/AdRules/csr/current/3csr/3c10-10.pdf",
+    "code_header_date": "2025-11-30",
+    "roster_count": null,
+    "hull_field": false
+  },
+  "commercial_fishing_permit": {
+    "privilege_rule": "3 CSR 10-10.720",
+    "fee_rule": "3 CSR 10-10.950",
+    "fee_rule_effective": "2026-01-01",
+    "issuance_rule": "3 CSR 10-10.771",
+    "resident_fee_usd": 44,
+    "nonresident_fee_usd": 349,
+    "roster_count": null,
+    "sport_guide": false
+  },
+  "department_area_guiding": {
+    "rule": "3 CSR 10-11.110",
+    "code_url": "https://www.sos.mo.gov/CMSImages/AdRules/csr/current/3csr/3c10-11.pdf",
+    "code_header_date": "2026-07-31",
+    "scope": "department areas",
+    "table_rock_identified_as_department_area": false
+  },
+  "angler_fees_usd": {
+    "daily_resident": 9,
+    "daily_nonresident": 9,
+    "annual_resident": 14,
+    "annual_nonresident": 57,
+    "trout_resident": 12,
+    "trout_nonresident": 24,
+    "trout_youth_0_15": 6,
+    "white_river_border_lakes": 10
+  },
+  "table_rock_sample": {
+    "sampled_rows": 4,
+    "supported_rows": 1,
+    "held_rows": 3,
+    "unique_hulls": 0
+  },
+  "sources": [
+    {
+      "publisher": "Missouri Department of Conservation",
+      "url": "https://mdc.mo.gov/permits/fishing-permits",
+      "access_date": "2026-11-25",
+      "terms_url": "https://mdc.mo.gov/terms-use",
+      "reuse_status": "not_granted",
+      "bulk": "HTML angler permit catalog. No guide roster or download.",
+      "request_process": "Permit purchase and exemption applications. No directory-permission process."
+    },
+    {
+      "publisher": "Missouri Department of Conservation",
+      "url": "https://mdc.mo.gov/terms-use",
+      "access_date": "2026-11-25",
+      "terms_url": "https://mdc.mo.gov/terms-use",
+      "reuse_status": "not_granted",
+      "bulk": "Website terms. No license feed.",
+      "request_process": "Written permission through the contact form before reproducing site text, images, or videos. Links are allowed under the origin and framing conditions."
+    },
+    {
+      "publisher": "Missouri Department of Conservation",
+      "url": "https://mdc.mo.gov/privacy-security",
+      "access_date": "2026-11-25",
+      "terms_url": "https://mdc.mo.gov/terms-use",
+      "reuse_status": "not_granted",
+      "bulk": "Visitor privacy statement. Describes Sunshine Law and section 252.228. No permit-holder file.",
+      "request_process": "Sunshine Law request path is described and was not submitted. Permit-record closure under 252.228 depends on a written request from the holder."
+    },
+    {
+      "publisher": "Missouri Revisor of Statutes",
+      "url": "https://revisor.mo.gov/main/OneSection.aspx?section=252.228",
+      "access_date": "2026-11-25",
+      "source_date": "1998-08-28",
+      "terms_url": null,
+      "reuse_status": "not_granted",
+      "bulk": "One statute section.",
+      "request_process": null
+    },
+    {
+      "publisher": "Missouri Secretary of State",
+      "url": "https://www.sos.mo.gov/CMSImages/AdRules/csr/current/3csr/3c10-10.pdf",
+      "access_date": "2026-11-25",
+      "source_date": "2025-11-30",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "Current Code of State Regulations chapter. No holder file.",
+      "request_process": null
+    },
+    {
+      "publisher": "Missouri Secretary of State",
+      "url": "https://www.sos.mo.gov/CMSImages/AdRules/csr/current/3csr/3c10-11.pdf",
+      "access_date": "2026-11-25",
+      "source_date": "2026-07-31",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "Current Code of State Regulations chapter. No holder file.",
+      "request_process": null
+    },
+    {
+      "publisher": "Missouri Department of Conservation",
+      "url": "https://mdc.mo.gov/fishing/regulations/special-waterbody-regulations/table-rock-lake",
+      "access_date": "2026-11-25",
+      "terms_url": "https://mdc.mo.gov/terms-use",
+      "reuse_status": "not_granted",
+      "bulk": "One waterbody creel page. Footer copyright 2026.",
+      "request_process": "Same contact-form permission as other MDC pages."
+    },
+    {
+      "publisher": "Missouri Department of Conservation",
+      "url": "https://mdc.mo.gov/permits/white-river-border-lakes-permit",
+      "access_date": "2026-11-25",
+      "terms_url": "https://mdc.mo.gov/terms-use",
+      "reuse_status": "not_granted",
+      "bulk": "One angler permit page.",
+      "request_process": "Buy-permit link. No guide roster."
+    },
+    {
+      "publisher": "Missouri State Parks",
+      "url": "https://mostateparks.com/park/table-rock-state-park/boating",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "Park boating page. Names the marina and a fishing-guide offer without a count.",
+      "request_process": null
+    },
+    {
+      "publisher": "Missouri State Parks",
+      "url": "https://mostateparks.com/key-location/marina-1",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "Park marina page. Describes the concession. No guide roster.",
+      "request_process": null
+    },
+    {
+      "publisher": "MO.gov",
+      "url": "https://mo.gov/privacy-policy",
+      "access_date": "2026-11-25",
+      "terms_url": "https://mo.gov/privacy-policy",
+      "reuse_status": "not_granted",
+      "bulk": "Portal privacy policy. Not linked from the Table Rock park pages that were opened.",
+      "request_process": "Webmaster contact for questions about the policy. No directory grant."
+    },
+    {
+      "publisher": "Missouri Department of Natural Resources",
+      "url": "https://dnr.mo.gov/privacy",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "Unavailable lookup. HTTP 503.",
+      "request_process": null
+    },
+    {
+      "publisher": "State Park Marina",
+      "url": "https://www.stateparkmarina.com/",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.stateparkmarina.com/terms-of-use",
+      "reuse_status": "not_granted",
+      "bulk": "Marina home page. Footer copyright 2026.",
+      "request_process": "Written permission under the terms of use."
+    },
+    {
+      "publisher": "State Park Marina",
+      "url": "https://www.stateparkmarina.com/boat-rentals",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.stateparkmarina.com/terms-of-use",
+      "reuse_status": "not_granted",
+      "bulk": "Rental class page. No guide roster and no hull identification numbers.",
+      "request_process": "Online rental booking. Written permission to reuse the page."
+    },
+    {
+      "publisher": "State Park Marina",
+      "url": "https://www.stateparkmarina.com/the-marina",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.stateparkmarina.com/terms-of-use",
+      "reuse_status": "not_granted",
+      "bulk": "About page. Names the managing company. No guide roster.",
+      "request_process": "Written permission under the terms of use."
+    },
+    {
+      "publisher": "State Park Marina",
+      "url": "https://www.stateparkmarina.com/terms-of-use",
+      "access_date": "2026-11-25",
+      "source_date": "2019-04",
+      "terms_url": "https://www.stateparkmarina.com/terms-of-use",
+      "reuse_status": "not_granted",
+      "bulk": "Site terms. Last updated April 2019.",
+      "request_process": "Written permission for use beyond individual or internal viewing."
+    },
+    {
+      "publisher": "State Park Marina",
+      "url": "https://www.stateparkmarina.com/privacy-policy",
+      "access_date": "2026-11-25",
+      "source_date": "2019-04",
+      "terms_url": "https://www.stateparkmarina.com/terms-of-use",
+      "reuse_status": "not_granted",
+      "bulk": "Visitor privacy policy. Last updated April 2019. Says personal information will not be sold.",
+      "request_process": "Visitor requests under the policy. No directory grant."
+    },
+    {
+      "publisher": "Big Cedar Lodge",
+      "url": "https://bigcedar.com/activity/fishing-guide/",
+      "access_date": "2026-11-25",
+      "terms_url": "https://bigcedar.com/wp-content/uploads/2019/12/Privacy-Policy-Hospitality.pdf",
+      "reuse_status": "not_granted",
+      "bulk": "One activity page with two waters. Direct HTTP request returned 403. A second fetch returned the page.",
+      "request_process": "Reservations on the page. Content terms were not opened."
+    },
+    {
+      "publisher": "Big Cedar Lodge",
+      "url": "https://bigcedar.com/wp-content/uploads/2019/12/Privacy-Policy-Hospitality.pdf",
+      "access_date": "2026-11-25",
+      "source_date": null,
+      "terms_url": "https://bigcedar.com/wp-content/uploads/2019/12/Privacy-Policy-Hospitality.pdf",
+      "reuse_status": "not_granted",
+      "bulk": "Hospitality privacy PDF. No revision date on the pages read. Names community guidelines and terms of use without a URL.",
+      "request_process": "Visitor privacy requests. The named site terms were not opened."
+    }
+  ],
+  "coverage": [
+    {
+      "population": "MDC angler permit catalog",
+      "roster_count": null,
+      "sampled": 0,
+      "supported": 0,
+      "held": 0,
+      "second_publishers": 0
+    },
+    {
+      "population": "Commercial fishing permits",
+      "roster_count": null,
+      "sampled": 0,
+      "supported": 0,
+      "held": 0,
+      "second_publishers": 0
+    },
+    {
+      "population": "Sport guide permit",
+      "roster_count": null,
+      "sampled": 0,
+      "supported": 0,
+      "held": 0,
+      "second_publishers": 0
+    },
+    {
+      "population": "Table Rock creel page",
+      "roster_count": null,
+      "sampled": 0,
+      "supported": 0,
+      "held": 0,
+      "second_publishers": 0
+    },
+    {
+      "population": "State Park Marina landing",
+      "roster_count": 1,
+      "sampled": 1,
+      "supported": 1,
+      "held": 0,
+      "second_publishers": 1
+    },
+    {
+      "population": "State Park Marina guide offer",
+      "roster_count": null,
+      "sampled": 1,
+      "supported": 0,
+      "held": 1,
+      "second_publishers": 0
+    },
+    {
+      "population": "Big Cedar Lodge, Table Rock bass trip",
+      "roster_count": 1,
+      "sampled": 1,
+      "supported": 0,
+      "held": 1,
+      "second_publishers": 0
+    },
+    {
+      "population": "Big Cedar Lodge, Lake Taneycomo trout trip",
+      "roster_count": 1,
+      "sampled": 1,
+      "supported": 0,
+      "held": 1,
+      "second_publishers": 0
+    }
+  ]
+}
