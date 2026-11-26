@@ -1,0 +1,157 @@
+{
+  "state": "Oregon",
+  "phase": "oregon-inventory",
+  "scope": "Statewide outfitter-guide and charter-vessel credentials, with a Depoe Bay fleet page checked for hull continuity past existing guide profiles",
+  "checked_date": "2026-11-25",
+  "base_commit": "7f69f59f4760afa53f1ef06bc64f6fb0824665e2",
+  "highest_priority_permission_question": "Whether public use of the charter boat file, together with the dashboard public-domain sentence, allows republication of a license number and boat ID after contact columns are removed.",
+  "recommended_first_source": "Read the charter vessel application for whether a vessel name is collected and then omitted from the public file. The charter download has no vessel name, and the Depoe Bay fleet page has no license number.",
+  "sample": {
+    "entity_type": "vessel",
+    "sampled_rows": 5,
+    "supported_rows": 0,
+    "held_rows": 5,
+    "vessel_rows": 0,
+    "independent_publisher_matches": 0,
+    "withheld_operator_publishers": 1
+  },
+  "coverage": [
+    {
+      "roster_url": "https://www.oregon.gov/osmb/guides-charters/pages/guides-charters.aspx",
+      "population": "Outfitter-guide and charter program page. Person registration, crew-member registration, and the page's definition of a charter vessel as a Coast Guard-inspected boat carrying 7 or more passengers besides the crew. A 6-pack is described as a guide vessel. No holder list on this page.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://experience.arcgis.com/experience/18f42df93f474cc2a58d79a4672d3ce8",
+      "population": "Public guide dashboard. Item modified 2026-03-13. Source named on the item is the roster generator. Activity-specific person downloads were not taken on 2026-11-25. No current person count.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://apps3.oregon.gov/Lookup/GenerateRoster.aspx",
+      "population": "Active charter boats CSV downloaded 2026-11-25. 132 service rows and 70 unique license numbers, each with one boat ID. No vessel-name column. Depoe Bay is the hailing port on 11 of the 70. Contact columns were not copied. Two unique licenses list 6 passengers. Those two are not among the 11 Depoe Bay licenses. OAR 250-015-0004 allows a charter boat license for a boat carrying fewer than seven.",
+      "roster_count": 70,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://apps3.oregon.gov/Lookup/OnlineReportExecute.aspx?queryIdnt=1040",
+      "population": "Public boat search. Fields are vessel ID, hull identification number, model year, material, length, and manufacturer. No vessel-name field. No query was submitted.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": null,
+      "population": "One first-party Depoe Bay fleet page. Six named vessels. Five were sampled. None printed a charter license number, boat ID, documentation number, or hull identification number.",
+      "roster_count": 6,
+      "sampled_rows": 5,
+      "supported_rows": 0,
+      "held_rows": 5,
+      "independent_publisher_matches": 0
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.oregon.gov/osmb/guides-charters/pages/guides-charters.aspx",
+      "publisher": "Oregon State Marine Board",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.oregon.gov/pages/terms-and-conditions.aspx",
+      "field_scope": "Program page. Outfitter guide is a person guiding for compensation on land or water the person does not own. 2026 fees stated on the page: outfitter guide $350, charter guide $500, crew member $50. On this page a charter guide is an outfitter guide with a Coast Guard operator license on navigable water. Charter vessel is defined here as a Coast Guard-inspected vessel carrying 7 or more passengers for hire besides the crew. A 6-pack is described as a guide vessel. Vessel registration fees stated here: $50 a year for an Oregon-registered boat and $100 a year for a documented vessel. ORS chapter 704 and OAR 250 division 15 were opened separately. ORS chapter 830 was linked and not opened. A verification telephone and a program email were not copied.",
+      "bulk": "No holder file on this page. It links the dashboard and the roster generator.",
+      "attribution": "None stated on this page.",
+      "request_process": "The page says registrations can be checked by telephone and that a list of guides is the dashboard. The telephone number was not copied.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://www.oregon.gov/pages/terms-and-conditions.aspx",
+      "publisher": "State of Oregon",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.oregon.gov/pages/terms-and-conditions.aspx",
+      "field_scope": "Terms for Oregon.gov and executive-agency sites. Content is as-is, without a warranty. Personal information is described, and Oregon Public Records Law, ORS chapter 192, is named, including a home-address non-disclosure path under ORS 192.445. Trademarks may be displayed in a truthful context. A DMCA notice process is stated for content that infringes someone else's copyright.",
+      "bulk": "No bulk license and no public-domain sentence.",
+      "attribution": "None stated as a condition of reuse.",
+      "request_process": "A copyright-notice mailbox is published. The address was not copied.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://experience.arcgis.com/experience/18f42df93f474cc2a58d79a4672d3ce8",
+      "publisher": "Oregon State Marine Board",
+      "access_date": "2026-11-25",
+      "source_date": "2026-03-13",
+      "terms_url": "https://www.arcgis.com/sharing/rest/content/items/18f42df93f474cc2a58d79a4672d3ce8?f=json",
+      "field_scope": "Public web experience titled Oregon Guides, Outfitters, and Charters. Owner Oregon_OSMB. Created 2023-07-13. Modified 2026-03-13. The item description names the roster generator as the source. Access is public. A coordinator name, telephone, and email in the description were not copied.",
+      "bulk": "The experience is a search interface. The item points at downloadable rosters. A person-file download was not taken.",
+      "attribution": "The item says to cite the Marine Board as the data source and to describe any modification. Do not imply the board endorsed a change.",
+      "request_process": "The item publishes a program contact. It was not used. A list that the generator does not show is a request to the Marine Board, as stated on the generator page.",
+      "reuse_status": "public_domain"
+    },
+    {
+      "url": "https://apps3.oregon.gov/Lookup/GenerateRoster.aspx",
+      "publisher": "Oregon State Marine Board",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.arcgis.com/sharing/rest/content/items/18f42df93f474cc2a58d79a4672d3ce8?f=json",
+      "field_scope": "Roster generator. The page says the lists are available for public use. Active Charter Boats is offered with no fee, beside activity-specific outfitter-guide lists that were not downloaded. The charter CSV has license number, status, expiration, contact name, phone, email, mailing address, charter boat ID, hailing port, distance, services, and passengers excluding crew. Counts: 132 rows, 70 unique licenses, 11 of them hailing from Depoe Bay. Contact values were not stored. The store footer says Copyright 1997-2026 Tyler Technologies.",
+      "bulk": "One CSV per selected list. No fee is marked on the charter list. Service rows repeat a license. There is no vessel-name column.",
+      "attribution": "The dashboard item that names this generator says the data are public domain and that the Marine Board should be cited.",
+      "request_process": "The page says to contact the Marine Board for a list that is not shown. The office address and telephones on the store footer were not copied.",
+      "reuse_status": "conditional"
+    },
+    {
+      "url": "https://apps3.oregon.gov/Lookup/OnlineReports.aspx?ID=340",
+      "publisher": "Oregon State Marine Board",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.oregon.gov/pages/terms-and-conditions.aspx",
+      "field_scope": "The guide page's Online Lookup link opens this menu. It offers boat, contact, and floating-property searches, each labeled as public records only. It is not the guide dashboard. The contact search and the floating-property search were not opened.",
+      "bulk": "No roster on the menu.",
+      "attribution": "None stated.",
+      "request_process": "None stated on the menu.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://apps3.oregon.gov/Lookup/OnlineReportExecute.aspx?queryIdnt=1040",
+      "publisher": "Oregon State Marine Board",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.oregon.gov/pages/terms-and-conditions.aspx",
+      "field_scope": "Boat public-record search. Inputs are vessel ID, hull identification number, model year, hull material, length less than, length greater than, and manufacturer. There is no vessel-name box and no download control on the form. No search was submitted.",
+      "bulk": "Query form only. A manufacturer-wide search was not run.",
+      "attribution": "None stated.",
+      "request_process": "None stated on the form.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://www.oregonlegislature.gov/bills_laws/ors/ors704.html",
+      "publisher": "Oregon Legislature",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "ORS chapter 704, Outfitters and Guides. Section 704.010 defines a charter guide as an outfitter and guide who has a Coast Guard operator license and carries no more than six passengers for hire on federally navigable water. An outfitter and guide is a person who provides or advertises those services for compensation, or who holds a federal special-use permit for them. Employees who conduct angling or operate a boat used for angling are not excluded from the definition. A crew member assists angling or boat operation aboard a boat under direct supervision and is registered with the board. The definition section's history line cites Oregon Laws 2025, chapter 350, section 1. The chapter points a charter boat license at ORS 830.430 to 830.465. That chapter was not opened.",
+      "bulk": "Statute text. No holder roster.",
+      "attribution": "None stated on the page.",
+      "request_process": "None stated on the page.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://secure.sos.state.or.us/oard/displayDivisionRules.action?selectedDivision=758",
+      "publisher": "Oregon Secretary of State",
+      "access_date": "2026-11-25",
+      "source_date": "2022-10-06",
+      "terms_url": null,
+      "field_scope": "OAR chapter 250, division 15, Ocean Charter Vessels. Rule 250-015-0002 applies the division to charter boats carrying passengers for hire on waters of this state. Rule 250-015-0004, amended effective 2022-10-06, allows a charter boat license for a boat carrying fewer than seven passengers for hire for angling, sightseeing, or other recreational purposes, if the owner completes the application and satisfies 250-015-0035(5). Subsection (5) is a pre-departure safety announcement. Rule 250-015-0005 says the issued license identifies the applicant, the boat, sole-state-waters or within-20-miles operation, and the expiration. It does not say the license prints a vessel name.",
+      "bulk": "Rule text. No holder roster.",
+      "attribution": "None stated on the page.",
+      "request_process": "None stated on the page.",
+      "reuse_status": "unknown"
+    }
+  ]
+}
