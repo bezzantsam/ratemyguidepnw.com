@@ -1,0 +1,291 @@
+{
+  "state": "Michigan",
+  "phase": "michigan-inventory",
+  "checked_date": "2026-11-25",
+  "target_waters": [
+    "Traverse City"
+  ],
+  "licensed_departure_population": null,
+  "sources": [
+    {
+      "url": "https://www.michigan.gov/dnr/managing-resources/fisheries/business/guides",
+      "publisher": "Michigan Department of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.michigan.gov/dnr/about/DNR-Website-and-application-policies",
+      "field_scope": "Inland sport fishing guide program page. As of March 1, 2024, a person acting as a sport fishing guide on inland lakes and streams, including Michigan boundary waters, needs this license plus a valid fishing license. Application is a questionnaire on the Fishing Activity and Catch Tracking System, then purchase through the DNR license system or the Hunt Fish app. Resident fee $150, nonresident $300, valid three years from issuance. A U.S. Coast Guard captain's license waives the fee. Eligibility on the page includes Red Cross or American Heart Association first aid and CPR, a Michigan driver license or state identification or a DNR sportcard, no listed conviction in the last three years, eligibility to buy a license for the targeted species, and a state inland pilot license or a Coast Guard captain's license if a watercraft is used. Monthly catch reports start April 1, 2024, including zero-trip months, and exclude the Great Lakes, named Great Lakes connecting waters, and waters under five acres. The Pere Marquette River commercial fish guide permit is a separate capped permit and the page says no new permits are being issued. The page links the public name list. It has no boat, port, or Traverse City field. Staff names and phone numbers on the page were not stored.",
+      "bulk": "No roster file is embedded. The linked PDF is a separate source.",
+      "attribution": null,
+      "request_process": "The page names staff contacts for reporting questions and for the Pere Marquette permit. Those are licensing paths, not a reuse grant. They were not used.",
+      "reuse_status": "personal_noncommercial_only",
+      "rights_basis": "The page is DNR website content. The DNR website policy allows personal and non-commercial use and requires prior written permission to copy, publish, or sell that content."
+    },
+    {
+      "url": "https://www.michigan.gov/dnr/-/media/Project/Websites/dnr/Documents/Fisheries/misc/Purchased-Inland-Sportfishing-Guide-Licenses.pdf",
+      "publisher": "Michigan Department of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.michigan.gov/dnr/about/DNR-Website-and-application-policies",
+      "field_scope": "Inland sport fishing guide name list. PDFKit reported 21 pages. The header reads Updated November 23, 2026, and says the department is providing the information in fulfillment of MCL 324.48714a(8). It prints 187 applications submitted in 2025 and 120 licenses issued under this section in 2025. Columns are last name, first name, and year licensed. Licenses are described as valid for three years after issuance. An automated line parse, skipping three header lines that also contain a year, counted 746 name rows: 525 labeled 2024, 120 labeled 2025, and 101 labeled 2026. The 2025 row count matches the printed issuance figure. The 746 name strings did not repeat. This is a line parse, not a hand audit. There is no city, port, boat, or business column. Names were not copied out of the file.",
+      "bulk": "One PDF linked from the program page. No API and no stated bulk license.",
+      "attribution": null,
+      "request_process": null,
+      "reuse_status": "personal_noncommercial_only",
+      "rights_basis": "The file is DNR website content, so the personal and non-commercial limit applies. The compiled statute read the same day assigns the public list to subsection (9), not to subsection (8). The posting duty is not a commercial-directory license. Catch-report contents are a different record."
+    },
+    {
+      "url": "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-324-48714a",
+      "publisher": "Michigan Legislature",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Compiled MCL 324.48714a, displayed as complete through Public Act 114 of 2026 and Initiated Law 1 of 2026. Subsection (1) requires, beginning March 1, 2024, an inland sport fishing guide license and a valid fishing license before a person acts as a sport fishing guide on an inland lake or stream. Subsection (5) makes the license valid for three years. Subsection (6) requires monthly reports. Subsection (8) says information submitted in those reports is confidential and exempt from the Freedom of Information Act, 1976 PA 442. Subsection (9) says the department shall annually post the previous year's application count, the previous year's license count, and a list of individuals who have valid licenses under this section. Subsection (13) defines a sport fishing guide as an individual who acts for a fee or other consideration, with stated exclusions. The legislature site's own reuse terms were not on this page.",
+      "bulk": null,
+      "attribution": null,
+      "request_process": null,
+      "reuse_status": "no_affirmative_grant",
+      "rights_basis": "Subsection (9) creates a posting duty. Subsection (8) withholds catch-report contents. Neither sentence grants commercial reuse of the posted names. The guide PDF cites subsection (8) for the list. The compiled text assigns that list to subsection (9)."
+    },
+    {
+      "url": "https://www.michigan.gov/dnr/managing-resources/fisheries/business/charter",
+      "publisher": "Michigan Department of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.michigan.gov/dnr/about/DNR-Website-and-application-policies",
+      "field_scope": "Charter operators page. Operators are identified from people who submitted catch reports the previous year and from people who received a certificate of inspection for a fishing vessel. New operators must tell the department they are active. Collected fields are date, fishing location, dock-to-dock hours, angler count, harvest and release, and species. Effort measures are angler hours, angler trips, and charter excursions, defined as one completed boat trip. The page says summaries for selected ports, lake totals, and annual reports are prepared each year. It links a 2025 charter report, a 2024 charter report, and an archive. A sport-trolling license is required for lake trout charter fishing and not for other charter fishing. As of March 1, 2024, inland trips also need the inland sport fishing guide license. The page points customers to the Michigan Charter Boat Association site and to the Great Lakes charter directory. It is not a public vessel roster. The organizational mailbox and phone number were not stored and were not used.",
+      "bulk": "The linked reports are separate PDFs. No vessel-roster download is on this page.",
+      "attribution": null,
+      "request_process": "The page says additional charter-specific data can be requested from an organizational mailbox. That request was not sent. It is not a reuse grant.",
+      "reuse_status": "personal_noncommercial_only",
+      "rights_basis": "DNR website content."
+    },
+    {
+      "url": "https://www.michigan.gov/dnr/-/media/Project/Websites/dnr/Documents/Fisheries/Charter/2025-Charter-Summary-posted-PDF.pdf",
+      "publisher": "Michigan Department of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.michigan.gov/dnr/about/DNR-Website-and-application-policies",
+      "field_scope": "The file linked as the 2025 Charter Report. PDFKit reported one page. Table 1 is total catch by species for charter boats fishing Michigan waters of the Great Lakes in 2025, with a bottom block of effort by lake. Printed excursions are Lake Michigan 12,481, Lake Huron including the St. Marys River 2,937, Lake Superior 924, Lake Erie including the Detroit River 2,619, and Lake St. Clair including the St. Clair River 1,782. Lake Michigan angler hours are 264,080 and Lake Michigan anglers are 51,311. The word Traverse does not appear. There is no port table and no hull table. The page does not print a statewide excursion total.",
+      "bulk": "One PDF. No stated bulk license.",
+      "attribution": null,
+      "request_process": null,
+      "reuse_status": "personal_noncommercial_only",
+      "rights_basis": "DNR website content. Lake totals are not a license to rebuild a charter directory, and they are not a Traverse City departure count."
+    },
+    {
+      "url": "https://www.michigan.gov/dnr/charterfishing",
+      "publisher": "Michigan Department of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.michigan.gov/dnr/about/DNR-Website-and-application-policies",
+      "field_scope": "Voluntary Great Lakes charter directory. The page says the list is updated periodically, that visitors should contact businesses to verify it, and that inclusion is not a recommendation or endorsement. Businesses ask to be added through a submission form. An HTML table has seven columns: city or port, Great Lake, business name, captain name, phone number, email address, and website. On this check the table had 397 data rows and one header, across 92 city labels. Lake-column labels were Michigan 202, Huron 72, Erie 51, Superior 19, St. Clair 50, St Clair 2, and St.Clair 1. Traverse City had 18 rows, 18 distinct business names, and the lake label Michigan on each of those rows. A city label is not a verified departure and not a hull. Contact fields and business names were not copied.",
+      "bulk": "One HTML table. No download file and no stated bulk license.",
+      "attribution": null,
+      "request_process": "A form lets a charter business ask to be listed. That is not a request path for reuse of the table.",
+      "reuse_status": "personal_noncommercial_only",
+      "rights_basis": "DNR website content. The directory's own sentences deny endorsement and tell visitors to verify. They do not grant commercial reuse."
+    },
+    {
+      "url": "https://www.michigan.gov/dnr/managing-resources/laws/municipal/vessels-carrying-passengers-for-hire",
+      "publisher": "Michigan Department of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.michigan.gov/dnr/about/DNR-Website-and-application-policies",
+      "field_scope": "Vessels carrying passengers for hire. Navigable waters, including the Great Lakes and connected waters to the upstream limit of navigation, require a U.S. Coast Guard captain's license. Inland waters require a state pilot license. Classes cited to MCL 324.44501: Class A, not more than 6 passengers on navigable waters, with more than 6 directed to the Coast Guard; Class B, not more than 6 on inland waters; Class C, more than 6 on inland waters; Class D, sail; Class E, not inspected, but the operator still needs a licensed pilot, for a hand-propelled river-drift boat or a boat 18 feet or less used mainly on a river or tributary. Inspection applications go through FACTS. The page says a certificate of inspection is downloaded from the vessel owner's FACTS account, and that starting in 2026 the certificate is electronic. Drydock inspection is once every 72 months and dockside inspection once every 24 months, citing the administrative rules and MCL 324.44507. No public inspection roster is on the page. No account was created.",
+      "bulk": "No roster download.",
+      "attribution": null,
+      "request_process": "The page gives an organizational mailbox for the navigable-waters list and for class questions. It was not used. Login to FACTS is an owner account, not a public file.",
+      "reuse_status": "personal_noncommercial_only",
+      "rights_basis": "DNR website content. Describing the inspection program does not publish the inspection file."
+    },
+    {
+      "url": "https://www.michigan.gov/dnr/about/DNR-Website-and-application-policies",
+      "publisher": "Michigan Department of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.michigan.gov/dnr/about/DNR-Website-and-application-policies",
+      "field_scope": "DNR website and application policies. The page says content is the property of the State or its suppliers and is protected by intellectual property laws. It says DNR websites and applications are for personal and non-commercial use only. It says the user may not modify, copy, distribute, display, reproduce, publish, license, create derivative works from, sell, or transfer information from these sites or any state websites unless the law provides otherwise or the State gives prior written permission. A linking-policy exception is stated for using content on another website. The page says content is provided as is and that terms may be amended.",
+      "bulk": null,
+      "attribution": null,
+      "request_process": "Prior written permission from the State is the stated path for any use beyond personal and non-commercial use. No permission was requested.",
+      "reuse_status": "personal_noncommercial_only",
+      "rights_basis": "This is the policy that covers the DNR pages and PDFs opened for this inventory. It does not contain an education exception."
+    },
+    {
+      "url": "https://www.michigan.gov/som/footer/policies",
+      "publisher": "State of Michigan",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.michigan.gov/som/footer/policies",
+      "field_scope": "Michigan.gov policies. The page says the user agrees not to use for commercial purposes, or resell, any of the data derived from the website unless a separate written agreement with the State allows it, or department-specific terms provided with the data allow it. It also says content may not be copied or published without law or prior written permission, and that duplication for commercial purposes or in a manner likely to imply official approval is prohibited. Disclaimer blocks on the retrieved page are marked Updated: December 2021. The page says terms may change without notice.",
+      "bulk": null,
+      "attribution": null,
+      "request_process": "A separate written agreement, or department-specific terms that allow the use, is the stated commercial path. No agreement was requested. The DNR policy above is the department-specific page that was found, and it does not allow commercial directory use.",
+      "reuse_status": "written_agreement_required_for_commercial_or_resale",
+      "rights_basis": "Statewide site terms. They sit over Michigan.gov pages. The DNR policy is the tighter rule for DNR content that was actually opened."
+    },
+    {
+      "url": "https://www.michigan.gov/dnr/about/dnr-freedom-of-information-act-process",
+      "publisher": "Michigan Department of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.michigan.gov/dnr/about/DNR-Website-and-application-policies",
+      "field_scope": "DNR Freedom of Information Act process page. The download succeeded. The text extract used for this check fell on navigation and a footer naming written procedures, a written public summary, and a fee itemization. A request-how-to paragraph was not isolated. No request was sent. The page does not say whether a current vessel-inspection roster would be released.",
+      "bulk": null,
+      "attribution": null,
+      "request_process": "The page is the published written-request path. It was not used. Release of an inspection roster remains unknown. Catch-report contents under MCL 324.48714a(8) are confidential even if some other record is public.",
+      "reuse_status": "unknown",
+      "rights_basis": "The page was opened and did not yield a readable release rule or a reuse license. Website copyright remains the DNR policy. Statutory confidentiality of guide catch reports is separate."
+    },
+    {
+      "url": "https://www.traversecitymi.gov/government/city-departments/duncan-l-clinch-marina/duncan-l-clinch-marina.html",
+      "publisher": "City of Traverse City",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Duncan L. Clinch Marina. A direct download returned HTTP 403. A second fetch returned the page. The marina is owned and operated by the City of Traverse City under policies of the Michigan State Waterways Commission. The printed address is 111 E. Grandview Parkway, Traverse City. The page links transient and seasonal slip information and the state reservation system at midnrreservations.com. It does not list charter boats, captains, or fishing trips. Dockmaster contact details were on the page and were not stored. City website terms were not found.",
+      "bulk": "No charter roster.",
+      "attribution": null,
+      "request_process": null,
+      "reuse_status": "unknown",
+      "rights_basis": "The page does not state a reuse license. It is a municipal landing page, not a charter inventory."
+    },
+    {
+      "url": null,
+      "publisher": "Three Traverse City fishing operators, one local tourism listing, and one booking marketplace. Addresses withheld.",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Three operator sites were downloaded. One boat section describes one hull and gives a length, a builder, a model year, and a beam. A review on that site refers to two boats. A second operator's Traverse City page names one hull, a length, a builder, a model, and a capacity, and says where Traverse City customers board. The same site also prints an office address in another town. A third operator's home page gives a length and a builder for one boat. A second page of that same operator gives the same length, does not repeat the builder, places the boat on the other side of the bay, and gives a length for a second boat. The about page names four boats. Those pages print a 2026 copyright claim and no reuse license. A local tourism listing repeats one hull description in the operator's first person. Direct requests to marketplace listings and to a state tourism property page returned HTTP 403. Marketplace wording was read only as a search extract and was not used to support a hull. No documentation or inspection number was displayed on any page that was opened.",
+      "bulk": null,
+      "attribution": null,
+      "request_process": null,
+      "reuse_status": "unknown_or_all_rights_reserved",
+      "rights_basis": "Operator pages are not DNR records. One operator prints a 2026 copyright claim and no license. The other retrieved operator texts are silent. Marketplace and tourism terms were not opened."
+    }
+  ],
+  "coverage": [
+    {
+      "roster_url": "https://www.michigan.gov/dnr/-/media/Project/Websites/dnr/Documents/Fisheries/misc/Purchased-Inland-Sportfishing-Guide-Licenses.pdf",
+      "population": "Person rows on the inland sport fishing guide list updated November 23, 2026. Year labels are 2024, 2025, and 2026. Not boats, not ports, and not the 187 applications figure.",
+      "roster_count": 746,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://www.michigan.gov/dnr/charterfishing",
+      "population": "Self-submitted Great Lakes charter business rows. A row is a business listing, not a hull and not a license.",
+      "roster_count": 397,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://www.michigan.gov/dnr/charterfishing",
+      "population": "Traverse City city-label rows inside the voluntary directory. The lake label on each is Michigan. The label is not a verified departure.",
+      "roster_count": 18,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": null,
+      "population": "Hull described in the boat section of one Traverse City operator site. The URL is withheld. A marketplace extract lists a second, shorter boat under the same operator. That second boat was not on the operator boat section and was not given its own row.",
+      "roster_count": 1,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": null,
+      "population": "Named hull on one operator's Traverse City booking page. The URL is withheld. The same business also publishes an office address in another town.",
+      "roster_count": 1,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": null,
+      "population": "Boat names on one operator's about page. Four names are printed. One name, the only one with a builder on the home page, was sampled. The URL is withheld.",
+      "roster_count": 4,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://www.traversecitymi.gov/government/city-departments/duncan-l-clinch-marina/duncan-l-clinch-marina.html",
+      "population": "Charter hulls listed by Duncan L. Clinch Marina. The page has slip information and no charter-boat list, so the roster count is null rather than zero slips.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://www.michigan.gov/dnr/-/media/Project/Websites/dnr/Documents/Fisheries/Charter/2025-Charter-Summary-posted-PDF.pdf",
+      "population": "Port or hull rows in the 2025 charter summary. The file is a one-page lake table. Lake Michigan excursions printed there are 12,481. That figure is not a roster count.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    }
+  ],
+  "sample_summary": {
+    "observations": 3,
+    "supported": 0,
+    "held": 3,
+    "operator_samples": [
+      {
+        "sampled_rows": 1,
+        "supported_rows": 0,
+        "held_rows": 1
+      },
+      {
+        "sampled_rows": 1,
+        "supported_rows": 0,
+        "held_rows": 1
+      },
+      {
+        "sampled_rows": 1,
+        "supported_rows": 0,
+        "held_rows": 1
+      }
+    ],
+    "agency_lists_sample": {
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0
+    },
+    "samples_are_not_additive": true,
+    "note": "The 746 guide names, the 397 directory businesses, the 18 Traverse City directory rows, and the three held hulls are different lists. None of them is a count of licensed Traverse City departures."
+  },
+  "next_questions": [
+    "Which subsection does the department mean when the guide PDF cites MCL 324.48714a(8)? The compiled section puts the public name list in subsection (9) and makes catch-report contents confidential in subsection (8). The names still cannot be joined to a boat or to Traverse City.",
+    "Is a current certificate-of-inspection file public? The passengers-for-hire page gives the certificate only through the owner's FACTS login. The FOIA process page did not yield a readable release rule on this pass. No request was sent. Subsection (8) would still withhold guide catch reports.",
+    "The charter operators page says port summaries are prepared each year, and the linked 2025 report has lakes only. The most useful next primary source is the 2024 charter summary PDF and the fisheries report archive, to see whether any official file counts Grand Traverse or Traverse City excursions.",
+    "Does compiled MCL 324.47328 still require a sport-trolling license for a boat offered for hire to fish lake trout? The charter page says that license is required for lake trout and not for other charter fishing. The section was not opened.",
+    "Three Traverse City booking hulls stay held. None has a documentation number. One cross-check was a search extract after HTTP 403 and also described a second, shorter boat that was not on the operator boat section. One tourism listing repeats the operator's first person, and that operator publishes a second town's office address. One operator's own pages disagree on which side of the bay the sampled boat uses."
+  ],
+  "next_investigations": [
+    {
+      "question": "Does the 2024 charter summary, or an older report in the fisheries archive, break charter excursions out by port or by Grand Traverse Bay?",
+      "source_url": "https://www.michigan.gov/dnr/-/media/Project/Websites/dnr/Documents/Fisheries/Charter/2024-Charter-Summary.pdf",
+      "publisher": "Michigan Department of Natural Resources",
+      "why_new": "The operators page says selected-port summaries are prepared each year. The 2025 file opened here is lake totals only and does not name Traverse City. The 2024 file was linked beside it and was not opened. A port table would be an official effort figure, still not a licensed-hull census."
+    },
+    {
+      "question": "Do older annual charter reports in the fisheries archive contain a Traverse City or Grand Traverse port table that the 2025 one-page summary omitted?",
+      "source_url": "https://www.michigan.gov/dnr/managing-resources/fisheries/archive",
+      "publisher": "Michigan Department of Natural Resources",
+      "why_new": "The charter page links this archive as past reports. It was not opened. It is the remaining first-party place to look for the port summaries the operators page describes."
+    },
+    {
+      "question": "Does the Michigan Charter Boat Association page name Traverse City hulls, or only member businesses?",
+      "source_url": "http://michigancharterboats.com",
+      "publisher": "Michigan Charter Boat Association, as linked by the DNR charter operators page",
+      "why_new": "The DNR charter page sends customers to this association as well as to the voluntary directory. The directory has no hull field. This association page was not opened, so it is the unused association path for Traverse City booking evidence."
+    },
+    {
+      "question": "Does the compiled text of MCL 324.47328 still require a sport-trolling license for each boat offered for hire in lake-trout trolling?",
+      "source_url": "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-324-47328",
+      "publisher": "Michigan Legislature",
+      "why_new": "The charter operators page states that license for lake trout charter fishing only. The compiled section was not opened, so the vessel credential for a Traverse City lake-trout trip is not verified beyond the program page."
+    }
+  ]
+}
