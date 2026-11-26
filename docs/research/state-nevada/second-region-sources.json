@@ -1,0 +1,201 @@
+{
+  "state": "Nevada",
+  "phase": "second-region",
+  "checked_date": "2026-11-25",
+  "sources": [
+    {
+      "url": "https://www.ndow.org/wp-content/uploads/2026/01/2026-Master-guide-list.pdf",
+      "publisher": "Nevada Department of Wildlife",
+      "access_date": "2026-11-25",
+      "source_date": "2026-01-26",
+      "terms_url": null,
+      "field_scope": "Re-read for a Pyramid Lake or Paiute field. None is present. Person rows, addresses, and phone numbers were already handled in the inventory and were not counted again.",
+      "bulk": "Already counted in the inventory. Not an incremental roster.",
+      "attribution": "No reuse sentence in the file. This phase did not re-read the department privacy policy.",
+      "request_process": "None used.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://pyramidlake.us/fishing",
+      "publisher": "Pyramid Lake Paiute Tribe",
+      "access_date": "2026-11-25",
+      "source_date": null,
+      "terms_url": "https://pyramidlake.us/permits",
+      "field_scope": "Angler rules. A Nevada fishing license is not required. A tribal fishing permit is required. Boats need a current registration from their home state. Trout season October 1 through June 30. Slot, tackle, and closed-area rules. Links the current guide list and the 2026-27 change file.",
+      "bulk": "Not a roster.",
+      "attribution": "Footer copyright Pyramid Lake Paiute Tribe. Page script says content is protected.",
+      "request_process": "No reuse request was submitted.",
+      "reuse_status": "not_granted"
+    },
+    {
+      "url": "https://pyramidlake.us/permits",
+      "publisher": "Pyramid Lake Paiute Tribe",
+      "access_date": "2026-11-25",
+      "source_date": null,
+      "terms_url": "https://pyramidlake.us/permits",
+      "field_scope": "Angler, boating, camping, and day-use prices. Says there are no seasonal permits. Links the current guide list, the change file, and a 2024-25 guide application. Street addresses and telephones were not copied.",
+      "bulk": "Not a guide roster.",
+      "attribution": "Footer copyright Pyramid Lake Paiute Tribe. Page script says content is protected.",
+      "request_process": "Permits are sold on the site and at tribal offices. No records request was submitted.",
+      "reuse_status": "not_granted"
+    },
+    {
+      "url": "https://pyramidlake.us/wp-content/uploads/2026/09/PLPT-Approved-Fishing-Guides-and-Boat-Charters-2026-27.pdf",
+      "publisher": "Pyramid Lake Paiute Tribe",
+      "access_date": "2026-11-25",
+      "source_date": "2026-09-24",
+      "terms_url": "https://pyramidlake.us/permits",
+      "field_scope": "Approved fishing guides and boat charters for October 1, 2026 through September 30, 2027. Nine fishing-guide rows and nine boat-charter rows. Phone numbers and email addresses were not copied.",
+      "bulk": "One-page roster. Contact columns were not retained.",
+      "attribution": "The PDF has no separate license sentence. The hosting site asserts copyright.",
+      "request_process": "Already posted. No request was submitted.",
+      "reuse_status": "not_granted"
+    },
+    {
+      "url": "https://pyramidlake.us/wp-content/uploads/2025/09/Amended-2025-26-PLPT-Approved-Fishing-Guides-and-Boat-Charters.pdf",
+      "publisher": "Pyramid Lake Paiute Tribe",
+      "access_date": "2026-11-25",
+      "source_date": "2025-09-23",
+      "terms_url": "https://pyramidlake.us/permits",
+      "field_scope": "Prior approved list for October 1, 2025 through September 30, 2026. Eleven fishing-guide rows and ten boat-charter rows. The season has ended. Contact columns were not copied.",
+      "bulk": "Prior snapshot. Not merged with the current list.",
+      "attribution": "The PDF has no separate license sentence. The hosting site asserts copyright.",
+      "request_process": "Already posted.",
+      "reuse_status": "not_granted"
+    },
+    {
+      "url": "https://pyramidlake.us/wp-content/uploads/2025/11/111945-Pyramid-Lake-Regulations-Book.pdf",
+      "publisher": "Pyramid Lake Paiute Tribe",
+      "access_date": "2026-11-25",
+      "source_date": "2025-11-21",
+      "terms_url": "https://pyramidlake.us/permits",
+      "field_scope": "Regulations brochure effective 2025-10-01. Section 21 guide and charter fees, application window, and one-person permits. Angler fees. Appearance-bond amount for guiding without approval. State boat-numbering rule. Drone prohibition.",
+      "bulk": "Rule text. Not a roster.",
+      "attribution": "The PDF has no separate license sentence. The hosting site asserts copyright.",
+      "request_process": "Already posted.",
+      "reuse_status": "not_granted"
+    },
+    {
+      "url": "https://pyramidlake.us/wp-content/uploads/2026/09/RegulationsChange2026s.pdf",
+      "publisher": "Pyramid Lake Paiute Tribe",
+      "access_date": "2026-11-25",
+      "source_date": "2026-09-21",
+      "terms_url": "https://pyramidlake.us/permits",
+      "field_scope": "Working-group proposed changes. Would close all fishing from July 1 through September 30 and add a $750 seasonal angler permit sold only from September 8 through September 30. Not used as the rule in force.",
+      "bulk": "Proposal. Not a roster.",
+      "attribution": "The PDF has no separate license sentence. The hosting site asserts copyright.",
+      "request_process": "Already posted.",
+      "reuse_status": "not_granted"
+    },
+    {
+      "url": "https://pyramidlake.us/wp-content/uploads/2024/06/2024-2025-Fishing-Guide-and-Boat-Charter-Application-Fillable.pdf",
+      "publisher": "Pyramid Lake Paiute Tribe",
+      "access_date": "2026-11-25",
+      "source_date": "2024-06-18",
+      "terms_url": "https://pyramidlake.us/permits",
+      "field_scope": "Application for the season that ended 2025-09-30. Still linked from the permits page. Says an approved guide must also obtain a tribal business license. That sentence is not in the brochure section read for this check.",
+      "bulk": "Blank form. Not a roster.",
+      "attribution": "The PDF has no separate license sentence. The hosting site asserts copyright.",
+      "request_process": "The form's deadline has passed. No application was submitted.",
+      "reuse_status": "not_granted"
+    },
+    {
+      "url": "https://pyramidlake.us/wp-content/uploads/2024/12/Press-Release-POCORN-Rock-Dec-20242024_08_13-17_08_42-UTC.pdf",
+      "publisher": "Pyramid Lake Paiute Tribe",
+      "access_date": "2026-11-25",
+      "source_date": "2024-12-18",
+      "terms_url": "https://pyramidlake.us/permits",
+      "field_scope": "Closes Popcorn Beach to public boat launches. Names a Sutcliffe watercraft inspection station. The aquatic-invasive-species site named in the release was not readable.",
+      "bulk": "Notice. Not a ramp roster.",
+      "attribution": "The PDF has no separate license sentence. The hosting site asserts copyright.",
+      "request_process": "Already posted.",
+      "reuse_status": "not_granted"
+    },
+    {
+      "url": "https://www.ndow.org/wp-content/uploads/2025/12/CGR-528-R053-25-Motor-Restrictions-and-Revisions-Related-to-Fisheries-Leg-Commission-Approved-December-2025.pdf",
+      "publisher": "Nevada Department of Wildlife",
+      "access_date": "2026-11-25",
+      "source_date": "2025-12-18",
+      "terms_url": null,
+      "field_scope": "Approved amendment of NAC 488.470. The Truckee River from the California line to where the river enters the Pyramid Lake Indian Reservation is limited to vessels without motors. Not a Pyramid Lake guide roster.",
+      "bulk": "Regulation. Not a roster.",
+      "attribution": "No reuse sentence in the file.",
+      "request_process": "Already posted.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": null,
+      "publisher": "Five first-party Pyramid Lake booking sites",
+      "access_date": "2026-11-25",
+      "source_date": null,
+      "terms_url": null,
+      "field_scope": "Five booking pages opened for Pyramid Lake. One more page was opened and excluded. Names, domains, contact lines, and boat descriptions are omitted.",
+      "bulk": "Not a roster.",
+      "attribution": "Three pages reserve all rights. One page's terms require written consent before reproduction. One page states no reuse sentence.",
+      "request_process": "No reuse request was submitted.",
+      "reuse_status": "not_granted_or_unknown"
+    }
+  ],
+  "coverage": [
+    {
+      "population": "Pyramid Lake Paiute Tribe fishing-guide and boat-charter permits for October 1, 2026 through September 30, 2027",
+      "roster_url": "https://pyramidlake.us/wp-content/uploads/2026/09/PLPT-Approved-Fishing-Guides-and-Boat-Charters-2026-27.pdf",
+      "roster_count": 18,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0,
+      "note": "Nine fishing-guide rows and nine boat-charter rows. One name and service appear in both columns. Phone numbers and email addresses were not stored. Person rows were not sampled. A permit row is not a hull."
+    },
+    {
+      "population": "Pyramid Lake Paiute Tribe fishing-guide and boat-charter permits for October 1, 2025 through September 30, 2026",
+      "roster_url": "https://pyramidlake.us/wp-content/uploads/2025/09/Amended-2025-26-PLPT-Approved-Fishing-Guides-and-Boat-Charters.pdf",
+      "roster_count": 21,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0,
+      "note": "Eleven fishing-guide rows and ten boat-charter rows. The season has ended. Not merged with the current list. Person rows were not sampled."
+    },
+    {
+      "population": "First-party booking pages opened for Pyramid Lake",
+      "roster_url": null,
+      "roster_count": null,
+      "sampled_rows": 5,
+      "supported_rows": 0,
+      "held_rows": 5,
+      "independent_publisher_matches": 2,
+      "note": "Not a census of the 18 permit rows. One more page was opened and excluded. Two sampled business strings also appear on the January 26, 2026 master-guide file with fishing status statewide. Those matches were not joined to a hull or to a Lake Mead inventory observation. The tribe matching its own list is not a second publisher."
+    },
+    {
+      "population": "Named open public boat launches on Pyramid Lake",
+      "roster_url": null,
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0,
+      "note": "Popcorn Beach is closed to public launching by the December 18, 2024 notice still linked from the fishing page. The remaining open ramp is not named on the pages read."
+    },
+    {
+      "population": "January 26, 2026 master-guide file, Pyramid field",
+      "roster_url": "https://www.ndow.org/wp-content/uploads/2026/01/2026-Master-guide-list.pdf",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0,
+      "note": "Re-read only for a Pyramid or Paiute field. None is present. The person count stays in the inventory and is not added again."
+    },
+    {
+      "population": "Public hull or registration search for Pyramid Lake boats",
+      "roster_url": null,
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0,
+      "note": "The brochure requires a state boat number. The tribal list does not print one. No new public vessel file was found in this phase."
+    }
+  ]
+}
