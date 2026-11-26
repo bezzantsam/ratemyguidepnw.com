@@ -1,0 +1,329 @@
+{
+  "state": "Kentucky",
+  "phase": "kentucky-inventory",
+  "checked_date": "2026-11-25",
+  "scope": "Fishing guide and outfitter licenses, the November 4, 2026 public list, Kentucky Lake and Lake Barkley landings, and four bookable observations. Personal-name domains and candidate names are omitted.",
+  "sources": [
+    {
+      "url": "https://fw.ky.gov/Licenses/Pages/Commercial-Guide-License-Requirements.aspx",
+      "publisher": "Kentucky Department of Fish and Wildlife Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://fw.ky.gov/Pages/Privacy.aspx",
+      "field_scope": "Person licenses. Fishing guide, resident $105.70 and nonresident $422.80, expires the last day of February. Fishing outfitter Tier I, zero guides, resident $264.25 and nonresident $1,057.00. Tier II, one or more guides, resident $792.75 and nonresident $1,585.50. Hunting products are separate. Boater education, a criminal-records check, and CPR and first aid are required. A USCG six-pack may substitute when guiding on a USCG-regulated waterway. Processing is 3 to 4 weeks. No in-person submissions. Online applications use the permit portal.",
+      "bulk": "The page links a PDF list. It is not itself the row file.",
+      "attribution": "Cite KDFWR and the page URL. Sale of collected information is prohibited.",
+      "request_process": "Application through the permit portal or by mail to Law Enforcement in Frankfort. No one was contacted.",
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://apps.legislature.ky.gov/law/kar/titles/301/003/150/",
+      "publisher": "Kentucky Legislative Research Commission",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "301 KAR 3:150. Effective November 6, 2025. Filed October 14, 2025. Page generated August 28, 2026. License year March 1 through the last day of February. Fishing outfitter Tier 1 has no guides. Tier 2 has one or more. A guide license exists only under a listed outfitter. A helper is a person, not a hull. Reports go to the activity portal by the 15th for the previous month and include waterbody per day. Those reports were not downloaded. Footer reserves all rights, 2024.",
+      "bulk": "Not a roster.",
+      "attribution": "Cite 301 KAR 3:150.",
+      "request_process": "The compilation is public. No one was contacted.",
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://fw.ky.gov/Licenses/Documents/Commercial_Guide_Info.pdf",
+      "publisher": "Kentucky Department of Fish and Wildlife Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://fw.ky.gov/Pages/Privacy.aspx",
+      "field_scope": "Nine-page PDF created and modified November 4, 2026. Footer Revised 11/04/2026. Hunting-licensed ZIP rows: 95. Fishing-licensed ZIP rows: 114. Columns are name, business name, and city, state, ZIP. No street, waterbody, boat, or license number.",
+      "bulk": "One published person-and-business list. Not a hull file.",
+      "attribution": "Cite KDFWR and the November 4, 2026 revision. Sale of collected information is prohibited.",
+      "request_process": "Linked from the license page. A further records request was not filed.",
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://fw.ky.gov/Licenses/Documents/Fishing-Guide-License-App.pdf",
+      "publisher": "Kentucky Department of Fish and Wildlife Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://fw.ky.gov/Pages/Privacy.aspx",
+      "field_scope": "2025 edition. Created November 5, 2025. Modified November 18, 2025. Person application under an outfitter. Collects a Social Security number, which was not copied. Helper is a person in the same boat or alongside on a stream or riverbank. No vessel field. USCG OUPV may replace boater education, CPR, and first aid.",
+      "bulk": "Blank form. Not an issued-license file.",
+      "attribution": "Cite the 2025 fishing guide application.",
+      "request_process": "The form names an online path and a mail path. No one was contacted.",
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://fw.ky.gov/Licenses/Documents/Fishing-Outfitter-License-App.pdf",
+      "publisher": "Kentucky Department of Fish and Wildlife Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://fw.ky.gov/Pages/Privacy.aspx",
+      "field_scope": "2025 edition. Created November 5, 2025. Modified November 19, 2025. Authorizes soliciting or providing guiding services, including bowfishing. Tier 1 is zero guides. Tier 2 is one or more. No vessel, lake, or Barkley field.",
+      "bulk": "Blank form. Not an issued-license file.",
+      "attribution": "Cite the 2025 fishing outfitter application.",
+      "request_process": "The form is the application. No one was contacted.",
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://fw.ky.gov/Licenses/Pages/Fees.aspx",
+      "publisher": "Kentucky Department of Fish and Wildlife Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://fw.ky.gov/Pages/Privacy.aspx",
+      "field_scope": "Fee table. Fishing guide and outfitter amounts match the requirements page. A commercial fishing license with 10 gear tags is a different product: resident $158.55 and nonresident $634.20. The page links 301 KAR 5:022, which was not opened.",
+      "bulk": "Not a holder file.",
+      "attribution": "Cite KDFWR and the access date.",
+      "request_process": "None. No one was contacted.",
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://fw.ky.gov/Pages/Privacy.aspx",
+      "publisher": "Kentucky Department of Fish and Wildlife Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://kentucky.gov/policies/Pages/default.aspx",
+      "field_scope": "Collects name, address, residency, date of birth, email, telephone, and license and harvest data, among other fields. Stored by the Commonwealth or a contractor. The department prohibits the sale of all collected information. Footer script reserves Commonwealth rights for the current year.",
+      "bulk": "Not a data license for the guide list.",
+      "attribution": "Cite the privacy statement.",
+      "request_process": "No privacy request was sent.",
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://kentucky.gov/policies/Pages/default.aspx",
+      "publisher": "Commonwealth of Kentucky",
+      "access_date": "2026-11-25",
+      "terms_url": "https://kentucky.gov/policies/Pages/default.aspx",
+      "field_scope": "Statewide privacy page. Points to KRS 61.870 and the personal-privacy exemption. Says personal information will not be provided, rented, or sold for marketing. Footer reserves rights, 2022. Not a directory grant.",
+      "bulk": "Not a bulk-data license.",
+      "attribution": "Cite the Commonwealth data policy.",
+      "request_process": "No request was sent.",
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://kentucky.gov/policies/Pages/disclaimer.aspx",
+      "publisher": "Commonwealth of Kentucky",
+      "access_date": "2026-11-25",
+      "terms_url": "https://kentucky.gov/policies/Pages/disclaimer.aspx",
+      "field_scope": "External-link disclaimer. No endorsement. Critical information should be verified. Footer reserves rights, 2022.",
+      "bulk": "Not a data license.",
+      "attribution": null,
+      "request_process": null,
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://fw.ky.gov/More/Pages/Open-Records-Procedures.aspx",
+      "publisher": "Kentucky Department of Fish and Wildlife Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://fw.ky.gov/Pages/Privacy.aspx",
+      "field_scope": "Resident inspection under KRS 61.872(2). Commercial purpose under KRS 61.870(4) includes sale, resale, solicitation, rent, or expected profit. KRS 61.874(4)(b) requires a certified statement. News and litigation uses are carved out. A directory was not authorized.",
+      "bulk": "No roster is attached.",
+      "attribution": "Cite the procedures page and the quoted KRS sections.",
+      "request_process": "Address a request to Legal, Open Records Request. The page publishes a role mailbox. A request was not filed.",
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://fw.ky.gov/More/Documents/CERTIFICATION%20OF%20COMMERCIAL%20PURPOSE.pdf",
+      "publisher": "Kentucky Department of Fish and Wildlife Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://fw.ky.gov/More/Pages/Open-Records-Procedures.aspx",
+      "field_scope": "One-page scanned form created July 22, 2020. Text extraction returned empty. The statutory definition used here comes from the procedures page.",
+      "bulk": "Image not read.",
+      "attribution": "Cite the procedures page.",
+      "request_process": "The form would accompany a commercial-purpose request. It was not submitted.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://fw.ky.gov/More/Pages/Guides.aspx",
+      "publisher": "Kentucky Department of Fish and Wildlife Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://fw.ky.gov/Pages/Privacy.aspx",
+      "field_scope": "Title is Hunting and Fishing Regulation Summary Guides. The saved HTML does not link the commercial holder PDF. This is a pamphlet page.",
+      "bulk": "No holder rows.",
+      "attribution": "Cite KDFWR.",
+      "request_process": null,
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://lakebarkleymarina.com/",
+      "publisher": "Lake Barkley Marina",
+      "access_date": "2026-11-25",
+      "terms_url": "https://lakebarkleymarina.com/boat-rentals/",
+      "field_scope": "Landing at Lake Barkley State Resort Park in Cadiz. Ship store, slips, and rentals. No guide roster. A news line is dated September 19, 2026. Footer copyright 2024, all rights reserved.",
+      "bulk": "No charter list.",
+      "attribution": null,
+      "request_process": "No directory process is published. No one was contacted.",
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://lakebarkleymarina.com/boat-rentals/",
+      "publisher": "Lake Barkley Marina",
+      "access_date": "2026-11-25",
+      "terms_url": "https://lakebarkleymarina.com/boat-rentals/",
+      "field_scope": "Boat rental agreement and waiver. A lessee contract. No guide roster. Same 2024 all-rights-reserved footer.",
+      "bulk": "Rental classes were not sampled as guide hulls.",
+      "attribution": null,
+      "request_process": "The agreement is for a renter. No one was contacted.",
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://kydammarina.com/",
+      "publisher": "Kentucky Dam Marina",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Marina on Kentucky Lake in Marshall County. Rental classes include an Aloha 25 Tritoon, a Double Decker Pontoon, a Barletta Tritoon, a Bayliner 18 fishing boat, paddleboards, and kayaks. No guide roster. No copyright line on the homepage. The privacy policy was not opened.",
+      "bulk": "No charter list.",
+      "attribution": null,
+      "request_process": "None on the homepage. No one was contacted.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://kydammarina.com/kentucky-dam-faqs/",
+      "publisher": "Kentucky Dam Marina",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Dock fishing is not allowed. Fishing licenses are not sold. Dam construction ran from 1941 to 1950. No guide roster.",
+      "bulk": "No roster.",
+      "attribution": null,
+      "request_process": null,
+      "reuse_status": "unknown"
+    },
+    {
+      "url": null,
+      "publisher": "Bookable operator on both lakes",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Personal-name domain withheld. One 21-foot Skeeter bass boat stated for Lake Barkley and Kentucky Lake. USCG OUPV role stated. No hull number. No copyright line. The angler is told to bring a fishing license.",
+      "bulk": "One boat claim.",
+      "attribution": null,
+      "request_process": "None published. No one was contacted.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": null,
+      "publisher": "Bookable Kentucky Lake operator",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Personal-name domain withheld. One 20-foot bass boat. Kentucky Lake only. Guiding described as full time since 1994. That year is not a hull date. No builder and no copyright line.",
+      "bulk": "One boat claim.",
+      "attribution": null,
+      "request_process": "None published. No one was contacted.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": null,
+      "publisher": "Bookable bowfishing operator",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Surname domain withheld. One unnamed boat, maximum four people, night trip. Waters stated: Kentucky Lake, Lake Barkley, and the Ohio, Tennessee, and Cumberland rivers. A privacy page says the site does not retain an emailed address and that the host logs traffic. No copyright line.",
+      "bulk": "One unnamed boat for several waters.",
+      "attribution": null,
+      "request_process": "None published. No one was contacted.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://www.shelldiversguide.com/",
+      "publisher": "Shelldivers Guide Service",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Fishing trips on Kentucky and Barkley lakes. Also sonar classes, hunting, diving, and a bass-fishing school. No length or builder. The fishing-trips path returned HTTP 404. No copyright line.",
+      "bulk": "One operator page with no hull measurement.",
+      "attribution": null,
+      "request_process": "None published. No one was contacted.",
+      "reuse_status": "unknown"
+    }
+  ],
+  "coverage": [
+    {
+      "roster_url": "https://fw.ky.gov/Licenses/Documents/Commercial_Guide_Info.pdf",
+      "population": "Fishing-licensed rows, PDF revised November 4, 2026. Person and business. No waterbody and no boat.",
+      "roster_count": 114,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://fw.ky.gov/Licenses/Documents/Commercial_Guide_Info.pdf",
+      "population": "Hunting-licensed rows on the same PDF. Counted separately from the fishing list.",
+      "roster_count": 95,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://fw.ky.gov/Licenses/Pages/Commercial-Guide-License-Requirements.aspx",
+      "population": "Requirements page. The lookup it offers is the PDF.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://fw.ky.gov/Licenses/Pages/Fees.aspx",
+      "population": "Fee table. Commercial fishing gear-tag license is a different product.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://fw.ky.gov/More/Pages/Guides.aspx",
+      "population": "Regulation summary guides. Not the holder list.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": null,
+      "population": "One 21-foot Skeeter claimed for Lake Barkley and Kentucky Lake. Personal-name domain withheld. Held.",
+      "roster_count": 1,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": null,
+      "population": "One 20-foot bass boat on Kentucky Lake. Personal-name domain withheld. Held.",
+      "roster_count": 1,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": null,
+      "population": "One unnamed bowfishing boat on two lakes and three rivers. Surname domain withheld. Held.",
+      "roster_count": 1,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://www.shelldiversguide.com/",
+      "population": "One brand page for both lakes. No hull measurement. Held.",
+      "roster_count": 1,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://lakebarkleymarina.com/",
+      "population": "Lake Barkley landing. Rentals and a waiver. No guide roster.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://kydammarina.com/",
+      "population": "Kentucky Lake landing. Rental classes include a Bayliner 18. No guide roster.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    }
+  ]
+}
