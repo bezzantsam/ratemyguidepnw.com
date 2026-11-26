@@ -1,0 +1,232 @@
+{
+  "state": "Ohio",
+  "scope": "Lake Erie fishing district, with a Port Clinton and Catawba Island departure check",
+  "checked_date": "2026-11-25",
+  "base_commit": "7f69f59f4760afa53f1ef06bc64f6fb0824665e2",
+  "recommended_first_source": "The Licensed Lake Erie Fishing Guides PDF linked from the ODNR Fishing Lake Erie page (https://ohiodnr.gov/static/documents/wildlife/fishing/Licensed+Fishing+Guides.pdf), as an opt-in person roster only, not as a hull, port, or listing-rights source.",
+  "highest_priority_permission_question": "Does the opt-in checkbox, or the public PDF of names, business names, and phone numbers, allow a third party to copy those fields into a commercial directory, and does the license or that listing authorize a directory claim? The sources checked on 2026-11-25 do not answer it.",
+  "opt_in_roster": {
+    "url": "https://ohiodnr.gov/static/documents/wildlife/fishing/Licensed+Fishing+Guides.pdf",
+    "asset_url": "https://dam.assets.ohio.gov/image/upload/ohiodnr.gov/documents/wildlife/fishing/Licensed%20Fishing%20Guides.pdf",
+    "etag": "0305c4c5b9d4f1a6571cc72ee793145e",
+    "last_modified": "2026-09-04",
+    "pages": 14,
+    "rows": 576,
+    "guide_types": {
+      "BOAT": 497,
+      "BOAT-ICE": 75,
+      "KAYAK": 2,
+      "ICE-SHORE": 1,
+      "BOAT-ICE-KAYAK": 1
+    },
+    "full_license_count": null,
+    "port_field": false
+  },
+  "sources": [
+    {
+      "publisher": "Ohio Legislative Service Commission",
+      "url": "https://codes.ohio.gov/ohio-revised-code/section-1533.51",
+      "role": "Fishing-guide license statute",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://codes.ohio.gov/legal/disclaimer",
+      "reuse_status": "unknown",
+      "bulk": "Not a roster.",
+      "request_process": null
+    },
+    {
+      "publisher": "Ohio Legislative Service Commission",
+      "url": "https://codes.ohio.gov/ohio-revised-code/section-1533.02",
+      "role": "Lake Erie fishing-district definition",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://codes.ohio.gov/legal/disclaimer",
+      "reuse_status": "unknown",
+      "bulk": "Not a roster.",
+      "request_process": null
+    },
+    {
+      "publisher": "Ohio Legislative Service Commission",
+      "url": "https://codes.ohio.gov/ohio-revised-code/section-1531.01",
+      "role": "Fishing-guide definition",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://codes.ohio.gov/legal/disclaimer",
+      "reuse_status": "unknown",
+      "bulk": "Not a roster.",
+      "request_process": null
+    },
+    {
+      "publisher": "Ohio Legislative Service Commission",
+      "url": "https://codes.ohio.gov/ohio-administrative-code/rule-1501:31-3-11",
+      "role": "Fishing guides rule",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://codes.ohio.gov/legal/disclaimer",
+      "reuse_status": "unknown",
+      "bulk": "Not a roster.",
+      "request_process": null
+    },
+    {
+      "publisher": "Ohio Legislative Service Commission",
+      "url": "https://codes.ohio.gov/legal/disclaimer",
+      "role": "Hosting disclaimer for the Revised Code and Administrative Code",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://codes.ohio.gov/legal/disclaimer",
+      "reuse_status": "unknown",
+      "bulk": "Not a roster.",
+      "request_process": null
+    },
+    {
+      "publisher": "Ohio Division of Wildlife",
+      "url": "https://ohiodnr.gov/buy-and-apply/regulatory-permits/commercial-wildlife-permits/lake-erie-fishing-guide",
+      "role": "Lake Erie fishing-guide license page",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://ohiodnr.gov/odnr-help-center/privacy-notices-and-policies",
+      "reuse_status": "unknown",
+      "bulk": "No roster download on this page.",
+      "request_process": "Public-records requests are described on the ODNR public-records page. No directory-permission process is published here."
+    },
+    {
+      "publisher": "Ohio Division of Wildlife",
+      "url": "https://dam.assets.ohio.gov/image/upload/ohiodnr.gov/documents/wildlife/permits/2025_OH_Lake_Erie_Fishing_Guide_License_Info.pdf",
+      "role": "2026 license information sheet",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://ohiodnr.gov/odnr-help-center/privacy-notices-and-policies",
+      "reuse_status": "unknown",
+      "bulk": "Blank instructions only. Not a roster.",
+      "request_process": "No directory-permission process on the sheet."
+    },
+    {
+      "publisher": "Ohio Division of Wildlife",
+      "url": "https://ohiodnr.gov/static/documents/wildlife/permits/dow-application-le-fishing-guide-license-8950.pdf",
+      "role": "Field dictionary, form DNR 8950 (R0224)",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://ohiodnr.gov/odnr-help-center/privacy-notices-and-policies",
+      "reuse_status": "unknown",
+      "bulk": "Blank form only.",
+      "request_process": "Applicants file the form with the Division. No directory-permission process is on the form."
+    },
+    {
+      "publisher": "Ohio Division of Wildlife",
+      "url": "https://ohiodnr.gov/buy-and-apply/hunting-fishing-boating/fishing-resources/fishing-lake-erie",
+      "role": "Fishing Lake Erie index",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://ohiodnr.gov/odnr-help-center/privacy-notices-and-policies",
+      "reuse_status": "unknown",
+      "bulk": "No roster other than the linked PDF.",
+      "request_process": "No directory-permission process on the page."
+    },
+    {
+      "publisher": "Ohio Division of Wildlife",
+      "url": "https://ohiodnr.gov/static/documents/wildlife/fishing/Licensed+Fishing+Guides.pdf",
+      "role": "Opt-in licensed-guide roster",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://ohiodnr.gov/odnr-help-center/privacy-notices-and-policies",
+      "reuse_status": "unknown",
+      "bulk": "One PDF. No API or CSV.",
+      "request_process": "ODNR public-records page and the Public Records Center linked from it. Copy fee stated as $0.05 per page. No fee stated for viewing or email. Redaction under Ohio Revised Code Chapters 149 and 1347. Access is not a commercial-directory grant."
+    },
+    {
+      "publisher": "Ohio Department of Natural Resources",
+      "url": "https://ohiodnr.gov/discover-and-learn/safety-conservation/about-ODNR/policies/public-records",
+      "role": "Public-records policy",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://ohiodnr.gov/discover-and-learn/safety-conservation/about-ODNR/policies/public-records",
+      "reuse_status": "unknown",
+      "bulk": "Requests are handled per request. The opt-in guide PDF is already posted separately.",
+      "request_process": "Public Records Center linked from this page, plus the contact paths printed on the page. Those contact details are not copied here."
+    },
+    {
+      "publisher": "Ohio Department of Natural Resources",
+      "url": "https://ohiodnr.gov/odnr-help-center/privacy-notices-and-policies",
+      "role": "Privacy policy",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://ohiodnr.gov/odnr-help-center/privacy-notices-and-policies",
+      "reuse_status": "unknown",
+      "bulk": "Not a data feed.",
+      "request_process": "No directory-permission process on this page."
+    },
+    {
+      "publisher": "Ohio Division of Wildlife",
+      "url": "https://ohiodnr.gov/business-and-industry/business-activities/lake-erie-fishing-guide-boat-captain/lake-erie-fishing-guide-boat-captain-procedure",
+      "role": "Guide and boat-captain procedure page",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://ohiodnr.gov/odnr-help-center/privacy-notices-and-policies",
+      "reuse_status": "unknown",
+      "bulk": "No roster extracted.",
+      "request_process": null
+    },
+    {
+      "publisher": "Catawba Landing",
+      "url": "https://www.catawbalanding.com/",
+      "role": "Marina homepage",
+      "checked_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "No charter roster.",
+      "request_process": null
+    },
+    {
+      "publisher": "Come Fish With Us",
+      "url": "http://comefishwith.us/",
+      "role": "Audited departure roster",
+      "checked_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "Five featured names on one page. Not a downloadable license file.",
+      "request_process": null
+    },
+    {
+      "publisher": "West Harbor Charters",
+      "url": "http://www.westharborcharters.com/",
+      "role": "Second 2022 featured index, not row-audited",
+      "checked_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "Not used as a counted roster.",
+      "request_process": null
+    },
+    {
+      "publisher": "Ohio Sea Grant",
+      "url": "https://ohioseagrant.osu.edu/education/resources/proh/certified",
+      "role": "Erie PrOH certified-guide page",
+      "checked_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "No rows.",
+      "request_process": null
+    },
+    {
+      "publisher": "Lake Erie Charter Boat Association",
+      "url": "https://www.lecba.net/",
+      "role": "Association homepage linked from the Fishing Lake Erie page",
+      "checked_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "No directory found.",
+      "request_process": null
+    }
+  ],
+  "coverage": [
+    {
+      "roster_url": "http://comefishwith.us/",
+      "population": "Five featured names on one 2022-01-14 page for Catawba Landing Marina in Port Clinton. Not a slip census. Full port count unknown.",
+      "roster_count": 5,
+      "sampled_rows": 5,
+      "supported_rows": 1,
+      "held_rows": 4,
+      "independent_publisher_matches": 1
+    },
+    {
+      "roster_url": "https://ohiodnr.gov/static/documents/wildlife/fishing/Licensed+Fishing+Guides.pdf",
+      "population": "Two additional current booking sites that state a Port Clinton departure. Not a random draw of the 576 opt-in rows. Full license count unknown. Operator hostnames are omitted from this public index.",
+      "roster_count": 576,
+      "sampled_rows": 2,
+      "supported_rows": 1,
+      "held_rows": 1,
+      "independent_publisher_matches": 2
+    }
+  ],
+  "sample_totals_without_double_counting": {
+    "supported": 2,
+    "held": 5,
+    "note": "The two frames do not share a supported or held operator. 1+1 supported and 4+1 held."
+  }
+}
