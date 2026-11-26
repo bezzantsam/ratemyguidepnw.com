@@ -1,0 +1,276 @@
+{
+  "state": "Kansas",
+  "phase": "kansas-inventory",
+  "scope": "Kansas fishing-guide credential and Milford Lake landings and fishing offers",
+  "checked_date": "2026-11-25",
+  "base_commit": "7f69f59f4760afa53f1ef06bc64f6fb0824665e2",
+  "recommended_first_source": "The repeal of K.S.A. 32-964 and the current fee regulation K.A.R. 115-2-1. Kansas ended authority to issue commercial guide service permits on January 1, 2006. The fee statute still prints a cap. The readable fee regulation does not print a guide price and is not a roster.",
+  "highest_priority_permission_question": "Will any Kansas office release a current list of businesses that guide sport fishing on Milford Lake, limited to business name and water, and authorize commercial-directory reuse? The commercial guide permit was repealed on January 1, 2006. The department website returned HTTP 403, so its terms were not read.",
+  "guide_license": {
+    "statute": "K.S.A. 32-964",
+    "statute_url": "https://ksrevisor.gov/statutes/chapters/ch32/032_009_0064.html",
+    "repeal_session_law_url": "https://www.kslegislature.gov/historical_data/sessionlaws/2006/2005_O_SessionLaws_Chapter124.pdf",
+    "repealed": true,
+    "repeal_effective": "2006-01-01",
+    "historical_scope": "Before repeal, commercial guide services covered big game or migratory waterfowl hunting or fishing for others on a commercial basis. The permit was a person permit.",
+    "statutory_fee_cap_resident_usd": 250,
+    "statutory_fee_cap_nonresident_usd": 1000,
+    "fee_cap_url": "https://ksrevisor.gov/statutes/chapters/ch32/032_009_0088.html",
+    "fee_usd": null,
+    "fee_url": "https://www.law.cornell.edu/regulations/kansas/K-A-R-115-2-1",
+    "fee_regulation_effective": "2023-12-29",
+    "roster_rows": null,
+    "roster_count_issued": null,
+    "hull_field": false
+  },
+  "angler_fees_usd": {
+    "source": "K.A.R. 115-2-1 as displayed by Cornell, last noted amendment effective 2023-12-29",
+    "annual_resident": 25,
+    "annual_nonresident": 75,
+    "calendar_day_resident": 3.5,
+    "calendar_day_nonresident": 10,
+    "five_day_nonresident": 25,
+    "senior_resident_65_through_74": 12.5,
+    "five_year_resident": 100,
+    "lifetime_resident": 500,
+    "trout": 12,
+    "youth_trout": 4.5
+  },
+  "milford_sample": {
+    "sampled_rows": 3,
+    "supported_rows": 2,
+    "held_rows": 1,
+    "unique_hulls": 0
+  },
+  "sources": [
+    {
+      "publisher": "Kansas Department of Wildlife and Parks",
+      "url": "https://www.ksoutdoors.gov/outdoor-activities/fishing-in-kansas",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "Assigned start page. HTTP 403. No roster was read.",
+      "request_process": "Direct read failed. No department terms page was opened."
+    },
+    {
+      "publisher": "Kansas Department of Wildlife and Parks",
+      "url": "https://ksoutdoors.gov/Fishing/Fishing-Application-and-Fees",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "Fee page. HTTP 403. No product table was read.",
+      "request_process": "Direct read failed."
+    },
+    {
+      "publisher": "Kansas Department of Wildlife and Parks",
+      "url": "https://www.ksoutdoors.gov/State-Parks/Locations/Milford",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "Milford State Park page. HTTP 403.",
+      "request_process": "Direct read failed."
+    },
+    {
+      "publisher": "Kansas Revisor of Statutes",
+      "url": "https://ksrevisor.gov/statutes/chapters/ch32/032_009_0064.html",
+      "access_date": "2026-11-25",
+      "source_date": "2006-01-01",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "Repealed section. History line L. 2005, ch. 124, section 4.",
+      "request_process": null
+    },
+    {
+      "publisher": "Kansas Revisor of Statutes",
+      "url": "https://ksrevisor.gov/statutes/chapters/ch32/032_009_0088.html",
+      "access_date": "2026-11-25",
+      "source_date": "2026-07-01",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "Fee-cap statute. History through L. 2026, ch. 100, section 3, July 1. Guide-permit caps remain. No holder file.",
+      "request_process": null
+    },
+    {
+      "publisher": "Kansas Revisor of Statutes",
+      "url": "https://ksrevisor.gov/statutes/chapters/ch32/032_009_0006.html",
+      "access_date": "2026-11-25",
+      "source_date": "2023-04-27",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "Angler fishing-license requirement and exceptions. History L. 2023, ch. 43, section 3, April 27.",
+      "request_process": null
+    },
+    {
+      "publisher": "Kansas Revisor of Statutes",
+      "url": "https://ksrevisor.gov/statutes/chapters/ch32/032_009_0089.html",
+      "access_date": "2026-11-25",
+      "source_date": "2003-07-01",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "Service-charge statute. Cap of $1 for secretary, county clerk, or appointed agent. Negotiated charge for telephone or internet agents.",
+      "request_process": null
+    },
+    {
+      "publisher": "Kansas Legislature",
+      "url": "https://kslegislature.gov/historical_data/sessionlaws/2004/2003_O_SessionLaws_Chapter108.html",
+      "access_date": "2026-11-25",
+      "source_date": "2003-04-21",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "2003 Chapter 108. Historical definition of commercial guide services, including fishing. The amended section was later repealed.",
+      "request_process": null
+    },
+    {
+      "publisher": "Kansas Legislature",
+      "url": "https://www.kslegislature.gov/historical_data/sessionlaws/2006/2005_O_SessionLaws_Chapter124.pdf",
+      "access_date": "2026-11-25",
+      "source_date": "2005-04-12",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "2005 Chapter 124, House Bill 2466. Repeals authority to issue commercial guide service permits. Section 4 repeals 32-964 on January 1, 2006. Approved April 12, 2005.",
+      "request_process": null
+    },
+    {
+      "publisher": "Cornell Legal Information Institute",
+      "url": "https://www.law.cornell.edu/regulations/kansas/K-A-R-115-2-1",
+      "access_date": "2026-11-25",
+      "source_date": "2023-12-29",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "Secondary copy of the fee regulation. No commercial guide permit line. Official HTML viewer returned HTTP 404.",
+      "request_process": "No Cornell terms page was opened."
+    },
+    {
+      "publisher": "Cornell Legal Information Institute",
+      "url": "https://www.law.cornell.edu/regulations/kansas/agency-115/article-21",
+      "access_date": "2026-11-25",
+      "source_date": "2006-01-01",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "Article 21, Commercial guides. 115-21-1, 115-21-2, and 115-21-4 revoked January 1, 2006. 115-21-3 revoked December 7, 2001.",
+      "request_process": null
+    },
+    {
+      "publisher": "Cornell Legal Information Institute",
+      "url": "https://www.law.cornell.edu/regulations/kansas/K-A-R-115-8-24",
+      "access_date": "2026-11-25",
+      "source_date": "2016-08-01",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "Revoked regulation. Notes say revoked effective August 1, 2016. Old operative text was not on the page.",
+      "request_process": null
+    },
+    {
+      "publisher": "Kansas Secretary of State",
+      "url": "https://sos.ks.gov/publications/pubs_kar_Regs.aspx?KAR=115-21-1",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "Official regulation HTML path. HTTP 404. rules.ks.gov returned an application shell without regulation text.",
+      "request_process": null
+    },
+    {
+      "publisher": "U.S. Army Corps of Engineers, Kansas City District",
+      "url": "https://www.nwk.usace.army.mil/Locations/District-Lakes/Milford-Lake/",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "Milford Lake location page. HTTP 403.",
+      "request_process": "Direct read failed."
+    },
+    {
+      "publisher": "Milford State Park Marina",
+      "url": "https://www.milfordstateparkmarina.org/",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "Landing homepage. Rentals, fuel, storage, and gated docks. No guide roster and no hull field. Terms and privacy paths returned HTTP 404.",
+      "request_process": "No terms page was found on the host."
+    },
+    {
+      "publisher": "Thunderbird Marina and RV Resort",
+      "url": "https://thunderbirdmarinaandrvresort.com/",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "Landing homepage. Slip classes and season. Footer copyright 2026. Privacy and terms paths returned HTTP 404.",
+      "request_process": "No terms page was found on the host."
+    },
+    {
+      "publisher": "Thunderbird Marina and RV Resort",
+      "url": "https://thunderbirdmarinaandrvresort.com/guides",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "Lake articles on species, the beach, the state park, and the season. Not a captain roster.",
+      "request_process": "Same publisher as the marina homepage."
+    },
+    {
+      "publisher": "Scattered Acres Outfitting LLC",
+      "url": "https://scatteredacresoutfitting.com/milford-lake-fishing-guide/",
+      "access_date": "2026-11-25",
+      "terms_url": "https://scatteredacresoutfitting.com/privacy-terms-of-use/",
+      "reuse_status": "not_granted",
+      "bulk": "One Milford fishing-offer page. Prices a trip and names another business as the booking desk. No hull field. Footer copyright 2026.",
+      "request_process": "Terms say site content is owned and that unpermitted copying could be infringement."
+    }
+  ],
+  "coverage": [
+    {
+      "population": "KDWP fishing program page",
+      "roster_count": null,
+      "sampled": 0,
+      "supported": 0,
+      "held": 0,
+      "second_publishers": 0
+    },
+    {
+      "population": "KDWP fee page and Milford State Park page",
+      "roster_count": null,
+      "sampled": 0,
+      "supported": 0,
+      "held": 0,
+      "second_publishers": 0
+    },
+    {
+      "population": "Current commercial-guide roster",
+      "roster_count": null,
+      "sampled": 0,
+      "supported": 0,
+      "held": 0,
+      "second_publishers": 0
+    },
+    {
+      "population": "Milford State Park Marina",
+      "roster_count": 1,
+      "sampled": 1,
+      "supported": 1,
+      "held": 0,
+      "second_publishers": 0
+    },
+    {
+      "population": "Thunderbird Marina and RV Resort",
+      "roster_count": 1,
+      "sampled": 1,
+      "supported": 1,
+      "held": 0,
+      "second_publishers": 0
+    },
+    {
+      "population": "Thunderbird lake articles titled guides",
+      "roster_count": null,
+      "sampled": 0,
+      "supported": 0,
+      "held": 0,
+      "second_publishers": 0
+    },
+    {
+      "population": "Scattered Acres Milford fishing offer",
+      "roster_count": 1,
+      "sampled": 1,
+      "supported": 0,
+      "held": 1,
+      "second_publishers": 0
+    }
+  ]
+}
