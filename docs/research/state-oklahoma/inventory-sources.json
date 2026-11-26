@@ -1,0 +1,231 @@
+{
+  "state": "Oklahoma",
+  "phase": "oklahoma-inventory",
+  "scope": "ODWC fishing-guide license and Lake Texoma guides departing from Oklahoma",
+  "checked_date": "2026-11-25",
+  "base_commit": "7f69f59f4760afa53f1ef06bc64f6fb0824665e2",
+  "recommended_first_source": "The ODWC fishing-guide directory and 29 O.S. section 4-113A. The credential is the person who guides. The directory is a published table of known guides, not a hull file and not a proven count of every issued license.",
+  "highest_priority_permission_question": "Does ODWC's permission to copy page information, with credit, cover republication of the current guide table in a commercial directory, and can holders who did not agree to publication be requested? The disclaimer permits copying and does not name a commercial directory. The 2022 application asks whether to publish business contact information.",
+  "guide_license": {
+    "statute": "29 O.S. \u00a7 4-113A",
+    "statute_url": "https://www.oscn.net/applications/OCISWeb/DeliverDocument.asp?CiteID=456501",
+    "statute_effective": "2009-07-01",
+    "statutory_fee_cap_usd": 200,
+    "fee_usd": 90,
+    "uscg_credential_fee_usd": 20,
+    "fee_url": "https://www.wildlifedepartment.com/licensing/regs/license-fees",
+    "valid": "January 1 through December 31",
+    "nonresident_fee_printed_separately": false,
+    "roster_rows": 348,
+    "unique_business_name_strings": 337,
+    "texoma_water_rows": 137,
+    "roster_count_issued": null,
+    "hull_field": false
+  },
+  "angler_fees_usd": {
+    "annual_resident_18_plus": 31,
+    "annual_nonresident_18_plus": 81,
+    "one_day_resident": 11,
+    "one_day_nonresident": 26,
+    "lake_texoma_resident": 12,
+    "lake_texoma_nonresident": 12
+  },
+  "texoma_sample": {
+    "sampled_rows": 3,
+    "supported_rows": 1,
+    "held_rows": 2,
+    "unique_hulls": 0,
+    "marina_guide_names_counted_not_sampled": 7,
+    "park_association_members_counted_not_sampled": 8
+  },
+  "sources": [
+    {
+      "publisher": "Oklahoma Department of Wildlife Conservation",
+      "url": "https://www.wildlifedepartment.com/fishing/fishing-guides",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.wildlifedepartment.com/disclaimer",
+      "reuse_status": "permitted_with_credit",
+      "bulk": "HTML table of known licensed guides. 348 rows. No download and no hull field.",
+      "request_process": "The hosted 2022 application asks whether to publish business contact information. No separate directory-license form was found."
+    },
+    {
+      "publisher": "Oklahoma Department of Wildlife Conservation",
+      "url": "https://www.wildlifedepartment.com/disclaimer",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.wildlifedepartment.com/disclaimer",
+      "reuse_status": "permitted_with_credit",
+      "bulk": "Website disclaimer. Footer copyright 2026.",
+      "request_process": "Copying page information is permitted. Credit is requested. Images need written permission."
+    },
+    {
+      "publisher": "Oklahoma Department of Wildlife Conservation",
+      "url": "https://www.wildlifedepartment.com/licensing/regs/license-fees",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.wildlifedepartment.com/disclaimer",
+      "reuse_status": "permitted_with_credit",
+      "bulk": "HTML fee table. One fishing-guide price. No holder file.",
+      "request_process": "Purchase paths. No directory grant beyond the disclaimer."
+    },
+    {
+      "publisher": "Oklahoma State Courts Network",
+      "url": "https://www.oscn.net/applications/OCISWeb/DeliverDocument.asp?CiteID=456501",
+      "access_date": "2026-11-25",
+      "source_date": "2009-07-01",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "One statute section.",
+      "request_process": null
+    },
+    {
+      "publisher": "Oklahoma Department of Wildlife Conservation",
+      "url": "https://www.wildlifedepartment.com/sites/default/files/2022-09/Fishing%20Guide%20License%20Application%20-%20Sept%202022.pdf",
+      "access_date": "2026-11-25",
+      "source_date": "2022-09",
+      "terms_url": "https://www.wildlifedepartment.com/disclaimer",
+      "reuse_status": "permitted_with_credit",
+      "bulk": "One application form. Asks whether to publish business contact information.",
+      "request_process": "Mail, online, or headquarters. The form's contact block was not copied."
+    },
+    {
+      "publisher": "Oklahoma Department of Wildlife Conservation",
+      "url": "https://www.wildlifedepartment.com/fishing/wheretofish/southeast/texoma",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.wildlifedepartment.com/disclaimer",
+      "reuse_status": "permitted_with_credit",
+      "bulk": "One lake page. Creel limits and counties. No guide roster.",
+      "request_process": "Links to the guide directory."
+    },
+    {
+      "publisher": "Go Outdoors Oklahoma licensing portal",
+      "url": "https://license.gooutdoorsoklahoma.com/",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.wildlifedepartment.com/disclaimer",
+      "reuse_status": "unknown",
+      "bulk": "Redirects to a page titled Customer Lookup. Not the guide directory.",
+      "request_process": "Customer lookup. No public roster on that page."
+    },
+    {
+      "publisher": "TravelOK",
+      "url": "https://www.travelok.com/state-parks/4383",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.travelok.com/privacy-policy",
+      "reuse_status": "not_granted",
+      "bulk": "Lake Texoma State Park page. Names the marina and an association. Footer copyright 2026.",
+      "request_process": "No listing-republication grant in the terms that were opened."
+    },
+    {
+      "publisher": "TravelOK",
+      "url": "https://www.travelok.com/listings/view.profile/id.1134",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.travelok.com/privacy-policy",
+      "reuse_status": "not_granted",
+      "bulk": "Catfish Bay Marina profile. Slip range and rental classes. No hull numbers.",
+      "request_process": null
+    },
+    {
+      "publisher": "TravelOK",
+      "url": "https://www.travelok.com/listings/view.profile/id.13359",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.travelok.com/privacy-policy",
+      "reuse_status": "not_granted",
+      "bulk": "One guide-service profile. No operator website link.",
+      "request_process": null
+    },
+    {
+      "publisher": "TravelOK",
+      "url": "https://www.travelok.com/listings/view.profile/id.652",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.travelok.com/privacy-policy",
+      "reuse_status": "not_granted",
+      "bulk": "One guide-service profile. Links an operator site that returned HTTP 404.",
+      "request_process": null
+    },
+    {
+      "publisher": "TravelOK",
+      "url": "https://www.travelok.com/privacy-policy",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.travelok.com/privacy-policy",
+      "reuse_status": "not_granted",
+      "bulk": "Terms of use and privacy policy. Brochure license is personal use.",
+      "request_process": "A removal request address is published. It was not copied and no request was sent."
+    },
+    {
+      "publisher": "Pointe Vista",
+      "url": "https://pointevista.com/marina/",
+      "access_date": "2026-11-25",
+      "terms_url": "https://pointevista.com/privacy",
+      "reuse_status": "not_granted",
+      "bulk": "Marina page. Guide price, rental classes, and a named guide list.",
+      "request_process": "Reservations. Reproduction limited by the site terms."
+    },
+    {
+      "publisher": "Pointe Vista",
+      "url": "https://pointevista.com/privacy",
+      "access_date": "2026-11-25",
+      "source_date": "2025-10-10",
+      "terms_url": "https://pointevista.com/privacy",
+      "reuse_status": "not_granted",
+      "bulk": "Privacy and website terms. Last modified October 10, 2025.",
+      "request_process": "Reproduction only as the copyright notice allows. SMS marketing sale is refused."
+    },
+    {
+      "publisher": "Blue Water Striper Guide Service",
+      "url": "http://www.texomastriperguidefishing.com",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "Unavailable lookup. HTTP 404.",
+      "request_process": null
+    }
+  ],
+  "coverage": [
+    {
+      "population": "ODWC fishing-guide directory, all rows",
+      "roster_count": 348,
+      "sampled": 0,
+      "supported": 0,
+      "held": 0,
+      "second_publishers": 0
+    },
+    {
+      "population": "ODWC rows whose waters field contains Texoma",
+      "roster_count": 137,
+      "sampled": 0,
+      "supported": 0,
+      "held": 0,
+      "second_publishers": 0
+    },
+    {
+      "population": "Catfish Bay Marina",
+      "roster_count": 1,
+      "sampled": 1,
+      "supported": 1,
+      "held": 0,
+      "second_publishers": 1
+    },
+    {
+      "population": "Tourism profiles for two association businesses",
+      "roster_count": 2,
+      "sampled": 2,
+      "supported": 0,
+      "held": 2,
+      "second_publishers": 0
+    },
+    {
+      "population": "Names on the marina guide list",
+      "roster_count": 7,
+      "sampled": 0,
+      "supported": 0,
+      "held": 0,
+      "second_publishers": 0
+    },
+    {
+      "population": "Members named on the park association sentence",
+      "roster_count": 8,
+      "sampled": 0,
+      "supported": 0,
+      "held": 0,
+      "second_publishers": 0
+    }
+  ]
+}
