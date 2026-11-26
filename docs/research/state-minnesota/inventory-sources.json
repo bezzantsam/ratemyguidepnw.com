@@ -1,0 +1,170 @@
+{
+  "state": "Minnesota",
+  "phase": "minnesota-inventory",
+  "scope": "Lake Superior fishing-guide license and Duluth charter fishing departures",
+  "checked_date": "2026-11-25",
+  "base_commit": "7f69f59f4760afa53f1ef06bc64f6fb0824665e2",
+  "recommended_first_source": "The 2026 compilation of Minnesota Statutes, section 97C.311 (https://www.revisor.mn.gov/statutes/cite/97C.311) is the person license to operate a charter boat and guide anglers on Lake Superior or the defined St. Louis River Estuary. It is not a roster. The commercial catalog row for that license (https://www.dnr.state.mn.us/licenses/commercial/index.html) has no roster link.",
+  "highest_priority_permission_question": "No public guide roster was found. Do the Department copyright notice or Minnesota Statutes chapter 13 authorize copying licensee or hull fields into a commercial directory or claiming a listing? The notice checked on 2026-11-25 requires permission for commercial publication. Chapter 13 was not opened. The Visit Duluth directory reserves all rights.",
+  "license_roster": {
+    "url": "https://www.dnr.state.mn.us/licenses/commercial/index.html",
+    "source_date": null,
+    "catalog_objects": 32,
+    "guide_rows": 1,
+    "guide_code": "754",
+    "full_license_count": null,
+    "public_lookup_found": false,
+    "person_license": true,
+    "hull_fields_published": false
+  },
+  "departure_roster": {
+    "url": "https://visitduluth.com/experience/adventure/fishing-sailing/",
+    "publisher": "Visit Duluth",
+    "source_date": null,
+    "listing_cards": 30,
+    "charter_fishing_cards": 7,
+    "other_fishing_guide_cards": 2,
+    "sampled_rows": 5,
+    "supported_rows": 1,
+    "held_rows": 4,
+    "unopened_charter_cards": 1,
+    "fetch_failures_outside_sample": 1
+  },
+  "sources": [
+    {
+      "publisher": "Minnesota Department of Natural Resources",
+      "url": "https://files.dnr.state.mn.us/education_safety/safety/boatwater/guide-licensing.pdf",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.dnr.state.mn.us/aboutdnr/disclaimers_and_policies.html",
+      "reuse_status": "not_granted",
+      "bulk": "Not a roster. File dated 2018-01-24.",
+      "request_process": "No directory process. The sheet points to the license center."
+    },
+    {
+      "publisher": "Minnesota Office of the Revisor of Statutes",
+      "url": "https://www.revisor.mn.gov/statutes/cite/97C.311",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.revisor.mn.gov/statutes/info",
+      "reuse_status": "unknown",
+      "bulk": "Not a roster.",
+      "request_process": null
+    },
+    {
+      "publisher": "Minnesota Office of the Revisor of Statutes",
+      "url": "https://www.revisor.mn.gov/statutes/cite/97A.475",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.revisor.mn.gov/statutes/info",
+      "reuse_status": "unknown",
+      "bulk": "Fee subdivision only.",
+      "request_process": null
+    },
+    {
+      "publisher": "Minnesota Office of the Revisor of Statutes",
+      "url": "https://www.revisor.mn.gov/rules/6262.3000/",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.revisor.mn.gov/statutes/info",
+      "reuse_status": "unknown",
+      "bulk": "Not a roster. Published electronically 2008-06-11.",
+      "request_process": "Applications go to the Lake Superior Area Fisheries Supervisor."
+    },
+    {
+      "publisher": "Minnesota Office of the Revisor of Statutes",
+      "url": "https://www.revisor.mn.gov/rules/6262.3050/",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.revisor.mn.gov/statutes/info",
+      "reuse_status": "unknown",
+      "bulk": "Monthly reports to the supervisor. Not a public file.",
+      "request_process": "Licensees file the forms with the supervisor."
+    },
+    {
+      "publisher": "Minnesota Department of Natural Resources",
+      "url": "https://www.dnr.state.mn.us/licenses/commercial/index.html",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.dnr.state.mn.us/aboutdnr/disclaimers_and_policies.html",
+      "reuse_status": "not_granted",
+      "bulk": "32 license-type objects. The guide row has no download.",
+      "request_process": "No directory process on the guide row."
+    },
+    {
+      "publisher": "Minnesota Department of Natural Resources",
+      "url": "https://www.dnr.state.mn.us/aboutdnr/disclaimers_and_policies.html",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.dnr.state.mn.us/aboutdnr/disclaimers_and_policies.html",
+      "reuse_status": "not_granted",
+      "bulk": "No bulk-download permission is stated.",
+      "request_process": "Commercial publication requires permission. No directory form is stated."
+    },
+    {
+      "publisher": "Minnesota Office of the Revisor of Statutes",
+      "url": "https://www.revisor.mn.gov/statutes/cite/326B.94",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.revisor.mn.gov/statutes/info",
+      "reuse_status": "unknown",
+      "bulk": "Not a roster. Inland waters, more than six passengers.",
+      "request_process": null
+    },
+    {
+      "publisher": "Minnesota Department of Labor and Industry",
+      "url": "https://www.dli.mn.gov/boat",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.dli.mn.gov/about-department/about-dli/disclaimer",
+      "reuse_status": "public_domain",
+      "bulk": "No roster on this page.",
+      "request_process": "Owners request a boat permit. The linked license lookup was not opened."
+    },
+    {
+      "publisher": "Minnesota Department of Labor and Industry",
+      "url": "https://www.dli.mn.gov/business/get-licenses-and-permits/boat-master-license",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.dli.mn.gov/about-department/about-dli/disclaimer",
+      "reuse_status": "public_domain",
+      "bulk": "No roster on this page.",
+      "request_process": "Applicants use the department system. That is not a directory process."
+    },
+    {
+      "publisher": "Minnesota Department of Labor and Industry",
+      "url": "https://www.dli.mn.gov/about-department/about-dli/disclaimer",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.dli.mn.gov/about-department/about-dli/disclaimer",
+      "reuse_status": "public_domain",
+      "bulk": "No license file. The page says site information is in the public domain and requests attribution.",
+      "request_process": "Logo use requires permission. No directory form is stated."
+    },
+    {
+      "publisher": "Minnesota Department of Labor and Industry",
+      "url": "https://www.dli.mn.gov/business/codes-and-licensing/boat-master-license",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": null,
+      "request_process": "This path returned HTTP 404. It is not the live boat-master page."
+    },
+    {
+      "publisher": "Minnesota Office of the Revisor of Statutes",
+      "url": "https://www.revisor.mn.gov/statutes/info",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.revisor.mn.gov/statutes/info",
+      "reuse_status": "unknown",
+      "bulk": "No bulk-data term is stated.",
+      "request_process": null
+    },
+    {
+      "publisher": "Visit Duluth",
+      "url": "https://visitduluth.com/experience/adventure/fishing-sailing/",
+      "access_date": "2026-11-25",
+      "terms_url": "https://visitduluth.com/terms-conditions/",
+      "reuse_status": "not_granted",
+      "bulk": "30 listing cards. Not a fleet download.",
+      "request_process": "Republication requires permission. No directory form was found."
+    },
+    {
+      "publisher": "Visit Duluth",
+      "url": "https://visitduluth.com/terms-conditions/",
+      "access_date": "2026-11-25",
+      "terms_url": "https://visitduluth.com/terms-conditions/",
+      "reuse_status": "not_granted",
+      "bulk": "No bulk-data license is stated.",
+      "request_process": "Other than personal travel-planning use, republication requires permission."
+    }
+  ]
+}
