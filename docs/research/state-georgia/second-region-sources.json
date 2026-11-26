@@ -1,0 +1,296 @@
+{
+  "state": "Georgia",
+  "phase": "georgia-second-region",
+  "checked_date": "2026-11-25",
+  "scope": "Incremental Toccoa trout-guide sources. The saltwater packet was rechecked and has no Toccoa field. Personal names and contact lines are omitted.",
+  "sources": [
+    {
+      "url": "https://georgiawildlife.com/sites/default/files/crd/pdf/marfish/2026GuideLic.pdf",
+      "publisher": "Georgia Department of Natural Resources, Law Enforcement Division",
+      "access_date": "2026-11-25",
+      "terms_url": "https://gadnr.org/webPolicies",
+      "field_scope": "Re-opened the 2026-2027 charter and guide packet. The PDF was created January 7, 2026. It is a saltwater fishing-guide application with two for-hire vessel lines. A text search found no Toccoa, trout, freshwater, or Blue Ridge field. Coastal observations from the inventory were not sampled again.",
+      "bulk": "Blank application. Not a Toccoa roster.",
+      "attribution": "Cite the 2026-2027 charter packet and the access date.",
+      "request_process": "The packet offers mail, email, or an in-person purchase at Coastal Regional Headquarters in Brunswick. No one was contacted.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://georgiawildlife.com/licenses-permits-passes/commercial",
+      "publisher": "Georgia Department of Natural Resources, Wildlife Resources Division",
+      "access_date": "2026-11-25",
+      "terms_url": "https://gadnr.org/webPolicies",
+      "field_scope": "Commercial-license landing. It points to a mail application for commercial hunting, fishing, and trapping products. Trapping licenses and the quail game-holding permit can also be bought in a Go Outdoors Georgia account. The page does not list a fishing-guide product or a Toccoa roster.",
+      "bulk": "No holder file.",
+      "attribution": "Cite the commercial-license page.",
+      "request_process": "The page says to complete the application and return it by mail, or to use the online path for the trapping products it names. No one was contacted.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://georgiawildlife.com/sites/default/files/Commercial%20License%20Application%2006-04-23.pdf",
+      "publisher": "Georgia Department of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://gadnr.org/webPolicies",
+      "field_scope": "Two-page commercial application, revision date 06-04-23, PDF created June 5, 2023. Licenses run April 1 through March 31. Products include commercial trapping, fish dealers, a catch-out pond, taxidermy, fur dealers, and commercial fishing defined as fishing for sale or with commercial gear. The form has no guide, charter, trout, or outfitter checkbox. The mail street was not copied.",
+      "bulk": "Blank form. Not a guide file.",
+      "attribution": "Cite the commercial-license application, revision 06-04-23.",
+      "request_process": "The form says to mail it to the commercial-license office. No one was contacted.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://georgiawildlife.com/delayed-harvest-trout-season-begins-nov-1-georgia",
+      "publisher": "Georgia Department of Natural Resources, Wildlife Resources Division",
+      "access_date": "2026-11-25",
+      "terms_url": "https://gadnr.org/webPolicies",
+      "field_scope": "Announcement dated October 20, 2026. Delayed harvest begins November 1, 2026. From November 1 to May 14 the five named streams are catch-and-release and limited to single-hook artificial lures. The Toccoa reach is Forest Service land upstream of Lake Blue Ridge in Fannin County, from 0.4 miles above Shallowford Bridge to 450 feet above the Sandy Bottom Canoe Access. The tailwater downstream of the dam is listed as a separate year-round trout water, not as delayed harvest. Anglers need a Georgia fishing license and a trout license. Not a guide roster.",
+      "bulk": "No outfitter list.",
+      "attribution": "Cite the October 20, 2026 Wildlife Resources Division announcement.",
+      "request_process": null,
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://georgiawildlife.com/Fishing/Trout",
+      "publisher": "Georgia Department of Natural Resources, Wildlife Resources Division",
+      "access_date": "2026-11-25",
+      "terms_url": "https://gadnr.org/webPolicies",
+      "field_scope": "Trout page. Anglers age 16 or older need a fishing license and a trout license. The Toccoa is named twice: as a delayed-harvest stream, and, downstream of Lake Blue Ridge Dam, as stocked rainbow and brown trout water. The page does not give a guide list, a boat field, or a printed revision date. It warns that many trout streams are on private property.",
+      "bulk": "No roster.",
+      "attribution": "Cite the Wildlife Resources Division trout page and the access date.",
+      "request_process": null,
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://georgiawildlife.com/sites/default/files/wrd/pdf/trout/2026%20Trout%20Stocking%20Frequencies%20050726.pdf",
+      "publisher": "Georgia Department of Natural Resources, Wildlife Resources Division",
+      "access_date": "2026-11-25",
+      "terms_url": "https://gadnr.org/webPolicies",
+      "field_scope": "2026 trout stocking list. PDF created May 7, 2026. Stocking runs March through October. Three Toccoa-area rows were read. Blue Ridge Tailwaters, Fannin County, is on the weekly table. Toccoa River, Fannin County, is on that table with the note that it is stocked weekly until July 4 and twice monthly afterward. Lake Blue Ridge, Fannin County, is on the once-each-year table. No guide, boat, or access-ramp column. The rest of the statewide water list was not counted.",
+      "bulk": "A water-and-county stocking list. Not a guide file.",
+      "attribution": "Cite the 2026 trout stocking list, created May 7, 2026.",
+      "request_process": null,
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://georgiawildlife.com/hunting/hunter-resources",
+      "publisher": "Georgia Department of Natural Resources, Wildlife Resources Division",
+      "access_date": "2026-11-25",
+      "terms_url": "https://gadnr.org/webPolicies",
+      "field_scope": "Regulations landing. It announces a 2026-2027 popular guide and still links a file named for the 2024-25 popular guide. That older file was not opened. The page is not a trout-guide roster.",
+      "bulk": "No holder file.",
+      "attribution": "Cite the hunter-resources page and the access date.",
+      "request_process": null,
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://gadnr.org/webPolicies",
+      "publisher": "Georgia Department of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://gadnr.org/webPolicies",
+      "field_scope": "Re-read for this phase. Trademarks, service marks, and copyrights on the portal belong to their respective owners. A link is not an endorsement. Personal information is not disclosed except with permission, when it is public under the Open Records Act, or when another law applies. The page does not grant a commercial directory.",
+      "bulk": "Not a data license.",
+      "attribution": "Cite the Department website policy.",
+      "request_process": "No permission request was sent.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://www.fs.usda.gov/r08/chattahoochee-oconee/permits",
+      "publisher": "U.S. Forest Service, Chattahoochee-Oconee National Forest",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.fs.usda.gov/about-agency/disclaimers-important-notices",
+      "field_scope": "Permits page, last updated June 1, 2026. Commercial guiding is named as a use that can require a special-use authorization. The page tells the applicant to contact the ranger district. It publishes no outfitter names and no Toccoa permit list. The office street and telephone in the footer were not copied.",
+      "bulk": "No issued-permit roster.",
+      "attribution": "Cite the forest permits page. The Forest Service disclaimer asks for a credit when its public pages are copied.",
+      "request_process": "Contact the local ranger district. No one was contacted.",
+      "reuse_status": "public_information_may_be_copied_credit_requested"
+    },
+    {
+      "url": "https://www.fs.usda.gov/r08/chattahoochee-oconee/alerts/forest-supervisors-orders-rules-regulations-and-guidelines",
+      "publisher": "U.S. Forest Service, Chattahoochee-Oconee National Forest",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.fs.usda.gov/about-agency/disclaimers-important-notices",
+      "field_scope": "Visitor rules page, last updated August 10, 2026. Generally, commercial activities require special authorization. The Toccoa sentence says floaters, boaters, and paddlers should know their rights because the river passes through public and private land. That sentence is not a guide roster and does not name a ramp.",
+      "bulk": "No roster.",
+      "attribution": "Cite the forest visitor-rules page.",
+      "request_process": null,
+      "reuse_status": "public_information_may_be_copied_credit_requested"
+    },
+    {
+      "url": "https://www.fs.usda.gov/about-agency/disclaimers-important-notices",
+      "publisher": "U.S. Forest Service",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.fs.usda.gov/about-agency/disclaimers-important-notices",
+      "field_scope": "Information on the Forest Service website is public information and may be distributed or copied. A byline or credit is requested. An external link is not an endorsement. This does not license a state license file or an operator's own pages.",
+      "bulk": "Not a permit roster.",
+      "attribution": "Credit the Forest Service when using its pages.",
+      "request_process": null,
+      "reuse_status": "public_information_may_be_copied_credit_requested"
+    },
+    {
+      "url": "https://www.fs.usda.gov/media/183889",
+      "publisher": "U.S. Forest Service, Chattahoochee-Oconee National Forest",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.fs.usda.gov/about-agency/disclaimers-important-notices",
+      "field_scope": "Open-season handout for outfitting and guiding, recreation events, and research. PDF created July 20, 2023 and modified July 24, 2023. Open seasons are February 1-28 for use from July 1 through December 31, and August 1-31 for use from January 1 through June 30. A temporary permit is capped at 200 service days in 180 days, and only one permit is issued per holder per use area in that period. Service days count each client. The forest asks holders to operate on temporary permits for two or three years before a priority permit of up to 10 years. The holder must indemnify the United States and name the United States as an additional insured. No dollar minimum was recovered from the text layer. The packet has no Toccoa field and no public holder list. A guide roster in the packet is a list the applicant must send, not a list the forest publishes. The permits mailbox was not copied.",
+      "bulk": "An application packet. Not an issued-permit file.",
+      "attribution": "Cite the Chattahoochee-Oconee open-season handout, file date July 24, 2023.",
+      "request_process": "Submit an open-season application to the forest permits mailbox printed in the packet, or ask the ranger district. No one was contacted.",
+      "reuse_status": "public_information_may_be_copied_credit_requested"
+    },
+    {
+      "url": "https://www.blueridgetroutfitters.com/",
+      "publisher": "Blue Ridge Troutfitters",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.termsfeed.com/live/9aeaac7f-222e-47c7-a34b-a7ec7a506e5b",
+      "field_scope": "Bookable Toccoa River float trips in Blue Ridge, plus private and public wade trips. Each boat seats two anglers plus a guide. The page says multiple boats are available, up to eight people. No boat name, length, builder, or documentation number. Anglers 16 and older need a Georgia fishing license. The page does not mention a trout license or a guide credential. No copyright line was on the homepage. The linked terms page does not grant directory reuse.",
+      "bulk": "A capacity statement. Not a count of identified hulls.",
+      "attribution": null,
+      "request_process": "None published for directory use. No one was contacted.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://toccoariveroutfitters.com/guided-trips",
+      "publisher": "Toccoa River Outfitters",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Guided float, public wade, and private trophy trips. Float trips are for one or two anglers per boat and are described on the Toccoa. No length, name, or documentation number. Guests buy their own fishing license for the state of the trip. The shop says it operates in Georgia, Tennessee, and North Carolina, so a float is not assumed to be the Toccoa unless the page says so. Footer copyright 2026, all rights reserved. The street was not copied.",
+      "bulk": "One boat-capacity claim. Not an identified hull.",
+      "attribution": null,
+      "request_process": "None published. No one was contacted.",
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://toccoariveranglers.com/trips/",
+      "publisher": "Toccoa River Anglers",
+      "access_date": "2026-11-25",
+      "terms_url": "https://toccoariveranglers.com/privacy-policy/",
+      "field_scope": "Three guided float durations for one or two anglers on the Toccoa near Blue Ridge. The full-day trip covers six to seven miles. The trips page does not name the craft. The homepage uses the word boat in reviews and does not give a length or a count. Footer copyright 2026, all rights reserved. The privacy page describes comment data. It does not grant directory reuse. The telephone and email were not copied.",
+      "bulk": "One float product. No identified hull.",
+      "attribution": null,
+      "request_process": "None published. No one was contacted.",
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://reelanglingadventures.com/upper-toccoa-blue-ridge",
+      "publisher": "Reel Angling Adventures",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Upper Toccoa float. The page says the trip is permitted by the Chattahoochee-Oconee National Forest. Anglers meet the guide at riverside in the Dial area. The float is about five miles and includes the delayed-harvest section. The page says the trip includes a guide and a boat. No length, name, or documentation number. Anglers are responsible for their own fishing licenses. Footer copyright 2026, all rights reserved.",
+      "bulk": "One unnamed boat in the trip package.",
+      "attribution": null,
+      "request_process": "None published. No one was contacted.",
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://troutfishingblueridge.com/",
+      "publisher": "Trout Fishing Blue Ridge",
+      "access_date": "2026-11-25",
+      "terms_url": "https://troutfishingblueridge.com/terms-and-conditions/",
+      "field_scope": "Toccoa tailwater floats. The page describes about 15 miles below the dam and says a guide watches generation. Each boat holds one or two anglers, and the price scale runs to three boats. No boat name, length, or documentation number. A separate lesson mentions rowing a raft and was not joined to the guided boats. Footer copyright 2026. The terms page says the site content remains the property of the business and its licensors.",
+      "bulk": "A capacity statement. Not a count of identified hulls.",
+      "attribution": null,
+      "request_process": "None published. No one was contacted.",
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    }
+  ],
+  "coverage": [
+    {
+      "roster_url": "https://georgiawildlife.com/sites/default/files/crd/pdf/marfish/2026GuideLic.pdf",
+      "population": "2026-2027 saltwater charter packet. No Toccoa field. Coastal hulls were not sampled again.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://georgiawildlife.com/sites/default/files/Commercial%20License%20Application%2006-04-23.pdf",
+      "population": "Commercial-license application. No fishing-guide product.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://georgiawildlife.com/delayed-harvest-trout-season-begins-nov-1-georgia",
+      "population": "Delayed-harvest reach upstream of Lake Blue Ridge. Not a guide list.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://georgiawildlife.com/sites/default/files/wrd/pdf/trout/2026%20Trout%20Stocking%20Frequencies%20050726.pdf",
+      "population": "Stocking rows read for the tailwater, the Toccoa River, and Lake Blue Ridge. Not a guide list.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://www.fs.usda.gov/r08/chattahoochee-oconee/permits",
+      "population": "Forest special-use permits. Guiding can require authorization. No issued-holder list.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://www.fs.usda.gov/media/183889",
+      "population": "Open-season outfitting packet, file date July 24, 2023. No public holder roster.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://www.blueridgetroutfitters.com/",
+      "population": "Toccoa float capacity. Two anglers plus a guide per boat, and more than one boat. Held.",
+      "roster_count": null,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://toccoariveroutfitters.com/guided-trips",
+      "population": "Toccoa float. One or two anglers per boat. No hull identity. Held.",
+      "roster_count": null,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://toccoariveranglers.com/trips/",
+      "population": "Toccoa float for one or two anglers. Craft not named. Held.",
+      "roster_count": null,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://reelanglingadventures.com/upper-toccoa-blue-ridge",
+      "population": "Upper Toccoa float from the Dial area, including delayed harvest. One unnamed boat. Held.",
+      "roster_count": null,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://troutfishingblueridge.com/",
+      "population": "Tailwater floats below the dam. One or two anglers per boat, up to three boats stated as capacity. Held.",
+      "roster_count": null,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 0
+    }
+  ]
+}
