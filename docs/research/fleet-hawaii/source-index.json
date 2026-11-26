@@ -1,0 +1,239 @@
+{
+  "state": "Hawaii",
+  "scope": "Kona and Honokohau Small Boat Harbor",
+  "checked_date": "2026-11-25",
+  "base_commit": "7f69f59f4760afa53f1ef06bc64f6fb0824665e2",
+  "recommended_first_source": "https://portal.ehawaii.gov/page/terms-of-use/",
+  "highest_priority_permission_question": "Whether DAR and DOBOR will each grant a written agreement naming the fields and the commercial directory use before any licensee name, vessel name, license number, or harbor permit record is republished. The Hawaii.gov Terms of Use prohibit that commercial use, resale, and automated access unless the providing agency agrees in writing.",
+  "sources": [
+    {
+      "publisher": "State of Hawaii",
+      "url": "https://portal.ehawaii.gov/page/terms-of-use/",
+      "role": "commercial reuse terms",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://portal.ehawaii.gov/page/terms-of-use/",
+      "reuse_status": "prohibited_without_written_agreement",
+      "bulk": "automated access prohibited unless a separate written agreement allows it",
+      "request_process": "Write to the agency that provides the service. terms@ehawaii.gov does not answer permission requests."
+    },
+    {
+      "publisher": "Hawaii State Legislature",
+      "url": "https://www.capitol.hawaii.gov/hrscurrent/vol03_ch0121-0200d/HRS0189/HRS_0189-0002.htm",
+      "role": "statute for the person license and the optional vessel license",
+      "checked_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "public_law",
+      "bulk": "not a roster",
+      "request_process": null
+    },
+    {
+      "publisher": "Hawaii State Legislature",
+      "url": "https://www.capitol.hawaii.gov/hrscurrent/vol03_ch0121-0200d/HRS0189/HRS_0189-0003.htm",
+      "role": "statute making catch-report submissions confidential",
+      "checked_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "public_law",
+      "bulk": "department may publish non-identifying aggregate only",
+      "request_process": "prior written consent of the submitter, or a statutory exception"
+    },
+    {
+      "publisher": "Hawaii Division of Aquatic Resources",
+      "url": "https://dlnr.hawaii.gov/dar/licenses-and-permits/commercial-marine-license/",
+      "role": "commercial marine license program",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://portal.ehawaii.gov/page/terms-of-use/",
+      "reuse_status": "prohibited_without_written_agreement",
+      "bulk": "no roster download",
+      "request_process": "written agreement with the providing agency"
+    },
+    {
+      "publisher": "Hawaii Division of Aquatic Resources",
+      "url": "https://dlnr.hawaii.gov/dar/licenses-and-permits/commercial-marine-vessel-license/",
+      "role": "commercial marine vessel license program",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://portal.ehawaii.gov/page/terms-of-use/",
+      "reuse_status": "prohibited_without_written_agreement",
+      "bulk": "no roster download",
+      "request_process": "written agreement with the providing agency"
+    },
+    {
+      "publisher": "Hawaii Division of Aquatic Resources",
+      "url": "https://dlnr.hawaii.gov/dar/files/2025/04/CMVL_FAQ.pdf",
+      "role": "vessel-license FAQ updated 2025-04-14",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://portal.ehawaii.gov/page/terms-of-use/",
+      "reuse_status": "prohibited_without_written_agreement",
+      "bulk": "no roster",
+      "request_process": "written agreement with the providing agency"
+    },
+    {
+      "publisher": "Hawaii Division of Aquatic Resources",
+      "url": "https://dlnr.hawaii.gov/dar/files/2021/11/ch74rev3.pdf",
+      "role": "unofficial HAR chapter 13-74 compilation adopted 2024-01-12",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://portal.ehawaii.gov/page/terms-of-use/",
+      "reuse_status": "prohibited_without_written_agreement",
+      "bulk": "no roster",
+      "request_process": "official copies from DLNR; commercial reuse of the hosted file needs the agency"
+    },
+    {
+      "publisher": "Hawaii Division of Aquatic Resources",
+      "url": "https://dlnr.hawaii.gov/dar/files/2025/04/CMVL_newrenew_application.pdf",
+      "role": "blank vessel-license application and field list",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://portal.ehawaii.gov/page/terms-of-use/",
+      "reuse_status": "prohibited_without_written_agreement",
+      "bulk": "blank form only",
+      "request_process": "applicants file the form; directory reuse still needs the agency"
+    },
+    {
+      "publisher": "Hawaii Division of Aquatic Resources",
+      "url": "https://dlnr.ehawaii.gov/cmls-public/app/welcome.html",
+      "role": "licensee application portal",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://portal.ehawaii.gov/page/terms-of-use/",
+      "reuse_status": "prohibited_without_written_agreement",
+      "bulk": "not offered",
+      "request_process": "written agreement with the providing agency"
+    },
+    {
+      "publisher": "Hawaii Division of Aquatic Resources",
+      "url": "https://dlnr.hawaii.gov/dar/files/2025/10/ODR_Website_User-Guide_2025.08.pdf",
+      "role": "field dictionary for the public license search",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://portal.ehawaii.gov/page/terms-of-use/",
+      "reuse_status": "prohibited_without_written_agreement",
+      "bulk": "lookup only; no download described",
+      "request_process": "written agreement with DAR before republishing returned fields"
+    },
+    {
+      "publisher": "Hawaii Division of Aquatic Resources",
+      "url": "https://dlnr.ehawaii.gov/odr/#/public-license-search",
+      "role": "one-record commercial marine license validation",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://portal.ehawaii.gov/page/terms-of-use/",
+      "reuse_status": "prohibited_without_written_agreement",
+      "bulk": "none observed; this check retrieved no rows",
+      "request_process": "written agreement with DAR"
+    },
+    {
+      "publisher": "Hawaii Division of Aquatic Resources",
+      "url": "https://dlnr.hawaii.gov/dar/fishing/commercial-fishing/",
+      "role": "commercial fishing rules notice and summary index",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://portal.ehawaii.gov/page/terms-of-use/",
+      "reuse_status": "prohibited_without_written_agreement",
+      "bulk": "aggregate landings PDFs only",
+      "request_process": "written agreement with the providing agency"
+    },
+    {
+      "publisher": "Hawaii Division of Aquatic Resources",
+      "url": "https://dlnr.hawaii.gov/dar/files/2026/08/cmlstr2025.pdf",
+      "role": "2025 aggregate landings summary",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://portal.ehawaii.gov/page/terms-of-use/",
+      "reuse_status": "prohibited_without_written_agreement",
+      "bulk": "one statewide summary, not microdata",
+      "request_process": "identity-level reports remain confidential under HRS 189-3"
+    },
+    {
+      "publisher": "Hawaii Division of Boating and Ocean Recreation",
+      "url": "https://dlnr.hawaii.gov/dobor/honokohau-small-boat-harbor/",
+      "role": "Honokohau facility page",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://portal.ehawaii.gov/page/terms-of-use/",
+      "reuse_status": "prohibited_without_written_agreement",
+      "bulk": "no tenant roster",
+      "request_process": "written request to DOBOR for any unpublished mooring or permit extract"
+    },
+    {
+      "publisher": "Hawaii Division of Boating and Ocean Recreation",
+      "url": "https://dlnr.hawaii.gov/dobor/cup-faq/",
+      "role": "ocean-waters commercial use permit FAQ",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://portal.ehawaii.gov/page/terms-of-use/",
+      "reuse_status": "prohibited_without_written_agreement",
+      "bulk": "no issued-permit roster",
+      "request_process": "permit filing is in person; data reuse requires DOBOR"
+    },
+    {
+      "publisher": "Hawaii Division of Boating and Ocean Recreation",
+      "url": "https://dlnr.hawaii.gov/dobor/files/2019/04/13-231.pdf",
+      "role": "unofficial HAR 13-231 compilation for mooring and harbor commercial use",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://portal.ehawaii.gov/page/terms-of-use/",
+      "reuse_status": "prohibited_without_written_agreement",
+      "bulk": "rule text only; Honokohau figures are caps, not issued counts",
+      "request_process": "official copies from DOBOR; permit-holder data needs a separate decision"
+    },
+    {
+      "publisher": "Hawaii Division of Boating and Ocean Recreation",
+      "url": "https://files.hawaii.gov/dlnr/dobor/rules/amend/Amend-13-256-3-4.pdf",
+      "role": "2014 amendment of the ocean-waters commercial use permit rule",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://portal.ehawaii.gov/page/terms-of-use/",
+      "reuse_status": "prohibited_without_written_agreement",
+      "bulk": "no roster",
+      "request_process": "certified copy from DLNR"
+    },
+    {
+      "publisher": "Hawaii Division of Boating and Ocean Recreation",
+      "url": "https://dlnr.hawaii.gov/dobor/rules/",
+      "role": "rules index",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://portal.ehawaii.gov/page/terms-of-use/",
+      "reuse_status": "prohibited_without_written_agreement",
+      "bulk": "none",
+      "request_process": "written request to DOBOR"
+    },
+    {
+      "publisher": "Hawaii Division of Boating and Ocean Recreation",
+      "url": "https://dlnr.hawaii.gov/dobor/forms/",
+      "role": "separate blank forms for commercial use and for harbor mooring",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://portal.ehawaii.gov/page/terms-of-use/",
+      "reuse_status": "prohibited_without_written_agreement",
+      "bulk": "blank forms only",
+      "request_process": "file the form with the office named on it"
+    },
+    {
+      "publisher": "Bite Me Sportfishing",
+      "url": "https://bitemesportfishing.com/charters/",
+      "role": "one directly bookable operator fleet page used as the Kona sample",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://bitemesportfishing.com/privacy-policy/",
+      "reuse_status": "not_granted",
+      "bulk": "silent",
+      "request_process": "no published directory-permission process"
+    }
+  ],
+  "coverage": [
+    {
+      "roster_url": "https://dlnr.ehawaii.gov/odr/#/public-license-search",
+      "population": "Dealer validation lookup for a commercial marine license. Not a Kona or vessel-license roster. Issued counts were not published.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://dlnr.hawaii.gov/dobor/honokohau-small-boat-harbor/",
+      "population": "Facility page lists 262 moorings and no vessels. Rule caps, not issued counts: 120 permanent-mooring commercial use permits and 35 launch-ramp commercial use permits at Honokohau.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://bitemesportfishing.com/charters/",
+      "population": "One operator publisher. Page claims six named charter boats; another page on the site claims seven. Two further offerings name no hull. Sample is three named offerings plus the unnamed passenger offering. Harbor-wide charter count is unknown.",
+      "roster_count": null,
+      "sampled_rows": 4,
+      "supported_rows": 0,
+      "held_rows": 4,
+      "independent_publisher_matches": 0
+    }
+  ]
+}
