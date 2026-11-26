@@ -1,0 +1,264 @@
+{
+  "state": "Alaska",
+  "phase": "alaska-inventory",
+  "scope": "Statewide sport fish business, guide, and vessel registration, with a Homer harbor landing and a five-row private-charter vessel sample",
+  "checked_date": "2026-11-25",
+  "base_commit": "7f69f59f4760afa53f1ef06bc64f6fb0824665e2",
+  "highest_priority_permission_question": "Whether the Department of Fish and Game will give written permission before any business, guide, or vessel registration record is republished, and whether a current registration file exists to request.",
+  "recommended_first_source": "Read the official text of 5 AAC 75.077, then the department records process for the sport fish registration file. The vessel page and the Cornell compilation do not say the same thing about a 90-day threshold.",
+  "sample": {
+    "entity_type": "vessel",
+    "sampled_rows": 5,
+    "supported_rows": 0,
+    "held_rows": 5,
+    "vessel_rows": 0,
+    "independent_publisher_matches": 1,
+    "withheld_operator_publishers": 4
+  },
+  "coverage": [
+    {
+      "roster_url": "https://www.adfg.alaska.gov/index.cfm?adfg=SFGuidesLicense.Businesslicense",
+      "population": "Annual sport fish business registration. Application fields and process only. No holder list.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://www.adfg.alaska.gov/index.cfm?adfg=SFGuidesLicense.guidelicense",
+      "population": "Annual sport fish guide registration and possession requirements. Assistants and deckhands on the same vessel under a registered guide are exempt. No holder list. Kenai River Department of Natural Resources registration is a separate water and was not sampled.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://www.adfg.alaska.gov/index.cfm?adfg=SFGuidesLicense.Vesselregistration",
+      "population": "Annual Department of Fish and Game vessel registration for charter vessels in fresh or salt water. Distinct from a motor-vehicle boat number. No vessel list.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://www.adfg.alaska.gov/index.cfm?adfg=SFGuidesLicense.lookup",
+      "population": "Guessed sport fish guide lookup, directory, and list paths. On 2026-11-25 each returned the department website-error page. The lookup path redirected to the page-not-found endpoint. No fields and no count.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://www.adfg.alaska.gov/index.cfm?adfg=fishlicense.holders",
+      "population": "Current-year commercial permit holders: processors, buyers, transporters, catcher-sellers, and direct marketers. Not a sport fish guide or charter-vessel roster. Not sampled.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://www.cityofhomer-ak.gov/port/reserved-moorage",
+      "population": "Homer harbor reserved stalls leased October 1 through September 30. The count is stalls, not charter vessels. Completed permits are not posted.",
+      "roster_count": 920,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": null,
+      "population": "First-party Homer charter vessel claims opened on 2026-11-25. No official denominator. All five rows are held. One embedded review repeats a vessel name and does not document a hull number.",
+      "roster_count": null,
+      "sampled_rows": 5,
+      "supported_rows": 0,
+      "held_rows": 5,
+      "independent_publisher_matches": 1
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.adfg.alaska.gov/index.cfm?adfg=SFGuidesLicense.Businesslicense",
+      "publisher": "Alaska Department of Fish and Game",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.adfg.alaska.gov/index.cfm?adfg=home.copyright",
+      "field_scope": "Application for an annual sport fish business or guide registration. Asks for name, mailing addresses, telephone, and email, plus a State of Alaska business license for a business and a sport fishing license for a guide. Online, in-person, and mailed paths. The application alone does not authorize guiding. No roster.",
+      "bulk": "A blank application PDF is linked. No bulk holder file.",
+      "attribution": "None stated as a condition of reuse.",
+      "request_process": "The mailed application goes to a Sport Fish RTS address printed on the page. That address was not copied. Permission to republish page material is the copyright-page letter, not this application.",
+      "reuse_status": "not_granted"
+    },
+    {
+      "url": "https://www.adfg.alaska.gov/index.cfm?adfg=SFGuidesLicense.main",
+      "publisher": "Alaska Department of Fish and Game",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.adfg.alaska.gov/index.cfm?adfg=home.copyright",
+      "field_scope": "Program hub. Businesses, guides, and vessels register separately. Business and guide registration can be completed online. Vessels are registered in person or, for saltwater operators, through the electronic-logbook review application. Registrations are free. Assistants and deckhands under a registered guide on the same vessel are exempt from guide registration.",
+      "bulk": "No download of registration records. The hub's letter link points at an internal host name. The public static PDF was opened separately.",
+      "attribution": "None stated as a condition of reuse.",
+      "request_process": "The page includes a help and complaint form. Staff contact details on the form were not copied.",
+      "reuse_status": "not_granted"
+    },
+    {
+      "url": "https://www.adfg.alaska.gov/index.cfm?adfg=SFGuidesLicense.Vesselregistration",
+      "publisher": "Alaska Department of Fish and Game",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.adfg.alaska.gov/index.cfm?adfg=home.copyright",
+      "field_scope": "Any charter vessel in fresh or salt water registers with the department. Issued items are two annual year stickers, two decals when needed, a saltwater backup logbook, and a 14-day temporary registration. The page says a vessel used more than 90 days needs a current Alaska boat number unless it has a unique Coast Guard documentation number, and that a single-person flotation tube is the exemption. That 90-day sentence was not in the Cornell text of 5 AAC 75.077.",
+      "bulk": "No vessel download.",
+      "attribution": "None stated as a condition of reuse.",
+      "request_process": "Registration is in person or through the saltwater electronic logbook. A phone and an email are published for questions. They were not copied.",
+      "reuse_status": "not_granted"
+    },
+    {
+      "url": "https://www.adfg.alaska.gov/index.cfm?adfg=SFGuidesLicense.guidelicense",
+      "publisher": "Alaska Department of Fish and Game",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.adfg.alaska.gov/index.cfm?adfg=home.copyright",
+      "field_scope": "What a guide carries while guiding: guide card, employer's business registration, sport fishing license, photo identification, and the business logbook. A vessel used for guiding must be registered. Kenai River guides and vessels also register with the Department of Natural Resources. Nonprofit organizations that charge for services register as a sport fish business.",
+      "bulk": "No guide download.",
+      "attribution": "None stated as a condition of reuse.",
+      "request_process": "The Kenai note publishes an email for the parks permitting office. That address was not copied and was not used.",
+      "reuse_status": "not_granted"
+    },
+    {
+      "url": "https://www.adfg.alaska.gov/index.cfm?adfg=SFGuidesLicense.eLogbook",
+      "publisher": "Alaska Department of Fish and Game",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.adfg.alaska.gov/index.cfm?adfg=home.copyright",
+      "field_scope": "Starting in 2025, saltwater charter operators report trips in the electronic logbook. The logbook is two web applications, Review and Entry, issued to the business owner. The business must be registered for the current year. Paper pages are a backup and are not accepted as the submission. The logbook is not a public hull lookup.",
+      "bulk": "No public export.",
+      "attribution": "Tutorial videos are described as educational and use fictitious examples.",
+      "request_process": "The page publishes staff contacts for issuing a logbook. Those contacts were not copied.",
+      "reuse_status": "not_granted"
+    },
+    {
+      "url": "https://www.adfg.alaska.gov/static/license/prolicenses/pdfs/LetterToTheIndustry.pdf",
+      "publisher": "Alaska Department of Fish and Game",
+      "access_date": "2026-11-25",
+      "source_date": "2026-04-03",
+      "terms_url": "https://www.adfg.alaska.gov/index.cfm?adfg=home.copyright",
+      "field_scope": "Industry letter. PDF creation timestamp April 3, 2026. Recipients were registered in 2025 or newly registered in 2026. Businesses, guides, and vessels in salt or fresh water register in 2026. Registration is free. Freshwater vessels register even though freshwater reporting is not required. Vessel registration also requires the motor-vehicle or Coast Guard registration. No recipient list and no count.",
+      "bulk": "Single PDF. Not a roster.",
+      "attribution": "None stated as a condition of reuse.",
+      "request_process": "The letter publishes staff contacts and a meeting login. Those details were not copied.",
+      "reuse_status": "not_granted"
+    },
+    {
+      "url": "https://www.adfg.alaska.gov/index.cfm?adfg=home.copyright",
+      "publisher": "Alaska Department of Fish and Game",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.adfg.alaska.gov/index.cfm?adfg=home.copyright",
+      "field_scope": "Site copyright. Republication of department web pages or publications requires prior permission. Fair-use downloading, such as a paper copy for reading, is allowed. Absence of a copyright notice is not a waiver. Frames are prohibited. Logos, graphics, sounds, and images need express permission. Authority cited: AS 16.05.050(2), AS 16.05.050(8), and AS 44.99.400.",
+      "bulk": "No bulk-data license. The page points to Standard Operating Procedure III-401 for the longer policy. That PDF was not opened.",
+      "attribution": "A permission letter must identify the source material. Attribution is not offered as a substitute for permission.",
+      "request_process": "A letter to the Commissioner, the appropriate division director, or the webmaster states the intended use, the duration, and the source. No response is not permission. A granted license can be revoked.",
+      "reuse_status": "not_granted"
+    },
+    {
+      "url": "https://www.adfg.alaska.gov/index.cfm?adfg=home.terms",
+      "publisher": "Alaska Department of Fish and Game",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.adfg.alaska.gov/index.cfm?adfg=home.copyright",
+      "field_scope": "Site terms. Information is provided as is. A link is not an endorsement. Reproduction of department information is directed to the copyright page. Alaska law governs use of the site.",
+      "bulk": "None.",
+      "attribution": "None stated as a substitute for copyright permission.",
+      "request_process": "The copyright page is the permission process.",
+      "reuse_status": "not_granted"
+    },
+    {
+      "url": "https://www.adfg.alaska.gov/index.cfm?adfg=home.privacy",
+      "publisher": "Alaska Department of Fish and Game",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.adfg.alaska.gov/index.cfm?adfg=home.copyright",
+      "field_scope": "Privacy statement. Cites 2 AAC 96.100-900. Information provided for a sport license, harvest ticket, commercial crew license, sport fish guide license, and similar licenses is public information except a social security number, a driver's license number, financial information, and certain harvest data. A non-sharing preference indicated at the time of collection will be honored.",
+      "bulk": "No file is linked.",
+      "attribution": "None.",
+      "request_process": "The page describes collection and sharing preferences. It does not describe a records-request fee or a field list for the guide registration file.",
+      "reuse_status": "not_granted"
+    },
+    {
+      "url": "https://www.akleg.gov/statutesPDF/Title-16.pdf",
+      "publisher": "Alaska Legislature",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Compiled statutes PDF. AS 16.05.395 requires department registration of a vessel used to provide sport fishing services, with visible proof, and says the department registers the vessel and provides the proof without charge. The department may adopt regulations to implement the section.",
+      "bulk": "Title PDF. Not a vessel roster.",
+      "attribution": "None in the section text.",
+      "request_process": "The Legislature disclaimer was not opened.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://www.law.cornell.edu/regulations/alaska/5-AAC-75.077",
+      "publisher": "Cornell Law School Legal Information Institute",
+      "access_date": "2026-11-25",
+      "source_date": "2023-06-25",
+      "terms_url": null,
+      "field_scope": "Compilation of 5 AAC 75.077. A vessel is registered annually before it is used to provide sport fishing guide services. The business owner provides the current motor-vehicle boat number or the current Coast Guard documentation number. Decals and year stickers must be displayed. A Kenai River Special Management Area vessel may display the current Department of Natural Resources Kenai River guide decal as proof of department registration. Float tubes are exempt. Notes: effective February 10, 2005, Register 173; amended June 25, 2023, Register 246. Authority: AS 16.05.251 and AS 16.05.395. The 90-day sentence on the department vessel page is not in this text.",
+      "bulk": "Single section. Not a roster.",
+      "attribution": "None read as a directory condition.",
+      "request_process": "Host terms were not opened. This is not the official Alaska register.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://www.adfg.alaska.gov/index.cfm?adfg=SFGuidesLicense.lookup",
+      "publisher": "Alaska Department of Fish and Game",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.adfg.alaska.gov/index.cfm?adfg=home.copyright",
+      "field_scope": "Guessed path. HTTP 302 to the department page-not-found endpoint. The guessed directory and list paths returned the same website-error page. No fields.",
+      "bulk": "None.",
+      "attribution": "None.",
+      "request_process": "None on the error page.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://www.adfg.alaska.gov/index.cfm?adfg=fishlicense.holders",
+      "publisher": "Alaska Department of Fish and Game",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.adfg.alaska.gov/index.cfm?adfg=home.copyright",
+      "field_scope": "Commercial permit and license holders for the current year: processors, buyers, transporters, catcher-sellers, and direct marketers. Separate from sport fish guide registration. The embedded report was not counted.",
+      "bulk": "The page loads a report and links regional processor maps. Those maps were not opened and were not treated as a charter roster.",
+      "attribution": "None stated as a condition of reuse.",
+      "request_process": "Same department copyright letter.",
+      "reuse_status": "not_granted"
+    },
+    {
+      "url": "https://www.cityofhomer-ak.gov/port/reserved-moorage",
+      "publisher": "City of Homer",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.cityofhomer-ak.gov/sites/default/files/fileattachments/city_manager039s_office/page/7403/city_of_homer_website_terms_and_conditions.pdf",
+      "field_scope": "Reserved moorage. 920 reserved stalls, leased October 1 through September 30. The page says a stall is unique to the person or entity on the wait list and is not sold with the boat. Wait time varies by stall size. No vessel roster.",
+      "bulk": "Stall diagrams are linked. They were not used as a vessel census.",
+      "attribution": "None stated as a condition of reuse.",
+      "request_process": "A stall wait-list application is the way to request a stall. Harbor office contacts are published. They were not copied.",
+      "reuse_status": "conditional"
+    },
+    {
+      "url": "https://www.cityofhomer-ak.gov/sites/default/files/fileattachments/port_amp_harbor/page/72862/reserved_stall_moorage_permit.pdf",
+      "publisher": "City of Homer",
+      "access_date": "2026-11-25",
+      "source_date": "2025",
+      "terms_url": "https://www.cityofhomer-ak.gov/sites/default/files/fileattachments/city_manager039s_office/page/7403/city_of_homer_website_terms_and_conditions.pdf",
+      "field_scope": "Blank reserved-stall permit. Terms revised 2025. The permit is for the named vessel, is revocable, and is not transferable to another owner or another vessel. A new vessel needs a new permit. Use boxes include charter. At least one of an Alaska motor-vehicle number, a Fish and Game number, or a Coast Guard documentation number is requested. Commercial boats, including charter fishing, need at least $500,000 of liability insurance and must add the City as an additional insured with a waiver of subrogation. The file contains no completed permits.",
+      "bulk": "Blank form. Not a roster.",
+      "attribution": "None stated as a condition of reuse.",
+      "request_process": "The form is returned to the harbor office. Contact fields on the form were not copied. No public export of issued permits was linked.",
+      "reuse_status": "conditional"
+    },
+    {
+      "url": "https://www.cityofhomer-ak.gov/sites/default/files/fileattachments/city_manager039s_office/page/7403/city_of_homer_website_terms_and_conditions.pdf",
+      "publisher": "City of Homer",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.cityofhomer-ak.gov/sites/default/files/fileattachments/city_manager039s_office/page/7403/city_of_homer_website_terms_and_conditions.pdf",
+      "field_scope": "City website terms adopted through the city manager process and Resolution 15-026. The city encourages sharing of information on the site and retains copyright on design elements, logos, photographs, and code. Information is provided as is. The terms are not a contract and may change without notice. Removed website content can be requested under the city records policy.",
+      "bulk": "No directory license and no harbor-roster license.",
+      "attribution": "None stated.",
+      "request_process": "Errors go to the responsible department or the webmaster. Former page content is requested from the City Manager under the public-records process. No commercial-directory workflow is described.",
+      "reuse_status": "conditional"
+    }
+  ]
+}
