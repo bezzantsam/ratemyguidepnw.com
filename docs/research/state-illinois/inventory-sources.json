@@ -1,0 +1,158 @@
+{
+  "state": "Illinois",
+  "phase": "illinois-inventory",
+  "scope": "Illinois passenger-for-hire boat license and Waukegan Lake Michigan fishing departures",
+  "checked_date": "2026-11-25",
+  "base_commit": "7f69f59f4760afa53f1ef06bc64f6fb0824665e2",
+  "recommended_first_source": "The Department passenger and rental boat license page (https://dnr.illinois.gov/boating/passengerrentalboatlicense.html) describes a per-boat business license. It is not a roster. The only Waukegan departure list found is the harbor charter page (https://waukeganharbor.com/charters/), modified 2018-03-19, which reserves all rights and is not a license roll.",
+  "highest_priority_permission_question": "No public passenger-boat roster was found. Do the Department legal notices, the application, or 17 Ill. Adm. Code 2080 authorize copying licensee or hull fields into a commercial directory or claiming a listing? The notices checked on 2026-11-25 are silent. The harbor charter page reserves all rights.",
+  "license_roster": {
+    "url": "https://dnr.illinois.gov/boating/passengerrentalboatlicense.html",
+    "source_date": null,
+    "rows": null,
+    "full_license_count": null,
+    "hull_fields_collected_on_application": true,
+    "hull_fields_published": false,
+    "public_lookup_found": false
+  },
+  "departure_roster": {
+    "url": "https://waukeganharbor.com/charters/",
+    "publisher": "Waukegan Harbor and Marina",
+    "source_date": "2018-03-19",
+    "business_rows": 10,
+    "boat_name_strings": 11,
+    "sampled_rows": 5,
+    "supported_rows": 4,
+    "held_rows": 1,
+    "unopened_rows": 4,
+    "fetch_failures_outside_sample": 1
+  },
+  "sources": [
+    {
+      "publisher": "Illinois Department of Natural Resources",
+      "url": "https://dnr.illinois.gov/boating/passengerrentalboatlicense.html",
+      "access_date": "2026-11-25",
+      "terms_url": "https://dnr.illinois.gov/about/privacy.html",
+      "reuse_status": "unknown",
+      "bulk": "No roster file.",
+      "request_process": "No directory-permission process. Records requests are pointed at the Department FOIA page."
+    },
+    {
+      "publisher": "Illinois Department of Natural Resources",
+      "url": "https://dnr.illinois.gov/content/dam/soi/en/web/dnr/boating/documents/passengerboatlicenseapplication.pdf",
+      "access_date": "2026-11-25",
+      "terms_url": "https://dnr.illinois.gov/about/privacy.html",
+      "reuse_status": "unknown",
+      "bulk": "Blank form only.",
+      "request_process": "Applicants file the form with the Department. No third-party directory process."
+    },
+    {
+      "publisher": "Illinois Department of Natural Resources",
+      "url": "https://dnr.illinois.gov/content/dam/soi/en/web/dnr/boating/documents/rentalboatlicenseapplication.pdf",
+      "access_date": "2026-11-25",
+      "terms_url": "https://dnr.illinois.gov/about/privacy.html",
+      "reuse_status": "unknown",
+      "bulk": "Blank form only.",
+      "request_process": "Applicants file the form with the Department. No directory process."
+    },
+    {
+      "publisher": "Illinois Department of Natural Resources",
+      "url": "https://dnr.illinois.gov/content/dam/soi/en/web/dnr/boating/documents/boatrentalserviceandpassengersforhireinformation.pdf",
+      "access_date": "2026-11-25",
+      "terms_url": "https://dnr.illinois.gov/about/privacy.html",
+      "reuse_status": "unknown",
+      "bulk": "Not a roster. File last-modified 2023-01-11.",
+      "request_process": null
+    },
+    {
+      "publisher": "Illinois Department of Natural Resources",
+      "url": "https://dnr.illinois.gov/content/dam/soi/en/web/dnr/boating/documents/boatinspectionreportnomorethan6.pdf",
+      "access_date": "2026-11-25",
+      "terms_url": "https://dnr.illinois.gov/about/privacy.html",
+      "reuse_status": "unknown",
+      "bulk": "Blank form only.",
+      "request_process": "Returned with the application. Not a public inspection file."
+    },
+    {
+      "publisher": "Illinois General Assembly",
+      "url": "https://www.ilga.gov/legislation/ILCS/details?MajorTopic=TRANSPORTATION&Chapter=VEHICLES&ActName=Boat%20Registration%20and%20Safety%20Act.&ActID=1826&ChapterID=49&ChapAct=625%20ILCS%2045%2F&SeqStart=11600000&SeqEnd=12700000",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "Not a roster.",
+      "request_process": null
+    },
+    {
+      "publisher": "Illinois General Assembly, Joint Committee on Administrative Rules",
+      "url": "https://ilga.gov/agencies/JCAR/EntirePart?titlepart=01702080",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "Not a roster.",
+      "request_process": null
+    },
+    {
+      "publisher": "Illinois Department of Natural Resources",
+      "url": "https://dnr.illinois.gov/about/privacy.html",
+      "access_date": "2026-11-25",
+      "terms_url": "https://dnr.illinois.gov/about/privacy.html",
+      "reuse_status": "unknown",
+      "bulk": "Not a data feed. No bulk-download permission is stated.",
+      "request_process": "No commercial-directory license process is stated."
+    },
+    {
+      "publisher": "Illinois Department of Natural Resources",
+      "url": "https://dnr.illinois.gov/foia.html",
+      "access_date": "2026-11-25",
+      "terms_url": "https://dnr.illinois.gov/about/privacy.html",
+      "reuse_status": "unknown",
+      "bulk": "No license download on this page.",
+      "request_process": "Written request under the Freedom of Information Act. The Act text was not opened."
+    },
+    {
+      "publisher": "Illinois Department of Natural Resources",
+      "url": "https://dnr.illinois.gov/lpr/commerciallicensesfees.html",
+      "access_date": "2026-11-25",
+      "terms_url": "https://dnr.illinois.gov/about/privacy.html",
+      "reuse_status": "unknown",
+      "bulk": "Fee table of 32 license types. Not a licensee roster.",
+      "request_process": "Business-name sales require a Department customer number. That is an applicant process."
+    },
+    {
+      "publisher": "State of Illinois open data portal",
+      "url": "https://data.illinois.gov/",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "The passenger-boat query used here did not return a license roster. Portal terms were not read.",
+      "request_process": null
+    },
+    {
+      "publisher": "Waukegan Harbor and Marina",
+      "url": "https://waukeganharbor.com/charters/",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "not_granted",
+      "bulk": "One HTML table. Not a downloadable fleet file.",
+      "request_process": "Copyright 2020, all rights reserved, on the page. No separate terms URL and no directory form were found."
+    },
+    {
+      "publisher": "Waukegan Harbor and Marina",
+      "url": "https://waukeganharbor.com/marina-resources-links/",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "not_granted",
+      "bulk": null,
+      "request_process": null
+    },
+    {
+      "publisher": "World Boat Charter Association",
+      "url": "https://www.wcba.info/",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "Not a Waukegan roster.",
+      "request_process": null
+    }
+  ]
+}
