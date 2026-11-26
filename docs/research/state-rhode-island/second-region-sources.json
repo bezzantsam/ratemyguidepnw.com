@@ -1,0 +1,137 @@
+{
+  "state": "Rhode Island",
+  "phase": "second-region",
+  "checked_date": "2026-11-25",
+  "sources": [
+    {
+      "url": "https://dem.ri.gov/office-divisions/natural-resources-bureau/natural-resources-divisions/marine-fisheries-1",
+      "publisher": "Rhode Island Department of Environmental Management",
+      "access_date": "2026-11-25",
+      "source_date": null,
+      "terms_url": "https://dem.ri.gov/disclaimer",
+      "field_scope": "Saved division lead, checked again for this phase. Direct fetch returned HTTP 403. Body not read. No Newport roster was recovered from this URL.",
+      "bulk": null,
+      "attribution": null,
+      "request_process": null,
+      "reuse_status": "unknown",
+      "note": "The inventory already recorded the vessel-license rule. This phase did not reread it."
+    },
+    {
+      "url": "https://www.eregulations.com/rhodeisland/fishing/saltwater/party-charter-boat-directory",
+      "publisher": "eRegulations",
+      "access_date": "2026-11-25",
+      "source_date": "2026-05-20",
+      "terms_url": "https://www.eregulations.com/privacy-policy",
+      "field_scope": "Newport block only. Ten business headings between the Newport subheading and the Portsmouth subheading. Captain lines were not counted. Other regions were not recounted. Printed last updated date is 2026-05-20. Not the license roster.",
+      "bulk": "One HTML page. HTTP last-modified 2026-11-10 was not treated as a new edition.",
+      "attribution": "Footer: © eRegulations. All Rights Reserved.",
+      "request_process": "The page still says a missing business can contact the division. No personal email was stored.",
+      "reuse_status": "all_rights_reserved_reuse_unknown",
+      "note": "Privacy-policy body was not reread. The inventory reading stands: advertising data only, no directory grant."
+    },
+    {
+      "url": "https://rules.sos.ri.gov/regulations/part/250-50-00-1",
+      "publisher": "Rhode Island Department of State",
+      "access_date": "2026-11-25",
+      "source_date": "2025-10-07",
+      "terms_url": "https://dem.ri.gov/disclaimer",
+      "field_scope": "Active port rule contents. This phase confirmed section 1.10, Newport Lobster Shack Cooperative, and section 1.12, State Pier #9 Newport traffic regulations. The fetched view had no vessel-name table. Galilee fee text was not reread.",
+      "bulk": "HTML contents. The linked official PDF was a separate fetch.",
+      "attribution": "Filed regulation.",
+      "request_process": "No public Newport assignment list was in the view that loaded.",
+      "reuse_status": "official_text_no_roster_grant"
+    },
+    {
+      "url": "https://risos-apa-production-public.s3.amazonaws.com/DEM/REG_13371_20250917123151870.pdf",
+      "publisher": "Rhode Island Department of State",
+      "access_date": "2026-11-25",
+      "source_date": "2025-10-07",
+      "terms_url": "https://dem.ri.gov/disclaimer",
+      "field_scope": "Official port-rule PDF linked from the active rule page. The file downloaded. Text was not extracted, so Newport berth names were not read from it.",
+      "bulk": "PDF identified. Body not read.",
+      "attribution": "Filed regulation.",
+      "request_process": null,
+      "reuse_status": "unknown",
+      "note": "Local extraction failed on the file encryption. This is a named unread lookup, not a zero-berth count."
+    },
+    {
+      "url": "https://dem.ri.gov/natural-resources-bureau/coastal-resources/services",
+      "publisher": "Rhode Island Department of Environmental Management",
+      "access_date": "2026-11-25",
+      "source_date": null,
+      "terms_url": "https://dem.ri.gov/disclaimer",
+      "field_scope": "Coastal-resources services page. Direct fetch returned HTTP 403. A search extract shows berthing application forms for the Port of Galilee or Pier 9 in Newport and does not show a named assignment list.",
+      "bulk": null,
+      "attribution": null,
+      "request_process": "The extract describes application forms for berths. The form files were not opened.",
+      "reuse_status": "unknown",
+      "note": "Search extract only. The page date on the search result was not used because the body was not read."
+    },
+    {
+      "url": "https://rifishing.com/port/newport/",
+      "publisher": "Rhode Island Party and Charter Boat Association",
+      "access_date": "2026-11-25",
+      "source_date": "2024",
+      "terms_url": null,
+      "field_scope": "Newport port page. Place description only. No vessel name, length, or slip list. The page mentions a 2015 ocean-race stop and was not treated as a current fleet.",
+      "bulk": "No downloadable roster.",
+      "attribution": "Footer: © 2024 Rhode Island Party & Charter Association – All Rights Reserved.",
+      "request_process": null,
+      "reuse_status": "all_rights_reserved_reuse_unknown"
+    },
+    {
+      "url": null,
+      "publisher": "Operator pages for five Newport directory headings",
+      "access_date": "2026-11-25",
+      "source_date": null,
+      "terms_url": null,
+      "field_scope": "First-party pages for five hulls that state a length and a hull or model. Identities, departure streets, and contact lines stay in the private packet. No official number or department decal was on the pages. Five other Newport headings were not given a hull row.",
+      "bulk": "No reuse grant was found on the pages used for hull evidence.",
+      "attribution": "Silent on a directory license. One footer credits a site builder and states 2026. That line is not a reuse grant.",
+      "request_process": "No directory-license contact was published on those pages.",
+      "reuse_status": "unknown"
+    }
+  ],
+  "coverage": [
+    {
+      "roster_url": "https://www.eregulations.com/rhodeisland/fishing/saltwater/party-charter-boat-directory",
+      "population": "Newport business headings on the directory last updated 2026-05-20",
+      "roster_count": 10,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0,
+      "note": "Counted business headings under the Newport subheading only. Captain lines were not separate businesses. Portsmouth and the other regions were not counted. The printed page date is 2026-05-20. An HTTP last-modified stamp of 2026-11-10 was not treated as a new edition. Five headings were not given a hull row."
+    },
+    {
+      "roster_url": "https://rules.sos.ri.gov/regulations/part/250-50-00-1",
+      "population": "Published Newport state-pier berth-assignment list",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0,
+      "note": "Section titles 1.10 and 1.12 are on the active rule page. The fetched view had no vessel table. The official PDF was downloaded and its text was not extracted. A direct fetch of the coastal-resources services page returned HTTP 403. A search extract of that page shows berthing forms for the Port of Galilee or Pier 9 and no named assignment list."
+    },
+    {
+      "roster_url": "https://rifishing.com/port/newport/",
+      "population": "Boats named on the association Newport port page",
+      "roster_count": 0,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0,
+      "note": "The Newport port page is a place description. It names no vessel. The footer is a 2024 all-rights-reserved notice."
+    },
+    {
+      "roster_url": null,
+      "population": "Operator-described bookable hulls from Newport directory headings",
+      "roster_count": null,
+      "sampled_rows": 5,
+      "supported_rows": 5,
+      "held_rows": 0,
+      "independent_publisher_matches": 5,
+      "note": "Not a closed license frame. The directory names the business for each sampled row and does not state length. One row's hull name is not the directory heading. One heading describes two boats and only one was sampled. One current length disagrees with older public copies and those copies were not joined. A second article agrees with one current length and is not added to this match count. Fishing-only was not established."
+    }
+  ]
+}
