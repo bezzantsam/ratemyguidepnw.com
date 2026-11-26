@@ -1,0 +1,186 @@
+{
+  "state": "Missouri",
+  "phase": "missouri-second-region",
+  "scope": "Lake Taneycomo trout fishing operators and landings, incremental to the Table Rock inventory",
+  "checked_date": "2026-11-25",
+  "prior_phase": "missouri-inventory",
+  "water": "Lake Taneycomo",
+  "recommended_first_source": "The MDC trout-permit page and the Lake Taneycomo special-waterbody page, read with inventory.md. The permit catalog still has no guide roster.",
+  "highest_priority_permission_question": "Will any office release a current list of businesses that guide sport fishing on Lake Taneycomo, limited to business name and water, and authorize commercial-directory reuse? The permit catalog checked on 2026-11-25 still publishes no holder list.",
+  "incremental_license_check": {
+    "fee_url": "https://mdc.mo.gov/permits/fishing-permits",
+    "trout_permit_url": "https://mdc.mo.gov/fishing/permits/trout-permit",
+    "daily_fishing_usd": 9,
+    "resident_fishing_usd": 14,
+    "nonresident_fishing_usd": 57,
+    "resident_trout_usd": 12,
+    "nonresident_trout_usd": 24,
+    "youth_trout_usd": 6,
+    "taneycomo_upstream_of_us_65_requires_trout_permit": true,
+    "roster_count": null,
+    "taneycomo_guide_count": null
+  },
+  "sample": {
+    "sampled": 4,
+    "supported": 1,
+    "held": 3,
+    "unique_hulls": 0,
+    "second_publishers": 0,
+    "excluded_prior_observation": "missouri-inventory-big-cedar-trout"
+  },
+  "cross_region_duplicates": [],
+  "sources": [
+    {
+      "publisher": "Missouri Department of Conservation",
+      "url": "https://mdc.mo.gov/permits/fishing-permits",
+      "access_date": "2026-11-25",
+      "terms_url": "https://mdc.mo.gov/terms-use",
+      "reuse_status": "not_granted",
+      "field_scope": "Angler permit catalog. Trout permit $12 resident, $24 nonresident, $6 youth. Required year-round on Lake Taneycomo upstream of U.S. Highway 65. No guide roster.",
+      "bulk": "HTML catalog. No download of guide holders.",
+      "request_process": "Buyers use the permit flow. Reproduction of site text requires written permission."
+    },
+    {
+      "publisher": "Missouri Department of Conservation",
+      "url": "https://mdc.mo.gov/fishing/permits/trout-permit",
+      "access_date": "2026-11-25",
+      "terms_url": "https://mdc.mo.gov/terms-use",
+      "reuse_status": "not_granted",
+      "field_scope": "Trout permit prices and the Taneycomo upstream rule. Season blocks run through 2026 and into early 2027.",
+      "bulk": "One HTML permit page.",
+      "request_process": "Buy permit link. No directory process.",
+      "source_date": null
+    },
+    {
+      "publisher": "Missouri Department of Conservation",
+      "url": "https://mdc.mo.gov/fishing/regulations/special-waterbody-regulations/lake-taneycomo",
+      "access_date": "2026-11-25",
+      "terms_url": "https://mdc.mo.gov/terms-use",
+      "reuse_status": "not_granted",
+      "field_scope": "Creel and method rules for Lake Taneycomo. Brown trout 20-inch minimum. Daily limit 4 trout with only 1 brown. Closed zone 760 feet below Table Rock Dam. Slot and artificial-lure rules to Fall Creek.",
+      "bulk": "One HTML waterbody page. No guide file.",
+      "request_process": null
+    },
+    {
+      "publisher": "Missouri Department of Conservation",
+      "url": "https://mdc.mo.gov/terms-use",
+      "access_date": "2026-11-25",
+      "terms_url": "https://mdc.mo.gov/terms-use",
+      "reuse_status": "not_granted",
+      "field_scope": "Written permission required before reproducing site text, images, or videos. Linking is allowed if origin stays clear and the material is not framed with outside advertising.",
+      "bulk": "One HTML terms page.",
+      "request_process": "Contact form for republication requests. No commercial-directory grant."
+    },
+    {
+      "publisher": "Scotty's Trout Dock",
+      "url": "https://scottystroutdock.com/",
+      "access_date": "2026-11-25",
+      "terms_url": "https://scottystroutdock.com/privacy-policy/",
+      "reuse_status": "not_granted",
+      "field_scope": "Dock home page. Boat and kayak rentals on Lake Taneycomo. Footer copyright 2026.",
+      "bulk": "One HTML page.",
+      "request_process": null,
+      "source_date": "2026"
+    },
+    {
+      "publisher": "Scotty's Trout Dock",
+      "url": "https://scottystroutdock.com/fishing-guides/",
+      "access_date": "2026-11-25",
+      "terms_url": "https://scottystroutdock.com/privacy-policy/",
+      "reuse_status": "not_granted",
+      "field_scope": "Guide referral prices for 4-hour and 6-hour trips. Guides are not named. No hull.",
+      "bulk": "One HTML page.",
+      "request_process": "Contact page. No roster."
+    },
+    {
+      "publisher": "Scotty's Trout Dock",
+      "url": "https://scottystroutdock.com/boat-rentals/",
+      "access_date": "2026-11-25",
+      "terms_url": "https://scottystroutdock.com/privacy-policy/",
+      "reuse_status": "not_granted",
+      "field_scope": "Rental classes and 2026-facing rates. Lengths and motor sizes are classes. Rate-sheet nicknames were not matched to a HIN.",
+      "bulk": "One HTML page.",
+      "request_process": null
+    },
+    {
+      "publisher": "Scotty's Trout Dock",
+      "url": "https://scottystroutdock.com/privacy-policy/",
+      "access_date": "2026-11-25",
+      "terms_url": "https://scottystroutdock.com/privacy-policy/",
+      "reuse_status": "not_granted",
+      "field_scope": "Comment, cookie, and analytics privacy text. Google Analytics is named for traffic statistics. No directory grant. /terms/ returned HTTP 404.",
+      "bulk": "One HTML policy.",
+      "request_process": "Account holders may request export or erasure of profile data. No commercial-directory process."
+    },
+    {
+      "publisher": "CastAway Charters",
+      "url": "https://www.taneycomotroutguide.com/",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "field_scope": "Taneycomo trip prices and a 20-year narrative. No hull. /privacy and /privacy-policy returned HTTP 404.",
+      "bulk": "One HTML homepage.",
+      "request_process": null
+    },
+    {
+      "publisher": "Table Rock Guide Service",
+      "url": "https://tablerockfishingguide.com/lake-taneycomo/",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "not_granted",
+      "field_scope": "Taneycomo guided-trip prices, a 2024 Skeeter SX241 class, and a capacity claim of up to 12 guides. Copyright line on the page. /privacy-policy/ and /terms/ returned HTTP 404.",
+      "bulk": "One HTML trip page. The page also uses the name Branson Guided Fishing Trips.",
+      "request_process": "Deposit and cancellation rules are on the page. No directory process."
+    }
+  ],
+  "coverage": [
+    {
+      "population": "MDC angler and trout permits on Lake Taneycomo",
+      "roster_count": null,
+      "sampled": 0,
+      "supported": 0,
+      "held": 0,
+      "second_publishers": 0
+    },
+    {
+      "population": "Lake Taneycomo creel page",
+      "roster_count": null,
+      "sampled": 0,
+      "supported": 0,
+      "held": 0,
+      "second_publishers": 0
+    },
+    {
+      "population": "Scotty's Trout Dock landing",
+      "roster_count": 1,
+      "sampled": 1,
+      "supported": 1,
+      "held": 0,
+      "second_publishers": 0
+    },
+    {
+      "population": "Scotty's Trout Dock guide referral",
+      "roster_count": null,
+      "sampled": 1,
+      "supported": 0,
+      "held": 1,
+      "second_publishers": 0
+    },
+    {
+      "population": "CastAway Charters",
+      "roster_count": 1,
+      "sampled": 1,
+      "supported": 0,
+      "held": 1,
+      "second_publishers": 0
+    },
+    {
+      "population": "Table Rock Guide Service, Taneycomo trip",
+      "roster_count": 1,
+      "sampled": 1,
+      "supported": 0,
+      "held": 1,
+      "second_publishers": 0
+    }
+  ]
+}
