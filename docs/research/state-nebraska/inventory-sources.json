@@ -1,0 +1,181 @@
+{
+  "state": "Nebraska",
+  "phase": "nebraska-inventory",
+  "scope": "Lake McConaughy guided fishing, with the Commission river-outfitter list counted and not sampled",
+  "checked_date": "2026-11-25",
+  "base_commit": "7f69f59f4760afa53f1ef06bc64f6fb0824665e2",
+  "highest_priority_permission_question": "Whether the Commission will give written permission before any guide, outfitter, concession, or convenience-list name is republished, and whether it will publish the voluntary database authorized by Neb. Rev. Stat. 37-356.",
+  "recommended_first_source": "Read Neb. Rev. Stat. 37-356, then the Commission copyright page, then look for an actual database. A Lake McConaughy guide still needs the park authorization that covers soliciting or vending on the recreation area. The river-outfitter PDF is a float-rental list.",
+  "sample": {
+    "entity_type": "operator",
+    "sampled_rows": 4,
+    "supported_rows": 0,
+    "held_rows": 4,
+    "vessel_rows": 0,
+    "independent_publisher_matches": 1,
+    "withheld_operator_publishers": 4
+  },
+  "coverage": [
+    {
+      "roster_url": "https://nebraskalegislature.gov/laws/statutes.php?statute=37-356",
+      "population": "Voluntary hunting and fishing guide and outfitter database authorized by Neb. Rev. Stat. 37-356. The guessed Commission path returned 404 on 2026-11-25. No public count.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://outdoornebraska.gov/permits/park-permits/special-occasion-permits/",
+      "population": "Special occasion permits for events in state park areas and wildlife management areas. No holder list was published on the page.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://outdoornebraska.gov/wp-content/uploads/2026/09/2026-Nebraska-River-Outfitters.pdf",
+      "population": "Commission convenience list of river outfitters and rentals for canoe, kayak, and float trips. 30 business entries. Not a fishing-guide roster and not a Lake McConaughy hull list. Names and contacts were not copied.",
+      "roster_count": 30,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": null,
+      "population": "First-party Lake McConaughy guided-fishing publishers opened on 2026-11-25. No official denominator. All four rows are held. One marketplace listing is a second publisher and does not document a hull.",
+      "roster_count": null,
+      "sampled_rows": 4,
+      "supported_rows": 0,
+      "held_rows": 4,
+      "independent_publisher_matches": 1
+    },
+    {
+      "roster_url": "https://outdoornebraska.gov/location/lake-mcconaughy/",
+      "population": "Concession areas and private launch vendors named by the Commission for Lake McConaughy. Facility directions, not a counted authorization roster and not a guide sample.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://outdoornebraska.gov/permits/park-permits/special-occasion-permits/",
+      "publisher": "Nebraska Game and Parks Commission",
+      "access_date": "2026-11-25",
+      "terms_url": "https://outdoornebraska.gov/about/notices/copyright/",
+      "field_scope": "Written permission for special events, sports events, entertainment, and commercial photography or videography in state park areas and wildlife management areas. Fishing tournaments also need tournament registration. Application is due at least 30 days before the event. No holder roster, guide field, hull field, or launch field.",
+      "bulk": "Application PDF is linked. No bulk holder file.",
+      "attribution": "None stated as a condition of reuse.",
+      "request_process": "The page points to a contact address for questions about the permit. That address was not copied. The process is a permit application, not a data-license process.",
+      "reuse_status": "conditional"
+    },
+    {
+      "url": "https://outdoornebraska.gov/about/notices/copyright/",
+      "publisher": "Nebraska Game and Parks Commission",
+      "access_date": "2026-11-25",
+      "terms_url": "https://outdoornebraska.gov/about/notices/copyright/",
+      "field_scope": "Sitewide copyright, photo, trademark, liability, endorsement, and likeness terms for outdoornebraska.gov materials.",
+      "bulk": "Download of educational or informational materials and lesson plans does not require a separate permission. No bulk API or directory license.",
+      "attribution": "Commission photographs require a credit line when a written photo agreement allows use. Attribution is not offered as permission to republish a roster.",
+      "request_process": "Written permission from the Commission for reproduction of website materials. Photo use goes through the Commission's Photo Library. No commercial-directory workflow is described.",
+      "reuse_status": "conditional"
+    },
+    {
+      "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=37-356",
+      "publisher": "Nebraska Legislature",
+      "access_date": "2026-11-25",
+      "terms_url": "https://nebraskalegislature.gov/contact/disclaimer.php",
+      "field_scope": "Neb. Rev. Stat. 37-356. Voluntary hunting and fishing guide and outfitter database. Defines guide and outfitter. Authorizes a website database, a fee, and a three-year listing if statutory conditions are met. Does not require registration before guiding. Source note: Laws 2024, LB867, section 2.",
+      "bulk": "Single section page. Not a roster.",
+      "attribution": "None stated.",
+      "request_process": "The disclaimer says questions about inaccuracies can be sent to the Legislature. That is not a data-license process. The email address was not copied.",
+      "reuse_status": "not_granted"
+    },
+    {
+      "url": "https://nebraskalegislature.gov/contact/disclaimer.php",
+      "publisher": "Nebraska Legislature",
+      "access_date": "2026-11-25",
+      "terms_url": "https://nebraskalegislature.gov/contact/disclaimer.php",
+      "field_scope": "Accuracy disclaimer. Directs readers to the printed official publication for matters affecting rights. Footer states copyright, all rights reserved.",
+      "bulk": "None.",
+      "attribution": "None.",
+      "request_process": "Report inaccuracies to the Legislature. No directory-permission process.",
+      "reuse_status": "not_granted"
+    },
+    {
+      "url": "https://outdoornebraska.gov/permits/guide-and-outfitter-database/",
+      "publisher": "Nebraska Game and Parks Commission",
+      "access_date": "2026-11-25",
+      "terms_url": "https://outdoornebraska.gov/about/notices/copyright/",
+      "field_scope": "Guessed path for the 37-356 database. The response was the agency 404 page. No fields, count, or download.",
+      "bulk": "None.",
+      "attribution": "None.",
+      "request_process": "None published on the 404 page.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://www.law.cornell.edu/regulations/nebraska/163-Neb-Admin-Code-ch-5-SS-001",
+      "publisher": "Cornell Law School, Legal Information Institute",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Compilation of 163 Nebraska Administrative Code, chapter 5, section 001, state park property rules. Section 001.04C prohibits commercial soliciting without a permit, except transactions with authorized concessionaires. Section 001.22A requires prior written Commission authorization for vending. Section 001.22B requires written authorization before a park area is used as a headquarters for commercial or professional activities. This is not the Secretary of State rule filing and it is not a holder roster.",
+      "bulk": "None.",
+      "attribution": "None stated on the section page.",
+      "request_process": "None for Commission data. The host's own terms were not opened.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://outdoornebraska.gov/parks/explore-trails/water-trails/",
+      "publisher": "Nebraska Game and Parks Commission",
+      "access_date": "2026-11-25",
+      "terms_url": "https://outdoornebraska.gov/about/notices/copyright/",
+      "field_scope": "Water-trail planning page. States that the Commission does not regulate or endorse river outfitters and maintains a convenience list for canoe, kayak, and float trips. The on-page list repeats contact details. Those details were not copied. The page links the September 2026 PDF.",
+      "bulk": "The outfitter list is a downloadable PDF, not an API.",
+      "attribution": "None required by the convenience-list sentence.",
+      "request_process": "Sitewide written-permission rule for reproduction. No separate request path for the outfitter list.",
+      "reuse_status": "conditional"
+    },
+    {
+      "url": "https://outdoornebraska.gov/wp-content/uploads/2026/09/2026-Nebraska-River-Outfitters.pdf",
+      "publisher": "Nebraska Game and Parks Commission",
+      "access_date": "2026-11-25",
+      "terms_url": "https://outdoornebraska.gov/about/notices/copyright/",
+      "field_scope": "Nebraska River Outfitters and Rentals. Two pages. Header says the list is compiled for the convenience of outdoor enthusiasts and that the Commission does not endorse any outfitter. Counted 30 business entries. No revision date is printed on the first page. The file path is September 2026. No Lake McConaughy fishing-guide entry. Contact fields exist and were not copied.",
+      "bulk": "Single PDF download. Not a feed.",
+      "attribution": "None stated in the file.",
+      "request_process": "None inside the PDF. Site copyright policy still applies.",
+      "reuse_status": "conditional"
+    },
+    {
+      "url": "https://outdoornebraska.gov/location/lake-mcconaughy/",
+      "publisher": "Nebraska Game and Parks Commission",
+      "access_date": "2026-11-25",
+      "terms_url": "https://outdoornebraska.gov/about/notices/copyright/",
+      "field_scope": "Lake McConaughy State Recreation Area. About 30,000 surface acres. Public ramp access described as unavailable because of low water, with visitors directed to private launch services. Concession areas are named for food, bait, and boat rental. Visitor center address is a park office. No guide roster and no hull registry. Phone numbers were not copied.",
+      "bulk": "None.",
+      "attribution": "Photo credits appear on the page. Not a roster license.",
+      "request_process": "Park contact path is published. Not copied. It is an operations contact, not a data-license process.",
+      "reuse_status": "conditional"
+    },
+    {
+      "url": "https://outdoornebraska.gov/about/press-events/news/lake-mac-launch-services-best-bet-as-water-drops/",
+      "publisher": "Nebraska Game and Parks Commission",
+      "access_date": "2026-11-25",
+      "terms_url": "https://outdoornebraska.gov/about/notices/copyright/",
+      "field_scope": "News release dated August 7, 2026. Names three private launch vendors for the remainder of that season and states that recreation on the lake is managed by the Commission through a lease with Central Nebraska Public Power and Irrigation District. Not a guide roster. Vendor phone numbers and a staff contact were not copied.",
+      "bulk": "None.",
+      "attribution": "Byline is a staff name. Not copied as a directory field.",
+      "request_process": "None for data reuse.",
+      "reuse_status": "conditional"
+    }
+  ],
+  "withheld": {
+    "operator_publishers": 4,
+    "reason": "First-party guide pages, personal names, and booking URLs stay outside Git."
+  }
+}
