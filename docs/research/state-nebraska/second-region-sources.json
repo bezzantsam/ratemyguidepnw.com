@@ -1,0 +1,160 @@
+{
+  "state": "Nebraska",
+  "phase": "nebraska-second-region",
+  "scope": "Lewis and Clark Lake guides based in Nebraska. Incremental to the Lake McConaughy inventory.",
+  "checked_date": "2026-11-25",
+  "base_commit": "7f69f59f4760afa53f1ef06bc64f6fb0824665e2",
+  "highest_priority_permission_question": "Whether the Commission will give written permission before any Lewis and Clark facility name or river-list name is republished. Operator pages in this pass publish no directory license.",
+  "recommended_first_source": "Read the Lewis and Clark State Recreation Area page for access, then the Weigand Marina FAQ for the 2027 slip plan. Neither is a guide roster. The fishing-tournament page is the next unopened Commission path that might name an event holder.",
+  "sample": {
+    "entity_type": "operator",
+    "sampled_rows": 1,
+    "supported_rows": 0,
+    "held_rows": 1,
+    "vessel_rows": 0,
+    "independent_publisher_matches": 1,
+    "withheld_operator_publishers": 1
+  },
+  "coverage": [
+    {
+      "roster_url": "https://outdoornebraska.gov/permits/park-permits/special-occasion-permits/",
+      "population": "Special-occasion permits re-read for Lewis and Clark. Event permission only. No holder list.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://outdoornebraska.gov/lewisandclark/",
+      "population": "Lewis and Clark State Recreation Area page. Facility description of 116 seasonal slips, 10 daily slips, and four Weigand ramps. Boat access closed through 2026. Not a guide roster.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://outdoornebraska.gov/parks/park-faqs/weigand-marina-faq/",
+      "population": "Weigand Marina 2027 slip plan. 264 boat slips and 24 personal-watercraft slips, labeled total 288. Structure sizes, not hulls and not guides.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://outdoornebraska.gov/about/press-events/news/lewis-and-clark-sra-gauging-boat-vendor-interest/",
+      "population": "Nov. 3, 2026 solicitation for future boat or personal-watercraft rental vendors. Not an awarded list.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://outdoornebraska.gov/wp-content/uploads/2026/09/2026-Nebraska-River-Outfitters.pdf",
+      "population": "River-outfitter PDF keyword check for this lake. No Lewis and Clark, Crofton, Yankton, Gavins Point, or Weigand string. Entries were not recounted.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://magazine.outdoornebraska.gov/stories/fishing/walleye-movement-at-lewis-clark/",
+      "population": "Magazine caption associates one fishing guide of Yutan, Nebraska, with this lake. No booking page and no hull, so the person was not sampled.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": null,
+      "population": "Nebraska-stated Missouri River operator whose second publisher places the meet point on the South Dakota side. The pages do not name Lewis and Clark Lake. One row held. No documented hull.",
+      "roster_count": null,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 1
+    },
+    {
+      "roster_url": null,
+      "population": "Current Lewis and Clark Lake guide page stating a southeast South Dakota base. Excluded from the Nebraska sample.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://outdoornebraska.gov/permits/park-permits/special-occasion-permits/",
+      "publisher": "Nebraska Game and Parks Commission",
+      "access_date": "2026-11-25",
+      "terms_url": "https://outdoornebraska.gov/about/notices/copyright/",
+      "field_scope": "Event permission re-read for this lake. Application at least 30 days ahead. Fishing tournaments also need the tournament page. No holder, guide, or hull field.",
+      "bulk": "Application PDF linked and not opened. No holder file.",
+      "attribution": "None stated as a condition of reuse.",
+      "request_process": "Permit application. The contact address was not copied.",
+      "reuse_status": "conditional"
+    },
+    {
+      "url": "https://outdoornebraska.gov/lewisandclark/",
+      "publisher": "Nebraska Game and Parks Commission",
+      "access_date": "2026-11-25",
+      "terms_url": "https://outdoornebraska.gov/about/notices/copyright/",
+      "field_scope": "Recreation-area access page. Marina store open. Weigand slips and ramp closed beginning Sept. 11, 2025 through 2026. States 116 seasonal slips, 10 daily slips, and four Weigand ramps. Not a guide roster. Street and phone were not copied.",
+      "bulk": "None.",
+      "attribution": "Photo credits name the magazine or the Commission. No directory attribution rule.",
+      "request_process": "Commission written permission to reproduce site materials. Linking is allowed.",
+      "reuse_status": "conditional"
+    },
+    {
+      "url": "https://outdoornebraska.gov/parks/park-faqs/weigand-marina-faq/",
+      "publisher": "Nebraska Game and Parks Commission",
+      "access_date": "2026-11-25",
+      "terms_url": "https://outdoornebraska.gov/about/notices/copyright/",
+      "field_scope": "2027 slip plan. 264 boat slips plus 24 personal-watercraft slips, labeled 288. Deposit $500. Surveys due Dec. 31, 2026. Not a hull census. Vendor contacts were not copied.",
+      "bulk": "Boat-lift checklist PDF linked and not opened.",
+      "attribution": "None stated on the FAQ.",
+      "request_process": "Slipholder survey, then a public slip release. Not a data license.",
+      "reuse_status": "conditional"
+    },
+    {
+      "url": "https://outdoornebraska.gov/about/press-events/news/lewis-and-clark-sra-gauging-boat-vendor-interest/",
+      "publisher": "Nebraska Game and Parks Commission",
+      "access_date": "2026-11-25",
+      "terms_url": "https://outdoornebraska.gov/about/notices/copyright/",
+      "field_scope": "News release dated Nov. 3, 2026. Solicitation for future rental vendors. Deadline Dec. 1, 2026. Not an awarded list. Staff contacts were not copied.",
+      "bulk": "None.",
+      "attribution": "None stated.",
+      "request_process": "Vendor interest call. The number was not stored.",
+      "reuse_status": "conditional"
+    },
+    {
+      "url": "https://outdoornebraska.gov/wp-content/uploads/2026/09/2026-Nebraska-River-Outfitters.pdf",
+      "publisher": "Nebraska Game and Parks Commission",
+      "access_date": "2026-11-25",
+      "terms_url": "https://outdoornebraska.gov/about/notices/copyright/",
+      "field_scope": "Convenience list. First page prints Updated July 2026. Keyword check found no Lewis and Clark guide names. Entries were not recounted. Contacts were not copied.",
+      "bulk": "Single PDF. Not a feed.",
+      "attribution": "None stated in the header. The header says the list is not an endorsement.",
+      "request_process": "Same Commission written-permission rule.",
+      "reuse_status": "conditional"
+    },
+    {
+      "url": "https://magazine.outdoornebraska.gov/stories/fishing/walleye-movement-at-lewis-clark/",
+      "publisher": "Nebraskaland Magazine, Nebraska Game and Parks Commission",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Fisheries story. One caption associates a fishing guide of Yutan with this lake and does not give a booking page or a hull. Names were not copied.",
+      "bulk": "None.",
+      "attribution": "A staff credit is printed. The name was not copied.",
+      "request_process": "None on the story. Host terms were not opened.",
+      "reuse_status": "unknown"
+    }
+  ]
+}
