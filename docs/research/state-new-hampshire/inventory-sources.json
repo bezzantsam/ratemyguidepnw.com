@@ -1,0 +1,220 @@
+{
+  "state": "New Hampshire",
+  "phase": "inventory",
+  "checked_date": "2026-11-25",
+  "sources": [
+    {
+      "url": "https://www.wildlife.nh.gov/sites/g/files/ehbemt746/files/documents/fishing-guide.pdf",
+      "publisher": "New Hampshire Fish and Game Department",
+      "access_date": "2026-11-25",
+      "source_date": null,
+      "terms_url": "https://www.nh.gov/policies/privacy-policy",
+      "field_scope": "Saved lead. Direct fetch returned HTTP 403. The PDF was not read and was not compared with the HTML guide table.",
+      "bulk": null,
+      "attribution": null,
+      "request_process": null,
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://www.wildlife.nh.gov/fishing-new-hampshire/licensed-nh-fishing-guides",
+      "publisher": "New Hampshire Fish and Game Department",
+      "access_date": "2026-11-25",
+      "source_date": "2026-11-03",
+      "terms_url": "https://www.nh.gov/policies/privacy-policy",
+      "field_scope": "Person fishing-guide table. 77 rows. Business, name, city, and state were counted. Phone and email columns were not copied. No Hampton or Rye city.",
+      "bulk": "One HTML table. No separate download was read.",
+      "attribution": "The page says the rows come from guide applications.",
+      "request_process": "The page points renewals and contact changes to the licensing office. The office phone was not copied.",
+      "reuse_status": "unknown",
+      "note": "Direct fetch returned HTTP 403. The table was read through a page viewer."
+    },
+    {
+      "url": "https://www.gencourt.state.nh.us/rsa/html/XVIII/215/215-1.htm",
+      "publisher": "New Hampshire General Court",
+      "access_date": "2026-11-25",
+      "source_date": null,
+      "terms_url": "https://www.gencourt.state.nh.us/rsa/html/XVIII/215/215-1.htm",
+      "field_scope": "A person may not engage in guiding until registered and licensed.",
+      "bulk": "Not a roster.",
+      "attribution": "Official statute.",
+      "request_process": null,
+      "reuse_status": "official_text_no_roster_grant"
+    },
+    {
+      "url": "https://www.gencourt.state.nh.us/rsa/html/XVIII/215/215-2.htm",
+      "publisher": "New Hampshire General Court",
+      "access_date": "2026-11-25",
+      "source_date": "2026-11-01",
+      "terms_url": "https://www.gencourt.state.nh.us/rsa/html/XVIII/215/215-2.htm",
+      "field_scope": "Guide application. The version effective November 1, 2026 was read. First-time applicants submit a criminal-history release and fingerprints. The earlier version printed on the same page had already expired.",
+      "bulk": "Not a roster.",
+      "attribution": "Official statute.",
+      "request_process": "Application to the chief of the fish and game law enforcement division.",
+      "reuse_status": "official_text_no_roster_grant"
+    },
+    {
+      "url": "https://www.gencourt.state.nh.us/rsa/html/XVIII/215/215-5.htm",
+      "publisher": "New Hampshire General Court",
+      "access_date": "2026-11-25",
+      "source_date": "2015-07-01",
+      "terms_url": "https://www.gencourt.state.nh.us/rsa/html/XVIII/215/215-5.htm",
+      "field_scope": "Guide qualifications, the discounted path for a long-licensed resident age 65 or older, and the coastal for-hire exemption. Those operators need a Coast Guard master or OUPV license and practical first aid and CPR, and they are exempt from the rest of RSA 215 while operating the licensed vessel in coastal and estuarine waters.",
+      "bulk": "Not a roster.",
+      "attribution": "Official statute.",
+      "request_process": null,
+      "reuse_status": "official_text_no_roster_grant"
+    },
+    {
+      "url": "https://www.gencourt.state.nh.us/rsa/html/XVIII/215/215-6.htm",
+      "publisher": "New Hampshire General Court",
+      "access_date": "2026-11-25",
+      "source_date": null,
+      "terms_url": "https://www.gencourt.state.nh.us/rsa/html/XVIII/215/215-6.htm",
+      "field_scope": "Every guide license expires with the calendar year.",
+      "bulk": "Not a roster.",
+      "attribution": "Official statute.",
+      "request_process": null,
+      "reuse_status": "official_text_no_roster_grant"
+    },
+    {
+      "url": "https://www.gencourt.state.nh.us/rsa/html/XVIII/214/214-9.htm",
+      "publisher": "New Hampshire General Court",
+      "access_date": "2026-11-25",
+      "source_date": null,
+      "terms_url": "https://www.gencourt.state.nh.us/rsa/html/XVIII/214/214-9.htm",
+      "field_scope": "RSA 214:9, XVI. Individual saltwater license, passenger exemption on a licensed for-hire vessel, per-vessel charter and party fees set by the executive director, and definitions of for-hire vessel, charter boat, and party boat.",
+      "bulk": "Not a roster.",
+      "attribution": "Official statute.",
+      "request_process": "Application on a department form.",
+      "reuse_status": "official_text_no_roster_grant"
+    },
+    {
+      "url": "https://www.gencourt.state.nh.us/rules/state_agencies/fis1100.html",
+      "publisher": "New Hampshire General Court",
+      "access_date": "2026-11-25",
+      "source_date": "2024-02-23",
+      "terms_url": "https://www.gencourt.state.nh.us/rules/state_agencies/fis1100.html",
+      "field_scope": "Fis 1110.09. Charter or other for-hire vessel with 6 or fewer passengers, except party boats: $50 plus the agent fee. Party boat: $100 plus the agent fee. The fee paragraph's source note includes document #13874, effective February 23, 2024.",
+      "bulk": "Rule text. Not a roster.",
+      "attribution": "Official administrative rule.",
+      "request_process": null,
+      "reuse_status": "official_text_no_roster_grant"
+    },
+    {
+      "url": "https://www.wildlife.nh.gov/saltwater-fisheries-new-hampshire/recreational-saltwater-fishing/nh-licensed-charter-and-party",
+      "publisher": "New Hampshire Fish and Game Department",
+      "access_date": "2026-11-25",
+      "source_date": "2026-03-06",
+      "terms_url": "https://www.nh.gov/policies/privacy-policy",
+      "field_scope": "Explainer. Charter boats take 6 or fewer for a set fee. Party boats carry more than 6 and charge per person. Licenses run by calendar year. The page links the PDF list. Search extract. The page date is the search-result timestamp.",
+      "bulk": "Not the roster. The PDF is the list.",
+      "attribution": null,
+      "request_process": "Apply in Concord or use the print-and-mail application.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://www.wildlife.nh.gov/sites/g/files/ehbemt746/files/documents/saltwater-charters.pdf",
+      "publisher": "New Hampshire Fish and Game Department",
+      "access_date": "2026-11-25",
+      "source_date": "2026-03-19",
+      "terms_url": "https://www.nh.gov/policies/privacy-policy",
+      "field_scope": "Licensed charter and party boat list. 40 rows. Hampton or Rye port text: 26 rows, 25 with a vessel name. Phones and websites were not copied into the public notes. Not a registration-number file.",
+      "bulk": "One PDF. Direct fetch returned HTTP 403. Text was read through a page viewer.",
+      "attribution": "Department list. No reuse sentence in the extract.",
+      "request_process": "The companion page says to apply in Concord or by mail.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://www.wildlife.nh.gov/sites/g/files/ehbemt746/files/inline-images/marine-saltwater-fishing-vessels-app.pdf",
+      "publisher": "New Hampshire Fish and Game Department",
+      "access_date": "2026-11-25",
+      "source_date": "2022-05",
+      "terms_url": "https://www.nh.gov/policies/privacy-policy",
+      "field_scope": "Saltwater fishing vessel application, form revision 05/22. Search extract. License issued to an individual. Checkboxes show $51 and $101. Vessel name, registration or Coast Guard number, principal port, length, and capacity are requested. Personal fields were not stored.",
+      "bulk": "Blank form. Not a roster.",
+      "attribution": null,
+      "request_process": "Mail or file with the department. A boat-registration copy is required each year.",
+      "reuse_status": "unknown",
+      "note": "The form body was not downloaded. Fields above are from the search extract."
+    },
+    {
+      "url": "https://www.wildlife.nh.gov/saltwater-fisheries-new-hampshire/saltwater-fishing-faqs",
+      "publisher": "New Hampshire Fish and Game Department",
+      "access_date": "2026-11-25",
+      "source_date": "2026-11-24",
+      "terms_url": "https://www.nh.gov/policies/privacy-policy",
+      "field_scope": "FAQ extract. Anglers on a licensed charter or party boat are exempt from the individual recreational saltwater license. The date is the search-result timestamp.",
+      "bulk": null,
+      "attribution": null,
+      "request_process": null,
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://www.nh.gov/policies/privacy-policy",
+      "publisher": "State of New Hampshire",
+      "access_date": "2026-11-25",
+      "source_date": "2026-11-10",
+      "terms_url": "https://www.nh.gov/policies/privacy-policy",
+      "field_scope": "Statewide privacy policy. Search extract. Personal information and RSA 91-A disclosure. No copyright grant for license tables. Direct fetch returned HTTP 403.",
+      "bulk": "Silent on bulk reuse of license lists.",
+      "attribution": "Silent in the extract.",
+      "request_process": null,
+      "reuse_status": "unknown",
+      "note": "The November 10, 2026 date is the search-result timestamp."
+    },
+    {
+      "url": null,
+      "publisher": "Operator pages for five Hampton and Rye hulls",
+      "access_date": "2026-11-25",
+      "source_date": null,
+      "terms_url": null,
+      "field_scope": "First-party pages for five hulls. Length or builder model and a booking path were read for the sampled rows. Identities stay in the private packet. Two other sites named on the license list returned no usable body.",
+      "bulk": "One opened site reserves all rights. The other opened site is silent.",
+      "attribution": "All rights reserved where a copyright line was present. Otherwise silent.",
+      "request_process": "No directory-license contact was published on the pages used for hull evidence.",
+      "reuse_status": "not_granted_or_unknown"
+    }
+  ],
+  "coverage": [
+    {
+      "roster_url": "https://www.wildlife.nh.gov/fishing-new-hampshire/licensed-nh-fishing-guides",
+      "population": "Licensed fishing guides updated 2026-11-03",
+      "roster_count": 77,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0,
+      "note": "Person rows. Phone and email were not copied. Cities Hampton and Rye: 0."
+    },
+    {
+      "roster_url": "https://www.wildlife.nh.gov/sites/g/files/ehbemt746/files/documents/saltwater-charters.pdf",
+      "population": "Licensed charter and party boat rows dated 2026-03-19",
+      "roster_count": 40,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0,
+      "note": "One row has vessel name N/A and port Raymond, and its business name was not recovered. One other row has no vessel name."
+    },
+    {
+      "roster_url": "https://www.wildlife.nh.gov/sites/g/files/ehbemt746/files/documents/saltwater-charters.pdf",
+      "population": "Rows dated 2026-03-19 whose port text contains Hampton or Rye",
+      "roster_count": 26,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0,
+      "note": "25 name a vessel. 4 are marked party and 22 are marked charter. Includes Hampton/Seabrook and Rye Harbor. Excludes a Seabrook-only port and other ports."
+    },
+    {
+      "roster_url": null,
+      "population": "Operator-described bookable hulls at Hampton and Rye",
+      "roster_count": null,
+      "sampled_rows": 5,
+      "supported_rows": 4,
+      "held_rows": 1,
+      "independent_publisher_matches": 4,
+      "note": "The frame is not the full 26. Four vessel names match the March 19 list. The held hull has a length and model on the operator page and was not joined to the second vessel name on that business's license rows."
+    }
+  ]
+}
