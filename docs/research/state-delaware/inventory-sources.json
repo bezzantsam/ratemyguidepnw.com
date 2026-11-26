@@ -1,0 +1,243 @@
+{
+  "state": "Delaware",
+  "phase": "delaware-inventory",
+  "checked_date": "2026-11-25",
+  "target_waters": [
+    "Indian River Inlet",
+    "Lewes"
+  ],
+  "licensed_departure_population": null,
+  "sources": [
+    {
+      "url": "https://documents.dnrec.delaware.gov/fw/Licensing/Charter-Head-Boat-Application.pdf",
+      "publisher": "Delaware DNREC Division of Fish and Wildlife",
+      "access_date": "2026-11-25",
+      "terms_url": "https://delcode.delaware.gov/title7/c005/sc01/",
+      "field_scope": "Blank application, last revised 9/19/2024. One form covers resident and nonresident head boat ($300 and $600) and charter boat ($150 and $300). It collects the vessel owner, a captain credential or the primary operator's captain credential, a boat registration or documentation number that must be valid for commercial passenger use, optional company name, boat name, length, passenger capacity, and home port or area of operation. Only operators listed on the form may use the license. It is not a public roster and it has no field dictionary beyond the form labels.",
+      "bulk": "No download of issued licenses. One PDF form.",
+      "attribution": null,
+      "request_process": "The form says applications are accepted by mail, fax, email, or online, and that the online application must be completed by the vessel owner. Processing is stated as about four weeks. That is an application path, not a reuse grant.",
+      "reuse_status": "no_affirmative_grant",
+      "rights_basis": "The form grants no right to copy issued permits into a directory. License-record limits are in 7 Del. C. §§ 503 and 506."
+    },
+    {
+      "url": "https://dnrec.delaware.gov/fish-wildlife/licenses/",
+      "publisher": "Delaware DNREC Division of Fish and Wildlife",
+      "access_date": "2026-11-25",
+      "terms_url": "https://delaware.gov/help/privacy",
+      "field_scope": "Recreational licensing entry page. Head boat licenses are for vessels hired per person. Charter boat licenses are for vessels hired per trip. Either license covers paying passengers, the captain, and the crew only while fishing aboard that vessel. Issuance is direct from the Division, by the application PDF. The page links aggregate fishing-license statistics and does not link a holder search.",
+      "bulk": "No roster file.",
+      "attribution": null,
+      "request_process": "Apply with the charter and head boat form. A named licensing office is published. That contact path was not treated as permission to republish records.",
+      "reuse_status": "no_affirmative_grant",
+      "rights_basis": "The page publishes how to apply. It does not license commercial reuse of holder records."
+    },
+    {
+      "url": "https://dnrec.delaware.gov/fish-wildlife/fishing/regulations/",
+      "publisher": "Delaware DNREC Division of Fish and Wildlife",
+      "access_date": "2026-11-25",
+      "terms_url": "https://delaware.gov/help/privacy",
+      "field_scope": "Repeats the per-person and per-trip distinction and points to the same application. Fisheries rules are in the Delaware Administrative Code. This page is not a fleet list.",
+      "bulk": null,
+      "attribution": null,
+      "request_process": null,
+      "reuse_status": "no_affirmative_grant",
+      "rights_basis": "No directory-reuse sentence on the page."
+    },
+    {
+      "url": "https://dnrec.delaware.gov/fish-wildlife/licenses/fees/",
+      "publisher": "Delaware DNREC Division of Fish and Wildlife",
+      "access_date": "2026-11-25",
+      "terms_url": "https://delaware.gov/help/privacy",
+      "field_scope": "Fee table checked this date: charter boat $150 resident and $300 nonresident; head boat $300 and $600; fishing guide $100 and $300. Charter and head boat rows show no agent fee. The fishing guide row shows a $2.50 agent fee. The page says fishing licenses are calendar-year and that a charter or head boat license covers the license holder and everyone fishing from that vessel, so those anglers do not need a separate FIN number. It also says federal law requires captains to keep a log for a federal survey. A hunting-guide sentence on the same page defines paid hunting guide service. No parallel definition is given for a fishing guide.",
+      "bulk": "No holder file.",
+      "attribution": null,
+      "request_process": "Charter and head boat licenses are issued by the Division, not by a license agent.",
+      "reuse_status": "no_affirmative_grant",
+      "rights_basis": "A fee schedule is not a roster and not a reuse license."
+    },
+    {
+      "url": "https://delcode.delaware.gov/title7/c005/sc01/",
+      "publisher": "Delaware General Assembly",
+      "access_date": "2026-11-25",
+      "terms_url": "https://delcode.delaware.gov/title7/c005/sc01/",
+      "field_scope": "7 Del. C. §§ 503 and 506: information in hunting, fishing, and trapping licenses and related databases may not be made available to the public. Government use is limited to fish and wildlife law enforcement and Department harvest surveys, excluding Social Security numbers, or as otherwise authorized by law. The Department may give a contractor that information, still excluding Social Security numbers, only to retain or recruit hunters, trappers, and anglers and to sustain license sales, and only under a confidentiality agreement. § 504(c) and § 508(a)(9) set the resident and nonresident charter and head boat fees and define those vessels by cross-reference to § 906(9) and § 906(36). §§ 504(a)(6) and 508(a)(12) set fishing guide fees and do not define the guide. § 510: fishing licenses run for the calendar year and expire December 31.",
+      "bulk": "The statute withholds the license databases from the public. It does not create a bulk feed.",
+      "attribution": null,
+      "request_process": "No published commercial-license request. The contractor path is for the Department's own angler-recruitment use.",
+      "reuse_status": "statutory_withholding",
+      "rights_basis": "7 Del. C. §§ 503 and 506 prohibit public release of fishing-license information and related databases, with the narrow exceptions stated in those sections. Those exceptions are not a license to build a commercial directory."
+    },
+    {
+      "url": "https://delcode.delaware.gov/title7/c009/",
+      "publisher": "Delaware General Assembly",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "7 Del. C. § 906(9): a charter boat is any vessel-for-hire engaged in recreational fishing that is hired on a per-trip basis. § 906(36): a headboat is any vessel-for-hire engaged in recreational fishing that is hired on a per-person basis. The word guide does not appear in this chapter. § 941: when a federal or Atlantic States plan requires monitoring, the species may not be landed from a headboat or charter boat unless the owner or operator holds a free headboat/charter boat fishing permit, and the holder must keep a Department log of permit number and landings by date and species. That reporting permit is separate from the paid license in Chapter 5.",
+      "bulk": null,
+      "attribution": null,
+      "request_process": null,
+      "reuse_status": "unknown",
+      "rights_basis": "The statute states duties. It does not grant or deny reuse of a directory, because no directory is published here."
+    },
+    {
+      "url": "https://dnrec.delaware.gov/foia/",
+      "publisher": "Delaware DNREC",
+      "access_date": "2026-11-25",
+      "terms_url": "https://delcode.delaware.gov/title29/c100/index.shtml",
+      "field_scope": "Freedom of Information Act intake for DNREC records. Points to the state FOIA form, the Open Data Portal, and the Delaware Environmental Navigator. Says some records still require a request. A request itself may be a public record.",
+      "bulk": "Not a standing data feed. Copies are produced per request.",
+      "attribution": null,
+      "request_process": "Written request through the state FOIA form addressed to DNREC. The page links the agency FOIA policy in the Administrative Code. A granted request is access. It is not, by itself, permission to republish a commercial directory.",
+      "reuse_status": "no_affirmative_grant",
+      "rights_basis": "FOIA is an access statute. Combined with §§ 503 and 506, fishing-license databases are not described as public records available for directory reuse."
+    },
+    {
+      "url": "https://delaware.gov/help/privacy",
+      "publisher": "State of Delaware",
+      "access_date": "2026-11-25",
+      "terms_url": "https://delaware.gov/help/privacy",
+      "field_scope": "Visitor privacy policy for the Delaware.gov portal. It covers information the portal collects from visitors. It says the portal will not distribute, share, sell, or lease that information to third parties for direct marketing. It also says state law may require disclosure of information that is a public record under FOIA. Other agency sites may have different policies.",
+      "bulk": null,
+      "attribution": null,
+      "request_process": null,
+      "reuse_status": "no_affirmative_grant",
+      "rights_basis": "The policy governs the State's use of visitor information. It is not a copyright license or a public-domain dedication for agency directories. DNREC pages checked this date carry a Delaware.gov footer marked ©MMXXVI."
+    },
+    {
+      "url": "https://dnrec.delaware.gov/dnrec-open-data/",
+      "publisher": "Delaware DNREC",
+      "access_date": "2026-11-25",
+      "terms_url": "https://data.delaware.gov/Energy-and-Environment/Delaware-Fishing-Licenses-and-Trout-Stamps/5bd6-z97c",
+      "field_scope": "Index of DNREC sets on data.delaware.gov. Fish and wildlife entries include boat-registration counts by year and fishing-license and trout-stamp totals by year. No charter boat, head boat, or fishing guide holder file is listed.",
+      "bulk": "Portal downloads exist for the listed sets. The charter and head boat license list is not one of them.",
+      "attribution": "Each dataset carries its own attribution.",
+      "request_process": null,
+      "reuse_status": "unrestricted_if_published_on_portal",
+      "rights_basis": "A portal license applies only to a dataset that is actually published. The absence of a holder file means the portal grant does not cover charter or guide identities."
+    },
+    {
+      "url": "https://data.delaware.gov/Energy-and-Environment/Delaware-Fishing-Licenses-and-Trout-Stamps/5bd6-z97c",
+      "publisher": "Delaware Open Data Portal, attributed to DNREC Division of Fish and Wildlife",
+      "access_date": "2026-11-25",
+      "terms_url": "https://data.delaware.gov/api/views/5bd6-z97c.json",
+      "field_scope": "Annual totals of resident and nonresident fishing licenses and trout stamps. Metadata licenseId is PUBLIC_DOMAIN. Columns are year and five count fields. Description says totals by year and residence. The metadata's largest year value is 2019, with 45 year rows. There is no charter, head boat, guide, vessel, or person field.",
+      "bulk": "SODA and download are available for this aggregate table.",
+      "attribution": "Attribution text names the Division of Fish and Wildlife. The license name is Public Domain, so attribution is not a condition of the dataset license.",
+      "request_process": null,
+      "reuse_status": "public_domain_aggregate_only",
+      "rights_basis": "The public-domain grant covers this count table. It does not cover the withheld license databases in §§ 503 and 506, and it does not identify a single vessel or guide."
+    },
+    {
+      "url": "https://www.destateparks.com/charter-boats/",
+      "publisher": "Delaware State Parks, Division of Parks and Recreation",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Referral list for the charter fleet at Indian River Marina, Delaware Seashore State Park, on Indian River Inlet. The page has no as-of date and no statement that the entries are current DNREC license holders. Parsed this date as 27 named boat entries. Fields on a typical entry are a boat label, a length and model, a captain name, and sometimes a website. One captain name is attached to two different boat labels. The page does not show a documentation number or a DNREC permit number.",
+      "bulk": "One HTML page. No download and no API.",
+      "attribution": null,
+      "request_process": "The page says to contact a captain or the marina office for a referral. That is a booking referral, not a reuse process.",
+      "reuse_status": "unknown",
+      "rights_basis": "The page states no copyright license, no public-domain dedication, and no permission to copy the list into another directory. Silence is recorded as unknown."
+    },
+    {
+      "url": "https://www.destateparks.com/wp-content/uploads/2025/03/brochure_Charter_Boats.pdf",
+      "publisher": "Delaware State Parks",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "A charter-fleet brochure linked from the park site path dated March 2025 in the URL. Not retrieved. The fetch returned access denied, and a second request returned HTTP 403.",
+      "bulk": null,
+      "attribution": null,
+      "request_process": null,
+      "reuse_status": "unavailable",
+      "rights_basis": "The file was not read, so its list and its terms are unknown. It is not evidence that the HTML list is current."
+    },
+    {
+      "url": "https://de.gov/DigitalDNREC",
+      "publisher": "State of Delaware",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Short address printed on the charter application for online filing. This check was rejected by the host before a page was shown.",
+      "bulk": null,
+      "attribution": null,
+      "request_process": null,
+      "reuse_status": "unavailable",
+      "rights_basis": "No catalog or terms were readable, so it is unknown whether the portal exposes a public holder search."
+    },
+    {
+      "url": "https://epermitting.dnrec.delaware.gov/",
+      "publisher": "Delaware DNREC",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Online permitting address linked from the licensing pages. The fetched text was only the word Portal. No holder search, fishing-guide product, or terms were visible without an account. No account was created.",
+      "bulk": null,
+      "attribution": null,
+      "request_process": "Account purchase is described on the licensing pages as the way an applicant manages that applicant's own documents.",
+      "reuse_status": "unknown",
+      "rights_basis": "The visible fetch did not grant or deny reuse. It also did not show a public roster."
+    },
+    {
+      "url": null,
+      "publisher": "Booking sites and one Lewes chamber listing in the purposive sample",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Four candidates were opened. Two booking sites agree with the Indian River referral page on length and builder or model. One booking site does not state length or builder. One Lewes landing names a hull that the chamber listing does not name. Identifying URLs are omitted.",
+      "bulk": null,
+      "attribution": null,
+      "request_process": null,
+      "reuse_status": "unknown_or_all_rights_reserved",
+      "rights_basis": "One opened booking site states no terms. Three pages claim all rights reserved, with copyright lines in 2020, 2025, and 2026. None grants commercial directory reuse."
+    }
+  ],
+  "coverage": [
+    {
+      "roster_url": "https://www.destateparks.com/charter-boats/",
+      "population": "Named entries on the Indian River Marina referral page. The page does not say these are the DNREC license holders. The licensed charter and head boat population is null.",
+      "roster_count": 27,
+      "sampled_rows": 3,
+      "supported_rows": 2,
+      "held_rows": 1,
+      "independent_publisher_matches": 3
+    },
+    {
+      "roster_url": null,
+      "population": "Hulls named by one Lewes landing on its own fleet page. The URL is withheld because it identifies the business. Not a licensed-fleet count.",
+      "roster_count": 4,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://documents.dnrec.delaware.gov/fw/Licensing/Charter-Head-Boat-Application.pdf",
+      "population": "Issued charter boat and head boat licenses. No public list was found. Fishing guide licenses are a separate fee with no roster and no definition on the pages checked.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    }
+  ],
+  "sample_summary": {
+    "observations": 4,
+    "supported": 2,
+    "held": 2,
+    "indian_river_referral_sample": {
+      "sampled_rows": 3,
+      "supported_rows": 2,
+      "held_rows": 1
+    },
+    "lewes_landing_sample": {
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1
+    },
+    "samples_are_not_additive": true,
+    "note": "People, hull names, and booking URLs are omitted. The two samples overlap nothing and are not a license count."
+  },
+  "next_questions": [
+    "Does DNREC authorize any commercial directory to copy, store, or refresh charter boat, head boat, or fishing guide license records? Sections 503 and 506 withhold those databases from the public. The application, the fee page, and the privacy policy do not grant that use. A FOIA response would still be access, not a standing directory license.",
+    "What does a Delaware fishing guide license authorize, and is the holder a person rather than a vessel? The fee is published. A definition and an application were not found.",
+    "The most useful next primary source is the Digital DNREC permitting portal, if it can be opened without an account, to see whether any public holder search or fishing-guide product exists. The short address was rejected on this check, and the permitting host returned only a portal title."
+  ]
+}
