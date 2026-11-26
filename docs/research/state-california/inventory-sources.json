@@ -1,0 +1,186 @@
+{
+  "state": "California",
+  "phase": "california-inventory",
+  "scope": "Statewide guide, commercial fishing, commercial boat, and commercial passenger fishing vessel credentials, with a Bodega Bay landing and a five-row private-charter vessel sample",
+  "checked_date": "2026-11-25",
+  "base_commit": "7f69f59f4760afa53f1ef06bc64f6fb0824665e2",
+  "highest_priority_permission_question": "Whether the December 7, 2000 Conditions of Use public-domain sentence covers the 2026 guide-lookup application, and whether a guide, commercial-boat, or passenger-vessel file may be republished.",
+  "recommended_first_source": "Read the guide-laws PDF linked from the guide page, then the department records process for a commercial passenger fishing vessel or commercial boat registration file. The lookup returns person cards with contact fields. It is not a hull file.",
+  "sample": {
+    "entity_type": "vessel",
+    "sampled_rows": 5,
+    "supported_rows": 0,
+    "held_rows": 5,
+    "vessel_rows": 0,
+    "independent_publisher_matches": 1,
+    "withheld_operator_publishers": 5
+  },
+  "coverage": [
+    {
+      "roster_url": "https://wildlife.ca.gov/Licensing/Guide",
+      "population": "Guide license definition and fees valid February 1, 2027 through January 31, 2028. Person credential for packing, guiding, compensated take assistance, and for-profit transport to a hunting or fishing area. Guide employee registration is a narrower person credential. No holder list.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://www.licenses.wildlife.ca.gov/InternetSales/PublicListSearch/FindPublicProvider/4",
+      "population": "Public guide search filtered to Sonoma County and the service Fishing, General on 2026-11-25. Page text showed 123 results. Every card listed Sonoma and Fishing, General. Cards are people and display mailing address and phone. Those fields were not copied. A displayed county is a service area, not a departure.",
+      "roster_count": 123,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://www.licenses.wildlife.ca.gov/InternetSales/PublicListSearch/FindPublicProvider/4",
+      "population": "Same guide search for Sonoma County with no service filter on 2026-11-25. Page text showed 161 results. Every card listed Sonoma. A Fishing service appeared on 137 cards. Not a statewide census and not added to the 123.",
+      "roster_count": 161,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://wildlife.ca.gov/Licensing/Commercial-Fishing/Descriptions",
+      "population": "Commercial fee descriptions valid April 1, 2026 through March 31, 2027. Separates the commercial fishing license, commercial boat registration, the commercial passenger fishing vessel license, the ocean enhancement stamp south of Point Arguello, and the crab-trap validation. No vessel list.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://apps.wildlife.ca.gov/marinelogs/cpfv/",
+      "population": "Account for a commercial passenger fishing vessel license holder to submit activity logs. Authority cited on the page: Fish and Game Code sections 7923 and 8026 and Title 14 sections 190 and 195. Not a public hull lookup.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "http://parks.sonomacounty.gov/visit/find-a-park/sport-fishing-center",
+      "population": "Sonoma County Sport Fishing Center operator labels inside Porto Bodega Marina. Eighteen booking names, a phone column that was not copied, and passenger labels. Three labels are whale-watching or sailing. Seven berths are a facility count. Not a documentation-number file.",
+      "roster_count": 18,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": null,
+      "population": "First-party Bodega Bay charter vessel claims opened on 2026-11-25. No official denominator. All five rows are held. The county landing repeats the five business labels and does not print a hull number.",
+      "roster_count": null,
+      "sampled_rows": 5,
+      "supported_rows": 0,
+      "held_rows": 5,
+      "independent_publisher_matches": 1
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://wildlife.ca.gov/Licensing/Guide",
+      "publisher": "California Department of Fish and Wildlife",
+      "access_date": "2026-11-25",
+      "terms_url": "https://wildlife.ca.gov/Conditions-of-Use",
+      "field_scope": "Guide definition and fees for February 1, 2027 through January 31, 2028. Resident guide license $306.00. Nonresident guide license $703.75. Guide employee registration $67.21, with the workers' compensation, tax withholding, and pre-contact registration conditions. Linked application PDFs were not opened. No roster.",
+      "bulk": "No holder download. The page links a public lookup.",
+      "attribution": "None stated as a condition of reuse.",
+      "request_process": "The page publishes a License and Revenue Branch mailing address, a sales-office telephone, and an email. Those were not copied. Republication of department text is the Conditions of Use page.",
+      "reuse_status": "conditional"
+    },
+    {
+      "url": "https://wildlife.ca.gov/Conditions-of-Use",
+      "publisher": "California Department of Fish and Wildlife",
+      "access_date": "2026-11-25",
+      "source_date": "2000-12-07",
+      "terms_url": "https://wildlife.ca.gov/Conditions-of-Use",
+      "field_scope": "Policy dated December 7, 2000, subject to change without notice. Unmarked site information is described as public domain and may be copied as permitted by law. Photographs, branding, seals, and third-party material need separate permission. Regulatory lists may be distributed as provided by law. Personal information is not sold. Public-records law controls in a conflict.",
+      "bulk": "No bulk license. Departments may have additional policies.",
+      "attribution": "None stated as a condition of copying unmarked text.",
+      "request_process": "Permission for material the State did not create goes to the owner. A discard request for personal information collected about a site user is described and was not used.",
+      "reuse_status": "conditional"
+    },
+    {
+      "url": "https://www.licenses.wildlife.ca.gov/InternetSales/PublicListSearch/SelectPermitType",
+      "publisher": "California Department of Fish and Wildlife",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.wildlife.ca.gov/Conditions-of-Use",
+      "field_scope": "Permit-type gate for the public provider search. The type list offers Guide. It continues to the guide search form.",
+      "bulk": "No download at this step.",
+      "attribution": "None stated as a condition of reuse.",
+      "request_process": "The application footer links Conditions of Use and a privacy policy. The privacy policy was not opened.",
+      "reuse_status": "not_granted"
+    },
+    {
+      "url": "https://www.licenses.wildlife.ca.gov/InternetSales/PublicListSearch/FindPublicProvider/4",
+      "publisher": "California Department of Fish and Wildlife",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.wildlife.ca.gov/Conditions-of-Use",
+      "field_scope": "Guide search. Fields are name, permit number, services, species, and counties. Sonoma plus Fishing, General returned 123 person cards. Sonoma with no service filter returned 161 person cards. Cards show mailing address and phone. Those values were not copied. No export control was present. Footer: Copyright 2026, State of California, All Rights Reserved.",
+      "bulk": "Query results only. No statewide file was downloaded. A blank statewide search was not run.",
+      "attribution": "None stated as a condition of reuse.",
+      "request_process": "The footer offers a support contact labeled Contact Aspira. That contact was not used. A records request for a file, if one exists, is the public-records process.",
+      "reuse_status": "not_granted"
+    },
+    {
+      "url": "https://wildlife.ca.gov/Licensing/Commercial-Fishing/Descriptions",
+      "publisher": "California Department of Fish and Wildlife",
+      "access_date": "2026-11-25",
+      "source_date": "2026-04-01",
+      "terms_url": "https://wildlife.ca.gov/Conditions-of-Use",
+      "field_scope": "Fee table valid April 1, 2026 through March 31, 2027. Commercial fishing license is a person credential. Commercial boat registration is a vessel registration for for-profit fishing operations or for permitting sport fishing for profit. The commercial passenger fishing vessel license is required for any boat from which persons sport fish for a fee. The ocean enhancement stamp applies south of Point Arguello. A 3 percent application fee is capped at $7.50. Online sales add 5 percent.",
+      "bulk": "Fee descriptions. No vessel download.",
+      "attribution": "None stated as a condition of reuse.",
+      "request_process": "None on this table beyond the department's public-records guidelines.",
+      "reuse_status": "conditional"
+    },
+    {
+      "url": "https://apps.wildlife.ca.gov/marinelogs/cpfv/",
+      "publisher": "California Department of Fish and Wildlife",
+      "access_date": "2026-11-25",
+      "terms_url": "https://wildlife.ca.gov/Conditions-of-Use",
+      "field_scope": "Submission account for the holder of a commercial passenger fishing vessel license. Logs are due by the 10th of the following month, including months with no fishing. Paper logs are the alternative. The page cites Fish and Game Code sections 7923 and 8026 and Title 14 sections 190 and 195. Catch information is described as used for resource analysis.",
+      "bulk": "No public export of other vessels.",
+      "attribution": "None stated as a condition of reuse.",
+      "request_process": "Account creation is for a registered owner or operator. A help email is printed and was not copied. Another party's logs are a public-records question, and commercial fishing data is addressed on the guidelines page.",
+      "reuse_status": "not_granted"
+    },
+    {
+      "url": "https://wildlife.ca.gov/General-Counsel/Public-Records-Requests",
+      "publisher": "California Department of Fish and Wildlife",
+      "access_date": "2026-11-25",
+      "terms_url": "https://wildlife.ca.gov/Conditions-of-Use",
+      "field_scope": "Public Records Act guidelines for the department, the Fish and Game Commission, and the Wildlife Conservation Board. GovQA is the request system as of March 1, 2021. A determination is due in 10 days, with a possible 14-day extension. Commercial fishing data, including landing receipts, is listed as exempt except as Fish and Game Code section 8022 provides. The agency is not required to create a new record.",
+      "bulk": "No standing directory file. Electronic copies through GovQA have no fee. Photocopies are $0.15 a page.",
+      "attribution": "None stated as a condition of reuse.",
+      "request_process": "Submit through GovQA. The page names a counsel office and a coordinator and publishes telephone numbers. Those names and numbers were not copied.",
+      "reuse_status": "conditional"
+    },
+    {
+      "url": "http://parks.sonomacounty.gov/visit/find-a-park/sport-fishing-center",
+      "publisher": "Sonoma County Regional Parks",
+      "access_date": "2026-11-25",
+      "terms_url": "https://sonomacounty.gov/terms-of-use",
+      "field_scope": "Landing page. The county operates the Sport Fishing Center inside Porto Bodega Marina and describes it as the Bodega Bay dock where private charters load and unload passengers. Eighteen operator labels and a phone column. Phones were not copied. Sixteen labels say 6 passenger, one says 20 passenger, and one sailing label has no count. Three labels are whale-watching or sailing. Seven berths, 20 to 80 feet, currently full. A 2026-2027 rates PDF is linked and was not opened.",
+      "bulk": "One HTML list. No hull-number download.",
+      "attribution": "None stated as a condition of reuse.",
+      "request_process": "A dock-use agreement is mentioned. The marina telephone and email were not copied and were not used.",
+      "reuse_status": "conditional"
+    },
+    {
+      "url": "https://sonomacounty.gov/terms-of-use",
+      "publisher": "County of Sonoma",
+      "access_date": "2026-11-25",
+      "terms_url": "https://sonomacounty.gov/terms-of-use",
+      "field_scope": "County website terms. Unmarked information is described as public domain and may be copied as permitted by law. Photographs and material the county did not create need the owner's permission. No warranty. The policy can change without notice. Collected personal information may become a public record unless an exemption applies. The Public Records Act controls in a conflict.",
+      "bulk": "No bulk license.",
+      "attribution": "None stated as a condition of copying unmarked county text.",
+      "request_process": "A webmaster contact at the Information Systems Department is published. The street address was not copied.",
+      "reuse_status": "conditional"
+    }
+  ]
+}
