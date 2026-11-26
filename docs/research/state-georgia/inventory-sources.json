@@ -1,0 +1,203 @@
+{
+  "state": "Georgia",
+  "phase": "georgia-inventory",
+  "checked_date": "2026-11-25",
+  "scope": "Saltwater guide and customer-license sources, plus a St. Simons landing and three bookable Golden Isles fishing publishers. Current statewide guide count is unknown. Candidate names are omitted.",
+  "sources": [
+    {
+      "url": "https://georgiawildlife.com/sites/default/files/crd/pdf/marfish/2026GuideLic.pdf",
+      "publisher": "Georgia Department of Natural Resources, Law Enforcement Division",
+      "access_date": "2026-11-25",
+      "terms_url": "https://gadnr.org/webPolicies",
+      "field_scope": "Blank 2026-2027 charter/guide application. Guide license is held by the captain. Optional customer license is held by that captain when a Coast Guard passenger-vessel license is also held. Up to two vessel identifier fields are requested. Not a roster.",
+      "bulk": "No issued-license file.",
+      "attribution": "Cite the packet and the access date.",
+      "request_process": "Mail, email, or in person at Coastal Regional Headquarters in Brunswick, as printed on the packet.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://coastalgadnr.org/commercialfishing",
+      "publisher": "Georgia DNR Coastal Resources Division",
+      "access_date": "2026-11-25",
+      "terms_url": "https://gadnr.org/webPolicies",
+      "field_scope": "Commercial license page. Links the 2026 guide packet for April 1, 2026 through March 31, 2027 and prints the guide and customer-license fees. No holder search.",
+      "bulk": "No guide roster.",
+      "attribution": "Cite the commercial fishing page and the access date.",
+      "request_process": "Applications follow the packet. Open records are a separate form.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://ga.elaws.us/law/section27-2-23.2",
+      "publisher": "eLaws.us Georgia Code mirror",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "O.C.G.A. 27-2-23.2 text. Guide license on the person. Customer license covers fee-paying anglers fishing with that guide. Pier license is separate. Mirror banner date is August 20, 2013. Fees match the 2026 packet.",
+      "bulk": null,
+      "attribution": "Cite O.C.G.A. 27-2-23.2.",
+      "request_process": null,
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://rules.sos.ga.gov/gac/391-2-4-.16",
+      "publisher": "Georgia Secretary of State rules site",
+      "access_date": "2026-11-25",
+      "terms_url": "https://rules.sos.ga.gov/gac/391-2-4-.16",
+      "field_scope": "Guide and pier reporting rule. Indexed text requires activity reports from licensed guides. Direct download returned HTTP 403. Not a public roster.",
+      "bulk": "Reporting records were not obtained.",
+      "attribution": "Cite Rule 391-2-4-.16. The site footer reserves Fastcase rights.",
+      "request_process": "Alternate forms are requested from the Department in writing.",
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://gadnr.org/webPolicies",
+      "publisher": "Georgia Department of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://gadnr.org/webPolicies",
+      "field_scope": "Website policy. No commercial directory grant. Personal information is tied to the Open Records Act.",
+      "bulk": "Not a data license.",
+      "attribution": "No attribution template.",
+      "request_process": "No commercial-permission desk.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://gadnr.org/gorarequest",
+      "publisher": "Georgia Department of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://gadnr.org/webPolicies",
+      "field_scope": "Open-records request form. Inspection and copying of non-exempt records, with a possible hourly charge. A guide-file request was not filed.",
+      "bulk": "Unknown until a request is answered.",
+      "attribution": null,
+      "request_process": "Use the form and name the license year and fields.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://coastalgadnr.org/AnglerAndGuideSurvey",
+      "publisher": "Georgia DNR Coastal Resources Division",
+      "access_date": "2026-11-25",
+      "terms_url": "https://gadnr.org/webPolicies",
+      "field_scope": "2017 survey page. States that 134 resident licensed guides were invited. Not a current named roster.",
+      "bulk": "Historical count only.",
+      "attribution": "Cite the 2017 survey page and keep that year separate from the check date.",
+      "request_process": null,
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://www.morningstarmarinas.com/location/706/ga/st-simons-island/morningstar-marinas-golden-isles/",
+      "publisher": "Morningstar Marinas Golden Isles",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.morningstarmarinas.com/terms-of-use/",
+      "field_scope": "St. Simons landing page. No named charter roster.",
+      "bulk": "No charter list.",
+      "attribution": null,
+      "request_process": "Prior written consent under the marina terms. No one was contacted.",
+      "reuse_status": "written_consent_required"
+    },
+    {
+      "url": "https://www.morningstarmarinas.com/terms-of-use/",
+      "publisher": "Morningstar Marinas",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.morningstarmarinas.com/terms-of-use/",
+      "field_scope": "Site material may not be copied, distributed, republished, uploaded, posted, or transmitted without prior written consent.",
+      "bulk": "No data license.",
+      "attribution": null,
+      "request_process": "Prior written consent of Morningstar.",
+      "reuse_status": "written_consent_required"
+    },
+    {
+      "url": "https://georgiacharterfishing.com/",
+      "publisher": "Bookable Golden Isles operator",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "One named boat and a St. Simons marina departure. No length or documentation number. No terms page.",
+      "bulk": "One boat page.",
+      "attribution": null,
+      "request_process": "None published. No one was contacted.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://charterfish.net/",
+      "publisher": "Bookable Golden Isles operator",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "One 22-foot hull. Island service areas are named. No dock. Footer reserves all rights and is dated 2024.",
+      "bulk": "One vessel page.",
+      "attribution": null,
+      "request_process": "None published. No one was contacted.",
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://www.lighthousetrolleys.com/fishing-charters",
+      "publisher": "Lighthouse Trolleys",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Bookable fishing trips departing Morningstar Marina on St. Simons Island. Describes one more-than-six-passenger inshore boat and does not name it. No terms line on the fetched page.",
+      "bulk": "One described service.",
+      "attribution": null,
+      "request_process": "Booking contacts are on the page. No content-license process is published. No one was contacted.",
+      "reuse_status": "unknown"
+    }
+  ],
+  "coverage": [
+    {
+      "roster_url": "https://coastalgadnr.org/commercialfishing",
+      "population": "Current saltwater guide licenses. No public roster.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://coastalgadnr.org/AnglerAndGuideSurvey",
+      "population": "2017 resident guide invitations. The page says 134. Not a 2026 denominator.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://www.morningstarmarinas.com/location/706/ga/st-simons-island/morningstar-marinas-golden-isles/",
+      "population": "Landing page with no named charter roster.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://georgiacharterfishing.com/",
+      "population": "One bookable boat page. Held for lack of a second publisher.",
+      "roster_count": 1,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://charterfish.net/",
+      "population": "One bookable boat page. Held for lack of a second publisher and lack of a dock.",
+      "roster_count": 1,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://www.lighthousetrolleys.com/fishing-charters",
+      "population": "One bookable fishing desk. Hull name absent.",
+      "roster_count": null,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 0
+    }
+  ],
+  "entity_sample": {
+    "supported": 0,
+    "held": 3,
+    "note": "Three bookable coastal services. None has two publishers agreeing on one physical hull."
+  },
+  "highest_priority_permission_question": "Will the Department of Natural Resources release the current saltwater guide and customer-license file, including the customer-license tier and the vessel identifier, for commercial directory use?",
+  "recommended_first_source": "The 2026-2027 charter/guide packet for the credential split, then the open-records form if a holder file is required. Morningstar's location page is a landing, not a fleet list."
+}
