@@ -1,0 +1,382 @@
+{
+  "state": "West Virginia",
+  "phase": "west-virginia-inventory",
+  "checked_date": "2026-11-25",
+  "scope": "General outfitter and guide license, the separate whitewater license, the 42-company portal, New River Gorge fishing observations, and reuse terms. Personal names and contact lines are omitted.",
+  "sources": [
+    {
+      "url": "https://wvdnr.gov/law-enforcement/general-outfitter-and-guide-license/",
+      "publisher": "West Virginia Division of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://wvdnr.gov/privacy-policy/",
+      "field_scope": "General outfitter and guide license. Fee $10 by check or money order to DNR Law Enforcement. The applicant sends a signed and notarized application, an original surety bond, a West Virginia business license, proof of liability insurance, an insurance and bond form, and a first aid card. A Natural Resources Police officer inspects equipment after the Attorney General approves the bond. The license certificate is mailed. Whitewater-zone user reporting is described as a separate duty: $0.70 per user on the Gauley and $0.35 per user on other rivers, with login credentials issued by Law Enforcement. A National Forest permit requires this license first. A motorboat guide born after December 31, 1986 needs a boater-education certificate unless the guide holds a federal commercial boater operator license. Boat-livery orientation is a separate duty under the posted boating code. District telephones, the Law Enforcement telephone, the mail street, and the wildlife mailbox were not copied.",
+      "bulk": "No holder list on this page. It links the application packet and the posted rule and code PDFs.",
+      "attribution": "Cite WVDNR and the page. The site footer is copyright 2026.",
+      "request_process": "Mail the packet to the Law Enforcement Section. No one was contacted.",
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://wvdnr.gov/wp-content/uploads/2021/05/Initial-Application-Packet-OG.pdf",
+      "publisher": "West Virginia Division of Natural Resources, Law Enforcement",
+      "access_date": "2026-11-25",
+      "terms_url": "https://wvdnr.gov/privacy-policy/",
+      "field_scope": "49-page packet. PDF created and modified November 6, 2019. Form DNR-LE-317 dated 11.06.2019. Collects company, owner, addresses, contact person, telephone, fax, email, and website. Section 6 is an item-and-quantity list of property used in the service. It is not a hull-identification field. Section 5 asks for services, areas, and whitewater zones. The packet also copies the posted code and the 2018 rule. A Social Security number was not on the form pages that were read.",
+      "bulk": "Blank application. Not an issued-license file.",
+      "attribution": "Cite form DNR-LE-317, 11.06.2019.",
+      "request_process": "The form is the application. No one was contacted.",
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://wvdnr.gov/wp-content/uploads/2021/05/58CSR11_04.26.2018.pdf",
+      "publisher": "West Virginia Division of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://wvdnr.gov/privacy-policy/",
+      "field_scope": "The PDF the license page still links. Series 11, hunting, fishing, and other outfitters and guides. Filed and effective April 26, 2018. Sunset provision: terminates April 26, 2023. This copy is historical. The active text was read from the Secretary of State Word file.",
+      "bulk": "Not a roster.",
+      "attribution": "Cite the 2018 file only as the copy linked from the license page.",
+      "request_process": null,
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://apps.sos.wv.gov/adlaw/csr/rule.aspx?rule=58-11",
+      "publisher": "West Virginia Secretary of State",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Rule index. Active Series 11 is effective April 19, 2024, titled Hunting, Fishing, and Other Outfitters and Guides. The index authority line is \u00a7\u00a720-1-7(30) and 20-2-23. Historical rows include May 8, 2023 and May 7, 2018. Footer copyright 2026 State of West Virginia. The page was viewed November 25, 2026.",
+      "bulk": "An index. Not a roster.",
+      "attribution": "Cite the Secretary of State rule index.",
+      "request_process": null,
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://apps.sos.wv.gov/adlaw/csr/readfile.aspx?DocId=57122&Format=WORD",
+      "publisher": "West Virginia Secretary of State",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Final Word file for the active Series 11, last saved April 19, 2024. Filing date and effective date April 19, 2024. Sunset August 1, 2029. Authority line inside the file is W. Va. Code \u00a7\u00a720-1-7(31) and 20-2-23, which does not match the index line. An outfitter provides boats or guide services for profit for hunting, fishing, or taking expeditions. The applicant may elect the outfitter or guide designation. Licenses expire December 31 of the year of issue. Bond is $1,000. Liability minimums are $300,000 bodily injury per occurrence and $25,000 property damage. Proof is due by February 15 each year. First aid is required for the person conducting the service. Boats must be kept in safe operable condition. Whitewater study fees in this text are $0.35 per customer on the Cheat, New, Shenandoah, and Tygart study zones and $0.70 on the Gauley. The companion final PDF is a scanned image and returned no text. Staff names in the Word metadata were not copied.",
+      "bulk": "Not a roster.",
+      "attribution": "Cite 58 CSR 11, effective April 19, 2024.",
+      "request_process": null,
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://wvdnr.gov/wp-content/uploads/2021/05/20-2-23.pdf",
+      "publisher": "West Virginia Division of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://wvdnr.gov/privacy-policy/",
+      "field_scope": "Agency copy of \u00a720-2-23. PDF created November 8, 2019. Defines outfitter to include a person who, for profit, provides boats or guide services for fishing or other taking expeditions. An occasional favor rental is outside the definition. The live code site did not connect on this check.",
+      "bulk": "Not a roster.",
+      "attribution": "Cite W. Va. Code \u00a720-2-23 as posted by WVDNR.",
+      "request_process": null,
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://wvdnr.gov/wp-content/uploads/2021/05/20-2-24.pdf",
+      "publisher": "West Virginia Division of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://wvdnr.gov/privacy-policy/",
+      "field_scope": "Agency copy of \u00a720-2-24. Created November 8, 2019. The licensee is a financially responsible United States citizen and must possess the equipment that is advertised. The director investigates qualifications before issuing a license.",
+      "bulk": "Not a roster.",
+      "attribution": "Cite W. Va. Code \u00a720-2-24 as posted by WVDNR.",
+      "request_process": null,
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://wvdnr.gov/wp-content/uploads/2021/05/20-2-25.pdf",
+      "publisher": "West Virginia Division of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://wvdnr.gov/privacy-policy/",
+      "field_scope": "Agency copy of \u00a720-2-25. Created November 8, 2019. The application states name, address, property to be used, area to be served, citizenship, and age. Three resident real-property owners of the applicant's county sign it. A national-forest license also needs the forest supervisor's site designation and permit.",
+      "bulk": "Not a roster.",
+      "attribution": "Cite W. Va. Code \u00a720-2-25 as posted by WVDNR.",
+      "request_process": null,
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://wvdnr.gov/wp-content/uploads/2021/05/20-2-26.pdf",
+      "publisher": "West Virginia Division of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://wvdnr.gov/privacy-policy/",
+      "field_scope": "Agency copy of \u00a720-2-26. Created November 8, 2019. Fee $10. The license is for the calendar year designated on it. Surety bond $1,000 for the life of the license, approved as to form by the Attorney General. The director may revoke the license.",
+      "bulk": "Not a roster.",
+      "attribution": "Cite W. Va. Code \u00a720-2-26 as posted by WVDNR.",
+      "request_process": null,
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://wvdnr.gov/wp-content/uploads/2021/05/20-7-12B.pdf",
+      "publisher": "West Virginia Division of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://wvdnr.gov/privacy-policy/",
+      "field_scope": "Agency copy of \u00a720-7-12b. A person born on or after December 31, 1986 needs a boating-safety education certificate to operate a motorboat or personal watercraft, with exceptions in the section. This is an operator certificate, not a guide roster and not a hull number.",
+      "bulk": "Not a roster.",
+      "attribution": "Cite W. Va. Code \u00a720-7-12b as posted by WVDNR.",
+      "request_process": null,
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://wvdnr.gov/wp-content/uploads/2021/05/20-7-16_BoatLiveries-1.pdf",
+      "publisher": "West Virginia Division of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://wvdnr.gov/privacy-policy/",
+      "field_scope": "Agency copy of \u00a720-7-16. A boat livery keeps a record of the person hiring a motorboat and the vessel identification number. That renter record was not collected. A livery is not the outfitter license.",
+      "bulk": "The statute describes a private rental log. No log was obtained.",
+      "attribution": "Cite W. Va. Code \u00a720-7-16 as posted by WVDNR.",
+      "request_process": null,
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://wvdnr.gov/wp-content/uploads/2021/05/58CSR12_03.28.2019.pdf",
+      "publisher": "West Virginia Division of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://wvdnr.gov/privacy-policy/",
+      "field_scope": "Commercial whitewater outfitters rule linked from the license page. Filed March 27, 2019. Effective March 28, 2019. Sunset March 28, 2024. It names New River segments, including from below Sandstone Falls to Meadow Creek and from Manns Creek to Teays Landing. Those zone lines are in a sunset file. The active 2024 series was not read.",
+      "bulk": "Not a roster.",
+      "attribution": "Cite the 2019 file as the copy the license page links, and as a sunset text.",
+      "request_process": null,
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://apps.sos.wv.gov/adlaw/csr/rule.aspx?rule=58-12",
+      "publisher": "West Virginia Secretary of State",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Rule index. Active Commercial Whitewater Outfitters rule is effective April 19, 2024, authority \u00a720-2-23a. The March 28, 2019 file is marked historical. The active text was not opened.",
+      "bulk": "An index. Not a roster.",
+      "attribution": "Cite the Secretary of State rule index.",
+      "request_process": null,
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://wvdnr.gov/wp-content/uploads/2021/05/58CSR25_07.01.2009.pdf",
+      "publisher": "West Virginia Division of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://wvdnr.gov/privacy-policy/",
+      "field_scope": "Boating rule. Filed May 8, 2009. Effective July 1, 2009. Governs motorboats and other vessels. Section 13 requires a livery to give a boating-safety orientation and to issue a temporary certificate for the rental period. Not a guide roster.",
+      "bulk": "Not a roster.",
+      "attribution": "Cite 58 CSR 25.",
+      "request_process": null,
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://wvdnr.gov/privacy-policy/",
+      "publisher": "West Virginia Division of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://wvdnr.gov/privacy-policy/",
+      "field_scope": "Visitor logs may include domain name and IP address and are described as not identifying a person. Except as required by law, the division does not share information gathered on the website, including email addresses, with any private or commercial organization. Information a person submits is used to respond to that person. Footer copyright 2026 West Virginia Division of Natural Resources. This is not a license to republish a holder file.",
+      "bulk": "Not a data license for the outfitter directory.",
+      "attribution": "Cite the privacy statement.",
+      "request_process": "No request was sent.",
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://wvdnr.gov/lands-waters/whitewater-commission/how-to-become-a-whitewater-outfitter-and-guide/",
+      "publisher": "West Virginia Division of Natural Resources",
+      "access_date": "2026-11-25",
+      "terms_url": "https://wvdnr.gov/privacy-policy/",
+      "field_scope": "A separate Whitewater Outfitter and Guide License. Structured data was published June 11, 2021, and modified June 9, 2025. Non-refundable application fee $250 with a letter of intent. Applications submitted by March 15 are considered for a license effective January 1 of the following calendar year. The page prints a commission deadline of September 31. After approval the annual license fee is $500 per license. Before operation the licensee submits a $1,000 outfitter and guide surety bond, commercial general liability insurance, and passes an equipment and location inspection that includes CPR and first aid. The mail street was not copied. The page links an insurance-and-bond PDF that was not opened.",
+      "bulk": "No holder list.",
+      "attribution": "Cite the how-to page and the June 9, 2025 modification date.",
+      "request_process": "Application to the Law Enforcement Section. No one was contacted.",
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://whitewater.wvdnr.gov/OutfittersAndGuides?Inactive=False",
+      "publisher": "West Virginia Division of Natural Resources, Whitewater",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Active company directory on the whitewater portal. Three pages, 42 rows. Columns are company name, address, county, phone, and website. No boat, no license number, and no waterbody. The page prints no revision date. Page 4 of the pager is empty. A login link is present. Telephones and street lines were not copied. Nine rows have a blank website. This portal is not linked from the $10 general-license page, and the page does not say the 42 rows are every general outfitter in the state.",
+      "bulk": "One HTML directory of companies. Not a hull file.",
+      "attribution": null,
+      "request_process": "The list is public on the portal. A records request was not filed.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://www.nps.gov/neri/planyourvisit/fishing.htm",
+      "publisher": "National Park Service",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.nps.gov/aboutus/disclaimer.htm",
+      "field_scope": "New River Gorge National Park and Preserve fishing page. Last updated September 30, 2024. Names public river access points from Hinton through Fayette Station and says a West Virginia fishing license is required in the park. Not a guide roster and not a hull list. The park mailing address and telephone were not copied.",
+      "bulk": "No outfitter list.",
+      "attribution": "Cite the National Park Service and the page.",
+      "request_process": null,
+      "reuse_status": "us_government_work_commercial_notice_required"
+    },
+    {
+      "url": "https://www.nps.gov/aboutus/disclaimer.htm",
+      "publisher": "National Park Service",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.nps.gov/aboutus/disclaimer.htm",
+      "field_scope": "NPS-created material on the site is generally in the public domain under 17 U.S.C. \u00a7\u00a7 101 and 105, unless otherwise indicated. A citation is appreciated. Commercial republication must carry a notice that no protection is claimed in original U.S. government works, citing 17 U.S.C. \u00a7 403. Trademarks, including the arrowhead, are excluded. A link is not an endorsement. This does not license a state license file.",
+      "bulk": "Not a data license for WVDNR records.",
+      "attribution": "Acknowledge the National Park Service when using its material.",
+      "request_process": null,
+      "reuse_status": "us_government_work_commercial_notice_required"
+    },
+    {
+      "url": "https://www.newriverbronzeback.com/services.html",
+      "publisher": "New River Bronzeback Adventures",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "States one 18.5-foot tunnel-hull aluminum jet boat for guided trips on the New River near Beckley. Maximum two people. The same page still shows a 2019 rate heading. It says the angler must obtain a West Virginia fishing license. No copyright line. A separate page names the guide. The telephone and email were not copied.",
+      "bulk": "One boat claim.",
+      "attribution": null,
+      "request_process": "None published for directory use. No one was contacted.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://www.profishwv.com/fishing-trips",
+      "publisher": "Pro Fish WV",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Guided trips. A jet-boat trip states a 2016 G3 jet boat for up to two anglers and a USCG Master Captain, with a custom meeting place. A separate Upper New River float of about 6.5 hours prices two anglers per boat and does not name the craft. A Summersville Lake pontoon trip does not state a length. The site also sells rafts. Footer copyright 2026, all rights reserved. The street and telephone were not copied.",
+      "bulk": "One dated jet-boat claim, plus unnamed trip craft.",
+      "attribution": null,
+      "request_process": "None published. No one was contacted.",
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://premierwestvirginiaoutdoors.com/",
+      "publisher": "Premier West Virginia Outdoors",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "States an 18-foot G3 jet boat for the New River and its tributaries, and separately states custom rafts with no length or count. The guides page names two people and gives years of experience. Footer copyright 2025, all rights reserved. The guides page does not restate the G3 or the rafts. Cookie text points at Google policies, which are not this operator's directory terms.",
+      "bulk": "One jet-boat claim and one undimensioned raft claim.",
+      "attribution": null,
+      "request_process": "None published. No one was contacted.",
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://nrgowv.com/",
+      "publisher": "New River Gorge Outfitters",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Fishing, rentals, and guided river trips. States that 16-foot, 14-foot, and 10.5-foot paddle rafts are available for guided tours and rental, plus inflatable kayaks. Fishing copy names the New, Greenbrier, and Bluestone. Footer copyright 2026. No hull name or documentation number. The street, telephone, and email were not copied.",
+      "bulk": "Three length classes, not a count of identified hulls.",
+      "attribution": null,
+      "request_process": "None published. No one was contacted.",
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://www.newrivertrophyoutfitters.com/",
+      "publisher": "New River Trophy Outfitters",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Wix homepage. Title is smallmouth fishing at Meadow Creek. The rendered text is a welcome line, a copyright line dated 2016, and a location line. It does not describe a boat or a trip. The street and telephone were not copied.",
+      "bulk": "No hull claim in the rendered page.",
+      "attribution": null,
+      "request_process": "None published. No one was contacted.",
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    }
+  ],
+  "coverage": [
+    {
+      "roster_url": "https://wvdnr.gov/law-enforcement/general-outfitter-and-guide-license/",
+      "population": "General outfitter and guide license page. Fee $10. No public roster.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://whitewater.wvdnr.gov/OutfittersAndGuides?Inactive=False",
+      "population": "Active companies on the whitewater portal. 42 rows. Name, place, county, phone, and website. No boat.",
+      "roster_count": 42,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://wvdnr.gov/lands-waters/whitewater-commission/how-to-become-a-whitewater-outfitter-and-guide/",
+      "population": "Whitewater outfitter and guide license steps. $250 application and $500 annual fee. No roster.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://www.nps.gov/neri/planyourvisit/fishing.htm",
+      "population": "Park fishing page. Access points and a state fishing-license requirement. No guide list.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://www.newriverbronzeback.com/services.html",
+      "population": "One New River jet-boat claim. Held.",
+      "roster_count": 1,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://www.profishwv.com/fishing-trips",
+      "population": "One 2016 G3 jet boat on a custom-location trip. Held. The Upper New float and the Summersville pontoon are separate rows below.",
+      "roster_count": 1,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://www.profishwv.com/fishing-trips",
+      "population": "Upper New River float. The page prices a boat and does not name it. Not sampled as a hull.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://www.profishwv.com/fishing-trips",
+      "population": "Summersville Lake pontoon trip. A different water. No length. Not sampled.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://premierwestvirginiaoutdoors.com/",
+      "population": "One 18-foot G3 jet boat for the New River and tributaries. Held. Not joined to the 2016 G3.",
+      "roster_count": 1,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://premierwestvirginiaoutdoors.com/",
+      "population": "Custom-built rafts on the same page. No length and no count. Held apart from the jet boat.",
+      "roster_count": null,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://nrgowv.com/",
+      "population": "Three paddle-raft length classes offered for guided tours and rental. One held operation. The classes were not counted as three hulls.",
+      "roster_count": null,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://www.newrivertrophyoutfitters.com/",
+      "population": "Homepage rendered a 2016 copyright and a Meadow Creek location. No boat and no trip text.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    }
+  ]
+}
