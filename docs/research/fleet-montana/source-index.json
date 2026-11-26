@@ -1,0 +1,278 @@
+{
+  "state": "Montana",
+  "scope": "Missouri River near Craig and the Madison Valley",
+  "checked_date": "2026-11-25",
+  "base_commit": "7f69f59f4760afa53f1ef06bc64f6fb0824665e2",
+  "recommended_first_source": "https://ebizws.mt.gov/PUBLICPORTAL/searchform?mylist=licenses",
+  "highest_priority_permission_question": "Whether the Department of Labor and Industry and Fish, Wildlife and Parks will authorize reuse of license-status facts and fishing-access-site facts in a commercial directory. MCA 2-6-1017(4)(d) only removes Title 37, chapter 47 lists from the distribution-list ban. FWP terms section 4 allow unmodified personal or informational copying and do not grant commercial-directory reuse. A current lookup, a reuse grant, and authority to claim a listing remain three different things.",
+  "sample": {
+    "population": "Two bookable outfitter operations, one guide row, and one vessel row. Access sites are not rows. The Board roster denominator is unknown.",
+    "roster_count": null,
+    "sampled_rows": 4,
+    "supported_rows": 1,
+    "held_rows": 3,
+    "independent_publisher_matches": 1
+  },
+  "sources": [
+    {
+      "publisher": "Montana Board of Outfitters, Department of Labor and Industry",
+      "url": "https://boards.bsd.dli.mt.gov/outfitters/license-information/outfitter",
+      "role": "outfitter license requirements",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://mt.gov/1240-X06.pdf",
+      "reuse_status": "unknown",
+      "bulk": "not a roster",
+      "request_process": "The page does not state a directory-permission desk."
+    },
+    {
+      "publisher": "Montana Department of Labor and Industry",
+      "url": "https://boards.bsd.dli.mt.gov/_global-pages/additional-license-information/lookup-individual",
+      "role": "lookup disclaimer",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://boards.bsd.dli.mt.gov/_global-pages/additional-license-information/lookup-individual",
+      "reuse_status": "unknown",
+      "bulk": "silent",
+      "request_process": null
+    },
+    {
+      "publisher": "Montana Department of Labor and Industry",
+      "url": "https://ebizws.mt.gov/PUBLICPORTAL/searchform?mylist=licenses",
+      "role": "license-status lookup, not completed",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://boards.bsd.dli.mt.gov/_global-pages/additional-license-information/lookup-individual",
+      "reuse_status": "unknown",
+      "bulk": "interactive search only; no row retrieved",
+      "request_process": "Finish the on-page verification. That step was not completed."
+    },
+    {
+      "publisher": "Montana Department of Labor and Industry",
+      "url": "https://ebizws.mt.gov/PUBLICPORTAL/help.jsp",
+      "role": "portal help stub, not a field dictionary",
+      "checked_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": null,
+      "request_process": null
+    },
+    {
+      "publisher": "Montana Department of Labor and Industry",
+      "url": "https://boards.bsd.dli.mt.gov/_global-pages/additional-license-information/licensee-mailing-lists",
+      "role": "emailed licensee list",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://mca.legmt.gov/bills/mca/title_0020/chapter_0060/part_0100/section_0170/0020-0060-0100-0170.html",
+      "reuse_status": "exception_is_not_a_directory_grant",
+      "bulk": "emailed list offered; not requested; phone numbers withheld; count unknown",
+      "request_process": "No-charge eBiz request linked from this page. The form was not submitted."
+    },
+    {
+      "publisher": "Montana Department of Labor and Industry",
+      "url": "https://dli.mt.gov/records-request",
+      "role": "records-request desk",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://dli.mt.gov/records-request",
+      "reuse_status": "unknown",
+      "bulk": null,
+      "request_process": "The page directs requests to the state public-information portal. No request was filed."
+    },
+    {
+      "publisher": "Montana Board of Outfitters",
+      "url": "https://boards.bsd.dli.mt.gov/outfitters/board-information/watercraft",
+      "role": "license-number decals, not a hull registry",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://mt.gov/1240-X06.pdf",
+      "reuse_status": "unknown",
+      "bulk": "no public hull list",
+      "request_process": "Licensees order decals inside the authenticated portal."
+    },
+    {
+      "publisher": "Montana Board of Outfitters",
+      "url": "https://boards.bsd.dli.mt.gov/outfitters/regulations",
+      "role": "rule index; web text may differ from the Secretary of State",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://mt.gov/1240-X06.pdf",
+      "reuse_status": "unknown",
+      "bulk": "not a roster",
+      "request_process": "Official administrative rules from the Secretary of State."
+    },
+    {
+      "publisher": "Montana Board of Outfitters",
+      "url": "https://boards.bsd.dli.mt.gov/_docs/out/2023-OUT-Statute-and-Rule-Combined.pdf",
+      "role": "unofficial compilation as of 2023-06-30",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://mca.legmt.gov/bills/mca/title_0010/chapter_0110/part_0030/section_0040/0010-0110-0030-0040.html",
+      "reuse_status": "public_law_text_only",
+      "bulk": "not a roster",
+      "request_process": "Secretary of State text controls over this PDF."
+    },
+    {
+      "publisher": "State of Montana",
+      "url": "https://mt.gov/1240-X06.pdf",
+      "role": "privacy policy, not a copyright license",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://mt.gov/1240-X06.pdf",
+      "reuse_status": "unknown",
+      "bulk": null,
+      "request_process": "Internal information-technology policy process. Not a directory-permission desk."
+    },
+    {
+      "publisher": "Montana Legislature",
+      "url": "https://mca.legmt.gov/bills/mca/title_0010/chapter_0110/part_0030/section_0040/0010-0110-0030-0040.html",
+      "role": "MCA 1-11-304, code text may not be copyrighted",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://mca.legmt.gov/bills/mca/title_0010/chapter_0110/part_0030/section_0040/0010-0110-0030-0040.html",
+      "reuse_status": "public_law_text",
+      "bulk": "not a roster",
+      "request_process": null
+    },
+    {
+      "publisher": "Montana Legislature",
+      "url": "https://mca.legmt.gov/bills/mca/title_0020/chapter_0060/part_0100/section_0030/0020-0060-0100-0030.html",
+      "role": "MCA 2-6-1003, right to examine public information",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://mca.legmt.gov/bills/mca/title_0010/chapter_0110/part_0030/section_0040/0010-0110-0030-0040.html",
+      "reuse_status": "public_law_text",
+      "bulk": "individual access, not a feed",
+      "request_process": null
+    },
+    {
+      "publisher": "Montana Legislature",
+      "url": "https://mca.legmt.gov/bills/mca/title_0020/chapter_0060/part_0100/section_0170/0020-0060-0100-0170.html",
+      "role": "MCA 2-6-1017, distribution-list ban and chapter 47 exception",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://mca.legmt.gov/bills/mca/title_0010/chapter_0110/part_0030/section_0040/0010-0110-0030-0040.html",
+      "reuse_status": "exception_is_not_a_directory_grant",
+      "bulk": "no API created by the statute",
+      "request_process": null
+    },
+    {
+      "publisher": "Montana Legislature",
+      "url": "https://mca.legmt.gov/bills/mca/title_0370/chapter_0470/part_0010/section_0010/0370-0470-0010-0010.html",
+      "role": "MCA 37-47-101 definitions",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://mca.legmt.gov/bills/mca/title_0010/chapter_0110/part_0030/section_0040/0010-0110-0030-0040.html",
+      "reuse_status": "public_law_text",
+      "bulk": "not a roster",
+      "request_process": null
+    },
+    {
+      "publisher": "Montana Legislature",
+      "url": "https://mca.legmt.gov/bills/MCA/title_0370/chapter_0470/part_0030/section_0010/0370-0470-0030-0010.html",
+      "role": "MCA 37-47-301 license required",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://mca.legmt.gov/bills/mca/title_0010/chapter_0110/part_0030/section_0040/0010-0110-0030-0040.html",
+      "reuse_status": "public_law_text",
+      "bulk": "not a roster",
+      "request_process": null
+    },
+    {
+      "publisher": "Montana Legislature",
+      "url": "https://mca.legmt.gov/bills/mca/title_0370/chapter_0470/part_0030/section_0040/0370-0470-0030-0040.html",
+      "role": "MCA 37-47-304 individual applicant",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://mca.legmt.gov/bills/mca/title_0010/chapter_0110/part_0030/section_0040/0010-0110-0030-0040.html",
+      "reuse_status": "public_law_text",
+      "bulk": "not a roster",
+      "request_process": "Applications are filed with the Board."
+    },
+    {
+      "publisher": "Montana Legislature",
+      "url": "https://mca.legmt.gov/bills/mca/title_0370/chapter_0470/part_0030/section_0100/0370-0470-0030-0100.html",
+      "role": "MCA 37-47-310 license is not transferable",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://mca.legmt.gov/bills/mca/title_0010/chapter_0110/part_0030/section_0040/0010-0110-0030-0040.html",
+      "reuse_status": "public_law_text",
+      "bulk": "not a roster",
+      "request_process": null
+    },
+    {
+      "publisher": "Montana Legislature",
+      "url": "https://mca.legmt.gov/bills/mca/title_0370/chapter_0470/part_0040/section_0040/0370-0470-0040-0040.html",
+      "role": "MCA 37-47-404 guide services through an endorsing outfitter",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://mca.legmt.gov/bills/mca/title_0010/chapter_0110/part_0030/section_0040/0010-0110-0030-0040.html",
+      "reuse_status": "public_law_text",
+      "bulk": "not a roster",
+      "request_process": null
+    },
+    {
+      "publisher": "Montana Fish, Wildlife and Parks",
+      "url": "https://fwp.mt.gov/terms-of-use",
+      "role": "website terms, section 4",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://fwp.mt.gov/terms-of-use",
+      "reuse_status": "personal_or_informational_use_only",
+      "bulk": "not offered",
+      "request_process": "No commercial-republication desk is stated."
+    },
+    {
+      "publisher": "Montana Fish, Wildlife and Parks",
+      "url": "https://fwp.mt.gov/buyandapply/outfitter-licenses",
+      "role": "commercial-use permit for state sites and waters",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://fwp.mt.gov/terms-of-use",
+      "reuse_status": "personal_or_informational_use_only",
+      "bulk": "no permit-holder roster",
+      "request_process": "Commercial-use application linked from the page. Not filed."
+    },
+    {
+      "publisher": "Montana Fish, Wildlife and Parks",
+      "url": "https://fwp.mt.gov/buyandapply/specialuseriverpermits",
+      "role": "Madison special recreation permit since 2008",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://fwp.mt.gov/terms-of-use",
+      "reuse_status": "personal_or_informational_use_only",
+      "bulk": "issued count unknown",
+      "request_process": "Madison application PDF. Not filed."
+    },
+    {
+      "publisher": "Montana Fish, Wildlife and Parks and the Bureau of Land Management",
+      "url": "https://fwp.mt.gov/binaries/content/assets/fwp/activities/river-recreation/madison-river/2026-madison-srp-application-form.pdf",
+      "role": "blank 2026 Madison special recreation application",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://fwp.mt.gov/terms-of-use",
+      "reuse_status": "personal_or_informational_use_only",
+      "bulk": "blank form; two printed deadline years",
+      "request_process": "Mail the signed form to FWP. Not filed."
+    },
+    {
+      "publisher": "Montana Fish, Wildlife and Parks",
+      "url": "https://fwp.mt.gov/conservation/wildlife-management-areas/public-use-rules",
+      "role": "conduct rules for access sites",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://fwp.mt.gov/terms-of-use",
+      "reuse_status": "personal_or_informational_use_only",
+      "bulk": null,
+      "request_process": null
+    },
+    {
+      "publisher": "Montana Fish, Wildlife and Parks",
+      "url": "https://myfwp.mt.gov/fishMT/fas/39753704",
+      "role": "Craig Fishing Access Site",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://fwp.mt.gov/terms-of-use",
+      "reuse_status": "personal_or_informational_use_only",
+      "bulk": "one site",
+      "request_process": null
+    },
+    {
+      "publisher": "Montana Fish, Wildlife and Parks",
+      "url": "https://myfwp.mt.gov/fishMT/fas/39753534",
+      "role": "Ennis Fishing Access Site",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://fwp.mt.gov/terms-of-use",
+      "reuse_status": "personal_or_informational_use_only",
+      "bulk": "one site",
+      "request_process": null
+    },
+    {
+      "publisher": "Montana Fish, Wildlife and Parks",
+      "url": "https://myfwp.mt.gov/fishMT/region/3",
+      "role": "paginated Region 3 access-site index",
+      "checked_date": "2026-11-25",
+      "terms_url": "https://fwp.mt.gov/terms-of-use",
+      "reuse_status": "personal_or_informational_use_only",
+      "bulk": "count not verified",
+      "request_process": null
+    }
+  ]
+}
