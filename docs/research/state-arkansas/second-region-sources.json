@@ -1,0 +1,204 @@
+{
+  "state": "Arkansas",
+  "phase": "arkansas-second-region",
+  "scope": "Lake Ouachita landings and guide operations, incremental to the White River inventory near Cotter",
+  "checked_date": "2026-11-25",
+  "prior_phase": "arkansas-inventory",
+  "water": "Lake Ouachita",
+  "recommended_first_source": "The AGFC fishing-license fee table, read with inventory.md. The table still has no fishing-guide roster. Lake Ouachita is absent from the named trout-permit tailwaters.",
+  "highest_priority_permission_question": "Will any office release a current list of businesses that guide sport fishing on Lake Ouachita, limited to business name and water, and authorize commercial-directory reuse? The fee table checked on 2026-11-25 still publishes no holder list.",
+  "incremental_license_check": {
+    "fee_url": "https://www.agfc.com/resources/licensing/fishing-license-descriptions-and-fees/",
+    "glf_usd": 250,
+    "glc_usd": 350,
+    "gnf_usd": 500,
+    "roster_count": null,
+    "ouachita_guide_count": null,
+    "ouachita_named_trout_tailwater": false,
+    "trout_keep_permit_any_water": true
+  },
+  "sample": {
+    "sampled_rows": 4,
+    "supported_rows": 3,
+    "held_rows": 1,
+    "unique_hulls": 0,
+    "recommended_guides_counted_not_sampled": 2,
+    "second_publishers": 0
+  },
+  "cross_region_duplicates": [],
+  "sources": [
+    {
+      "publisher": "Arkansas Game and Fish Commission",
+      "url": "https://www.agfc.com/resources/licensing/fishing-license-descriptions-and-fees/",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.agfc.com/privacy-policy/",
+      "reuse_status": "not_granted",
+      "field_scope": "Fee table. GLF $250, GLC $350, GNF $500. Named trout-permit tailwaters omit Lake Ouachita. No guide roster.",
+      "bulk": "HTML fee table. No download and no holder file.",
+      "request_process": "Purchase paths only. No directory-permission process on this page."
+    },
+    {
+      "publisher": "Arkansas.com",
+      "url": "https://www.arkansas.com/state-parks/parks/lake-ouachita-state-park",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.arkansas.com/privacy-policy",
+      "reuse_status": "not_granted",
+      "field_scope": "State park marina rental classes, a 40,000-acre lake description, and species names. No sport-fishing guide roster.",
+      "bulk": "One HTML park page. The arkansasstateparks.com host redirected here.",
+      "request_process": "The privacy policy read in the inventory phase does not grant republication of listings.",
+      "source_date": null
+    },
+    {
+      "publisher": "Mountain Harbor Resort and Spa",
+      "url": "https://mountainharborresort.com/activities/fishing/",
+      "access_date": "2026-11-25",
+      "terms_url": "https://mountainharborresort.com/privacy/",
+      "reuse_status": "not_granted",
+      "field_scope": "Resort fishing page. Marina license sales claim. Two recommended guides, unsampled. No trip price and no hull.",
+      "bulk": "One HTML page.",
+      "request_process": null
+    },
+    {
+      "publisher": "Mountain Harbor Resort and Spa",
+      "url": "https://mountainharborresort.com/marina/",
+      "access_date": "2026-11-25",
+      "terms_url": "https://mountainharborresort.com/privacy/",
+      "reuse_status": "not_granted",
+      "field_scope": "2026 rental classes, deposits, and damage terms. Boat brands and rate cards were not joined to hulls.",
+      "bulk": "One HTML page. Repeated cards are one class.",
+      "request_process": "A reservation-policy link did not resolve to its own URL. A third-party booking catalog was not opened.",
+      "source_date": "2026"
+    },
+    {
+      "publisher": "Mountain Harbor Resort and Spa",
+      "url": "https://mountainharborresort.com/privacy/",
+      "access_date": "2026-11-25",
+      "terms_url": "https://mountainharborresort.com/privacy/",
+      "reuse_status": "not_granted",
+      "field_scope": "Visitor and marketing data. Consent required before third-party disclosure. Aggregate statistics may omit personal identifiers.",
+      "bulk": "One HTML policy. No date line on the policy text.",
+      "request_process": "Contact page for questions. No directory license.",
+      "source_date": null
+    },
+    {
+      "publisher": "Safe Harbor",
+      "url": "https://safeharbor.com/locations/safe-harbor-brady-mountain/",
+      "access_date": "2026-11-25",
+      "terms_url": "https://safeharbor.com/privacy-statement/",
+      "reuse_status": "not_granted",
+      "field_scope": "Marina limits for wet slips, transient slips, and dry storage. Rental boats delegated to local partners from March through October. No guide roster and no slip count.",
+      "bulk": "One HTML location page. shmarinas.com redirected here.",
+      "request_process": "An inquire form collects visitor details under the privacy statement. No directory process."
+    },
+    {
+      "publisher": "Safe Harbor",
+      "url": "https://safeharbor.com/privacy-statement/",
+      "access_date": "2026-11-25",
+      "source_date": "2025-08",
+      "terms_url": "https://safeharbor.com/privacy-statement/",
+      "reuse_status": "not_granted",
+      "field_scope": "Customer, member, and visitor personal information. The statement refuses sale and refuses sharing for a third party's commercial use.",
+      "bulk": "One HTML privacy statement.",
+      "request_process": "Privacy choices inside the statement. No marina-directory license."
+    },
+    {
+      "publisher": "Hot Springs Fishing Guide Service",
+      "url": "https://hotspringsfishingguideservice.com/",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "not_granted",
+      "field_scope": "Half-day prices, a 2004 start narrative, and a 24-foot Blazer Bay class. No hull identifier.",
+      "bulk": "One HTML homepage. Copyright 2026, all rights reserved.",
+      "request_process": "No terms page on the paths checked.",
+      "source_date": "2026"
+    },
+    {
+      "publisher": "Arkansas.com",
+      "url": "https://www.arkansas.com/hot-springs/attractions/xtreme-strike-guide-service",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.arkansas.com/privacy-policy",
+      "reuse_status": "not_granted",
+      "field_scope": "Unavailable listing. The URL returned the attractions index, showing 1-15 of 564.",
+      "bulk": "Generic index. The named listing was not on the page.",
+      "request_process": null
+    },
+    {
+      "publisher": "Family Fishing Trips",
+      "url": "https://familyfishingtrips.com/",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "field_scope": "Fetch failed. No fields were read.",
+      "bulk": null,
+      "request_process": null
+    },
+    {
+      "publisher": "Arkansas Game and Fish Commission",
+      "url": "https://www.agfc.com/fishing/daily-limits/",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.agfc.com/privacy-policy/",
+      "reuse_status": "not_granted",
+      "field_scope": "Unavailable regulation lookup. This path returned the commission not-found page. Three sibling regulation paths returned HTTP 403.",
+      "bulk": null,
+      "request_process": null
+    }
+  ],
+  "coverage": [
+    {
+      "population": "AGFC fishing-guide licenses on Lake Ouachita",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "second_publishers": 0
+    },
+    {
+      "population": "Guide ARK fishing listings for Lake Ouachita",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "second_publishers": 0
+    },
+    {
+      "population": "Lake Ouachita State Park marina",
+      "roster_count": 1,
+      "sampled_rows": 1,
+      "supported_rows": 1,
+      "held_rows": 0,
+      "second_publishers": 0
+    },
+    {
+      "population": "Mountain Harbor Resort and Spa marina",
+      "roster_count": 1,
+      "sampled_rows": 1,
+      "supported_rows": 1,
+      "held_rows": 0,
+      "second_publishers": 0
+    },
+    {
+      "population": "Mountain Harbor recommended guides",
+      "roster_count": 2,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "second_publishers": 0
+    },
+    {
+      "population": "Safe Harbor Brady Mountain",
+      "roster_count": 1,
+      "sampled_rows": 1,
+      "supported_rows": 1,
+      "held_rows": 0,
+      "second_publishers": 0
+    },
+    {
+      "population": "Hot Springs Fishing Guide Service",
+      "roster_count": 1,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "second_publishers": 0
+    }
+  ]
+}

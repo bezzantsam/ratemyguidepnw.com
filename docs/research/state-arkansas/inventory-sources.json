@@ -1,0 +1,360 @@
+{
+  "state": "Arkansas",
+  "phase": "arkansas-inventory",
+  "scope": "AGFC fishing-guide license and White River tailwater guides near Cotter",
+  "checked_date": "2026-11-25",
+  "base_commit": "7f69f59f4760afa53f1ef06bc64f6fb0824665e2",
+  "recommended_first_source": "AGFC Code 03.14 and Code 03.15, with the fishing-license fee table. The credential is the person who guides. The fee table and the licensing portal do not publish a holder list.",
+  "highest_priority_permission_question": "Will AGFC release a current fishing-guide list limited to business or name, license class, and water or county, and authorize commercial-directory reuse? The privacy policy refuses the sale of personally identifiable information and routes records through FOIA with redactions. The sources checked on 2026-11-25 do not answer the question.",
+  "guide_license": {
+    "resident_code_url": "https://agfc-omnibus.s3.amazonaws.com/eregs/regulation_pdfs/large/agfc_regulation_03.14_large.pdf",
+    "resident_code_date": "2025-07-01",
+    "nonresident_code_url": "https://agfc-omnibus.s3.amazonaws.com/eregs/regulation_pdfs/large/agfc_regulation_03.15_large.pdf",
+    "nonresident_code_date": "2025-01-03",
+    "fees": {
+      "GLF": 250,
+      "GLC": 350,
+      "GNF": 500
+    },
+    "glc_expiration": "June 30",
+    "glf_expiration": null,
+    "gnf_expiration": null,
+    "insurance_minimum_usd": 100000,
+    "roster_count": null,
+    "hull_field": false
+  },
+  "guide_ark": {
+    "url": "https://www.arkansas.com/plan-your-trip/plan/guide-ark-program",
+    "about_url": "https://adpht.arkansas.gov/office-of-outdoor-recreation/guide-ark/",
+    "about_modified": "2026-03-13",
+    "unfiltered_count": 29,
+    "white_river_fishing_count": null,
+    "voluntary": true,
+    "agfc_extract": false
+  },
+  "cotter_sample": {
+    "sampled_rows": 4,
+    "supported_rows": 3,
+    "held_rows": 1,
+    "unique_hulls": 0,
+    "crew_headings_counted_not_sampled": 14
+  },
+  "sources": [
+    {
+      "publisher": "Arkansas Game and Fish Commission",
+      "url": "https://www.agfc.com/resources/licensing/fishing-license-descriptions-and-fees/",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.agfc.com/privacy-policy/",
+      "reuse_status": "not_granted",
+      "bulk": "HTML fee table. No guide roster or download.",
+      "request_process": "Buyers are sent to the licensing portal, license agents, and regional offices. No directory-permission process."
+    },
+    {
+      "publisher": "Arkansas Game and Fish Commission",
+      "url": "https://www.agfc.com/resources/licensing/commercial-licenses/",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.agfc.com/privacy-policy/",
+      "reuse_status": "not_granted",
+      "bulk": "HTML table. The commercial fish permit is a separate credential and is not a guide file.",
+      "request_process": "Purchase paths only. No third-party directory process."
+    },
+    {
+      "publisher": "Arkansas Game and Fish Commission",
+      "url": "https://www.agfc.com/privacy-policy/",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.agfc.com/privacy-policy/",
+      "reuse_status": "not_granted",
+      "bulk": "No license feed. FOIA is the records path and was not submitted.",
+      "request_process": "FOIA to AGFC, with redaction before release. No commercial-directory license."
+    },
+    {
+      "publisher": "Arkansas Game and Fish Commission",
+      "url": "https://agfc-omnibus.s3.amazonaws.com/eregs/regulation_pdfs/large/agfc_regulation_03.14_large.pdf",
+      "access_date": "2026-11-25",
+      "source_date": "2025-07-01",
+      "terms_url": "https://www.agfc.com/privacy-policy/",
+      "reuse_status": "not_granted",
+      "bulk": "One code section.",
+      "request_process": null
+    },
+    {
+      "publisher": "Arkansas Game and Fish Commission",
+      "url": "https://agfc-omnibus.s3.amazonaws.com/eregs/regulation_pdfs/large/agfc_regulation_03.15_large.pdf",
+      "access_date": "2026-11-25",
+      "source_date": "2025-01-03",
+      "terms_url": "https://www.agfc.com/privacy-policy/",
+      "reuse_status": "not_granted",
+      "bulk": "One code section.",
+      "request_process": null
+    },
+    {
+      "publisher": "Arkansas Game and Fish Commission licensing portal",
+      "url": "https://ar-web.s3licensing.com/",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.agfc.com/privacy-policy/",
+      "reuse_status": "unknown",
+      "bulk": "Account and cart shell. Search for Existing Customer is an account tool.",
+      "request_process": "Account linking for a purchase. No public roster."
+    },
+    {
+      "publisher": "Arkansas Office of Outdoor Recreation",
+      "url": "https://adpht.arkansas.gov/office-of-outdoor-recreation/guide-ark/",
+      "access_date": "2026-11-25",
+      "source_date": "2026-03-13",
+      "terms_url": "https://portal.arkansas.gov/pages/acceptable-use/#privacy",
+      "reuse_status": "not_granted",
+      "bulk": "About page. Listing is free and voluntary.",
+      "request_process": "Guides apply on the linked application page. That page was not opened."
+    },
+    {
+      "publisher": "Arkansas Office of Outdoor Recreation",
+      "url": "https://adpht.arkansas.gov/office-of-outdoor-recreation/guide-ark/find-a-guide/",
+      "access_date": "2026-11-25",
+      "terms_url": "https://portal.arkansas.gov/pages/acceptable-use/#privacy",
+      "reuse_status": "not_granted",
+      "bulk": "Disclaimer page. Listings are informational and are not an endorsement.",
+      "request_process": "Confirm licensure and insurance with the guide. No directory grant."
+    },
+    {
+      "publisher": "Arkansas.com",
+      "url": "https://www.arkansas.com/plan-your-trip/plan/guide-ark-program",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.arkansas.com/privacy-policy",
+      "reuse_status": "not_granted",
+      "bulk": "Paged HTML directory. Unfiltered count 29. White River fishing filter not applied.",
+      "request_process": "No commercial-directory request path on the page opened."
+    },
+    {
+      "publisher": "Arkansas.com",
+      "url": "https://www.arkansas.com/privacy-policy",
+      "access_date": "2026-11-25",
+      "source_date": "2026",
+      "terms_url": "https://www.arkansas.com/privacy-policy",
+      "reuse_status": "not_granted",
+      "bulk": "Privacy policy under Act 1713 of 2003. Not a listing license.",
+      "request_process": "The policy invites questions. Contact details were not copied."
+    },
+    {
+      "publisher": "Arkansas.com",
+      "url": "https://www.arkansas.com/terms-use",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.arkansas.com/privacy-policy",
+      "reuse_status": "unknown",
+      "bulk": null,
+      "request_process": null,
+      "note": "HTTP 404."
+    },
+    {
+      "publisher": "Arkansas.gov",
+      "url": "https://portal.arkansas.gov/pages/acceptable-use/#privacy",
+      "access_date": "2026-11-25",
+      "terms_url": "https://portal.arkansas.gov/pages/acceptable-use/#privacy",
+      "reuse_status": "not_granted",
+      "bulk": "Linking to agency pages is permitted. Copying the content as one's own is outside that permission.",
+      "request_process": "Portal link requests and DMCA notices. The agent's address was not copied."
+    },
+    {
+      "publisher": "Arkansas Office of Outdoor Recreation",
+      "url": "https://adpht.arkansas.gov/office-of-outdoor-recreation/economic-impact/hunting-and-fishing-license-data-story/",
+      "access_date": "2026-11-25",
+      "source_date": "2024-06-30",
+      "terms_url": "https://portal.arkansas.gov/pages/acceptable-use/#privacy",
+      "reuse_status": "not_granted",
+      "bulk": "Angler and hunter purchase visualizations. The 2024 season in the footnote is July 1, 2023 through June 30, 2024.",
+      "request_process": null
+    },
+    {
+      "publisher": "Arkansas.com",
+      "url": "https://www.arkansas.com/regions-cities/cities/cotter",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.arkansas.com/privacy-policy",
+      "reuse_status": "not_granted",
+      "bulk": "City page. Names two businesses as places to hire fishing guides.",
+      "request_process": null
+    },
+    {
+      "publisher": "Cotter Trout Dock",
+      "url": "http://www.cottertroutdock.com/",
+      "access_date": "2026-11-25",
+      "source_date": "1954",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": null,
+      "request_process": null
+    },
+    {
+      "publisher": "Cotter Trout Dock",
+      "url": "http://www.cottertroutdock.com/rental_boats.htm",
+      "access_date": "2026-11-25",
+      "source_date": "2010-07",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": "Boat-class description. No hull inventory.",
+      "request_process": null
+    },
+    {
+      "publisher": "Ember Shoals",
+      "url": "https://www.embershoals.com/guided-fishing-trips",
+      "access_date": "2026-11-25",
+      "source_date": "2026",
+      "terms_url": "https://www.embershoals.com/terms-and-conditions",
+      "reuse_status": "not_granted",
+      "bulk": "One booking page. Three partner businesses named. One partner site opened.",
+      "request_process": "Written permission under the terms."
+    },
+    {
+      "publisher": "Ember Shoals",
+      "url": "https://www.embershoals.com/terms-and-conditions",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.embershoals.com/terms-and-conditions",
+      "reuse_status": "not_granted",
+      "bulk": null,
+      "request_process": "Written permission before reproduction of site content."
+    },
+    {
+      "publisher": "Ember Shoals",
+      "url": "https://www.embershoals.com/privacy-policy",
+      "access_date": "2026-11-25",
+      "source_date": "2026-05",
+      "terms_url": "https://www.embershoals.com/terms-and-conditions",
+      "reuse_status": "not_granted",
+      "bulk": "Visitor reservation policy.",
+      "request_process": null
+    },
+    {
+      "publisher": "Rising River Guides",
+      "url": "https://risingriverguides.com/",
+      "access_date": "2026-11-25",
+      "source_date": "2024",
+      "terms_url": "https://risingriverguides.com/privacy-policy/",
+      "reuse_status": "not_granted",
+      "bulk": null,
+      "request_process": null
+    },
+    {
+      "publisher": "Rising River Guides",
+      "url": "https://risingriverguides.com/about-us/",
+      "access_date": "2026-11-25",
+      "source_date": "2017-08",
+      "terms_url": "https://risingriverguides.com/privacy-policy/",
+      "reuse_status": "not_granted",
+      "bulk": "Fourteen crew headings. Not a license roster and not a hull file.",
+      "request_process": null
+    },
+    {
+      "publisher": "Rising River Guides",
+      "url": "https://risingriverguides.com/terms-and-conditions/",
+      "access_date": "2026-11-25",
+      "source_date": "2023-02-26",
+      "terms_url": "https://risingriverguides.com/privacy-policy/",
+      "reuse_status": "not_granted",
+      "bulk": "Menu label is Terms. The page served is a privacy policy.",
+      "request_process": null
+    },
+    {
+      "publisher": "Rising River Guides",
+      "url": "https://risingriverguides.com/privacy-policy/",
+      "access_date": "2026-11-25",
+      "source_date": "2023-02-26",
+      "terms_url": "https://risingriverguides.com/privacy-policy/",
+      "reuse_status": "not_granted",
+      "bulk": "Menu label is Privacy Policy. The page served is the terms. No directory grant.",
+      "request_process": "Visitor disputes go to the company. The email was not copied."
+    },
+    {
+      "publisher": "Cotter Elite Anglers",
+      "url": "https://cottereliteanglers.com/",
+      "access_date": "2026-11-25",
+      "source_date": "2024",
+      "terms_url": null,
+      "reuse_status": "unknown",
+      "bulk": null,
+      "request_process": null
+    },
+    {
+      "publisher": "Arkansas.com",
+      "url": "https://www.arkansas.com/cotter/outdoor-recreation/cotter-trout-dock",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.arkansas.com/privacy-policy",
+      "reuse_status": "unknown",
+      "bulk": null,
+      "request_process": null,
+      "note": "Direct fetch returned a generic Outdoor Experiences page. Unavailable listing."
+    },
+    {
+      "publisher": "Arkansas.com",
+      "url": "https://www.arkansas.com/cotter/outdoor-outfitters/rising-river-guides",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.arkansas.com/privacy-policy",
+      "reuse_status": "unknown",
+      "bulk": null,
+      "request_process": null,
+      "note": "Direct fetch returned a generic Outdoor Experiences page. Unavailable listing."
+    }
+  ],
+  "coverage": [
+    {
+      "roster_url": "https://www.agfc.com/resources/licensing/fishing-license-descriptions-and-fees/",
+      "population": "AGFC fishing-guide licenses. Person credentials. No public holder list.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://www.arkansas.com/plan-your-trip/plan/guide-ark-program",
+      "population": "Guide ARK voluntary directory, unfiltered, mixed activities.",
+      "roster_count": 29,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://adpht.arkansas.gov/office-of-outdoor-recreation/economic-impact/hunting-and-fishing-license-data-story/",
+      "population": "Angler and hunter purchases for the 2024 season. Not a guide census.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "http://www.cottertroutdock.com/",
+      "population": "One Cotter landing.",
+      "roster_count": 1,
+      "sampled_rows": 1,
+      "supported_rows": 1,
+      "held_rows": 0,
+      "independent_publisher_matches": 1
+    },
+    {
+      "roster_url": "https://www.embershoals.com/guided-fishing-trips",
+      "population": "One booking desk and three named partners. Two rows opened. Two partners unsampled.",
+      "roster_count": 4,
+      "sampled_rows": 2,
+      "supported_rows": 2,
+      "held_rows": 0,
+      "independent_publisher_matches": 2
+    },
+    {
+      "roster_url": "https://risingriverguides.com/about-us/",
+      "population": "Crew headings on one about page. People were not sampled.",
+      "roster_count": 14,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://cottereliteanglers.com/",
+      "population": "One operator site.",
+      "roster_count": 1,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 0
+    }
+  ]
+}
