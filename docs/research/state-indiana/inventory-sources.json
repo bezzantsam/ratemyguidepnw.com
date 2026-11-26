@@ -1,0 +1,115 @@
+{
+  "state": "Indiana",
+  "phase": "indiana-inventory",
+  "scope": "Indiana fishing-guide license and Michigan City Lake Michigan departures",
+  "checked_date": "2026-11-25",
+  "base_commit": "7f69f59f4760afa53f1ef06bc64f6fb0824665e2",
+  "recommended_first_source": "The Division of Fish and Wildlife Licensed Fishing Guides page (https://www.in.gov/dnr/fish-and-wildlife/fishing/licensed-fishing-guides), as an opt-in person list with charter-location text, not as a Michigan City, slip, or hull roster.",
+  "highest_priority_permission_question": "Do the opt-in checkbox and the IN.gov personal-use limit allow a third party to copy names, business names, and telephone numbers from the guide table into a commercial directory, and does the license or that listing authorize a directory claim? The sources checked on 2026-11-25 do not answer it.",
+  "opt_in_roster": {
+    "url": "https://www.in.gov/dnr/fish-and-wildlife/fishing/licensed-fishing-guides",
+    "source_date": "2026-10-06",
+    "rows": 69,
+    "lake_michigan_rows": 32,
+    "michigan_city_rows": 0,
+    "full_license_count": null,
+    "port_field": false,
+    "hull_field": false
+  },
+  "departure_roster": {
+    "url": "http://www.mcmarina.org/charters.htm",
+    "publisher": "Michigan City Port Authority",
+    "source_date": "2026-03-11",
+    "fishing_listings": 12,
+    "sampled_rows": 5,
+    "supported_rows": 2,
+    "held_rows": 3,
+    "unsampled_rows": 7,
+    "tours_and_rentals_excluded": 1
+  },
+  "sources": [
+    {
+      "publisher": "Indiana DNR Division of Fish and Wildlife",
+      "url": "https://www.in.gov/dnr/fish-and-wildlife/fishing/licensed-fishing-guides",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.in.gov/core/terms_of_use.html",
+      "reuse_status": "commercial_republication_not_granted",
+      "bulk": "One HTML table. No CSV, API, or name-search lookup was found.",
+      "request_process": "No directory-permission process on the page. Portal reuse is governed by the IN.gov terms. Public-records access is the statutory process named in those terms and was not opened."
+    },
+    {
+      "publisher": "Indiana DNR Division of Fish and Wildlife",
+      "url": "https://www.in.gov/dnr/fish-and-wildlife/licenses-and-permits/permits-commercial-licenses",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.in.gov/core/terms_of_use.html",
+      "reuse_status": "commercial_republication_not_granted",
+      "bulk": "Blank forms and regulation PDFs. No roster download on this page.",
+      "request_process": "The page gives a Division phone and a mailing office for form questions. Those contact details are not copied here. No directory-permission process."
+    },
+    {
+      "publisher": "Indiana DNR Division of Fish and Wildlife",
+      "url": "https://forms.in.gov/Download.aspx?id=4860",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.in.gov/core/terms_of_use.html",
+      "reuse_status": "commercial_republication_not_granted",
+      "bulk": "Blank form only.",
+      "request_process": "Applicants file the form with the Division. No third-party directory process."
+    },
+    {
+      "publisher": "Indiana DNR Division of Fish and Wildlife",
+      "url": "https://www.in.gov/dA/6bdf2a29d6/fw-Fishing_Guide_License_Regs.pdf?language_id=1",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.in.gov/core/terms_of_use.html",
+      "reuse_status": "commercial_republication_not_granted",
+      "bulk": "Not a roster.",
+      "request_process": null
+    },
+    {
+      "publisher": "IN.gov",
+      "url": "https://www.in.gov/core/terms_of_use.html",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.in.gov/core/terms_of_use.html",
+      "reuse_status": "commercial_republication_not_granted",
+      "bulk": "Not a data feed. Automated commercial extraction is not granted.",
+      "request_process": "No published process for a commercial-directory license. Copyright notices go to the agent named on the terms page."
+    },
+    {
+      "publisher": "Michigan City Port Authority",
+      "url": "http://www.mcmarina.org/charters.htm",
+      "access_date": "2026-11-25",
+      "terms_url": "http://www.mcmarina.org/legal.htm",
+      "reuse_status": "personal_noncommercial_only",
+      "bulk": "One HTML page. Not a downloadable fleet file.",
+      "request_process": "Written consent under the legal notice for any use beyond personal non-commercial reproduction. No directory form."
+    },
+    {
+      "publisher": "Michigan City Port Authority",
+      "url": "http://www.mcmarina.org/legal.htm",
+      "access_date": "2026-11-25",
+      "terms_url": "http://www.mcmarina.org/legal.htm",
+      "reuse_status": "personal_noncommercial_only",
+      "bulk": null,
+      "request_process": "Written consent. The notice points to a site contact. That address is not copied here."
+    }
+  ],
+  "coverage": [
+    {
+      "roster_url": "https://www.in.gov/dnr/fish-and-wildlife/fishing/licensed-fishing-guides",
+      "population": "Opt-in person table. Not a Michigan City roster. Issued-license count unknown.",
+      "roster_count": 69,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "http://www.mcmarina.org/charters.htm",
+      "population": "Twelve Washington Park fishing listings. Five opened. Operator hostnames omitted from this public index.",
+      "roster_count": 12,
+      "sampled_rows": 5,
+      "supported_rows": 2,
+      "held_rows": 3,
+      "independent_publisher_matches": 4
+    }
+  ]
+}
