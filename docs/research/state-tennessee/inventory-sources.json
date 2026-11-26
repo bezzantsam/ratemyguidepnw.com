@@ -1,0 +1,278 @@
+{
+  "state": "Tennessee",
+  "phase": "tennessee-inventory",
+  "checked_date": "2026-11-25",
+  "scope": "Guide-license sources, Norris Lake and Clinch tailwater landings, and five bookable fishing observations. Current statewide guide count is unknown. Personal-name domains and candidate names are omitted.",
+  "sources": [
+    {
+      "url": "https://www.tn.gov/twra/license-sales.html",
+      "publisher": "Tennessee Wildlife Resources Agency",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.tn.gov/web-policies/linking-policy.html",
+      "field_scope": "Guide license is a person credential. Resident $150. Nonresident $650. Employer may buy it for employees. No holder search. Commercial fishing licenses and the NCWMA OHV guide permit are different products.",
+      "bulk": "No guide roster.",
+      "attribution": "Identify TWRA and the agency web address. Do not imply endorsement.",
+      "request_process": "Application PDF or the GoOutdoors purchase path. Records requests are separate. No one was contacted.",
+      "reuse_status": "copy_with_agency_attribution_no_endorsement"
+    },
+    {
+      "url": "https://www.tn.gov/content/dam/tn/twra/documents/licensing/TWRA-Miscellaneous-Licenses-Application.pdf",
+      "publisher": "Tennessee Wildlife Resources Agency, Licensing Department",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.tn.gov/web-policies/linking-policy.html",
+      "field_scope": "Blank application. Types 450 and 455, hunt, fish, or both, at the same fees. Business name is requested. No vessel field. File modified 2025-12-03.",
+      "bulk": "Not an issued-license file.",
+      "attribution": "Cite the application and the access date.",
+      "request_process": "The form is the application. No one was contacted.",
+      "reuse_status": "copy_with_agency_attribution_no_endorsement"
+    },
+    {
+      "url": "https://publications.tnsosfiles.com/rules_all/2018/1660-01-28.20260722.pdf",
+      "publisher": "Tennessee Secretary of State",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "July 2026 compilation of chapter 1660-01-28. Rule .10 matches the $150 and $650 person license. Guide-rule history ends June 19, 2023. The canonical rules path returned HTTP 403.",
+      "bulk": "Not a roster.",
+      "attribution": "Cite Tenn. Comp. R. & Regs. 1660-01-28-.10.",
+      "request_process": null,
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://www.tn.gov/web-policies/linking-policy.html",
+      "publisher": "State of Tennessee",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.tn.gov/web-policies/linking-policy.html",
+      "field_scope": "TN.gov information may be copied when the use is not misleading, does not imply endorsement, and names the agency and its web address.",
+      "bulk": "Not a data license.",
+      "attribution": "Name the agency and the agency web address.",
+      "request_process": "Graphic reuse needs agency permission. No one was contacted.",
+      "reuse_status": "copy_with_agency_attribution_no_endorsement"
+    },
+    {
+      "url": "https://www.tn.gov/web-policies/dmca.html",
+      "publisher": "State of Tennessee",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.tn.gov/web-policies/dmca.html",
+      "field_scope": "DMCA notice process for TN.gov. Not a directory grant.",
+      "bulk": null,
+      "attribution": null,
+      "request_process": "Notices go to the designated agent on the page. No notice was sent.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://www.tn.gov/twra/contact-us.html",
+      "publisher": "Tennessee Wildlife Resources Agency",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.tn.gov/web-policies/linking-policy.html",
+      "field_scope": "Public-records section. Existing disclosable records only. The agency need not create a spreadsheet. A records mailbox is published.",
+      "bulk": "No file is posted.",
+      "attribution": "Identify TWRA and the agency web address.",
+      "request_process": "Use the published records mailbox or chapter 1660-03-02. A request was not filed.",
+      "reuse_status": "copy_with_agency_attribution_no_endorsement"
+    },
+    {
+      "url": "https://publications.tnsosfiles.com/rules/1660/1660-03-02.20190606.pdf",
+      "publisher": "Tennessee Secretary of State",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "June 2019 public-records rule. Inspection is for a Tennessee citizen. Fees and redaction apply. Fees at or under $10 are waived.",
+      "bulk": "Unknown until a request is answered.",
+      "attribution": "Cite chapter 1660-03-02.",
+      "request_process": "Request to the public-records coordinator. Not filed.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://comptroller.tn.gov/office-functions/open-records-counsel/open-meetings/frequently-asked-questions/tennessee-public-records-act-faqs.html",
+      "publisher": "Tennessee Comptroller of the Treasury",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Public-records FAQ. Confirms the citizen limit, a required agency policy, and that photo identification may be required.",
+      "bulk": null,
+      "attribution": "Cite the FAQ and T.C.A. § 10-7-503(a)(2)(A).",
+      "request_process": "Requests go to the records custodian.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://gooutdoorstennessee.com/",
+      "publisher": "Go Outdoors Tennessee",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.tn.gov/web-policies.html",
+      "field_scope": "Purchase homepage. No guide roster. Boat registration is a separate module. Footer is 2026 and links the state web-policies index.",
+      "bulk": "No public roster on the homepage.",
+      "attribution": null,
+      "request_process": "Account purchase path. No one was contacted.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://www.tn.gov/twra/fishing-regs/trout-regulations.html",
+      "publisher": "Tennessee Wildlife Resources Agency",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.tn.gov/web-policies/linking-policy.html",
+      "field_scope": "Clinch tailwater from Norris Dam to the Highway 61 bridge has its own trout limits. Not a guide roster.",
+      "bulk": "No roster.",
+      "attribution": "Identify TWRA and the agency web address.",
+      "request_process": null,
+      "reuse_status": "copy_with_agency_attribution_no_endorsement"
+    },
+    {
+      "url": "https://tnstateparks.com/parks/norris-dam/boating",
+      "publisher": "Tennessee State Parks",
+      "access_date": "2026-11-25",
+      "terms_url": "https://tnstateparks.com/about/privacy-policy",
+      "field_scope": "Marina, ramp, and pontoon rental near Norris Dam. Guide services are a telephone referral. No named hull. Footer reserves all rights.",
+      "bulk": "No charter list.",
+      "attribution": null,
+      "request_process": "The page gives a telephone referral. No one was called.",
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://www.twincovemarina.com/location/",
+      "publisher": "Twin Cove Resort and Marina",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Norris Lake location page modified 2021-04-28. Names one guide business and no hull.",
+      "bulk": "No hull roster.",
+      "attribution": null,
+      "request_process": "None published. No one was contacted.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "http://covecreekcharters.com/",
+      "publisher": "Bookable Norris Lake operator",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "One 20-foot Duracraft center console at Twin Cove Marina. Half-day party up to three. Angler fishing license required. Page undated. Secure URL did not answer.",
+      "bulk": "One boat page.",
+      "attribution": null,
+      "request_process": "None published. No one was contacted.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": null,
+      "publisher": "Bookable Norris Lake operator",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Personal-name domain withheld. Two hull claims: a 21-foot center console and an 18-foot Crestliner. No dock and no hull number. Footer reserves all rights and is dated 2026.",
+      "bulk": "Two hull claims on one page.",
+      "attribution": null,
+      "request_process": "None published. No one was contacted.",
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": "https://goliathstriper.com/",
+      "publisher": "Bookable Norris Lake operator",
+      "access_date": "2026-11-25",
+      "terms_url": "https://www.goliathstriper.com/terms-and-conditions",
+      "field_scope": "Bookable Norris Lake trips. The boat is not named and has no length or number. Terms cover the booking and are silent on directory reuse.",
+      "bulk": "One booking page.",
+      "attribution": null,
+      "request_process": "Booking contacts are on the page. No one was contacted.",
+      "reuse_status": "unknown"
+    },
+    {
+      "url": "https://striperfun.com/clinch-river-lake-in-east-tennessee/",
+      "publisher": "StriperFun Guide Service",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Heading says charters are not currently offered. The page also names three different places and gives no hull measurement. Footer reserves all rights.",
+      "bulk": "Not a current bookable hull.",
+      "attribution": null,
+      "request_process": "No one was contacted.",
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    },
+    {
+      "url": null,
+      "publisher": "Bookable Clinch tailwater operator",
+      "access_date": "2026-11-25",
+      "terms_url": null,
+      "field_scope": "Personal-name domain withheld. One Hyde Low Pro drift boat in a 2026 rate section, Norris Dam to the Highway 61 bridge. No length or documentation number. Footer reserves all rights.",
+      "bulk": "One drift-boat claim.",
+      "attribution": null,
+      "request_process": "None published. No one was contacted.",
+      "reuse_status": "all_rights_reserved_directory_reuse_not_granted"
+    }
+  ],
+  "coverage": [
+    {
+      "roster_url": "https://www.tn.gov/twra/license-sales.html",
+      "population": "Current guide licenses. No public roster. Commercial fishing and the NCWMA OHV guide permit are different products.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://gooutdoorstennessee.com/",
+      "population": "Purchase homepage. No public guide search on the page that was opened.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://tnstateparks.com/parks/norris-dam/boating",
+      "population": "Landing page. Marina and rentals. No named charter roster.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://www.twincovemarina.com/location/",
+      "population": "Marina page names one guide business and no hull.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "http://covecreekcharters.com/",
+      "population": "One Norris Lake boat page. Held for lack of a second publisher of the hull.",
+      "roster_count": 1,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": null,
+      "population": "One Norris Lake operator page, personal-name domain withheld. Two hull claims, both held.",
+      "roster_count": 2,
+      "sampled_rows": 2,
+      "supported_rows": 0,
+      "held_rows": 2,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://goliathstriper.com/",
+      "population": "One bookable Norris Lake operator. Hull not identified.",
+      "roster_count": 1,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://striperfun.com/clinch-river-lake-in-east-tennessee/",
+      "population": "Clinch page that says charters are not currently offered. Not sampled.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": null,
+      "population": "One Clinch tailwater drift-boat claim. Personal-name domain withheld. Held.",
+      "roster_count": 1,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 0
+    }
+  ]
+}
