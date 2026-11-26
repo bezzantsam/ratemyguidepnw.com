@@ -1,0 +1,292 @@
+{
+  "state": "South Carolina",
+  "checked_date": "2026-11-25",
+  "scope": "Methodology and publisher index for saltwater for-hire fishing sources. Not a vessel roster.",
+  "statewide_charter_license_count": null,
+  "charleston_landings_sampled": 0,
+  "inland_outfitters_sampled": 0,
+  "coverage": [
+    {
+      "roster_url": "https://crazysistermarina.com/fishing/charter-fishing/",
+      "population": "Named private fishing-charter booking products on one Murrells Inlet landing index. Not a statewide count. One product names two hulls, so the hull denominator is null.",
+      "roster_count": 11,
+      "sampled_rows": 3,
+      "supported_rows": 3,
+      "held_rows": 0,
+      "independent_publisher_matches": 3
+    },
+    {
+      "roster_url": "https://crazysistermarina.com/all-day-snapper-trip/",
+      "population": "Large hull names printed on both the fishing fleet module and the ocean-cruise module. One held row covers both names because the fishing tickets do not assign a hull.",
+      "roster_count": 2,
+      "sampled_rows": 1,
+      "supported_rows": 0,
+      "held_rows": 1,
+      "independent_publisher_matches": 0
+    },
+    {
+      "roster_url": "https://www.dnr.sc.gov/licenses/commercialpricing.html",
+      "population": "Statewide SCDNR annual saltwater charter fishing vessel licenses. No public name roster or count was published on the licensing, FOIA, or reporting pages opened.",
+      "roster_count": null,
+      "sampled_rows": 0,
+      "supported_rows": 0,
+      "held_rows": 0,
+      "independent_publisher_matches": 0
+    }
+  ],
+  "highest_priority_permission_question": "Will SCDNR authorize release and commercial-directory reuse of a current saltwater charter-vessel list limited to vessel name, passenger class, and landing, or do section 30-2-50 and the identity rule in section 50-5-380 bar that use? No public roster, field dictionary, bulk file, or commercial-reuse grant was found.",
+  "sources": [
+    {
+      "publisher": "South Carolina Department of Natural Resources",
+      "url": "https://www.dnr.sc.gov/licenses/commercialpricing.html",
+      "terms_url": "https://www.dnr.sc.gov/admin/privacypolicy.html",
+      "role": "Commercial saltwater fee index. Three charter passenger classes. No roster.",
+      "checked_date": "2026-11-25",
+      "reuse_status": "no_commercial_reuse_grant",
+      "commercial_directory_grant": false
+    },
+    {
+      "publisher": "South Carolina Department of Natural Resources, Marine Resources Division",
+      "url": "https://dnr.sc.gov/licenses/pdf/CharterVesselSOL.pdf",
+      "terms_url": "https://www.dnr.sc.gov/admin/privacypolicy.html",
+      "role": "Fiscal year 2026-2027 charter-law summary. Fee citation to omitted section 50-9-560 is stale.",
+      "checked_date": "2026-11-25",
+      "reuse_status": "no_commercial_reuse_grant",
+      "commercial_directory_grant": false
+    },
+    {
+      "publisher": "South Carolina Department of Natural Resources, Commercial License Office",
+      "url": "https://dnr.sc.gov/licenses/pdf/CharterApp.pdf",
+      "terms_url": "https://www.dnr.sc.gov/admin/privacypolicy.html",
+      "role": "Blank charter application used as the intake field list. Completed applications are not public.",
+      "checked_date": "2026-11-25",
+      "reuse_status": "no_commercial_reuse_grant",
+      "commercial_directory_grant": false
+    },
+    {
+      "publisher": "South Carolina Department of Natural Resources",
+      "url": "https://www.dnr.sc.gov/licenses/pricingresident.html",
+      "terms_url": "https://www.dnr.sc.gov/admin/privacypolicy.html",
+      "role": "Resident prices for the three annual charter licenses, expiring June 30, 2027.",
+      "checked_date": "2026-11-25",
+      "reuse_status": "no_commercial_reuse_grant",
+      "commercial_directory_grant": false
+    },
+    {
+      "publisher": "South Carolina Legislature",
+      "url": "https://www.scstatehouse.gov/code/t50c009.php",
+      "terms_url": "https://www.scstatehouse.gov/code/t50c009.php",
+      "role": "License year, expiration, and charter vessel fees in section 50-9-540(D).",
+      "checked_date": "2026-11-25",
+      "reuse_status": "statute_text",
+      "commercial_directory_grant": false
+    },
+    {
+      "publisher": "South Carolina Legislature",
+      "url": "https://www.scstatehouse.gov/code/t50c005.php",
+      "terms_url": "https://www.scstatehouse.gov/code/t50c005.php",
+      "role": "Charter-vessel definition, monthly logs, and licensee-identity rule.",
+      "checked_date": "2026-11-25",
+      "reuse_status": "identity_in_reports_not_public",
+      "commercial_directory_grant": false
+    },
+    {
+      "publisher": "South Carolina Legislature",
+      "url": "https://www.scstatehouse.gov/code/t30c002.php",
+      "terms_url": "https://www.scstatehouse.gov/code/t30c002.php",
+      "role": "Family Privacy Protection Act personal-information and commercial-solicitation rules.",
+      "checked_date": "2026-11-25",
+      "reuse_status": "prohibited_for_personal_information",
+      "commercial_directory_grant": false
+    },
+    {
+      "publisher": "South Carolina Department of Natural Resources",
+      "url": "https://www.dnr.sc.gov/admin/privacypolicy.html",
+      "terms_url": "https://www.dnr.sc.gov/admin/privacypolicy.html",
+      "role": "Agency privacy statement restating section 30-2-50.",
+      "checked_date": "2026-11-25",
+      "reuse_status": "prohibited_for_personal_information",
+      "commercial_directory_grant": false
+    },
+    {
+      "publisher": "South Carolina Department of Natural Resources",
+      "url": "https://www.dnr.sc.gov/admin/foia.html",
+      "terms_url": "https://www.dnr.sc.gov/admin/privacypolicy.html",
+      "role": "FOIA policy and copy fees. No charter name list.",
+      "checked_date": "2026-11-25",
+      "reuse_status": "request_required_and_solicitation_restricted",
+      "commercial_directory_grant": false
+    },
+    {
+      "publisher": "South Carolina Department of Natural Resources",
+      "url": "https://www.dnr.sc.gov/admin/foia/howto.html",
+      "terms_url": "https://www.dnr.sc.gov/admin/privacypolicy.html",
+      "role": "Written FOIA request instructions. No request was submitted.",
+      "checked_date": "2026-11-25",
+      "reuse_status": "request_required_and_solicitation_restricted",
+      "commercial_directory_grant": false
+    },
+    {
+      "publisher": "VESL",
+      "url": "https://www.vesldata.com/",
+      "terms_url": null,
+      "role": "Electronic charter-log portal named by SCDNR. Homepage had no roster or terms.",
+      "checked_date": "2026-11-25",
+      "reuse_status": "unknown",
+      "commercial_directory_grant": false
+    },
+    {
+      "publisher": "NOAA Fisheries",
+      "url": "https://www.fisheries.noaa.gov/disclaimer",
+      "terms_url": "https://www.fisheries.noaa.gov/disclaimer",
+      "role": "Copyright and acknowledgement policy for NOAA Fisheries pages.",
+      "checked_date": "2026-11-25",
+      "reuse_status": "federal_work_not_copyrighted_acknowledgement_requested",
+      "commercial_directory_grant": false
+    },
+    {
+      "publisher": "NOAA Fisheries, Southeast Regional Office",
+      "url": "https://www.fisheries.noaa.gov/southeast/resources-fishing/southeast-fisheries-permits",
+      "terms_url": "https://www.fisheries.noaa.gov/disclaimer",
+      "role": "Southeast permit index. No public South Carolina charter roster.",
+      "checked_date": "2026-11-25",
+      "reuse_status": "no_public_roster",
+      "commercial_directory_grant": false
+    },
+    {
+      "publisher": "NOAA Fisheries, Southeast Regional Office",
+      "url": "https://www.fisheries.noaa.gov/southeast/resources-fishing/frequent-freedom-information-act-requests-southeast-region",
+      "terms_url": "https://www.fisheries.noaa.gov/disclaimer",
+      "role": "Index of frequent Southeast FOIA releases. Linked files were not downloaded.",
+      "checked_date": "2026-11-25",
+      "reuse_status": "not_retrieved",
+      "commercial_directory_grant": false
+    },
+    {
+      "publisher": "NOAA Fisheries, Greater Atlantic Regional Fisheries Office",
+      "url": "https://www.fisheries.noaa.gov/data-tools/public-permit-lookup",
+      "terms_url": "https://www.fisheries.noaa.gov/disclaimer",
+      "role": "Greater Atlantic permit lookup. Out of scope for South Carolina.",
+      "checked_date": "2026-11-25",
+      "reuse_status": "out_of_scope",
+      "commercial_directory_grant": false
+    },
+    {
+      "publisher": "National Archives, Office of the Federal Register, eCFR",
+      "url": "https://www.ecfr.gov/current/title-50/chapter-VI/part-622/subpart-A/section-622.2",
+      "terms_url": "https://www.ecfr.gov/reader-aids/government-policy-and-ofr-procedures/about-this-site",
+      "role": "Federal charter-vessel and headboat definitions.",
+      "checked_date": "2026-11-25",
+      "reuse_status": "federal_regulation_text",
+      "commercial_directory_grant": false
+    },
+    {
+      "publisher": "United States Code, via the Legal Information Institute",
+      "url": "https://www.law.cornell.edu/uscode/text/46/2101",
+      "terms_url": "https://www.law.cornell.edu/uscode/text/46/2101",
+      "role": "Passenger, uninspected passenger vessel, and small passenger vessel definitions.",
+      "checked_date": "2026-11-25",
+      "reuse_status": "federal_statute_text",
+      "commercial_directory_grant": false
+    },
+    {
+      "publisher": "United States Code, via the Legal Information Institute",
+      "url": "https://www.law.cornell.edu/uscode/text/46/8902",
+      "terms_url": "https://www.law.cornell.edu/uscode/text/46/8902",
+      "role": "Licensed-operator duty for a small passenger vessel.",
+      "checked_date": "2026-11-25",
+      "reuse_status": "federal_statute_text",
+      "commercial_directory_grant": false
+    },
+    {
+      "publisher": "United States Code, via the Legal Information Institute",
+      "url": "https://www.law.cornell.edu/uscode/text/46/8903",
+      "terms_url": "https://www.law.cornell.edu/uscode/text/46/8903",
+      "role": "Licensed-operator duty for a self-propelled uninspected passenger vessel.",
+      "checked_date": "2026-11-25",
+      "reuse_status": "federal_statute_text",
+      "commercial_directory_grant": false
+    },
+    {
+      "publisher": "National Archives, Office of the Federal Register, eCFR",
+      "url": "https://www.ecfr.gov/current/title-46/chapter-I/subchapter-B/part-15/subpart-I/section-15.905",
+      "terms_url": "https://www.ecfr.gov/reader-aids/government-policy-and-ofr-procedures/about-this-site",
+      "role": "MMC endorsements that authorize service as operator of an uninspected passenger vessel.",
+      "checked_date": "2026-11-25",
+      "reuse_status": "federal_regulation_text",
+      "commercial_directory_grant": false
+    },
+    {
+      "publisher": "United States Coast Guard",
+      "url": "https://cgmix.uscg.mil/psix/",
+      "terms_url": "https://cgmix.uscg.mil/psix/",
+      "role": "Port State Information Exchange weekly FOIA vessel snapshot. Name search only. Bulk export not downloaded.",
+      "checked_date": "2026-11-25",
+      "reuse_status": "federal_foia_snapshot_no_directory_grant",
+      "commercial_directory_grant": false
+    },
+    {
+      "publisher": "Crazy Sister Marina",
+      "url": "https://crazysistermarina.com/fishing/charter-fishing/",
+      "terms_url": "https://crazysistermarina.com/privacy-policy/",
+      "role": "Murrells Inlet index of private fishing-charter products.",
+      "checked_date": "2026-11-25",
+      "reuse_status": "unknown",
+      "commercial_directory_grant": false
+    },
+    {
+      "publisher": "Crazy Sister Marina",
+      "url": "https://crazysistermarina.com/fishing/head-boat/",
+      "terms_url": "https://crazysistermarina.com/privacy-policy/",
+      "role": "Ticket head-boat fishing menu. Opened trip pages do not name the departing hull.",
+      "checked_date": "2026-11-25",
+      "reuse_status": "unknown",
+      "commercial_directory_grant": false
+    },
+    {
+      "publisher": "Crazy Sister Marina",
+      "url": "https://crazysistermarina.com/all-day-snapper-trip/",
+      "terms_url": "https://crazysistermarina.com/privacy-policy/",
+      "role": "Fishing page for the large inspected boats. Trip caps are not a certificate of inspection.",
+      "checked_date": "2026-11-25",
+      "reuse_status": "unknown",
+      "commercial_directory_grant": false
+    },
+    {
+      "publisher": "Crazy Sister Marina",
+      "url": "https://crazysistermarina.com/excursions/sealife-dolphin-cruise/",
+      "terms_url": "https://crazysistermarina.com/privacy-policy/",
+      "role": "Ocean-cruise booking. Separate activity from fishing, with overlapping large-boat names.",
+      "checked_date": "2026-11-25",
+      "reuse_status": "unknown",
+      "commercial_directory_grant": false
+    },
+    {
+      "publisher": "Crazy Sister Marina",
+      "url": "https://crazysistermarina.com/privacy-policy/",
+      "terms_url": "https://crazysistermarina.com/privacy-policy/",
+      "role": "Landing privacy policy. Silent on third-party directory reuse.",
+      "checked_date": "2026-11-25",
+      "reuse_status": "unknown",
+      "commercial_directory_grant": false
+    },
+    {
+      "publisher": "Next Lvl Sportfishing",
+      "url": "https://www.nextlvlsportfishing.com/",
+      "terms_url": null,
+      "role": "Independent operator site for fishing trips sold from the landing. No terms page found.",
+      "checked_date": "2026-11-25",
+      "reuse_status": "unknown",
+      "commercial_directory_grant": false
+    },
+    {
+      "publisher": "Silver Tuna Sport Fishing",
+      "url": "https://www.silvertunasportfishing.com/the-boats",
+      "terms_url": "https://www.silvertunasportfishing.com/",
+      "role": "Independent operator hull page. Homepage reserves all rights.",
+      "checked_date": "2026-11-25",
+      "reuse_status": "all_rights_reserved",
+      "commercial_directory_grant": false
+    }
+  ]
+}
